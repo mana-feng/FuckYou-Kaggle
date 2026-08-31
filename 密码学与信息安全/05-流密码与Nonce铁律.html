@@ -279,7 +279,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><a href="#_2">🌊 一、基本结构</a></li>
 <li><a href="#nonce">💀 二、Nonce 铁律</a></li>
 <li><a href="#lfsr">🔧 三、一个反面教材：LFSR</a></li>
-<li><a href="#_5">✅ 四、现代该用什么</a></li>
+<li><a href="#_5">🧭 四、现代该用什么</a></li>
 <li><a href="#_6">🔗 和站内其他章的关系</a></li>
 <li><a href="#_7">✅ 检查点</a></li>
 <li><a href="#_8">🛑 可以停在这里</a></li>
@@ -524,7 +524,7 @@ LFSR 的<strong>统计随机性完美，密码学价值为零</strong>。
 三个 LFSR 联合搜索是 2^(L₁+L₂+L₃)，分开搜是 2^L₁ + 2^L₂ + 2^L₃。</p>
 </blockquote>
 <hr />
-<h2 id="_5">✅ 四、现代该用什么</h2>
+<h2 id="_5">🧭 四、现代该用什么</h2>
 <section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">❌ 不要用：RC4（有统计偏差，已被禁用）、A5/1、E0、任何自制的 LFSR 方案</span></div><div class="vb-tree-row"><span class="vb-tree-node">✅ 用这些：</span></div><div class="vb-tree-row"><span class="vb-tree-node">ChaCha20</span><span class="vb-tree-note">软件实现快，无需硬件加速，移动端首选</span></div><div class="vb-tree-row"><span class="vb-tree-node">AES-CTR</span><span class="vb-tree-note">有 AES-NI 硬件指令时最快</span></div><div class="vb-tree-row"><span class="vb-tree-node">⭐ 但实际上你应该用【认证加密】：</span></div><div class="vb-tree-row"><span class="vb-tree-node">ChaCha20-Poly1305 / AES-GCM</span></div><div class="vb-tree-row"><span class="vb-tree-node">（见第 11 章 —— 光加密不够，必须带认证）</span></div></div></section>
 <blockquote>
 <p>🔑 <strong>本章最实用的一条建议</strong>：

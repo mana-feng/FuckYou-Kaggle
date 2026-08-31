@@ -285,7 +285,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><a href="#1520">🛡️ 环境层硬边界（第 15、20 节）</a></li>
 <li><a href="#1419">📏 评测循环（第 14、19 节）</a></li>
 <li><a href="#llm-rubric">🧪 LLM 评委 rubric 模板</a></li>
-<li><a href="#_2">✅ 上生产检查单</a></li>
+<li><a href="#_2">📋 上生产检查单</a></li>
 <li><a href="#_3">🐛 常见问题速查</a></li>
 </ul>
 </div>
@@ -487,7 +487,7 @@ pip<span class="w"> </span>install<span class="w"> </span>pytest<span class="w">
 </code></pre></div>
 
 <hr />
-<h2 id="_2">✅ 上生产检查单</h2>
+<h2 id="_2">📋 上生产检查单</h2>
 <section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>【架构】</p><p>☐ 做过降级测试，有数据证明当前复杂度必要（第6节）</p><p>☐ 能说清为什么用工作流/Agent、为什么用这种多Agent模式</p><p>☐ 多Agent的15倍token溢价对得起它的价值</p><p>【上下文】</p><p>☐ 系统提示词砍到最小，删掉了为旧模型写的补丁</p><p>☐ 长任务有压缩机制，且摘要保留关键事实</p><p>☐ 工具超过20个上了Tool Search</p><p>☐ 大量阅读类任务派给了子Agent</p><p>【工具】</p><p>☐ 工具按意图分组，不是API的一比一镜像</p><p>☐ 返回里没有模型用不上的字段</p><p>☐ 错误信息是可行动的（告诉模型怎么改）</p><p>☐ 危险操作做了防呆</p><p>【验证】</p><p>☐ Agent有能自己跑的验证（测试/编译/lint）</p><p>☐ 验证者不是干活的那个Agent</p><p>☐ 主观标准转成了可回答的rubric条目</p><p>【评测】</p><p>☐ 至少20个来自真实失败的任务，每个有参考解</p><p>☐ 评分器评产出不评路径</p><p>☐ 读过转录，人工核对过评分器</p><p>☐ 明确该看pass@k还是pass^k</p><p>☐ 对小于3个百分点的差距保持怀疑</p><p>【安全】</p><p>☐ 做过威胁建模：Agent被完全控制最坏会怎样</p><p>☐ 至少一道环境层硬边界（代码里的if，不是提示词）</p><p>☐ 高危动作权限分离（能写≠能部署）</p><p>☐ 只在高危动作要确认，避免审批疲劳</p><p>☐ 外部内容当不可信数据处理</p><p>【运维】</p><p>☐ 有max_steps/超时/预算三道护栏，且优雅退出</p><p>☐ 状态可从出错点恢复，不用从头重跑</p><p>☐ 有结构化trace能回放决策路径</p><p>☐ 部署不打断运行中的Agent（彩虹部署）</p><p>【长期】</p><p>☐ 日历上有&quot;模型升级后重审harness&quot;的提醒</p><p>☐ 定期问：我可以停止做什么？</p></div></section>
 <hr />
 <h2 id="_3">🐛 常见问题速查</h2>

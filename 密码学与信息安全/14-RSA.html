@@ -278,7 +278,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><a href="#_1">🎯 一句话</a></li>
 <li><a href="#_2">🔑 一、算法</a></li>
 <li><a href="#rsa">💀 二、教科书 RSA 为什么不能直接用</a></li>
-<li><a href="#_3">✅ 三、正确用法：必须填充</a></li>
+<li><a href="#_3">🔧 三、正确用法：必须填充</a></li>
 <li><a href="#_4">⏱️ 四、侧信道：私钥能被"听"出来</a></li>
 <li><a href="#rsa_1">📉 五、RSA 今天的地位</a></li>
 <li><a href="#_5">🔗 和站内其他章的关系</a></li>
@@ -324,7 +324,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="4">问题 ④ 共模 / 共因子</h3>
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">💥 共模攻击：两个人用相同的 n、不同的 e</span></div><div class="vb-flow-row"><span class="vb-flow-step">任一方都能算出对方的私钥</span></div><div class="vb-flow-row"><span class="vb-flow-step">💥 共因子：如果两个 RSA 公钥的 n 恰好共享一个素数因子</span></div><div class="vb-flow-row"><span class="vb-flow-step">gcd(n₁, n₂) 直接给出那个素数</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">两个密钥全废</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 这不是理论：2012 年有研究扫描全网 TLS 证书，</span></div><div class="vb-flow-row"><span class="vb-flow-step">发现【数万个】RSA 公钥可以被这样直接分解 ——</span></div><div class="vb-flow-row"><span class="vb-flow-step">根因是嵌入式设备开机时熵不足（第 4 章）</span></div></div></section>
 <hr />
-<h2 id="_3">✅ 三、正确用法：必须填充</h2>
+<h2 id="_3">🔧 三、正确用法：必须填充</h2>
 <h3 id="oaep">加密用 OAEP</h3>
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">OAEP = Optimal Asymmetric Encryption Padding</span></div><div class="vb-flow-row"><span class="vb-flow-step">把消息 + 【随机数】+ 结构化填充，经过两轮哈希混合，再做 RSA</span></div><div class="vb-flow-row"><span class="vb-flow-step">✅ 引入随机性</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">满足 IND-CPA</span></div><div class="vb-flow-row"><span class="vb-flow-step">✅ 结构化</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">破坏乘法同态</span></div><div class="vb-flow-row"><span class="vb-flow-step">✅ 在随机预言机模型下可证 IND-CCA</span></div></div></section>
 <blockquote>

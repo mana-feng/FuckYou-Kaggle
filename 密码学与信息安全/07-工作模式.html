@@ -280,7 +280,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><a href="#cbc">⛓️ 二、CBC：把前一块的密文混进来</a></li>
 <li><a href="#ctr">⚡ 三、CTR：把分组密码变成流密码</a></li>
 <li><a href="#_2">📊 四、对比表（可以直接拿去用）</a></li>
-<li><a href="#_3">✅ 五、那实际该用什么</a></li>
+<li><a href="#_3">🧭 五、那实际该用什么</a></li>
 <li><a href="#_4">🔗 和站内其他章的关系</a></li>
 <li><a href="#_5">✅ 检查点</a></li>
 <li><a href="#_6">🛑 可以停在这里</a></li>
@@ -454,7 +454,7 @@ Java 的多个框架、以及大量自制的"加密 cookie"方案。</p>
 <strong>这就是为什么这三个模式今天都不该单独使用</strong> —— 见下。</p>
 </blockquote>
 <hr />
-<h2 id="_3">✅ 五、那实际该用什么</h2>
+<h2 id="_3">🧭 五、那实际该用什么</h2>
 <section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">❌ 不要单独用任何一个上面的模式</span></div><div class="vb-tree-row"><span class="vb-tree-node">✅ 用【认证加密 AEAD】：</span></div><div class="vb-tree-row"><span class="vb-tree-node">AES-GCM</span><span class="vb-tree-note">CTR + GMAC，有硬件加速时最快</span></div><div class="vb-tree-row"><span class="vb-tree-node">ChaCha20-Poly1305</span><span class="vb-tree-note">无硬件加速时更快，移动端首选</span></div><div class="vb-tree-row"><span class="vb-tree-node">AES-GCM-SIV ⭐ nonce 重复时&quot;只泄露该消息重复&quot;，不会灾难性崩溃</span></div></div></section>
 
 <div class="codehilite"><pre><span></span><code><span class="c1"># ✅ 这才是你应该写的代码</span>
