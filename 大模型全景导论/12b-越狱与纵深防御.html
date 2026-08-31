@@ -276,9 +276,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
 <ul>
 <li><a href="#_1">🎯 一句话</a></li>
-<li><a href="#_2">🧠 二、越狱与红队</a></li>
-<li><a href="#_6">✅ 检查点</a></li>
-<li><a href="#_7">🛑 可以停在这里</a></li>
+<li><a href="#_2">🧠 越狱与红队</a></li>
+<li><a href="#_6">🔗 想再深一层，去哪一套</a></li>
+<li><a href="#_7">✅ 检查点</a></li>
+<li><a href="#_8">🛑 可以停在这里</a></li>
 </ul>
 </div>
 </details>
@@ -290,7 +291,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 所以判断标准只有一句：<strong>「被绕过 100 次里 1 次，我能承受吗」</strong>，不能承受的事就必须放到那一层。</p>
 <p>⚠️ 这一页是可执行清单，不必先读<a href="12-对齐与AI安全.html">上一页</a>的对齐理论。</p>
 <hr />
-<h2 id="_2">🧠 二、越狱与红队</h2>
+<h2 id="_2">🧠 越狱与红队</h2>
 <h3 id="_3">常见越狱手法（了解是为了防御）</h3>
 <table>
 <thead>
@@ -318,7 +319,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 <tr>
 <td><strong>长上下文淹没</strong></td>
-<td>塞大量内容稀释安全指令（第 2 章的注意力摊薄）</td>
+<td>塞大量内容把安全指令稀释掉</td>
 </tr>
 </tbody>
 </table>
@@ -328,18 +329,47 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <p>关键认知：
 - 模型层防御是<strong>概率性的</strong>——总有漏网（智能体第 15 章的铁律）
-- 所以<strong>纵深防御</strong>：模型对齐 + 输入过滤 + 输出过滤 + 环境硬边界</p>
+- 所以<strong>纵深防御</strong>：模型对齐 + 输入过滤 + 提示词结构 + 输出过滤 + 环境硬边界</p>
 <h3 id="_5">🛡️ 纵深防御具体长什么样</h3>
 <section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 模型对齐 ← 模型方做的，你控制不了，且是【概率性】的</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 输入过滤 ← 检测明显的注入模式、编码混淆</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 提示词结构 ← 把用户输入明确标记为&quot;数据&quot;而非&quot;指令&quot; ⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">④ 输出过滤 ← 校验格式、检测敏感内容、验证引用真实性</span></div><div class="vb-flow-row"><span class="vb-flow-step">⑤ 环境硬边界 ⭐ ← 权限最小化、沙箱、出口白名单、不可逆操作要确认</span></div><div class="vb-flow-row"><span class="vb-flow-step">🔑 关键：只有 ⑤ 是【确定性】的保证，前四层都是概率性的</span></div><div class="vb-flow-row"><span class="vb-flow-step">所以真正兜底的必须是 ⑤</span></div></div></section>
 <blockquote>
-<p>🔗 <strong>这就是<a href="../智能体工程教程/index.html">《智能体工程教程》</a>那条铁律的来源</strong>：
-<strong>「不要用提示词去防你承受不起被绕过的事。」</strong></p>
+<p>🔗 <strong><a href="../智能体工程教程/15-安全-沙箱与提示注入.html">智能体工程教程 15 · 安全-沙箱与提示注入</a> 是同一条结论的另一种说法</strong>：
+那一章的原话是<strong>「概率性的模型层防御必有漏网之鱼，确定性的环境层边界才是底线」</strong> ——
+换成这一页的话就是：<strong>承受不起被绕过的事，不能靠提示词去防。</strong></p>
 <p>💡 <strong>一个判断标准</strong>：问自己「如果这层防御被绕过 100 次里有 1 次，我能承受吗？」
 不能承受 → <strong>它必须是第 ⑤ 层（代码/权限层面），不能是第 ①②③④ 层。</strong></p>
 </blockquote>
 <hr />
 <hr />
-<h2 id="_6">✅ 检查点</h2>
+<h2 id="_6">🔗 想再深一层，去哪一套</h2>
+<table>
+<thead>
+<tr>
+<th>去哪</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../智能体工程教程/15-安全-沙箱与提示注入.html">智能体工程教程 15 · 安全-沙箱与提示注入</a></td>
+<td>⭐ 同一条结论的工程版：沙箱怎么搭、权限怎么最小化、提示注入具体长什么样</td>
+</tr>
+<tr>
+<td><a href="../智能体工程教程/20-挑战项目C-提示注入攻防.html">智能体工程教程 20 · 挑战项目C-提示注入攻防</a></td>
+<td>想自己动手攻一遍：那是一个完整的攻防练习</td>
+</tr>
+<tr>
+<td><a href="../AI全栈/08c-CSRF与XSS.html">AI全栈 08c · CSRF 与 XSS</a></td>
+<td>「把用户输入标记为数据而不是指令」在 Web 那一侧是同一个老问题的另一副面孔</td>
+</tr>
+<tr>
+<td><a href="12-对齐与AI安全.html">12 · 对齐</a></td>
+<td>第一层「模型对齐」为什么只能是概率性的 —— 那一页讲有用/诚实/无害三者的根本张力</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_7">✅ 检查点</h2>
 <ol>
 <li>举三种越狱手法。</li>
 <li>纵深防御的五层是什么？哪一层是确定性的？判断标准是什么？</li>
@@ -354,7 +384,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ol>
 </details>
 <hr />
-<h2 id="_7">🛑 可以停在这里</h2>
+<h2 id="_8">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
 <p><strong>常见越狱手法</strong>（了解是为了防御）：<strong>角色扮演绕开</strong>、<strong>多轮铺垫</strong>利用上下文惯性、<strong>编码混淆</strong>（Base64、拆字）、<strong>低资源语言</strong>、<strong>长上下文淹没</strong>稀释安全指令。<strong>红队测试</strong>就是主动拿这些去攻自己的系统，而不是等线上出事。⭐ 核心是<strong>纵深防御五层</strong>：<strong>①模型对齐 ②输入过滤 ③提示词结构</strong>（把用户输入明确标记为「数据」而不是指令）<strong>④输出过滤 ⑤环境硬边界</strong>（权限最小化、沙箱、出口白名单）。💀 <strong>最要紧的一条：只有第 ⑤ 层是确定性的，前四层全是概率性的。</strong> 概率性意味着总有被绕过的那一次，只是频率高低而已。⭐ 所以判断标准就一句话：<strong>「被绕过 100 次里 1 次，我能承受吗」</strong> —— 不能承受的事（删库、转账、越权读到别人的数据、把密钥发出去）就<strong>必须</strong>放到第 ⑤ 层，靠「做不到就是做不到」的硬约束兜住，而不是靠提示词求它别做。</p>

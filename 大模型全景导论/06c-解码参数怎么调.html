@@ -456,12 +456,12 @@ T=0 是纯利用（每次都选当前最优），T 大是探索。
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">keep</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">q</span><span class="p">))</span>
 
 
-<span class="n">logits</span> <span class="o">=</span> <span class="p">[</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">1.75</span><span class="p">,</span> <span class="mf">1.35</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">]</span>   <span class="c1"># 就是上图那 8 个</span>
+<span class="n">logits</span> <span class="o">=</span> <span class="p">[</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">1.75</span><span class="p">,</span> <span class="mf">1.35</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">]</span>   <span class="c1"># 就是 06b 那张图里的 8 个</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sample_next</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">top_p</span><span class="o">=</span><span class="mf">0.9</span><span class="p">))</span>     <span class="c1"># 核里 6 个候选</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sample_next</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">top_p</span><span class="o">=</span><span class="mf">0.9</span><span class="p">))</span>     <span class="c1"># 核里只剩 2 个 ⭐</span>
 </code></pre></div>
 
-<p>💡 <strong>十行代码把上面那张图跑了一遍</strong>：同一组 logits，只把 T 从 1.0 降到 0.3，核就从 6 个缩到 2 个——<strong>温度和截断是串起来的，不是两个独立开关。</strong></p>
+<p>💡 <strong>十行代码把 <a href="06b-解码策略.html">06b</a> 那张图跑了一遍</strong>：同一组 logits，只把 T 从 1.0 降到 0.3，核就从 6 个缩到 2 个——<strong>温度和截断是串起来的，不是两个独立开关。</strong></p>
 <hr />
 <h2 id="_3">🔗 想再深一层，去哪一套</h2>
 <table>

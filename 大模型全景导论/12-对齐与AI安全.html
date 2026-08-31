@@ -278,9 +278,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><a href="#_1">🎯 一句话</a></li>
 <li><a href="#_2">🧭 先分清两层安全</a></li>
 <li><a href="#_3">🧠 一、对齐要解决的三个目标</a></li>
-<li><a href="#_5">🔬 三、可解释性（最前沿也最迷人的一块）</a></li>
-<li><a href="#ai">⚖️ 四、宪法 AI 与可扩展监督</a></li>
-<li><a href="#_6">🌡️ 五、值得知道的几个概念</a></li>
+<li><a href="#_5">🔬 二、可解释性（最前沿也最迷人的一块）</a></li>
+<li><a href="#ai">⚖️ 三、宪法 AI 与可扩展监督</a></li>
+<li><a href="#_6">🌡️ 四、值得知道的几个概念</a></li>
 <li><a href="#_8">🔗 和站内其他章的关系</a></li>
 <li><a href="#_9">📦 深挖的话要学什么</a></li>
 <li><a href="#_10">⚖️ 要不要深挖</a></li>
@@ -351,11 +351,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 这不是"越狱"，是<strong>帮模型看清这确实是个正当请求</strong>。</p>
 </blockquote>
 <hr />
-<h2 id="_5">🔬 三、可解释性（最前沿也最迷人的一块）</h2>
+<h2 id="_5">🔬 二、可解释性（最前沿也最迷人的一块）</h2>
 <p>问题：模型有几千亿参数，我们<strong>不知道它内部在想什么</strong>。这是 AI 安全最根本的困难。</p>
 <h3 id="mechanistic-interpretability">机械可解释性（Mechanistic Interpretability）</h3>
 <p>试图<strong>逆向工程</strong>模型内部的计算过程：</p>
-<section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">困难：一个神经元往往同时代表多个概念（叠加/多义性）</span></div><div class="vb-flow-row"><span class="vb-flow-step">—— 因为要用有限的神经元表示海量特征</span></div><div class="vb-flow-row"><span class="vb-flow-step">突破：稀疏自编码器（SAE）</span></div><div class="vb-flow-row"><span class="vb-flow-step">把纠缠的神经元激活&quot;解开&quot;成大量单义的特征</span></div><div class="vb-flow-row"><span class="vb-flow-step">能找到诸如&quot;这段代码有bug&quot;、&quot;正在说法语&quot;、</span></div><div class="vb-flow-row"><span class="vb-flow-step">&quot;在讨论欺骗&quot;这样可解释的特征</span></div><div class="vb-flow-row"><span class="vb-flow-step">甚至能通过放大/抑制某个特征来**引导**模型行为</span></div></div></section>
+<section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">困难：一个神经元往往同时代表多个概念（叠加/多义性）</span></div><div class="vb-flow-row"><span class="vb-flow-step">—— 因为要用有限的神经元表示海量特征</span></div><div class="vb-flow-row"><span class="vb-flow-step">突破：稀疏自编码器（SAE）</span></div><div class="vb-flow-row"><span class="vb-flow-step">把纠缠的神经元激活&quot;解开&quot;成大量单义的特征</span></div><div class="vb-flow-row"><span class="vb-flow-step">能找到诸如&quot;这段代码有bug&quot;、&quot;正在说法语&quot;、</span></div><div class="vb-flow-row"><span class="vb-flow-step">&quot;在讨论欺骗&quot;这样可解释的特征</span></div><div class="vb-flow-row"><span class="vb-flow-step">甚至能通过放大/抑制某个特征来引导模型行为</span></div></div></section>
 <p><strong>为什么重要</strong>：如果能读懂模型内部，就能：
 - 检测它是否在「说谎」（内部表示和输出不一致）
 - 在部署前发现危险能力
@@ -364,7 +364,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>💡 这是目前 AI 安全最有希望的技术路线之一，但离完全解决还很远。</p>
 </blockquote>
 <hr />
-<h2 id="ai">⚖️ 四、宪法 AI 与可扩展监督</h2>
+<h2 id="ai">⚖️ 三、宪法 AI 与可扩展监督</h2>
 <section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>问题：靠人工标注对齐，人类跟不上模型的规模和能力</li><li>宪法 AI（Constitutional AI）：</li><li>写一套明文原则（&quot;宪法&quot;）</li><li>让模型根据原则自我批判、自我修正</li><li>用 AI 生成的偏好数据做对齐（RLAIF）</li><li>✅ 可扩展、原则透明可审计、减少人工暴露于有害内容</li></ol></section>
 <p><strong>可扩展监督（Scalable Oversight）</strong> 的核心问题：</p>
 <blockquote>
@@ -372,7 +372,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 思路：辩论、递归奖励建模、用 AI 辅助人类评估。这是未解决的开放问题。</p>
 </blockquote>
 <hr />
-<h2 id="_6">🌡️ 五、值得知道的几个概念</h2>
+<h2 id="_6">🌡️ 四、值得知道的几个概念</h2>
 <table>
 <thead>
 <tr>

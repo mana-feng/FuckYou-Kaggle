@@ -339,7 +339,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <blockquote>
 <p>🔑 <strong>Self-RAG 和 CRAG 其实是同一个念头的两种实现</strong>：都在给 RAG 加一道「<strong>这次检索到底靠不靠谱</strong>」的判断。
 区别是 <strong>Self-RAG 把判断力训进模型里</strong>（要微调），<strong>CRAG 把判断力放在模型外面</strong>（一个可插拔的评估器）。</p>
-<p>⭐ <strong>工程上先做 CRAG 那一路</strong>：它不动模型，加一个打分阈值就能上线，是这两条里投入产出比高得多的一条。而且它的评估器和你<a href="#ragas">上面那张诊断表</a>想量化的是同一件事——<strong>只不过从"事后排查"变成了"事中拦截"</strong>。</p>
+<p>⭐ <strong>工程上先做 CRAG 那一路</strong>：它不动模型，加一个打分阈值就能上线，是这两条里投入产出比高得多的一条。而且它的评估器和你 <a href="08c-RAG怎么评估.html">08c 那张诊断表</a>想量化的是同一件事——<strong>只不过从"事后排查"变成了"事中拦截"</strong>。</p>
 </blockquote>
 <hr />
 <hr />
@@ -368,7 +368,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table>
 <hr />
 <h2 id="_3">📦 深挖的话要学什么</h2>
-<p>✅ = 本章正文已经讲了，点进去就是；其余是本章之外的。</p>
+<p>✅ = 这一组的前三页已经讲了，点进去就是；其余是四页之外的。</p>
 <blockquote>
 <p>📍 <strong>本章之外的那些，也标了它在哪</strong>：
 📗 <strong>本库有</strong> = 站内已经讲透，点进去就行；📙 <strong>半有</strong> = 站内讲了一半，另一半得外找；
@@ -379,18 +379,18 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><strong>文档解析</strong>：PDF/表格/扫描件（OCR）、版面分析、Markdown 转换
   → 📕 <strong>要外找</strong>：站内<strong>一个字都没有</strong>。⚠️ 这一条值得单独警惕——它排在整条链的第一位，做企业知识库时也常常是最耗时的一环，而本库帮不上忙。别因为它在清单第一行就以为它最简单</li>
 <li><strong>切分</strong>：语义切分算法的阈值怎么定、Late Chunking、上下文补全的成本控制
-  → 📙 <strong>半有</strong>：切分的<strong>实用判据</strong>本章自己给了（块大小起点、上下文检索/Contextual Retrieval 的做法）。Late Chunking 和语义切分算法的阈值调法站内没有，要外找</li>
-<li><strong>Embedding</strong>：✅ <a href="#embedding">选型判据与维度取舍</a> ｜ 领域微调的数据怎么攒、跨语言检索、MRL 截断检索
+  → 📙 <strong>半有</strong>：切分的<strong>实用判据</strong><a href="08-RAG深水区.html">08 章</a>给了（块大小起点、上下文检索/Contextual Retrieval 的做法）。Late Chunking 和语义切分算法的阈值调法站内没有，要外找</li>
+<li><strong>Embedding</strong>：✅ <a href="08b-重排与Embedding选型.html">选型判据与维度取舍</a> ｜ 领域微调的数据怎么攒、跨语言检索、MRL 截断检索
   → 📙 <strong>半有</strong>：「领域微调的数据怎么攒」本质是标注问题，<a href="../数据这一关/09-标注体系怎么设计.html">数据这一关 09 · 标注体系怎么设计</a> 和 <a href="../数据这一关/12-标注预算与主动学习.html">12 · 标注预算与主动学习</a> 讲的正是"用有限预算攒出有用的标注"。<strong>MRL 截断检索和跨语言检索站内没有，要外找</strong></li>
 <li><strong>检索</strong>：BM25 的公式本身（tf-idf、k1、b）、SPLADE 学习式稀疏检索、向量库选型（Milvus/Qdrant/pgvector，见<a href="../推荐算法/10-向量检索与ANN.html">推荐算法第 10 章</a>）
   → 📙 <strong>半有</strong>：向量库选型 📗 就是上面那条链接；BM25 <strong>怎么用</strong>在 <a href="../智能体工程教程/11-检索与RAG.html">智能体工程 11 · 检索与RAG</a>（为什么查「XR-2000」时向量会返回「XR-3000」、以及 RRF 融合为什么不需要分数可比）。但 BM25 的公式本身（k1、b 怎么调）和 SPLADE 站内没有，要外找</li>
-<li><strong>重排</strong>：✅ <a href="#cross-encoder-colbert-llm">Cross-Encoder / ColBERT / LLM 三条路线</a> ｜ ColBERTv2 的残差压缩、ColPali（直接对页面截图做后期交互）
-  → 📕 <strong>要外找</strong>：⚠️ 全站搜「ColBERT」，唯一的正文出处就是本章上面那一节——<strong>ColBERTv2 和 ColPali 站内彻底没有</strong>，去 ColBERT 项目仓库</li>
-<li><strong>查询理解</strong>：改写、扩展、HyDE、路由、多跳（本章环节四给了地图，每一项都还能深挖）
+<li><strong>重排</strong>：✅ <a href="08b-重排与Embedding选型.html">Cross-Encoder / ColBERT / LLM 三条路线</a> ｜ ColBERTv2 的残差压缩、ColPali（直接对页面截图做后期交互）
+  → 📕 <strong>要外找</strong>：⚠️ 全站搜「ColBERT」，唯一的正文出处就是 <a href="08b-重排与Embedding选型.html">08b</a> 那一节——<strong>ColBERTv2 和 ColPali 站内彻底没有</strong>，去 ColBERT 项目仓库</li>
+<li><strong>查询理解</strong>：改写、扩展、HyDE、路由、多跳（<a href="08c-RAG怎么评估.html">08c</a> 的环节四给了地图，每一项都还能深挖）
   → 📗 <strong>本库有（HyDE 这一项）</strong>：<a href="../智能体工程教程/11-检索与RAG.html">智能体工程 11 · 检索与RAG</a> 把 HyDE 讲透了——<strong>问题「怎么申请报销」和文档「报销流程：第一步…」在向量空间里未必近，但模型编的假答案和真文档就很近</strong>。其余（改写/扩展/路由/多跳）本章的地图已经是站内最全的版本，再深挖要外找</li>
 <li><strong>生成</strong>：引用溯源怎么校验、幻觉检测、上下文压缩（LLMLingua）、拒答策略
   → 📙 <strong>半有</strong>：拒答和输出把关这一侧站内很实在——<a href="../智能体工程教程/16c-接进真实产品.html">智能体工程 16c · 接进真实产品</a> 讲三层护栏、审核该放在链路哪个位置，⚠️ 还有一次事故复盘：<strong>审核只在末尾做，有害内容已经吐了 3.2 秒</strong>（做流式 RAG 的话这条直接适用）。但引用溯源的自动校验和 LLMLingua 式上下文压缩，站内没有，要外找</li>
-<li><strong>评估</strong>：✅ <a href="#ragas">RAGAS 四指标</a> ｜ 构建自己的测试集、端到端 vs 分段评估、TruLens / DeepEval / promptfoo 的差别
+<li><strong>评估</strong>：✅ <a href="08c-RAG怎么评估.html">RAGAS 四指标</a> ｜ 构建自己的测试集、端到端 vs 分段评估、TruLens / DeepEval / promptfoo 的差别
   → 📙 <strong>半有</strong>：「构建自己的测试集」📗 站内很强——<a href="../智能体工程教程/14-评测Evals.html">智能体工程 14 · 评测Evals</a> 的八步（最贵的是<strong>写无歧义任务+参考解</strong>和读转录），加 <a href="../数据这一关/13-评测集也是数据.html">数据这一关 13 · 评测集也是数据</a>（抽样、多大才够、评分器也要校准）。工具那一侧 <a href="../智能体工程教程/16b-框架这层皮.html">智能体工程 16b · 框架这层皮</a> 说清了 Ragas / promptfoo / DeepEval 替你做的只是"评分器实现 + 跑批出表"，最贵的三步一步不管。只有三者之间的具体差别要外找</li>
 <li><strong>进阶</strong>：✅ <a href="#graphrag-agentic-rag-self-rag-crag">GraphRAG / Agentic RAG / Self-RAG / CRAG 及各自的代价</a> ｜ 知识图谱怎么抽实体关系、增量索引与更新策略
   → 📕 <strong>要外找</strong>：⚠️ <strong>别被「知识图谱」这个词在站内的搜索结果骗了</strong>——<a href="../Kaggle竞赛方法论/19_排序与多目标.html">Kaggle 19</a> 里的知识图谱是推荐系统的物品关系图，和 GraphRAG 的实体抽取不是一回事。实体关系抽取和增量索引站内没有，从 GraphRAG 项目文档开始</li>

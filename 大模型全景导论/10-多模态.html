@@ -305,7 +305,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <tr>
 <td>让模型看懂图片、截图、表格、文档</td>
 <td><strong>本页</strong></td>
-<td>VLM 三段式架构、图片怎么变 token、CLIP 与对比学习</td>
+<td>VLM 三段式架构、图片怎么变 token、三个常见误判</td>
 </tr>
 <tr>
 <td>想懂图文为什么能对齐、要自己训 VLM</td>
@@ -370,7 +370,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>💡 <strong>核心洞察</strong>：<strong>图片被翻译成了「视觉单词」，和文字并排放进同一个上下文。</strong>
 所以做文本应用时的那一整套（上下文管理、提示词、工具，本站《智能体工程教程》讲的就是这些）全部适用。</p>
 <p>📌 <strong>这张图有名字</strong>：这套「ViT → 投影层 → LLM」的结构就是 LLaVA，也是目前开源多模态模型的默认长相。
-另一条路线（BLIP-2 的 <strong>Q-Former</strong>）改的只有中间那一层——两者的差别在本章后面单独讲。</p>
+另一条路线（BLIP-2 的 <strong>Q-Former</strong>）改的只有中间那一层——两者的差别在 <a href="10d-CLIP与对比学习.html">10d · CLIP 与对比学习</a> 那一页。</p>
 <p>⚠️ <strong>实用推论</strong>：一张高分辨率图可能消耗 <strong>1000+ token</strong>。多图对话烧 token 极快——上下文预算意识（智能体第 4 章）在这里更重要。</p>
 <h3 id="token">💰 图片的 token 账（做视觉应用前先算这笔）</h3>
 <section class="visual-block visual-block-calc" aria-label="算一算"><p class="visual-block-title">算一算</p><div class="vb-calc"><p>图片 token 数 ≈ (宽/patch) × (高/patch)，patch 通常 14~16 像素</p><p>512×512 → 约 1,000 token</p><p>1024×1024 → 约 4,000 token ⭐ 翻倍分辨率 = 4 倍 token</p><p>一段 10 张图的对话 → 轻松几万 token</p><p>💡 所以主流做法是【先缩放到模型的最优分辨率】再传</p><p>盲目传原图 = 白烧几倍的钱</p></div></section>
@@ -472,18 +472,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>CLIP 对齐出来的图文向量，最终要落进向量库才有用</td>
 </tr>
 <tr>
-<td><a href="06-推理优化.html">第 6 章 推理优化</a></td>
-<td>τ 和你调 API 的 <code>temperature</code> 是同一个东西；那一章讲它落在<strong>采样</strong>上是什么样</td>
+<td><a href="06c-解码参数怎么调.html">06c · 解码参数怎么调</a></td>
+<td>τ 和你调 API 的 <code>temperature</code> 是同一个东西；那一页讲它落在<strong>采样</strong>上是什么样、以及为什么它和 <code>top_p</code> 不是两个独立开关</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<!--MIDSTOP-->
-<blockquote>
-<p>🛑 <strong>读到这里可以停</strong> —— 已经读了约 27 分钟。
-<strong>最后一段还有</strong>（约 26 分钟）：深挖的话要学什么 · 要不要深挖 · 检查点与走神救援
-回来的时候不用重读，直接从下一节接着看就行。</p>
-</blockquote>
 <hr />
 <hr />
 <hr />

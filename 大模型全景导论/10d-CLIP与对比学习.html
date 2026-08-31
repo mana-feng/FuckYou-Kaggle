@@ -276,8 +276,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
 <ul>
 <li><a href="#_1">🎯 一句话</a></li>
-<li><a href="#_4">✅ 检查点</a></li>
-<li><a href="#_5">🛑 可以停在这里</a></li>
+<li><a href="#_4">🔗 想再深一层，去哪一套</a></li>
+<li><a href="#_5">✅ 检查点</a></li>
+<li><a href="#_6">🛑 可以停在这里</a></li>
 </ul>
 </div>
 </details>
@@ -291,7 +292,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⚠️ 这一页是原理层。只做视觉应用的话，<a href="10-多模态.html">上一页</a>就够用了。</p>
 <hr />
 <h3 id="clip">CLIP：图文对齐的地基</h3>
-<section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">训练：几亿对（图片，描述文字）</span></div><div class="vb-flow-row"><span class="vb-flow-step">目标：让匹配的图文向量靠近，不匹配的远离（对比学习）</span></div><div class="vb-flow-row"><span class="vb-flow-step">结果：图片和文字进入**同一个向量空间**</span></div><div class="vb-flow-row"><span class="vb-flow-step">可以用文字搜图、用图搜图、零样本分类</span></div></div></section>
+<section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">训练：几亿对（图片，描述文字）</span></div><div class="vb-flow-row"><span class="vb-flow-step">目标：让匹配的图文向量靠近，不匹配的远离（对比学习）</span></div><div class="vb-flow-row"><span class="vb-flow-step">结果：图片和文字进入同一个向量空间</span></div><div class="vb-flow-row"><span class="vb-flow-step">可以用文字搜图、用图搜图、零样本分类</span></div></div></section>
 <blockquote>
 <p>🔗 这就是推荐算法第 10 章向量检索的多模态版本——<strong>同一套 ANN 基础设施</strong>。</p>
 </blockquote>
@@ -397,7 +398,35 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <hr />
-<h2 id="_4">✅ 检查点</h2>
+<h2 id="_4">🔗 想再深一层，去哪一套</h2>
+<table>
+<thead>
+<tr>
+<th>去哪</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../推荐算法/08-深度学习推荐模型.html">推荐算法 08 · 深度学习推荐模型</a></td>
+<td>⭐⭐ <strong>这一页最值钱的一条连线</strong>：CLIP 和双塔召回是同一套东西 —— 图文编码器 ↔ 用户塔/物品塔、in-batch 负采样、温度系数 τ（那边从 0.05 开始调），连坑都一样（热门样本被过度当负样本要做 LogQ 校正）</td>
+</tr>
+<tr>
+<td><a href="../推荐算法/10-向量检索与ANN.html">推荐算法 10 · 向量检索与 ANN</a></td>
+<td>「图文进同一个空间」之后拿它干什么：HNSW / IVF 怎么在千万级向量里秒选一批</td>
+</tr>
+<tr>
+<td><a href="06c-解码参数怎么调.html">06c · 解码参数怎么调</a></td>
+<td>这一页的温度系数 τ，和你调 API 的 <code>temperature</code> 是同一个东西 —— 那一页讲它落在采样上是什么样</td>
+</tr>
+<tr>
+<td><a href="../机器学习与深度学习基础/05-评估与过拟合.html">机器学习与深度学习基础 05 · 评估与过拟合</a></td>
+<td>「阶段一冻住、阶段二解冻」这类训练安排背后的判据：什么时候该冻、解冻会过拟合到什么程度</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_5">✅ 检查点</h2>
 <ol>
 <li>CLIP 训练出来的是什么？能用来做什么？</li>
 <li>CLIP 的 InfoNCE 在优化什么？它的负样本从哪里来？</li>
@@ -420,7 +449,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ol>
 </details>
 <hr />
-<h2 id="_5">🛑 可以停在这里</h2>
+<h2 id="_6">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
 <p><strong>CLIP 训出来的是一个图片和文字共享的向量空间</strong>，所以能文字搜图、图搜图、零样本分类，还能复用现成的向量检索设施。它的 <strong>InfoNCE</strong> 损失是：把一个 batch 的 N 对图文编码成 <strong>N×N 相似度矩阵</strong>，要求对角线最大 —— 本质是「N 选 1 选对」的交叉熵（图找文、文找图各算一次取平均）。⭐ <strong>负样本是白捡的</strong>：同一批次里别人的正样本就是我的负样本（in-batch 负采样）。<strong>温度系数 τ</strong> 很关键：<strong>τ 小（0.01）分布尖锐</strong>，最难的负样本梯度极大，学得锋利但对错标极敏感、容易训崩；<strong>τ 大（0.5）分布平坦</strong>，训得稳但向量挤在一起、区分度不够。CLIP 干脆把它做成<strong>可学习参数</strong>，说明它重要到值得让模型自己学。⚠️ <strong>batch size 是对比学习最直接的效果杠杆</strong>：batch=256 只有 255 个干扰项，CLIP 用的 batch=32768 有 32767 个 —— 干扰项越多这道多选题越难，向量必须分得越开。代价是显存（N×N 矩阵要多卡 all-gather）。<strong>SigLIP</strong> 把 softmax 对比损失换成<strong>逐对的 sigmoid 二分类</strong>，每对自己判「配不配」，不再需要对整行归一化，于是小 batch 也能训。⭐⭐ 最值得记的一条：<strong>这整套和推荐系统的双塔召回是同一套东西</strong> —— 图文编码器 ↔ 用户塔/物品塔、in-batch 负采样、温度系数 τ，连坑都一样（热门样本被过度当负样本要做 LogQ 校正、负样本选错会训废、batch 越大越好）。投影层有两条路线：<strong>LLaVA 用一个 MLP 直接投影</strong>（简单、几小时训完、细节不丢，但吃 token），<strong>BLIP-2 的 Q-Former</strong> 用可学习 query 把视觉特征压成固定个数（省 token、多图友好，但压缩必然丢细节，OCR 和小字最明显）—— 主流赢家是 LLaVA 那条。训练分两阶段：<strong>阶段一只训投影层</strong>（视觉编码器和 LLM 全冻），本质是训一个「翻译器」；<strong>阶段二训投影层 + LLM</strong>（视觉编码器仍冻）。⚠️ 视觉编码器不解冻，是因为它的表征是几亿图文对训出来的，随便动会破坏好不容易对齐的空间。</p>

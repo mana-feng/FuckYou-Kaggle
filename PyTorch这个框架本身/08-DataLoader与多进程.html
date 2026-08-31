@@ -455,7 +455,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>实跑输出：</p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>num_workers=0: [8506, 6369, 5111, 2697, 3078, 409, 752, 165] 去重后 8/8</p><p>num_workers=2: [8506, 6369, 5111, 2697, 8506, 6369, 5111, 2697] 去重后 4/8</p><p>num_workers=4: [8506, 6369, 5111, 2697, 8506, 6369, 5111, 2697] 去重后 4/8</p><p>加了 worker_init_fn: [3232, 9238, 8653, 6793, 4674, 6441, 4372, 3919] 去重后 8/8</p><p>（⚠️ 具体数值是**某次实跑** —— base seed 每次运行都变，稳定可复现的是「去重后 8/8」这个结论）</p></div></section>
+<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>num_workers=0: [8506, 6369, 5111, 2697, 3078, 409, 752, 165] 去重后 8/8</p><p>num_workers=2: [8506, 6369, 5111, 2697, 8506, 6369, 5111, 2697] 去重后 4/8</p><p>num_workers=4: [8506, 6369, 5111, 2697, 8506, 6369, 5111, 2697] 去重后 4/8</p><p>加了 worker_init_fn: [3232, 9238, 8653, 6793, 4674, 6441, 4372, 3919] 去重后 8/8</p><p>（⚠️ 具体数值是某次实跑 —— base seed 每次运行都变，稳定可复现的是「去重后 8/8」这个结论）</p></div></section>
 <p>⭐ <strong><code>8506, 6369, 5111, 2697</code> 一字不差地重复了一遍</strong> —— 两个 worker 各自从同一个状态开始摇。
 换成真实场景就是：<strong>你的随机裁剪、随机翻转、随机 mask，在每 <code>batch/num_workers</code> 条样本上循环重复</strong>。</p>
 <p>💀 <strong>为什么这个 bug 极难发现</strong>：</p>
