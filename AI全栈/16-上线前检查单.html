@@ -284,14 +284,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><a href="#_7">🔭 六、可观测</a></li>
 <li><a href="#_8">📱 七、体验</a></li>
 <li><a href="#_9">🚦 八、⭐ 如果只做六条</a></li>
-<li><a href="#_10">🔗 这一章连到哪里</a></li>
-<li><a href="#_11">✅ 检查点</a></li>
-<li><a href="#_12">🛑 可以停在这里</a></li>
+<li><a href="#_10">🧪 九、把备份真的恢复一次</a></li>
+<li><a href="#_16">🔗 这一章连到哪里</a></li>
+<li><a href="#_17">✅ 检查点</a></li>
+<li><a href="#_18">🛑 可以停在这里</a></li>
 </ul>
 </div>
 </details>
 <h1 id="16">16 · 上线前检查单</h1>
-<p>⏱ <strong>32 分钟</strong> ｜ ☑️ <strong>这一章不解释，只验证 —— 每一条都能在十分钟内当场做一次</strong></p>
+<p>⏱ <strong>53 分钟</strong> ｜ ☑️ <strong>这一章不解释，只验证 —— 每一条都能在十分钟内当场做一次，唯一的例外单独展开在第九节</strong></p>
 <hr />
 <h2 id="_1">🎯 一句话</h2>
 <p><strong>「做了」和「验证过做了」之间隔着一次事故。</strong></p>
@@ -467,7 +468,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <tr>
 <td>⭐ 备份真的能用</td>
 <td>不是看「备份任务成功」，而是<strong>把最近一份备份恢复到一个临时库，查出数据来</strong>。<strong>没恢复过的备份等于没有备份</strong></td>
-<td>⚠️ 本板块未展开（<a href="07-向量检索落地.html">07</a> 只提到「多一个专用库就多一套备份恢复」）—— 按你的数据库官方文档做</td>
+<td>⭐ <strong>本章第九节</strong> —— 这是清单上唯一一条十分钟内做不完的，所以单独展开：演练要演到第几步才算数、RPO / RTO 怎么定、要留下什么记录</td>
 </tr>
 <tr>
 <td>迁移能回滚</td>
@@ -586,7 +587,159 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 而这六条出问题时，一切看起来完全正常 —— 直到不正常的那一刻已经来不及了。</p>
 </blockquote>
 <hr />
-<h2 id="_10">🔗 这一章连到哪里</h2>
+<h2 id="_10">🧪 九、把备份真的恢复一次</h2>
+<p>⭐ 这一章开头承诺「每一条都能在十分钟内当场做一次」——<strong>有一条不能</strong>，就是上面六条里的第 4 条。它是这份清单上<strong>唯一一条要单独排一次演练</strong>的，所以在这里展开，而不是塞一句「按数据库官方文档做」。</p>
+<h3 id="_11">🔍 备份是「写」，恢复是「读」，你只验过写那一半</h3>
+<p>「备份任务成功」的真实含义只有一个：<strong>有个文件被写到某个地方去了</strong>。它不保证：</p>
+<table>
+<thead>
+<tr>
+<th>静默失败</th>
+<th>面板上为什么还是绿的</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>备出来是空库，或只有表结构</td>
+<td>命令跑通了、退出码是 0，只是参数选错了对象</td>
+</tr>
+<tr>
+<td>文件解不开</td>
+<td>加密密钥换过一次，没人拿新密钥试过旧文件</td>
+</tr>
+<tr>
+<td>⭐ 备的是一个停止同步的副本</td>
+<td>脚本连的是只读副本，而它两个月前断了复制 —— <strong>每天都成功，备的是两个月前的数据</strong></td>
+</tr>
+</tbody>
+</table>
+<p>⭐ <strong>这三种在监控上长得和成功一模一样</strong> —— 就是本章开头那句「最危险的不是没做，是以为做了」。⚠️ <strong>托管数据库不豁免</strong>：托管商按时替你做了快照，但那还是<strong>写</strong>那一半。</p>
+<h3 id="_12">🧯 演练要演到第几步才算数</h3>
+<p>四道关卡，<strong>过不了第 ④ 道就不算演练过</strong>：① 取回文件 → ② 恢复成一个临时库 → ③ 查出数据、确认它停在哪个时间点 → ④ <strong>让应用真的连上去跑通一次读写</strong>。</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># ① 真的下载下来，而不是在界面上看它「成功」，然后 ② 恢复到【临时库】。⚠️ 绝不恢复到生产</span>
+aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>s3://your-bucket/backups/db-2026-08-29-0300.dump<span class="w"> </span>./drill.dump
+createdb<span class="w"> </span>restore_drill<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pg_restore<span class="w"> </span>-d<span class="w"> </span>restore_drill<span class="w"> </span>--no-owner<span class="w"> </span>./drill.dump
+
+<span class="c1"># ③ 查出数据来——不是 SELECT 1，是查你的核心表</span>
+psql<span class="w"> </span>restore_drill<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;SELECT count(*) FROM messages;&quot;</span>
+psql<span class="w"> </span>restore_drill<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;SELECT max(created_at) FROM messages;&quot;</span><span class="w">   </span><span class="c1"># ⭐ 这个时间戳就是实测的 RPO</span>
+
+<span class="c1"># ④ ⭐ 最关键的一步：让应用连上这个临时库，发一条真实消息</span>
+<span class="nv">DATABASE_URL</span><span class="o">=</span>postgresql://localhost/restore_drill<span class="w"> </span>uvicorn<span class="w"> </span>app:app<span class="w"> </span>--port<span class="w"> </span><span class="m">8001</span>
+</code></pre></div>
+
+<p>⭐ <strong>第 ④ 步最多人跳过，也最容易翻车</strong>，而绊倒你的通常不是数据：临时库里没装 <code>pgvector</code>（第 7 章那些向量列直接恢复失败）、迁移版本对不上（库是三周前的、代码是今天的，一启动就报 schema 不匹配）。<strong>只有真连一次才会暴露。</strong></p>
+<h3 id="rpo-rto">📐 RPO 和 RTO：把「能接受多糟」写成两个数</h3>
+<p>演练得先有条及格线，否则「恢复出来了」和「恢复得够快、够新」分不开。业界就两个数：</p>
+<ul>
+<li><strong>RPO</strong>（Recovery Point Objective）⭐ <strong>你能接受丢多少数据</strong> —— 上一份可用备份到故障时刻，这段窗口里的写入全没了。</li>
+<li><strong>RTO</strong>（Recovery Time Objective）⭐ <strong>你能接受停多久</strong> —— 故障时刻到服务重新可用。</li>
+</ul>
+<p>⭐ <strong>记法：RPO 往前看（丢了多少），RTO 往后看（停了多久）</strong>，它们决定两件完全不同的事。<strong>RPO 决定备份的频率和形式</strong>：每天凌晨 3 点全量一次，RPO 最坏就是 24 小时；想压到分钟级只能开<strong>连续归档 + 时间点恢复</strong>（Postgres 的 WAL 归档、MySQL 的 binlog），⚠️ 那是另一套东西，不是把每天一次改成每天四次。<strong>RTO 决定你得预先准备什么</strong>：恢复一个几百 GB 的库要多久是个物理事实，临场想办法只会更慢 —— 靠的是<strong>脚本已经写好、机器已经在那儿、并且演练时量过真实耗时</strong>。</p>
+<p>⭐ <strong>这两个数是业务判断不是技术判断，要让掏钱的那个人拍板。</strong> 三个可以直接拿去用的起点：</p>
+<table>
+<thead>
+<tr>
+<th>你的东西</th>
+<th>起点</th>
+<th>对应的做法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>个人项目 / 内部工具</td>
+<td>RPO 24 小时，RTO 半天</td>
+<td>每天一次全量，扔对象存储</td>
+</tr>
+<tr>
+<td>有付费用户的小产品</td>
+<td>RPO 1 小时，RTO 2 小时</td>
+<td>托管库自动备份 + 打开时间点恢复，脚本先写好</td>
+</tr>
+<tr>
+<td>掉数据要赔钱 / 有合规要求</td>
+<td>两个都是分钟级</td>
+<td>连续归档 + 待命副本，演练更频繁</td>
+</tr>
+</tbody>
+</table>
+<p>💀 <strong>最常见的自欺是这两个数和实际做法对不上</strong>：文档里写着「RPO 5 分钟」，而备份每天 3 点才跑一次。⭐ <strong>判据很干净：RPO 不可能小于备份间隔。</strong></p>
+<h3 id="_13">📋 演练要留下什么，多久演一次</h3>
+<p>⭐ 记录不是给别人看的，它把「我们能恢复」换成两个<strong>能和目标对拍的数</strong>。留五行就够：</p>
+<table>
+<thead>
+<tr>
+<th>记什么</th>
+<th>例子</th>
+<th>为什么要它</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>谁、哪天、用的哪份备份</td>
+<td>08-30 · 某某 · <code>db-2026-08-29-0300.dump</code></td>
+<td>证明用的是常规备份，不是临时手工导的</td>
+</tr>
+<tr>
+<td>⭐ 恢复花了多久</td>
+<td>从开始到应用跑通 47 分钟</td>
+<td><strong>这就是实测的 RTO</strong></td>
+</tr>
+<tr>
+<td>⭐ 恢复出来最新一条数据</td>
+<td><code>max(created_at)</code> = 08-29 02:58</td>
+<td><strong>这就是实测的 RPO</strong></td>
+</tr>
+<tr>
+<td>卡在哪、怎么绕过去的</td>
+<td>临时库没装 <code>pgvector</code></td>
+<td>⭐ 下次演练前该修掉的全在这一行</td>
+</tr>
+<tr>
+<td>和目标对不对得上</td>
+<td>目标 RTO 2 小时，实测 47 分钟</td>
+<td>对不上就<strong>改方案或改目标</strong>，别挂着</td>
+</tr>
+</tbody>
+</table>
+<p>⭐ <strong>实测值比目标值重要</strong> —— 目标是你希望的，实测是你实际有的，出事那天生效的是后者。</p>
+<p><strong>频率不看日历，看变更</strong>：至少每季度一次，外加换数据库版本、换托管商或区域、多一个数据存储、改备份脚本、⭐ <strong>负责的人换了</strong>之后各补一次 —— 最后一条最容易忽略，因为演练同时也在验「除了原作者，还有别人做得了这件事」。</p>
+<h3 id="_14">♻️ 别漏掉第二个库</h3>
+<p>⚠️ <strong>第 7 章埋的那句话在这里到期了</strong>：多一个专用向量库，就多一套备份恢复，<strong>而且要和主库恢复到同一个时间点，否则数据对不上</strong>。落到演练里它是一条很具体的动作：</p>
+<blockquote>
+<p>⭐ <strong>把主库和向量库一起恢复，拿一份「已经删掉的文档」去检索。</strong>
+还搜得到就说明两边的时间点错开了 —— 💀 <strong>这正是第 7 章说的「文档已删除却仍能被检索到」，只不过这一次是你自己在恢复时造出来的。</strong></p>
+</blockquote>
+<p>⚠️ 还有两件不属于「演练」、但要一起写下来的事：<strong>留多久</strong>（只留 7 天，30 天前的误删就救不回来）、<strong>放在哪</strong>（和生产同账号同区域的备份挡不住「整个项目被误删」）。⭐ 保留期要和 🗄️ 数据那组「留存期写下来了」对齐。</p>
+<h3 id="_15">☑️ 这一节自己的验收项</h3>
+<table>
+<thead>
+<tr>
+<th>检查项</th>
+<th>⭐ 当场怎么验证</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>⭐ 演练真的做过</td>
+<td>找出<strong>最近一次演练记录</strong>，上面那五行都在。⭐ 没有记录 = 没演练过</td>
+</tr>
+<tr>
+<td>RPO / RTO 写下来了</td>
+<td>两个都是<strong>具体时间</strong>而不是「尽快」；⭐ 且 RPO <strong>不小于</strong>备份间隔</td>
+</tr>
+<tr>
+<td>实测对得上目标</td>
+<td>实测 RTO / RPO 和目标并排看，<strong>对不上时有一条待办</strong></td>
+</tr>
+<tr>
+<td>向量库一起演过</td>
+<td>恢复出来的两个库里，<strong>已删的文档检索不到</strong>；备份至少有一份在<strong>另一个账号或区域</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_16">🔗 这一章连到哪里</h2>
 <table>
 <thead>
 <tr>
@@ -604,6 +757,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>「可观测」整组的来源。⚠️ 注意这份清单<strong>只覆盖「服务健不健康」</strong></td>
 </tr>
 <tr>
+<td><a href="07-向量检索落地.html">07 · 向量检索落地</a></td>
+<td>⭐ 第九节那条「主库和向量库要恢复到<strong>同一个时间点</strong>」是它埋下的。那一章算过「多一个专用库多出来的四样东西」，并讲了为什么「文档已删除却仍能被检索到」是数据泄露 —— 恢复时时间点错开会<strong>重新造出</strong>这个状态</td>
+</tr>
+<tr>
 <td><a href="../模型上线之后/03-灰度影子与回滚.html">模型上线之后 03 · 灰度、影子与回滚</a></td>
 <td>⭐ 这份清单管<strong>上线那一刻</strong>；<strong>怎么只放 5% 流量、发现不对怎么退回来</strong>是那边的方法论</td>
 </tr>
@@ -618,7 +775,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table>
 <hr />
-<h2 id="_11">✅ 检查点</h2>
+<h2 id="_17">✅ 检查点</h2>
 <ol>
 <li>这份清单和普通「上线注意事项」最大的区别是什么？</li>
 <li>为什么说「最危险的不是没做，是以为做了」？举出本章给的三个例子。</li>
@@ -629,6 +786,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>健康检查该怎么验？两个端点在数据库停掉时应该分别是什么状态？</li>
 <li>为什么流式必须用手机流量在线上验一次？</li>
 <li>「如果只做六条」是按什么排序的？这六条的共同点是什么？</li>
+<li>RPO 和 RTO 分别问的是什么？为什么说「RPO 不可能小于备份间隔」？</li>
+<li>一次恢复演练要演到第几步才算数？演练记录里最重要的是哪两行，它们各自量的是什么？</li>
 </ol>
 <details>
 <summary>👀 答案</summary>
@@ -642,15 +801,18 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>停掉数据库：<code>/healthz</code> 应仍返回 <strong>200</strong>（它只答「进程活着吗」），<code>/readyz</code> 应变 503。两个都挂的话，数据库一抖，编排器会把你所有实例全部重启。</li>
 <li>因为<strong>本地没有反向代理那一层</strong>，而缓冲、超时、压缩都发生在那里 —— 本地逐字、线上憋十几秒一次性出现，是必然会遇到的一课。用手机流量还能顺便验「关掉笔记本它还在」。</li>
 <li>按「<strong>不做会当场出事</strong>」排序：密钥、日预算熔断、租户隔离、备份恢复过、request_id 串得起来、告警触发过。共同点是它们的失败都是静默的 —— 其余各条出问题你会收到报错或投诉，这六条出问题时一切看起来完全正常。</li>
+<li><strong>RPO（Recovery Point Objective）问「你能接受丢多少数据」</strong> —— 上一份可用备份到故障时刻这段窗口里的写入全没了；<strong>RTO（Recovery Time Objective）问「你能接受停多久」</strong> —— 故障时刻到服务重新可用。⭐ 你手上最新的那份备份，最新也只能是上一次备份跑完的那一刻，所以那段窗口最短就等于备份间隔：每天凌晨 3 点全量一次，RPO 最坏就是 24 小时。文档里写「RPO 5 分钟」而备份每天只跑一次，是最常见的自欺。</li>
+<li>四道关卡：① 取回文件 → ② 恢复成一个临时库（⚠️ 绝不恢复到生产）→ ③ 查出数据、确认它停在哪个时间点 → ④ ⭐ <strong>让应用真的连上去跑通一次读写</strong>，过不了第 ④ 道就不算演练过。记录里最重要的两行是<strong>恢复花了多久</strong>（= 实测 RTO）和<strong>恢复出来的最新一条数据是什么时候</strong>（= 实测 RPO）—— 出事那天生效的是实测值，不是你写下的目标值。</li>
 </ol>
 </details>
 <hr />
-<h2 id="_12">🛑 可以停在这里</h2>
+<h2 id="_18">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
 <p>☑️ 这一章是<strong>清单不是讲解</strong>：⭐ <strong>「做了」和「验证过做了」之间隔着一次事故</strong>——所以每条都给一个当场能做的动作，判据是「我看到了什么现象」而不是「我配了什么」。不是「配了限流」，而是「打一百次，从第 N 次开始返回 429 且带 <code>Retry-After</code>」。</p>
 <p>⚠️ <strong>最危险的不是没做，是以为做了</strong>：限流中间件挂在认证之前所以拿不到用户、备份任务两个月前就静默失败、告警发到没人在的频道——<strong>三种都长得和「做了」一模一样</strong>。</p>
 <p>六组里最容易漏的各一条：🔐 ⭐ <strong>用 A 的 token 去拿 B 的资源</strong>（只测「A 能拿自己的」测不出越权）；💸 <strong>三层护栏要一层一层单独验</strong>，而供应商侧的月上限是<strong>唯一一层不依赖你没写错代码</strong>的；🧯 <strong>400/401 一次就进死信</strong>、<code>docker stop</code> 时长流式请求要被做完；🗄️ ⭐ <strong>把备份真的恢复到临时库并查出数据</strong>——<strong>没恢复过的备份等于没有备份</strong>；🔭 <strong>拿 <code>trace_id</code> 要能把入口、调用层、队列任务全搜到</strong>（⚠️ 队列那段最容易断）、⭐ <strong>告警手动触发一次，确认手机真的响了</strong>。</p>
+<p>⭐ <strong>六条里唯一被展开成一整节的是备份</strong>（第九节，也是清单上唯一一条十分钟内做不完的）：「备份任务成功」只证明<strong>写</strong>成功了——空库、文件解不开、备的是一个两个月前就停止同步的副本，三种在面板上都是绿的。⭐ 演练要过四道关：取回、恢复到<strong>临时库</strong>（⚠️ 绝不恢复到生产）、查出数据并确认它停在哪个时间点、⭐ <strong>让应用真的连上去跑通一次读写</strong>（最后这道最多人跳过，过不了它就不算演练过）。⭐ 之前先写下两个数：<strong>RPO＝能接受丢多少数据</strong>（⚠️ <strong>不可能小于备份间隔</strong>——每天凌晨 3 点全量一次，最坏就是 24 小时）、<strong>RTO＝能接受停多久</strong>。记录里最重要的两行是<strong>实测 RTO</strong>（恢复花了多久）和<strong>实测 RPO</strong>（恢复出来最新一条数据是什么时候），⭐ <strong>实测值比目标值重要</strong>。⚠️ 还要<strong>把主库和向量库一起恢复</strong>——已删的文档还搜得到，就是两边时间点错开了。</p>
 <p>⚠️ 还有一条容易被跳过：<strong>回滚命令要在预发上真执行过</strong>——没执行过的回滚方案，和没恢复过的备份是同一类东西。</p>
 </blockquote>
 <p><strong>下一节</strong> 👉 <a href="17-实战与挑战项目.html">17-实战与挑战项目.md</a></p>

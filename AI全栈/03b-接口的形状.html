@@ -787,15 +787,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>要自己定</strong>（Zod 失败你自己 catch，常写成 400）</td>
 <td><strong>没有默认</strong>，全靠自己判</td>
 </tr>
-<tr>
-<td>方法语义、状态码语义</td>
-<td>三家<strong>一模一样</strong> —— 它们属于 HTTP，不属于框架</td>
-<td></td>
-<td></td>
-</tr>
 </tbody>
 </table>
-<p>⭐ <strong>这张表要看出的是：只有倒数第二行三家真不同，而它恰恰是换栈时最容易被忽略的一行。</strong> 客户端如果按 <code>422</code> 分诊「参数不合法」，代码搬到 Node 就全掉进 <code>400</code> 分支 —— ⚠️ <strong>而两个码都是 4xx、都进死信，粗粒度监控完全看不出来</strong>，只有细粒度的错误分类会静默失真。剩下几行的差别全是拼写差别。</p>
+<p>⭐ <strong>表里没有「方法语义、状态码语义」这一行，是因为那一件事三家一模一样</strong> —— 它属于 HTTP，不属于框架，换栈根本不会动它。⭐ <strong>所以这张表要看出的是：只有最后一行三家真不同，而它恰恰是换栈时最容易被忽略的一行。</strong> 客户端如果按 <code>422</code> 分诊「参数不合法」，代码搬到 Node 就全掉进 <code>400</code> 分支 —— ⚠️ <strong>而两个码都是 4xx、都进死信，粗粒度监控完全看不出来</strong>，只有细粒度的错误分类会静默失真。剩下几行的差别全是拼写差别。</p>
 <hr />
 <h2 id="_8">🔗 这一章连到哪里</h2>
 <table>
