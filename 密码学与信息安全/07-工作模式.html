@@ -277,7 +277,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <ul>
 <li><a href="#_1">🎯 一句话</a></li>
 <li><a href="#ecb">🐧 一、ECB：那张著名的企鹅图</a></li>
-<li><a href="#cbc">🔗 二、CBC：把前一块的密文混进来</a></li>
+<li><a href="#cbc">⛓️ 二、CBC：把前一块的密文混进来</a></li>
 <li><a href="#ctr">⚡ 三、CTR：把分组密码变成流密码</a></li>
 <li><a href="#_2">📊 四、对比表（可以直接拿去用）</a></li>
 <li><a href="#_3">✅ 五、那实际该用什么</a></li>
@@ -307,7 +307,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 如果你在代码里看到 <code>AES/ECB/PKCS5Padding</code>，那基本就是一个 bug。</p>
 </blockquote>
 <hr />
-<h2 id="cbc">🔗 二、CBC：把前一块的密文混进来</h2>
+<h2 id="cbc">⛓️ 二、CBC：把前一块的密文混进来</h2>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>C₀ = IV ← 随机初始向量</p><p>Cᵢ = E_K(Mᵢ ⊕ Cᵢ₋₁)</p><p>解密：Mᵢ = D_K(Cᵢ) ⊕ Cᵢ₋₁</p></div></section>
 <section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">M₁ M₂ M₃</span></div><div class="vb-tree-row"><span class="vb-tree-node">⊕ IV ⊕ ⊕</span></div><div class="vb-tree-row"><span class="vb-tree-node">[E] [E] [E]</span></div><div class="vb-tree-row"><span class="vb-tree-node">C₁ C₂ C₃</span></div></div></section>
 <p>💡 <strong>人话</strong>：<em>每一块加密前先和上一块的密文异或 —— 让相同的明文块产生不同的密文块。</em></p>
