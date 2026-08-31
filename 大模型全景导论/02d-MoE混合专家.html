@@ -280,7 +280,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><a href="#ffn">为什么常替换 FFN，不替换注意力</a></li>
 <li><a href="#_3">一个必须知道的代价：别让专家闲着或挤爆</a></li>
 <li><a href="#_4">✅ 检查点</a></li>
-<li><a href="#_5">🛑 可以停在这里</a></li>
+<li><a href="#_5">🔗 想再深一层，去哪一套</a></li>
+<li><a href="#_6">🛑 可以停在这里</a></li>
 </ul>
 </div>
 </details>
@@ -308,7 +309,30 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <summary>点开核对</summary>
 <p>MoE 让路由器每次选少数 FFN 专家，所以一次计算更省；但所有专家仍要存下，且必须避免流量都挤到同几位专家。</p>
 </details>
-<h2 id="_5">🛑 可以停在这里</h2>
+<h2 id="_5">🔗 想再深一层，去哪一套</h2>
+<table>
+<thead>
+<tr>
+<th>去哪</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../AI基础设施/14-并行策略怎么组合.html">AI 基础设施 14 · 并行策略怎么组合</a></td>
+<td>⭐ 「别让专家闲着或挤爆」在集群上的正题：MoE 要加专家并行，走的是 All2All 而不是 AllReduce，最头疼的正是负载不均</td>
+</tr>
+<tr>
+<td><a href="../AI基础设施/09-显存优化全家桶.html">AI 基础设施 09 · 显存优化全家桶</a></td>
+<td>「所有柜台仍得在场」意味着显存照吃 —— 那一章是省显存的完整清单</td>
+</tr>
+<tr>
+<td><a href="02e-SwiGLU与RoPE.html">专题 B · SwiGLU：筛选信息</a></td>
+<td>两个专题动的是同一层：SwiGLU 改 FFN 内部，MoE 改「一次启用几个 FFN」</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_6">🛑 可以停在这里</h2>
 <p>如果你只是使用模型，知道“MoE 容量大但每次只开一部分”即可。top-k、辅助损失、共享专家属于训练与系统专题。</p>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
