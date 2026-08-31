@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>07 · 让它真的交付出去：从“我这里能跑”到“别人能用” · Mendix 低代码开发</title>
+<title>附录A · 报错反查与速查 · 框架底下是 C++</title>
 <script>(function(){var t=localStorage.getItem('recsys-theme');
 if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
 @font-face{font-family:"CodeCJK";
@@ -267,281 +267,221 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
-  <span class="title">07 · 让它真的交付出去</span>
-  <span class="prevnext"><a href="06-怎么连接外部系统.html">←</a>
-  <a href="附录A-速查.html">→</a></span>
+  <span class="title">附录A · 报错反查与速查</span>
+  <span class="prevnext"><a href="06-读源码路线图.html">←</a>
+  </span>
   <button class="js-done-btn">☐ 打卡</button>
   <button id="themeToggle" title="切换深浅色">🌗</button>
 </div></header>
 <main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
 <ul>
-<li><a href="#_1">🎯 一句话</a></li>
-<li><a href="#_2">🚦 先区分三种“能跑”</a></li>
-<li><a href="#_3">📋 上线前的最小检查单</a></li>
-<li><a href="#_4">🤝 协作时，别把“版本”当成文件名</a></li>
-<li><a href="#employeehub">🧪 跟着做：为 EmployeeHub 做一次“交付演练”</a></li>
-<li><a href="#_5">🧯 用真实故障替代“看起来没问题”</a></li>
-<li><a href="#_6">🗂️ 交接给别人时，至少留四样东西</a></li>
-<li><a href="#_7">🧭 学到这里以后，怎么继续才不迷路</a></li>
-<li><a href="#_8">🎓 你现在已经站在哪里</a></li>
-<li><a href="#_9">🔗 这一章连到哪里</a></li>
-<li><a href="#_10">🛑 可以停在这里</a></li>
-<li><a href="#_11">✅ 检查点</a></li>
+<li><a href="#_1">🧭 怎么用这一页</a></li>
+<li><a href="#_2">🚨 一、报错反查：它到底在说什么</a></li>
+<li><a href="#_3">🧮 二、判据速查：该怎么选</a></li>
+<li><a href="#_4">🔍 三、不下载源码也能查的三件事</a></li>
+<li><a href="#_5">📖 四、术语对照</a></li>
+<li><a href="#_6">🔗 这一页连到哪里</a></li>
 </ul>
 </div>
 </details>
-<h1 id="07">07 · 让它真的交付出去：从“我这里能跑”到“别人能用”</h1>
-<p>⏱ <strong>14 分钟</strong> ｜ 这一步让项目从练习变成应用</p>
+<h1 id="a">附录A · 报错反查与速查</h1>
+<p>⏱ <strong>14 分钟</strong> ｜ ⭐ <strong>撞墙的时候翻这一页：报错原文 → 它到底在说什么 → 去哪一章</strong></p>
 <hr />
-<h2 id="_1">🎯 一句话</h2>
-<p>交付不是点一次发布按钮；它是确认应用在正确环境里，以正确权限，带着可回退的版本，被真实用户完成真实任务。</p>
+<h2 id="_1">🧭 怎么用这一页</h2>
+<p>这个板块不是 C++ 教程，它只回答一个问题：<strong>往下追 PyTorch 会撞到哪几堵墙</strong>。
+所以这份速查也按「你撞到了什么」组织，而不是按语法点组织。</p>
+<p>⚠️ 三张表的用法不同：<strong>报错反查表</strong>用来定位问题，<strong>判据速查</strong>用来做决定，<strong>术语对照</strong>用来读源码和读别人的报错。</p>
 <hr />
-<h2 id="_2">🚦 先区分三种“能跑”</h2>
+<h2 id="_2">🚨 一、报错反查：它到底在说什么</h2>
 <table>
 <thead>
 <tr>
-<th>状态</th>
-<th>说明</th>
-<th>还缺什么</th>
+<th>你看到的</th>
+<th>它其实在说</th>
+<th>去哪一章</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>本地能跑</td>
-<td>你自己的 Studio Pro 能打开它</td>
-<td>不代表别人能登录或看到正确数据</td>
+<td><code>undefined symbol: _ZN3c10...</code></td>
+<td><strong>符号对不上</strong>。那串 <code>_ZN3c10</code> 是名字修饰（mangling）之后的 C++ 函数名，<code>c10</code> 是 PyTorch 的核心命名空间。你的扩展要的那个符号，在实际加载的库里不存在</td>
+<td><a href="04-ABI与二进制兼容.html">04 · ABI 与二进制兼容</a> 第四节</td>
 </tr>
 <tr>
-<td>测试环境能跑</td>
-<td>团队可以试用流程</td>
-<td>需要准备测试数据和反馈方式</td>
+<td><code>undefined symbol</code>，但函数名看着明明有</td>
+<td>⚠️ <strong>两边的 <code>_GLIBCXX_USE_CXX11_ABI</code> 不一致</strong>。同一个函数在两种 ABI 下修饰出来的名字不一样，编译器认为它们是两个函数</td>
+<td><a href="04-ABI与二进制兼容.html">04</a> 第二、四节</td>
 </tr>
 <tr>
-<td>正式环境能跑</td>
-<td>真实用户开始依赖它</td>
-<td>需要权限、监控、回退和责任边界</td>
+<td><code>cannot open shared object file</code> / 库文件找不到</td>
+<td>符号是对的，<strong>库本身没被找到</strong>。这是加载路径问题，不是编译问题</td>
+<td><a href="04-ABI与二进制兼容.html">04</a> 第五节</td>
+</tr>
+<tr>
+<td>💀 <strong>什么都不报，但数据是错的</strong></td>
+<td>最贵的一种：结构体在两边的内存布局不一致，读写错位。它不会崩，只会给你错的数字</td>
+<td><a href="04-ABI与二进制兼容.html">04</a> 第六节</td>
+</tr>
+<tr>
+<td><code>Could not run 'aten::gelu' with arguments from the 'SparseCPU' backend</code></td>
+<td><strong>分派表里那一格是空的</strong>。算子名是行坐标，backend 是列坐标，这句话的意思是「这一行有，但这一列没实现」</td>
+<td><a href="05-算子怎么注册进PyTorch.html">05 · 算子怎么注册进 PyTorch</a> 第一节</td>
+</tr>
+<tr>
+<td>装 wheel 时提示平台不兼容</td>
+<td>wheel 标签和你的 glibc 版本对不上 —— manylinux 那套标签就是在描述「这个包能装在多老的系统上」</td>
+<td><a href="04-ABI与二进制兼容.html">04</a> 第七节</td>
+</tr>
+<tr>
+<td>程序莫名其妙比单线程还慢</td>
+<td>⚠️ 可能是 <strong>false sharing</strong>：两个逻辑上无关的变量落在同一条 cache line 上，两个核在互相打架</td>
+<td><a href="03-cache与数据布局.html">03 · cache 与数据布局</a> 第六节</td>
+</tr>
+<tr>
+<td>对象出了作用域之后再用就崩</td>
+<td><strong>悬垂</strong>（dangling）。这是这个板块第 02 章真正存在的理由</td>
+<td><a href="02-值语义与所有权.html">02 · 值语义与所有权</a> 第七节</td>
 </tr>
 </tbody>
 </table>
-<p>官方 Quick Start 也把“本地运行”和“发布到云端”分开：前者验证你正在做的东西，后者才是让其他人访问它。不要跳过前者；每次小改动先在本地验证，发布才不变成猜谜。</p>
+<blockquote>
+<p>⭐ <strong>一条通用判据</strong>：<code>undefined symbol</code> 是<strong>链接期</strong>的事，<code>Could not run</code> 是<strong>运行期查表</strong>的事。
+前者去查 ABI 和编译选项，后者去查分派表 —— <strong>这两条路完全不通，别串</strong>。</p>
+</blockquote>
 <hr />
-<h2 id="_3">📋 上线前的最小检查单</h2>
-<div class="panels">
-<div class="panel"><div class="ph">数据</div><ul class="pl"><li>有没有测试用的员工和部门？错误数据会不会误导别人？</li></ul></div>
-<div class="panel"><div class="ph">角色</div><ul class="pl"><li>普通员工和管理员分别实际登录过吗？</li></ul></div>
-<div class="panel"><div class="ph">关键路径</div><ul class="pl"><li>新建、编辑、保存、搜索各走一遍。</li></ul></div>
-<div class="panel"><div class="ph">失败方式</div><ul class="pl"><li>故意漏填、断开外部服务时，用户能看懂下一步吗？</li></ul></div>
-</div>
-
-<p>这不是“为了测试而测试”。它是在替未来的你减少最贵的沟通：用户遇到问题时，你能知道它发生在哪条路径上。</p>
-<hr />
-<h2 id="_4">🤝 协作时，别把“版本”当成文件名</h2>
-<p>应用不该靠 <code>final-final-v3</code> 这种文件名协作。每次变化都应该能回答：谁改了什么、为什么改、出现问题能否回到上一版。</p>
-<p>对个人练习而言，最重要的习惯是：<strong>每完成一个能运行的小目标，就留一个可回来的版本。</strong> 对团队而言，这会发展成更完整的分支、审查和发布流程；但核心没变——不要把所有改变堆成一次不可理解的大提交。</p>
-<h2 id="employeehub">🧪 跟着做：为 EmployeeHub 做一次“交付演练”</h2>
-<p>这不是要求你今天购买云资源。你要做的是把“我电脑上能看到”变成一组可验证的交付条件。把下面清单逐条勾掉，才算本章完成。</p>
-<h3 id="1">第 1 步：写出一条最关键的用户路径</h3>
-<p>这条教程的路径可以是：</p>
-<div class="flowchain">
-<div class="fstep"><b>HR 登录</b><span>看到员工管理入口</span></div>
-<div class="farrow">→</div>
-<div class="fstep"><b>新建员工</b><span>填写姓名、部门、职位</span></div>
-<div class="farrow">→</div>
-<div class="fstep"><b>保存</b><span>空姓名被拦住；完整信息被保存</span></div>
-<div class="farrow">→</div>
-<div class="fstep"><b>回列表</b><span>看到刚创建的员工</span></div>
-</div>
-
-<p>把这条路径从头走一遍，不要跳步。只要其中某一步需要你“凭感觉补一下”，那就是交付前需要补的说明或功能。</p>
-<h3 id="2">第 2 步：准备可重复的测试数据</h3>
-<p>测试数据不必多，但必须故意覆盖几种情况：</p>
+<h2 id="_3">🧮 二、判据速查：该怎么选</h2>
 <table>
 <thead>
 <tr>
-<th>数据</th>
-<th>用来验证什么</th>
+<th>你在犹豫</th>
+<th>判据</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>两个部门</td>
-<td>部门选择和关联是否正确</td>
+<td>值传递还是引用传递</td>
+<td>⚠️ C++ 的 <code>=</code> <strong>默认是复制</strong>，和 Python 的「贴名字」完全相反。源码里到处是 <code>const Tensor&amp;</code>，就是为了不复制</td>
 </tr>
 <tr>
-<td>两名在职员工</td>
-<td>列表、详情和编辑是否可用</td>
+<td><code>std::move</code> 要不要用</td>
+<td>记住它<strong>不移动任何东西</strong> —— 它只是把对象标记成「可以被搬走」，真正搬不搬由接收方决定</td>
 </tr>
 <tr>
-<td>一名离职员工</td>
-<td><code>IsActive</code> 显示/筛选是否符合预期</td>
+<td>用哪种指针</td>
+<td>四种指针 = 四种<strong>所有权声明</strong>。选哪种等于在回答「谁负责释放」</td>
 </tr>
 <tr>
-<td>一份空姓名表单</td>
-<td>校验是否真的阻止保存</td>
+<td>资源怎么保证释放</td>
+<td><strong>RAII</strong>：把释放绑在析构上。它是 C++ 版的 <code>with</code></td>
 </tr>
 <tr>
-<td>一个普通用户、一个 HR 用户</td>
-<td>角色边界是否生效</td>
-</tr>
-</tbody>
-</table>
-<p>每次测试前从同一组数据开始，会比“我刚才随便点了几下”更容易复现问题。</p>
-<h3 id="3">第 3 步：把环境说清楚</h3>
-<table>
-<thead>
-<tr>
-<th>环境</th>
-<th>可以做什么</th>
-<th>不应该做什么</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>本地</td>
-<td>快速试页面、模型和流程</td>
-<td>当作真实多人环境</td>
+<td>数据怎么摆（AoS 还是 SoA）</td>
+<td>看你<strong>每次遍历用到几个字段</strong>。只用一两个字段就该拆成 SoA，否则每条 cache line 里大半是白搬的</td>
 </tr>
 <tr>
-<td>测试</td>
-<td>给同事或测试者验证完整路径</td>
-<td>随意放真实敏感员工数据</td>
+<td>结构体为什么变胖</td>
+<td>对齐填充。字段按大小从大到小排，通常能省下来</td>
 </tr>
 <tr>
-<td>正式</td>
-<td>让真实用户完成工作</td>
-<td>直接试验未验证的改动</td>
-</tr>
-</tbody>
-</table>
-<p>如果你暂时只有本地环境，也可以完成前两行思考：假如明天交给同事，你要给他什么地址、什么测试账号、什么操作说明？答不出来的部分，就是从“练习”到“交付”缺的内容。</p>
-<h3 id="4">第 4 步：每次发布前只问五个问题</h3>
-<ol>
-<li>这次具体改了哪条用户路径？</li>
-<li>这条路径我刚刚真的走过吗？</li>
-<li>什么角色会受影响？</li>
-<li>失败时用户会看见什么、我会在哪里发现？</li>
-<li>有问题时回到上一版的办法是什么？</li>
-</ol>
-<p>这五个问题比“有没有点 Publish”重要。发布是一个动作；交付是让人愿意依赖这个动作的证据。</p>
-<h2 id="_5">🧯 用真实故障替代“看起来没问题”</h2>
-<p>请故意测试至少三次失败：</p>
-<table>
-<thead>
-<tr>
-<th>故意制造的情况</th>
-<th>你想看到的正确反应</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>不填姓名就保存</td>
-<td>留在表单，提示要补什么，不生成空员工</td>
-</tr>
-<tr>
-<td>普通员工尝试进入管理页</td>
-<td>看不到入口，且不能通过其他路径打开或执行管理动作</td>
-</tr>
-<tr>
-<td>外部部门同步失败</td>
-<td>不清空已有部门；管理员能知道同步失败而不是以为数据消失</td>
-</tr>
-</tbody>
-</table>
-<p>“错误时仍然可理解”是产品质量的一部分。尤其对内部工具，用户不知道怎么继续时，最终会把问题带到人身上，而不是带回系统。</p>
-<h2 id="_6">🗂️ 交接给别人时，至少留四样东西</h2>
-<table>
-<thead>
-<tr>
-<th>留下什么</th>
-<th>写到什么程度</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>应用目的</td>
-<td>一句话：它替谁解决什么工作</td>
-</tr>
-<tr>
-<td>角色说明</td>
-<td>谁能看、谁能改、谁负责开账号</td>
-</tr>
-<tr>
-<td>关键路径</td>
-<td>从登录到完成一件事的步骤</td>
-</tr>
-<tr>
-<td>已知限制</td>
-<td>例如“部门当前来自测试数据，尚未接 HR 系统”</td>
-</tr>
-</tbody>
-</table>
-<p>这比几十页背景介绍更有用。下一位维护者首先需要知道：应用为什么存在、现在可靠到什么程度、哪里还不能碰。</p>
-<h2 id="_7">🧭 学到这里以后，怎么继续才不迷路</h2>
-<p>不要同时开五条新学习线。用你的下一个真实需求做选择：</p>
-<table>
-<thead>
-<tr>
-<th>你卡住的真实问题</th>
-<th>先补这一块</th>
-<th>先别急着学</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>用户要在手机上操作</td>
-<td>Native Mobile 的页面与离线限制</td>
-<td>复杂企业集成</td>
-</tr>
-<tr>
-<td>要对接现有系统</td>
-<td>REST、数据映射、认证、失败重试</td>
-<td>新建十个 UI 动画</td>
-</tr>
-<tr>
-<td>多人开始依赖应用</td>
-<td>环境、部署、监控、版本协作</td>
-<td>把每个模块都重写一遍</td>
-</tr>
-<tr>
-<td>权限规则越来越细</td>
-<td>用户、角色、实体访问和约束</td>
-<td>先堆更多业务字段</td>
-</tr>
-</tbody>
-</table>
-<p>官方 Academy 将学习路径按目标、角色和技能层级组织；完成基础项目后按需求选路径，比“把所有课程刷完”更有效。<a href="https://docs.mendix.com/academy/">Mendix Academy 总览</a></p>
-<hr />
-<h2 id="_8">🎓 你现在已经站在哪里</h2>
-<p>你已经走完 Rapid Developer 风格的骨架：用 Studio Pro 建项目，建数据、做页面、画逻辑、配权限、接外部能力并发布。官方认证阶梯后面还有 Intermediate、Advanced 和 Expert；它们不是“必须立刻刷完的关卡”，而是在你真的开始交付复杂应用后，给你补更深的工程能力。</p>
-<p>下一步请按真实需求选：</p>
-<table>
-<thead>
-<tr>
-<th>真实需求</th>
-<th>下一步应该补什么</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>要做手机端</td>
-<td>Native Mobile</td>
-</tr>
-<tr>
-<td>要接企业系统</td>
-<td>REST、OData、身份与错误处理</td>
-</tr>
-<tr>
-<td>要承受更多用户和环境</td>
-<td>部署、监控、性能与治理</td>
-</tr>
-<tr>
-<td>要做 AI 功能</td>
-<td>先明确业务流程，再看 Mendix 的 AI / GenAI 相关学习路径</td>
+<td>要不要真去编译 PyTorch</td>
+<td>⭐ <strong>多半不需要</strong>。<a href="06-读源码路线图.html">06 · 读源码路线图</a> 第五节给了只用 Python 就能查分派表的办法</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="_9">🔗 这一章连到哪里</h2>
+<h2 id="_4">🔍 三、不下载源码也能查的三件事</h2>
+<table>
+<thead>
+<tr>
+<th>想知道</th>
+<th>怎么查</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>某个算子的真实 schema</td>
+<td>用 PyTorch 自带的接口直接读，不必去翻 <code>native_functions.yaml</code></td>
+</tr>
+<tr>
+<td>某个算子在哪些 backend 上有实现</td>
+<td><code>torch._C._dispatch_dump("aten::算子名")</code> —— ⭐ 它把那一行的分派表直接打出来</td>
+</tr>
+<tr>
+<td>报错到底来自哪一层</td>
+<td>从 <code>Could not run</code> 里抽出算子名和 backend，再去 dump 那一行</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ <strong><code>native_functions.yaml</code> 不在 pip 装的 wheel 里</strong> —— 它是构建期的输入文件。
+想看算子定义，用上面这两条命令比找源码快得多。</p>
+</blockquote>
+<hr />
+<h2 id="_5">📖 四、术语对照</h2>
+<table>
+<thead>
+<tr>
+<th>词</th>
+<th>一句话</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>名字修饰 / mangling</strong></td>
+<td>编译器把 C++ 函数名连同参数类型编码成一个唯一符号，<code>_ZN3c10...</code> 就是它的样子</td>
+</tr>
+<tr>
+<td><strong>ABI</strong></td>
+<td>二进制层面的约定：名字怎么编码、结构体怎么排布、异常怎么传。⚠️ 和 API 是两件事</td>
+</tr>
+<tr>
+<td><strong>API</strong></td>
+<td>源码层面的约定：函数长什么样、怎么调用。API 兼容不等于 ABI 兼容</td>
+</tr>
+<tr>
+<td><strong>manylinux</strong></td>
+<td>一套「能装在多老的 Linux 上」的 wheel 标签标准，本质是在钉死一条 ABI 基线</td>
+</tr>
+<tr>
+<td><strong>cache line</strong></td>
+<td>CPU 一次从内存搬的最小单位。你取一个 int，它搬的是一整条</td>
+</tr>
+<tr>
+<td><strong>false sharing</strong></td>
+<td>两个无关变量落在同一条 cache line，多核互相使对方的缓存失效</td>
+</tr>
+<tr>
+<td><strong>AoS / SoA</strong></td>
+<td>结构体数组 / 数组的结构体。同一批数据的两种摆法，遍历模式决定该选哪个</td>
+</tr>
+<tr>
+<td><strong>RAII</strong></td>
+<td>资源获取即初始化：构造时拿、析构时还，异常路径也保证还</td>
+</tr>
+<tr>
+<td><strong>悬垂 / dangling</strong></td>
+<td>对象已经没了，还有指针或引用指着它</td>
+</tr>
+<tr>
+<td><strong>分派表 / dispatch</strong></td>
+<td>PyTorch 用「算子名 × DispatchKey」两个坐标查实现的那张表</td>
+</tr>
+<tr>
+<td><strong>DispatchKeySet</strong></td>
+<td>列坐标的集合：CPU / CUDA / SparseCPU / Autograd… 决定这次调用落到哪一格</td>
+</tr>
+<tr>
+<td><strong>TORCH_LIBRARY</strong></td>
+<td>声明算子的宏。和注册实现的宏各管一件事</td>
+</tr>
+<tr>
+<td><strong>pybind11</strong></td>
+<td>只需头文件的绑定库，把 C++ 函数包成 Python 能直接调的模块</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_6">🔗 这一页连到哪里</h2>
 <table>
 <thead>
 <tr>
@@ -551,45 +491,29 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </thead>
 <tbody>
 <tr>
-<td><a href="../AI全栈/16-上线前检查单.html">AI 全栈 16 · 上线前检查单</a></td>
-<td>⭐ 本章那张最小检查单的加长版，判据同源：<strong>「做了」和「验证过做了」之间隔着一次事故</strong> —— 每一条都问「你怎么知道它真的在生效」</td>
+<td><a href="00-怎么用这份教程.html">00 · 怎么用这份教程</a></td>
+<td>六堵墙分别是什么、这个板块<strong>不讲</strong>什么、以及那些内容在站内哪里</td>
 </tr>
 <tr>
-<td><a href="../AI全栈/14-容器化与部署.html">AI 全栈 14 · 容器化与部署</a></td>
-<td>「三种能跑」的区别在手写栈里怎么消灭：把整台机器和代码一起提交进版本库，每个环境跑同一份产物、只换环境变量</td>
+<td><a href="01-Python调C++的那条边界.html">01 · Python 调 C++ 的那条边界</a></td>
+<td>跨语言调用的两笔开销：转换成本，和那把锁</td>
 </tr>
 <tr>
-<td><a href="../模型上线之后/00-怎么用这份教程.html">模型上线之后 00</a></td>
-<td>交付不是终点。那一套从「上线那一刻」开始：监控该看什么、灰度和回滚怎么做、告警为什么没人看</td>
+<td><a href="../NumPy与向量化思维/05-内存布局与stride.html">NumPy 与向量化思维 05 · 内存布局与 stride</a></td>
+<td>⭐ cache 那一章的上游：同一个「按行还是按列走」的问题，在 NumPy 里长什么样</td>
+</tr>
+<tr>
+<td><a href="../PyTorch这个框架本身/09-自定义算子.html">PyTorch 这个框架本身 09 · 自定义算子</a></td>
+<td>Python 侧怎么写自定义算子 —— 05 章讲的是它在 C++ 那一半</td>
 </tr>
 </tbody>
 </table>
-<hr />
-<h2 id="_10">🛑 可以停在这里</h2>
-<p>你不必“全学完 Mendix”才算开始。现在最有价值的下一步是：选一个真实但小的业务问题，用这条线再做一次，然后只补它缺的那块能力。</p>
-<hr />
-<h2 id="_11">✅ 检查点</h2>
-<p>为什么“本地打开过一次”不能等同于“已经可以交付”？</p>
-<details>
-<summary>👀 看答案</summary>
-<p>因为本地运行只证明你的当前环境能启动它。交付还要确认真实角色、真实数据、关键流程、失败反馈、环境配置和回退方式都成立。</p>
-</details>
-<hr />
-<p>⚡ <strong>走神救援</strong></p>
-<ul>
-<li>本地能跑、测试可用、正式交付是三件不同的事。</li>
-<li>上线前至少检查数据、角色、关键路径和失败反馈。</li>
-<li>复杂度上来后再按需求选移动端、集成、治理或 AI，不要一次全学。</li>
-<li>你已经完成一条从想法到应用的基础主线。</li>
-</ul>
-<p><strong>回到：</strong> <a href="index.html">Mendix 教程首页</a></p>
-<p><strong>继续：</strong> <a href="附录A-速查.html">附录A · 速查</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
-<nav class="pagenav"><a href="06-怎么连接外部系统.html"><div class="dir">← 上一节</div>🔌 06 · 怎么连接外部系统</a><a class="next" href="附录A-速查.html"><div class="dir">下一节 →</div>📖 附录A · 速查</a></nav>
+<nav class="pagenav"><a href="06-读源码路线图.html"><div class="dir">← 上一节</div>🗺️ 06 · 读源码路线图</a><a class="next" href="index.html"><div class="dir">完成 →</div>🏠 回首页看进度</a></nav>
 </main>
 <script>(function(){
-  var KEY="mendix-progress", FILE="07-\u8ba9\u5b83\u771f\u7684\u4ea4\u4ed8\u51fa\u53bb.md";
+  var KEY="cpp-progress", FILE="\u9644\u5f55A-\u901f\u67e5.md";
   function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
   function refresh(){var d=!!load()[FILE];
     document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
