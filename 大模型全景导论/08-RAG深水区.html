@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>08 · RAG 深水区 · 大模型全景导论</title>
+<title>08 · RAG：先搭出一个能用的 · 大模型全景导论</title>
 <script>(function(){var t=localStorage.getItem('recsys-theme');
 if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
 @font-face{font-family:"CodeCJK";
@@ -267,9 +267,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
-  <span class="title">08 · RAG 深水区</span>
+  <span class="title">08 · RAG 最小闭环</span>
   <span class="prevnext"><a href="07-本地部署与开源生态.html">←</a>
-  <a href="09-推理范式.html">→</a></span>
+  <a href="08b-重排与Embedding选型.html">→</a></span>
   <button class="js-done-btn">☐ 打卡</button>
   <button id="themeToggle" title="切换深浅色">🌗</button>
 </div></header>
@@ -279,25 +279,19 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><a href="#_2">😅 先看差距有多大</a></li>
 <li><a href="#_3">🧱 环节一：切分（最被低估的一环）</a></li>
 <li><a href="#_6">🔍 环节二：混合检索（别只用向量）</a></li>
-<li><a href="#_7">🎯 环节三：重排（性价比最高的一步）</a></li>
-<li><a href="#embedding">🧭 Embedding 选型：排在重排之后的那件事</a></li>
-<li><a href="#_10">🔄 环节四：查询侧处理</a></li>
-<li><a href="#_11">📊 环节五：评估（最容易被跳过，也最致命）</a></li>
-<li><a href="#graphrag-agentic-rag-self-rag-crag">🕸️ 进阶方向：GraphRAG / Agentic RAG / Self-RAG / CRAG</a></li>
-<li><a href="#_13">🔗 和站内其他章的关系</a></li>
-<li><a href="#_14">📦 深挖的话要学什么</a></li>
-<li><a href="#_15">⚖️ 要不要深挖</a></li>
-<li><a href="#_16">✅ 检查点</a></li>
-<li><a href="#_17">🛑 可以停在这里</a></li>
+<li><a href="#_7">🔗 和站内其他章的关系</a></li>
+<li><a href="#_8">✅ 检查点</a></li>
+<li><a href="#_9">🛑 可以停在这里</a></li>
 </ul>
 </div>
 </details>
-<h1 id="08-rag">08 · RAG 深水区</h1>
-<p>⏱ <strong>76 分钟</strong> ｜ ⭐⭐ <strong>落地场景最多的一块</strong></p>
+<h1 id="08-rag">08 · RAG：先搭出一个能用的</h1>
+<p>⏱ <strong>22 分钟</strong> ｜ ⭐ <strong>切分和混合检索 —— 决定上限的那两步</strong></p>
 <hr />
 <h2 id="_1">🎯 一句话</h2>
-<p>RAG 的 demo 版本一小时能搭出来，生产版本能做三个月。差距不在「向量检索」这四个字，而在<strong>切分、混合检索、重排、查询改写、评估</strong>这一整条链路。
-而这条链路上最容易被搞反的是顺序：先做切分和混合检索，再加重排，<strong>最后才轮到换 embedding 模型</strong>。</p>
+<p>RAG 不是「把文档塞给模型」，它是一个<strong>搜索系统</strong>：召回 → 粗排 → 精排 → 重排，和推荐系统同构。
+这一页只做<strong>最小可用闭环</strong> —— 把文档切对，再把两路检索合起来。
+⭐ 这两步决定上限：<strong>它们没做好，后面加多少花活都救不回来。</strong></p>
 <figure class="dia" data-fig="rag_flow"><svg viewBox="0 0 680 316" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="RAG 检索增强生成流程"><defs><marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker><marker id="a4l" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--link)"/></marker><marker id="a4d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--danger,#e5534b)"/></marker></defs><rect x="30" y="96" width="118" height="52" rx="9" fill="var(--card)" stroke="var(--muted)" stroke-width="1.9"/><text class="dia-t" x="89.0" y="127.0" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="700">用户问题</text><rect x="186" y="96" width="118" height="52" rx="9" fill="var(--card)" stroke="var(--link)" stroke-width="1.9"/><text class="dia-t" x="245.0" y="118" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="700">向量化</text><text class="dia-t" x="245.0" y="135" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">同一个嵌入模型</text><rect x="342" y="96" width="128" height="52" rx="9" fill="var(--accent-soft)" stroke="var(--link)" stroke-width="1.9"/><text class="dia-t" x="406.0" y="118" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="700">向量库检索</text><text class="dia-t" x="406.0" y="135" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">取 top-K 相似块</text><rect x="508" y="96" width="128" height="52" rx="9" fill="var(--card)" stroke="var(--link)" stroke-width="1.9"/><text class="dia-t" x="572.0" y="118" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="700">重排 Rerank</text><text class="dia-t" x="572.0" y="135" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">精排一次</text><rect x="342" y="214" width="128" height="52" rx="9" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.9"/><text class="dia-t" x="406.0" y="236" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="700">拼进提示词</text><text class="dia-t" x="406.0" y="253" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">问题 + 检索到的块</text><rect x="508" y="214" width="128" height="52" rx="9" fill="var(--card)" stroke="var(--accent)" stroke-width="1.9"/><text class="dia-t" x="572.0" y="236" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="700">模型生成</text><text class="dia-t" x="572.0" y="253" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">带引用</text><rect x="186" y="214" width="118" height="52" rx="9" fill="var(--card)" stroke="var(--muted)" stroke-width="1.9"/><text class="dia-t" x="245.0" y="236" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="700">文档库</text><text class="dia-t" x="245.0" y="253" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">离线切块+嵌入</text><line x1="148" y1="122" x2="186" y2="122" stroke="var(--link)" stroke-width="2.2" marker-end="url(#a4l)"/><line x1="304" y1="122" x2="342" y2="122" stroke="var(--link)" stroke-width="2.2" marker-end="url(#a4l)"/><line x1="470" y1="122" x2="508" y2="122" stroke="var(--link)" stroke-width="2.2" marker-end="url(#a4l)"/><path d="M572 148 L572 182 L406 182 L406 214" fill="none" stroke="var(--accent)" stroke-width="2.2" marker-end="url(#a4)"/><line x1="470" y1="240" x2="508" y2="240" stroke="var(--accent)" stroke-width="2.2" marker-end="url(#a4)"/><path d="M245 214 L245 182 L342 182" fill="none" stroke="var(--muted)" stroke-width="1.6" stroke-dasharray="5 4"/><text class="dia-t" x="340" y="32" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">RAG 不是「让模型记住文档」，是「每次把相关的那几段塞给它」</text><text class="dia-t" x="340" y="56" font-size="11.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">所以效果的上限，几乎完全由【检索准不准】决定，而不是模型多强</text><text class="dia-t" x="340" y="300" font-size="12.5" text-anchor="middle" fill="var(--accent)" font-weight="700">⭐ 排查 RAG 效果差，永远先看「检索回来的块对不对」——而不是先去换更大的模型</text></svg><figcaption>蓝色是检索链路，橙色是生成链路。⭐ RAG 的效果上限几乎完全由<b>「检索准不准」</b>决定 —— 所以排查效果差时，永远先看检索回来的块对不对，而不是先换更大的模型。</figcaption></figure>
 
 <hr />
@@ -343,383 +337,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>$$\text{RRF}(d) = \sum_{r \in \text{检索器}} \frac{1}{k + \text{rank}_r(d)}$$</p>
 <p>💡 <strong>人话</strong>：每个文档在各路检索里的排名越靠前，得分越高，加起来排序。简单粗暴但极其有效。</p>
 <hr />
-<h2 id="_7">🎯 环节三：重排（性价比最高的一步）</h2>
-<section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">双塔 Embedding（检索用） Cross-Encoder（重排用）</span></div><div class="vb-flow-row"><span class="vb-flow-step">问题和文档分别编码，点积 问题和文档拼在一起过模型</span></div><div class="vb-flow-row"><span class="vb-flow-step">✅ 快，能扫全库 ✅ 准得多（能做深度交互）</span></div><div class="vb-flow-row"><span class="vb-flow-step">❌ 不能做深度交互 ❌ 慢，只能处理几十上百条</span></div><div class="vb-flow-row"><span class="vb-flow-step">先用向量+BM25 召回 100 条，再用 Cross-Encoder 精排出 10 条</span></div></div></section>
-<blockquote>
-<p>🔗 <strong>完全是推荐算法第 8 章的「双塔做召回、精排做交叉」</strong>。同一套思想。</p>
-</blockquote>
-<p><strong>这一步通常是投入产出比最高的优化</strong>——加一个重排模型，往往比换更好的 embedding 模型收益大。</p>
-<h3 id="cross-encoder-colbert-llm">🥊 Cross-Encoder / ColBERT / LLM：三种重排怎么选</h3>
-<p>"重排"不是一种东西，是三条不同的路线。<strong>它们的核心差别只有一个：问题和文档在什么时候相遇。</strong></p>
-<table>
-<thead>
-<tr>
-<th>路线</th>
-<th>问题和文档什么时候相遇</th>
-<th>文档能预计算吗</th>
-<th>100 条候选的延迟</th>
-<th>效果</th>
-<th>什么时候选它</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>双塔 Embedding（对照组，<strong>不是重排</strong>）</td>
-<td><strong>从不</strong> —— 各自编码成一个向量，最后才点积</td>
-<td>✅ 全部离线</td>
-<td>≈ 0（它就是检索本身）</td>
-<td>基线</td>
-<td>召回阶段</td>
-</tr>
-<tr>
-<td><strong>Cross-Encoder</strong></td>
-<td><strong>最早</strong> —— 拼成一条输入一起过模型</td>
-<td>❌ 一条都不能</td>
-<td>几十~几百毫秒</td>
-<td>⭐ 最好</td>
-<td><strong>绝大多数场景的默认答案</strong></td>
-</tr>
-<tr>
-<td><strong>ColBERT（后期交互）</strong></td>
-<td><strong>中间</strong> —— 各自编码成 token 级向量矩阵，查询时才交互</td>
-<td>✅ 文档侧可离线</td>
-<td>个位数毫秒</td>
-<td>介于两者之间</td>
-<td>候选量大到 Cross-Encoder 跑不动</td>
-</tr>
-<tr>
-<td><strong>LLM 重排</strong></td>
-<td>最早，而且是"读懂了再排"</td>
-<td>❌</td>
-<td>秒级 + token 账单</td>
-<td>复杂/多条件问题上最好</td>
-<td>候选很少（20 条以内）、单次价值高</td>
-</tr>
-</tbody>
-</table>
-<p><strong>ColBERT 的机制值得单独说清楚</strong>（它是这三条里最容易讲错的）：</p>
-<section class="visual-block visual-block-calc" aria-label="算一算"><p class="visual-block-title">算一算</p><div class="vb-calc"><p>Cross-Encoder：[问题 + 文档] 拼一起进模型 → 一个分数</p><p>→ 100 条候选 = 100 次前向，全在线算 → 贵</p><p>ColBERT：问题编成 Q 个向量，文档编成 D 个向量（每个 token 一个）</p><p>分数 = 对每个【问题 token】，取它和所有【文档 token】里最像的那个</p><p>的相似度，然后全部加起来 ← 这就是 MaxSim</p><p>→ 文档那 D 个向量【可以离线算好存起来】⭐</p><p>→ 在线只剩一堆点积，比 Cross-Encoder 快一到两个数量级</p><p>⚠️ 代价是存储爆炸：一个块从「1 个向量」变成「几百个向量」，</p><p>索引体积膨胀一个数量级。ColBERTv2 用残差压缩把它压回来一些，</p><p>但仍然远大于单向量索引。</p></div></section>
-<blockquote>
-<p>🔑 <strong>一句话选型</strong>：<strong>默认 Cross-Encoder。</strong>
-只有"候选太多、Cross-Encoder 跑不动"才上 <strong>ColBERT</strong>（拿存储换延迟）；
-只有"候选很少但问题很绕"才上 <strong>LLM 重排</strong>（拿钱换效果）。
-⚠️ <strong>别从 ColBERT 开始</strong>——它解决的是<strong>规模</strong>问题，不是<strong>效果</strong>问题。用它替代 Cross-Encoder 通常是效果的降级。</p>
-</blockquote>
-<p>💡 <strong>LLM 重排还有一个更划算的用法</strong>：不当线上重排器，而当<strong>离线评测集的标注器</strong>——让它给 100 个问题的召回结果打分，人再抽查 10%。线上跑不起的成本，离线跑得起。</p>
-<hr />
-<h2 id="embedding">🧭 Embedding 选型：排在重排之后的那件事</h2>
-<p><strong>先把这一节的位置摆正。</strong> 前面已经说过两次同一件事：</p>
-<ul>
-<li>环节一：高维空间里「最近邻」这个概念本身在变弱，<strong>只靠调 embedding 模型救不回来</strong></li>
-<li>环节三：<strong>加一个重排模型，往往比换更好的 embedding 收益大</strong></li>
-</ul>
-<p>所以正确顺序是 <strong>切分 → 混合检索 → 重排 → 然后才轮到换 embedding</strong>。
-这一节回答的是"轮到了之后怎么选"，<strong>不是"一上来先选哪个"</strong>。</p>
-<h3 id="_8">什么时候是真的该换了</h3>
-<table>
-<thead>
-<tr>
-<th>信号</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>⭐ <strong>语种不对</strong></td>
-<td>拿纯英文模型跑中文——这不是"效果差一点"，是<strong>根本不该出现的配置错误</strong>。中文/多语言场景先确认模型的训练语料覆盖</td>
-</tr>
-<tr>
-<td>⭐ <strong>领域词汇完全在分布外</strong></td>
-<td>医学、法律、化学式、内部工单代号。通用模型没见过这些词，它们的向量互相挤在一起，怎么调都分不开</td>
-</tr>
-<tr>
-<td>⚠️ <strong>文本长度对不上</strong></td>
-<td>模型 <code>max_seq_len</code> 是 512 token，你的块是 1000 字 → <strong>超出部分被静默截断</strong>。你以为在检索整块，其实只检索了前半块。<strong>这个坑最隐蔽，因为它不报错</strong></td>
-</tr>
-<tr>
-<td><strong>非对称检索没用对姿势</strong></td>
-<td>「短问题查长文档」是<strong>非对称</strong>任务，很多模型要求给 query 和 document 加<strong>不同的前缀（instruction）</strong>，不加就掉点。这是配置问题，不是模型问题</td>
-</tr>
-</tbody>
-</table>
-<h3 id="768-1024-1536">维度怎么取舍（768 / 1024 / 1536）</h3>
-<section class="visual-block visual-block-calc" aria-label="算一算"><p class="visual-block-title">算一算</p><div class="vb-calc"><p>维度 ↑ → 表达能力略强，但【边际收益递减很快】</p><p>→ 存储、内存、ANN 检索延迟【线性增长】</p><p>100 万块 × 1536 维 × 4 字节 = 6.1 GB （还没算索引结构本身）</p><p>100 万块 × 768 维 × 4 字节 = 3.1 GB</p><p>⭐ 判断顺序（不要反过来）：</p><p>先量出 1536 维比 768 维在【你自己那 20 个问题】上高几个点，</p><p>再问这几个点值不值 2 倍存储 + 更慢的检索。</p><p>多数企业知识库场景：不值。</p></div></section>
-<p>💡 <strong>一个常被忽略的选项：MRL（套娃表示）</strong>。有些模型在训练时就让"前 256 维"自己也是一个能用的向量，于是同一份 embedding 可以<strong>截断后粗筛、完整维度精算</strong>，存储和延迟一起省。选型时留意模型卡上有没有这一条。</p>
-<h3 id="mteb">MTEB 榜怎么看（榜首≠对你最好）</h3>
-<ol>
-<li>⭐ <strong>看子任务，不看总分。</strong> MTEB 总分把分类、聚类、语义相似度、检索混在一起平均。你只关心 <strong>Retrieval</strong> 那一栏；中文看 C-MTEB 的检索子集。</li>
-<li><strong>顺手看"参数量"和"维度"两列。</strong> 榜首常是 7B 级的 embedding 模型——它的推理成本可能比你整条检索链路还高。</li>
-<li>⚠️ <strong>榜单会被刷。</strong> 训练数据里混进评测集是这个榜公开的老问题。<strong>一个模型只在榜上好、在你那 20 个问题上不好，信你自己的。</strong></li>
-<li><strong>别忘了迁移成本</strong>：换 embedding 意味着<strong>全库重算向量 + 重建索引</strong>。100 万块重跑一遍是实打实的钱和时间。</li>
-</ol>
-<h3 id="_9">什么时候值得领域微调</h3>
-<p>⭐ <strong>判据不是"效果不够好"，而是"通用模型分不开你的两类文档"。</strong></p>
-<table>
-<thead>
-<tr>
-<th>情况</th>
-<th>建议</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>领域术语密集，且<strong>有 1000 条以上</strong>「问题 → 正确文档」的真实数据（可以从线上点击日志里挖）</td>
-<td>✅ 值得试</td>
-</tr>
-<tr>
-<td>只有几百条</td>
-<td>🟡 先试<strong>指令前缀</strong>和<strong>领域词典做查询扩展</strong>，成本低一个数量级</td>
-</tr>
-<tr>
-<td>还没做混合检索和重排</td>
-<td>❌ 顺序错了，回去做那两件</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>🔗 <strong>微调 embedding 用的就是对比学习 + in-batch 负采样 + 温度系数</strong>，和<a href="../推荐算法/08-深度学习推荐模型.html">推荐算法第 8 章的双塔训练</a>是<strong>同一套方法，连坑都一样</strong>：负样本选错（用"曝光未点击"当负样本会训废）、热门项支配（要 LogQ 校正）、温度系数 τ 从 0.05 开始调。要动手微调之前先去读那一节。</p>
-<p>🚨 <strong>最后一条是运维铁律</strong>：<strong>换了 embedding 模型，全库必须重建索引。</strong>
-新旧模型的向量空间<strong>不通用</strong>，混在一个索引里检索结果是乱的——而且<strong>不报错</strong>，只是变差。
-灰度期必须<strong>双索引并行</strong>（新旧各一份，按流量切），不能原地替换。</p>
-</blockquote>
-<hr />
-<h2 id="_10">🔄 环节四：查询侧处理</h2>
-<table>
-<thead>
-<tr>
-<th>技巧</th>
-<th>做什么</th>
-<th>解决</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>查询改写</strong></td>
-<td>把口语化问题改成检索友好的</td>
-<td>「上次说的那个咋样了」→ 无法检索</td>
-</tr>
-<tr>
-<td><strong>多查询扩展</strong></td>
-<td>一个问题生成 3–5 个变体分别检索</td>
-<td>单一表述漏召回</td>
-</tr>
-<tr>
-<td><strong>HyDE</strong></td>
-<td>先让模型<strong>假装回答</strong>，用假答案去检索</td>
-<td>问题和答案的表述差异大</td>
-</tr>
-<tr>
-<td><strong>意图路由</strong></td>
-<td>判断该查文档、查数据库、还是直接答</td>
-<td>不是所有问题都需要 RAG</td>
-</tr>
-<tr>
-<td><strong>多跳检索</strong></td>
-<td>检索→发现缺信息→再检索</td>
-<td>需要串联多个事实的问题</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>💡 <strong>HyDE 的巧妙之处</strong>：问题「怎么申请报销」和文档「报销流程：第一步…」在向量空间里未必近；
-但模型编的假答案「报销需要先填单据…」和真文档就很近了。</p>
-</blockquote>
-<hr />
-<h2 id="_11">📊 环节五：评估（最容易被跳过，也最致命）</h2>
-<p><strong>必须分开评估两段</strong>，否则你不知道问题出在哪：</p>
-<section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>检索质量：正确答案在召回结果里吗？</li><li>指标：Recall@K、MRR、NDCG ← 推荐算法第 12 章的老朋友</li><li>生成质量：</li><li>· 忠实度 Faithfulness —— 答案是否只基于检索到的内容（防幻觉）⭐</li><li>· 答案相关性 —— 答案是否真的回答了问题</li><li>· 上下文相关性 —— 召回的内容是否真的有用</li></ol></section>
-<blockquote>
-<p>⚠️ <strong>最常见的诊断错误</strong>：答案不对就去调提示词。
-<strong>先查检索</strong>——如果正确文档根本没被召回，提示词再怎么调都没用。</p>
-</blockquote>
-<h3 id="ragas">📐 RAGAS 的四个指标（把上面三条补齐）</h3>
-<p>上面列的三条<strong>全是生成侧</strong>的。面试最常问的 <strong>RAGAS 四指标</strong>里，还有一个是检索侧的，也是最容易被漏掉的那个：</p>
-<table>
-<thead>
-<tr>
-<th>指标</th>
-<th>它问的是什么</th>
-<th>分低说明</th>
-<th>属于哪一段</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>faithfulness</code><br>忠实度</td>
-<td>答案里的每一句，都能在召回的上下文里找到依据吗</td>
-<td><strong>模型在编</strong></td>
-<td>生成</td>
-</tr>
-<tr>
-<td><code>answer_relevancy</code><br>答案相关性</td>
-<td>答案是在回答这个问题吗（不是"对不对"，是"答没答"）</td>
-<td><strong>答跑题了 / 车轱辘话</strong></td>
-<td>生成</td>
-</tr>
-<tr>
-<td><code>context_precision</code><br>上下文精确率</td>
-<td>召回的那几块里，<strong>有用的排在前面</strong>吗</td>
-<td><strong>重排缺失或没做好</strong>，正确文档排太后</td>
-<td>检索</td>
-</tr>
-<tr>
-<td><code>context_recall</code><br>上下文召回率</td>
-<td>标准答案需要的信息，<strong>都被召回了</strong>吗</td>
-<td><strong>压根没捞到</strong>——切分不当 / 缺 BM25 / 表述差异</td>
-<td>检索 ⭐</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>⭐ <strong>四个里最该先看 <code>context_recall</code>。</strong> 它是唯一需要<strong>标准答案</strong>才能算的指标（另外三个只要 问题 + 上下文 + 答案 就能算），也是唯一能告诉你"信息压根没进来"的指标。
-上面那条铁律「答案不对先查检索」，量化出来就是它。</p>
-<p>⚠️ <strong><code>context_precision</code> 和 <code>context_recall</code> 千万别搞反</strong>：
-<strong>recall 低 = 没捞到</strong>（要改切分和检索）；<strong>precision 低 = 捞到了但埋在噪声里</strong>（要加重排）。
-这两条的处方完全不同，认错了就会一直修错的那一环。</p>
-</blockquote>
-<p>⚠️ <strong>RAGAS 这四个分数多数是靠 LLM 打出来的</strong>，所以它自带 LLM-as-a-Judge 的全部毛病：分数随裁判模型版本漂移、成本按 token 计、同一批数据两次跑结果不完全一样。
-<strong>把它当"趋势指标"用（这次改动比上次高了吗），别当"绝对分数"用</strong>——「我们的 faithfulness 是 0.87」这句话离开了裁判模型和版本就没有意义。</p>
-<h3 id="5">🩺 一张诊断表（照着查，5 分钟定位问题）</h3>
-<table>
-<thead>
-<tr>
-<th>现象</th>
-<th>先查这个</th>
-<th>大概率的根因</th>
-<th>哪个指标会先亮红灯</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>答案完全跑偏</strong></td>
-<td>召回结果里有正确文档吗？</td>
-<td><strong>检索问题</strong>：切分不当 / 缺 BM25 / 查询表述差异大</td>
-<td><code>context_recall</code></td>
-</tr>
-<tr>
-<td>召回里有正确文档，但答案还是错</td>
-<td>它排第几？</td>
-<td><strong>重排缺失</strong>——正确文档排在第 15 位，被截断了 ⭐</td>
-<td><code>context_precision</code></td>
-</tr>
-<tr>
-<td>答案对但<strong>编了引用</strong></td>
-<td>提示词有没有强制"只用给定内容"</td>
-<td>生成侧幻觉，要加约束 + 引用校验</td>
-<td><code>faithfulness</code></td>
-</tr>
-<tr>
-<td>答案太笼统</td>
-<td>召回的块是不是太大</td>
-<td>块里混了多个主题，模型抓不住重点</td>
-<td><code>answer_relevancy</code></td>
-</tr>
-<tr>
-<td><strong>专有名词/型号查不到</strong></td>
-<td>有没有 BM25</td>
-<td>纯向量检索的典型失败 ⭐</td>
-<td><code>context_recall</code></td>
-</tr>
-<tr>
-<td>时效性内容答错</td>
-<td>索引多久更新一次</td>
-<td>索引腐烂——文档更新了但没重建</td>
-<td><code>context_recall</code>（症状而已，根因在索引管线）</td>
-</tr>
-<tr>
-<td><strong>别人的数据被查出来了</strong></td>
-<td>有没有做行级权限过滤</td>
-<td>🚨 <strong>合规事故</strong>（<a href="14-合规与伦理.html">第 14 章</a>）</td>
-<td>⚠️ <strong>一个都不会亮</strong></td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>🚨 <strong>盯住最后一行</strong>：<strong>RAGAS 四个指标一个都发现不了权限越权。</strong>
-被越权召回的文档"内容相关、答案忠实、引用属实"——<strong>四项全绿</strong>，评估体系完全无感。
-<strong>合规只能靠专门的权限测试用例</strong>（拿 A 用户的身份去问只有 B 能看的问题，断言召回为空），指标救不了你。
-⭐ 这条推广出去是一条通用教训：<strong>你的指标体系只会告诉你它被设计来测的东西。</strong></p>
-<p>🔑 <strong>最有价值的一个习惯</strong>：
-<strong>每次 RAG 回答错了，都把"召回的原始块"打印出来看一眼。</strong>
-十次里有七次，你会发现问题根本不在生成侧。</p>
-</blockquote>
-<h3 id="_12">🔨 一个最小可用的评估脚本</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 只需要 20 条 (问题, 正确文档ID) 就能开始</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">eval_retrieval</span><span class="p">(</span><span class="n">qa_pairs</span><span class="p">,</span> <span class="n">retrieve</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-    <span class="n">hits</span><span class="p">,</span> <span class="n">ranks</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">q</span><span class="p">,</span> <span class="n">gold_id</span> <span class="ow">in</span> <span class="n">qa_pairs</span><span class="p">:</span>
-        <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">retrieve</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)]</span>
-        <span class="k">if</span> <span class="n">gold_id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
-            <span class="n">hits</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="n">ranks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">ids</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">gold_id</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>   <span class="c1"># MRR</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">ranks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Recall@</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">hits</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">qa_pairs</span><span class="p">)</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">   MRR = </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">ranks</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">ranks</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</code></pre></div>
-
-<blockquote>
-<p>💡 <strong>有了这 10 行，你的每一次改动才有了意义</strong>——
-否则"我觉得加了重排好像好一点"永远只是感觉。
-🔗 这条纪律来自<a href="../机器学习与深度学习基础/05-评估与过拟合.html">《机器学习基础》第 5 章</a>和 Kaggle 教程。</p>
-</blockquote>
-<hr />
-<!--MIDSTOP-->
-<blockquote>
-<p>🛑 <strong>读到这里可以停</strong> —— 五个环节加上 Embedding 选型都讲完了（约 36 分钟），主线到此为止。
-<strong>后半章还有</strong>：GraphRAG / Agentic RAG / Self-RAG / CRAG 四条进阶路线<strong>各自的代价</strong> · 和推荐算法知识的对应表 · 深挖清单 · 要不要深挖的判断
-回来的时候不用重读，直接从下一节接着看就行。</p>
-</blockquote>
-<hr />
-<h2 id="graphrag-agentic-rag-self-rag-crag">🕸️ 进阶方向：GraphRAG / Agentic RAG / Self-RAG / CRAG</h2>
-<p>⭐ <strong>每一行都写了代价</strong> —— 这些方向的资料通常只讲好处，而真正决定要不要上的是右边那一列。</p>
-<table>
-<thead>
-<tr>
-<th>方向</th>
-<th>解决什么</th>
-<th>代价</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>GraphRAG</strong></td>
-<td>构建实体关系图，回答「跨多个文档的全局性问题」（如「这些报告的共同主题是什么」）</td>
-<td>建图要把全库过一遍 LLM，<strong>索引成本高一到两个数量级</strong>；而且图建好之后<strong>很难增量维护</strong>——文档一改，关系可能全变</td>
-</tr>
-<tr>
-<td><strong>Agentic RAG</strong></td>
-<td>让 Agent 自己决定检索几次、检索什么（智能体教程的循环 + RAG）</td>
-<td>延迟和 token 从"一次检索"变成"若干轮"；<strong>必须有显式步数上限</strong>，否则会绕圈</td>
-</tr>
-<tr>
-<td><strong>Self-RAG</strong></td>
-<td>让模型<strong>自己判断"这次要不要检索"和"检回来的有没有用"</strong>：训练时就往输出里加入反思标记（要不要检索 / 相不相关 / 有没有被支持），生成时按标记走分支</td>
-<td>⚠️ <strong>要微调模型</strong>才能产生这些标记，通用 API 模型用不了原版；用提示词模拟会明显打折</td>
-</tr>
-<tr>
-<td><strong>CRAG</strong>（Corrective RAG）</td>
-<td>给召回结果加一个<strong>轻量评估器</strong>打分：好 → 直接用；差 → <strong>回退到网络搜索</strong>；不确定 → 两者混合。本质是"检索质量的兜底闸门"</td>
-<td>多一个评估器（延迟 + 成本）；<strong>回退到外部搜索意味着答案可能来自不可控来源</strong>，企业内网场景要谨慎</td>
-</tr>
-<tr>
-<td><strong>多模态 RAG</strong></td>
-<td>检索图片、表格、图表（第 10 章）</td>
-<td>需要多模态 embedding + 版面解析，整条链路变重</td>
-</tr>
-<tr>
-<td><strong>长上下文 vs RAG</strong></td>
-<td>上下文变长后还需要 RAG 吗？→ <strong>需要</strong>：成本、时效、可溯源、规模</td>
-<td>—</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>🔑 <strong>Self-RAG 和 CRAG 其实是同一个念头的两种实现</strong>：都在给 RAG 加一道「<strong>这次检索到底靠不靠谱</strong>」的判断。
-区别是 <strong>Self-RAG 把判断力训进模型里</strong>（要微调），<strong>CRAG 把判断力放在模型外面</strong>（一个可插拔的评估器）。</p>
-<p>⭐ <strong>工程上先做 CRAG 那一路</strong>：它不动模型，加一个打分阈值就能上线，是这两条里投入产出比高得多的一条。而且它的评估器和你<a href="#ragas">上面那张诊断表</a>想量化的是同一件事——<strong>只不过从"事后排查"变成了"事中拦截"</strong>。</p>
-</blockquote>
-<hr />
-<h2 id="_13">🔗 和站内其他章的关系</h2>
+<h2 id="_7">🔗 和站内其他章的关系</h2>
 <p>⭐ <strong>RAG 是全导论迁移余地最大的一块</strong>，但迁移是有条件的——对上了是白赚，没对上也不影响学（它同时是门槛最低的几章之一）：</p>
 <table>
 <thead>
@@ -756,127 +374,37 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>没做过也别绕路</strong>：上表右列就是你要学的东西本身，只是别人已经在另一个领域学过一遍而已。</p>
 </blockquote>
 <hr />
-<h2 id="_14">📦 深挖的话要学什么</h2>
-<p>✅ = 本章正文已经讲了，点进去就是；其余是本章之外的。</p>
-<blockquote>
-<p>📍 <strong>本章之外的那些，也标了它在哪</strong>：
-📗 <strong>本库有</strong> = 站内已经讲透，点进去就行；📙 <strong>半有</strong> = 站内讲了一半，另一半得外找；
-📕 <strong>要外找</strong> = 站内没有，得去论文或别处。
-（这份清单以前只列词不说去哪，指到的坑有些站内根本没挖过，按图索骥会扑空。）</p>
-</blockquote>
-<ul>
-<li><strong>文档解析</strong>：PDF/表格/扫描件（OCR）、版面分析、Markdown 转换
-  → 📕 <strong>要外找</strong>：站内<strong>一个字都没有</strong>。⚠️ 这一条值得单独警惕——它排在整条链的第一位，做企业知识库时也常常是最耗时的一环，而本库帮不上忙。别因为它在清单第一行就以为它最简单</li>
-<li><strong>切分</strong>：语义切分算法的阈值怎么定、Late Chunking、上下文补全的成本控制
-  → 📙 <strong>半有</strong>：切分的<strong>实用判据</strong>本章自己给了（块大小起点、上下文检索/Contextual Retrieval 的做法）。Late Chunking 和语义切分算法的阈值调法站内没有，要外找</li>
-<li><strong>Embedding</strong>：✅ <a href="#embedding">选型判据与维度取舍</a> ｜ 领域微调的数据怎么攒、跨语言检索、MRL 截断检索
-  → 📙 <strong>半有</strong>：「领域微调的数据怎么攒」本质是标注问题，<a href="../数据这一关/09-标注体系怎么设计.html">数据这一关 09 · 标注体系怎么设计</a> 和 <a href="../数据这一关/12-标注预算与主动学习.html">12 · 标注预算与主动学习</a> 讲的正是"用有限预算攒出有用的标注"。<strong>MRL 截断检索和跨语言检索站内没有，要外找</strong></li>
-<li><strong>检索</strong>：BM25 的公式本身（tf-idf、k1、b）、SPLADE 学习式稀疏检索、向量库选型（Milvus/Qdrant/pgvector，见<a href="../推荐算法/10-向量检索与ANN.html">推荐算法第 10 章</a>）
-  → 📙 <strong>半有</strong>：向量库选型 📗 就是上面那条链接；BM25 <strong>怎么用</strong>在 <a href="../智能体工程教程/11-检索与RAG.html">智能体工程 11 · 检索与RAG</a>（为什么查「XR-2000」时向量会返回「XR-3000」、以及 RRF 融合为什么不需要分数可比）。但 BM25 的公式本身（k1、b 怎么调）和 SPLADE 站内没有，要外找</li>
-<li><strong>重排</strong>：✅ <a href="#cross-encoder-colbert-llm">Cross-Encoder / ColBERT / LLM 三条路线</a> ｜ ColBERTv2 的残差压缩、ColPali（直接对页面截图做后期交互）
-  → 📕 <strong>要外找</strong>：⚠️ 全站搜「ColBERT」，唯一的正文出处就是本章上面那一节——<strong>ColBERTv2 和 ColPali 站内彻底没有</strong>，去 ColBERT 项目仓库</li>
-<li><strong>查询理解</strong>：改写、扩展、HyDE、路由、多跳（本章环节四给了地图，每一项都还能深挖）
-  → 📗 <strong>本库有（HyDE 这一项）</strong>：<a href="../智能体工程教程/11-检索与RAG.html">智能体工程 11 · 检索与RAG</a> 把 HyDE 讲透了——<strong>问题「怎么申请报销」和文档「报销流程：第一步…」在向量空间里未必近，但模型编的假答案和真文档就很近</strong>。其余（改写/扩展/路由/多跳）本章的地图已经是站内最全的版本，再深挖要外找</li>
-<li><strong>生成</strong>：引用溯源怎么校验、幻觉检测、上下文压缩（LLMLingua）、拒答策略
-  → 📙 <strong>半有</strong>：拒答和输出把关这一侧站内很实在——<a href="../智能体工程教程/16c-接进真实产品.html">智能体工程 16c · 接进真实产品</a> 讲三层护栏、审核该放在链路哪个位置，⚠️ 还有一次事故复盘：<strong>审核只在末尾做，有害内容已经吐了 3.2 秒</strong>（做流式 RAG 的话这条直接适用）。但引用溯源的自动校验和 LLMLingua 式上下文压缩，站内没有，要外找</li>
-<li><strong>评估</strong>：✅ <a href="#ragas">RAGAS 四指标</a> ｜ 构建自己的测试集、端到端 vs 分段评估、TruLens / DeepEval / promptfoo 的差别
-  → 📙 <strong>半有</strong>：「构建自己的测试集」📗 站内很强——<a href="../智能体工程教程/14-评测Evals.html">智能体工程 14 · 评测Evals</a> 的八步（最贵的是<strong>写无歧义任务+参考解</strong>和读转录），加 <a href="../数据这一关/13-评测集也是数据.html">数据这一关 13 · 评测集也是数据</a>（抽样、多大才够、评分器也要校准）。工具那一侧 <a href="../智能体工程教程/16b-框架这层皮.html">智能体工程 16b · 框架这层皮</a> 说清了 Ragas / promptfoo / DeepEval 替你做的只是"评分器实现 + 跑批出表"，最贵的三步一步不管。只有三者之间的具体差别要外找</li>
-<li><strong>进阶</strong>：✅ <a href="#graphrag-agentic-rag-self-rag-crag">GraphRAG / Agentic RAG / Self-RAG / CRAG 及各自的代价</a> ｜ 知识图谱怎么抽实体关系、增量索引与更新策略
-  → 📕 <strong>要外找</strong>：⚠️ <strong>别被「知识图谱」这个词在站内的搜索结果骗了</strong>——<a href="../Kaggle竞赛方法论/19_排序与多目标.html">Kaggle 19</a> 里的知识图谱是推荐系统的物品关系图，和 GraphRAG 的实体抽取不是一回事。实体关系抽取和增量索引站内没有，从 GraphRAG 项目文档开始</li>
-</ul>
-<p><strong>需要的前置</strong>：不需要 GPU、不需要新数学，会调 API 就能开始。⭐ <strong>做过推荐/搜索或写过 Agent 的人几乎是零前置</strong>（站内《推荐算法》《智能体工程教程》覆盖的就是这两块）；没有这些背景的人，前置也只是「会用向量数据库存取一次数据」。</p>
 <hr />
-<h2 id="_15">⚖️ 要不要深挖</h2>
-<table>
-<thead>
-<tr>
-<th>你的情况</th>
-<th>建议</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>要做企业知识库/客服/文档问答</td>
-<td>✅ <strong>必须，且优先级最高</strong></td>
-</tr>
-<tr>
-<td>做任何需要「模型用上私有数据」的事</td>
-<td>✅ 必须（比微调重要得多）</td>
-</tr>
-<tr>
-<td>只做通用对话应用</td>
-<td>🟡 知道基础即可</td>
-</tr>
-<tr>
-<td>想快速产出可用成果</td>
-<td>✅ <strong>这块见效最快</strong></td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>🔑 <strong>我的判断</strong>：如果只能深挖一块，<strong>从纯实用角度这块排第一</strong>：
-- 落地场景最多（企业知识库是当前最主流的 AI 落地形态）
-- 迁移余地最大（做过推荐/搜索的话，那套知识直接复用；没做过也是全表门槛最低的几块之一）
-- 见效最快（一周能做出可用的东西）
-- 不需要 GPU、不需要新数学</p>
-<p>唯一的竞争者是第 2 章 Transformer 原理——那个是<strong>认知价值</strong>最高，这个是<strong>实用价值</strong>最高。</p>
-</blockquote>
-<hr />
-<h2 id="_16">✅ 检查点</h2>
+<h2 id="_8">✅ 检查点</h2>
 <ol>
 <li>RAG 的漏斗结构和推荐系统的什么结构对应？</li>
 <li>块太大为什么反而检索不准？（说出机制）</li>
 <li>高维向量的什么性质决定了「只调 embedding 模型救不回来」？该配什么？</li>
 <li>为什么必须用混合检索而不能只用向量？</li>
 <li>上下文检索（Contextual Retrieval）做了什么？效果如何？</li>
-<li>为什么说重排是性价比最高的一步？</li>
-<li>RAG 答案不对，第一步该查什么？最有价值的排查习惯是什么？</li>
-<li>「召回里有正确文档但答案还是错」——该查什么？</li>
-<li>HyDE 的原理是什么？</li>
-<li>Cross-Encoder、ColBERT、LLM 重排三条路线的核心差别是什么？默认该选哪个、为什么不该从 ColBERT 开始？</li>
-<li>ColBERT 的 MaxSim 是怎么算的？它换来了什么、代价是什么？</li>
-<li>什么信号说明"该换 embedding 模型了"？换模型有一条什么运维铁律？</li>
-<li>RAGAS 的四个指标分别问什么？<code>context_precision</code> 低和 <code>context_recall</code> 低，处方有什么不同？</li>
-<li>为什么说 RAGAS 分数只能当"趋势指标"？</li>
-<li>诊断表里哪一类问题是<strong>四个指标一个都不会亮</strong>的？该怎么查？</li>
-<li>Self-RAG 和 CRAG 在解决同一件什么事？两者的区别是什么？工程上先做哪个？</li>
 </ol>
 <details>
 <summary>👀 答案</summary>
 <ol>
 <li><strong>召回→粗排→精排→重排</strong>。RAG 本质是一个搜索系统。</li>
-<li>一个块的 embedding 是<strong>它整体语义的平均</strong>。塞进三个主题，向量就落在三者中间的"没人区"，对哪个主题的问题都不够近。</li>
+<li>一个块的 embedding 是<strong>它整体语义的平均</strong>。塞进三个主题，向量就落在三者中间的“没人区”，对哪个主题的问题都不够近。</li>
 <li><strong>维度灾难</strong>——500 维时最远和最近的点距离只差 19%，「最近邻」这个概念本身在变弱。所以必须配 BM25（字面匹配不受影响）和重排（Cross-Encoder 不依赖向量距离）。</li>
 <li>向量懂语义但对精确的专有名词/型号/代码不准（可能召回 XR-3000 而不是 XR-2000）；BM25 精确匹配但不懂同义。两路融合（<strong>RRF</strong>，只用排名不用分数）互补。</li>
-<li>给每个分块补一句"它在讲什么"的上下文说明再向量化，让孤立的块也能被检索到。官方数据<strong>检索失败率降约 49%</strong>。</li>
-<li>双塔检索快但不能深度交互；Cross-Encoder 把问题和文档拼一起过模型，<strong>准得多</strong>。在已召回的几十条上重排，成本可控而收益大，通常比换 embedding 模型更划算。</li>
-<li><strong>先查检索</strong>——正确文档有没有被召回。最有价值的习惯：每次答错都把召回的原始块打印出来看一眼，十次里七次问题不在生成侧。</li>
-<li><strong>查它排第几</strong>——大概率是重排缺失，正确文档排在第 15 位被截断了。</li>
-<li>先让模型<strong>假装回答</strong>生成一个"假答案"，用假答案去检索。因为假答案和真文档的表述风格更接近，比原始问题更容易匹配上。</li>
-<li>核心差别是<strong>问题和文档在什么时候相遇</strong>：Cross-Encoder 最早（拼一起过模型，文档一条都不能预计算，最准也最慢）；ColBERT 在中间（各自编成 token 级向量，查询时才 MaxSim，文档侧可离线）；LLM 重排是"读懂了再排"（秒级 + token 账单）。默认 Cross-Encoder。不该从 ColBERT 开始是因为它解决的是规模问题不是效果问题——拿它替代 Cross-Encoder 通常是效果的降级。</li>
-<li>对<strong>每个问题 token</strong>，取它和所有文档 token 里最像的那个的相似度，全部加起来。换来的是文档那几百个向量可以离线算好，在线只剩点积，比 Cross-Encoder 快一到两个数量级。代价是存储爆炸：一个块从 1 个向量变成几百个向量，索引体积膨胀一个数量级（ColBERTv2 用残差压缩压回来一些）。</li>
-<li>四个信号：<strong>语种不对</strong>（英文模型跑中文是配置错误不是效果问题）、领域词汇完全在分布外（医学/法律/工单代号）、⚠️块长超过模型 <code>max_seq_len</code> 被静默截断（最隐蔽，因为不报错）、非对称检索没加 query/document 前缀。铁律：换 embedding 必须全库重建索引——新旧向量空间不通用，混在一个索引里检索结果会乱且不报错；灰度期要双索引并行。</li>
-<li><code>faithfulness</code> 答案有没有依据（模型在编）、<code>answer_relevancy</code> 答没答这个问题、<code>context_precision</code> 有用的排没排在前面、<code>context_recall</code> 需要的信息捞没捞到。<strong>recall 低 = 没捞到 → 改切分和检索；precision 低 = 捞到了但埋在噪声里 → 加重排。</strong> 处方完全不同，认错就一直修错的那一环。</li>
-<li>因为这四个分数<strong>多数是 LLM 打出来的</strong>，自带 LLM-as-a-Judge 的毛病：随裁判模型版本漂移、按 token 计费、同一批数据两次跑结果不完全一样。所以「我们的 faithfulness 是 0.87」离开裁判模型和版本就没有意义，只能比"这次改动比上次高了吗"。</li>
-<li><strong>权限越权</strong>（别人的数据被查出来）。被越权召回的文档内容相关、答案忠实、引用属实，四项全绿。只能靠专门的权限测试用例——拿 A 用户的身份去问只有 B 能看的问题，断言召回为空。通用教训：指标体系只会告诉你它被设计来测的东西。</li>
-<li>都在给 RAG 加一道「<strong>这次检索靠不靠谱</strong>」的判断。区别是 Self-RAG 把判断力训进模型里（要微调，通用 API 模型用不了原版），CRAG 把判断力放在模型外面（一个可插拔的评估器，差就回退到网络搜索）。工程上先做 CRAG——不动模型，加个打分阈值就能上线。</li>
+<li>给每个分块补一句“它在讲什么”的上下文说明再向量化，让孤立的块也能被检索到。官方数据<strong>检索失败率降约 49%</strong>。</li>
 </ol>
 </details>
 <hr />
-<h2 id="_17">🛑 可以停在这里</h2>
+<h2 id="_9">🛑 可以停在这里</h2>
+<p>切分 + 混合检索做完，你已经有一个能用的 RAG 了。<strong>先让它跑起来、先看真实的召回结果</strong>，比继续往下堆技术更重要。</p>
+<p>⚠️ <strong>什么时候看下一页</strong>：正确文档<strong>已经被召回了</strong>，但排得太靠后被截断 —— 那是重排该解决的事。</p>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>⭐ <strong>RAG demo 一小时、生产三个月。它的本质是搜索系统</strong>，漏斗和推荐算法那一套一模一样——做过推荐或搜索的人迁移余地极大，没做过也是门槛最低的几章之一。</p>
-<p>五个环节按<strong>该动的先后顺序</strong>排：<strong>切分 → 混合检索 → 重排 → 查询侧 → 评估</strong>。⭐ 块太大反而不准，因为 embedding 是整体语义的平均，混三个主题就落在「没人区」；而<strong>光调 embedding 救不回来</strong>，根因是维度灾难——高维下最远和最近的距离差别本来就在缩小，所以专有名词必须配 BM25。</p>
-<p>⭐ <strong>重排是性价比最高的一步</strong>，通常比换 embedding 模型划算。三条重排路线的差别就是<strong>问题和文档什么时候相遇</strong>：Cross-Encoder 最早相遇（最准最慢，默认选它）、ColBERT 后期交互（文档侧可离线所以快得多，⚠️ 代价是索引膨胀一个数量级——<strong>它解决的是规模问题不是效果问题，别从它开始</strong>）、LLM 重排（更划算的用法是当离线评测集的标注器）。</p>
-<p>⭐ <strong>最有价值的一个习惯：每次答错都打印召回的原始块</strong>——十次里有七次问题不在生成侧。</p>
-<p>⚠️ <strong>换 embedding 模型必须全库重建索引</strong>，灰度要双索引并行；⚠️ 块长超过模型上限会被<strong>静默截断，不报错</strong>。</p>
-<p>🚨 <strong>RAGAS 那四个指标一个都发现不了权限越权</strong>（内容相关、答案忠实、引用属实，全绿）——<strong>合规只能靠权限测试用例</strong>。⭐ <strong>指标体系只会告诉你它被设计来测的东西。</strong></p>
+<p>RAG 不是「把文档塞给模型」，它是一个<strong>搜索系统</strong>，结构和推荐系统同构：<strong>召回 → 粗排 → 精排 → 重排</strong>。这一页的两件事决定整个系统的上限。<strong>切分是最被低估的一环</strong>：一个块的 embedding 是它<strong>整体语义的平均</strong>，所以块太大反而检索不准 —— 塞进三个主题，向量就落在三者中间的「没人区」，对哪个主题的问题都不够近。⭐ <strong>上下文检索</strong>（Contextual Retrieval）是性价比很高的一招：给每个分块补一句「它在讲什么」的说明再向量化，让孤立的块也能被检索到，官方数据<strong>检索失败率降约 49%</strong>。<strong>混合检索</strong>则是因为纯向量有硬伤：⚠️ <strong>维度灾难</strong> —— 500 维时最远和最近的点距离只差 <strong>19%</strong>，「最近邻」这个概念本身在变弱，所以<strong>只换 embedding 模型是救不回来的</strong>。向量懂语义但对精确的专有名词、型号、代码不准（可能召回 XR-3000 而不是 XR-2000）；BM25 精确匹配但不懂同义词。两路用 <strong>RRF</strong> 融合（只用排名不用分数）正好互补。</p>
 </blockquote>
-<p><strong>下一节</strong> 👉 <a href="09-推理范式.html">09-推理范式.md</a></p>
+<p><strong>下一节</strong> 👉 <a href="08b-重排与Embedding选型.html">08b-重排与Embedding选型.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
-<nav class="pagenav"><a href="07-本地部署与开源生态.html"><div class="dir">← 上一节</div>💻 07 · 本地部署与生态</a><a class="next" href="09-推理范式.html"><div class="dir">下一节 →</div>🧩 09 · 推理范式</a></nav>
+<nav class="pagenav"><a href="07-本地部署与开源生态.html"><div class="dir">← 上一节</div>💻 07 · 本地部署与生态</a><a class="next" href="08b-重排与Embedding选型.html"><div class="dir">下一节 →</div>🎯 08b · 重排与选型</a></nav>
 </main>
 <script>(function(){
   var KEY="overview-progress", FILE="08-RAG\u6df1\u6c34\u533a.md";

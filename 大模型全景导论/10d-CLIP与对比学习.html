@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>06 · 推理优化：先弄清瓶颈，再省显存 · 大模型全景导论</title>
+<title>10d · CLIP 与对比学习 · 大模型全景导论</title>
 <script>(function(){var t=localStorage.getItem('recsys-theme');
 if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
 @font-face{font-family:"CodeCJK";
@@ -267,179 +267,171 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
-  <span class="title">06 · 推理优化：省显存</span>
-  <span class="prevnext"><a href="02d-MoE混合专家.html">←</a>
-  <a href="06d-降延迟与三个指标.html">→</a></span>
+  <span class="title">10d · CLIP 与对比学习</span>
+  <span class="prevnext"><a href="10-多模态.html">←</a>
+  <a href="10b-图像生成.html">→</a></span>
   <button class="js-done-btn">☐ 打卡</button>
   <button id="themeToggle" title="切换深浅色">🌗</button>
 </div></header>
 <main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
 <ul>
 <li><a href="#_1">🎯 一句话</a></li>
-<li><a href="#_2">🧠 先理解瓶颈在哪：两个阶段</a></li>
-<li><a href="#quantization">🗜️ 武器一：量化（Quantization）</a></li>
-<li><a href="#_5">📦 武器二：批处理（提升吞吐）</a></li>
-<li><a href="#_6">🔗 想再深一层，去哪一套</a></li>
-<li><a href="#_7">✅ 检查点</a></li>
-<li><a href="#_8">🛑 可以停在这里</a></li>
+<li><a href="#_4">✅ 检查点</a></li>
+<li><a href="#_5">🛑 可以停在这里</a></li>
 </ul>
 </div>
 </details>
-<h1 id="06">06 · 推理优化：先弄清瓶颈，再省显存</h1>
-<p>⏱ <strong>22 分钟</strong> ｜ ⭐ <strong>自建部署省钱最大的杠杆，就从这两件事开始</strong></p>
+<h1 id="10d-clip">10d · CLIP 与对比学习</h1>
+<p>⏱ <strong>26 分钟</strong> ｜ ⭐ <strong>和推荐系统的双塔召回是同一套东西</strong></p>
 <hr />
 <h2 id="_1">🎯 一句话</h2>
-<p>推理优化解决一个矛盾：<strong>模型很大，显存很贵，用户很急</strong>。
-这一页先解决前两件事 —— <strong>搞清楚瓶颈在哪</strong>，然后用<strong>量化</strong>把模型压小、用<strong>批处理</strong>把卡榨满。
-⭐ 降延迟那一半（投机解码、缓存、指标怎么权衡）在下一页。</p>
+<p><strong>CLIP 训出来的不是一个分类器，是一个图片和文字共享的向量空间</strong> ——
+于是可以用文字搜图、图搜图、零样本分类，还能直接复用向量检索那套基础设施。
+⭐ 而它的训练方式，和推荐系统的双塔召回<strong>是同一套东西</strong>，连坑都一样。</p>
+<p>⚠️ 这一页是原理层。只做视觉应用的话，<a href="10-多模态.html">上一页</a>就够用了。</p>
 <hr />
-<h2 id="_2">🧠 先理解瓶颈在哪：两个阶段</h2>
-<section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① Prefill（预填充）—— 处理你的输入提示词</span></div><div class="vb-flow-row"><span class="vb-flow-step">所有 token 可以并行算</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">计算密集（GPU 算力吃满）</span></div><div class="vb-flow-row"><span class="vb-flow-step">时间 ∝ 输入长度</span></div><div class="vb-flow-row"><span class="vb-flow-step">决定了「首字延迟 TTFT」</span></div><div class="vb-flow-row"><span class="vb-flow-step">② Decode（解码）—— 一个一个吐出回答</span></div><div class="vb-flow-row"><span class="vb-flow-step">每次只算 1 个 token，但要把整个模型权重从显存搬到计算单元</span></div><div class="vb-flow-row"><span class="vb-flow-step">访存密集（显存带宽吃满，算力大量闲置！）⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">决定了「每字延迟 TPOT」</span></div></div></section>
+<h3 id="clip">CLIP：图文对齐的地基</h3>
+<section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">训练：几亿对（图片，描述文字）</span></div><div class="vb-flow-row"><span class="vb-flow-step">目标：让匹配的图文向量靠近，不匹配的远离（对比学习）</span></div><div class="vb-flow-row"><span class="vb-flow-step">结果：图片和文字进入**同一个向量空间**</span></div><div class="vb-flow-row"><span class="vb-flow-step">可以用文字搜图、用图搜图、零样本分类</span></div></div></section>
 <blockquote>
-<p>🔑 <strong>最反直觉也最重要的一条</strong>：
-<strong>Decode 阶段的瓶颈是显存带宽，不是算力。</strong>
-GPU 的算力大部分时间在空转，卡在「把 14GB 权重搬过来」这件事上。</p>
-<p><strong>这一条解释了后面所有优化的底层逻辑。</strong></p>
+<p>🔗 这就是推荐算法第 10 章向量检索的多模态版本——<strong>同一套 ANN 基础设施</strong>。</p>
 </blockquote>
-<p>💡 <strong>顺带把一件事说清楚</strong>：Decode 每一步吐出来的其实是一个概率分布，不是一个词。
-从分布里挑出那一个词的规则叫解码策略——你天天在调的 <code>temperature</code> / <code>top_p</code> 就在那一步。
-<strong>它和"跑得快"是两件正交的事</strong>，所以单独成章：<a href="06b-解码策略.html">06b · 解码策略</a>。
-这一章只管速度和成本，看到"输出飘/复读"这类问题就该去那一章。</p>
-<hr />
-<h2 id="quantization">🗜️ 武器一：量化（Quantization）</h2>
-<p>思路：权重本来用 16 位浮点存，改成 8 位甚至 4 位整数。</p>
-<section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">FP16 (16bit)</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">INT8 (8bit)</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">INT4 (4bit)</span></div><div class="vb-flow-row"><span class="vb-flow-step">显存 100% 50% 25%</span></div><div class="vb-flow-row"><span class="vb-flow-step">7B 模型：14GB</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">7GB</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">3.5GB （消费级显卡能跑了！）</span></div><div class="vb-flow-row"><span class="vb-flow-step">70B 模型：140GB</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">70GB</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">35GB （单卡 A100 能跑）</span></div></div></section>
-<p><strong>为什么还能用</strong>：神经网络对权重精度有惊人的容忍度。4bit 量化后，多数任务的效果损失在 1–3%。</p>
-<p>主流方案速查：</p>
+<h4 id="infonce-batch">训练目标 InfoNCE：说白了是一道 batch 内的多选题</h4>
+<p>拿一个 batch 的 N 对（图片，描述）。把 N 张图和 N 段文字各自编码、L2 归一化，得到一个 <strong>N×N 的相似度矩阵</strong>，然后要求<strong>对角线最大</strong>：</p>
+<p>$$\mathcal{L} = -\frac{1}{N}\sum_{i=1}^{N} \log \frac{\exp(\text{sim}(I_i, T_i)/\tau)}{\sum_{j=1}^{N} \exp(\text{sim}(I_i, T_j)/\tau)}$$</p>
+<p>💡 <strong>人话</strong>：<strong>对角线是正确答案，同一个 batch 里其他所有文字都是干扰项。</strong> 这个式子就是"N 选 1 选对"的交叉熵；训练时图找文、文找图各算一次取平均（所以是对称的）。</p>
+<p>⭐ <strong>关键在于负样本是白捡的</strong>：不用专门去采负样本——<strong>同一批次里别人的正样本，就是我的负样本</strong>（in-batch 负采样）。这是对比学习最省事的地方，也正是它对 batch size 极度敏感的原因。</p>
+<h4 id="_2">温度系数 τ 到底在干什么</h4>
+<p>$\tau$ 就是<a href="06-推理优化.html">第 6 章解码策略</a>里那个 temperature，只不过用在了训练的 loss 上：</p>
 <table>
 <thead>
 <tr>
-<th>方案</th>
-<th>特点</th>
-<th>场景</th>
+<th>τ</th>
+<th>分布</th>
+<th>后果</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>GGUF</strong>（llama.cpp）</td>
-<td>CPU/GPU 混合、格式通用</td>
-<td>本地跑、Mac、消费级设备 ⭐</td>
+<td><strong>小</strong>（如 0.01）</td>
+<td>尖锐</td>
+<td>把<strong>最难的那个负样本</strong>的梯度放到极大 → 学得"锋利"，但对错标极敏感、容易训崩</td>
 </tr>
 <tr>
-<td><strong>AWQ</strong></td>
-<td>激活感知，保护重要权重</td>
-<td>GPU 服务，质量好</td>
-</tr>
-<tr>
-<td><strong>GPTQ</strong></td>
-<td>逐层校准量化</td>
-<td>GPU 服务，经典方案</td>
-</tr>
-<tr>
-<td><strong>FP8</strong></td>
-<td>新硬件原生支持</td>
-<td>H100 及以后的卡</td>
+<td><strong>大</strong>（如 0.5）</td>
+<td>平坦</td>
+<td>所有负样本一视同仁 → 训练稳，但区分度不够，向量都挤在一起</td>
 </tr>
 </tbody>
 </table>
-<p>⚠️ <strong>注意</strong>：量化省的是<strong>显存和带宽</strong>（因此 decode 变快），不一定省计算。而且 KV Cache 也可以单独量化——长上下文时这个收益很大。</p>
-<h3 id="_3">⚠️ 量化的三个真实代价（别只看省显存）</h3>
+<p>⭐ CLIP 的做法是<strong>把 τ 当成可学习参数</strong>（存它的对数，并夹住上限防止训练时自己跑飞）——<strong>它重要到值得让模型自己学</strong>。</p>
+<h4 id="batch-size">为什么 batch size 对对比学习特别重要</h4>
+<section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">batch = 256</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">每张图面对 255 个干扰项</span></div><div class="vb-flow-row"><span class="vb-flow-step">batch = 32768</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">每张图面对 32767 个干扰项 ⭐ CLIP 用的就是这个量级</span></div><div class="vb-flow-row"><span class="vb-flow-step">干扰项越多</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">这道多选题越难</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">学到的向量必须分得越开</span></div><div class="vb-flow-row"><span class="vb-flow-step">这是对比学习【最直接的效果杠杆】，比改网络结构管用</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 代价是显存：N×N 相似度矩阵 + N 份激活，batch 一大就必须多卡</span></div><div class="vb-flow-row"><span class="vb-flow-step">（把各卡的特征 all-gather 到一起再算 loss，通信量还不小）</span></div></div></section>
+<p>⚠️ <strong>SigLIP 就是冲着这一条来的</strong>：它把 softmax 对比损失换成<strong>逐对的 sigmoid 二分类损失</strong>——每一对图文自己判断"配不配"，不再需要对整行做归一化。于是不必凑齐全局负样本，小 batch 也能训、多卡通信也省了。现在很多新模型的视觉编码器用的是 SigLIP 而不是 CLIP。</p>
+<h4 id="_3">⭐ 一条跨板块的连线（这一章最值钱的一句）</h4>
+<blockquote>
+<p><strong>CLIP 的训练方式，和推荐系统的双塔召回是同一个东西。</strong></p>
 <table>
 <thead>
 <tr>
-<th>代价</th>
-<th>说明</th>
+<th>CLIP</th>
+<th>推荐算法的双塔</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>长尾能力先崩</strong> ⭐</td>
-<td>平均分只掉 1-3%，但<strong>复杂推理、多语言、长上下文这些"边缘能力"掉得更多</strong></td>
+<td>图片编码器 / 文本编码器</td>
+<td>用户塔 / 物品塔</td>
 </tr>
 <tr>
-<td><strong>量化后必须重测</strong></td>
-<td>别信"官方说损失很小"——<strong>用你自己的评测集测一遍</strong>（<a href="11-评测体系.html">第 11 章</a>）</td>
+<td>in-batch 负采样（别人的正样本当我的负样本）</td>
+<td>一模一样</td>
 </tr>
 <tr>
-<td><strong>不同任务敏感度差很多</strong></td>
-<td>分类/抽取类几乎无损；<strong>数学、代码、多步推理最敏感</strong></td>
+<td>温度系数 τ</td>
+<td>一模一样（那边建议从 <strong>0.05</strong> 开始调）</td>
+</tr>
+<tr>
+<td>图文进同一空间 → 用文字搜图</td>
+<td>用户物品进同一空间 → ANN 召回</td>
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>🔑 <strong>一条实用的选择规则</strong>：
-<strong>显存刚好够 → 别量化</strong>；<strong>差一点点 → INT8</strong>；<strong>差很多 → INT4</strong>。
-<strong>量化是"为了能跑"的妥协，不是"免费的优化"。</strong></p>
+<p>连<strong>坑</strong>都一样：热门样本会被过度当成负样本（推荐那边用 <strong>LogQ 校正</strong> 修）、负样本选错会训废、batch 越大越好。</p>
+<p>🔗 <a href="../推荐算法/08-深度学习推荐模型.html">推荐算法第 8 章</a>有一段可跑的「双塔 + In-batch 负采样」代码——
+<strong>把"用户"换成"图片"、"物品"换成"文字"，那就是 CLIP 的训练循环。</strong> 想动手复现对比学习，去那一节抄。</p>
 </blockquote>
-<h3 id="_4">🧮 显存怎么估（部署前先算这一笔）</h3>
-<section class="visual-block visual-block-calc" aria-label="算一算"><p class="visual-block-title">算一算</p><div class="vb-calc"><p>总显存 ≈ 模型权重 + KV Cache + 激活/框架开销</p><p>模型权重 = 参数量 × 每参数字节数</p><p>FP16 = 2 字节，INT8 = 1，INT4 = 0.5</p><p>7B FP16 → 14GB；7B INT4 → 3.5GB</p><p>KV Cache = 2 × 层数 × KV头数 × 头维度 × 序列长 × batch × 精度字节</p><p>（第 2 章算过：70B 模型每 token 约 2.6MB）</p><p>开销 ≈ 权重的 10~20%</p><p>⭐ 最常见的翻车：只算了权重，没算 KV Cache</p><p>→ &quot;3.5GB 的模型怎么在 8GB 卡上 OOM 了&quot;</p></div></section>
-<hr />
-<h2 id="_5">📦 武器二：批处理（提升吞吐）</h2>
-<p>既然 decode 卡在「搬权重」，那就<strong>搬一次权重，同时给多个用户算</strong>——这是吞吐提升的关键。</p>
-<section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">❌ 静态批处理：等 8 个请求凑齐一起跑</span></div><div class="vb-flow-row"><span class="vb-flow-step">问题：有的请求 10 字就答完，有的要 1000 字</span></div><div class="vb-flow-row"><span class="vb-flow-step">短的必须干等长的，GPU 大量空转</span></div><div class="vb-flow-row"><span class="vb-flow-step">✅ 连续批处理 (Continuous Batching) ⭐ vLLM 的核心</span></div><div class="vb-flow-row"><span class="vb-flow-step">谁答完谁下车，新请求立刻上车</span></div><div class="vb-flow-row"><span class="vb-flow-step">吞吐提升 几倍到 10 倍以上</span></div></div></section>
-<h3 id="pagedattention">PagedAttention：借鉴操作系统的虚拟内存</h3>
-<section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">问题：KV Cache 要预留最大长度的显存，但实际用不了那么多</span></div><div class="vb-flow-row"><span class="vb-flow-step">大量显存浪费（碎片化），能同时服务的用户数被限制</span></div><div class="vb-flow-row"><span class="vb-flow-step">解法：像操作系统管理内存页一样，把 KV Cache 切成小块按需分配</span></div><div class="vb-flow-row"><span class="vb-flow-step">显存利用率大幅提升</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">能塞下更多并发用户</span></div></div></section>
-<blockquote>
-<p>📌 这是 <strong>vLLM</strong> 成为事实标准的原因。同样的卡，吞吐能翻好几倍。</p>
-</blockquote>
-<hr />
-<h2 id="_6">🔗 想再深一层，去哪一套</h2>
+<h3 id="llava-vs-q-former">🔌 LLaVA vs Q-Former：投影层的两条路线</h3>
+<p>三段式里中间那一层有两种主流实现，<strong>差别在于视觉 token 有没有被压过</strong>：</p>
 <table>
 <thead>
 <tr>
-<th>去哪</th>
-<th>为什么</th>
+<th>路线</th>
+<th>代表</th>
+<th>投影层是什么</th>
+<th>视觉 token 数</th>
+<th>取舍</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><a href="../AI基础设施/18-量化.html">AI基础设施 18 · 量化</a></td>
-<td>⭐ 武器一的完整展开：为什么会掉点、离群值才是根因、什么时候干脆别量化</td>
+<td><strong>直接投影</strong></td>
+<td><strong>LLaVA</strong></td>
+<td>一个 MLP（最早的版本就是一层线性）</td>
+<td><strong>等于 ViT 的 patch 数</strong>（几百个）</td>
+<td>✅ 简单、训得快、细节不丢<br>❌ 吃 token</td>
 </tr>
 <tr>
-<td><a href="../AI基础设施/17-连续批处理与PagedAttention.html">AI基础设施 17 · 连续批处理与PagedAttention</a></td>
-<td>武器二的完整展开：块表、写时复制、抢占，以及连续批处理和静态批处理到底差在哪</td>
-</tr>
-<tr>
-<td><a href="../AI基础设施/16-KV-Cache.html">AI基础设施 16 · KV Cache</a></td>
-<td>「估显存最容易漏掉 KV Cache」那一条的正题：它到底有多大，以及 GQA / MQA 怎么砍</td>
+<td><strong>查询压缩</strong></td>
+<td><strong>BLIP-2 的 Q-Former</strong></td>
+<td>一个小 Transformer，带一组<strong>可学习的 query 向量</strong>，用交叉注意力去"问"视觉特征</td>
+<td><strong>等于 query 个数</strong>（比如固定 32 个）</td>
+<td>✅ token 少、多图/长上下文友好<br>❌ 结构复杂、压缩必然丢细节（<strong>OCR 和小字场景最明显</strong>）</td>
 </tr>
 </tbody>
 </table>
+<p><strong>LLaVA 的两阶段训练</strong>（"多模态模型怎么训"这道题的标准答案）：</p>
+<section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">阶段一：只训投影层 ← 视觉编码器和 LLM 全部冻住</span></div><div class="vb-flow-row"><span class="vb-flow-step">数据：大量【图片</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">简短描述】</span></div><div class="vb-flow-row"><span class="vb-flow-step">目标：把视觉向量对齐到 LLM 的词空间</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 这一阶段本质上就是在训一个「翻译器」</span></div><div class="vb-flow-row"><span class="vb-flow-step">阶段二：训投影层 + LLM ← 视觉编码器仍然冻住</span></div><div class="vb-flow-row"><span class="vb-flow-step">数据：【图片 + 多轮指令问答】</span></div><div class="vb-flow-row"><span class="vb-flow-step">从&quot;能描述图片&quot;变成&quot;能按指令回答关于图片的问题&quot;</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 视觉编码器（CLIP / SigLIP 的那个 ViT）通常全程不解冻，</span></div><div class="vb-flow-row"><span class="vb-flow-step">或只在最后小幅解冻 —— 它的表征是几亿图文对训出来的，</span></div><div class="vb-flow-row"><span class="vb-flow-step">随便动会把好不容易对齐的空间破坏掉</span></div></div></section>
+<blockquote>
+<p>🔑 <strong>为什么 LLaVA 这条"看起来太简单"的路线赢了</strong>：Q-Former 那一坨结构要单独预训练，而 MLP 投影层<strong>几乎没有超参</strong>、几个小时就训完，效果还不差。
+⭐ 现在的主流做法是「<strong>LLaVA 式直接投影 + 想省 token 时在 ViT 输出上做池化或切图</strong>」——把复杂度留在<strong>数据和分辨率策略</strong>上，而不是留在结构上。</p>
+</blockquote>
 <hr />
-<h2 id="_7">✅ 检查点</h2>
+<hr />
+<h2 id="_4">✅ 检查点</h2>
 <ol>
-<li>Prefill 和 Decode 各自的瓶颈是什么？为什么这个区别重要？</li>
-<li>4bit 量化把 70B 模型从多少压到多少？主要省的是什么？</li>
-<li>量化的三个真实代价是什么？什么任务对量化最敏感？选择规则是什么？</li>
-<li>估部署显存时最容易漏掉什么？</li>
-<li>连续批处理比静态批处理好在哪？</li>
+<li>CLIP 训练出来的是什么？能用来做什么？</li>
+<li>CLIP 的 InfoNCE 在优化什么？它的负样本从哪里来？</li>
+<li>温度系数 τ 调小、调大分别有什么后果？CLIP 是怎么处理 τ 的？</li>
+<li>为什么 batch size 对对比学习特别重要？SigLIP 改了什么来绕开这个限制？</li>
+<li>⭐ CLIP 的训练方式和推荐系统的哪个模型是同一套？列出至少三条对应关系。</li>
+<li>LLaVA 和 BLIP-2 的 Q-Former 在投影层上有什么区别？各自的取舍是什么？</li>
+<li>LLaVA 的两个训练阶段分别训什么、冻什么？为什么视觉编码器通常不解冻？</li>
 </ol>
 <details>
 <summary>👀 答案</summary>
 <ol>
-<li><strong>Prefill 计算密集</strong>（并行处理输入，决定首字延迟）；<strong>Decode 访存密集</strong>（每步都要把整个模型搬一遍，决定每字延迟）。区别重要是因为两个阶段该优化的东西完全不同。</li>
-<li><strong>140GB → 35GB</strong>。主要省的是显存和带宽（所以 decode 变快），<strong>不一定省计算</strong>。</li>
-<li>①<strong>长尾能力先崩</strong>（平均只掉 1–3%，但复杂推理、多语言、长上下文掉得更多）②必须自己在真实任务上评测 ③不同方法适合不同场景。对量化最敏感的是复杂推理这类长尾任务。</li>
-<li><strong>KV Cache</strong>。最常见的翻车是「3.5GB 的模型怎么在 8GB 卡上 OOM 了」—— 只算了权重没算它。</li>
-<li>静态批处理要等最长的那个请求结束，短请求占着位置空转；<strong>连续批处理谁答完谁下车，空位立刻补新请求</strong>。</li>
+<li>让<strong>图片和文字进入同一个向量空间</strong>。可以用文字搜图、图搜图、零样本分类，且能复用同一套向量检索基础设施。</li>
+<li>一个 batch 的 N 对图文编码后得到 <strong>N×N 相似度矩阵</strong>，InfoNCE 要求对角线最大——本质是“N 选 1 选对”的交叉熵（图找文、文找图各算一次取平均）。负样本是白捡的：同一批次里别人的正样本就是我的负样本（in-batch 负采样）。</li>
+<li><strong>τ 小（0.01）→ 分布尖锐</strong>，最难的负样本梯度极大，学得锋利但对错标极敏感、容易训崩；τ 大（0.5）→ 分布平坦，所有负样本一视同仁，训得稳但区分度不够、向量挤在一起。CLIP 把它做成可学习参数（存对数值并夹住上限），说明它重要到值得让模型自己学。</li>
+<li>因为负样本就是 batch 里的其他样本：<strong>batch=256 只有 255 个干扰项，batch=32768 有 32767 个</strong>（CLIP 用的量级）。干扰项越多多选题越难，向量必须分得越开——这是对比学习最直接的效果杠杆。代价是显存（N×N 矩阵，得多卡 all-gather）。SigLIP 把 softmax 对比损失换成逐对的 sigmoid 二分类，每对自己判“配不配”，不再需要对整行归一化，于是小 batch 也能训。</li>
+<li><strong>推荐算法第 8 章的双塔召回。</strong> 对应关系：图片/文本编码器 ↔ 用户塔/物品塔；in-batch 负采样一模一样；温度系数 τ 一模一样（那边从 0.05 开始调）；图文进同一空间用文字搜图 ↔ 用户物品进同一空间做 ANN 召回。连坑都一样（热门样本被过度当负样本 → LogQ 校正、负样本选错会训废、batch 越大越好）。</li>
+<li><strong>LLaVA 是一个 MLP 直接投影</strong>，视觉 token 数 = ViT 的 patch 数（几百个）——简单、训得快、细节不丢，但吃 token；Q-Former 是一个带可学习 query 的小 Transformer，用交叉注意力把视觉特征压成固定个数（比如 32 个）——省 token、多图友好，但结构复杂且压缩必然丢细节，OCR 和小字场景最明显。主流赢家是 LLaVA 这条：MLP 几乎没有超参、几小时训完。</li>
+<li><strong>阶段一只训投影层</strong>（视觉编码器和 LLM 全冻），用【图片 → 简短描述】把视觉向量对齐到 LLM 的词空间，本质是训一个“翻译器”；阶段二训投影层 + LLM（视觉编码器仍冻），用【图片 + 多轮指令问答】做指令微调。视觉编码器不解冻是因为它的表征是几亿图文对训出来的，随便动会破坏好不容易对齐的空间。</li>
 </ol>
 </details>
 <hr />
-<h2 id="_8">🛑 可以停在这里</h2>
-<p>读到这里，你已经能回答「这个模型能不能塞进我这张卡」和「怎么把卡榨满」这两个问题 —— 对自建部署来说这就是最小闭环。</p>
-<p>⚠️ <strong>什么时候回来看下一页</strong>：显存够了、吞吐也够了，但<strong>用户还是觉得慢</strong>。那是延迟问题，不是容量问题，解法在下一页。</p>
+<h2 id="_5">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>推理优化的全部前提是一句话：<strong>Decode 阶段的瓶颈是显存带宽，不是算力</strong>。每生成一个 token，都要把整个模型的权重从显存搬进计算单元一次 —— 所以模型越大越慢，而 GPU 的算力其实在空转。Prefill 反过来是计算密集的：它并行处理整段输入，决定首字延迟。这两个阶段该优化的东西完全不同，混为一谈就会白忙。<strong>武器一是量化</strong>：把权重从 FP16 压到 INT4，70B 模型 <strong>140GB → 35GB</strong>（单卡 A100 就能跑），decode 因为搬得少也跟着变快。⚠️ 但它有三个真实代价：<strong>长尾能力先崩</strong>（平均只掉 1–3%，复杂推理和长上下文掉得更多）、必须在自己的真实任务上重新评测、不同方法适合不同场景（本地跑用 GGUF，服务化用 AWQ 这类）。⚠️ <strong>估显存时最容易漏掉 KV Cache</strong> —— 「3.5GB 的模型怎么在 8GB 卡上 OOM」几乎都是这么来的。<strong>武器二是批处理</strong>：静态批处理要等最长的请求结束、短请求占着位置空转；<strong>连续批处理谁答完谁下车</strong>，空位立刻补新请求，吞吐差出一个量级。PagedAttention 则借了操作系统虚拟内存的思路管理 KV Cache，不再给每个请求预留一整段连续显存。</p>
+<p><strong>CLIP 训出来的是一个图片和文字共享的向量空间</strong>，所以能文字搜图、图搜图、零样本分类，还能复用现成的向量检索设施。它的 <strong>InfoNCE</strong> 损失是：把一个 batch 的 N 对图文编码成 <strong>N×N 相似度矩阵</strong>，要求对角线最大 —— 本质是「N 选 1 选对」的交叉熵（图找文、文找图各算一次取平均）。⭐ <strong>负样本是白捡的</strong>：同一批次里别人的正样本就是我的负样本（in-batch 负采样）。<strong>温度系数 τ</strong> 很关键：<strong>τ 小（0.01）分布尖锐</strong>，最难的负样本梯度极大，学得锋利但对错标极敏感、容易训崩；<strong>τ 大（0.5）分布平坦</strong>，训得稳但向量挤在一起、区分度不够。CLIP 干脆把它做成<strong>可学习参数</strong>，说明它重要到值得让模型自己学。⚠️ <strong>batch size 是对比学习最直接的效果杠杆</strong>：batch=256 只有 255 个干扰项，CLIP 用的 batch=32768 有 32767 个 —— 干扰项越多这道多选题越难，向量必须分得越开。代价是显存（N×N 矩阵要多卡 all-gather）。<strong>SigLIP</strong> 把 softmax 对比损失换成<strong>逐对的 sigmoid 二分类</strong>，每对自己判「配不配」，不再需要对整行归一化，于是小 batch 也能训。⭐⭐ 最值得记的一条：<strong>这整套和推荐系统的双塔召回是同一套东西</strong> —— 图文编码器 ↔ 用户塔/物品塔、in-batch 负采样、温度系数 τ，连坑都一样（热门样本被过度当负样本要做 LogQ 校正、负样本选错会训废、batch 越大越好）。投影层有两条路线：<strong>LLaVA 用一个 MLP 直接投影</strong>（简单、几小时训完、细节不丢，但吃 token），<strong>BLIP-2 的 Q-Former</strong> 用可学习 query 把视觉特征压成固定个数（省 token、多图友好，但压缩必然丢细节，OCR 和小字最明显）—— 主流赢家是 LLaVA 那条。训练分两阶段：<strong>阶段一只训投影层</strong>（视觉编码器和 LLM 全冻），本质是训一个「翻译器」；<strong>阶段二训投影层 + LLM</strong>（视觉编码器仍冻）。⚠️ 视觉编码器不解冻，是因为它的表征是几亿图文对训出来的，随便动会破坏好不容易对齐的空间。</p>
 </blockquote>
-<p><strong>下一节</strong> 👉 <a href="06d-降延迟与三个指标.html">06d-降延迟与三个指标.md</a></p>
+<p><strong>下一节</strong> 👉 <a href="10b-图像生成.html">10b-图像生成.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
-<nav class="pagenav"><a href="02d-MoE混合专家.html"><div class="dir">← 上一节</div>🧑‍🔬 专题 D · MoE：怎样扩容</a><a class="next" href="06d-降延迟与三个指标.html"><div class="dir">下一节 →</div>🏎️ 06d · 降延迟与指标</a></nav>
+<nav class="pagenav"><a href="10-多模态.html"><div class="dir">← 上一节</div>🖼️ 10 · 多模态：视觉理解</a><a class="next" href="10b-图像生成.html"><div class="dir">下一节 →</div>🎨 10b · 图像生成</a></nav>
 </main>
 <script>(function(){
-  var KEY="overview-progress", FILE="06-\u63a8\u7406\u4f18\u5316.md";
+  var KEY="overview-progress", FILE="10d-CLIP\u4e0e\u5bf9\u6bd4\u5b66\u4e60.md";
   function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
   function refresh(){var d=!!load()[FILE];
     document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
