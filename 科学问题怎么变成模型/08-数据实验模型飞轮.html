@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>08 · 数据、实验、模型的飞轮 · 科学问题怎么变成模型</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:1.14em;margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:.92em}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">08 · 数据、实验、模型的飞轮</span>
+  <span class="prevnext"><a href="07-评测的坑.html">←</a>
+  <a href="附录A-速查.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">🔄 一、闭环才是这件事的形态</a></li>
+<li><a href="#_3">🎯 二、为什么不能挑分数最高的</a></li>
+<li><a href="#_4">🧪 三、把差别跑出来</a></li>
+<li><a href="#_5">📦 四、一次挑一批的坑</a></li>
+<li><a href="#_6">⚠️ 五、实验结果回来之后，你的数据分布已经变了</a></li>
+<li><a href="#_7">🏁 六、什么时候停</a></li>
+<li><a href="#_8">🔗 这一章连到哪里</a></li>
+<li><a href="#_9">✅ 检查点</a></li>
+<li><a href="#_10">🛑 可以停在这里</a></li>
+</ul>
+</div>
+</details>
+<h1 id="08">08 · 数据、实验、模型的飞轮</h1>
+<p>⏱ <strong>24 分钟</strong> ｜ ⭐ <strong>贪心挑候选 8 次只成功 2 次，UCB 8 次全中</strong></p>
+<hr />
+<h2 id="_1">🎯 一句话</h2>
+<p><strong>这里的数据不是给定的，是你决定去生产的。</strong>
+所以模型的价值不在指标好看，在于<strong>它让下一批实验少做多少次</strong> ——
+⭐ 而「下一批做什么」这个问题，答案<strong>不是挑预测分最高的那些</strong>。</p>
+<hr />
+<h2 id="_2">🔄 一、闭环才是这件事的形态</h2>
+<p>普通 ML 的数据集是给定的：拿到、切分、训练、评估，结束。
+AI4S 不是。它是一个环，而且<strong>环上每一步都要花真钱</strong>：</p>
+<p><strong>训模型 → 挑候选 → 做实验 → 拿到新数据 → 回去训模型</strong></p>
+<p>⭐⭐ <strong>这个环改变了「好模型」的定义。</strong>
+一个 R² 0.9 但只会推荐你已经做过的东西的模型，<strong>价值是零</strong>；
+一个 R² 0.6 但每次都能指出「这个方向你没试过、而且可能有戏」的模型，能省掉几个月。</p>
+<blockquote>
+<p>⭐ <strong>判据一句话</strong>：<strong>别问模型多准，问它让你少做了多少次实验。</strong></p>
+</blockquote>
+<hr />
+<h2 id="_3">🎯 二、为什么不能挑分数最高的</h2>
+<p>这是全章的题眼。直觉是「挑模型觉得最好的」—— ⚠️ <strong>这会让你一直在已知区域打转</strong>：
+模型对熟悉的区域预测得准、给分高；对没探过的区域<strong>没把握，于是给不出高分</strong>。
+于是你永远不去那里，于是模型永远学不会那里。<strong>这个循环自己会锁死。</strong></p>
+<p>⭐ 解法是在打分里<strong>明确地给不确定性付钱</strong>：</p>
+<blockquote>
+<p><strong>采集分数 = 预测值 + κ × 不确定性</strong></p>
+</blockquote>
+<p><code>κ = 0</code> 就是纯贪心；<code>κ</code> 越大越倾向于去没探过的地方。
+这个式子叫 <strong>UCB</strong>（置信上界），⭐ 和强化学习里的探索与利用是<strong>同一件事</strong>，
+站内有一整章：<a href="../强化学习基础/07-探索与利用.html">强化学习基础 07 · 探索与利用</a>。</p>
+<hr />
+<h2 id="_4">🧪 三、把差别跑出来</h2>
+<p>一个一维的目标函数，<strong>右边有个高的全局最优，左边有个诱人的局部最优</strong>。
+两种策略从<strong>完全相同</strong>的三个初始点出发，各跑 25 轮：</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;多峰目标函数：全局最优在右侧，左侧有个诱人的局部最优。&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.3</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1.6</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mf">7.2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+
+<span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+<span class="n">best_x</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">grid</span><span class="p">))]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">gp</span><span class="p">(</span><span class="n">Xtr</span><span class="p">,</span> <span class="n">ytr</span><span class="p">,</span> <span class="n">Xte</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;最小版高斯过程：RBF 核，返回后验均值和标准差。&quot;&quot;&quot;</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">((</span><span class="n">a</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">b</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:])</span> <span class="o">/</span> <span class="n">ls</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="n">k</span><span class="p">(</span><span class="n">Xtr</span><span class="p">,</span> <span class="n">Xtr</span><span class="p">)</span> <span class="o">+</span> <span class="n">noise</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Xtr</span><span class="p">))</span>
+    <span class="n">Ki</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">k</span><span class="p">(</span><span class="n">Xte</span><span class="p">,</span> <span class="n">Xtr</span><span class="p">)</span> <span class="o">@</span> <span class="n">Ki</span> <span class="o">@</span> <span class="n">ytr</span>
+    <span class="n">var</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ij,jk,ik-&gt;i&quot;</span><span class="p">,</span> <span class="n">k</span><span class="p">(</span><span class="n">Xte</span><span class="p">,</span> <span class="n">Xtr</span><span class="p">),</span> <span class="n">Ki</span><span class="p">,</span> <span class="n">k</span><span class="p">(</span><span class="n">Xte</span><span class="p">,</span> <span class="n">Xtr</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">mu</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="mf">1e-12</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="n">kappa</span><span class="p">,</span> <span class="n">rounds</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>                       <span class="c1"># 三个初始点，两种策略完全相同</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rounds</span><span class="p">):</span>
+        <span class="n">mu</span><span class="p">,</span> <span class="n">sd</span> <span class="o">=</span> <span class="n">gp</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span>
+        <span class="n">nxt</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">mu</span> <span class="o">+</span> <span class="n">kappa</span> <span class="o">*</span> <span class="n">sd</span><span class="p">)]</span>    <span class="c1"># ⭐ kappa=0 就是纯贪心</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">nxt</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">nxt</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">nxt</span> <span class="o">-</span> <span class="n">best_x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.15</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">t</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;目标函数全局最优在 x = </span><span class="si">%.2f</span><span class="s2">，f = </span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">best_x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">best_x</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%-22s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;策略&quot;</span><span class="p">,</span> <span class="s2">&quot;第几轮找到全局最优（25 轮内）&quot;</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">kap</span> <span class="ow">in</span> <span class="p">[(</span><span class="s2">&quot;greedy (kappa=0)&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;UCB (kappa=2)&quot;</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)]:</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">run</span><span class="p">(</span><span class="n">kap</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">)]</span>
+    <span class="n">ok</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">res</span> <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%-22s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%2s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">r</span> <span class="k">if</span> <span class="n">r</span> <span class="k">else</span> <span class="s2">&quot;--&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">res</span><span class="p">)))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%-22s</span><span class="s2">   found </span><span class="si">%d</span><span class="s2">/8, avg round </span><span class="si">%.1f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ok</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span> <span class="k">if</span> <span class="n">ok</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;nan&quot;</span><span class="p">)))</span>
+</code></pre></div>
+
+<p>真实输出：</p>
+<div class="codehilite"><pre><span></span><code>目标函数全局最优在 x = 7.19，f = 1.600
+
+策略                     第几轮找到全局最优（25 轮内）
+greedy (kappa=0)       -- -- -- -- --  2 --  2
+                         found 2/8, avg round 2.0
+UCB (kappa=2)           5  7  8  7  9  7  8  5
+                         found 8/8, avg round 7.0
+</code></pre></div>
+
+<p>⭐⭐ <strong>这张表要横着读，不要只看平均轮数</strong>：</p>
+<ul>
+<li><strong>贪心 8 次里只成功 2 次</strong> —— 而且那两次是<strong>初始点碰巧就撞在全局最优附近</strong>（第 2 轮就中）。
+  ⚠️ 其余 6 次它 <strong>25 轮全部耗光</strong>，一直在左边那个局部最优上反复采样。</li>
+<li><strong>UCB 8 次全中</strong>，平均第 7 轮。</li>
+</ul>
+<blockquote>
+<p>⚠️ <strong>别被「贪心平均 2.0 轮」骗了</strong> —— 那是只统计成功的那 2 次算出来的。
+⭐ <strong>把失败的 6 次算进去，贪心的期望代价是无穷</strong> —— 它根本到不了。
+💀 这正是真实项目里最贵的失败模式：<strong>指标一直在缓慢改善，而你一直在错的区域里。</strong></p>
+</blockquote>
+<hr />
+<h2 id="_5">📦 四、一次挑一批的坑</h2>
+<p>实验很少一次做一个 —— 一块 96 孔板就是 96 个。
+⚠️ <strong>直接取采集分数最高的 96 个是错的</strong>：它们会挤在同一个小区域里，
+<strong>彼此几乎一样</strong>，你花了 96 次实验只买到 1 条信息。</p>
+<p>⭐ 两个能直接用的办法：</p>
+<ol>
+<li><strong>挑一个就假装拿到了结果</strong>（用模型预测值代替），更新不确定性再挑下一个 ——
+   这样后选的点自然会避开已选的点。</li>
+<li><strong>加一个多样性下限</strong>：候选之间的距离/相似度不得超过某个阈值。</li>
+</ol>
+<blockquote>
+<p>⭐ 站内已经有一整章讲这个问题的近亲：
+<a href="../数据这一关/12-标注预算与主动学习.html">数据这一关 12 · 标注预算与主动学习</a>。
+⚠️ <strong>两者的区别值得记</strong>：那一章是「<strong>标注一个已经存在的样本</strong>要花钱」，
+候选池是给定的、有限的；⭐ 这一章是「<strong>做一次实验</strong>要花钱，而样本是你造出来的、
+原本不存在」—— <strong>搜索空间是开放的</strong>，这让「挑哪个」变得难得多。</p>
+</blockquote>
+<hr />
+<h2 id="_6">⚠️ 五、实验结果回来之后，你的数据分布已经变了</h2>
+<p>💀 <strong>这一条最容易被忽略，而它会毁掉你的评估。</strong></p>
+<p>你<strong>专门挑了模型认为好的、或者不确定的</strong>那些去做实验。
+于是新数据<strong>根本不是从原分布里随机抽的</strong> —— 它是被你的模型筛过的。</p>
+<p>后果有两个：</p>
+<p><strong>① 用新旧数据混在一起做的评估会失真。</strong> 测试集里塞满了「模型觉得有戏」的样本，
+它在这些样本上的表现<strong>不代表</strong>它在全空间上的表现。</p>
+<p><strong>② 每一轮的指标不可比。</strong> 第 3 轮的测试集和第 1 轮的分布不同，
+⚠️ <strong>「R² 从 0.6 涨到 0.7」可能只是因为后来的候选更好预测。</strong></p>
+<p>⭐ <strong>对策</strong>：留一个<strong>从原始分布随机抽的、从不参与挑选的</strong>固定测试集。
+它是你唯一一把不会随着飞轮转动而变形的尺子。
+⚠️ 而它同样必须按同源家族划分 —— 见 <a href="07-评测的坑.html">07 章</a>。</p>
+<hr />
+<h2 id="_7">🏁 六、什么时候停</h2>
+<p>三个信号，⚠️ <strong>但它们都不干净</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>信号</th>
+<th>⚠️ 但是</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>预算用完了</td>
+<td>最诚实的一个，也是最常见的真实原因</td>
+</tr>
+<tr>
+<td>连续几轮没有改善</td>
+<td>可能是收敛了，⭐ <strong>也可能是 κ 太小、根本没在探索</strong></td>
+</tr>
+<tr>
+<td>模型说没有更好的了</td>
+<td>💀 <strong>这句话不可信</strong> —— 它只覆盖你定义的搜索空间</td>
+</tr>
+</tbody>
+</table>
+<p>⭐⭐ <strong>第三条要特别当心</strong>：「模型找不到更好的」和「更好的东西不在你的搜索空间里」
+<strong>在数据上完全无法区分</strong>。第 3 节那个实验就是缩微版 ——
+贪心那 6 次失败里，模型每一轮都很自信，<strong>而它从没去过右边</strong>。</p>
+<hr />
+<h2 id="_8">🔗 这一章连到哪里</h2>
+<table>
+<thead>
+<tr>
+<th>去哪</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../强化学习基础/07-探索与利用.html">强化学习基础 07 · 探索与利用</a></td>
+<td>⭐ 第 2 节那个 <code>预测值 + κ × 不确定性</code> 就是 UCB，那一章讲它的完整形态和为什么这样配</td>
+</tr>
+<tr>
+<td><a href="../数据这一关/12-标注预算与主动学习.html">数据这一关 12 · 标注预算与主动学习</a></td>
+<td>⭐ 同一个问题的近亲。<strong>区别</strong>：那边候选池是给定的（标注已有样本），这边样本是你造出来的、搜索空间开放</td>
+</tr>
+<tr>
+<td><a href="07-评测的坑.html">07 · 评测的坑</a></td>
+<td>⚠️ 第五节说的固定测试集，同样必须按同源家族划分，否则它也是虚的</td>
+</tr>
+<tr>
+<td><a href="06-小数据这一关.html">06 · 小数据这一关</a></td>
+<td>飞轮的第一圈就是小数据 —— 那一章讲头几十条标签怎么用</td>
+</tr>
+<tr>
+<td><a href="../模型上线之后/附录A-速查.html">模型上线之后 · 附录A 速查</a></td>
+<td>⭐ 第五节那个「分布变了」在部署语境里叫数据漂移，那边有完整的检测方法清单</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_9">✅ 检查点</h2>
+<ol>
+<li>闭环怎么改变了「好模型」的定义？判据是什么？</li>
+<li>为什么挑预测分最高的候选会锁死？说清那个循环。</li>
+<li>实验里贪心和 UCB 各成功几次？「贪心平均 2.0 轮」为什么是个误导性的数字？</li>
+<li>一次挑 96 个的坑是什么？两个解法各是什么？</li>
+<li>实验结果回来后为什么数据分布变了？会造成哪两个后果？对策是什么？</li>
+<li>「模型说没有更好的了」为什么不可信？</li>
+</ol>
+<details>
+<summary>👀 答案</summary>
+<ol>
+<li>因为数据不是给定的，是你决定去生产的。⭐ <strong>好模型 = 让你少做实验的模型</strong>，不是指标高的模型。一个 R² 0.9 但只推荐你做过的东西的模型价值是零。<strong>判据：别问模型多准，问它让你少做了多少次实验。</strong></li>
+<li>模型对熟悉区域预测准、给分高；对没探过的区域<strong>没把握所以给不出高分</strong> → 你永远不去那里 → 模型永远学不会那里 → 继续给不出高分。<strong>这个循环自己会锁死。</strong></li>
+<li><strong>贪心 2/8，UCB 8/8。</strong> ⚠️「贪心平均 2.0 轮」只统计了成功的那 2 次，而那 2 次是<strong>初始点碰巧撞上</strong>；其余 6 次 25 轮全耗光。⭐ <strong>把失败算进去，贪心的期望代价是无穷。</strong></li>
+<li>取分数最高的 96 个会<strong>挤在同一小区域、彼此几乎一样</strong>，96 次实验只买到 1 条信息。解法：①挑一个就用预测值假装拿到结果、更新不确定性再挑下一个 ②加多样性下限。</li>
+<li>因为你<strong>专门挑了模型觉得好或不确定的</strong>去做实验，新数据不是从原分布随机抽的。后果：①混合数据的评估失真 ②<strong>每轮指标不可比</strong>（涨了可能只是因为后来的候选更好预测）。⭐ 对策：留一个<strong>从原始分布随机抽、从不参与挑选</strong>的固定测试集（且同样要按家族划分）。</li>
+<li>因为它<strong>只覆盖你定义的搜索空间</strong>。💀「模型找不到更好的」和「更好的不在搜索空间里」<strong>在数据上无法区分</strong> —— 第 3 节贪心失败的那 6 次里，模型每轮都很自信，而它从没去过右边。</li>
+</ol>
+</details>
+<hr />
+<h2 id="_10">🛑 可以停在这里</h2>
+<p>这是正文最后一章。⭐ 你现在有一条完整的链：
+<strong>把科学问题变成建模问题 → 表示 → 结构与对称性 → 小数据 → 正确评估 → 决定下一批实验做什么。</strong></p>
+<p>⚠️ <strong>什么时候回来</strong>：真正开始转飞轮的时候。第五节那条「分布已经变了」
+在纸上看很显然，⭐ <strong>在项目第三轮时几乎所有人都会忘</strong>。</p>
+<p>⚡ <strong>走神救援</strong></p>
+<blockquote>
+<p><strong>AI4S 和普通 ML 最大的不同：数据不是给定的，是你决定去生产的。</strong> 流程是个环 —— <strong>训模型 → 挑候选 → 做实验 → 新数据 → 再训模型</strong>，⭐⭐ 而这个环改变了「好模型」的定义：<strong>R² 0.9 但只推荐你做过的东西的模型价值是零</strong>。<strong>判据：别问模型多准，问它让你少做了多少次实验。</strong> ⭐ <strong>题眼是「不能挑预测分最高的」</strong>：模型对熟悉区域给分高、对没探过的区域没把握给不出高分 → 你永远不去 → 它永远学不会 → <strong>循环自己锁死</strong>。解法是给不确定性明确付钱：<strong>采集分数 = 预测值 + κ × 不确定性</strong>（就是 UCB，和强化学习的探索与利用是同一件事）。<strong>实测</strong>：一维多峰函数、相同的三个初始点各跑 25 轮 —— <strong>贪心 8 次只成功 2 次</strong>（而且那 2 次是初始点碰巧撞上，第 2 轮就中），<strong>其余 6 次 25 轮全部耗光</strong>，一直在左边局部最优上反复采样；<strong>UCB 8 次全中</strong>，平均第 7 轮。⚠️ <strong>别被「贪心平均 2.0 轮」骗了</strong> —— 那只统计了成功的两次，<strong>把失败算进去它的期望代价是无穷</strong>。💀 这正是真实项目最贵的失败模式：<strong>指标缓慢改善，而你一直在错的区域里。</strong> <strong>批量选择</strong>：直接取 top-96 会挤在同一小区域、彼此几乎一样，96 次实验只买到 1 条信息 —— 要么挑一个就用预测值假装拿到结果再挑下一个，要么加多样性下限。💀 <strong>最容易忘的一条：实验回来后你的数据分布已经变了</strong> —— 你专门挑了模型觉得好的去做，新数据不是随机抽的，于是<strong>混合评估失真、每轮指标不可比</strong>（涨了可能只因为后来的候选更好预测）。⭐ 对策是留一个<strong>从原分布随机抽、从不参与挑选</strong>的固定测试集。<strong>什么时候停</strong>：预算用完（最诚实）、连续几轮没改善（⭐ 也可能是 κ 太小根本没在探索）、模型说没有更好的了（💀 <strong>不可信</strong> —— 它只覆盖你定义的搜索空间，而「找不到」和「不在空间里」在数据上无法区分）。</p>
+</blockquote>
+<p><strong>下一节</strong> 👉 <a href="附录A-速查.html">附录A-速查.md</a></p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="07-评测的坑.html"><div class="dir">← 上一节</div>🚨 07 · 评测的坑</a><a class="next" href="附录A-速查.html"><div class="dir">下一节 →</div>📖 附录A · 速查</a></nav>
+</main>
+<script>(function(){
+  var KEY="sci-progress", FILE="08-\u6570\u636e\u5b9e\u9a8c\u6a21\u578b\u98de\u8f6e.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>

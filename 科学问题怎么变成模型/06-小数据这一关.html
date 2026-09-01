@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>06 · 小数据这一关 · 科学问题怎么变成模型</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:1.14em;margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:.92em}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">06 · 小数据这一关</span>
+  <span class="prevnext"><a href="05-等变与不变.html">←</a>
+  <a href="07-评测的坑.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">💸 一、先认清这个比例</a></li>
+<li><a href="#_3">🧊 二、把这件事跑出来</a></li>
+<li><a href="#_4">🎛️ 三、为什么冻结比微调更适合这里</a></li>
+<li><a href="#_5">🧰 四、另外四件小数据该做的事</a></li>
+<li><a href="#_6">⚠️ 五、小数据上最容易骗到自己的两件事</a></li>
+<li><a href="#_7">🔗 这一章连到哪里</a></li>
+<li><a href="#_8">✅ 检查点</a></li>
+<li><a href="#_9">🛑 可以停在这里</a></li>
+</ul>
+</div>
+</details>
+<h1 id="06">06 · 小数据这一关</h1>
+<p>⏱ <strong>24 分钟</strong> ｜ ⭐ <strong>20 条标注时，冻结的预训练表示把 R² 从 0.374 抬到 0.696</strong></p>
+<hr />
+<h2 id="_1">🎯 一句话</h2>
+<p><strong>在这里，标注贵得离谱，而无标注数据几乎免费。</strong>
+一条标注意味着一次真实的实验 —— 几天、几千块；而序列数据库里躺着几亿条没有标签的序列。
+⭐ 整章只讲一件事：<strong>怎么把便宜的那一半，换成贵的那一半。</strong></p>
+<hr />
+<h2 id="_2">💸 一、先认清这个比例</h2>
+<p>普通 ML 里「数据多」通常意味着标注也多。这里完全不是：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>无标注数据</th>
+<th>有标注数据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>来源</td>
+<td>测序、公开数据库</td>
+<td>⚠️ <strong>一次湿实验</strong></td>
+</tr>
+<tr>
+<td>单条成本</td>
+<td>接近 0</td>
+<td>几百到几千元，几天到几周</td>
+</tr>
+<tr>
+<td>量级</td>
+<td>亿级</td>
+<td>⚠️ <strong>常常是两位数到三位数</strong></td>
+</tr>
+</tbody>
+</table>
+<p>💀 <strong>两位数不是夸张。</strong> 一个新酶的定向进化项目，第一轮拿到手的可能就是 <strong>几十个</strong>突变体的活性数据。
+拿这个去训一个几百维的模型，<code>n &lt; p</code> —— 参数比样本还多。</p>
+<p>⭐ 所以这一章的问题不是「怎么把模型调好」，而是：
+<strong>在只有几十条标签的情况下，怎么让那几亿条无标签数据也出力。</strong></p>
+<hr />
+<h2 id="_3">🧊 二、把这件事跑出来</h2>
+<p>最有效的一招是<strong>冻结</strong>：先用无标注数据学出一个表示，
+然后<strong>只在它上面训一个很小的头</strong>。下面这段把它和「直接用原始特征」对照：</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">AA</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">5</span>          <span class="c1"># 20 种氨基酸，长 30，背后 5 维隐变量</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">corpus</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">seed</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;序列由一个 5 维隐变量 z 生成 —— 位置之间因此不独立（&quot;共进化&quot;）。</span>
+<span class="sd">    标签只由 z 决定，序列是 z 的一个带噪观测。&quot;&quot;&quot;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">AA</span><span class="p">))</span>     <span class="c1"># 生成规则全局固定</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">K</span><span class="p">))</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;nk,klv-&gt;nlv&quot;</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logits</span> <span class="o">-</span> <span class="n">logits</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="n">p</span> <span class="o">/=</span> <span class="n">p</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">seqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">r</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">AA</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">l</span><span class="p">])</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">L</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)])</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">L</span> <span class="o">*</span> <span class="n">AA</span><span class="p">))</span>
+    <span class="n">X</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="o">*</span> <span class="n">AA</span> <span class="o">+</span> <span class="n">seqs</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">K</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">z</span> <span class="o">@</span> <span class="n">w</span> <span class="o">+</span> <span class="n">r</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+
+<span class="c1"># ① 无标注大池子 → PCA 当&quot;预训练表示&quot;。⭐ 这一步不用任何标签</span>
+<span class="n">Xpool</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">corpus</span><span class="p">(</span><span class="mi">4000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="n">Xpool</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">Vt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">Xpool</span> <span class="o">-</span> <span class="n">mu</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">Vt</span><span class="p">[:</span><span class="mi">16</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>                                                 <span class="c1"># 取前 16 个主成分</span>
+
+<span class="n">Xte</span><span class="p">,</span> <span class="n">yte</span> <span class="o">=</span> <span class="n">corpus</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">999</span><span class="p">)</span>
+<span class="n">Xbig</span><span class="p">,</span> <span class="n">ybig</span> <span class="o">=</span> <span class="n">corpus</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>                                  <span class="c1"># ② 训练池，下面取前 n 条</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">r2</span><span class="p">(</span><span class="n">Xtr</span><span class="p">,</span> <span class="n">ytr</span><span class="p">,</span> <span class="n">Xte_</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">Xtr</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">Xtr</span> <span class="o">+</span> <span class="n">lam</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">Xtr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">Xtr</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">ytr</span> <span class="o">-</span> <span class="n">ytr</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
+    <span class="n">pred</span> <span class="o">=</span> <span class="n">Xte_</span> <span class="o">@</span> <span class="n">b</span> <span class="o">+</span> <span class="n">ytr</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">((</span><span class="n">yte</span> <span class="o">-</span> <span class="n">pred</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="p">((</span><span class="n">yte</span> <span class="o">-</span> <span class="n">yte</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%-8s</span><span class="s2"> </span><span class="si">%16s</span><span class="s2"> </span><span class="si">%20s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;labels&quot;</span><span class="p">,</span> <span class="s2">&quot;raw one-hot&quot;</span><span class="p">,</span> <span class="s2">&quot;frozen 16-dim&quot;</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">3000</span><span class="p">]:</span>
+    <span class="n">Xtr</span><span class="p">,</span> <span class="n">ytr</span> <span class="o">=</span> <span class="n">Xbig</span><span class="p">[:</span><span class="n">n</span><span class="p">],</span> <span class="n">ybig</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span>                             <span class="c1"># ⭐ 嵌套子集：大池子的前 n 条</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">r2</span><span class="p">(</span><span class="n">Xtr</span><span class="p">,</span> <span class="n">ytr</span><span class="p">,</span> <span class="n">Xte</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">r2</span><span class="p">((</span><span class="n">Xtr</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">@</span> <span class="n">P</span><span class="p">,</span> <span class="n">ytr</span><span class="p">,</span> <span class="p">(</span><span class="n">Xte</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">@</span> <span class="n">P</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%-8d</span><span class="s2"> </span><span class="si">%16.3f</span><span class="s2"> </span><span class="si">%20.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+</code></pre></div>
+
+<p>真实输出：</p>
+<div class="codehilite"><pre><span></span><code>labels        raw one-hot        frozen 16-dim
+20                  0.374                0.696
+50                  0.728                0.785
+100                 0.797                0.849
+300                 0.783                0.878
+1000                0.815                0.884
+3000                0.878                0.884
+</code></pre></div>
+
+<p>⭐ <strong>20 条标注时：0.374 → 0.696，差不多翻倍。</strong> 而那 16 维表示是从 <strong>4000 条无标签序列</strong>里
+用 PCA 抽出来的 —— <strong>一个标签都没用</strong>。</p>
+<p>⭐⭐ <strong>到 3000 条时两者收敛</strong>（0.878 vs 0.884）。这和 <a href="01-第一天.html">01 章</a>量到的是同一件事：
+<strong>预训练买的是速度，不是上限。</strong> 差距从 <strong>+0.32</strong> 一路收窄到 <strong>+0.006</strong>。</p>
+<blockquote>
+<p>⚠️ <strong>一个我没有藏起来的毛病</strong>：<code>raw one-hot</code> 那一列在 300 那格回落了
+（0.797 → 0.783）。那是固定 <code>lam=1</code> 在不同样本量下正则强度不匹配造成的<strong>采样噪声</strong>，
+不是什么规律。⭐ 该看的是<strong>两端</strong>：20 条时差 0.32，3000 条时差 0.006。</p>
+</blockquote>
+<hr />
+<h2 id="_4">🎛️ 三、为什么冻结比微调更适合这里</h2>
+<p>「用预训练模型」有两种用法，⚠️ <strong>在小数据上它们的表现相差很远</strong>：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>冻结 + 小头</th>
+<th>全量微调</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>要拟合的参数</td>
+<td>⭐ <strong>十几到几百个</strong></td>
+<td>几百万到几亿</td>
+</tr>
+<tr>
+<td>几十条标签时</td>
+<td>稳</td>
+<td>💀 <strong>几乎必然过拟合</strong></td>
+</tr>
+<tr>
+<td>需要的算力</td>
+<td>一台笔记本</td>
+<td>GPU</td>
+</tr>
+<tr>
+<td>什么时候该换</td>
+<td>——</td>
+<td>标签上到几千条以后</td>
+</tr>
+</tbody>
+</table>
+<p>⭐ <strong>判据很朴素：可训练参数的数量级要和样本量匹配。</strong>
+上面代码里冻结方案要解的是一个 <strong>16 维</strong>的岭回归，而原始方案是 <strong>600 维</strong> ——
+20 个样本对 600 个参数，那是在背答案。</p>
+<p>⚠️ <strong>中间档也存在</strong>（只解冻最后几层、或用 LoRA 那类低秩适配），
+但在几十条标签的量级上，<strong>先把冻结这一档做扎实</strong>，它是最难做错的一个。</p>
+<hr />
+<h2 id="_5">🧰 四、另外四件小数据该做的事</h2>
+<p><strong>① 别用单次划分，用交叉验证。</strong>
+50 条数据切出 10 条测试集，那 10 条换一批结论就变了。
+⭐ 用 K 折把每条数据都当一次测试 —— 基本功在
+<a href="../机器学习与深度学习基础/05-评估与过拟合.html">机器学习与深度学习基础 05 · 评估与过拟合</a>。
+⚠️ <strong>但这里的 K 折必须按同源家族分组</strong>，理由见 <a href="07-评测的坑.html">07 章</a>。</p>
+<p><strong>② 报区间，不报单点。</strong>
+50 条数据上的 R² 本身就带着很大的不确定性。⭐ 只报一个数会让你和同事都高估它。</p>
+<p><strong>③ 数据增强要尊重对称性。</strong>
+⚠️ <strong>不能乱加</strong> —— 把分子旋转一下当新样本是合法的（性质不变），
+把序列里一个残基随便换掉当新样本<strong>通常不合法</strong>（性质可能全变）。
+⭐ 什么变换是安全的，取决于你的问题有什么对称性，那是 <a href="05-等变与不变.html">05 章</a>的正题。</p>
+<p><strong>④ 主动选下一批标注哪些。</strong>
+既然每条标签都这么贵，就不该随机挑。站内已经有一整章讲这件事：
+<a href="../数据这一关/12-标注预算与主动学习.html">数据这一关 12 · 标注预算与主动学习</a>。
+⭐ 到 <a href="08-数据实验模型飞轮.html">08 章</a>会把它推到更远的地方 ——
+那里<strong>连样本本身都是你造出来的</strong>。</p>
+<hr />
+<h2 id="_6">⚠️ 五、小数据上最容易骗到自己的两件事</h2>
+<p><strong>① 指标好看是因为测试集也小。</strong>
+20 条测试集上的 R² 波动极大，<strong>挑一个好看的划分太容易了</strong>。
+💀 如果你试过好几种划分才选定一个，那这个数字已经被污染了。</p>
+<p><strong>② 用同一批数据既选模型又报成绩。</strong>
+在 5 个模型里挑测试集上最好的那个，<strong>报出来的分数必然虚高</strong> ——
+你已经把测试集用作选择依据了。⭐ 小数据上这件事的代价格外大，因为噪声大、可挑的空间也大。</p>
+<blockquote>
+<p>⭐ 这两条本质是同一件事：<strong>测试集每被看一次，它作为尺子的价值就掉一点。</strong>
+<a href="../数据这一关/13-评测集也是数据.html">数据这一关 13 · 评测集也是数据</a> 有完整的展开，
+包括「多大才够」怎么算。</p>
+</blockquote>
+<hr />
+<h2 id="_7">🔗 这一章连到哪里</h2>
+<table>
+<thead>
+<tr>
+<th>去哪</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="01-第一天.html">01 · 第一天</a></td>
+<td>⭐ <strong>同一个结论的另一半</strong>：那一章量的是「领域知识 ≈ 一倍数据」，这一章量的是「预训练表示 ≈ 更多数据」。两者都在 3000 条时收敛 —— <strong>先验买速度不买上限</strong></td>
+</tr>
+<tr>
+<td><a href="07-评测的坑.html">07 · 评测的坑</a></td>
+<td>⚠️ 这一章说「用交叉验证」，而那一章说明<strong>为什么这里的 K 折必须按家族分组</strong>。不看那一章，这里的 K 折会给你一个虚高的数</td>
+</tr>
+<tr>
+<td><a href="05-等变与不变.html">05 · 等变与不变</a></td>
+<td>第 4 节第三条：哪些数据增强是安全的，取决于问题的对称性</td>
+</tr>
+<tr>
+<td><a href="../数据这一关/12-标注预算与主动学习.html">数据这一关 12 · 标注预算与主动学习</a></td>
+<td>⭐ 标签贵到这个程度时，「下一批标注哪些」本身就是个要优化的问题。那一章讲不确定性采样和批量多样性</td>
+</tr>
+<tr>
+<td><a href="../数据这一关/13-评测集也是数据.html">数据这一关 13 · 评测集也是数据</a></td>
+<td>第五节两个自欺的完整版，以及「测试集多大才够」的置信区间算法</td>
+</tr>
+<tr>
+<td><a href="../机器学习与深度学习基础/05-评估与过拟合.html">机器学习与深度学习基础 05 · 评估与过拟合</a></td>
+<td>交叉验证和过拟合的基本功。⚠️ 那里的随机 K 折在这个板块要改成分组 K 折</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_8">✅ 检查点</h2>
+<ol>
+<li>无标注数据和有标注数据在这个领域的成本差多少？「一条标注」实际意味着什么？</li>
+<li>20 条标签时，冻结表示把 R² 从多少提到了多少？那个表示是怎么来的、用了多少标签？</li>
+<li>到 3000 条标签时两种方案的差距是多少？这说明预训练买到的是什么？</li>
+<li>为什么小数据上「冻结 + 小头」比「全量微调」更合适？判据是什么？</li>
+<li>数据增强在这里为什么不能乱加？举一个合法的和一个不合法的。</li>
+<li>小数据上最容易骗到自己的两件事是什么？它们的共同本质是什么？</li>
+</ol>
+<details>
+<summary>👀 答案</summary>
+<ol>
+<li>无标注接近 0 成本、亿级；有标注<strong>一条就是一次湿实验</strong>，几百到几千元、几天到几周，量级常常只有<strong>两位数到三位数</strong>。</li>
+<li>从 <strong>0.374</strong> 提到 <strong>0.696</strong>（差不多翻倍）。那 16 维表示是从 <strong>4000 条无标签序列</strong>用 PCA 抽的，<strong>一个标签都没用</strong>。</li>
+<li><strong>0.878 vs 0.884，差 0.006</strong>，基本收敛（20 条时的差距是 <strong>0.32</strong>）。⭐ 说明预训练买的是<strong>速度不是上限</strong> —— 和 <a href="01-第一天.html">01 章</a>量到的「领域知识 ≈ 一倍数据」是同一件事。</li>
+<li>因为<strong>可训练参数的数量级要和样本量匹配</strong>。冻结方案只解一个 16 维岭回归，原始方案是 600 维 —— 20 个样本对 600 个参数是在背答案。全量微调有几百万到几亿参数，几十条标签下几乎必然过拟合。</li>
+<li>因为增强必须<strong>保持标签不变</strong>。⭐ 合法：把分子整体旋转（性质不变）。⚠️ 不合法：随便换掉序列里一个残基（性质可能全变）。什么变换安全取决于问题的对称性，见 <a href="05-等变与不变.html">05 章</a>。</li>
+<li>①指标好看是因为<strong>测试集也小</strong>，试过多种划分再挑一个好看的，那个数已经被污染 ②<strong>用同一批数据既选模型又报成绩</strong>，在 5 个模型里挑测试集最好的那个，分数必然虚高。⭐ 共同本质：<strong>测试集每被看一次，它作为尺子的价值就掉一点。</strong></li>
+</ol>
+</details>
+<hr />
+<h2 id="_9">🛑 可以停在这里</h2>
+<p>到这里你手上有小数据场景最有效的那一招（<strong>冻结 + 小头</strong>）和它的判据（<strong>参数量级配得上样本量</strong>），
+外加四件该做的事和两个该躲的坑。<strong>这些已经够你开工了。</strong></p>
+<p>⚠️ <strong>什么时候看下一页</strong>：你已经把现有的几十条数据榨干了，
+开始想「<strong>那下一批实验该做什么</strong>」—— 那正是下一章。</p>
+<p>⚡ <strong>走神救援</strong></p>
+<blockquote>
+<p><strong>在科学问题里，标注贵得离谱而无标注数据几乎免费</strong>：一条标注 = 一次湿实验（几百到几千元、几天到几周），量级常常只有<strong>两位数到三位数</strong>；而序列数据库里躺着亿级的无标签数据。💀 一个新酶项目第一轮可能就<strong>几十个</strong>突变体的活性数据，拿去训几百维的模型就是 <code>n &lt; p</code>。⭐ 整章只讲怎么把便宜的那一半换成贵的那一半，而最有效的一招是<strong>冻结</strong>：先用无标注数据学出表示，只在它上面训一个很小的头。实测：<strong>20 条标签时，原始 one-hot 的测试 R² 是 0.374，冻结的 16 维表示是 0.696 —— 差不多翻倍</strong>，而那 16 维是从 <strong>4000 条无标签序列</strong>用 PCA 抽的，<strong>一个标签都没用</strong>。⭐⭐ 但到 <strong>3000 条</strong>时两者收敛（0.878 vs 0.884，差 0.006）—— 差距从 <strong>+0.32</strong> 收窄到 <strong>+0.006</strong>，和 01 章「领域知识 ≈ 一倍数据」是同一个结论：<strong>预训练买的是速度，不是上限</strong>。⭐ 冻结之所以比全量微调适合这里，判据很朴素：<strong>可训练参数的数量级要和样本量匹配</strong> —— 冻结方案解 16 维岭回归，原始方案 600 维，20 个样本对 600 个参数是在背答案。另外四件事：<strong>用交叉验证不用单次划分</strong>（但 K 折必须按同源家族分组）、<strong>报区间不报单点</strong>、<strong>数据增强要尊重对称性</strong>（整体旋转合法，随便换个残基通常不合法）、<strong>主动选下一批标注哪些</strong>。⚠️ 两个最容易骗到自己的：<strong>指标好看是因为测试集也小</strong>（试过多种划分再挑好看的，那个数已经脏了）、<strong>用同一批数据既选模型又报成绩</strong>（在 5 个模型里挑测试集最好的，分数必然虚高）—— 本质是同一件事：<strong>测试集每被看一次，作为尺子的价值就掉一点。</strong></p>
+</blockquote>
+<p><strong>下一节</strong> 👉 <a href="07-评测的坑.html">07-评测的坑.md</a></p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="05-等变与不变.html"><div class="dir">← 上一节</div>🔄 05 · 等变与不变</a><a class="next" href="07-评测的坑.html"><div class="dir">下一节 →</div>🚨 07 · 评测的坑</a></nav>
+</main>
+<script>(function(){
+  var KEY="sci-progress", FILE="06-\u5c0f\u6570\u636e\u8fd9\u4e00\u5173.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>

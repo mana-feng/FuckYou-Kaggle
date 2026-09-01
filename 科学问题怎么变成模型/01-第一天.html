@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>01 · 第一天：一列领域知识值多少条数据 · 科学问题怎么变成模型</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:1.14em;margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:.92em}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">01 · 第一天：一列领域知识值多少数据</span>
+  <span class="prevnext"><a href="00-怎么用这份教程.html">←</a>
+  <a href="02-序列不是文本.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">🧪 一、先跑起来</a></li>
+<li><a href="#_3">💱 二、把这张表读明白</a></li>
+<li><a href="#_4">🧭 三、于是你有了一张分诊表</a></li>
+<li><a href="#_5">🚧 四、开始之前先说清楚三件事</a></li>
+<li><a href="#_6">🔗 这一章连到哪里</a></li>
+<li><a href="#_7">✅ 检查点</a></li>
+<li><a href="#_8">🛑 可以停在这里</a></li>
+</ul>
+</div>
+</details>
+<h1 id="01">01 · 第一天：一列领域知识值多少条数据</h1>
+<p>⏱ <strong>24 分钟</strong> ｜ ⭐ <strong>同一份数据，加一列先验知识 ≈ 把训练集翻一倍</strong></p>
+<hr />
+<h2 id="_1">🎯 一句话</h2>
+<p><strong>科学问题里，「你知道什么」和「你有多少数据」是可以互换的。</strong>
+这一章用一个能在你机器上跑起来的例子把这个兑换率<strong>量出来</strong>：
+一列领域知识特征，在数据少的时候顶得上一倍数据；<strong>而数据一多，它就白给了。</strong></p>
+<hr />
+<h2 id="_2">🧪 一、先跑起来</h2>
+<p>不用装任何东西，只要 numpy。任务是最典型的那一类：
+<strong>给一条序列，预测它的一个数值性质</strong>（稳定性、活性、溶解度都是这个形状）。</p>
+<p>我们造一批长度 30 的序列，性质由两件事决定：<strong>平均疏水性</strong>，
+加上一个「位置 4 是酸性 且 位置 21 是碱性」时出现的加成 —— 后者是个<strong>成对相互作用</strong>。</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">AA</span> <span class="o">=</span> <span class="s2">&quot;ACDEFGHIKLMNPQRSTVWY&quot;</span>          <span class="c1"># 20 种氨基酸</span>
+<span class="n">L</span> <span class="o">=</span> <span class="mi">30</span>                                <span class="c1"># 序列长度</span>
+<span class="c1"># 疏水性标度：真实世界里这是【查表查出来的先验知识】，不是从数据里学的</span>
+<span class="n">HYDRO</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">AA</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.8</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.5</span><span class="p">,</span> <span class="mf">2.8</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.2</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.9</span><span class="p">,</span> <span class="mf">3.8</span><span class="p">,</span>
+                      <span class="mf">1.9</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.8</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.3</span><span class="p">]))</span>
+<span class="n">idx</span> <span class="o">=</span> <span class="p">{</span><span class="n">c</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">AA</span><span class="p">)}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">make</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">seed</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;造 n 条序列。性质 = 2 x 平均疏水性 + 一个&quot;盐桥&quot;加成，再加噪声。&quot;&quot;&quot;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">seqs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">AA</span><span class="p">),</span> <span class="n">L</span><span class="p">))</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">truth</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">HYDRO</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">s</span><span class="p">])</span>
+        <span class="n">pair</span> <span class="o">=</span> <span class="mf">3.0</span> <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="ow">in</span> <span class="s2">&quot;DE&quot;</span> <span class="ow">and</span> <span class="n">s</span><span class="p">[</span><span class="mi">21</span><span class="p">]</span> <span class="ow">in</span> <span class="s2">&quot;KR&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="mf">0.0</span>   <span class="c1"># ⭐ 位置 4 和 21 的相互作用</span>
+        <span class="k">return</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">h</span> <span class="o">+</span> <span class="n">pair</span>
+
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">truth</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">seqs</span><span class="p">])</span> <span class="o">+</span> <span class="n">r</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+    <span class="n">X1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">L</span> <span class="o">*</span> <span class="mi">20</span><span class="p">))</span>                                     <span class="c1"># ① 纯 one-hot</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">seqs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+            <span class="n">X1</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">p</span> <span class="o">*</span> <span class="mi">20</span> <span class="o">+</span> <span class="n">idx</span><span class="p">[</span><span class="n">c</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">HYDRO</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">s</span><span class="p">])]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">seqs</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">X1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">X1</span><span class="p">,</span> <span class="n">h</span><span class="p">]),</span> <span class="n">y</span>                               <span class="c1"># ② 多一列疏水性</span>
+
+
+<span class="n">X1te</span><span class="p">,</span> <span class="n">X2te</span><span class="p">,</span> <span class="n">yte</span> <span class="o">=</span> <span class="n">make</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">999</span><span class="p">)</span>                                   <span class="c1"># 固定测试集</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">r2</span><span class="p">(</span><span class="n">Xtr</span><span class="p">,</span> <span class="n">ytr</span><span class="p">,</span> <span class="n">Xte</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">Xtr</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">Xtr</span> <span class="o">+</span> <span class="n">lam</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">Xtr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">Xtr</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">ytr</span> <span class="o">-</span> <span class="n">ytr</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">Xte</span> <span class="o">@</span> <span class="n">b</span> <span class="o">+</span> <span class="n">ytr</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">((</span><span class="n">yte</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="p">((</span><span class="n">yte</span> <span class="o">-</span> <span class="n">yte</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%-10s</span><span class="s2"> </span><span class="si">%14s</span><span class="s2"> </span><span class="si">%20s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;train rows&quot;</span><span class="p">,</span> <span class="s2">&quot;one-hot&quot;</span><span class="p">,</span> <span class="s2">&quot;one-hot + hydro&quot;</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">450</span><span class="p">,</span> <span class="mi">900</span><span class="p">,</span> <span class="mi">1800</span><span class="p">,</span> <span class="mi">3600</span><span class="p">]:</span>
+    <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">ay</span> <span class="o">=</span> <span class="n">make</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%-10d</span><span class="s2"> </span><span class="si">%14.3f</span><span class="s2"> </span><span class="si">%20.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">r2</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">ay</span><span class="p">,</span> <span class="n">X1te</span><span class="p">),</span> <span class="n">r2</span><span class="p">(</span><span class="n">a2</span><span class="p">,</span> <span class="n">ay</span><span class="p">,</span> <span class="n">X2te</span><span class="p">)))</span>
+</code></pre></div>
+
+<p>真实输出：</p>
+<div class="codehilite"><pre><span></span><code>train rows        one-hot      one-hot + hydro
+450                 0.319                0.515
+900                 0.535                0.537
+1800                0.705                0.705
+3600                0.748                0.748
+</code></pre></div>
+
+<hr />
+<h2 id="_3">💱 二、把这张表读明白</h2>
+<p>这四行里有三个不同的结论，<strong>每一个都值得单独记住</strong>。</p>
+<p><strong>① 数据少的时候，那一列抵得上一倍数据。</strong>
+450 条时纯 one-hot 只有 <strong>0.319</strong>，加一列疏水性跳到 <strong>0.515</strong>；
+而把数据翻倍到 900 条、什么特征都不加，是 <strong>0.535</strong>。
+⭐ 两者几乎相当 —— <strong>一列先验知识 ≈ 一倍数据</strong>。在湿实验里，「一倍数据」可能意味着几个月和一笔真金白银。</p>
+<p><strong>② 数据一多，那一列就白给了。</strong>
+1800 条以后两列完全一样（0.705 / 0.705）。⭐ <strong>不是特征失效了，是模型自己从 one-hot 里学会了同一件事</strong> ——
+疏水性本来就是 20 个氨基酸各自的一个数，one-hot 加线性模型完全有能力把它拟合出来，<strong>只要样本够。</strong></p>
+<blockquote>
+<p>⭐⭐ <strong>这就是领域知识的兑换率</strong>：<strong>它买的不是上限，是速度。</strong>
+你付出的先验越多，需要的数据越少；但先验能给到的上限，数据自己也能到。</p>
+</blockquote>
+<p><strong>③ 涨到 0.748 就不再涨了。</strong>
+因为真实性质里还有那个<strong>成对相互作用</strong>（位置 4 和 21），
+而线性模型对每个位置<strong>独立</strong>打分，<strong>结构上就表达不了「两个位置一起才生效」</strong>。
+⚠️ 这不是数据不够，是<strong>模型形式错了</strong> —— 再给十倍数据也一样。</p>
+<hr />
+<h2 id="_4">🧭 三、于是你有了一张分诊表</h2>
+<p>上面三条对应三种完全不同的处境，而<strong>它们的解法互不通用</strong>。
+拿到一个科学建模任务，第一件事是判断自己在哪一格：</p>
+<table>
+<thead>
+<tr>
+<th>症状</th>
+<th>说明什么</th>
+<th>该做的</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>加特征立刻涨</td>
+<td>数据不够，先验还有空间</td>
+<td>⭐ 继续挖领域知识，这是<strong>最便宜</strong>的一档</td>
+</tr>
+<tr>
+<td>加特征没反应、加数据还在涨</td>
+<td>先验已经饱和</td>
+<td>去搞数据（或用预训练模型代替数据，见 <a href="03-蛋白质语言模型.html">03 章</a>）</td>
+</tr>
+<tr>
+<td>加数据也不涨了</td>
+<td><strong>模型形式表达不了真实关系</strong></td>
+<td>换模型结构，比如让它能表达成对交互</td>
+</tr>
+</tbody>
+</table>
+<p>💀 <strong>最常见的浪费是搞错格子</strong>：明明卡在第三格（模型表达不了），却一直在第一格里加特征、
+在第二格里堆数据。⚠️ <strong>两者都会「有一点点效果」</strong>，于是你会一直做下去 —— 这是最贵的一种陷阱。</p>
+<p>⭐ <strong>判据很简单，就是上面那张表</strong>：<strong>同时</strong>沿两个方向各推一步，看哪个方向动了。
+花不了多少时间，能省掉几个月。</p>
+<hr />
+<h2 id="_5">🚧 四、开始之前先说清楚三件事</h2>
+<p>这个板块后面每一章都建立在这三条上，<strong>现在就要接受它们</strong>。</p>
+<p><strong>① 你的数据比你以为的少。</strong>
+表里那 450 条是<strong>独立</strong>的 450 条。真实数据库里的一万条常常只有几百条是真独立的 ——
+因为它们彼此同源。⚠️ 这件事会<strong>同时</strong>毁掉你的训练和你的评估，
+而且<strong>默认的随机划分会让你完全看不出来</strong>。这是 <a href="07-评测的坑.html">07 章</a>的正题，
+也是整个板块最要紧的一章。</p>
+<p><strong>② 数据不是天上掉的，是有人做实验做出来的。</strong>
+所以它带着实验的痕迹：不同批次、不同仪器、只有成功的才被记录。
+⭐ 反过来，这也意味着<strong>你能去生产新数据</strong> —— 这是 AI4S 和普通 ML 最大的不同，
+<a href="08-数据实验模型飞轮.html">08 章</a>讲怎么利用它。</p>
+<p><strong>③ 有些先验不该当特征加，该当结构内建。</strong>
+疏水性这种「每个位置各自一个数」的先验，加成一列就行。
+但「<strong>整体旋转一下还是同一个分子</strong>」这种先验加不成特征 ——
+⭐ 它得<strong>写进模型结构里</strong>，那是 <a href="05-等变与不变.html">05 章</a>的正题。</p>
+<hr />
+<h2 id="_6">🔗 这一章连到哪里</h2>
+<table>
+<thead>
+<tr>
+<th>去哪</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="07-评测的坑.html">07 · 评测的坑</a></td>
+<td>⭐⭐ <strong>上面那张表的前提是「测试集真的独立」</strong> —— 而科学数据默认不满足。那一章实测：同一份数据只改划分方式，R² 从 0.71 掉到 −1.20</td>
+</tr>
+<tr>
+<td><a href="05-等变与不变.html">05 · 等变与不变</a></td>
+<td>第 4 节第三条的展开：旋转不变这类先验为什么只能内建进结构</td>
+</tr>
+<tr>
+<td><a href="03-蛋白质语言模型.html">03 · 蛋白质语言模型</a></td>
+<td>分诊表第二格的现代解法：没有更多标注数据时，用无标注序列预训练出来的表示顶上</td>
+</tr>
+<tr>
+<td><a href="../机器学习与深度学习基础/03-线性模型.html">机器学习与深度学习基础 03 · 线性模型</a></td>
+<td>这一章用的岭回归、以及 <code>lam</code> 那个正则项在做什么。⭐ 如果 <code>np.linalg.solve</code> 那行你看不懂，先去那一章</td>
+</tr>
+<tr>
+<td><a href="../机器学习与深度学习基础/05-评估与过拟合.html">机器学习与深度学习基础 05 · 评估与过拟合</a></td>
+<td>R² 和训练/测试划分的基本功。⚠️ 但那里的随机划分在这个板块里<strong>不能直接用</strong>，原因见 07</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_7">✅ 检查点</h2>
+<ol>
+<li>450 条数据时，加一列疏水性把 R² 从多少提到了多少？这个提升相当于把数据加到多少条？</li>
+<li>为什么 1800 条之后，那一列特征完全不起作用了？是特征失效了吗？</li>
+<li>R² 涨到 0.748 就不动了，是数据不够还是别的原因？</li>
+<li>分诊表的三格分别对应什么症状、什么解法？</li>
+<li>为什么说「你的数据比你以为的少」？这件事最先会在哪里坑到你？</li>
+<li>疏水性这种先验和「旋转不变」这种先验，处理方式有什么根本不同？</li>
+</ol>
+<details>
+<summary>👀 答案</summary>
+<ol>
+<li>从 <strong>0.319</strong> 提到 <strong>0.515</strong>。而纯 one-hot 要到 <strong>900 条</strong>才有 0.535 —— ⭐ <strong>一列先验 ≈ 一倍数据</strong>。</li>
+<li><strong>不是特征失效，是模型自己从 one-hot 学会了同一件事。</strong> 疏水性本来就是每个氨基酸各自的一个数，one-hot 加线性模型完全有能力拟合出来，只要样本够。⭐ <strong>领域知识买的是速度，不是上限。</strong></li>
+<li><strong>是模型形式不对。</strong> 真实性质里有位置 4 和 21 的<strong>成对相互作用</strong>，而线性模型对每个位置独立打分，<strong>结构上就表达不了「两个位置一起才生效」</strong>。再给十倍数据也一样。</li>
+<li>①加特征立刻涨 → 数据不够、先验还有空间 → 继续挖领域知识（最便宜）②加特征没反应但加数据还涨 → 先验饱和 → 搞数据或用预训练表示 ③加数据也不涨 → 模型表达不了 → 换结构。💀 最常见的浪费是搞错格子，而错的方向<strong>也会有一点点效果</strong>，于是你会一直做下去。</li>
+<li>因为数据库里的条目大量<strong>同源</strong>，一万条可能只有几百条真独立。<strong>最先坑到你的是评估</strong> —— 默认的随机划分会把几乎一样的样本分到训练和测试两边，指标虚高而你看不出来。见 <a href="07-评测的坑.html">07 章</a>。</li>
+<li>疏水性是「每个位置各自一个数」，<strong>加成一列特征</strong>就行；而「整体旋转一下还是同一个分子」<strong>加不成特征</strong>，只能<strong>写进模型结构</strong>里。见 <a href="05-等变与不变.html">05 章</a>。</li>
+</ol>
+</details>
+<hr />
+<h2 id="_8">🛑 可以停在这里</h2>
+<p>读到这里你已经有了这个板块最核心的那个直觉：<strong>先验和数据可以互换，而且兑换率是能量出来的</strong>，
+以及一张判断「现在该往哪个方向使劲」的分诊表。<strong>这两样东西已经能用了。</strong></p>
+<p>⚠️ <strong>什么时候看下一页</strong>：你想知道序列这种数据到底该怎么表示 ——
+上面用的 one-hot 是最笨的一种，而它有几个具体的毛病。</p>
+<p>⚡ <strong>走神救援</strong></p>
+<blockquote>
+<p><strong>科学问题里「你知道什么」和「你有多少数据」可以互换，而兑换率能量出来。</strong> 实测：预测一条长 30 的序列的数值性质，<strong>450 条</strong>数据时纯 one-hot 的测试 R² 是 <strong>0.319</strong>，只加一列「平均疏水性」（查表查出来的先验，不是学的）跳到 <strong>0.515</strong>；而纯 one-hot 要<strong>翻倍到 900 条</strong>才有 <strong>0.535</strong> —— ⭐ <strong>一列先验知识 ≈ 一倍数据</strong>，在湿实验里那可能是几个月和一笔钱。⭐⭐ 但<strong>数据一多那一列就白给了</strong>：1800 条时两者都是 <strong>0.705</strong>，完全一样 —— <strong>不是特征失效，是模型自己从 one-hot 学会了同一件事</strong>（疏水性本来就是每个氨基酸一个数，线性模型有能力拟合，只要样本够）。<strong>领域知识买的是速度，不是上限。</strong> ⚠️ 第三条：R² 涨到 <strong>0.748</strong> 就不动了，<strong>这不是数据不够，是模型形式错了</strong> —— 真实性质里有位置 4 和 21 的<strong>成对相互作用</strong>，而线性模型对每个位置独立打分，结构上表达不了「两个位置一起才生效」，再给十倍数据也一样。⭐ 于是有了<strong>分诊表</strong>：加特征立刻涨 = 先验还有空间（最便宜）；加特征没反应、加数据还涨 = 先验饱和，去搞数据或用预训练表示；加数据也不涨 = <strong>换模型结构</strong>。💀 <strong>最贵的陷阱是搞错格子</strong> —— 明明卡在第三格却一直加特征堆数据，而这两件事<strong>都会有一点点效果</strong>，于是你会一直做下去。判据就是同时往两个方向各推一步，看哪个动了。最后三条前提：<strong>你的数据比你以为的少</strong>（大量同源，一万条可能只有几百独立，最先坑到的是评估）、<strong>数据是有人做实验做出来的</strong>（所以你也能去生产新数据）、<strong>有些先验只能内建进结构</strong>（比如旋转不变）。</p>
+</blockquote>
+<p><strong>下一节</strong> 👉 <a href="02-序列不是文本.html">02-序列不是文本.md</a></p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="00-怎么用这份教程.html"><div class="dir">← 上一节</div>🧭 00 · 怎么用这份教程</a><a class="next" href="02-序列不是文本.html"><div class="dir">下一节 →</div>🧬 02 · 序列不是文本</a></nav>
+</main>
+<script>(function(){
+  var KEY="sci-progress", FILE="01-\u7b2c\u4e00\u5929.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>

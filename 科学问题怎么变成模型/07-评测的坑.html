@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>07 · 评测的坑：随机划分在这里是作弊 · 科学问题怎么变成模型</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:1.14em;margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:.92em}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">07 · 评测的坑</span>
+  <span class="prevnext"><a href="06-小数据这一关.html">←</a>
+  <a href="08-数据实验模型飞轮.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">🧬 一、为什么这里的样本不独立</a></li>
+<li><a href="#_3">🧪 二、把这件事跑出来</a></li>
+<li><a href="#_4">🚨 三、为什么正则化救不了它</a></li>
+<li><a href="#_5">🔧 四、正确的划分怎么做</a></li>
+<li><a href="#_6">🪤 五、另外三个坑</a></li>
+<li><a href="#_10">🔗 这一章连到哪里</a></li>
+<li><a href="#_11">✅ 检查点</a></li>
+<li><a href="#_12">🛑 可以停在这里</a></li>
+</ul>
+</div>
+</details>
+<h1 id="07">07 · 评测的坑：随机划分在这里是作弊</h1>
+<p>⏱ <strong>32 分钟</strong> ｜ ⭐ <strong>同一份数据同一个模型，只改划分方式，R² 从 0.71 掉到 −1.20</strong></p>
+<hr />
+<h2 id="_1">🎯 一句话</h2>
+<p><strong>随机划分训练集和测试集，在科学数据上几乎总是错的。</strong>
+互联网数据里样本大致独立；这里不是 —— 同一个家族的序列彼此高度相似，
+随机划分会把「几乎一样的东西」同时放进两边，于是模型<strong>只要记住就能拿高分</strong>。</p>
+<hr />
+<h2 id="_2">🧬 一、为什么这里的样本不独立</h2>
+<p>蛋白质序列数据库里，大量条目是<strong>同源</strong>的：来自不同物种、但由同一个祖先演化而来，
+序列相似度常常在 60%–90% 以上。化合物库同理 —— 一个母核衍生出几十个类似物。</p>
+<p>⚠️ 这不是数据脏，<strong>这是数据本来的样子</strong>。数据库收录的就是「已经被研究过的那些」，
+而研究本身就倾向于成簇进行：找到一个有意思的蛋白，接着测它的一堆同源物。</p>
+<p>于是你手上那一万条数据，<strong>有效独立样本数可能只有几百</strong>。</p>
+<blockquote>
+<p>⭐ <strong>一句话判据</strong>：如果随便抽两条样本，它们相似到「知道一条就能猜出另一条的标签」，
+那这两条就不该被划分到两边去。</p>
+</blockquote>
+<hr />
+<h2 id="_3">🧪 二、把这件事跑出来</h2>
+<p>下面这段用合成数据复现这个坑：40 个「家族」，每族一条原型序列，
+族内成员是原型的小扰动（12% 位点突变）。<strong>标签由家族原型决定</strong> ——
+也就是说真信号在<strong>家族层面</strong>，不在单条序列层面。</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">N_FAMILY</span><span class="p">,</span> <span class="n">PER_FAMILY</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">20</span>   <span class="c1"># 40 个家族，每族 25 条，长 60，20 种&quot;氨基酸&quot;</span>
+
+<span class="c1"># 每个家族一条原型；同族成员是原型的小扰动 —— 这就是&quot;同源&quot;</span>
+<span class="n">proto</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">N_FAMILY</span><span class="p">,</span> <span class="n">L</span><span class="p">))</span>
+<span class="n">seqs</span><span class="p">,</span> <span class="n">fam</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_FAMILY</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">PER_FAMILY</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">proto</span><span class="p">[</span><span class="n">f</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">mut</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.12</span>
+        <span class="n">s</span><span class="p">[</span><span class="n">mut</span><span class="p">]</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">mut</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+        <span class="n">seqs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">);</span> <span class="n">fam</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="n">seqs</span><span class="p">,</span> <span class="n">fam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">seqs</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fam</span><span class="p">)</span>
+
+<span class="c1"># 标签由家族原型决定（真信号在家族层面），加一点噪声</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">K</span><span class="p">))</span>
+<span class="n">fam_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">w</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">L</span><span class="p">),</span> <span class="n">proto</span><span class="p">[</span><span class="n">f</span><span class="p">]]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_FAMILY</span><span class="p">)])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">fam_y</span><span class="p">[</span><span class="n">fam</span><span class="p">]</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.35</span> <span class="o">*</span> <span class="n">fam_y</span><span class="o">.</span><span class="n">std</span><span class="p">(),</span> <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">fam</span><span class="p">))</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">seqs</span><span class="p">),</span> <span class="n">L</span> <span class="o">*</span> <span class="n">K</span><span class="p">))</span>                       <span class="c1"># one-hot</span>
+<span class="n">X</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seqs</span><span class="p">))[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="o">*</span> <span class="n">K</span> <span class="o">+</span> <span class="n">seqs</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ridge_r2</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">te</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">tr</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">tr</span><span class="p">]</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">Xt</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">Xt</span> <span class="o">+</span> <span class="n">lam</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">Xt</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">yt</span> <span class="o">-</span> <span class="n">yt</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
+    <span class="n">pred</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">te</span><span class="p">]</span> <span class="o">@</span> <span class="n">beta</span> <span class="o">+</span> <span class="n">yt</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">((</span><span class="n">y</span><span class="p">[</span><span class="n">te</span><span class="p">]</span> <span class="o">-</span> <span class="n">pred</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="p">((</span><span class="n">y</span><span class="p">[</span><span class="n">te</span><span class="p">]</span> <span class="o">-</span> <span class="n">y</span><span class="p">[</span><span class="n">te</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+
+<span class="n">idx</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seqs</span><span class="p">))</span>
+<span class="n">cut</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.75</span><span class="p">)</span>
+<span class="n">r2_random</span> <span class="o">=</span> <span class="n">ridge_r2</span><span class="p">(</span><span class="n">idx</span><span class="p">[:</span><span class="n">cut</span><span class="p">],</span> <span class="n">idx</span><span class="p">[</span><span class="n">cut</span><span class="p">:])</span>             <span class="c1"># ① 随机划分</span>
+
+<span class="n">fam_order</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">N_FAMILY</span><span class="p">)</span>                  <span class="c1"># ② 按家族划分</span>
+<span class="n">train_f</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">fam_order</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="n">N_FAMILY</span> <span class="o">*</span> <span class="mf">0.75</span><span class="p">)])</span>
+<span class="n">tr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seqs</span><span class="p">))</span> <span class="k">if</span> <span class="n">fam</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">in</span> <span class="n">train_f</span><span class="p">])</span>
+<span class="n">te</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seqs</span><span class="p">))</span> <span class="k">if</span> <span class="n">fam</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">train_f</span><span class="p">])</span>
+<span class="n">r2_group</span> <span class="o">=</span> <span class="n">ridge_r2</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">te</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;同一份数据、同一个模型，只改划分方式：&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  random split   test R2 = </span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">r2_random</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  group split    test R2 = </span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">r2_group</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  inflation      </span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">r2_random</span> <span class="o">-</span> <span class="n">r2_group</span><span class="p">))</span>
+
+<span class="n">in_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">fam</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">fam</span><span class="p">[</span><span class="n">idx</span><span class="p">[:</span><span class="n">cut</span><span class="p">]])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idx</span><span class="p">[</span><span class="n">cut</span><span class="p">:]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;random split: </span><span class="si">%d%%</span><span class="s2"> of test seqs have a same-family sibling in train&quot;</span>
+      <span class="o">%</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">in_train</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
+</code></pre></div>
+
+<p>真实输出：</p>
+<div class="codehilite"><pre><span></span><code>同一份数据、同一个模型，只改划分方式：
+  random split   test R2 = 0.707
+  group split    test R2 = -1.199
+  inflation      1.906
+random split: 100% of test seqs have a same-family sibling in train
+</code></pre></div>
+
+<p>⭐ <strong><code>R² = 0.707</code> 看起来是个像样的模型；<code>R² = −1.199</code> 意味着它还不如直接猜训练集均值。</strong>
+同一份数据、同一个模型、同一套超参 —— <strong>只改了怎么切</strong>。</p>
+<blockquote>
+<p>⚠️ <strong>你的数值会不同，要看的是两者的差距。</strong> 我换了六组设置复核过：
+正则化从 1 加到 100、家族数从 40 加到 100、突变率从 5% 到 25%、换随机种子 ——
+<strong>随机划分的 R² 恒在 0.66–0.85 之间，按家族划分的 R² 恒为负数</strong>（−0.25 到 −1.36）。
+⭐ 这个差距<strong>不是某组超参下的巧合</strong>。</p>
+</blockquote>
+<hr />
+<h2 id="_4">🚨 三、为什么正则化救不了它</h2>
+<p>一个自然的反应是「加大正则化就好了」。上面那组复核里，
+把 <code>lam</code> 从 1 加到 100，按家族划分的 R² 从 −1.20 抬到 −0.25 —— <strong>抬上去了，但还是负的</strong>。</p>
+<p>⭐ <strong>原因不在模型复杂度，在于训练集里根本没有测试家族的信息。</strong>
+标签由家族原型决定，而那 10 个测试家族的原型模型一次都没见过。
+正则化能防止过拟合，防不了「要预测的东西压根不在训练分布里」。</p>
+<p>⚠️ 所以看到「按组划分后指标暴跌」时，<strong>不要第一时间去调模型</strong> —— 先接受这个数字，
+它才是你系统真实泛化能力的估计。</p>
+<hr />
+<h2 id="_5">🔧 四、正确的划分怎么做</h2>
+<ol>
+<li><strong>先聚类，再划分。</strong> 按序列相似度把数据聚成簇，<strong>整簇整簇地分配</strong>到训练/验证/测试。
+   🗓️ 工具层面常用 CD-HIT、MMseqs2 这类序列聚类程序（版本和参数会变，用之前查它们的当前文档）。</li>
+<li><strong>阈值要说清楚。</strong> 「30% 相似度以下才算不同簇」和「90% 以下」是两个完全不同的难度，
+   ⭐ <strong>报告指标时必须同时报这个阈值</strong>，否则数字之间不可比。</li>
+<li><strong>验证集也要按组切。</strong> 只把测试集按组切、验证集还是随机切，调参那一步照样会泄漏。</li>
+<li>⚠️ <strong>用别人的公开划分之前，先问它是怎么划的。</strong> 公开 benchmark 一样可能带这个坑。</li>
+</ol>
+<blockquote>
+<p>⭐ <strong>这不是一条新规矩，是站内那条规矩换了一个域。</strong>
+<a href="../数据这一关/14-数据泄漏的七种来源.html">数据这一关 · 14 数据泄漏的七种来源</a> 的
+<strong>④ 分组泄漏</strong>讲的就是这件事：同一个用户的多条记录被随机切散，
+随机切 AUC <strong>0.706</strong>、按用户 <code>GroupKFold</code> 切只剩 <strong>0.564</strong> —— 那 0.14 是「认人」不是「预测」。
+⭐⭐ <strong>唯一的区别是「组」给没给你</strong>：那边 <code>user_id</code> 是现成的一列，
+一行 <code>len(set(uid_train) &amp; set(uid_test))</code> 就能验，期望是 0；
+而这里<strong>没有这一列</strong> —— 「哪些序列算同一组」得你自己按相似度聚出来，
+<strong>连阈值定在哪都是你的决定</strong>。这才是科学数据上真正难的那一半。</p>
+</blockquote>
+<hr />
+<h2 id="_6">🪤 五、另外三个坑</h2>
+<h3 id="_7">只有成功的实验进了数据库</h3>
+<p>发表和录入本身是有筛选的：做出来没效果的分子、表达失败的突变体，大多不会进公开库。
+⚠️ 于是你的「负样本」不是真正的负样本，而是<strong>没被记录的那一类被整体删掉了</strong>。</p>
+<p>⭐ 这就是<a href="../数据这一关/15-采样偏差与幸存者偏差.html">数据这一关 · 15 采样偏差与幸存者偏差</a>
+讲的那件事：<strong>你手上的数据只包含「活下来的」那部分，而失败的那部分根本没进样本。</strong>
+用它训出来的模型会系统性高估效果，<strong>而且从数据本身看不出问题</strong>。</p>
+<h3 id="_8">测试集太小，指标根本分不出差别</h3>
+<p>科学数据的测试集常常只有一两百条 —— 而按家族划分之后，<strong>有效独立样本数还要再打一个折</strong>。
+⚠️ 站内<a href="../大模型全景导论/11-评测体系.html">大模型全景导论 · 11 评测体系</a>算过一笔同类的账：
+<strong>100 题只能分辨约 8 个百分点，想分辨 3 个点要约 700 题。</strong>
+⭐ 你的测试集如果只有 40 个独立家族，「A 比 B 高 2 个点」这句话大概率没有意义。</p>
+<h3 id="_9">指标选错</h3>
+<p>阳性样本占 3% 时，一个「全都预测阴性」的模型准确率就有 97%。
+⭐ 极不平衡的数据上看准确率没有意义，该看的是 AUPRC 这类对正类敏感的指标，
+或者干脆报「排名前 N 里有几个真阳性」—— <strong>因为下游真正要做的就是「挑 N 个去做实验」</strong>。</p>
+<hr />
+<h2 id="_10">🔗 这一章连到哪里</h2>
+<table>
+<thead>
+<tr>
+<th>去哪</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../数据这一关/14-数据泄漏的七种来源.html">数据这一关 14 · 数据泄漏的七种来源</a></td>
+<td>⭐ <strong>它的 ④ 分组泄漏和这一章是同一个机制</strong>：那边同一个用户的记录跨集，随机切 AUC 0.706、<code>GroupKFold</code> 按用户切只剩 0.564。⭐⭐ <strong>差别在「组」是不是现成的</strong> —— 那边 <code>user_id</code> 是一列，一行 <code>len(set(uid_train) &amp; set(uid_test))</code> 就能验；这里没有这一列，<strong>「哪些序列算同一组」本身就是个要你来定的建模决策</strong></td>
+</tr>
+<tr>
+<td><a href="../数据这一关/15-采样偏差与幸存者偏差.html">数据这一关 15 · 采样偏差与幸存者偏差</a></td>
+<td>「只有成功的实验进了数据库」的完整版，以及查出偏了之后的逆倾向加权</td>
+</tr>
+<tr>
+<td><a href="../数据这一关/13-评测集也是数据.html">数据这一关 13 · 评测集也是数据</a></td>
+<td>⭐ 尺子本身也会坏。它的<strong>第三节「多大才够：把置信区间算出来」</strong>，正是「测试集太小、指标分不出差别」的算法</td>
+</tr>
+<tr>
+<td><a href="../机器学习与深度学习基础/05-评估与过拟合.html">机器学习与深度学习基础 05 · 评估与过拟合</a></td>
+<td>交叉验证的基本功。⚠️ 这里要用的是<strong>按组的</strong>交叉验证，不是普通的 K 折</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_11">✅ 检查点</h2>
+<ol>
+<li>为什么科学数据上的随机划分是作弊？用一句话说清机制。</li>
+<li>实验里两种划分的 R² 各是多少？「负的 R²」意味着什么？</li>
+<li>加大正则化能不能救回按家族划分的指标？为什么？</li>
+<li>正确的划分要做哪四件事？为什么验证集也要按组切？</li>
+<li>「只有成功的实验进了数据库」会造成什么后果？它对应站内哪一章讲的问题？</li>
+<li>测试集只有 40 个独立家族时，「A 比 B 高 2 个点」这句话可信吗？</li>
+</ol>
+<details>
+<summary>👀 答案</summary>
+<ol>
+<li>同源序列高度相似，随机划分会把<strong>几乎一样的样本</strong>同时放进训练集和测试集，于是模型只要<strong>记住训练集</strong>就能在测试集拿高分 —— 测的是记忆不是泛化。实验里随机划分下 <strong>100%</strong> 的测试序列在训练集里有同族兄弟。</li>
+<li><strong>随机划分 R² = 0.707，按家族划分 R² = −1.199</strong>，虚高 1.906。负的 R² 意味着模型<strong>还不如直接猜训练集均值</strong>。</li>
+<li><strong>不能。</strong> <code>lam</code> 从 1 加到 100，按家族划分只从 −1.20 抬到 −0.25，<strong>仍然是负的</strong>。因为问题不在模型复杂度，而在于<strong>训练集里根本没有测试家族的信息</strong> —— 正则化防得了过拟合，防不了「要预测的东西不在训练分布里」。</li>
+<li>①按相似度聚类再整簇分配 ②报告时必须同时报相似度阈值 ③<strong>验证集也要按组切</strong>（否则调参那一步照样泄漏）④用别人的公开划分前先问它是怎么划的。</li>
+<li>负样本不是真正的负样本，而是「没被记录的那一类被整体删掉了」，模型会<strong>系统性高估效果、而且从数据本身看不出来</strong>。对应<a href="../数据这一关/15-采样偏差与幸存者偏差.html">数据这一关 15 · 采样偏差与幸存者偏差</a>。</li>
+<li><strong>大概率不可信。</strong> 站内算过：100 个独立样本只能分辨约 8 个百分点，想分辨 3 个点要约 700 个。40 个家族比 100 还少。</li>
+</ol>
+</details>
+<hr />
+<h2 id="_12">🛑 可以停在这里</h2>
+<p>读到这里你手上有一条可以立刻执行的规矩：<strong>拿到任何科学数据集，第一件事是问「它是怎么划分的」</strong> ——
+如果答案是「随机」，那所有报告出来的指标都要重新估。</p>
+<p>⚠️ <strong>什么时候看下一页</strong>：你已经能正确评估了，接下来要决定<strong>下一批实验做什么</strong> ——
+那是把评测接回数据生产的事。</p>
+<p>⚡ <strong>走神救援</strong></p>
+<blockquote>
+<p><strong>随机划分训练/测试集，在科学数据上几乎总是作弊。</strong> 因为这里的样本<strong>不独立</strong>：同源序列来自同一个祖先，相似度常在 60%–90% 以上；数据库收录的又正是「已经被成簇研究过的那些」。⚠️ 于是你手上那一万条，<strong>有效独立样本数可能只有几百</strong>。⭐ 实测证据：同一份合成数据、同一个岭回归、同一套超参，<strong>只改划分方式</strong> —— 随机划分测试集 <strong>R² = 0.707</strong>（看起来是个像样的模型），按家族划分 <strong>R² = −1.199</strong>（<strong>还不如直接猜训练集均值</strong>），虚高 <strong>1.906</strong>。随机划分时 <strong>100%</strong> 的测试序列在训练集里有同族兄弟；按家族划分时这个比例构造上就是 0。⚠️ 换六组设置复核过：随机划分的 R² 恒在 <strong>0.66–0.85</strong>，按家族划分<strong>恒为负数</strong>（−0.25 到 −1.36）—— 不是某组超参下的巧合。⭐ <strong>加大正则化救不了</strong>：<code>lam</code> 从 1 加到 100 只把它从 −1.20 抬到 −0.25，仍是负的 —— 因为问题不在模型复杂度，而在<strong>训练集里根本没有测试家族的信息</strong>。正确做法四条：<strong>先按相似度聚类再整簇划分</strong>、<strong>报指标必须同时报相似度阈值</strong>、<strong>验证集也要按组切</strong>（否则调参照样泄漏）、<strong>用别人的划分前先问它是怎么划的</strong>。另外三个坑：<strong>只有成功的实验进了数据库</strong>（负样本不是真负样本，是整类没被记录 —— 就是幸存者偏差）、<strong>测试集太小</strong>（站内算过 100 题只能分辨 8 个百分点，而你可能只有 40 个独立家族）、<strong>指标选错</strong>（阳性占 3% 时全猜阴性也有 97% 准确率，该看 AUPRC 或「前 N 里有几个真阳性」，因为下游真正要做的就是挑 N 个去做实验）。</p>
+</blockquote>
+<p><strong>下一节</strong> 👉 <a href="08-数据实验模型飞轮.html">08-数据实验模型飞轮.md</a></p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="06-小数据这一关.html"><div class="dir">← 上一节</div>🧊 06 · 小数据这一关</a><a class="next" href="08-数据实验模型飞轮.html"><div class="dir">下一节 →</div>♻️ 08 · 数据、实验、模型的飞轮</a></nav>
+</main>
+<script>(function(){
+  var KEY="sci-progress", FILE="07-\u8bc4\u6d4b\u7684\u5751.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
