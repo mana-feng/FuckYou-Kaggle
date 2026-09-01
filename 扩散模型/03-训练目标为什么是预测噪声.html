@@ -323,9 +323,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>$$L_{\text{VLB}} = D_{KL}\big(q(x_T|x_0)\|p(x_T)\big) + \sum_{t\ge 2} D_{KL}\big(q(x_{t-1}|x_t,x_0)\|p_\theta(x_{t-1}|x_t)\big) - \log p_\theta(x_0|x_1)$$</p>
 <p>首项无可学参数（扔），末项是收尾重建，中间 T−1 项是全部战场。</p>
 <p><strong>第一刀</strong>：q(x_{t−1} | x_t, x₀) 是高斯，模型那边方差也定成常数 σ_t²，这项 KL 就是 ‖μ̃_t − μ_θ‖² ÷ 2σ_t²。</p>
-<p><strong>第二刀</strong>：把 x₀ 用 x_t 和 ε 表示代回，得</p>
-<p>$$\tilde\mu_t = \frac{1}{\sqrt{\alpha_t}}\left(x_t - \frac{\beta_t}{\sqrt{1-\bar\alpha_t}}\,\varepsilon\right)$$</p>
-<p>让模型照同一形状写 μ_θ。⭐ <strong>相减时 x_t 抵消</strong>，只剩 ε − ε_θ 乘一个常数。</p>
+<p><strong>第二刀</strong>：把 x₀ 用 x_t 和 ε 表示代回上一章那个 μ̃_t，化简后它变成 (1/√α_t)·(x_t − β_t/√(1−ᾱ_t)·ε)；让模型照同一形状写 μ_θ。⭐ <strong>相减时 x_t 抵消</strong>，只剩 ε − ε_θ 乘一个常数。</p>
 <p>⚠️ 「预测噪声」正是在这一刀选定的：吐 x̂₀ 或 μ_θ 也走得完，只是平方差里装的东西不同。</p>
 </details>
 <hr />
@@ -455,7 +453,7 @@ t= 990 k=142.35 | 摆烂猜x0=1.9877 摆烂猜eps=0.9995 | x0-MSE=2.02e+02 eps-M
 <p><strong>什么时候回来</strong>：改了预测目标却忘了改采样端的换算（第三节）；loss 好看但出图糊（第二节）；想上 zero terminal SNR 却发现 ε 参数化在终点除零（第三节的表）。</p>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>扩散模型的训练是<strong>监督学习，标签是你自己造的</strong>：取一张真图 x₀、随机抽时刻 t、随机采一份 ε，闭式拼出 x_t，让网络看着 (x_t, t) 把那份 ε 认出来，损失就是 ‖ε − ε_θ‖²。⭐ <strong>采出来的和比对的是同一个张量</strong>，没有未知量；同一张图配不同 t 和 ε 就是新样本，训练数据几乎无限。这行均方误差从<strong>变分下界</strong>来：ELBO 展开后是 T 项 KL 之和，而<strong>两边都是高斯、方差写死只学均值</strong>，KL 塌成「均值差平方 ÷ 2σ²」，x_t 抵消后只剩带系数的平方差；DDPM 把系数也扔了得到 L_simple，等于<strong>给 t 大的样本更高权重</strong>。<strong>三种参数化（ε / x₀ / v）可互换</strong>，选噪声是<strong>梯度量级</strong>的决定：t=10 时摆烂网络在 x₀ 上只错 <strong>0.0019</strong>、在 ε 上却错 <strong>1.0024</strong>，t=990 反过来是 <strong>1.9877</strong> 对 <strong>0.9995</strong>；同一个网络在 ε 上恒差 0.1，换 x₀ 口径后损失从 <strong>1.90e-05</strong> 跨到 <strong>202</strong>，ε 口径恒定 <strong>0.0100</strong>，换算比 k 在 t=990 时是 <strong>142.35</strong>。v 是两者的旋转混合，两头都不塌。最后 t 必须送进网络每一层，做法是<strong>正弦嵌入</strong>（和 Transformer 位置编码同一个零件）。</p>
+<p>扩散模型的训练是<strong>监督学习，标签是你自己造的</strong>：取一张真图 x₀、随机抽时刻 t、随机采一份 ε，闭式拼出 x_t，让网络看着 (x_t, t) 把那份 ε 认出来，损失就是 ‖ε − ε_θ‖²。⭐ <strong>采出来的和比对的是同一个张量</strong>，没有未知量；同一张图配不同 t 和 ε 就是新样本，训练数据几乎无限。这行均方误差从<strong>变分下界</strong>来：ELBO 展开后是 T 项 KL 之和，而<strong>两边都是高斯、方差写死只学均值</strong>，KL 塌成「均值差平方 ÷ 2σ²」，x_t 抵消后只剩带系数的平方差；DDPM 把系数也扔了得到 L_simple，等于<strong>给 t 大的样本更高权重</strong>。<strong>ε / x₀ / v 三种参数化可互换</strong>，选噪声是<strong>梯度量级</strong>的决定：t=10 时摆烂网络在 x₀ 上只错 <strong>0.0019</strong>、在 ε 上却错 <strong>1.0024</strong>，t=990 反过来是 <strong>1.9877</strong> 对 <strong>0.9995</strong>；同一个网络在 ε 上恒差 0.1，换 x₀ 口径后损失从 <strong>1.90e-05</strong> 跨到 <strong>202</strong>，ε 口径恒定 <strong>0.0100</strong>，换算比 k 在 t=990 时是 <strong>142.35</strong>。最后 t 必须送进网络每一层，做法是<strong>正弦嵌入</strong>（和 Transformer 位置编码同一个零件）。</p>
 </blockquote>
 <p><strong>下一节</strong> 👉 <a href="04-DDIM与采样加速.html">04-DDIM与采样加速.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
