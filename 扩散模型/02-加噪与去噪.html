@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>02 · 加噪与去噪：这个过程到底在做什么 · 扩散模型</title>
+<title>02 · 加噪：一条不用学的公式 · 扩散模型</title>
 <script>(function(){var t=localStorage.getItem('recsys-theme');
 if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
 @font-face{font-family:"CodeCJK";
@@ -269,7 +269,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
   <span class="title">02 · 加噪与去噪</span>
   <span class="prevnext"><a href="01-第一天-从噪声里捞出一张图.html">←</a>
-  <a href="03-训练目标为什么是预测噪声.html">→</a></span>
+  <a href="02b-调度表与反向过程.html">→</a></span>
   <button class="js-done-btn">☐ 打卡</button>
   <button id="themeToggle" title="切换深浅色">🌗</button>
 </div></header>
@@ -279,21 +279,19 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><a href="#_2">🌫️ 一、前向过程：一条不用学的公式</a></li>
 <li><a href="#_3">⚡ 二、闭式采样：训练能并行的全部原因</a></li>
 <li><a href="#x_t">🌑 三、终点 x_T：和原图已经没关系了</a></li>
-<li><a href="#_5">📉 四、β 调度：这条曲线在决定什么</a></li>
-<li><a href="#_6">🔄 五、反向过程：唯一需要学的那一半</a></li>
-<li><a href="#_8">🔗 这一章连到哪里</a></li>
-<li><a href="#_9">✅ 检查点</a></li>
-<li><a href="#_10">🛑 可以停在这里</a></li>
+<li><a href="#_5">🔗 这一章连到哪里</a></li>
+<li><a href="#_6">✅ 检查点</a></li>
+<li><a href="#_7">🛑 可以停在这里</a></li>
 </ul>
 </div>
 </details>
-<h1 id="02">02 · 加噪与去噪：这个过程到底在做什么</h1>
-<p>⏱ <strong>56 分钟</strong> ｜ ⭐ <strong>两条方向相反的路，只有一条需要学</strong></p>
+<h1 id="02">02 · 加噪：一条不用学的公式</h1>
+<p>⏱ <strong>32 分钟</strong> ｜ ⭐ <strong>前向过程零个可训练参数，而它决定了训练能不能并行</strong></p>
 <hr />
 <h2 id="_1">🎯 一句话</h2>
-<p><strong>扩散模型的前一半根本不用训练。</strong>
-往图上一点点掺噪声的那条路是一行写死的公式，没有任何参数；模型要学的只有反过来那条 —— 而且它学的不是「怎么画画」，是「<strong>这张图上加了什么噪声</strong>」。</p>
-<p>上一章你已经让一团随机点变回了原来的分布。这一章把那个循环拆开，一格一格看清每一步在算什么。</p>
+<p>扩散有两条方向相反的路，<strong>只有反向那条要学</strong>。
+这一页讲前向：<strong>加噪是一条写死的公式，零个可训练参数</strong> ——
+而它最要紧的性质是<strong>能一步跳到任意时刻</strong>，训练能并行全靠这一条。</p>
 <hr />
 <h2 id="_2">🌫️ 一、前向过程：一条不用学的公式</h2>
 <p>从原图 $x_0$ 出发，每一步往里掺一点高斯噪声：</p>
@@ -453,179 +451,42 @@ t=1000  sqrt(abar_t)=0.0064   corr(x0, x_t) = +0.0031
 </blockquote>
 <p>⚠️ <strong>但「几乎无关」不是「完全无关」。</strong> 看最后一行：$\sqrt{\bar\alpha_T} = 0.0064$，<strong>不是 0</strong>。也就是说训练时模型在最后一步见到的输入里，还残留着原图约 0.6% 的信息 —— 其中最显眼的是<strong>整幅画面的平均亮度</strong>。而采样时你喂进去的是纯噪声，那 0.6% 是空的。这个「训练时有、推理时没有」的口径不一致叫 <strong>signal leak</strong>，症状是模型很难生成<strong>整体极亮或极暗</strong>的画面（结果的平均亮度总往中灰靠）。修法是把调度改成终点严格 $\bar\alpha_T = 0$，即 <strong>zero terminal SNR</strong>。</p>
 <hr />
-<!--MIDSTOP-->
-<blockquote>
-<p>🛑 <strong>读到这里可以停</strong> —— 已经读了约 29 分钟。
-<strong>最后一段还有</strong>（约 34 分钟）：β 调度：这条曲线在决定什么 · 反向过程：唯一需要学的那一半 · 检查点与走神救援
-回来的时候不用重读，直接从下一节接着看就行。</p>
-</blockquote>
 <hr />
-<h2 id="_5">📉 四、β 调度：这条曲线在决定什么</h2>
-<p>$\beta_t$ 那张表怎么填，决定了「信息被毁掉的节奏」。两个常见选择：</p>
-<ul>
-<li><strong>linear</strong>：$\beta_t$ 从 0.0001 线性涨到 0.02（DDPM 原文）</li>
-<li><strong>cosine</strong>：不直接定 $\beta$，而是<strong>先画出 $\bar\alpha_t$ 想要的形状</strong>，再反推 $\beta$（Improved DDPM）</li>
-</ul>
-<p>$$\bar\alpha_t = \frac{f(t)}{f(0)}, \qquad f(t) = \cos^2\!\left(\frac{t/T + s}{1+s}\cdot\frac{\pi}{2}\right), \quad s = 0.008$$</p>
-<p><strong>人话</strong>：cosine 让「原图还剩多少」沿一条平缓的余弦曲线下落，而不是像 linear 那样前段陡跌。那个小小的 $s$ 是防止 $t=0$ 附近 $\beta$ 掉到 0 的偏置项。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 两种 β 调度下，「原图还剩多少」随 t 怎么衰减</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-
-<span class="n">T</span> <span class="o">=</span> <span class="mi">1000</span>
-
-<span class="c1"># linear：DDPM 原论文</span>
-<span class="n">beta_lin</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-4</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
-<span class="n">abar_lin</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cumprod</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">beta_lin</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-
-<span class="c1"># cosine：Improved DDPM 提出的，直接定义 ᾱ_t 而不是先定义 β_t</span>
-<span class="n">s</span> <span class="o">=</span> <span class="mf">0.008</span>
-<span class="n">t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cos</span><span class="p">((</span><span class="n">t</span> <span class="o">/</span> <span class="n">T</span> <span class="o">+</span> <span class="n">s</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">s</span><span class="p">)</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
-<span class="n">abar_cos</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span> <span class="o">/</span> <span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">1</span><span class="p">:]</span>                       <span class="c1"># ⭐ 先画出 ᾱ 的形状，β 是反推出来的</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;t&#39;</span><span class="si">:</span><span class="s2">&gt;5</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;sqrt_ab_lin&#39;</span><span class="si">:</span><span class="s2">&gt;12</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;sqrt_ab_cos&#39;</span><span class="si">:</span><span class="s2">&gt;12</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;SNR linear&#39;</span><span class="si">:</span><span class="s2">&gt;11</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;SNR cosine&#39;</span><span class="si">:</span><span class="s2">&gt;11</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">199</span><span class="p">,</span> <span class="mi">399</span><span class="p">,</span> <span class="mi">599</span><span class="p">,</span> <span class="mi">799</span><span class="p">,</span> <span class="mi">999</span><span class="p">]:</span>
-    <span class="n">al</span><span class="p">,</span> <span class="n">ac</span> <span class="o">=</span> <span class="n">abar_lin</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">abar_cos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s2">5d</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">al</span><span class="o">**</span><span class="mf">0.5</span><span class="si">:</span><span class="s2">11.4f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">ac</span><span class="o">**</span><span class="mf">0.5</span><span class="si">:</span><span class="s2">11.4f</span><span class="si">}</span><span class="s2"> &quot;</span>
-          <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">al</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">al</span><span class="p">)</span><span class="si">:</span><span class="s2">11.3f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">ac</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">ac</span><span class="p">)</span><span class="si">:</span><span class="s2">11.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1"># 「一半信号一半噪声」（SNR = 1）出现在哪一步</span>
-<span class="n">half_lin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">abar_lin</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">abar_lin</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
-<span class="n">half_cos</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">abar_cos</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">abar_cos</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">SNR 掉到 1 之前，linear 撑了 </span><span class="si">{</span><span class="n">half_lin</span><span class="si">}</span><span class="s2"> 步（</span><span class="si">{</span><span class="n">half_lin</span><span class="o">/</span><span class="n">T</span><span class="si">:</span><span class="s2">.0%</span><span class="si">}</span><span class="s2">），&quot;</span>
-      <span class="sa">f</span><span class="s2">&quot;cosine 撑了 </span><span class="si">{</span><span class="n">half_cos</span><span class="si">}</span><span class="s2"> 步（</span><span class="si">{</span><span class="n">half_cos</span><span class="o">/</span><span class="n">T</span><span class="si">:</span><span class="s2">.0%</span><span class="si">}</span><span class="s2">）&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;终点 sqrt(abar_T)：linear </span><span class="si">{</span><span class="n">abar_lin</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="o">**</span><span class="mf">0.5</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">，cosine </span><span class="si">{</span><span class="n">abar_cos</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="o">**</span><span class="mf">0.5</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</code></pre></div>
-
-<p>真实输出：</p>
-<div class="codehilite"><pre><span></span><code>    t  sqrt_ab_lin  sqrt_ab_cos  SNR linear  SNR cosine
-    1      0.9999      1.0000    9997.341   24221.327
-  100      0.9471      0.9859       8.710      34.833
-  200      0.8118      0.9480       1.933       8.872
-  400      0.4418      0.8047       0.242       1.837
-  600      0.1609      0.5838       0.027       0.517
-  800      0.0391      0.3067       0.002       0.104
- 1000      0.0064      0.0000       0.000       0.000
-
-SNR 掉到 1 之前，linear 撑了 259 步（26%），cosine 撑了 496 步（50%）
-终点 sqrt(abar_T)：linear 0.00635，cosine 0.00000
-</code></pre></div>
-
-<p>这里的 <strong>SNR（信噪比）</strong> 就是 $\bar\alpha_t / (1-\bar\alpha_t)$：信号功率比噪声功率。SNR = 1 是「一半信号一半噪声」那条线。</p>
-<!--FIG: 两条 √ᾱ_t 随 t 下降的曲线叠在同一张图上（linear 前段陡跌、cosine 平缓 S 形），横轴 t、纵轴 √ᾱ，用一条横虚线标出 SNR=1 的位置，并在两条曲线上分别点出第 259 步和第 496 步-->
-
-<p>⭐ <strong>这张表就是 cosine 后来更常用的全部理由</strong>：</p>
+<h2 id="_5">🔗 这一章连到哪里</h2>
 <table>
 <thead>
 <tr>
-<th>对比项</th>
-<th>linear</th>
-<th>cosine</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>SNR ≥ 1 撑到第几步</td>
-<td><strong>259</strong>（26%）</td>
-<td><strong>496</strong>（50%）</td>
-</tr>
-<tr>
-<td>$t=400$ 时原图还剩</td>
-<td>0.44</td>
-<td>0.80</td>
-</tr>
-<tr>
-<td>后段在干什么</td>
-<td><strong>74% 的步数花在几乎纯噪声上</strong></td>
-<td>一半步数留给还有内容的区间</td>
-</tr>
-</tbody>
-</table>
-<p>linear 调度<strong>把信息毁得太快</strong>：走到四分之一，图就已经糊到看不出内容了，剩下 740 步都在给一团接近纯噪声的东西继续加噪 —— 这些步既学不到什么，采样时也白走。cosine 把衰减摊平，<strong>每一步都还在做有意义的事</strong>。</p>
-<p>⚠️ <strong>cosine 的一个实现细节</strong>：按上式反推出来的 $\beta_t$ 在最后一步会等于 <strong>1.0</strong>（因为 $s$ 的定义让 $\bar\alpha_T$ 恰好为 0），代进后面的公式会除以零。所有实现都会把 $\beta$ <strong>clip 到 0.999</strong>。抄公式时别漏了这一句。</p>
-<hr />
-<h2 id="_6">🔄 五、反向过程：唯一需要学的那一半</h2>
-<p>要生成图，就得反着问：<strong>给定 $x_t$，$x_{t-1}$ 是什么？</strong></p>
-<p>直接求 $q(x_{t-1}\mid x_t)$ 要用到整个数据分布 —— 而那正是你想学的东西，绕回去了。</p>
-<p>⭐ <strong>但如果额外告诉你 $x_0$，这个后验有闭式解，而且还是个高斯</strong>：</p>
-<p>$$q(x_{t-1}\mid x_t, x_0) = \mathcal{N}\!\left(\tilde\mu_t(x_t, x_0),\; \tilde\beta_t I\right)$$</p>
-<p>$$\tilde\mu_t = \frac{\sqrt{\bar\alpha_{t-1}}\,\beta_t}{1-\bar\alpha_t}\,x_0 + \frac{\sqrt{\alpha_t}\,(1-\bar\alpha_{t-1})}{1-\bar\alpha_t}\,x_t, \qquad \tilde\beta_t = \frac{1-\bar\alpha_{t-1}}{1-\bar\alpha_t}\,\beta_t$$</p>
-<p><strong>人话</strong>：<strong>已知起点和终点，中间那一步就是两者的一个加权平均</strong>，权重由调度决定，再配一个固定的方差。$t$ 大的时候权重偏向 $x_t$，$t$ 小的时候偏向 $x_0$。</p>
-<p>问题只剩一个：<strong>推理时你没有 $x_0$</strong>（有的话还生成什么）。所以拿一个网络去估它。而由第二节的闭式采样式一变形，</p>
-<p>$$x_0 = \frac{x_t - \sqrt{1-\bar\alpha_t}\;\varepsilon}{\sqrt{\bar\alpha_t}}$$</p>
-<p><strong>知道 $x_t$ 和 $\varepsilon$，就等于知道 $x_0$。</strong> 于是「估原图」和「估噪声」在数学上是同一件事 —— ⭐ 而工程上普遍选后者，为什么，就是下一章的正题。</p>
-<blockquote>
-<p>⭐ <strong>所以「模型到底学什么」这个问题有了确切答案</strong>：
-它学的<strong>不是「怎么画一只猫」</strong>，而是「<strong>给你一张糊掉的图和一个时刻 $t$，指出这上面加了哪些噪声</strong>」。
-这是一个<strong>回归任务</strong>，不是什么神秘的创作能力。至于这个网络长什么样（U-Net、DiT），是第 7 章的事。</p>
-</blockquote>
-<h3 id="_7">🚧 为什么前向能一步到位，反向必须一步步走</h3>
-<table>
-<thead>
-<tr>
-<th>对比项</th>
-<th>前向</th>
-<th>反向</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>每一步在做什么</td>
-<td>加一份<strong>和数据无关</strong>的高斯噪声</td>
-<td>问「这坨像素最可能是从什么演变来的」</td>
-</tr>
-<tr>
-<td>是不是线性</td>
-<td>是（乘一个数 + 加噪声）</td>
-<td><strong>否</strong> —— 网络是非线性的</td>
-</tr>
-<tr>
-<td>能不能合并</td>
-<td>⭐ 能，两个高斯相加还是高斯</td>
-<td>❌ 不能，两个非线性映射合起来没有闭式</td>
-</tr>
-</tbody>
-</table>
-<p><strong>所以那 1000 步是一步一步走出来的，这就是扩散模型慢的根源。</strong> ⚠️ 但「不能精确合并」不等于「不能近似跳过」—— 怎么把 1000 步压到 50 步，是第 4 章的正题。</p>
-<hr />
-<h2 id="_8">🔗 这一章连到哪里</h2>
-<table>
-<thead>
-<tr>
-<th>相关的地方</th>
+<th>去哪</th>
 <th>为什么</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><a href="../大模型全景导论/10b-图像生成.html">全景导论 10b · 图像生成</a></td>
-<td>14 分钟的鸟瞰版，讲<strong>为什么图像走扩散、语言走自回归</strong>。它的深挖清单把这一整块判成「要外找」，本章就是那份外找的第一页</td>
+<td><a href="03-训练目标为什么是预测噪声.html">03 · 训练目标为什么是预测噪声</a></td>
+<td>闭式采样是训练循环的第 4 步 —— 那一页讲拿它拼出 $x_t$ 之后要让网络做什么</td>
 </tr>
 <tr>
-<td><a href="../强化学习基础/02-MDP.html">强化学习基础 02 · MDP</a></td>
-<td>第一节说前向过程是<strong>马尔可夫链</strong>。那一章专门有一节讲马尔可夫性质（「未来只取决于现在，与过去无关」），还给了个反例说明<strong>它是「状态怎么定义」的属性、不是问题本身的属性</strong></td>
+<td><a href="02b-调度表与反向过程.html">02b · 调度表与反向过程</a></td>
+<td>β 这张表具体该长什么样，以及反向那一半为什么不能照抄前向</td>
 </tr>
 <tr>
-<td><a href="../机器学习的数学原理/13-EM与高斯混合.html">机器学习的数学原理 13 · EM 与高斯混合</a></td>
-<td>$x_1 \dots x_T$ 全是<strong>隐变量</strong> —— 扩散模型是个隐变量模型。那一章用高斯混合把「有隐变量该怎么办」讲透了，<strong>下一章的变分下界直接接着它用</strong></td>
+<td><a href="../机器学习的数学原理/01b-KL散度.html">机器学习的数学原理 01b · KL 散度</a></td>
+<td>「两个独立高斯相加、方差直接相加」这类性质，是后面变分下界推导的地基</td>
 </tr>
 <tr>
-<td><a href="../机器学习与深度学习基础/15-PyTorch实战手册.html">机器学习与深度学习基础 15 · PyTorch 实战手册</a></td>
-<td>上面几段代码里的 <code>torch.cumprod</code>、<code>randn_like</code>、广播如果读着吃力，那一章有一份可直接抄的 PyTorch 模板</td>
+<td><a href="../NumPy与向量化思维/03-广播的三条规则.html">NumPy 与向量化思维 03 · 广播的三条规则</a></td>
+<td>闭式采样要对一整个 batch 同时算不同的 $t$，靠的就是广播</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="_9">✅ 检查点</h2>
+<h2 id="_6">✅ 检查点</h2>
 <ol>
 <li>前向过程里有多少个可训练参数？$\beta_t$ 是学出来的吗？</li>
 <li>为什么系数写成 $\sqrt{1-\beta_t}$ 和 $\sqrt{\beta_t}$ 而不是别的？这条性质反过来对输入数据提了什么要求？</li>
 <li>闭式采样式 $x_t = \sqrt{\bar\alpha_t}x_0 + \sqrt{1-\bar\alpha_t}\varepsilon$ 是精确的还是近似的？它成立靠的是哪个数学事实？</li>
 <li>如果没有闭式采样，训练要多付出什么代价？</li>
 <li>$t=1000$ 时 $x_0$ 和 $x_t$ 的相关系数是多少？这个数字为什么决定了「生成能不能凭空启动」？</li>
-<li>linear 和 cosine 两种调度，SNR 掉到 1 各撑了多少步？为什么这个差别让 cosine 更受欢迎？</li>
-<li>模型到底在学什么？用一句不含「生成」「创作」的话说清楚。</li>
-<li>前向能一步跳到任意 $t$，反向为什么不能？</li>
 </ol>
 <details>
 <summary>👀 答案</summary>
@@ -635,23 +496,20 @@ SNR 掉到 1 之前，linear 撑了 259 步（26%），cosine 撑了 496 步（5
 <li><strong>精确的，是恒等不是近似。</strong> 靠的是「两个独立零均值高斯相加仍是高斯、且方差直接相加」：$\alpha_2(1-\alpha_1) + (1-\alpha_2) = 1-\alpha_1\alpha_2$。</li>
 <li>一个 batch 里每张图抽的 $t$ 都不同，没有闭式解就得<strong>为每张图各跑一遍几百步的循环</strong>，训练成本乘上几百倍。代码里 $t=1000$ 时迭代法 182.5 ms、闭式法 0.29 ms，而且闭式那一列<strong>不随 $t$ 增长</strong>。</li>
 <li><strong>+0.0031</strong>（此时 $\sqrt{\bar\alpha_T} = 0.0064$）。因为终点几乎和输入无关，采样时才能直接从 <code>torch.randn(...)</code> 起手 —— 否则你得先有一张图才能生成。</li>
-<li>linear <strong>259 步（26%）</strong>，cosine <strong>496 步（50%）</strong>。linear 把信息毁得太快，剩下 74% 的步数都在给一团接近纯噪声的东西继续加噪，既学不到东西、采样时也白走；cosine 把衰减摊平，每一步都还在做有意义的事。</li>
-<li><strong>给定一张加了噪的图和一个时刻 $t$，指出这上面加了哪些噪声。</strong> 这是一个回归任务。</li>
-<li>前向每步是「加一份和数据无关的噪声」，是线性的、两个高斯能合并成一个；反向每步要问「这坨像素最可能是从什么演变来的」，依赖数据分布而且是<strong>非线性</strong>的，两个非线性映射合起来没有闭式解。（近似跳过是另一回事，第 4 章讲。）</li>
 </ol>
 </details>
 <hr />
-<h2 id="_10">🛑 可以停在这里</h2>
-<p>读到这里，你已经能<strong>把任意一份扩散代码里的前向部分逐行读懂</strong>：看到 <code>alphas_cumprod</code> 知道它是 $\bar\alpha_t$，看到 <code>sqrt_one_minus_alphas_cumprod</code> 知道它是噪声那一半的系数，看到配置里写着 <code>squaredcos_cap_v2</code> 知道那是 cosine 调度而且末尾 clip 过。</p>
-<p><strong>出现下面这些情况再回来</strong>：训出来的图整体亮度总往中灰靠（回看第三节的 signal leak）；换了数据集但忘了归一化、训练怎么都不收敛（回看第一节）；想改 $T$ 或换调度却不知道会牵动什么（回看第四节）。</p>
+<h2 id="_7">🛑 可以停在这里</h2>
+<p>读到这里，扩散的<strong>前向那一半你已经完整了</strong>：它是一条写死的公式，而闭式采样让训练能并行。</p>
+<p>⚠️ <strong>什么时候看下一页</strong>：你想知道 β 那张表具体该怎么定，或者好奇「既然前向能一步跳，反向为什么不能」。</p>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>扩散模型有两条方向相反的路，<strong>只有反向那条要学</strong>。<strong>前向</strong>：$x_t = \sqrt{1-\beta_t}\,x_{t-1} + \sqrt{\beta_t}\,\varepsilon$，$\beta_t$ 是一张写死的表（DDPM 里 0.0001 → 0.02，$T=1000$），<strong>零个可训练参数</strong>，而且是一条马尔可夫链。两个系数凑成一对是为了<strong>方差保持</strong>：$(1-\beta)+\beta=1$，所以输入方差是 1 时每一步都还是 1（实测各步 std 为 1.000 0.998 0.999 1.000 0.999）—— ⭐ <strong>这就是图像必须归一化的真正理由</strong>，方差 3 的数据会从 3.00 漂到 1.00。⭐⭐ 最重要的一条是<strong>闭式采样</strong>：记 $\bar\alpha_t = \prod \alpha_s$，则 $x_t = \sqrt{\bar\alpha_t}x_0 + \sqrt{1-\bar\alpha_t}\varepsilon$，<strong>一步跳到任意 $t$，而且是恒等不是近似</strong>（靠「独立高斯相加、方差相加」）。实测 $t=1000$ 时迭代法 182.5 ms、闭式 0.29 ms，且闭式不随 $t$ 增长 —— <strong>训练能并行全靠它</strong>，否则 batch 里每张图都要各跑几百步。终点 $x_T$ 和原图的相关系数只剩 <strong>0.0031</strong>，所以采样能从纯噪声凭空起手；⚠️ 但 $\sqrt{\bar\alpha_T}=0.0064$ <strong>不是 0</strong>，残留的那点亮度信息叫 <strong>signal leak</strong>，症状是生成结果的整体亮度老往中灰靠，修法是 zero terminal SNR。<strong>β 调度</strong>决定信息被毁的节奏：SNR 定义为 $\bar\alpha/(1-\bar\alpha)$，掉到 1 之前 linear 只撑 <strong>259 步（26%）</strong>、cosine 撑 <strong>496 步（50%）</strong> —— linear 有 74% 的步数花在几乎纯噪声上，这就是 cosine 更常用的全部理由；⚠️ cosine 反推的 $\beta$ 末尾会到 1.0，实现里一律 clip 到 0.999。<strong>反向</strong>：$q(x_{t-1}\mid x_t,x_0)$ 是高斯（起点终点的加权平均，方差 $\tilde\beta_t$），但推理时没有 $x_0$，所以用网络估；又因为 $x_0 = (x_t - \sqrt{1-\bar\alpha_t}\varepsilon)/\sqrt{\bar\alpha_t}$，<strong>估噪声和估原图是同一件事</strong>。模型学的不是「怎么画画」，是「<strong>这张图上加了什么噪声</strong>」，一个回归任务。⚠️ 前向能合并是因为线性、且噪声与数据无关，反向两条都不满足，<strong>所以必须一步步走</strong> —— 这就是扩散慢的根源。</p>
+<p>扩散有两条方向相反的路，<strong>只有反向那条要学</strong>。<strong>前向</strong>：$x_t = \sqrt{1-\beta_t}\,x_{t-1} + \sqrt{\beta_t}\,\varepsilon$，$\beta_t$ 是一张写死的表（DDPM 里 0.0001 → 0.02，$T=1000$），<strong>零个可训练参数</strong>。两个系数凑成一对是为了<strong>方差保持</strong>：$(1-\beta)+\beta=1$，所以输入方差是 1 时每一步都还是 1（实测各步 std 为 1.000 0.998 0.999 1.000 0.999）—— ⭐ <strong>这就是图像必须归一化的真正理由</strong>，方差 3 的数据会从 3.00 漂到 1.00。⭐⭐ 最重要的一条是<strong>闭式采样</strong>：记 $\bar\alpha_t = \prod \alpha_s$，则 $x_t = \sqrt{\bar\alpha_t}x_0 + \sqrt{1-\bar\alpha_t}\varepsilon$，<strong>一步跳到任意 $t$，而且是恒等不是近似</strong>（靠「独立高斯相加、方差相加」）。实测 $t=1000$ 时迭代法 182.5 ms、闭式 0.29 ms，且闭式不随 $t$ 增长 —— <strong>训练能并行全靠它</strong>，否则 batch 里每张图都要各跑几百步。终点 $x_T$ 和原图的相关系数只剩 <strong>0.0031</strong>，所以采样能从纯噪声凭空起手。</p>
 </blockquote>
-<p><strong>下一节</strong> 👉 <a href="03-训练目标为什么是预测噪声.html">03-训练目标为什么是预测噪声.md</a></p>
+<p><strong>下一节</strong> 👉 <a href="02b-调度表与反向过程.html">02b-调度表与反向过程.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
-<nav class="pagenav"><a href="01-第一天-从噪声里捞出一张图.html"><div class="dir">← 上一节</div>🎨 01 · 第一天：从噪声里捞出一张图</a><a class="next" href="03-训练目标为什么是预测噪声.html"><div class="dir">下一节 →</div>🎯 03 · 训练目标为什么是预测噪声</a></nav>
+<nav class="pagenav"><a href="01-第一天-从噪声里捞出一张图.html"><div class="dir">← 上一节</div>🎨 01 · 第一天：从噪声里捞出一张图</a><a class="next" href="02b-调度表与反向过程.html"><div class="dir">下一节 →</div>📉 02b · 调度表与反向过程</a></nav>
 </main>
 <script>(function(){
   var KEY="diff-progress", FILE="02-\u52a0\u566a\u4e0e\u53bb\u566a.md";

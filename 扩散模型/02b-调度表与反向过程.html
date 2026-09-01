@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>02b · 调度表与反向过程 · 扩散模型</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:1.14em;margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:.92em}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">02b · 调度表与反向过程</span>
+  <span class="prevnext"><a href="02-加噪与去噪.html">←</a>
+  <a href="03-训练目标为什么是预测噪声.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">📉 四、β 调度：这条曲线在决定什么</a></li>
+<li><a href="#_3">🔄 五、反向过程：唯一需要学的那一半</a></li>
+<li><a href="#_5">🔗 这一章连到哪里</a></li>
+<li><a href="#_6">✅ 检查点</a></li>
+<li><a href="#_7">🛑 可以停在这里</a></li>
+</ul>
+</div>
+</details>
+<h1 id="02b">02b · 调度表与反向过程</h1>
+<p>⏱ <strong>26 分钟</strong> ｜ ⭐ <strong>β 那张表在决定什么，以及反向为什么不能照抄前向</strong></p>
+<hr />
+<h2 id="_1">🎯 一句话</h2>
+<p>上一页说前向是一条写死的公式 —— 但<strong>那张表具体怎么写，直接决定有多少步是白走的</strong>。
+这一页先讲调度表，再回答那个自然会冒出来的问题：
+<strong>既然前向能一步跳到任意 $t$，反向为什么必须一步步走？</strong></p>
+<hr />
+<h2 id="_2">📉 四、β 调度：这条曲线在决定什么</h2>
+<p>$\beta_t$ 那张表怎么填，决定了「信息被毁掉的节奏」。两个常见选择：</p>
+<ul>
+<li><strong>linear</strong>：$\beta_t$ 从 0.0001 线性涨到 0.02（DDPM 原文）</li>
+<li><strong>cosine</strong>：不直接定 $\beta$，而是<strong>先画出 $\bar\alpha_t$ 想要的形状</strong>，再反推 $\beta$（Improved DDPM）</li>
+</ul>
+<p>$$\bar\alpha_t = \frac{f(t)}{f(0)}, \qquad f(t) = \cos^2\!\left(\frac{t/T + s}{1+s}\cdot\frac{\pi}{2}\right), \quad s = 0.008$$</p>
+<p><strong>人话</strong>：cosine 让「原图还剩多少」沿一条平缓的余弦曲线下落，而不是像 linear 那样前段陡跌。那个小小的 $s$ 是防止 $t=0$ 附近 $\beta$ 掉到 0 的偏置项。</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 两种 β 调度下，「原图还剩多少」随 t 怎么衰减</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="c1"># linear：DDPM 原论文</span>
+<span class="n">beta_lin</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-4</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+<span class="n">abar_lin</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cumprod</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">beta_lin</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># cosine：Improved DDPM 提出的，直接定义 ᾱ_t 而不是先定义 β_t</span>
+<span class="n">s</span> <span class="o">=</span> <span class="mf">0.008</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">T</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cos</span><span class="p">((</span><span class="n">t</span> <span class="o">/</span> <span class="n">T</span> <span class="o">+</span> <span class="n">s</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">s</span><span class="p">)</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="n">abar_cos</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span> <span class="o">/</span> <span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">1</span><span class="p">:]</span>                       <span class="c1"># ⭐ 先画出 ᾱ 的形状，β 是反推出来的</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;t&#39;</span><span class="si">:</span><span class="s2">&gt;5</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;sqrt_ab_lin&#39;</span><span class="si">:</span><span class="s2">&gt;12</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;sqrt_ab_cos&#39;</span><span class="si">:</span><span class="s2">&gt;12</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;SNR linear&#39;</span><span class="si">:</span><span class="s2">&gt;11</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;SNR cosine&#39;</span><span class="si">:</span><span class="s2">&gt;11</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">199</span><span class="p">,</span> <span class="mi">399</span><span class="p">,</span> <span class="mi">599</span><span class="p">,</span> <span class="mi">799</span><span class="p">,</span> <span class="mi">999</span><span class="p">]:</span>
+    <span class="n">al</span><span class="p">,</span> <span class="n">ac</span> <span class="o">=</span> <span class="n">abar_lin</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">abar_cos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s2">5d</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">al</span><span class="o">**</span><span class="mf">0.5</span><span class="si">:</span><span class="s2">11.4f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">ac</span><span class="o">**</span><span class="mf">0.5</span><span class="si">:</span><span class="s2">11.4f</span><span class="si">}</span><span class="s2"> &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">al</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">al</span><span class="p">)</span><span class="si">:</span><span class="s2">11.3f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">ac</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">ac</span><span class="p">)</span><span class="si">:</span><span class="s2">11.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 「一半信号一半噪声」（SNR = 1）出现在哪一步</span>
+<span class="n">half_lin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">abar_lin</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">abar_lin</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="n">half_cos</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">abar_cos</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">abar_cos</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">SNR 掉到 1 之前，linear 撑了 </span><span class="si">{</span><span class="n">half_lin</span><span class="si">}</span><span class="s2"> 步（</span><span class="si">{</span><span class="n">half_lin</span><span class="o">/</span><span class="n">T</span><span class="si">:</span><span class="s2">.0%</span><span class="si">}</span><span class="s2">），&quot;</span>
+      <span class="sa">f</span><span class="s2">&quot;cosine 撑了 </span><span class="si">{</span><span class="n">half_cos</span><span class="si">}</span><span class="s2"> 步（</span><span class="si">{</span><span class="n">half_cos</span><span class="o">/</span><span class="n">T</span><span class="si">:</span><span class="s2">.0%</span><span class="si">}</span><span class="s2">）&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;终点 sqrt(abar_T)：linear </span><span class="si">{</span><span class="n">abar_lin</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="o">**</span><span class="mf">0.5</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">，cosine </span><span class="si">{</span><span class="n">abar_cos</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="o">**</span><span class="mf">0.5</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>真实输出：</p>
+<div class="codehilite"><pre><span></span><code>    t  sqrt_ab_lin  sqrt_ab_cos  SNR linear  SNR cosine
+    1      0.9999      1.0000    9997.341   24221.327
+  100      0.9471      0.9859       8.710      34.833
+  200      0.8118      0.9480       1.933       8.872
+  400      0.4418      0.8047       0.242       1.837
+  600      0.1609      0.5838       0.027       0.517
+  800      0.0391      0.3067       0.002       0.104
+ 1000      0.0064      0.0000       0.000       0.000
+
+SNR 掉到 1 之前，linear 撑了 259 步（26%），cosine 撑了 496 步（50%）
+终点 sqrt(abar_T)：linear 0.00635，cosine 0.00000
+</code></pre></div>
+
+<p>这里的 <strong>SNR（信噪比）</strong> 就是 $\bar\alpha_t / (1-\bar\alpha_t)$：信号功率比噪声功率。SNR = 1 是「一半信号一半噪声」那条线。</p>
+<figure class="dia"><svg viewBox="0 0 710 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="两条 sqrt(abar) 随 t 下降的曲线，linear 前段陡跌，cosine 呈平缓 S 形"><text class="dia-t" x="355" y="24" font-size="14" text-anchor="middle" fill="var(--fg)" font-weight="700">同样走 1000 步，cosine 把「还剩多少原图」的下降推后了很多</text><line x1="70" y1="244" x2="660" y2="244" stroke="var(--fg)" stroke-width="1.8"/><line x1="70" y1="244" x2="70" y2="46" stroke="var(--fg)" stroke-width="1.8"/><polyline points="70.57,66.0178 127,75.4162 184,99.4996 298,165.36 412,215.36 526,237.04 640,242.861" fill="none" stroke="var(--muted)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><polyline points="70.57,66 127,68.5098 184,75.256 298,100.763 412,140.084 526,189.407 640,244" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="70.57" cy="66.0178" r="3.5" fill="var(--muted)"/><circle cx="127" cy="75.4162" r="3.5" fill="var(--muted)"/><circle cx="184" cy="99.4996" r="3.5" fill="var(--muted)"/><circle cx="298" cy="165.36" r="3.5" fill="var(--muted)"/><circle cx="412" cy="215.36" r="3.5" fill="var(--muted)"/><circle cx="526" cy="237.04" r="3.5" fill="var(--muted)"/><circle cx="640" cy="242.861" r="3.5" fill="var(--muted)"/><circle cx="70.57" cy="66" r="3.5" fill="var(--accent)"/><circle cx="127" cy="68.5098" r="3.5" fill="var(--accent)"/><circle cx="184" cy="75.256" r="3.5" fill="var(--accent)"/><circle cx="298" cy="100.763" r="3.5" fill="var(--accent)"/><circle cx="412" cy="140.084" r="3.5" fill="var(--accent)"/><circle cx="526" cy="189.407" r="3.5" fill="var(--accent)"/><circle cx="640" cy="244" r="3.5" fill="var(--accent)"/><text class="dia-t" x="270" y="190.6" font-size="13" text-anchor="middle" fill="var(--muted)" font-weight="700">linear</text><text class="dia-t" x="400" y="90.92" font-size="13" text-anchor="middle" fill="var(--accent)" font-weight="700">cosine</text><text class="dia-t" x="70.57" y="266" font-size="11.5" text-anchor="middle" fill="var(--muted)">t=1</text><text class="dia-t" x="298" y="266" font-size="11.5" text-anchor="middle" fill="var(--muted)">t=400</text><text class="dia-t" x="640" y="266" font-size="11.5" text-anchor="middle" fill="var(--muted)">t=1000</text><text class="dia-t" x="355" y="292" font-size="12.5" text-anchor="middle" fill="var(--done)" font-weight="700">⭐ SNR 掉到 1 之前：linear 撑了 259 步（26%），cosine 撑了 496 步（50%）</text><text class="dia-t" x="355" y="314" font-size="12" text-anchor="middle" fill="var(--muted)">⚠️ linear 在后半段几乎贴地 —— 那几百步几乎学不到东西，这就是 cosine 被提出来的原因</text></svg><figcaption>看 **linear 那条后半段贴地**：从 t=600 往后它已经接近 0，那几百步几乎没有信息可学。⭐ cosine 把有效区间从 26% 拉到 50% —— 同样 1000 步，能用的多了一倍。</figcaption></figure>
+
+<p>⭐ <strong>这张表就是 cosine 后来更常用的全部理由</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>linear</th>
+<th>cosine</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SNR ≥ 1 撑到第几步</td>
+<td><strong>259</strong>（26%）</td>
+<td><strong>496</strong>（50%）</td>
+</tr>
+<tr>
+<td>$t=400$ 时原图还剩</td>
+<td>0.44</td>
+<td>0.80</td>
+</tr>
+<tr>
+<td>后段在干什么</td>
+<td><strong>74% 的步数花在几乎纯噪声上</strong></td>
+<td>一半步数留给还有内容的区间</td>
+</tr>
+</tbody>
+</table>
+<p>linear 调度<strong>把信息毁得太快</strong>：走到四分之一，图就已经糊到看不出内容了，剩下 740 步都在给一团接近纯噪声的东西继续加噪 —— 这些步既学不到什么，采样时也白走。cosine 把衰减摊平，<strong>每一步都还在做有意义的事</strong>。</p>
+<p>⚠️ <strong>cosine 的一个实现细节</strong>：按上式反推出来的 $\beta_t$ 在最后一步会等于 <strong>1.0</strong>（因为 $s$ 的定义让 $\bar\alpha_T$ 恰好为 0），代进后面的公式会除以零。所有实现都会把 $\beta$ <strong>clip 到 0.999</strong>。抄公式时别漏了这一句。</p>
+<hr />
+<h2 id="_3">🔄 五、反向过程：唯一需要学的那一半</h2>
+<p>要生成图，就得反着问：<strong>给定 $x_t$，$x_{t-1}$ 是什么？</strong></p>
+<p>直接求 $q(x_{t-1}\mid x_t)$ 要用到整个数据分布 —— 而那正是你想学的东西，绕回去了。</p>
+<p>⭐ <strong>但如果额外告诉你 $x_0$，这个后验有闭式解，而且还是个高斯</strong>：</p>
+<p>$$q(x_{t-1}\mid x_t, x_0) = \mathcal{N}\!\left(\tilde\mu_t(x_t, x_0),\; \tilde\beta_t I\right)$$</p>
+<p>$$\tilde\mu_t = \frac{\sqrt{\bar\alpha_{t-1}}\,\beta_t}{1-\bar\alpha_t}\,x_0 + \frac{\sqrt{\alpha_t}\,(1-\bar\alpha_{t-1})}{1-\bar\alpha_t}\,x_t, \qquad \tilde\beta_t = \frac{1-\bar\alpha_{t-1}}{1-\bar\alpha_t}\,\beta_t$$</p>
+<p><strong>人话</strong>：<strong>已知起点和终点，中间那一步就是两者的一个加权平均</strong>，权重由调度决定，再配一个固定的方差。$t$ 大的时候权重偏向 $x_t$，$t$ 小的时候偏向 $x_0$。</p>
+<p>问题只剩一个：<strong>推理时你没有 $x_0$</strong>（有的话还生成什么）。所以拿一个网络去估它。而由第二节的闭式采样式一变形，</p>
+<p>$$x_0 = \frac{x_t - \sqrt{1-\bar\alpha_t}\;\varepsilon}{\sqrt{\bar\alpha_t}}$$</p>
+<p><strong>知道 $x_t$ 和 $\varepsilon$，就等于知道 $x_0$。</strong> 于是「估原图」和「估噪声」在数学上是同一件事 —— ⭐ 而工程上普遍选后者，为什么，就是下一章的正题。</p>
+<blockquote>
+<p>⭐ <strong>所以「模型到底学什么」这个问题有了确切答案</strong>：
+它学的<strong>不是「怎么画一只猫」</strong>，而是「<strong>给你一张糊掉的图和一个时刻 $t$，指出这上面加了哪些噪声</strong>」。
+这是一个<strong>回归任务</strong>，不是什么神秘的创作能力。至于这个网络长什么样（U-Net、DiT），是第 7 章的事。</p>
+</blockquote>
+<h3 id="_4">🚧 为什么前向能一步到位，反向必须一步步走</h3>
+<table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>前向</th>
+<th>反向</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>每一步在做什么</td>
+<td>加一份<strong>和数据无关</strong>的高斯噪声</td>
+<td>问「这坨像素最可能是从什么演变来的」</td>
+</tr>
+<tr>
+<td>是不是线性</td>
+<td>是（乘一个数 + 加噪声）</td>
+<td><strong>否</strong> —— 网络是非线性的</td>
+</tr>
+<tr>
+<td>能不能合并</td>
+<td>⭐ 能，两个高斯相加还是高斯</td>
+<td>❌ 不能，两个非线性映射合起来没有闭式</td>
+</tr>
+</tbody>
+</table>
+<p><strong>所以那 1000 步是一步一步走出来的，这就是扩散模型慢的根源。</strong> ⚠️ 但「不能精确合并」不等于「不能近似跳过」—— 怎么把 1000 步压到 50 步，是第 4 章的正题。</p>
+<hr />
+<h2 id="_5">🔗 这一章连到哪里</h2>
+<table>
+<thead>
+<tr>
+<th>相关的地方</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../大模型全景导论/10b-图像生成.html">全景导论 10b · 图像生成</a></td>
+<td>14 分钟的鸟瞰版，讲<strong>为什么图像走扩散、语言走自回归</strong>。它的深挖清单把这一整块判成「要外找」，本章就是那份外找的第一页</td>
+</tr>
+<tr>
+<td><a href="../强化学习基础/02-MDP.html">强化学习基础 02 · MDP</a></td>
+<td>第一节说前向过程是<strong>马尔可夫链</strong>。那一章专门有一节讲马尔可夫性质（「未来只取决于现在，与过去无关」），还给了个反例说明<strong>它是「状态怎么定义」的属性、不是问题本身的属性</strong></td>
+</tr>
+<tr>
+<td><a href="../机器学习的数学原理/13-EM与高斯混合.html">机器学习的数学原理 13 · EM 与高斯混合</a></td>
+<td>$x_1 \dots x_T$ 全是<strong>隐变量</strong> —— 扩散模型是个隐变量模型。那一章用高斯混合把「有隐变量该怎么办」讲透了，<strong>下一章的变分下界直接接着它用</strong></td>
+</tr>
+<tr>
+<td><a href="../机器学习与深度学习基础/15-PyTorch实战手册.html">机器学习与深度学习基础 15 · PyTorch 实战手册</a></td>
+<td>上面几段代码里的 <code>torch.cumprod</code>、<code>randn_like</code>、广播如果读着吃力，那一章有一份可直接抄的 PyTorch 模板</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<hr />
+<h2 id="_6">✅ 检查点</h2>
+<ol>
+<li>linear 和 cosine 两种调度，SNR 掉到 1 各撑了多少步？为什么这个差别让 cosine 更受欢迎？</li>
+<li>模型到底在学什么？用一句不含「生成」「创作」的话说清楚。</li>
+<li>前向能一步跳到任意 $t$，反向为什么不能？</li>
+</ol>
+<details>
+<summary>👀 答案</summary>
+<ol>
+<li>linear <strong>259 步（26%）</strong>，cosine <strong>496 步（50%）</strong>。linear 把信息毁得太快，剩下 74% 的步数都在给一团接近纯噪声的东西继续加噪，既学不到东西、采样时也白走；cosine 把衰减摊平，每一步都还在做有意义的事。</li>
+<li><strong>给定一张加了噪的图和一个时刻 $t$，指出这上面加了哪些噪声。</strong> 这是一个回归任务。</li>
+<li>前向每步是「加一份和数据无关的噪声」，是线性的、两个高斯能合并成一个；反向每步要问「这坨像素最可能是从什么演变来的」，依赖数据分布而且是<strong>非线性</strong>的，两个非线性映射合起来没有闭式解。（近似跳过是另一回事，<a href="04-DDIM与采样加速.html">04 章</a>讲。）</li>
+</ol>
+</details>
+<hr />
+<h2 id="_7">🛑 可以停在这里</h2>
+<p>到这里前向和反向两条路你都看清了：<strong>一条写死、一条要学</strong>，而且清楚了为什么反向不能像前向那样抄近道。</p>
+<p>⚠️ <strong>什么时候回来</strong>：读完 <a href="04-DDIM与采样加速.html">04 章</a>之后 —— 那一章会告诉你反向其实<strong>可以</strong>跳步，只是换掉了一个前提。回头再看这一页最后那一节，会更清楚它换掉的是什么。</p>
+<p>⚡ <strong>走神救援</strong></p>
+<blockquote>
+<p><strong>β 调度表在决定「信息以多快的速度被毁掉」</strong>。linear 是最早的做法：$\beta$ 从 0.0001 线性涨到 0.02。⚠️ 它的毛病是<strong>毁得太快</strong> —— 实测 SNR 掉到 1 之前 linear 只撑了 <strong>259 步（26%）</strong>，剩下 74% 的步数都在给一团已经接近纯噪声的东西继续加噪，<strong>既学不到东西、采样时也白走</strong>。<strong>cosine</strong> 改成直接定义 $\bar\alpha_t$ 的形状（β 是反推出来的），把衰减摊平，同样 1000 步能撑到 <strong>496 步（50%）</strong> —— ⭐ <strong>同样的步数，能用的多了一倍</strong>，这就是它后来更常用的全部原因。<strong>反向过程</strong>才是要学的那一半，而模型学的东西可以用一句不含「生成」「创作」的话说清楚：<strong>给定一张加了噪的图和一个时刻 $t$，指出这上面加了哪些噪声</strong> —— 这是一个<strong>回归任务</strong>。⭐ 最后那个自然的疑问：<strong>前向能一步跳，反向为什么不能？</strong> 因为前向每步是「加一份和数据无关的噪声」，线性、两个高斯能合并成一个；而反向每步要问「这坨像素最可能是从什么演变来的」，<strong>依赖数据分布而且是非线性的</strong>，两个非线性映射合起来没有闭式解。⚠️ 注意这说的是「没有精确的闭式跳步」——<strong>近似地跳是另一回事</strong>，那是 04 章 DDIM 的正题。</p>
+</blockquote>
+<p><strong>下一节</strong> 👉 <a href="03-训练目标为什么是预测噪声.html">03-训练目标为什么是预测噪声.md</a></p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="02-加噪与去噪.html"><div class="dir">← 上一节</div>🌫️ 02 · 加噪与去噪</a><a class="next" href="03-训练目标为什么是预测噪声.html"><div class="dir">下一节 →</div>🎯 03 · 训练目标为什么是预测噪声</a></nav>
+</main>
+<script>(function(){
+  var KEY="diff-progress", FILE="02b-\u8c03\u5ea6\u8868\u4e0e\u53cd\u5411\u8fc7\u7a0b.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
