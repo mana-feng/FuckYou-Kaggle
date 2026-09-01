@@ -140,6 +140,8 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
