@@ -451,7 +451,6 @@ t=1000  sqrt(abar_t)=0.0064   corr(x0, x_t) = +0.0031
 </blockquote>
 <p>⚠️ <strong>但「几乎无关」不是「完全无关」。</strong> 看最后一行：$\sqrt{\bar\alpha_T} = 0.0064$，<strong>不是 0</strong>。也就是说训练时模型在最后一步见到的输入里，还残留着原图约 0.6% 的信息 —— 其中最显眼的是<strong>整幅画面的平均亮度</strong>。而采样时你喂进去的是纯噪声，那 0.6% 是空的。这个「训练时有、推理时没有」的口径不一致叫 <strong>signal leak</strong>，症状是模型很难生成<strong>整体极亮或极暗</strong>的画面（结果的平均亮度总往中灰靠）。修法是把调度改成终点严格 $\bar\alpha_T = 0$，即 <strong>zero terminal SNR</strong>。</p>
 <hr />
-<hr />
 <h2 id="_5">🔗 这一章连到哪里</h2>
 <table>
 <thead>
