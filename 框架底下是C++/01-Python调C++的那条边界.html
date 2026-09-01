@@ -609,6 +609,13 @@ Python 在 PyTorch 里的角色是编排：决定调用哪个算子、按什么�
 </table>
 <p>⭐ <strong>最省事的做法</strong>：进 C++ 之前，把要用的东西<strong>全部转成裸指针和普通数值</strong>（<code>data_ptr</code>、<code>int</code>、<code>float</code>），然后再放开锁 —— 这样「不碰 Python 对象」是结构上保证的，不靠你记得。</p>
 <hr />
+<!--MIDSTOP-->
+<blockquote>
+<p>🛑 <strong>读到这里可以停</strong> —— 已经读了约 27 分钟。
+<strong>最后一段还有</strong>（约 20 分钟）：pybind11 把这些压成几行 · 检查点与走神救援
+回来的时候不用重读，直接从下一节接着看就行。</p>
+</blockquote>
+<hr />
 <h2 id="pybind11">🧩 五、pybind11 把这些压成几行</h2>
 <p><code>ctypes</code> 的好处是不用装东西，坏处是<strong>你得自己声明每个签名</strong>，而且只能传标量和指针。真正做扩展时用的是 <strong>pybind11</strong>：一个只有头文件的库，把 Python C API 那一大堆样板压成几行。</p>
 <p>🗓️ <strong>未实跑 —— 本机没装 pybind11，而且是 MinGW g++ 配 MSVC 编译的 CPython，编不出能导入的扩展模块。</strong>

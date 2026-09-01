@@ -691,6 +691,13 @@ RoPE 解耦是这个套路最干净的一个例子 —— <strong>64 维的额�
    它头特别多（128 个），所以 MHA 那一列显得格外夸张。</li>
 </ol>
 <hr />
+<!--MIDSTOP-->
+<blockquote>
+<p>🛑 <strong>读到这里可以停</strong> —— 已经读了约 24 分钟。
+<strong>最后一段还有</strong>（约 25 分钟）：朴素管理方式的浪费 · 四个能立刻用的优化 · 动手：算你能开多大 batch · 检查点与走神救援
+回来的时候不用重读，直接从下一节接着看就行。</p>
+</blockquote>
+<hr />
 <h2 id="_4">🗑️ 五、朴素管理方式的浪费</h2>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>❌ 传统做法：为每个请求预分配【最大长度】的连续显存</p><p>请求 A（实际用 100 token，max 2048）：</p><p>[████░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 用了 5%，浪费 95%</p><p>请求 B（实际用 1500）：</p><p>[████████████████████████░░░░░░░░] 浪费 27%</p><p>⭐ 实测：传统方式的 KV Cache 显存利用率只有 20-40% 💀</p></div></section>
 <p><strong>三种浪费</strong>：</p>
