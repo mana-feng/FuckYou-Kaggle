@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>04 · DDIM 与采样加速 · 扩散模型</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:1.14em;margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:.92em}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">04 · DDIM 与采样加速</span>
+  <span class="prevnext"><a href="03-训练目标为什么是预测噪声.html">←</a>
+  <a href="05-Latent-Diffusion.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">🐌 一、慢在哪：不是图大，是步多</a></li>
+<li><a href="#ddpm">🎲 二、DDPM 为什么一步都不能跳</a></li>
+<li><a href="#ddim">⏩ 三、DDIM 改了什么</a></li>
+<li><a href="#ddpm-ddim">🎛️ 四、η：一个旋钮在 DDPM 和 DDIM 之间滑动</a></li>
+<li><a href="#1000-50">🔢 五、动手：把 1000 步的表抽成 50 步</a></li>
+<li><a href="#_3">🎰 六、确定性带来的三个副产品</a></li>
+<li><a href="#_4">📉 七、步数不是越多越好</a></li>
+<li><a href="#_5">🗓️ 八、步数和调度表怎么配</a></li>
+<li><a href="#_6">🔗 这一章连到哪里</a></li>
+<li><a href="#_7">✅ 检查点</a></li>
+<li><a href="#_8">🛑 可以停在这里</a></li>
+</ul>
+</div>
+</details>
+<h1 id="04-ddim">04 · DDIM 与采样加速</h1>
+<p>⏱ <strong>42 分钟</strong> ｜ ⭐ 为什么 50 步能顶 1000 步，以及 UI 上那个「种子」为什么真能复现</p>
+<hr />
+<h2 id="_1">🎯 一句话</h2>
+<p><strong>DDPM 每走一步都要掷一次骰子，所以一步都不能跳；DDIM 把骰子拿掉，采样变成一条确定的轨迹 —— 于是可以在时间步上跳着走，20~50 步就出图。</strong></p>
+<p>上一章讲的是训练：模型学会了「给一张带噪的图，说出里面掺了什么噪声」。
+这一章讲<strong>生成</strong>：同一份权重，一个字都不用重训，怎么把 1000 次调用砍到 50 次。</p>
+<hr />
+<h2 id="_2">🐌 一、慢在哪：不是图大，是步多</h2>
+<p>每一步都是一次完整的网络前向，而且<strong>步与步之间硬串行</strong> —— 第 t 步的输出就是第 t−1 步的输入。
+（同一批里的多张图倒是可以并排跑，所以「一次出 8 张」几乎不额外花时间。）</p>
+<p>⭐ 于是出图耗时 ≈ <strong>步数 × 单次前向</strong>。想快只有两条路：<strong>让每一步更便宜</strong>（下一章的潜空间），或者<strong>少走几步</strong>（这一章）。</p>
+<hr />
+<h2 id="ddpm">🎲 二、DDPM 为什么一步都不能跳</h2>
+<p>DDPM 的反向过程是一条<strong>马尔可夫链</strong>：</p>
+<p>$$x_{t-1} = \frac{1}{\sqrt{\alpha_t}}\left(x_t - \frac{\beta_t}{\sqrt{1-\bar\alpha_t}}\,\epsilon_\theta(x_t,t)\right) + \sigma_t z,\qquad z\sim\mathcal N(0,I)$$</p>
+<p>💡 <strong>人话</strong>：按模型预测的噪声把 $x_t$ 减掉一点，然后<strong>再重新掺一点全新的随机噪声回去</strong>。</p>
+<p>末尾那个 $\sigma_t z$ 是关键 —— 它让每一步不是「算」出来的，而是从一个分布里<strong>抽</strong>出来的。
+而这个分布的整套推导都建立在「$t$ 和 $t-1$ 相邻」上（$\alpha_t$、$\beta_t$ 都是<strong>单步</strong>的量）。</p>
+<p>⚠️ 所以你不能把式子里的 $t-1$ 改成 $t-20$ 当作跳了 20 步 —— 那样式子根本不成立。
+<strong>1000 步不是保守，是这个公式自己要求的。</strong></p>
+<hr />
+<h2 id="ddim">⏩ 三、DDIM 改了什么</h2>
+<p>⭐⭐ <strong>先说最容易误会的一点：DDIM 不用重训，也不是另一个模型，它只是换了个采样器。</strong></p>
+<p>为什么能换得这么随便？因为训练只用到一个东西 —— 前向的<strong>边缘分布</strong> $q(x_t\mid x_0)$。
+DDIM 构造了一族<strong>非马尔可夫</strong>的前向过程，它们的 $q(x_t\mid x_0)$ 和 DDPM 完全一样，
+只有「相邻两步之间怎么衔接」不同。<strong>训练目标看不见这个差别</strong>，所以同一份权重直接就能用。</p>
+<details>
+<summary>📐 那一族过程是怎么构造出来的（想看再点）</summary>
+<p>DDPM 先定义单步加噪 $q(x_t\mid x_{t-1})$，再<strong>推出</strong> $q(x_t\mid x_0)$。
+DDIM 反过来：<strong>先钉死</strong> $q(x_t\mid x_0)=\mathcal N(\sqrt{\bar\alpha_t}x_0,(1-\bar\alpha_t)I)$，
+再去找所有满足它的联合分布。答案不唯一，是一族，由自由参数 $\sigma$ 索引：</p>
+<p>$$q_\sigma(x_{t'}\mid x_t,x_0)=\mathcal N\!\left(\sqrt{\bar\alpha_{t'}}x_0+\sqrt{1-\bar\alpha_{t'}-\sigma^2}\cdot\frac{x_t-\sqrt{\bar\alpha_t}x_0}{\sqrt{1-\bar\alpha_t}},\;\sigma^2 I\right)$$</p>
+<p>⭐ 这一族里<strong>没有一个成员用到「相邻」这个条件</strong>，$t'$ 可以是任何比 $t$ 小的步。</p>
+</details>
+<p>采样时的每一步，其实只有两个动作：</p>
+<p><strong>① 用当前的 $\epsilon$ 猜一张干净图</strong>（不管噪声水平多高都能算）：</p>
+<p>$$\hat x_0=\frac{x_t-\sqrt{1-\bar\alpha_t}\,\epsilon_\theta(x_t,t)}{\sqrt{\bar\alpha_t}}$$</p>
+<p><strong>② 把这张猜出来的图，按下一个噪声水平重新加噪回去</strong>：</p>
+<p>$$x_{t'}=\sqrt{\bar\alpha_{t'}}\,\hat x_0+\sqrt{1-\bar\alpha_{t'}-\sigma^2}\,\epsilon_\theta(x_t,t)+\sigma z$$</p>
+<p>💡 <strong>人话：每一步都先赌一把「最终这张图长什么样」，再退回到下一个噪声水平重新出发。</strong></p>
+<p>⭐ 看清楚：<strong>这两行里哪儿也没要求 $t'=t-1$。</strong> 第二步只需要知道目标噪声水平 $\bar\alpha_{t'}$ 是多少，
+$t'$ 想取 $t-20$ 就取 $t-20$。<strong>这就是能跳步的全部原因。</strong></p>
+<figure class="dia"><svg viewBox="0 0 760 178" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="左侧 DDPM 是一条密集连续的节点链，右侧 DDIM 只有五个节点、虚线跳跃相连"><text class="dia-t" x="190" y="24" font-size="14" text-anchor="middle" fill="var(--fg)" font-weight="700">DDPM：一步都不能跳</text><text class="dia-t" x="570" y="24" font-size="14" text-anchor="middle" fill="var(--accent)" font-weight="700">DDIM：可以跳着走</text><circle cx="40" cy="70" r="9" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/><line x1="49" y1="70" x2="69" y2="70" stroke="var(--muted)" stroke-width="2"/><circle cx="78" cy="70" r="9" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/><line x1="87" y1="70" x2="107" y2="70" stroke="var(--muted)" stroke-width="2"/><circle cx="116" cy="70" r="9" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/><line x1="125" y1="70" x2="145" y2="70" stroke="var(--muted)" stroke-width="2"/><circle cx="154" cy="70" r="9" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/><line x1="163" y1="70" x2="183" y2="70" stroke="var(--muted)" stroke-width="2"/><circle cx="192" cy="70" r="9" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/><line x1="201" y1="70" x2="221" y2="70" stroke="var(--muted)" stroke-width="2"/><circle cx="230" cy="70" r="9" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/><line x1="239" y1="70" x2="259" y2="70" stroke="var(--muted)" stroke-width="2"/><circle cx="268" cy="70" r="9" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/><line x1="277" y1="70" x2="297" y2="70" stroke="var(--muted)" stroke-width="2"/><circle cx="306" cy="70" r="9" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/><line x1="315" y1="70" x2="335" y2="70" stroke="var(--muted)" stroke-width="2"/><circle cx="344" cy="70" r="9" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/><text class="dia-t" x="190" y="104" font-size="12" text-anchor="middle" fill="var(--muted)">每步都注入 σ·z（一次抽样）</text><text class="dia-t" x="190" y="124" font-size="12" text-anchor="middle" fill="var(--muted)">整套推导要求 t 和 t−1 相邻</text><text class="dia-t" x="190" y="148" font-size="12.5" text-anchor="middle" fill="var(--danger,#e5534b)" font-weight="700">1000 步全串行</text><circle cx="420" cy="70" r="9" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="500" cy="70" r="9" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="580" cy="70" r="9" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="660" cy="70" r="9" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="700" cy="70" r="9" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/><line x1="429" y1="70" x2="491" y2="70" stroke="var(--accent)" stroke-width="2.2" stroke-dasharray="5 4"/><line x1="509" y1="70" x2="571" y2="70" stroke="var(--accent)" stroke-width="2.2" stroke-dasharray="5 4"/><line x1="589" y1="70" x2="651" y2="70" stroke="var(--accent)" stroke-width="2.2" stroke-dasharray="5 4"/><line x1="669" y1="70" x2="691" y2="70" stroke="var(--accent)" stroke-width="2.2" stroke-dasharray="5 4"/><text class="dia-t" x="570" y="104" font-size="12" text-anchor="middle" fill="var(--muted)">去掉随机项 → 确定性</text><text class="dia-t" x="570" y="124" font-size="12" text-anchor="middle" fill="var(--muted)">边缘分布和 DDPM 一样 → 不用重训</text><text class="dia-t" x="570" y="148" font-size="12.5" text-anchor="middle" fill="var(--done)" font-weight="700">20~50 步就出图</text><line x1="360" y1="40" x2="360" y2="164" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="4 4"/></svg><figcaption>看节点<b>密度</b>：左边每一步都得算，右边可以隔着跳。⭐ 关键不是右边更聪明，是它换掉了「必须相邻」这个前提 —— 而训练目标只用得到边缘分布，所以<b>换采样器不用重训</b>。</figcaption></figure>
+
+<hr />
+<h2 id="ddpm-ddim">🎛️ 四、η：一个旋钮在 DDPM 和 DDIM 之间滑动</h2>
+<p>上面那个自由参数 $\sigma$，实践中写成一个更好用的形式（$\eta$ 是随机性总开关，前面两个根号只是把它缩放到当前噪声水平该有的量级）：</p>
+<p>$$\sigma_{t\to t'}=\eta\sqrt{\frac{1-\bar\alpha_{t'}}{1-\bar\alpha_t}}\sqrt{1-\frac{\bar\alpha_t}{\bar\alpha_{t'}}}$$</p>
+<table>
+<thead>
+<tr>
+<th>η</th>
+<th>是什么</th>
+<th>后果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td>⭐ 确定性 DDIM</td>
+<td>整条轨迹没有一处随机；同一个初始噪声永远出同一张图；<strong>跳步基本不掉质量</strong></td>
+</tr>
+<tr>
+<td>0 ~ 1</td>
+<td>中间地带</td>
+<td>每步注一点随机，多样性回来一些，跳步的代价也回来一些</td>
+</tr>
+<tr>
+<td><strong>1</strong></td>
+<td>退回 DDPM</td>
+<td>和原来的 DDPM 采样等价</td>
+</tr>
+</tbody>
+</table>
+<p>⚠️ <strong>η 越大，步数少了越吃亏</strong>：注进去的随机本来指望后面几百步慢慢洗掉，只给 20 步就洗不干净。
+<strong>「少步数」和「高随机性」是一对矛盾，不能都要。</strong></p>
+<hr />
+<h2 id="1000-50">🔢 五、动手：把 1000 步的表抽成 50 步</h2>
+<p>不需要模型、不需要 GPU，几毫秒跑完：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 把 1000 步的 DDPM 调度表，按 DDIM 的方式抽成 50 步</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">betas</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-4</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>      <span class="c1"># DDPM 原论文的线性 beta 表</span>
+<span class="n">abar</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cumprod</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">betas</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>   <span class="c1"># abar[t] 就是公式里的 alpha_bar_t</span>
+
+<span class="n">S</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">tau</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span> <span class="o">//</span> <span class="n">S</span><span class="p">)</span>           <span class="c1"># ⭐ 均匀跳步：0, 20, 40, ..., 980</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;原始 </span><span class="si">{</span><span class="n">T</span><span class="si">}</span><span class="s2"> 步 -&gt; 抽成 </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tau</span><span class="p">)</span><span class="si">}</span><span class="s2"> 步，步距 </span><span class="si">{</span><span class="n">T</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">S</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;前 6 个时间步：&quot;</span><span class="p">,</span> <span class="n">tau</span><span class="p">[:</span><span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;后 6 个时间步：&quot;</span><span class="p">,</span> <span class="n">tau</span><span class="p">[</span><span class="o">-</span><span class="mi">6</span><span class="p">:]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">    t     alpha_bar    信号系数     噪声系数&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tau</span><span class="p">[::</span><span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">():</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">abar</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">t</span><span class="si">:</span><span class="s2">5d</span><span class="si">}</span><span class="s2">   </span><span class="si">{</span><span class="n">a</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">10.6f</span><span class="si">}</span><span class="s2">   </span><span class="si">{</span><span class="n">a</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">8.4f</span><span class="si">}</span><span class="s2">   </span><span class="si">{</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">8.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>真实输出：</p>
+<div class="codehilite"><pre><span></span><code>原始 1000 步 -&gt; 抽成 50 步，步距 20
+前 6 个时间步： [0, 20, 40, 60, 80, 100]
+后 6 个时间步： [880, 900, 920, 940, 960, 980]
+
+    t     alpha_bar    信号系数     噪声系数
+    0     0.999900     0.9999     0.0100
+  140     0.809844     0.8999     0.4361
+  280     0.443395     0.6659     0.7461
+  420     0.163926     0.4049     0.9144
+  560     0.040879     0.2022     0.9793
+  700     0.006868     0.0829     0.9966
+  840     0.000777     0.0279     0.9996
+  980     0.000059     0.0077     1.0000
+</code></pre></div>
+
+<p>⭐ <strong>这张表里藏着一条后面要用的结论：均匀跳步很浪费。</strong>
+看「信号系数」一列 —— 从 t=980 走到 t=560，信号只从 <strong>0.0077</strong> 涨到 <strong>0.2022</strong>，
+这一整段肉眼都是雪花、几乎分不出区别，却吃掉了差不多一半的步数；
+而 t 从 280 走到 0，信号从 <strong>0.6659</strong> 涨到 <strong>0.9999</strong>，<strong>一张图的细节全在这一段定下来</strong>。
+<strong>步要花在「图还在明显变」的地方。</strong></p>
+<hr />
+<h2 id="_3">🎰 六、确定性带来的三个副产品</h2>
+<p>$\eta=0$ 时，采样从「一串抽样」变成了<strong>一个函数</strong>：给定 $x_T$，输出唯一确定。这件事的实用价值不比「快」小。</p>
+<p><strong>① 种子能复现。</strong> seed 只是用来生成 $x_T$ 的随机数种子；既然 $x_T\mapsto x_0$ 是个确定映射，
+同样的种子 + 模型 + 提示词 + 步数和调度 = 同一张图。
+⚠️ 这几个「同样」缺一不可，而且还有一条隐藏条件：<strong>浮点归约顺序也得一样</strong>。
+换显卡、换推理框架、换 batch 大小都可能差那么一点点 ——
+🔑 这和语言模型那边「temperature=0 也不保证逐位复现」是<strong>同一个坑</strong>（链接见章末）。</p>
+<p><strong>② 图生图不从纯噪声出发。</strong> 把真实图片按前向公式加噪到中间某个 $t$，再从那里去噪走完，出来的图就保留了原图的大结构。
+UI 上的 <strong>strength</strong> 就是「加到多深」：小 → 只动细节和风格，大 → 越来越像重画。
+⚠️ 随机采样器也能做图生图，<strong>确定性带来的是可控</strong> —— strength 每调一点，你能确定变化是这次调整的功劳，而不是重抽了个签。</p>
+<p><strong>③ 插值要用球面插值，不能取平均。</strong> 在 $x_T$ 上从 A 走到 B，输出会连续地从图 A 变成图 B。
+⚠️ 但<strong>线性</strong>中点会出问题，这一点可以直接算：Stable Diffusion 的潜空间 $d=4\times64\times64=16384$ 维，
+标准高斯的样本几乎全落在半径 $\sqrt d=128$ 的<strong>球壳</strong>上（实测范数中位数 <strong>128.01</strong>），中心附近反而是空的；
+而两个独立噪声的线性中点，范数中位数只有 <strong>90.51</strong>，正好是 $1/\sqrt2\approx$ <strong>0.7071</strong> 倍 ——
+掉进了模型训练时从没见过的区域，于是中间几帧发灰糊掉。<strong>沿球面走就没这个问题。</strong></p>
+<hr />
+<h2 id="_4">📉 七、步数不是越多越好</h2>
+<p>「50 步够不够」与其背结论，不如测一次。下面这组数是用<strong>解析解当去噪网络</strong>测的
+（一维两峰高斯混合的 $\epsilon$ 有闭式解），所以它量的是<strong>纯粹的离散化误差</strong>，不掺任何网络自身误差；
+误差用生成样本和真实样本的一维 Wasserstein 距离，两万个样本。</p>
+<table>
+<thead>
+<tr>
+<th>步数</th>
+<th>W1（生成 vs 真实）</th>
+<th>离地板还差</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>1.1473</td>
+<td>+1.1274</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0.2759</td>
+<td>+0.2561</td>
+</tr>
+<tr>
+<td>10</td>
+<td>0.1326</td>
+<td>+0.1127</td>
+</tr>
+<tr>
+<td>20</td>
+<td>0.0682</td>
+<td>+0.0483</td>
+</tr>
+<tr>
+<td><strong>50</strong></td>
+<td>0.0298</td>
+<td><strong>+0.0099</strong></td>
+</tr>
+<tr>
+<td><strong>100</strong></td>
+<td>0.0225</td>
+<td><strong>+0.0026</strong></td>
+</tr>
+<tr>
+<td><strong>200</strong></td>
+<td>0.0228</td>
+<td><strong>+0.0029</strong></td>
+</tr>
+</tbody>
+</table>
+<p>「地板」是两组<strong>真实样本</strong>之间的 W1，<strong>0.0199</strong> —— 有限样本本身的抖动，谁也低不过它。</p>
+<ul>
+<li><strong>2 步是灾难</strong>，5 步已进入可用区间，之后每翻一倍误差差不多减半。</li>
+<li>50 步离地板只差 0.0099，100 步差 0.0026 —— <strong>50→100 这一倍算力只买回那点差距的四分之三</strong>。</li>
+<li>⭐ <strong>100 → 200 完全没有收益</strong>（0.0225 → 0.0228，反而略高，是采样抖动）。<strong>这就是饱和。</strong></li>
+</ul>
+<p>⚠️ <strong>别把「50 步」这个数字搬到你的模型上。</strong> 饱和点取决于调度表、$\eta$、模型质量和分辨率，
+真实模型还要叠上网络自己的预测误差，<strong>饱和点只会来得更早</strong>。
+<strong>能搬走的只有形状：先陡后平，而且平得比大多数人想象得早。</strong></p>
+<hr />
+<h2 id="_5">🗓️ 八、步数和调度表怎么配</h2>
+<p>第五节那张表已经说明白了：均匀跳步把太多步花在了看不出区别的高噪声段。于是有了别的排法。</p>
+<table>
+<thead>
+<tr>
+<th>排法</th>
+<th>怎么排</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>均匀（uniform）</td>
+<td><code>range(0, T, T // S)</code></td>
+<td>最简单，S 小的时候质量掉得最快</td>
+</tr>
+<tr>
+<td>二次（quadratic）</td>
+<td>步距按平方分布，低噪声端更密</td>
+<td>DDIM 原论文就给了这一种，短步数下明显好过均匀</td>
+</tr>
+<tr>
+<td>⭐ Karras 式</td>
+<td>不在 $t$ 上排，改在噪声水平上按幂律排</td>
+<td>现在多数推理框架的默认，对 10~20 步的场景收益最大</td>
+</tr>
+</tbody>
+</table>
+<p>另一条正交的路：<strong>换更好的求解器</strong>。
+⭐ DDIM 本质上是把去噪写成一条常微分方程、再用<strong>一阶欧拉法</strong>去解。既然是解 ODE，就可以上二阶和多步法 ——
+DPM-Solver、DPM-Solver++、UniPC 干的就是这件事，常见说法是十几步能达到 DDIM 五十步上下的效果，<strong>同样不需要重训</strong>。</p>
+<p>⚠️ <strong>最后一条最容易被忽略：采样器和调度表是复现的一部分。</strong>
+同一个种子、同一个提示词，把 DDIM 换成 DPM-Solver++ 就是另一张图。
+<strong>分享参数时，步数、采样器、调度表要和种子一起给。</strong></p>
+<hr />
+<h2 id="_6">🔗 这一章连到哪里</h2>
+<table>
+<thead>
+<tr>
+<th>去哪</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../大模型全景导论/06c-解码参数怎么调.html">大模型全景导论 06c · 解码参数怎么调，出问题怎么查</a></td>
+<td>⭐ 那一页有一整节讲「temperature=0 也不保证逐位复现」：GPU 浮点加法不满足结合律，batch 组成一变归约顺序就跟着变。<strong>DDIM 的「同种子同图」踩的是同一个坑</strong> —— 数学上确定，工程上仍会差一点</td>
+</tr>
+<tr>
+<td><a href="../AI基础设施/19-投机解码.html">AI基础设施 19 · 投机解码</a></td>
+<td>语言模型那边同一个病（串行步数太多）的另一种药：小模型先猜几个 token，大模型一次验完。⭐ 值得对照的是<strong>代价不同</strong> —— 投机解码可以证明输出分布和原模型完全一致，而 DDIM 跳步是<strong>近似</strong>，20 步和 1000 步不是同一张图</td>
+</tr>
+<tr>
+<td><a href="../大模型全景导论/10b-图像生成.html">大模型全景导论 10b · 图像生成：扩散模型</a></td>
+<td>14 分钟的全景版：扩散和自回归为什么是两种范式、五个关键组件各管什么。⭐ 那一页的深挖清单白纸黑字写着 DDIM「整块要外找」—— 你正在读的就是它点名要的那一块</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_7">✅ 检查点</h2>
+<ol>
+<li>DDPM 的反向过程为什么一步都不能跳？式子里哪一项是罪魁祸首？</li>
+<li>DDIM 需要重新训练吗？为什么？（提示：训练目标只用到了什么）</li>
+<li>DDIM 的一步拆成哪两个动作？哪一个动作允许了跳步？</li>
+<li>η=0 和 η=1 分别对应什么？η 大了以后，为什么少步数更吃亏？</li>
+<li>第五节那张表里，t 从 980 到 560，信号系数只从多少涨到多少？这说明均匀跳步有什么毛病？</li>
+<li>步数-误差表里 50 / 100 / 200 步各离地板差多少？这三个数说明什么？</li>
+<li>为什么两个噪声之间要用球面插值？线性中点的范数掉到了原来的几倍？</li>
+</ol>
+<details>
+<summary>👀 答案</summary>
+<ol>
+<li>因为它是<strong>马尔可夫链</strong>，每步的分布都按「$t$ 和 $t-1$ 相邻」推导（$\alpha_t$、$\beta_t$ 都是单步量）。罪魁祸首是末尾的 $\sigma_t z$ —— 它让每一步是从分布里<strong>抽</strong>样，而不是算出来的。把 $t-1$ 换成 $t-20$ 式子就不成立。</li>
+<li><strong>不需要。</strong> 训练只用到前向的边缘分布 $q(x_t\mid x_0)$，而 DDIM 那一族非马尔可夫前向过程的这个边缘分布和 DDPM 完全一样，差别只在相邻两步怎么衔接 —— 训练目标看不见它。</li>
+<li>① 用当前 $\epsilon$ 猜一张干净图 $\hat x_0=(x_t-\sqrt{1-\bar\alpha_t}\epsilon)/\sqrt{\bar\alpha_t}$；② 按下一个噪声水平重新加噪回去。⭐ <strong>第二个动作允许跳步</strong> —— 它只需要目标噪声水平 $\bar\alpha_{t'}$，从没要求 $t'=t-1$。</li>
+<li>η=0 是确定性 DDIM（同一个初始噪声永远出同一张图），η=1 退回 DDPM。η 大了以后，注进去的随机要靠后面几百步慢慢洗掉，只给 20 步洗不干净 —— 少步数和高随机性是一对矛盾。</li>
+<li>只从 <strong>0.0077</strong> 涨到 <strong>0.2022</strong>。这一大段肉眼全是雪花、分不出区别，却吃掉近一半步数；而 t 从 280 到 0 那段信号从 0.6659 涨到 0.9999，细节全在那里定下来。说明<strong>均匀跳步把步花错了地方</strong>。</li>
+<li>50 步差 <strong>+0.0099</strong>，100 步差 <strong>+0.0026</strong>，200 步差 <strong>+0.0029</strong>（比 100 步还略高，是采样抖动）。说明收益<strong>先陡后平</strong>：50→100 只买回一点点，100→200 完全没有收益。⚠️ 而且这还是没有网络误差的理想条件，真实模型饱和得更早。</li>
+<li>因为高维标准高斯的样本几乎全落在半径 $\sqrt d$ 的<strong>球壳</strong>上（$d=16384$ 时是 128，实测范数中位数 128.01），中心是空的。两个独立噪声的线性中点范数只有 <strong>90.51</strong>，是原来的 <strong>0.7071</strong> 倍，落进模型没见过的区域 → 中间帧发灰糊掉。沿球面走不会离开那层壳。</li>
+</ol>
+</details>
+<hr />
+<h2 id="_8">🛑 可以停在这里</h2>
+<p>读到这里，你已经知道 UI 上那三个旋钮（步数、采样器、种子）各自在动什么，
+也知道了「把步数从 50 调到 150」大概率是白花钱。这些今天就能用上。</p>
+<p><strong>出现这些情况时再回来</strong>：出图不可复现（第六节那几个「同样」）；
+少步数下图发灰或糊（第四节的 η、第八节的调度表）；换个采样器就变成另一张图（第八节最后一条）。</p>
+<p>⚡ <strong>走神救援</strong></p>
+<blockquote>
+<p>DDPM 采样慢的根源是<strong>步多</strong>不是图大：1000 步全串行，每步一次完整前向。它一步都不能跳，因为反向过程是马尔可夫链 —— 式子末尾的 $\sigma_t z$ 让每步成了一次抽样，而整套推导建立在「t 和 t−1 相邻」上。<strong>DDIM 换掉了这个前提</strong>：它构造了一族非马尔可夫的前向过程，边缘分布 $q(x_t\mid x_0)$ 和 DDPM 一模一样 —— ⭐ 而训练目标只用得到这个边缘分布，<strong>所以 DDIM 不用重训，只是换个采样器</strong>。它的每一步拆成两个动作：先用当前 $\epsilon$ 猜出一张干净图 $\hat x_0$，再按下一个噪声水平重新加噪回去；第二个动作只关心目标噪声水平 $\bar\alpha_{t'}$，从没要求 $t'=t-1$，<strong>这就是能跳步的全部原因</strong>。η 是随机性总开关：0 是确定性 DDIM，1 退回 DDPM，越大越吃亏于少步数。确定性带来三个副产品：<strong>种子能复现</strong>（$x_T\mapsto x_0$ 成了一个函数，但模型、步数、调度、提示词要全同，连浮点归约顺序都得一样）、<strong>图生图</strong>（从中间某个 t 出发，strength 就是「加到多深」）、<strong>插值</strong>（必须走球面 —— 潜空间 16384 维，噪声都落在半径 128 的球壳上，线性中点范数只有 90.51，掉到 0.7071 倍就出了分布）。⚠️ <strong>步数不是越多越好</strong>：拿解析解当网络实测，50 步离地板差 0.0099，100 步差 0.0026，200 步差 0.0029，100 步之后完全饱和。均匀跳步还很浪费：t 从 980 到 560 信号系数只从 0.0077 涨到 0.2022，全是看不出区别的雪花段 —— 所以有了二次间隔、Karras 调度，以及把它当 ODE 解的 DPM-Solver++、UniPC。⚠️ 最后记住：<strong>采样器和调度表也是复现的一部分</strong>，分享参数要和种子一起给。</p>
+</blockquote>
+<p><strong>下一节</strong> 👉 <a href="05-Latent-Diffusion.html">05-Latent-Diffusion.md</a></p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="03-训练目标为什么是预测噪声.html"><div class="dir">← 上一节</div>🎯 03 · 训练目标为什么是预测噪声</a><a class="next" href="05-Latent-Diffusion.html"><div class="dir">下一节 →</div>🗜️ 05 · Latent Diffusion</a></nav>
+</main>
+<script>(function(){
+  var KEY="diff-progress", FILE="04-DDIM\u4e0e\u91c7\u6837\u52a0\u901f.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>10 · 多模态：视觉理解（VLM） · 大模型全景导论</title>
+<title>08 · ControlNet 与风格 LoRA · 扩散模型</title>
 <script>(function(){var t=localStorage.getItem('recsys-theme');
 if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
 @font-face{font-family:"CodeCJK";
@@ -267,186 +267,168 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
-  <span class="title">10 · 多模态：视觉理解</span>
-  <span class="prevnext"><a href="09-推理范式.html">←</a>
-  <a href="10d-CLIP与对比学习.html">→</a></span>
+  <span class="title">08 · ControlNet 与风格 LoRA</span>
+  <span class="prevnext"><a href="07-去噪主干-UNet与DiT.html">←</a>
+  <a href="09-怎么评估.html">→</a></span>
   <button class="js-done-btn">☐ 打卡</button>
   <button id="themeToggle" title="切换深浅色">🌗</button>
 </div></header>
 <main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
 <ul>
 <li><a href="#_1">🎯 一句话</a></li>
-<li><a href="#_2">🧭 先选你要做哪个模态</a></li>
-<li><a href="#vlm">🖼️ 一、视觉理解（VLM）</a></li>
-<li><a href="#_4">🔗 和站内其他章的关系</a></li>
-<li><a href="#_5">✅ 检查点</a></li>
-<li><a href="#_6">🛑 可以停在这里</a></li>
+<li><a href="#_2">🖐️ 一、提示词到底控制不了什么</a></li>
+<li><a href="#controlnet">🧬 二、ControlNet：复制一份主干，再用零卷积接回去</a></li>
+<li><a href="#lora">🎨 三、风格 LoRA：和语言模型那个是同一个东西</a></li>
+<li><a href="#_3">⚖️ 四、三者的分工（这一章最该记住的一张表）</a></li>
+<li><a href="#_4">💸 五、代价</a></li>
+<li><a href="#_5">🔗 这一章连到哪里</a></li>
+<li><a href="#_6">✅ 检查点</a></li>
+<li><a href="#_7">🛑 可以停在这里</a></li>
 </ul>
 </div>
 </details>
-<h1 id="10-vlm">10 · 多模态：视觉理解（VLM）</h1>
-<p>⏱ <strong>20 分钟</strong> ｜ ⭐ <strong>图片进模型之后变成什么，以及什么时候不该用 VLM</strong></p>
+<h1 id="08-controlnet-lora">08 · ControlNet 与风格 LoRA</h1>
+<p>⏱ <strong>22 分钟</strong> ｜ ⭐ <strong>提示词管「画什么」，这一章补上「画成什么形状」和「用什么风格画」</strong></p>
 <hr />
 <h2 id="_1">🎯 一句话</h2>
-<p>多模态的共同思想只有一句：<strong>万物皆 token</strong> —— 图像、音频、视频都被切成 token 之后，
-就都能交给同一个 Transformer 处理。</p>
+<p><strong>文字说得清「一只猫在雪地里」，说不清「猫站在画面左三分之一、头偏右、镜头俯视」。</strong>
+ControlNet 补形状，风格 LoRA 补风格。⭐ <strong>它们和提示词三者互不替代</strong> —— 这是这一章最容易搞混的地方。</p>
 <hr />
-<h2 id="_2">🧭 先选你要做哪个模态</h2>
-<p>⚠️ <strong>这三页互不依赖，直接跳到你要的那一页就行</strong>，不必顺着读。</p>
+<h2 id="_2">🖐️ 一、提示词到底控制不了什么</h2>
+<p>上一章把接口钉死了：去噪网络吃 <code>(x_t, t, c)</code>。<strong>提示词只是 <code>c</code> 的一种</strong>，所以「加控制」只有两条路：往 <code>c</code> 里塞更强的东西，或者改那个函数本身。下面两个主角各走一条。</p>
 <table>
 <thead>
 <tr>
-<th>你要做的东西</th>
-<th>去哪一页</th>
-<th>它讲什么</th>
+<th>你想控制的</th>
+<th>文字够不够</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>让模型看懂图片、截图、表格、文档</td>
-<td><strong>本页</strong></td>
-<td>VLM 三段式架构、图片怎么变 token、三个常见误判</td>
+<td><strong>画什么</strong>（一只猫、雪地、黄昏）</td>
+<td>✅ 够，这正是文本编码器擅长的语义</td>
 </tr>
 <tr>
-<td>想懂图文为什么能对齐、要自己训 VLM</td>
-<td><a href="10d-CLIP与对比学习.html">10d · CLIP 与对比学习</a></td>
-<td>InfoNCE、温度系数、LLaVA 两阶段训练</td>
+<td><strong>画成什么形状</strong>（构图、姿势、线稿）</td>
+<td>❌ <strong>说不清</strong> —— 每加一条空间约束，全部命中的概率就掉一截，你还<strong>无法验证它听了哪几条</strong></td>
 </tr>
 <tr>
-<td>文生图、图生图、风格控制</td>
-<td><a href="10b-图像生成.html">10b · 图像生成</a></td>
-<td>扩散模型：从噪声一步步擦出图像</td>
-</tr>
-<tr>
-<td>语音识别、语音合成、语音对话</td>
-<td><a href="10c-语音与视频.html">10c · 语音与视频</a></td>
-<td>ASR / TTS / 端到端语音，以及视频的 token 爆炸问题</td>
-</tr>
-<tr>
-<td>视频理解或视频生成</td>
-<td><a href="10c-语音与视频.html">10c · 语音与视频</a></td>
-<td>同上</td>
+<td><strong>用什么风格画</strong>（某种笔触、你的角色）</td>
+<td>❌ <strong>说了也没用</strong> —— 不是描述得更细就行，是底座<strong>根本没见过</strong>它</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="vlm">🖼️ 一、视觉理解（VLM）</h2>
-<h3 id="_3">架构：三段式</h3>
-<figure class="dia">
-<svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="VLM 三段式架构：图片经视觉编码器 ViT 编码，再经投影层翻译成 token，最后与文字一起送入语言模型">
-  <rect x="40" y="12" width="130" height="32" rx="8" fill="none" stroke="var(--border)" stroke-width="1.4"/>
-  <text class="dia-t" x="105" y="33" font-size="12.5" text-anchor="middle" fill="var(--fg)">图片</text>
-  <line x1="105" y1="44" x2="105" y2="52" stroke="var(--accent)" stroke-width="1.5"/>
-  <polygon points="99,52 111,52 105,58" fill="var(--accent)"/>
-  <rect x="40" y="58" width="130" height="48" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/>
-  <text class="dia-t" x="105" y="80" font-size="12.5" font-weight="700" text-anchor="middle" fill="var(--accent)">视觉编码器</text>
-  <text class="dia-t" x="105" y="97" font-size="11" text-anchor="middle" fill="var(--muted)">(ViT)</text>
-  <text class="dia-t" x="190" y="80" font-size="12" fill="var(--fg)">ViT：把图切成 16×16 的小块（patch），</text>
-  <text class="dia-t" x="190" y="98" font-size="12" fill="var(--fg)">每块当一个「词」，过 Transformer</text>
-  <line x1="105" y1="106" x2="105" y2="124" stroke="var(--accent)" stroke-width="1.5"/>
-  <polygon points="99,124 111,124 105,130" fill="var(--accent)"/>
-  <text class="dia-t" x="120" y="122" font-size="11" fill="var(--muted)">一堆视觉向量</text>
-  <rect x="40" y="130" width="130" height="48" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/>
-  <text class="dia-t" x="105" y="152" font-size="12.5" font-weight="700" text-anchor="middle" fill="var(--accent)">投影层</text>
-  <text class="dia-t" x="105" y="169" font-size="11" text-anchor="middle" fill="var(--muted)">(Projector)</text>
-  <text class="dia-t" x="190" y="152" font-size="12" fill="var(--accent)">⭐ 关键：把视觉向量「翻译」成</text>
-  <text class="dia-t" x="190" y="170" font-size="12" fill="var(--accent)">语言模型能懂的 token 空间</text>
-  <line x1="105" y1="178" x2="105" y2="196" stroke="var(--accent)" stroke-width="1.5"/>
-  <polygon points="99,196 111,196 105,202" fill="var(--accent)"/>
-  <rect x="40" y="202" width="620" height="84" rx="10" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/>
-  <text class="dia-t" x="58" y="224" font-size="13" font-weight="700" fill="var(--accent)">语言模型 LLM</text>
-  <rect x="58" y="236" width="90" height="26" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.1"/>
-  <text class="dia-t" x="103" y="253" font-size="11.5" text-anchor="middle" fill="var(--accent)">图像 token</text>
-  <rect x="154" y="236" width="90" height="26" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.1"/>
-  <text class="dia-t" x="199" y="253" font-size="11.5" text-anchor="middle" fill="var(--accent)">图像 token</text>
-  <text class="dia-t" x="256" y="253" font-size="12" fill="var(--muted)">…</text>
-  <rect x="280" y="236" width="190" height="26" rx="6" fill="none" stroke="var(--border)" stroke-width="1.1"/>
-  <text class="dia-t" x="375" y="253" font-size="11.5" text-anchor="middle" fill="var(--fg)">[用户] 这张图里有什么？</text>
-  <text class="dia-t" x="484" y="253" font-size="11.5" fill="var(--accent)">← 图像和文字被拼在一起！</text>
-</svg>
-<figcaption>三段式：图像被 ViT 切成 patch 编码 → 投影层把它「翻译」成语言模型能读的 token → 和文字拼进<b>同一个上下文</b>。</figcaption>
-</figure>
+<h2 id="controlnet">🧬 二、ControlNet：复制一份主干，再用零卷积接回去</h2>
+<!--FIG: 左边一个灰色带锁的冻结 U-Net（编码器三级 → 瓶颈 → 解码器三级）；右边是它编码器那一半的可训练副本；条件图（线稿）从下方经小编码器和一个标 0 的方块加到副本输入；副本每一级输出各经一个标 0 的方块，横向汇入左边解码器同级的加号-->
 
-<p>💡 <strong>核心洞察</strong>：<strong>图片被翻译成了「视觉单词」，和文字并排放进同一个上下文。</strong>
-所以做文本应用时的那一整套（上下文管理、提示词、工具，本站《智能体工程教程》讲的就是这些）全部适用。</p>
-<p>📌 <strong>这张图有名字</strong>：这套「ViT → 投影层 → LLM」的结构就是 LLaVA，也是目前开源多模态模型的默认长相。
-另一条路线（BLIP-2 的 <strong>Q-Former</strong>）改的只有中间那一层——两者的差别在 <a href="10d-CLIP与对比学习.html">10d · CLIP 与对比学习</a> 那一页。</p>
-<p>⚠️ <strong>实用推论</strong>：一张高分辨率图可能消耗 <strong>1000+ token</strong>。多图对话烧 token 极快——上下文预算意识（智能体第 4 章）在这里更重要。</p>
-<h3 id="token">💰 图片的 token 账（做视觉应用前先算这笔）</h3>
-<section class="visual-block visual-block-calc" aria-label="算一算"><p class="visual-block-title">算一算</p><div class="vb-calc"><p>图片 token 数 ≈ (宽/patch) × (高/patch)，patch 通常 14~16 像素</p><p>512×512 → 约 1,000 token</p><p>1024×1024 → 约 4,000 token ⭐ 翻倍分辨率 = 4 倍 token</p><p>一段 10 张图的对话 → 轻松几万 token</p><p>💡 所以主流做法是【先缩放到模型的最优分辨率】再传</p><p>盲目传原图 = 白烧几倍的钱</p></div></section>
-<h3 id="vlm_1">⚠️ VLM 的三个常见误判（知道了能省很多调试时间）</h3>
-<table>
-<thead>
-<tr>
-<th>场景</th>
-<th>表现</th>
-<th>原因</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>密集小字 / 表格</strong></td>
-<td>读错数字、串行</td>
-<td>分辨率被压缩后细节丢失 → <strong>切图分块传</strong> ⭐</td>
-</tr>
-<tr>
-<td><strong>需要精确空间关系</strong></td>
-<td>"左边第三个"经常说错</td>
-<td>ViT 的 patch 化削弱了精确位置感</td>
-</tr>
-<tr>
-<td><strong>需要计数</strong></td>
-<td>超过 5~6 个就不准</td>
-<td>和文本模型数字母是同类问题——<strong>给工具，别让它数</strong></td>
-</tr>
-</tbody>
-</table>
+<ol>
+<li><strong>冻结</strong>原来的去噪主干（上一章那个 U-Net），一个权重都不动。</li>
+<li>把它<strong>编码器那一半复制一份</strong>，这份可训练 —— 起点是会画画的权重，不是随机数。</li>
+<li><strong>条件图</strong>（Canny 边缘图 / 深度图 / 姿态骨架）经一个小编码器，加到副本输入上。</li>
+<li>副本每一级的输出，各经一个<strong>零初始化的 1×1 卷积</strong>，加进冻结主干<strong>解码器</strong>同级。</li>
+</ol>
+<p>第 4 步那个「零初始化」是整个设计的支点：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 零初始化卷积：训练前输出恒为 0，梯度却不为 0 —— 所以它接得进去，也学得起来</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">frozen</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">320</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>      <span class="c1"># 冻结主干这一级的输出</span>
+<span class="n">branch</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">320</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>      <span class="c1"># 可训练副本这一级的输出</span>
+<span class="n">zc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">320</span><span class="p">,</span> <span class="mi">320</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>             <span class="c1"># ⭐ ControlNet 接回主干用的 1×1 卷积</span>
+<span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">zeros_</span><span class="p">(</span><span class="n">zc</span><span class="o">.</span><span class="n">weight</span><span class="p">);</span> <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">zeros_</span><span class="p">(</span><span class="n">zc</span><span class="o">.</span><span class="n">bias</span><span class="p">)</span>
+
+<span class="n">out</span> <span class="o">=</span> <span class="n">frozen</span> <span class="o">+</span> <span class="n">zc</span><span class="p">(</span><span class="n">branch</span><span class="p">)</span>               <span class="c1"># ControlNet 就是这么接回去的</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;接回后的最大差&quot;</span><span class="p">,</span> <span class="n">out</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">frozen</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+<span class="n">out</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;权重梯度范数  &quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">zc</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="mi">1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;默认初始化的话&quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">320</span><span class="p">,</span> <span class="mi">320</span><span class="p">,</span> <span class="mi">1</span><span class="p">)(</span><span class="n">branch</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="mi">3</span><span class="p">))</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>接回后的最大差 0.0
+权重梯度范数   2501.0
+默认初始化的话 2.217
+</code></pre></div>
+
+<p><code>0.0</code> 说明第 0 步加了 ControlNet 的模型和原模型<strong>逐位相同</strong>；但梯度 <strong>2501 不是 0</strong>（里面带着副本这一级输出了什么），所以它从第一步就开始长。⚠️ 换成默认初始化，训练还没开始就往训好的模型里灌进 <strong>2.217</strong> 的随机改动。</p>
 <blockquote>
-<p>🔑 <strong>一条通用建议</strong>：<strong>VLM 擅长"理解这张图在说什么"，不擅长"精确读出图里的每个数"。</strong>
-需要精确的场景（发票、表格、图纸），<strong>用 OCR + VLM 组合</strong>，别只靠 VLM。</p>
+<p>⭐ <strong>零初始化把「加一条新支路」从破坏性改动变成了从零长出来的增量。</strong>
+这也是它只用<strong>几万张</strong>图就训得起来的原因 —— 不必重新学画画，只需学「怎么把条件图掺进去」。</p>
 </blockquote>
-<h2 id="_4">🔗 和站内其他章的关系</h2>
-<p>左列有的来自日常用 LLM 的经验，有的在站内别的板块讲过——<strong>碰上过哪几条就从哪几条接进来，一条没碰过也不影响读这一章</strong>。</p>
+<p>💡 上一章 DiT 的 adaLN-Zero 门控也是零初始化，同一个想法。</p>
+<hr />
+<h2 id="lora">🎨 三、风格 LoRA：和语言模型那个是同一个东西</h2>
+<p>不是「像」，是<strong>同一个低秩适配</strong>：底座 <code>W</code> 冻结，旁边挂一对窄矩阵，前向变成 <code>W·x + B(A·x)</code>，中间那个窄维度叫 <strong>rank</strong>（记作 <code>r</code>）。⭐ <code>B</code> 零初始化，所以挂上那一刻 <code>W + BA = W</code> —— <strong>和上一节的零卷积同一个动机</strong>。</p>
+<p>拿交叉注意力里 768 → 320 那层算笔账：原层 <code>768×320 = 245760</code> 个参数，LoRA 只有 <code>r×(768+320) = 1088r</code> 个。</p>
 <table>
 <thead>
 <tr>
-<th>你可能已经知道的</th>
-<th>这一章的对应</th>
+<th><code>r</code></th>
+<th>可训练参数</th>
+<th>占原层</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>上下文预算（智能体第 4 章）</td>
-<td>图像吃 token 极凶，预算意识更重要</td>
+<td>4</td>
+<td>4352</td>
+<td><strong>1.77%</strong></td>
 </tr>
 <tr>
-<td>向量检索 ANN（推荐第 10 章）</td>
-<td>CLIP 让图文进同一空间，同一套检索设施</td>
-</tr>
-<tr>
-<td>LoRA（第 5 章）</td>
-<td>图像生成里的风格 LoRA，同源技术</td>
-</tr>
-<tr>
-<td>多模态 Embedding 做冷启动（推荐第 13 章）</td>
-<td>就是用 CLIP/ViT 提取的特征</td>
-</tr>
-<tr>
-<td>计算机使用（智能体第 9 章）</td>
-<td>那是 VLM 的一个具体应用</td>
-</tr>
-<tr>
-<td>双塔 + in-batch 负采样 + 温度系数（推荐第 8 章）</td>
-<td>⭐ <strong>CLIP 的训练方式和它是同一个东西</strong>，连坑都一样</td>
-</tr>
-<tr>
-<td><code>temperature</code> 怎么改变分布（第 6 章）</td>
-<td>CLIP 的 τ 是同一个式子，只是用在 loss 上</td>
+<td>64</td>
+<td>69632</td>
+<td><strong>28.33%</strong></td>
 </tr>
 </tbody>
 </table>
-<!--XREF-->
-<p><strong>想接着深挖，去这几处</strong>：</p>
+<p>⚠️ 所以 <code>r</code> 不是越大越好：到 64 已经离全量微调不远，小数据下更容易把训练集背下来。常见取值就在 <strong>4~64</strong>，主要挂在<strong>交叉注意力</strong>的 Q/K/V 和输出投影上 —— 那正是文本条件落到图像特征的地方。</p>
+<p><strong>为什么风格只能走这条路</strong>：风格是<strong>分布层面</strong>的偏移（笔触走向、色调、留白），几个形容词定位不了，得拿 20~100 张风格一致的图去改权重。</p>
+<hr />
+<h2 id="_3">⚖️ 四、三者的分工（这一章最该记住的一张表）</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>管什么</th>
+<th>怎么进模型</th>
+<th>代价</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>提示词</strong></td>
+<td><strong>画什么</strong> —— 内容、语义</td>
+<td>文本编码器 → 条件 <code>c</code></td>
+<td>免费，改字就行</td>
+</tr>
+<tr>
+<td><strong>ControlNet</strong></td>
+<td><strong>画成什么形状</strong> —— 构图、姿势</td>
+<td>一条并行支路，逐级加进主干</td>
+<td>多跑一份编码器副本</td>
+</tr>
+<tr>
+<td><strong>风格 LoRA</strong></td>
+<td><strong>用什么风格画</strong> —— 笔触、角色</td>
+<td>直接改主干若干层的权重</td>
+<td>算力几乎不加，但要训</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>只给 ControlNet 不给提示词 → <strong>形状对了，它不知道该画猫还是狗</strong>。</li>
+<li>只给 LoRA 不给 ControlNet → <strong>风格稳了，构图还是每次都变</strong>。</li>
+<li>提示词写「站在左边」只让概率<strong>偏一点</strong>；ControlNet 给的是<strong>逐像素</strong>的约束。</li>
+</ul>
+<hr />
+<h2 id="_4">💸 五、代价</h2>
+<p><strong>① ControlNet 要多跑一份主干。</strong> 副本是编码器那一半，推理时那部分跑两遍，参数和激活都多一份。⚠️ <strong>更贵的是它和 CFG 相乘</strong> —— CFG 本来就要跑两次去噪网络，加了 ControlNet 之后<strong>这两次都得带上副本</strong>。</p>
+<p><strong>② 多个 ControlNet 会打架。</strong> 条件互相矛盾时（线稿说手在这儿、深度图说手在那儿），出图就崩在那个位置。</p>
+<p><strong>③ 多个 LoRA 更麻烦</strong>：<code>BA</code> 直接加进同一个 <code>W</code>，⚠️ <strong>它们没有任何机制知道对方存在</strong>，只能每个配一个系数靠试（diffusers 里就是 <code>set_adapters([...], adapter_weights=[0.8, 0.6])</code> 那两个数）。风格 LoRA 和角色 LoRA 打架是最常见的一种。</p>
+<p><strong>④ 风格 LoRA 会越界。</strong> 训练集只有几十张时，它常连<strong>背景和构图</strong>一起学走，那就侵占了 ControlNet 的地盘。症状很好认：<strong>不管提示词怎么改，构图都像训练集那几张</strong>。解法是减 <code>r</code>、减步数，或让训练集构图更杂。</p>
+<hr />
+<h2 id="_5">🔗 这一章连到哪里</h2>
 <table>
 <thead>
 <tr>
@@ -456,61 +438,57 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </thead>
 <tbody>
 <tr>
-<td><a href="../机器学习与深度学习基础/12-CNN.html">ML基础 12</a></td>
-<td>视觉编码器的前身：卷积在看什么、为什么后来被 ViT 取代</td>
+<td><a href="../大模型全景导论/05-微调与LoRA.html">大模型全景导论 主线 5 · 怎样把模型变成你的助手</a></td>
+<td>⭐ <strong>同一个低秩适配</strong>：那页讲原权重 <code>W</code>、全量微调要学的 <code>ΔW</code>、以及用两个更窄的矩阵 <code>BA</code> 去近似它，还多讲一件本章没讲的 —— <strong>什么时候根本不该微调</strong></td>
 </tr>
 <tr>
-<td><a href="../机器学习与深度学习基础/14-通往Transformer.html">ML基础 14</a></td>
-<td>⭐ ViT 的关键一步：把图切成 patch 当 token —— 三段式架构的中间那段</td>
+<td><a href="../机器学习与深度学习基础/12-CNN.html">机器学习与深度学习基础 12 · CNN 处理图像</a></td>
+<td>「零卷积」就是它「三个变体」那节的 <strong>1×1 卷积</strong>：不看空间、只在通道间做线性组合。⭐ 接回主干那个 <code>+</code>，也是它残差连接那节的同一个 <code>+</code></td>
 </tr>
 <tr>
-<td><a href="../推荐算法/08-深度学习推荐模型.html">推荐算法 08</a></td>
-<td>⭐ <strong>想动手复现 CLIP 的对比学习，就去那一节抄代码</strong>——它有一段可跑的「双塔 + In-batch 负采样」，把"用户"换成"图片"、"物品"换成"文字"就是 CLIP 的训练循环；温度系数怎么调、LogQ 校正怎么修热门样本，也都在那里</td>
+<td><a href="../AI基础设施/09-显存优化全家桶.html">AI基础设施 09 · 显存优化全家桶</a></td>
+<td>训 ControlNet 多出来的副本让<strong>参数、梯度、优化器状态三块一起翻</strong>。那章第一节的判断很实用：<strong>把 batch 调到 1 还 OOM 吗</strong> —— 还 OOM 是这三块的问题，不 OOM 才是激活的</td>
 </tr>
 <tr>
-<td><a href="../推荐算法/10-向量检索与ANN.html">推荐算法 10</a></td>
-<td>CLIP 对齐出来的图文向量，最终要落进向量库才有用</td>
-</tr>
-<tr>
-<td><a href="06c-解码参数怎么调.html">06c · 解码参数怎么调</a></td>
-<td>τ 和你调 API 的 <code>temperature</code> 是同一个东西；那一页讲它落在<strong>采样</strong>上是什么样、以及为什么它和 <code>top_p</code> 不是两个独立开关</td>
-</tr>
-<tr>
-<td><a href="../扩散模型/index.html">扩散模型（整套 11 页）</a></td>
-<td>⭐ 图像生成那一支的深挖：从加噪去噪一路到 ControlNet 和 FID 的坑。本页的 10b 是索引，那一套是它点名要外找的正文</td>
+<td><a href="../大模型全景导论/10b-图像生成.html">大模型全景导论 10b · 图像生成</a></td>
+<td>14 分钟的索引版，这两样在那里只占组件表<strong>一行</strong>。⭐ 而它的「📦 深挖的话要学什么」把 ControlNet 和风格 LoRA 训练标成 <strong>📕 整块要外找</strong> —— 本章就是那一行</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="_5">✅ 检查点</h2>
+<h2 id="_6">✅ 检查点</h2>
 <ol>
-<li>VLM 的三段式架构是什么？投影层的作用？</li>
-<li>图片在语言模型看来是什么？分辨率翻倍，token 变几倍？</li>
-<li>VLM 的三个常见误判是什么？需要精确读取时该怎么做？</li>
+<li>提示词说不清「形状」和说不清「风格」，失败方式有什么不同？</li>
+<li>ControlNet 冻结哪一份、训练哪一份？副本复制主干的哪一半，又加回哪一半？</li>
+<li>零初始化的卷积第 0 步输出是多少？那它靠什么学起来？换成默认初始化会怎样？</li>
+<li><code>r=64</code> 时 LoRA 的可训练参数占原层多少？为什么它不是越大越好？</li>
+<li>为什么 ControlNet 的算力代价会和 CFG「相乘」？多个 LoRA 叠加时又要调什么、为什么？</li>
 </ol>
 <details>
 <summary>👀 答案</summary>
 <ol>
-<li><strong>视觉编码器（ViT，把图切 patch 当词）→ 投影层 → 语言模型</strong>。投影层把视觉向量翻译成 LLM 能理解的 token 空间。</li>
-<li>就是一串“<strong>视觉单词</strong>”，和文字并排放在同一个上下文里。分辨率翻倍 → token 变 4 倍（512×512 约 1000，1024×1024 约 4000）。所以要先缩放到模型最优分辨率再传，盲目传原图是白烧钱。</li>
-<li>①<strong>密集小字/表格读错</strong>（分辨率压缩后细节丢失 → 切图分块传）②精确空间关系说不准（patch 化削弱位置感）③计数超过 5~6 个就不准。需要精确时用 OCR + VLM 组合——VLM 擅长“理解图在说什么”，不擅长“精确读出每个数”。</li>
+<li>形状是<strong>说不清</strong>（文字表达不了逐像素的空间约束）；风格是<strong>说了也没用</strong>（底座根本没见过那个角色或笔触）。</li>
+<li>原主干<strong>全部冻结</strong>，复制出来的<strong>编码器那一半</strong>可训练；副本每级输出经零卷积加进冻结主干的<strong>解码器</strong>同级。</li>
+<li>恒为 <strong>0</strong>，所以模型和原模型<strong>逐位相同</strong>（<code>0.0</code>）。但权重梯度是 <strong>2501.0 不是 0</strong>，里面带着副本这一级的输出，所以它从第一步就开始长。默认初始化则在第 0 步就把主干改动 <strong>2.217</strong>，等于往训好的模型里灌噪声。</li>
+<li><strong>28.33%</strong>（<code>r=4</code> 只有 1.77%）。<code>r</code> 一大就接近全量微调，小数据下更容易背下训练集，常见 <strong>4~64</strong>。</li>
+<li>CFG 本身要跑两次去噪网络，加了 ControlNet 后<strong>这两次都得带上编码器副本</strong>，所以相乘不是相加。多个 LoRA 要调<strong>各自的权重系数</strong>（如 0.8 / 0.6），因为它们的 <code>BA</code> 直接加进同一个 <code>W</code>，<strong>没有任何机制知道对方存在</strong>。</li>
 </ol>
 </details>
 <hr />
-<h2 id="_6">🛑 可以停在这里</h2>
-<p>到这里你已经能设计一个视觉应用了：知道图片进去变成什么、要花多少 token、以及<strong>什么时候不该用 VLM</strong>（精确读数交给 OCR）。</p>
-<p>⚠️ <strong>什么时候看下一页</strong>：你想知道「图片和文字为什么能进同一个向量空间」，或者要自己训 / 微调一个 VLM。那是原理层，做应用不必先看。</p>
+<h2 id="_7">🛑 可以停在这里</h2>
+<p>读到这里你已经能看懂一份出图工作流：哪部分是提示词、哪部分是 ControlNet 的条件图、挂了几个 LoRA、那几个 0.x 在调什么。⭐ 更重要的是<strong>出了问题知道该动哪一个</strong>。</p>
+<p><strong>什么时候回来</strong>：加了 LoRA 之后<strong>构图被锁死</strong>时回看第五节 ④；显存或耗时突然翻倍时回看第五节 ①。</p>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>多模态的共同思想是<strong>万物皆 token</strong>。<strong>VLM 是三段式</strong>：<strong>视觉编码器（ViT，把图切成 patch 当词用）→ 投影层 → 语言模型</strong>，投影层负责把视觉向量翻译成 LLM 能懂的 token 空间。⭐ 所以<strong>图片在语言模型看来就是一串「视觉单词」</strong>，和文字并排放在同一个上下文里。⚠️ 做视觉应用之前先算 token 账：<strong>分辨率翻倍，token 变 4 倍</strong>（512×512 约 1000 个，1024×1024 约 4000 个）—— 盲目传原图是白烧钱，应该先缩放到模型的最优分辨率。VLM 有三个常见误判，知道了能省很多调试时间：<strong>密集小字和表格会读错</strong>（分辨率压缩把细节丢了，解法是切图分块传）、<strong>精确的空间关系说不准</strong>（patch 化本身就削弱了位置感）、<strong>计数超过 5~6 个就不准</strong>。⭐ 所以需要精确读数时用 <strong>OCR + VLM 组合</strong>：VLM 擅长「理解这张图在说什么」，不擅长「精确读出每一个数」—— 这两件事分开交给不同工具，比换更大的模型有效得多。</p>
+<p>提示词说得清「画什么」，说不清「画成什么形状」（每加一条空间约束，全部命中的概率就掉一截），也解决不了「用什么风格画」（底座根本没见过你那个角色）。<strong>ControlNet 补形状、风格 LoRA 补风格，三者互不替代。</strong> ControlNet 四步：冻结原主干 → <strong>编码器那一半复制一份</strong>当可训练支路 → 条件图（线稿 / 深度图 / 姿态骨架）经小编码器进副本 → 副本每级输出经<strong>零初始化的 1×1 卷积</strong>加进冻结主干的解码器同级。⭐ 零初始化是支点：实测第 0 步接回后和原主干<strong>逐位相同</strong>（<code>0.0</code>），而权重梯度 <strong>2501.0 不是 0</strong>，所以它照样从第一步开始学；默认初始化则在第 0 步就把主干改动 <strong>2.217</strong>。这就是它只用几万张图训得起来的原因。<strong>风格 LoRA 就是语言模型那个低秩适配</strong>：<code>W</code> 冻结、旁边挂 <code>B(A·x)</code>，中间宽度叫 rank；768→320 那层原有 245760 个参数，<code>r=4</code> 只占 <strong>1.77%</strong>、<code>r=64</code> 到 <strong>28.33%</strong>，常见 4~64。⚠️ 代价：ControlNet 多跑一份副本、还<strong>和 CFG 相乘</strong>；多个 LoRA 加进同一个 <code>W</code>、<strong>互相不知道对方存在</strong>，得逐个调系数。</p>
 </blockquote>
-<p><strong>下一节</strong> 👉 <a href="10d-CLIP与对比学习.html">10d-CLIP与对比学习.md</a></p>
+<p><strong>下一节</strong> 👉 <a href="09-怎么评估.html">09-怎么评估.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
-<nav class="pagenav"><a href="09-推理范式.html"><div class="dir">← 上一节</div>🧩 09 · 推理范式</a><a class="next" href="10d-CLIP与对比学习.html"><div class="dir">下一节 →</div>🧲 10d · CLIP 与对比学习</a></nav>
+<nav class="pagenav"><a href="07-去噪主干-UNet与DiT.html"><div class="dir">← 上一节</div>🏗️ 07 · 去噪主干：U-Net 与 DiT</a><a class="next" href="09-怎么评估.html"><div class="dir">下一节 →</div>📊 09 · 怎么评估</a></nav>
 </main>
 <script>(function(){
-  var KEY="overview-progress", FILE="10-\u591a\u6a21\u6001.md";
+  var KEY="diff-progress", FILE="08-ControlNet\u4e0e\u98ce\u683cLoRA.md";
   function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
   function refresh(){var d=!!load()[FILE];
     document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);

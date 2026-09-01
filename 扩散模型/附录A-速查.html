@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>10 · 多模态：视觉理解（VLM） · 大模型全景导论</title>
+<title>附录A · 速查 · 扩散模型</title>
 <script>(function(){var t=localStorage.getItem('recsys-theme');
 if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
 @font-face{font-family:"CodeCJK";
@@ -267,186 +267,352 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
-  <span class="title">10 · 多模态：视觉理解</span>
-  <span class="prevnext"><a href="09-推理范式.html">←</a>
-  <a href="10d-CLIP与对比学习.html">→</a></span>
+  <span class="title">附录A · 速查</span>
+  <span class="prevnext"><a href="09-怎么评估.html">←</a>
+  </span>
   <button class="js-done-btn">☐ 打卡</button>
   <button id="themeToggle" title="切换深浅色">🌗</button>
 </div></header>
 <main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
 <ul>
-<li><a href="#_1">🎯 一句话</a></li>
-<li><a href="#_2">🧭 先选你要做哪个模态</a></li>
-<li><a href="#vlm">🖼️ 一、视觉理解（VLM）</a></li>
-<li><a href="#_4">🔗 和站内其他章的关系</a></li>
-<li><a href="#_5">✅ 检查点</a></li>
-<li><a href="#_6">🛑 可以停在这里</a></li>
+<li><a href="#_1">🧭 怎么用这一页</a></li>
+<li><a href="#_2">🔢 一、公式速查</a></li>
+<li><a href="#_3">📐 二、数字速查（都是本板块实测出来的）</a></li>
+<li><a href="#_4">🚨 三、症状反查</a></li>
+<li><a href="#_5">🎚️ 四、你会调到的旋钮</a></li>
+<li><a href="#_6">📖 五、术语对照</a></li>
+<li><a href="#_7">🔗 这一页连到哪里</a></li>
 </ul>
 </div>
 </details>
-<h1 id="10-vlm">10 · 多模态：视觉理解（VLM）</h1>
-<p>⏱ <strong>20 分钟</strong> ｜ ⭐ <strong>图片进模型之后变成什么，以及什么时候不该用 VLM</strong></p>
+<h1 id="a">附录A · 速查</h1>
+<p>⏱ <strong>18 分钟</strong> ｜ ⭐ <strong>公式、数字、症状反查 —— 用到哪查哪，不用从头读</strong></p>
 <hr />
-<h2 id="_1">🎯 一句话</h2>
-<p>多模态的共同思想只有一句：<strong>万物皆 token</strong> —— 图像、音频、视频都被切成 token 之后，
-就都能交给同一个 Transformer 处理。</p>
+<h2 id="_1">🧭 怎么用这一页</h2>
+<p>四张表各管一件事：<strong>公式</strong>用来回忆推导落点，<strong>数字</strong>用来判断量级对不对，
+<strong>症状反查</strong>用来定位问题，<strong>旋钮</strong>用来调参。每一行都能点回本板块的某一章。</p>
 <hr />
-<h2 id="_2">🧭 先选你要做哪个模态</h2>
-<p>⚠️ <strong>这三页互不依赖，直接跳到你要的那一页就行</strong>，不必顺着读。</p>
+<h2 id="_2">🔢 一、公式速查</h2>
 <table>
 <thead>
 <tr>
-<th>你要做的东西</th>
-<th>去哪一页</th>
-<th>它讲什么</th>
+<th>在做什么</th>
+<th>式子</th>
+<th>出处</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>让模型看懂图片、截图、表格、文档</td>
-<td><strong>本页</strong></td>
-<td>VLM 三段式架构、图片怎么变 token、三个常见误判</td>
+<td>前向加噪（一步）</td>
+<td>$x_t = \sqrt{1-\beta_t}\,x_{t-1} + \sqrt{\beta_t}\,\varepsilon$</td>
+<td><a href="02-加噪与去噪.html">02 · 加噪与去噪</a></td>
 </tr>
 <tr>
-<td>想懂图文为什么能对齐、要自己训 VLM</td>
-<td><a href="10d-CLIP与对比学习.html">10d · CLIP 与对比学习</a></td>
-<td>InfoNCE、温度系数、LLaVA 两阶段训练</td>
+<td>⭐ <strong>闭式采样</strong>（一步跳到任意 $t$）</td>
+<td>$x_t = \sqrt{\bar\alpha_t}\,x_0 + \sqrt{1-\bar\alpha_t}\,\varepsilon$，其中 $\bar\alpha_t=\prod_s \alpha_s$</td>
+<td><a href="02-加噪与去噪.html">02</a></td>
 </tr>
 <tr>
-<td>文生图、图生图、风格控制</td>
-<td><a href="10b-图像生成.html">10b · 图像生成</a></td>
-<td>扩散模型：从噪声一步步擦出图像</td>
+<td>训练损失</td>
+<td>$L_{\text{simple}} = \|\varepsilon - \varepsilon_\theta(x_t, t)\|^2$</td>
+<td><a href="03-训练目标为什么是预测噪声.html">03 · 训练目标</a></td>
 </tr>
 <tr>
-<td>语音识别、语音合成、语音对话</td>
-<td><a href="10c-语音与视频.html">10c · 语音与视频</a></td>
-<td>ASR / TTS / 端到端语音，以及视频的 token 爆炸问题</td>
+<td>从 $\varepsilon$ 反推干净图</td>
+<td>$\hat x_0 = (x_t - \sqrt{1-\bar\alpha_t}\,\varepsilon_\theta)/\sqrt{\bar\alpha_t}$</td>
+<td><a href="04-DDIM与采样加速.html">04 · DDIM</a></td>
 </tr>
 <tr>
-<td>视频理解或视频生成</td>
-<td><a href="10c-语音与视频.html">10c · 语音与视频</a></td>
-<td>同上</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="vlm">🖼️ 一、视觉理解（VLM）</h2>
-<h3 id="_3">架构：三段式</h3>
-<figure class="dia">
-<svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="VLM 三段式架构：图片经视觉编码器 ViT 编码，再经投影层翻译成 token，最后与文字一起送入语言模型">
-  <rect x="40" y="12" width="130" height="32" rx="8" fill="none" stroke="var(--border)" stroke-width="1.4"/>
-  <text class="dia-t" x="105" y="33" font-size="12.5" text-anchor="middle" fill="var(--fg)">图片</text>
-  <line x1="105" y1="44" x2="105" y2="52" stroke="var(--accent)" stroke-width="1.5"/>
-  <polygon points="99,52 111,52 105,58" fill="var(--accent)"/>
-  <rect x="40" y="58" width="130" height="48" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/>
-  <text class="dia-t" x="105" y="80" font-size="12.5" font-weight="700" text-anchor="middle" fill="var(--accent)">视觉编码器</text>
-  <text class="dia-t" x="105" y="97" font-size="11" text-anchor="middle" fill="var(--muted)">(ViT)</text>
-  <text class="dia-t" x="190" y="80" font-size="12" fill="var(--fg)">ViT：把图切成 16×16 的小块（patch），</text>
-  <text class="dia-t" x="190" y="98" font-size="12" fill="var(--fg)">每块当一个「词」，过 Transformer</text>
-  <line x1="105" y1="106" x2="105" y2="124" stroke="var(--accent)" stroke-width="1.5"/>
-  <polygon points="99,124 111,124 105,130" fill="var(--accent)"/>
-  <text class="dia-t" x="120" y="122" font-size="11" fill="var(--muted)">一堆视觉向量</text>
-  <rect x="40" y="130" width="130" height="48" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/>
-  <text class="dia-t" x="105" y="152" font-size="12.5" font-weight="700" text-anchor="middle" fill="var(--accent)">投影层</text>
-  <text class="dia-t" x="105" y="169" font-size="11" text-anchor="middle" fill="var(--muted)">(Projector)</text>
-  <text class="dia-t" x="190" y="152" font-size="12" fill="var(--accent)">⭐ 关键：把视觉向量「翻译」成</text>
-  <text class="dia-t" x="190" y="170" font-size="12" fill="var(--accent)">语言模型能懂的 token 空间</text>
-  <line x1="105" y1="178" x2="105" y2="196" stroke="var(--accent)" stroke-width="1.5"/>
-  <polygon points="99,196 111,196 105,202" fill="var(--accent)"/>
-  <rect x="40" y="202" width="620" height="84" rx="10" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/>
-  <text class="dia-t" x="58" y="224" font-size="13" font-weight="700" fill="var(--accent)">语言模型 LLM</text>
-  <rect x="58" y="236" width="90" height="26" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.1"/>
-  <text class="dia-t" x="103" y="253" font-size="11.5" text-anchor="middle" fill="var(--accent)">图像 token</text>
-  <rect x="154" y="236" width="90" height="26" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.1"/>
-  <text class="dia-t" x="199" y="253" font-size="11.5" text-anchor="middle" fill="var(--accent)">图像 token</text>
-  <text class="dia-t" x="256" y="253" font-size="12" fill="var(--muted)">…</text>
-  <rect x="280" y="236" width="190" height="26" rx="6" fill="none" stroke="var(--border)" stroke-width="1.1"/>
-  <text class="dia-t" x="375" y="253" font-size="11.5" text-anchor="middle" fill="var(--fg)">[用户] 这张图里有什么？</text>
-  <text class="dia-t" x="484" y="253" font-size="11.5" fill="var(--accent)">← 图像和文字被拼在一起！</text>
-</svg>
-<figcaption>三段式：图像被 ViT 切成 patch 编码 → 投影层把它「翻译」成语言模型能读的 token → 和文字拼进<b>同一个上下文</b>。</figcaption>
-</figure>
-
-<p>💡 <strong>核心洞察</strong>：<strong>图片被翻译成了「视觉单词」，和文字并排放进同一个上下文。</strong>
-所以做文本应用时的那一整套（上下文管理、提示词、工具，本站《智能体工程教程》讲的就是这些）全部适用。</p>
-<p>📌 <strong>这张图有名字</strong>：这套「ViT → 投影层 → LLM」的结构就是 LLaVA，也是目前开源多模态模型的默认长相。
-另一条路线（BLIP-2 的 <strong>Q-Former</strong>）改的只有中间那一层——两者的差别在 <a href="10d-CLIP与对比学习.html">10d · CLIP 与对比学习</a> 那一页。</p>
-<p>⚠️ <strong>实用推论</strong>：一张高分辨率图可能消耗 <strong>1000+ token</strong>。多图对话烧 token 极快——上下文预算意识（智能体第 4 章）在这里更重要。</p>
-<h3 id="token">💰 图片的 token 账（做视觉应用前先算这笔）</h3>
-<section class="visual-block visual-block-calc" aria-label="算一算"><p class="visual-block-title">算一算</p><div class="vb-calc"><p>图片 token 数 ≈ (宽/patch) × (高/patch)，patch 通常 14~16 像素</p><p>512×512 → 约 1,000 token</p><p>1024×1024 → 约 4,000 token ⭐ 翻倍分辨率 = 4 倍 token</p><p>一段 10 张图的对话 → 轻松几万 token</p><p>💡 所以主流做法是【先缩放到模型的最优分辨率】再传</p><p>盲目传原图 = 白烧几倍的钱</p></div></section>
-<h3 id="vlm_1">⚠️ VLM 的三个常见误判（知道了能省很多调试时间）</h3>
-<table>
-<thead>
-<tr>
-<th>场景</th>
-<th>表现</th>
-<th>原因</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>密集小字 / 表格</strong></td>
-<td>读错数字、串行</td>
-<td>分辨率被压缩后细节丢失 → <strong>切图分块传</strong> ⭐</td>
+<td>CFG 合成</td>
+<td>$\tilde\varepsilon = \varepsilon_{\text{uncond}} + s\,(\varepsilon_{\text{cond}} - \varepsilon_{\text{uncond}})$</td>
+<td><a href="06-条件控制与CFG.html">06 · 条件控制与 CFG</a></td>
 </tr>
 <tr>
-<td><strong>需要精确空间关系</strong></td>
-<td>"左边第三个"经常说错</td>
-<td>ViT 的 patch 化削弱了精确位置感</td>
-</tr>
-<tr>
-<td><strong>需要计数</strong></td>
-<td>超过 5~6 个就不准</td>
-<td>和文本模型数字母是同类问题——<strong>给工具，别让它数</strong></td>
+<td>LoRA 旁路</td>
+<td>$W' = W + B(Ax)$，中间宽度就是 rank</td>
+<td><a href="08-ControlNet与风格LoRA.html">08 · ControlNet 与风格 LoRA</a></td>
 </tr>
 </tbody>
 </table>
 <blockquote>
-<p>🔑 <strong>一条通用建议</strong>：<strong>VLM 擅长"理解这张图在说什么"，不擅长"精确读出图里的每个数"。</strong>
-需要精确的场景（发票、表格、图纸），<strong>用 OCR + VLM 组合</strong>，别只靠 VLM。</p>
+<p>⭐ <strong>闭式采样那一行是整套东西的支点</strong>：它是<strong>恒等不是近似</strong>（靠「独立高斯相加、方差相加」），
+所以训练能并行 —— 不必为 batch 里每张图各跑几百步。</p>
 </blockquote>
-<h2 id="_4">🔗 和站内其他章的关系</h2>
-<p>左列有的来自日常用 LLM 的经验，有的在站内别的板块讲过——<strong>碰上过哪几条就从哪几条接进来，一条没碰过也不影响读这一章</strong>。</p>
+<hr />
+<h2 id="_3">📐 二、数字速查（都是本板块实测出来的）</h2>
 <table>
 <thead>
 <tr>
-<th>你可能已经知道的</th>
-<th>这一章的对应</th>
+<th>量</th>
+<th>值</th>
+<th>它说明什么</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>上下文预算（智能体第 4 章）</td>
-<td>图像吃 token 极凶，预算意识更重要</td>
+<td>$\beta_t$ 的范围（DDPM linear）</td>
+<td>0.0001 → 0.02，$T=1000$</td>
+<td>一张<strong>写死的表，零个可训练参数</strong></td>
 </tr>
 <tr>
-<td>向量检索 ANN（推荐第 10 章）</td>
-<td>CLIP 让图文进同一空间，同一套检索设施</td>
+<td>闭式 vs 迭代（$t{=}1000$）</td>
+<td><strong>0.29 ms vs 182.5 ms</strong></td>
+<td>闭式<strong>不随 $t$ 增长</strong>，迭代线性涨</td>
 </tr>
 <tr>
-<td>LoRA（第 5 章）</td>
-<td>图像生成里的风格 LoRA，同源技术</td>
+<td>$x_T$ 与 $x_0$ 的相关系数</td>
+<td><strong>0.0031</strong></td>
+<td>终点和原图基本无关 —— 所以采样能凭空起手</td>
 </tr>
 <tr>
-<td>多模态 Embedding 做冷启动（推荐第 13 章）</td>
-<td>就是用 CLIP/ViT 提取的特征</td>
+<td>8 倍下采样后的高频保留</td>
+<td><strong>0.0000</strong></td>
+<td>U-Net 跳跃连接救的就是这个</td>
 </tr>
 <tr>
-<td>计算机使用（智能体第 9 章）</td>
-<td>那是 VLM 的一个具体应用</td>
+<td>512²×3 → 64²×4</td>
+<td>786432 → 16384，<strong>压缩 48 倍</strong></td>
+<td>但卷积省 <strong>64 倍</strong>、注意力省 <strong>4096 倍</strong></td>
 </tr>
 <tr>
-<td>双塔 + in-batch 负采样 + 温度系数（推荐第 8 章）</td>
-<td>⭐ <strong>CLIP 的训练方式和它是同一个东西</strong>，连坑都一样</td>
+<td>一个潜空间格子</td>
+<td>8×8=64 个像素，<strong>192 个数压成 4 个</strong></td>
+<td>💀 画不好小字的第一层原因</td>
 </tr>
 <tr>
-<td><code>temperature</code> 怎么改变分布（第 6 章）</td>
-<td>CLIP 的 τ 是同一个式子，只是用在 loss 上</td>
+<td>CLIP ViT-L/14 文本输出</td>
+<td><strong>77 × 768</strong></td>
+<td>77 就是「提示词太长后面不起作用」的根</td>
+</tr>
+<tr>
+<td>CFG 训练时丢条件的概率</td>
+<td>约 <strong>10%</strong></td>
+<td>free 指的是不用额外分类器</td>
+</tr>
+<tr>
+<td>ControlNet 零初始化（第 0 步）</td>
+<td>输出差 <strong>0.0</strong>，而梯度 <strong>2501.0</strong></td>
+<td>⭐ 不破坏原模型，但学得动</td>
+</tr>
+<tr>
+<td>同样位置用默认初始化</td>
+<td>第 0 步就把主干改动 <strong>2.217</strong></td>
+<td>对照组：为什么必须零初始化</td>
+</tr>
+<tr>
+<td>LoRA rank（768→320 那层）</td>
+<td>r=4 → <strong>1.77%</strong> 参数，r=64 → <strong>28.33%</strong></td>
+<td>常见取值 4~64</td>
+</tr>
+<tr>
+<td>FID：同分布、真值应为 0</td>
+<td>n=100 → <strong>21.4</strong>，n=10000 → <strong>0.214</strong></td>
+<td>💀 样本量不够时 FID 毫无意义</td>
+</tr>
+<tr>
+<td>FID：高斯 vs 每维 ±1</td>
+<td><strong>0.1127</strong>（同分布基线 0.1088）</td>
+<td>💀 两个天差地别的分布，得分没区别</td>
 </tr>
 </tbody>
 </table>
-<!--XREF-->
-<p><strong>想接着深挖，去这几处</strong>：</p>
+<hr />
+<h2 id="_4">🚨 三、症状反查</h2>
+<table>
+<thead>
+<tr>
+<th>现象</th>
+<th>先怀疑</th>
+<th>去哪一章</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>训练 loss 降了但采样出来一团糊</td>
+<td>采样器的调度表和训练时的 $\bar\alpha$ 对不上</td>
+<td><a href="02-加噪与去噪.html">02</a>、<a href="04-DDIM与采样加速.html">04</a></td>
+</tr>
+<tr>
+<td>数据没归一化就开训</td>
+<td>⚠️ 方差保持只在输入方差为 1 时成立，方差 3 的数据会从 3.00 漂到 1.00</td>
+<td><a href="02-加噪与去噪.html">02</a></td>
+</tr>
+<tr>
+<td>采样太慢</td>
+<td>步数，不是图大。DDIM 20~50 步就够</td>
+<td><a href="04-DDIM与采样加速.html">04</a></td>
+</tr>
+<tr>
+<td>同一个种子出的图不一样</td>
+<td>模型 / 步数 / 调度 / 提示词要<strong>全同</strong>，连浮点归约顺序都算</td>
+<td><a href="04-DDIM与采样加速.html">04</a></td>
+</tr>
+<tr>
+<td>两个噪声之间插值出来是糊的</td>
+<td>⚠️ 必须走<strong>球面</strong>：线性中点范数只有 90.51，掉出了那个半径 128 的球壳</td>
+<td><a href="04-DDIM与采样加速.html">04</a></td>
+</tr>
+<tr>
+<td>小字、远景人脸、手指画不好</td>
+<td>💀 在 <strong>VAE 编码那一步</strong>就丢了，扩散再准也补不回来</td>
+<td><a href="05-Latent-Diffusion.html">05 · Latent Diffusion</a></td>
+</tr>
+<tr>
+<td>提示词后半段像没生效</td>
+<td>文本编码器只有 77 个 token 位</td>
+<td><a href="06-条件控制与CFG.html">06</a></td>
+</tr>
+<tr>
+<td>出图过饱和、构图崩、每次都差不多</td>
+<td>CFG 的 <code>s</code> 太大 —— ⚠️ <code>s&gt;1</code> 是<strong>外推</strong>不是插值</td>
+<td><a href="06-条件控制与CFG.html">06</a></td>
+</tr>
+<tr>
+<td>加了 ControlNet 显存爆了</td>
+<td>它要多跑一份主干副本</td>
+<td><a href="08-ControlNet与风格LoRA.html">08</a></td>
+</tr>
+<tr>
+<td>两个 LoRA 一起用互相打架</td>
+<td>权重要调，叠加会干扰</td>
+<td><a href="08-ControlNet与风格LoRA.html">08</a></td>
+</tr>
+<tr>
+<td>FID 比别人论文高/低很多</td>
+<td>⚠️ 先问三件事：样本量、真图取自哪、resize 方式</td>
+<td><a href="09-怎么评估.html">09 · 怎么评估</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_5">🎚️ 四、你会调到的旋钮</h2>
+<table>
+<thead>
+<tr>
+<th>旋钮</th>
+<th>调大会怎样</th>
+<th>调小会怎样</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>采样步数</strong></td>
+<td>慢；收益会饱和</td>
+<td>快；太少则细节垮掉</td>
+</tr>
+<tr>
+<td><strong>CFG scale <code>s</code></strong></td>
+<td>更听话，但过饱和、构图崩、多样性塌缩</td>
+<td><code>s=1</code> 等于不引导，出图发散</td>
+</tr>
+<tr>
+<td><strong>η（DDIM 随机性）</strong></td>
+<td>越接近 1 越像 DDPM，少步数下越吃亏</td>
+<td><code>η=0</code> 确定性，种子可复现</td>
+</tr>
+<tr>
+<td><strong>strength（图生图）</strong></td>
+<td>改动越大，越不像原图</td>
+<td>越贴近原图</td>
+</tr>
+<tr>
+<td><strong>LoRA rank <code>r</code></strong></td>
+<td>表达力强、参数多（r=64 → 28.33%）</td>
+<td>省参数（r=4 → 1.77%），但学不动复杂风格</td>
+</tr>
+<tr>
+<td><strong>LoRA 权重</strong></td>
+<td>风格越重，容易盖掉提示词</td>
+<td>风格若隐若现</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_6">📖 五、术语对照</h2>
+<table>
+<thead>
+<tr>
+<th>词</th>
+<th>一句话</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>前向过程</strong></td>
+<td>加噪。<strong>固定的、不用学</strong>，$\beta$ 是一张写死的表</td>
+</tr>
+<tr>
+<td><strong>反向过程</strong></td>
+<td>去噪。<strong>这才是学出来的那一半</strong></td>
+</tr>
+<tr>
+<td>$\bar\alpha_t$</td>
+<td>从 0 到 $t$ 的 $\alpha$ 连乘。它一个数就决定了「这一步还剩多少原图」</td>
+</tr>
+<tr>
+<td><strong>方差保持</strong></td>
+<td>$(1-\beta)+\beta=1$，所以输入方差是 1 时每步都还是 1</td>
+</tr>
+<tr>
+<td><strong>ELBO / 变分下界</strong></td>
+<td>损失的出处。⚠️ 前置在<a href="../机器学习的数学原理/01b-KL散度.html">数学原理 01b · KL 散度</a></td>
+</tr>
+<tr>
+<td>$L_{\text{simple}}$</td>
+<td>把 ELBO 的系数直接扔掉的损失 —— 等于<strong>给 $t$ 大的样本更高权重</strong></td>
+</tr>
+<tr>
+<td><strong>参数化（ε / x₀ / v）</strong></td>
+<td>三种等价写法，选预测 ε 是<strong>梯度量级</strong>的决定</td>
+</tr>
+<tr>
+<td><strong>DDIM</strong></td>
+<td>非马尔可夫的采样器。⭐ <strong>不用重训</strong>，因为它和 DDPM 的边缘分布一样</td>
+</tr>
+<tr>
+<td><strong>η</strong></td>
+<td>DDIM 的随机性总开关：0 确定性、1 退回 DDPM</td>
+</tr>
+<tr>
+<td><strong>Latent Diffusion</strong></td>
+<td>把扩散搬进 VAE 的潜空间。Stable Diffusion 名字里的 "Latent"</td>
+</tr>
+<tr>
+<td><strong>交叉注意力</strong></td>
+<td>条件进入去噪的通道：<strong>Q 来自图像、K/V 来自文本</strong></td>
+</tr>
+<tr>
+<td><strong>CFG</strong></td>
+<td>同一步跑两次（带条件/不带），再外推。<code>s</code> 就是 UI 上的 guidance scale</td>
+</tr>
+<tr>
+<td><strong>U-Net</strong></td>
+<td>U 形去噪主干。跳跃连接是<strong>拼接</strong>不是相加</td>
+</tr>
+<tr>
+<td><strong>DiT</strong></td>
+<td>把潜空间切 patch 当 token，用 Transformer 当去噪主干</td>
+</tr>
+<tr>
+<td><strong>adaLN-Zero</strong></td>
+<td>DiT 里那个零初始化的门控 —— 和 ControlNet 是同一个想法</td>
+</tr>
+<tr>
+<td><strong>ControlNet</strong></td>
+<td>复制一份编码器当可训练支路，<strong>零初始化卷积</strong>接回主干</td>
+</tr>
+<tr>
+<td><strong>FID</strong></td>
+<td>两堆特征各当高斯，算 Fréchet 距离。⚠️ <strong>只用了均值和协方差</strong></td>
+</tr>
+<tr>
+<td><strong>CLIP Score</strong></td>
+<td>图文两个编码器输出的余弦相似度。⚠️ 只测对不对，不测好不好看</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_7">🔗 这一页连到哪里</h2>
 <table>
 <thead>
 <tr>
@@ -456,61 +622,33 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </thead>
 <tbody>
 <tr>
-<td><a href="../机器学习与深度学习基础/12-CNN.html">ML基础 12</a></td>
-<td>视觉编码器的前身：卷积在看什么、为什么后来被 ViT 取代</td>
+<td><a href="00-怎么用这份教程.html">00 · 怎么用这份教程</a></td>
+<td>三条读法路线，以及这个板块<strong>不讲</strong>什么</td>
 </tr>
 <tr>
-<td><a href="../机器学习与深度学习基础/14-通往Transformer.html">ML基础 14</a></td>
-<td>⭐ ViT 的关键一步：把图切成 patch 当 token —— 三段式架构的中间那段</td>
+<td><a href="../大模型全景导论/10b-图像生成.html">大模型全景导论 10b · 图像生成</a></td>
+<td>⭐ 索引版，14 分钟。本板块就是它深挖清单上那条「📕 整块要外找」</td>
 </tr>
 <tr>
-<td><a href="../推荐算法/08-深度学习推荐模型.html">推荐算法 08</a></td>
-<td>⭐ <strong>想动手复现 CLIP 的对比学习，就去那一节抄代码</strong>——它有一段可跑的「双塔 + In-batch 负采样」，把"用户"换成"图片"、"物品"换成"文字"就是 CLIP 的训练循环；温度系数怎么调、LogQ 校正怎么修热门样本，也都在那里</td>
+<td><a href="../机器学习的数学原理/01b-KL散度.html">机器学习的数学原理 01b · KL 散度</a></td>
+<td>ELBO 的地基 —— 03 章那段推导建在它上面</td>
 </tr>
 <tr>
-<td><a href="../推荐算法/10-向量检索与ANN.html">推荐算法 10</a></td>
-<td>CLIP 对齐出来的图文向量，最终要落进向量库才有用</td>
+<td><a href="../大模型全景导论/06c-解码参数怎么调.html">大模型全景导论 06c · 解码参数怎么调</a></td>
+<td>⭐ CFG 的 <code>s</code> 和语言模型的 <code>temperature</code> 是同一类旋钮：都在「多听话 vs 多自由」之间取舍</td>
 </tr>
 <tr>
-<td><a href="06c-解码参数怎么调.html">06c · 解码参数怎么调</a></td>
-<td>τ 和你调 API 的 <code>temperature</code> 是同一个东西；那一页讲它落在<strong>采样</strong>上是什么样、以及为什么它和 <code>top_p</code> 不是两个独立开关</td>
-</tr>
-<tr>
-<td><a href="../扩散模型/index.html">扩散模型（整套 11 页）</a></td>
-<td>⭐ 图像生成那一支的深挖：从加噪去噪一路到 ControlNet 和 FID 的坑。本页的 10b 是索引，那一套是它点名要外找的正文</td>
+<td><a href="../AI基础设施/09-显存优化全家桶.html">AI基础设施 09 · 显存优化全家桶</a></td>
+<td>潜空间省下来的那笔账，在训练侧还有一整套别的省法</td>
 </tr>
 </tbody>
 </table>
-<hr />
-<h2 id="_5">✅ 检查点</h2>
-<ol>
-<li>VLM 的三段式架构是什么？投影层的作用？</li>
-<li>图片在语言模型看来是什么？分辨率翻倍，token 变几倍？</li>
-<li>VLM 的三个常见误判是什么？需要精确读取时该怎么做？</li>
-</ol>
-<details>
-<summary>👀 答案</summary>
-<ol>
-<li><strong>视觉编码器（ViT，把图切 patch 当词）→ 投影层 → 语言模型</strong>。投影层把视觉向量翻译成 LLM 能理解的 token 空间。</li>
-<li>就是一串“<strong>视觉单词</strong>”，和文字并排放在同一个上下文里。分辨率翻倍 → token 变 4 倍（512×512 约 1000，1024×1024 约 4000）。所以要先缩放到模型最优分辨率再传，盲目传原图是白烧钱。</li>
-<li>①<strong>密集小字/表格读错</strong>（分辨率压缩后细节丢失 → 切图分块传）②精确空间关系说不准（patch 化削弱位置感）③计数超过 5~6 个就不准。需要精确时用 OCR + VLM 组合——VLM 擅长“理解图在说什么”，不擅长“精确读出每个数”。</li>
-</ol>
-</details>
-<hr />
-<h2 id="_6">🛑 可以停在这里</h2>
-<p>到这里你已经能设计一个视觉应用了：知道图片进去变成什么、要花多少 token、以及<strong>什么时候不该用 VLM</strong>（精确读数交给 OCR）。</p>
-<p>⚠️ <strong>什么时候看下一页</strong>：你想知道「图片和文字为什么能进同一个向量空间」，或者要自己训 / 微调一个 VLM。那是原理层，做应用不必先看。</p>
-<p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>多模态的共同思想是<strong>万物皆 token</strong>。<strong>VLM 是三段式</strong>：<strong>视觉编码器（ViT，把图切成 patch 当词用）→ 投影层 → 语言模型</strong>，投影层负责把视觉向量翻译成 LLM 能懂的 token 空间。⭐ 所以<strong>图片在语言模型看来就是一串「视觉单词」</strong>，和文字并排放在同一个上下文里。⚠️ 做视觉应用之前先算 token 账：<strong>分辨率翻倍，token 变 4 倍</strong>（512×512 约 1000 个，1024×1024 约 4000 个）—— 盲目传原图是白烧钱，应该先缩放到模型的最优分辨率。VLM 有三个常见误判，知道了能省很多调试时间：<strong>密集小字和表格会读错</strong>（分辨率压缩把细节丢了，解法是切图分块传）、<strong>精确的空间关系说不准</strong>（patch 化本身就削弱了位置感）、<strong>计数超过 5~6 个就不准</strong>。⭐ 所以需要精确读数时用 <strong>OCR + VLM 组合</strong>：VLM 擅长「理解这张图在说什么」，不擅长「精确读出每一个数」—— 这两件事分开交给不同工具，比换更大的模型有效得多。</p>
-</blockquote>
-<p><strong>下一节</strong> 👉 <a href="10d-CLIP与对比学习.html">10d-CLIP与对比学习.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
-<nav class="pagenav"><a href="09-推理范式.html"><div class="dir">← 上一节</div>🧩 09 · 推理范式</a><a class="next" href="10d-CLIP与对比学习.html"><div class="dir">下一节 →</div>🧲 10d · CLIP 与对比学习</a></nav>
+<nav class="pagenav"><a href="09-怎么评估.html"><div class="dir">← 上一节</div>📊 09 · 怎么评估</a><a class="next" href="index.html"><div class="dir">完成 →</div>🏠 回首页看进度</a></nav>
 </main>
 <script>(function(){
-  var KEY="overview-progress", FILE="10-\u591a\u6a21\u6001.md";
+  var KEY="diff-progress", FILE="\u9644\u5f55A-\u901f\u67e5.md";
   function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
   function refresh(){var d=!!load()[FILE];
     document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);

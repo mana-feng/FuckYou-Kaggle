@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>01 · 第一天：从噪声里捞出一张图 · 扩散模型</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:1.14em;margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:.92em}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">01 · 第一天：从噪声里捞出一张图</span>
+  <span class="prevnext"><a href="00-怎么用这份教程.html">←</a>
+  <a href="02-加噪与去噪.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">🧪 一、为什么第一天不跑真的文生图</a></li>
+<li><a href="#_3">🎲 二、先造一个「分布」</a></li>
+<li><a href="#_4">🌫️ 三、加噪：把它一路糊成纯噪声</a></li>
+<li><a href="#_5">🔮 四、反过来走：训练 + 采样</a></li>
+<li><a href="#_6">🔍 五、读这四行</a></li>
+<li><a href="#_7">🧯 六、三个值得自己改一下的地方</a></li>
+<li><a href="#_8">🔗 这一章连到哪里</a></li>
+<li><a href="#_9">✅ 检查点</a></li>
+<li><a href="#_10">🛑 可以停在这里</a></li>
+</ul>
+</div>
+</details>
+<h1 id="01">01 · 第一天：从噪声里捞出一张图</h1>
+<p>⏱ <strong>52 分钟</strong>（读完全章；⭐ 真正动手那段 CPU 十几秒跑完）｜ ⭐ <strong>五十行 PyTorch，亲眼看见纯噪声变回一个分布</strong></p>
+<hr />
+<h2 id="_1">🎯 一句话</h2>
+<p><strong>扩散模型只学一件事：把一点噪声擦掉。然后把这个动作重复几百次。</strong>
+这一章不解释为什么能这样，先让你在自己机器上看见它真的发生 —— 后面几章再回来算账。</p>
+<hr />
+<h2 id="_2">🧪 一、为什么第一天不跑真的文生图</h2>
+<p>跑一个真的文生图模型要下载几个 GB 的权重，多半还要一块显卡。<strong>那不是「第一天」该干的事</strong>，而且跑完你看到的只是一张图，看不见里面在发生什么。</p>
+<p>所以这一章把维度从 400 万降到 <strong>2</strong>：数据是平面上的两团点，去噪网络是一个三层 MLP。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>真的文生图模型</th>
+<th>本章的玩具</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据</td>
+<td>512×512×3 的图片</td>
+<td>平面上一个点 <code>(x, y)</code></td>
+</tr>
+<tr>
+<td>去噪网络</td>
+<td>U-Net / DiT，上亿参数</td>
+<td>三层 MLP，约 2 万参数</td>
+</tr>
+<tr>
+<td>步数 T</td>
+<td>1000</td>
+<td>200，⭐ <strong>CPU 十几秒训完</strong></td>
+</tr>
+<tr>
+<td>怎么看结果</td>
+<td>肉眼看图</td>
+<td>⭐ <strong>看数字</strong>：采样点的中心、团内散布、落点比例</td>
+</tr>
+</tbody>
+</table>
+<p>⭐ <strong>除了这几行，别的一模一样</strong>：同一条加噪公式、同一个训练目标、同一套采样循环。
+⚠️ 用数字而不是图看结果是刻意的 —— 肉眼看图容易自我欺骗，「看着挺像」和「分布对不对」是两回事。这个区别到 09 章讲评估时会变成正题。</p>
+<hr />
+<h2 id="_3">🎲 二、先造一个「分布」</h2>
+<p>得先有个东西给模型学。这里用平面上的两团点：中心分别在 <code>(-2, -1)</code> 和 <code>(2, 1)</code>，各占一半，每团自己散开 0.35。</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">CENTERS</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]])</span>           <span class="c1"># 两团的中心</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_data</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">CENTERS</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,))]</span> <span class="o">+</span> <span class="mf">0.35</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">x0</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
+<span class="n">lab</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cdist</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">CENTERS</span><span class="p">)</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>                     <span class="c1"># 每个点离哪个中心近</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;整体std:&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">x0</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()])</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">x0</span><span class="p">[</span><span class="n">lab</span> <span class="o">==</span> <span class="n">k</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;第 </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> 团 </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">g</span><span class="p">)</span><span class="si">}</span><span class="s2"> 个点  中心 </span><span class="si">{</span><span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">g</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span><span class="si">}</span><span class="s2">&quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;  团内std </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>整体std: [2.042, 1.061]
+第 0 团 2007 个点  中心 [-2.016, -1.006]  团内std 0.356
+第 1 团 2089 个点  中心 [2.007, 0.995]  团内std 0.35
+</code></pre></div>
+
+<p>⭐ 记住这三样：<strong>中心 ±2 / ±1、团内散布 0.35、两团各一半</strong>。判断模型学没学会，靠的就是它们。</p>
+<hr />
+<h2 id="_4">🌫️ 三、加噪：把它一路糊成纯噪声</h2>
+<p>前向过程是<strong>写死的规则，一个要学的参数都没有</strong>：给每一步定一个 $\beta_t$，每步往数据里掺一点新噪声。累乘出来的 $\bar\alpha_t=\prod_{s\le t}(1-\beta_s)$ 让你<strong>跳过循环、一步算出任意时刻的 $x_t$</strong>：</p>
+<p>$$x_t=\sqrt{\bar\alpha_t}\;x_0+\sqrt{1-\bar\alpha_t}\;\epsilon,\qquad \epsilon\sim\mathcal N(0,I)$$</p>
+<p>人话：<strong>$\sqrt{\bar\alpha_t}$ 是「原图还剩多少」，$\sqrt{1-\bar\alpha_t}$ 是「噪声占多少」，两个系数的平方和恒为 1。</strong> 想看第 137 步长什么样，不必把前面 136 步跑一遍。</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">betas</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-4</span><span class="p">,</span> <span class="mf">0.06</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>      <span class="c1"># 每一步掺多少新噪声</span>
+<span class="n">abar</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cumprod</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">betas</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>   <span class="c1"># ᾱ_t = (1-β₁)(1-β₂)…(1-β_t)  ⭐ 秘密全在它身上</span>
+
+<span class="n">CENTERS</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]])</span>
+<span class="n">which</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">4096</span><span class="p">,))</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="n">CENTERS</span><span class="p">[</span><span class="n">which</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.35</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4096</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># ⚠️ 表头用 ASCII：Windows 控制台默认 gbk，打 √ 和 ᾱ 会直接抛 UnicodeEncodeError</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;t&#39;</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}{</span><span class="s1">&#39;abar&#39;</span><span class="si">:</span><span class="s2">&gt;9</span><span class="si">}{</span><span class="s1">&#39;sqrt(abar)&#39;</span><span class="si">:</span><span class="s2">&gt;12</span><span class="si">}{</span><span class="s1">&#39;sqrt(1-abar)&#39;</span><span class="si">:</span><span class="s2">&gt;14</span><span class="si">}{</span><span class="s1">&#39;两团中心间距&#39;</span><span class="si">:</span><span class="s2">&gt;13</span><span class="si">}{</span><span class="s1">&#39;整体std&#39;</span><span class="si">:</span><span class="s2">&gt;9</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">149</span><span class="p">,</span> <span class="mi">199</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">abar</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="n">xt</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span> <span class="o">*</span> <span class="n">x0</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>   <span class="c1"># ⭐ 一步到位，不用循环</span>
+    <span class="n">gap</span> <span class="o">=</span> <span class="p">(</span><span class="n">xt</span><span class="p">[</span><span class="n">which</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">xt</span><span class="p">[</span><span class="n">which</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">t</span><span class="si">:</span><span class="s2">&gt;4</span><span class="si">}{</span><span class="n">a</span><span class="si">:</span><span class="s2">&gt;9.4f</span><span class="si">}{</span><span class="n">a</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span><span class="si">:</span><span class="s2">&gt;12.3f</span><span class="si">}{</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span><span class="si">:</span><span class="s2">&gt;14.3f</span><span class="si">}{</span><span class="n">gap</span><span class="si">:</span><span class="s2">&gt;13.3f</span><span class="si">}{</span><span class="n">xt</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">&gt;9.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;原始两团中心间距:&quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">((</span><span class="n">CENTERS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">CENTERS</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="mi">3</span><span class="p">))</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>   t     abar  sqrt(abar)  sqrt(1-abar)       两团中心间距    整体std
+   0   0.9999       1.000         0.010        4.493    1.627
+  49   0.6869       0.829         0.560        3.709    1.453
+  99   0.2198       0.469         0.883        2.117    1.169
+ 149   0.0324       0.180         0.984        0.799    1.023
+ 199   0.0022       0.047         0.999        0.205    0.996
+原始两团中心间距: 4.472
+</code></pre></div>
+
+<p>⭐ <strong>这张表怎么读</strong>：盯「两团中心间距」这一列 —— 原本 <strong>4.472</strong>，到 t=199 只剩 <strong>0.205</strong>，两团彻底认不出来了；同时整体 std 收到 <strong>0.996</strong>，也就是 $\mathcal N(0,I)$。<strong>信息是被均匀擦干净的，不是被搬走的。</strong></p>
+<p>⚠️ $\beta$ 的上限（这里 0.06）是配着 T=200 挑的：<strong>T 越小每步就得掺得越猛，否则最后一步还留着原图的形状</strong>，而采样时你却从纯噪声起步 —— 两头对不上。DDPM 原论文用 T=1000、$\beta$ 到 0.02，是同一笔账的另一种配法。</p>
+<!--FIG: 一条从左到右的时间轴，上方两条曲线 sqrt(ᾱ_t) 从 1.000 降到 0.047、sqrt(1-ᾱ_t) 从 0.010 升到 0.999，下方对应「两团清晰 → 开始重叠 → 完全糊成一团」三个状态-->
+
+<hr />
+<h2 id="_5">🔮 四、反过来走：训练 + 采样</h2>
+<p>前向是死规则，<strong>要学的只有反向那一步</strong>。训练目标简单到不像真的：随机挑一个时刻 $t$，按上面的公式造出 $x_t$，<strong>让网络看着 $x_t$ 和 $t$ 猜出刚才掺进去的那个 $\epsilon$</strong>，用均方误差罚它。就一行。</p>
+<p>采样反过来：从纯噪声起步，每一步用网络猜出的噪声往回退一点，退 200 次。</p>
+<p>⚠️ 下面这段是<strong>完整可跑的一整个文件</strong>，复制到空文件里 <code>python xxx.py</code> 就行。</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">math</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span><span class="o">,</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># ---------- ① 数据：两个高斯团 ----------</span>
+<span class="n">CENTERS</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_data</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">CENTERS</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,))]</span> <span class="o">+</span> <span class="mf">0.35</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># ---------- ② 噪声表 ----------</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">betas</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-4</span><span class="p">,</span> <span class="mf">0.06</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+<span class="n">alphas</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">betas</span>
+<span class="n">abar</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cumprod</span><span class="p">(</span><span class="n">alphas</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># ---------- ③ 去噪网络：输入 (x_t, t)，输出「我猜掺进去的噪声是什么」----------</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Denoiser</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">temb</span><span class="o">=</span><span class="mi">32</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temb</span> <span class="o">=</span> <span class="n">temb</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">net</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">dim</span> <span class="o">+</span> <span class="n">temb</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">SiLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">SiLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="n">half</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">temb</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">freq</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">1000.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">half</span><span class="p">)</span> <span class="o">/</span> <span class="n">half</span><span class="p">)</span>
+        <span class="n">ang</span> <span class="o">=</span> <span class="n">t</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span><span class="o">.</span><span class="n">float</span><span class="p">()</span> <span class="o">*</span> <span class="n">freq</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">emb</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">ang</span><span class="o">.</span><span class="n">sin</span><span class="p">(),</span> <span class="n">ang</span><span class="o">.</span><span class="n">cos</span><span class="p">()],</span> <span class="mi">1</span><span class="p">)</span>   <span class="c1"># 告诉网络「现在噪声有多大」</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">emb</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">Denoiser</span><span class="p">()</span>
+<span class="n">opt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">2e-3</span><span class="p">)</span>
+
+<span class="c1"># ---------- ④ 训练：唯一的损失就是「噪声猜得准不准」----------</span>
+<span class="n">t0</span><span class="p">,</span> <span class="n">run</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">(),</span> <span class="mf">0.0</span>
+<span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4000</span><span class="p">):</span>
+    <span class="n">x0</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">256</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="p">(</span><span class="mi">256</span><span class="p">,))</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">abar</span><span class="p">[</span><span class="n">t</span><span class="p">][:,</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="n">xt</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span> <span class="o">*</span> <span class="n">x0</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span> <span class="o">*</span> <span class="n">eps</span>     <span class="c1"># 前向加噪，一步到位</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="p">((</span><span class="n">model</span><span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="o">-</span> <span class="n">eps</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>     <span class="c1"># ⭐ 全部训练目标就这一行</span>
+    <span class="n">opt</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">();</span> <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">();</span> <span class="n">opt</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+    <span class="n">run</span> <span class="o">=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="k">if</span> <span class="n">step</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.99</span> <span class="o">*</span> <span class="n">run</span> <span class="o">+</span> <span class="mf">0.01</span> <span class="o">*</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">step</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">step</span> <span class="o">==</span> <span class="mi">3999</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;step </span><span class="si">{</span><span class="n">step</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2">  平滑后的 loss </span><span class="si">{</span><span class="n">run</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;训练用时 </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t0</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> 秒&quot;</span><span class="p">)</span>
+
+<span class="c1"># ---------- ⑤ 采样：从纯噪声倒着走 200 步 ----------</span>
+<span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sample</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>                          <span class="c1"># t = T-1，纯噪声</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">)):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">n</span><span class="p">,),</span> <span class="n">i</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">betas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">abar</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span> <span class="o">*</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span> <span class="o">/</span> <span class="n">alphas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">mean</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">mean</span> <span class="o">+</span> <span class="n">betas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+<span class="c1"># ---------- ⑥ 对照：不迭代，直接从纯噪声反解一次 ----------</span>
+<span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">one_shot</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">n</span><span class="p">,),</span> <span class="n">T</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">abar</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span> <span class="o">*</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span> <span class="o">/</span> <span class="n">abar</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">report</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">pts</span><span class="p">):</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cdist</span><span class="p">(</span><span class="n">pts</span><span class="p">,</span> <span class="n">CENTERS</span><span class="p">);</span> <span class="n">lab</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">hit</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span>     <span class="c1"># ⭐ 落在任一团 1.0 半径内的比例</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">round</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">pts</span><span class="p">[</span><span class="n">lab</span> <span class="o">==</span> <span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">pts</span><span class="p">[</span><span class="n">lab</span> <span class="o">==</span> <span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">16s</span><span class="si">}</span><span class="s2"> 落在团里 </span><span class="si">{</span><span class="n">hit</span><span class="si">:</span><span class="s2">5.1f</span><span class="si">}</span><span class="s2">%   两团中心 </span><span class="si">{</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">   &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;团内std </span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2">   整体std </span><span class="si">{</span><span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">pts</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">report</span><span class="p">(</span><span class="s2">&quot;真实数据&quot;</span><span class="p">,</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">4000</span><span class="p">))</span>
+<span class="n">report</span><span class="p">(</span><span class="s2">&quot;走完 200 步&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="p">(</span><span class="mi">4000</span><span class="p">))</span>
+<span class="n">report</span><span class="p">(</span><span class="s2">&quot;只走 1 步反解&quot;</span><span class="p">,</span> <span class="n">one_shot</span><span class="p">(</span><span class="mi">4000</span><span class="p">))</span>
+<span class="n">report</span><span class="p">(</span><span class="s2">&quot;什么都不做&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4000</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</code></pre></div>
+
+<p>我这台普通笔记本（CPU，PyTorch 2.13）上的真实输出：</p>
+<div class="codehilite"><pre><span></span><code>step    0  平滑后的 loss 1.0095
+step 1000  平滑后的 loss 0.2697
+step 2000  平滑后的 loss 0.2605
+step 3000  平滑后的 loss 0.2596
+step 3999  平滑后的 loss 0.2600
+训练用时 17.3 秒
+真实数据             落在团里  98.2%   两团中心 [-1.99, -1.0] [1.99, 0.99]   团内std [0.349, 0.355]   整体std [2.02, 1.06]
+走完 200 步         落在团里  97.4%   两团中心 [-2.05, -0.93] [2.05, 1.04]   团内std [0.37, 0.365]   整体std [2.08, 1.05]
+只走 1 步反解         落在团里  15.8%   两团中心 [-0.36, -0.71] [1.01, 0.33]   团内std [0.63, 0.736]   整体std [0.99, 0.84]
+什么都不做            落在团里  10.6%   两团中心 [-0.72, -0.33] [0.71, 0.34]   团内std [0.819, 0.825]   整体std [1.0, 1.0]
+</code></pre></div>
+
+<p>⚠️ 你的绝对数字会和这里不同（机器、torch 版本、线程数都影响），<strong>要看的是四行之间的关系</strong>。训练用时我这里 10 到 60 多秒都出现过，取决于机器当时忙不忙。</p>
+<hr />
+<!--MIDSTOP-->
+<blockquote>
+<p>🛑 <strong>读到这里可以停</strong> —— 已经读了约 33 分钟。
+<strong>最后一段还有</strong>（约 20 分钟）：读这四行 · 三个值得自己改一下的地方 · 检查点与走神救援
+回来的时候不用重读，直接从下一节接着看就行。</p>
+</blockquote>
+<hr />
+<h2 id="_6">🔍 五、读这四行</h2>
+<p>⭐ <strong>「走完 200 步」那一行和真实数据几乎重合</strong>：两团中心猜到了 <code>(-2.05, -0.93)</code> 和 <code>(2.05, 1.04)</code>（真值 ±2 / ±1），团内 std 0.37（真值 0.35），落在团里 <strong>97.4%</strong> 对真实数据的 <strong>98.2%</strong>。<strong>模型从来没见过「中心在哪」这个信息，它只被要求猜噪声。</strong></p>
+<p>纯噪声什么都不做只有 <strong>10.6%</strong>，那是地板。</p>
+<p>而「只走 1 步反解」值得多看一眼 —— 它用的是<strong>同一个训练好的模型、同一份权重</strong>，只是拿 $x_T$ 直接反解出 $\hat x_0=(x_T-\sqrt{1-\bar\alpha_T}\,\hat\epsilon)/\sqrt{\bar\alpha_T}$。此时 $\sqrt{\bar\alpha_T}=0.047$，<strong>除以它等于把网络那点残差放大二十多倍</strong>，结果整体 std 只剩 0.99 / 0.84（真值 2.02 / 1.06），命中率 <strong>15.8%</strong>，比地板高不了多少。</p>
+<blockquote>
+<p>⭐ <strong>这就是「为什么必须一步步走」最直接的证据</strong>：不是迭代更精细，而是<strong>一步跨过去的那个除法在数值上根本不成立</strong>。02 章会把这件事算清楚。</p>
+</blockquote>
+<p>⚠️ 另外注意损失<strong>稳在 0.26 附近就不再降</strong>，这是正常的：同一个 $x_t$ 可能由无数组 $(x_0,\epsilon)$ 产生，<strong>网络再准也消不掉这份固有的不确定性</strong>。看 loss 的绝对值判断扩散模型训得好不好基本没用 —— 要看采样结果。</p>
+<hr />
+<h2 id="_7">🧯 六、三个值得自己改一下的地方</h2>
+<p>每一行都只改上面那段代码的<strong>一处</strong>，我把结果也跑出来了（判据是同一个「落在团里」，外加<strong>团内 std</strong>，真值 0.35）：</p>
+<table>
+<thead>
+<tr>
+<th>改什么</th>
+<th>怎么改</th>
+<th>落在团里</th>
+<th>团内 std</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>——</td>
+<td>不改</td>
+<td>97.4%</td>
+<td>0.370 / 0.365</td>
+</tr>
+<tr>
+<td>训练不够</td>
+<td><code>range(4000)</code> → <code>range(400)</code></td>
+<td>94.7%</td>
+<td>0.396 / 0.411</td>
+</tr>
+<tr>
+<td><strong>不告诉网络现在是第几步</strong></td>
+<td><code>forward</code> 里加一行 <code>emb = torch.zeros_like(emb)</code></td>
+<td>⚠️ <strong>74.6%</strong></td>
+<td>0.565 / 0.563</td>
+</tr>
+<tr>
+<td>采样时不加那一项随机噪声</td>
+<td><code>x = mean if i == 0 else mean + …</code> 改成 <code>x = mean</code></td>
+<td><strong>99.7%</strong></td>
+<td>💀 <strong>0.093 / 0.084</strong></td>
+</tr>
+</tbody>
+</table>
+<p>⭐ <strong>第三行是这一章最该记住的一条</strong>：$x_t$ 里「有多少是原图、有多少是噪声」完全由 $t$ 决定 —— 不给它 $t$，它只能对所有时刻用同一套猜法，命中率当场从 97.4% 掉到 <strong>74.6%</strong>。<strong>时间嵌入不是装饰。</strong></p>
+<p>💀 <strong>第四行是个陷阱</strong>：去掉采样里那一项随机噪声，「落在团里」反而涨到 <strong>99.7%</strong>，看上去更好。但团内 std 塌到 <strong>0.09</strong>（真值 0.35）：<strong>所有样本挤成了两个点，多样性全没了。</strong></p>
+<blockquote>
+<p>⚠️ <strong>单看一个指标会骗你。</strong> 一个「更准」的采样器可能只是更保守。这件事在 04 章（DDIM 也是确定性采样）和 09 章（FID 与 CLIP Score 各自看不见什么）还会各出现一次。</p>
+</blockquote>
+<hr />
+<h2 id="_8">🔗 这一章连到哪里</h2>
+<table>
+<thead>
+<tr>
+<th>相关的地方</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../机器学习与深度学习基础/15-PyTorch实战手册.html">ML 基础 15 · PyTorch 实战手册</a></td>
+<td>上面那段训练循环看着吃力的话，那一章有一份验证过能跑的完整模板，还有「六个高频 Bug」</td>
+</tr>
+<tr>
+<td><a href="../机器学习与深度学习基础/09-优化器与学习率.html">ML 基础 09 · 优化器与学习率</a></td>
+<td>代码里的 <code>Adam(lr=2e-3)</code> 为什么是这个数、调大调小会怎样</td>
+</tr>
+<tr>
+<td><a href="../大模型全景导论/10b-图像生成.html">全景导论 10b · 图像生成</a></td>
+<td>想马上知道从这个玩具到真的文生图还缺哪些零件（VAE、文本编码器、CFG、ControlNet），那一页 14 分钟列全</td>
+</tr>
+<tr>
+<td><a href="../机器学习的数学原理/13-EM与高斯混合.html">数学原理 13 · EM 与高斯混合</a></td>
+<td>这一章造数据用的「两团高斯」正式的名字叫高斯混合；那一章讲怎么<strong>反过来</strong>从点里估出这两团</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_9">✅ 检查点</h2>
+<ol>
+<li>前向加噪过程里有几个要学的参数？为什么可以「跳到第 137 步」而不用跑前面 136 步？</li>
+<li>$\sqrt{\bar\alpha_t}$ 和 $\sqrt{1-\bar\alpha_t}$ 各代表什么？t=199 时它们分别是多少？</li>
+<li>训练时网络的输入是什么、输出是什么、损失是什么？</li>
+<li>判断「模型学会了」看哪几个数字？模型采到的两团中心是多少？</li>
+<li>同一个模型，「走完 200 步」和「只走 1 步反解」的命中率差多少？为什么一步不行？</li>
+<li>不给网络 $t$ 会怎样？给出数字。</li>
+<li>采样时去掉那一项随机噪声，「落在团里」变高了，为什么这反而是坏事？</li>
+</ol>
+<details>
+<summary>👀 答案</summary>
+<ol>
+<li><strong>零个</strong> —— 前向是写死的规则，$\beta_t$ 是人定的表。能跳步是因为累乘量 $\bar\alpha_t=\prod(1-\beta_s)$ 给了闭式解 $x_t=\sqrt{\bar\alpha_t}x_0+\sqrt{1-\bar\alpha_t}\epsilon$。</li>
+<li>$\sqrt{\bar\alpha_t}$ 是原图还剩多少，$\sqrt{1-\bar\alpha_t}$ 是噪声占多少，平方和恒为 1。t=199 时是 <strong>0.047 和 0.999</strong>：两团中心间距从 4.472 掉到 0.205、整体 std 0.996，已经是 $\mathcal N(0,I)$。</li>
+<li>输入是 $(x_t,\,t)$，输出是<strong>它猜的那个噪声 $\hat\epsilon$</strong>，损失是 $\hat\epsilon$ 和真实 $\epsilon$ 的均方误差 —— 就一行 <code>((model(xt, t) - eps) ** 2).mean()</code>。</li>
+<li>看两团的<strong>中心</strong>、<strong>团内 std</strong>、<strong>落在团里的比例</strong>。模型采到的中心是 <code>(-2.05, -0.93)</code> 和 <code>(2.05, 1.04)</code>，真值 ±2 / ±1；团内 std 0.37，真值 0.35。</li>
+<li><strong>97.4% vs 15.8%</strong>（地板是纯噪声的 10.6%）。一步不行是因为反解要除以 $\sqrt{\bar\alpha_T}=0.047$，<strong>把网络的残差放大二十多倍</strong>，结果整体 std 只剩 0.99 / 0.84 而真值是 2.02 / 1.06。</li>
+<li>命中率从 <strong>97.4% 掉到 74.6%</strong>，团内 std 从 0.37 涨到 0.565。因为「$x_t$ 里有多少是噪声」完全由 $t$ 决定，不给 $t$ 网络只能对所有时刻用同一套猜法。</li>
+<li>因为<strong>团内 std 塌到 0.09</strong>（真值 0.35）—— 所有样本挤成两个点，多样性没了。⭐「落在团里」这个指标奖励保守，<strong>单看一个指标会骗你</strong>。</li>
+</ol>
+</details>
+<hr />
+<h2 id="_10">🛑 可以停在这里</h2>
+<p>你已经在自己机器上跑出了一个能工作的扩散模型，并且知道了它的三个要害：<strong>前向是死规则、训练只学「猜噪声」、采样必须一步步走</strong>。停在这里完全可以。</p>
+<p>⚠️ 什么时候回来：想知道<strong>为什么损失稳在 0.26 而不趋近 0</strong>、<strong>为什么目标是猜噪声而不是直接猜原图</strong>，或者<strong>那 200 步能不能少走几步</strong> —— 分别是 02、03、04 章。</p>
+<p>⚡ <strong>走神救援</strong></p>
+<blockquote>
+<p>⭐ <strong>扩散模型只学一件事：把一点噪声擦掉，然后重复几百次。</strong> 这一章在<strong>二维玩具数据</strong>上从头训了一个，<strong>CPU 十几秒</strong>；除了维度（400 万 → 2）和网络（U-Net → 三层 MLP），公式、目标、采样循环和真模型一模一样。数据是平面上两团点，中心 <code>(-2,-1)</code> 和 <code>(2,1)</code>、团内散开 <strong>0.35</strong>。</p>
+<p>🌫️ <strong>前向加噪是写死的规则，零个可学参数</strong>。关键量是累乘 $\bar\alpha_t=\prod(1-\beta_s)$，它给出闭式解 $x_t=\sqrt{\bar\alpha_t}x_0+\sqrt{1-\bar\alpha_t}\epsilon$：<strong>前一个系数是原图还剩多少、后一个是噪声占多少，平方和恒为 1</strong>，所以能一步跳到任意时刻。t=199 时两者是 <strong>0.047 / 0.999</strong>，两团中心间距从 <strong>4.472 掉到 0.205</strong>、整体 std <strong>0.996</strong>。⚠️ β 上限要配着 T 挑，T 小就得掺得更猛。</p>
+<p>🔮 <strong>训练目标就一行</strong>：随机挑时刻 t 造出 $x_t$，让网络看着 $(x_t,t)$ 猜出刚掺进去的 $\epsilon$，均方误差。采样从纯噪声起步倒着走 200 步。结果：两团中心 <strong>(-2.05,-0.93) / (2.05,1.04)</strong>（真值 ±2/±1），团内 std <strong>0.37</strong>（真值 0.35），落在团里 <strong>97.4%</strong>，真实数据 98.2%、纯噪声只有 10.6%。<strong>它从没见过中心在哪，只被要求猜噪声。</strong> ⚠️ 损失稳在 <strong>0.26</strong> 不再降是正常的 —— 同一个 $x_t$ 能由无数组 $(x_0,\epsilon)$ 产生，<strong>别拿 loss 判断扩散模型好坏</strong>。</p>
+<p>⚠️ <strong>只走 1 步反解，命中率掉到 15.8%</strong>：要除以 $\sqrt{\bar\alpha_T}=0.047$，<strong>把残差放大二十多倍</strong>，整体 std 只剩 0.99/0.84（真值 2.02/1.06）。这就是「必须一步步走」最直接的证据。🧯 <strong>三个改一行的实验</strong>：只训 400 步 → 94.7%；<strong>不告诉网络现在是第几步 → 74.6%</strong>（⭐ 时间嵌入不是装饰）；<strong>采样去掉随机项 → 落在团里涨到 99.7%，团内 std 却塌到 0.09</strong>（真值 0.35）——💀 <strong>样本挤成两个点，看着更准其实只是更保守，单看一个指标会骗你</strong>。</p>
+</blockquote>
+<p><strong>下一节</strong> 👉 <a href="02-加噪与去噪.html">02-加噪与去噪.md</a></p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="00-怎么用这份教程.html"><div class="dir">← 上一节</div>🧭 00 · 怎么用这份教程</a><a class="next" href="02-加噪与去噪.html"><div class="dir">下一节 →</div>🌫️ 02 · 加噪与去噪</a></nav>
+</main>
+<script>(function(){
+  var KEY="diff-progress", FILE="01-\u7b2c\u4e00\u5929-\u4ece\u566a\u58f0\u91cc\u635e\u51fa\u4e00\u5f20\u56fe.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>

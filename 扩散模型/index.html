@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>扩散模型</title><script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
+<style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:1.14em;margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:.92em}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+.hero{background:linear-gradient(135deg,var(--accent-soft),transparent 70%);
+ border:1px solid var(--border);border-radius:20px;padding:34px 30px;margin:26px 0}
+.hero h1{margin:0 0 10px;font-size:2.1em}
+.hero p{color:var(--muted);margin:.4em 0}
+.hero .cta{display:inline-block;margin-top:14px;background:var(--accent);color:#fff;
+ padding:13px 30px;border-radius:999px;text-decoration:none;font-weight:700;font-size:1.05em}
+.hero .cta:hover{filter:brightness(1.1)}
+.hero .cta.secondary{background:var(--card);color:var(--fg);border:2px solid var(--border);margin-left:10px}
+.dash{display:flex;gap:16px;align-items:center;background:var(--card);border:1px solid var(--border);
+ border-radius:16px;padding:18px 22px;margin:18px 0;box-shadow:var(--shadow);flex-wrap:wrap}
+.dash .pct{font-size:2em;font-weight:800;color:var(--accent);min-width:110px}
+.dash .track{flex:1;min-width:200px;height:14px;background:var(--quote-bg);border-radius:99px;overflow:hidden}
+.dash .fill{height:100%;background:var(--done);width:0;border-radius:99px;transition:width .6s}
+.dash .label{color:var(--muted);font-size:.9em;width:100%}
+.stage h2{border:none;margin:2em 0 .6em;padding:0}
+.stage h2 small{display:block;font-size:.55em;font-weight:400;color:var(--muted);margin-top:2px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:10px}
+.card{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);
+ border-radius:12px;padding:12px 14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow);font-size:.95em}
+.card:hover{border-color:var(--accent)}
+.card .check{font-size:1.1em;color:var(--muted);flex-shrink:0}
+.card.done .check{color:var(--done)}
+.card.done .cname{color:var(--muted);text-decoration:line-through;
+ text-decoration-color:color-mix(in srgb,var(--done) 55%,transparent);text-decoration-thickness:2px}
+.card .badge{flex-shrink:0}.card .cname{flex:1;line-height:1.4}
+.card .time{color:var(--muted);font-size:.82em;flex-shrink:0}
+.card .date{color:var(--muted);font-size:.78em;flex-shrink:0}
+.rules{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin:16px 0}
+.rule{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 18px;
+ box-shadow:var(--shadow);font-size:.93em}.rule b{color:var(--accent)}
+.map{background:var(--code-bg);color:#f8f8f2;border-radius:14px;padding:18px;overflow-x:auto;
+ font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;font-size:.8em;line-height:1.5;white-space:pre}
+footer{color:var(--muted);font-size:.85em;text-align:center;margin-top:60px}
+h2.stage{margin:34px 0 2px;font-size:1.12em;display:flex;align-items:baseline;
+ gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--border);padding-bottom:8px}
+h2.stage span{font-size:.78em;font-weight:400;color:var(--muted)}
+.bigcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin:26px 0}
+.bigcard{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:26px;
+ text-decoration:none;color:var(--fg);box-shadow:var(--shadow);display:flex;flex-direction:column}
+.bigcard:hover{border-color:var(--accent);transform:translateY(-2px);transition:.15s}
+.bigcard .ico{font-size:2.4em;line-height:1}
+.bigcard h3{margin:.5em 0 .3em;font-size:1.3em;color:var(--fg)}
+.bigcard p{color:var(--muted);font-size:.92em;margin:.3em 0;flex:1}
+.bigcard .meta{margin-top:14px;font-size:.85em;color:var(--accent);font-weight:600}
+</style></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner"><a href="../index.html">🏠 总目录</a>
+<span class="title">扩散模型 · 从噪声里把图像擦出来</span>
+<button id="themeToggle" title="切换深浅色">🌗</button></div></header>
+<main>
+<div class="hero"><h1>扩散模型</h1>
+<p><b>语言模型一个词一个词地写；扩散模型从一团纯噪声开始，一步步把图像擦出来。</b></p>
+<p>这一套补的是《大模型全景导论》自己点名要外找的那一块 ——
+它那页的深挖清单上写着「📕 <b>整块要外找</b>」。
+从前向加噪的闭式解，到为什么训练目标是「预测噪声」；
+从 DDIM 为什么能跳步，到 Latent Diffusion 省的到底是哪一部分算力；
+再到 CFG 那个你天天在调的 guidance scale 究竟在权衡什么。
+<b>第 1 章就在二维数据上从头训一个出来，CPU 几十秒。</b></p>
+<a class="cta" id="continueBtn" href="01-第一天-从噪声里捞出一张图.html">🎨 从噪声里捞出第一张图</a></div>
+<div class="dash"><div class="pct" id="pct">0%</div>
+<div class="track"><div class="fill" id="fill"></div></div>
+<div class="label" id="dashLabel">你的进度（在每章末尾点「打卡」，保存在本浏览器里）</div></div>
+
+<section class="stage"><h2>阶段 0 · 先看见它动<small>⭐ 第 1 章在二维玩具数据上从头训一个扩散模型，CPU 几十秒跑完</small></h2><div class="cards"><a class="card" href="00-怎么用这份教程.html" data-md="00-怎么用这份教程.md"><span class="check">☐</span><span class="badge">🧭</span><span class="cname">00 · 怎么用这份教程</span><span class='time'>⏱20 分钟</span></a><a class="card" href="01-第一天-从噪声里捞出一张图.html" data-md="01-第一天-从噪声里捞出一张图.md"><span class="check">☐</span><span class="badge">🎨</span><span class="cname">01 · 第一天：从噪声里捞出一张图</span><span class='time'>⏱52 分钟</span></a></div></section><section class="stage"><h2>阶段 1 · 它到底在做什么<small>前向加噪是固定的，反向去噪才是学出来的</small></h2><div class="cards"><a class="card" href="02-加噪与去噪.html" data-md="02-加噪与去噪.md"><span class="check">☐</span><span class="badge">🌫️</span><span class="cname">02 · 加噪与去噪：这个过程到底在做什么</span><span class='time'>⏱64 分钟</span></a><a class="card" href="03-训练目标为什么是预测噪声.html" data-md="03-训练目标为什么是预测噪声.md"><span class="check">☐</span><span class="badge">🎯</span><span class="cname">03 · 训练目标为什么是「预测噪声」</span><span class='time'>⏱30 分钟</span></a></div></section><section class="stage"><h2>阶段 2 · 让它快起来、可控起来<small>DDIM 跳步 / 潜空间 / 文本条件与 CFG</small></h2><div class="cards"><a class="card" href="04-DDIM与采样加速.html" data-md="04-DDIM与采样加速.md"><span class="check">☐</span><span class="badge">⏩</span><span class="cname">04 · DDIM 与采样加速</span><span class='time'>⏱42 分钟</span></a><a class="card" href="05-Latent-Diffusion.html" data-md="05-Latent-Diffusion.md"><span class="check">☐</span><span class="badge">🗜️</span><span class="cname">05 · Latent Diffusion：在压缩过的空间里扩散</span><span class='time'>⏱40 分钟</span></a><a class="card" href="06-条件控制与CFG.html" data-md="06-条件控制与CFG.md"><span class="check">☐</span><span class="badge">🎚️</span><span class="cname">06 · 条件控制：文本与 CFG</span><span class='time'>⏱22 分钟</span></a></div></section><section class="stage"><h2>阶段 3 · 主干、控制与验收<small>U-Net 与 DiT / ControlNet 与 LoRA / 指标的坑</small></h2><div class="cards"><a class="card" href="07-去噪主干-UNet与DiT.html" data-md="07-去噪主干-UNet与DiT.md"><span class="check">☐</span><span class="badge">🏗️</span><span class="cname">07 · 去噪主干：U-Net 与 DiT</span><span class='time'>⏱34 分钟</span></a><a class="card" href="08-ControlNet与风格LoRA.html" data-md="08-ControlNet与风格LoRA.md"><span class="check">☐</span><span class="badge">🎛️</span><span class="cname">08 · ControlNet 与风格 LoRA</span><span class='time'>⏱22 分钟</span></a><a class="card" href="09-怎么评估.html" data-md="09-怎么评估.md"><span class="check">☐</span><span class="badge">📊</span><span class="cname">09 · 怎么评估：FID 与 CLIP Score</span><span class='time'>⏱38 分钟</span></a></div></section><section class="stage"><h2>随时查<small>公式、参数、术语对照</small></h2><div class="cards"><a class="card" href="附录A-速查.html" data-md="附录A-速查.md"><span class="check">☐</span><span class="badge">📖</span><span class="cname">附录A · 速查</span><span class='time'>⏱18 分钟</span></a></div></section>
+<footer>打卡数据只存在你自己的浏览器里 · <a href="../index.html">返回总目录</a></footer>
+</main>
+<script>(function(){
+  var KEY="diff-progress",FILES=["00-怎么用这份教程.md", "01-第一天-从噪声里捞出一张图.md", "02-加噪与去噪.md", "03-训练目标为什么是预测噪声.md", "04-DDIM与采样加速.md", "05-Latent-Diffusion.md", "06-条件控制与CFG.md", "07-去噪主干-UNet与DiT.md", "08-ControlNet与风格LoRA.md", "09-怎么评估.md", "附录A-速查.md"],F2H={"00-怎么用这份教程.md": "00-怎么用这份教程.html", "01-第一天-从噪声里捞出一张图.md": "01-第一天-从噪声里捞出一张图.html", "02-加噪与去噪.md": "02-加噪与去噪.html", "03-训练目标为什么是预测噪声.md": "03-训练目标为什么是预测噪声.html", "04-DDIM与采样加速.md": "04-DDIM与采样加速.html", "05-Latent-Diffusion.md": "05-Latent-Diffusion.html", "06-条件控制与CFG.md": "06-条件控制与CFG.html", "07-去噪主干-UNet与DiT.md": "07-去噪主干-UNet与DiT.html", "08-ControlNet与风格LoRA.md": "08-ControlNet与风格LoRA.html", "09-怎么评估.md": "09-怎么评估.html", "附录A-速查.md": "附录A-速查.html"};
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  var p=load(),done=0;
+  document.querySelectorAll('.card').forEach(function(c){
+    if(p[c.dataset.md]){c.classList.add('done');c.querySelector('.check').textContent='✅';}});
+  FILES.forEach(function(f){if(p[f])done++});
+  var pct=Math.round(done/FILES.length*100);
+  document.getElementById('pct').textContent=pct+'%';
+  document.getElementById('fill').style.width=pct+'%';
+  document.getElementById('dashLabel').textContent=done===0
+    ?'你的进度（在每章末尾点「打卡」，保存在本浏览器里）'
+    :'已完成 '+done+' / '+FILES.length+' 章 —— 这是你的多巴胺条，别嫌幼稚，它有用';
+  for(var i=0;i<FILES.length;i++){if(!p[FILES[i]]){
+    if(done>0){var b=document.getElementById('continueBtn');
+      if(b){b.href=F2H[FILES[i]];b.textContent='▶ 继续学习：'+FILES[i].replace('.md','');}}
+    break;}}
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script>
+</body></html>
