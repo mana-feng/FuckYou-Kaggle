@@ -157,7 +157,6 @@
     { id: "e-invariant", names: ["不变量"], group: "算法", meaning: "一句在循环每一轮结束时都成立的话，比如「prev 指向已经反转好的那一段」。", role: "先把它用中文写出来，代码基本就跟着长出来了；卡住时也是先回去检查它还成不成立。", code: "# 每轮结束后：左边都已排好，右边都还没看" },
     { id: "e-dp", names: ["动态规划"], group: "算法", meaning: "把大问题拆成小问题，用已经解出来的小问题推出当前这个，并且把结果存下来不重复算。", role: "两种常见形态：写题时是「先定义 dp[i] 代表什么」，强化学习里是「用贝尔曼方程反复迭代解出价值」——同一个思想的两面。", code: "dp[i] = max(dp[i-1] + a[i], a[i])" },
     { id: "e-sliding-window", names: ["滑动窗口"], group: "算法", meaning: "用两个下标框住一段连续区间，右边界往前吃、左边界按条件收缩，整个数组只扫一遍。", role: "把「枚举所有子区间」的平方复杂度降到线性；求最长不重复子串这类题的标准形状。", code: "while 窗口不合法:\n    left += 1   # 收缩\nright += 1      # 扩张" },
-    { id: "e-microflow", names: ["Microflow"], group: "低代码", meaning: "Mendix 里用图形把一段业务逻辑画出来：取数据、判断分支、改数据、给提示。", role: "它就是手写后端里的一个接口处理函数，只是用连线代替了代码。", code: "# 起点 → 取对象 → 判断 → 提交 / 报错 → 终点" },
     { id: "f-agent", names: ["Agent"], group: "智能体", meaning: "一个让模型自己决定下一步做什么的循环：看当前情况、挑一个工具去用、看结果、再决定下一步，直到任务完成。", role: "和「一问一答」的根本差别在于路径是模型自己走出来的，而不是你预先编排好的。", code: "while not done:\n    action = model(state)\n    state = run(action)" },
     { id: "f-mcp", names: ["MCP"], group: "智能体", meaning: "一套让工具和 Agent 之间互相发现、互相调用的标准协议，中间那层叫 Server。", role: "有了它，加一个新系统只要写一个 Server，所有 Agent 都能直接用，不用两两对接。", code: "# Server 暴露三类东西：工具、资源、提示模板" },
     { id: "f-tool-call", names: ["工具调用"], group: "智能体", meaning: "模型不直接回答，而是按约定格式输出「我要调用哪个函数、参数是什么」，由外面的程序真正执行。", role: "它是模型接触真实世界的唯一出口；工具描述写不清楚，模型就选错或者传错参数。", code: "{\"name\": \"search\", \"arguments\": {\"q\": \"天气\"}}" },
@@ -185,8 +184,6 @@
     { id: "f-tta", names: ["TTA"], group: "竞赛", meaning: "推理时对同一个输入做几种变换各预测一次，再把结果平均。", role: "几乎不用改训练就能稳定涨一点分；代价是推理耗时翻几倍。", code: "pred = (f(x) + f(flip(x))) / 2" },
     { id: "f-stacking", names: ["Stacking"], group: "竞赛", meaning: "把多个模型的预测当成新特征，再训一个模型去学怎么组合它们。", role: "比固定权重的加权平均更灵活；但必须用 OOF 预测来训，否则一定过拟合。", code: "meta.fit(oof_preds, y)" },
     { id: "f-shakeup", names: ["shake-up"], group: "竞赛", meaning: "公开榜和私榜的排名发生大幅变动。", role: "它说明很多人是在拟合公开榜那一小批数据；相信自己的交叉验证比相信榜单更重要。", code: "# 公开榜只是一个样本量很小的验证集" },
-    { id: "g-studio-pro", names: ["Studio Pro"], group: "低代码", meaning: "Mendix 的桌面开发工具，数据模型、页面、逻辑、权限都在同一个窗口里改。", role: "它把「建表、写后端、做前端、配权限」合并成一件事，代价是你得接受它的做法。", code: "# 左边是项目树，中间是画布，右边是属性面板" },
-    { id: "g-entity", names: ["Entity"], group: "低代码", meaning: "Mendix 里的一类业务对象（员工、部门），带一组属性，落到底下就是数据库的一张表。", role: "画完 Entity 和它们之间的关系，表和外键就自动生成了；画错了后面页面和逻辑都会别扭。", code: "# Entity「员工」 ── 多对一 ──> Entity「部门」" },
     { id: "g-recursion", names: ["递归"], group: "算法", meaning: "函数在自己内部再调用自己，把大问题交给规模更小的同一个问题。", role: "树和分治天然适合它；⚠️ 它替你保存的那个「回来之后从哪继续」的栈是有深度上限的。", code: "def depth(node):\n    if not node: return 0\n    return 1 + max(depth(node.left), depth(node.right))" },
     { id: "g-memoization", names: ["记忆化"], group: "算法", meaning: "把已经算过的子问题结果存起来，下次遇到直接取，不重复算。", role: "它是从朴素递归过渡到动态规划的那座桥：看见「很多子问题被重复计算」就该想到它。", code: "@functools.lru_cache(maxsize=None)\ndef fib(n): ..." },
     { id: "g-hashmap", names: ["哈希表"], group: "算法", meaning: "用哈希函数把键直接映射到存储位置，所以查找几乎不受数据量影响。", role: "「用空间换时间」最常见的形态；Python 的 dict 和 set 都是它。", code: "seen = {}\nif x in seen: ...   # 平均 O(1)" }
