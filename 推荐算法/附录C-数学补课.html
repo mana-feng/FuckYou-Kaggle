@@ -170,6 +170,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */
 /* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
 .katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -296,7 +300,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <p>💡 多目标融合、bandit 算法都在算这个。</p>
 <h3 id="3_1">③ 分布（只要认识三个）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>分布</th>
@@ -317,7 +321,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>A/B 实验的统计检验</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Beta 分布的直觉</strong>（第 13 节用得到）：</p>
 <div class="codehilite"><pre><span></span><code>   Beta(α, β) 里：α ≈ 成功次数，β ≈ 失败次数
 
@@ -345,7 +349,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p><strong>你需要知道的三件事</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>现象</th>
@@ -370,7 +374,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>加正则化 / 减小模型 / 早停</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>求导交给框架</strong>：</p>
 <div class="codehilite"><pre><span></span><code><span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>      <span class="c1"># PyTorch 自动算出所有梯度</span>
 <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>     <span class="c1"># 自动更新所有参数</span>
@@ -431,7 +435,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
                     这一项让参数不要太大
 </code></pre></div>
 
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>类型</th>
@@ -456,7 +460,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>防止过度依赖某几个特征</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>💡 <strong>直觉</strong>：一个参数特别大 = 模型特别依赖某个特征 = 换个数据就崩。
 让参数都小一点，模型就更"稳重"。</p>
 <p><strong>λ 怎么调</strong>：</p>

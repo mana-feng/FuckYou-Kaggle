@@ -176,6 +176,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 
 /* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
 .katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -219,7 +223,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <p><strong>时间序列「竞赛」和教科书里的时间序列「预测」不是一回事。</strong>教科书讲 ARIMA、平稳性检验；竞赛里赢的通常是<strong>「把时序问题转成有监督学习问题，然后用树模型 + 大量滚动特征」</strong>。这一章讲的就是这条主线，以及什么时候深度学习才真的值得上。</p>
 <hr />
 <h2 id="_2">一、时间序列竞赛与传统时序建模的差异</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -244,10 +248,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>预测Action（买入/卖出/持有），而非直接预测价格或收益率</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="action">二、Action标签的构建策略</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -276,10 +280,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>可尝试将Weight * Response作为额外输出目标，与Response预测联合优化</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_3">三、时间序列交叉验证策略</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -308,9 +312,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>5折时序交叉验证，每折的训练/验证时间区间不重叠</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="gap">时序样本切分策略（带Gap）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -339,10 +343,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>用前N天训练，后M天验证，逐步滚动模拟真实预测场景</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_4">四、树模型在时序竞赛中的应用</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -371,10 +375,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>树模型本身不捕捉时间依赖，需通过特征工程引入时间信息</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_5">五、深度学习模型在时序竞赛中的应用</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -403,10 +407,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>深度学习需要GPU，树模型CPU即可，根据资源选择</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_6">六、特征工程在时序竞赛中的关键作用</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -435,9 +439,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>根据features.csv的Tag标签，对同组特征进行聚合</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_7">趋势特征衍生</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -466,10 +470,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>将趋势信息显式编码为特征，弥补GBT等模型对趋势捕获能力不足的问题</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_8">七、模型集成在时序竞赛中的重要性</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -498,10 +502,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>将Base模型的预测结果作为Meta模型的输入特征</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_9">八、复合预测策略（简单模型+复杂模型）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -538,10 +542,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>简单模型处理趋势/固有值，复杂模型专注于残差中的非线性模式</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="smape">九、SMAPE作为损失函数</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -570,10 +574,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>模型优化方向与评价标准完全一致</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="dnnskip-connection">十、DNN时序架构（多输入+Skip Connection）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -606,10 +610,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>参考Kaggle上类似场景的NN结构，直接迁移并微调</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_10">十一、取整技巧（整数型目标变量后处理）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -638,10 +642,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>零成本的后处理技巧，对整数型目标变量的预测任务普遍有效</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_11">十二、神经网络交叉验证集成</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -670,10 +674,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td><code>final_pred = np.median(predictions, axis=0)</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_12">十三、时序竞赛的做赛节奏</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -702,11 +706,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>每次尝试都应在验证集上评估，确认有效后再提交线上</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_13">十四、深度学习时序模型进阶</h2>
 <h3 id="n-beats">N-BEATS</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -735,9 +739,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>单变量时序预测，趋势和季节性明显的序列</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="n-hits">N-HiTS</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -762,9 +766,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>长序列多步预测</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="patchtst">PatchTST</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -793,9 +797,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>多变量长序列预测</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="timesnet">TimesNet</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -824,9 +828,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>2023年时序预测榜单SOTA</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="informer-autoformer-fedformer">Informer / Autoformer / FEDformer</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>模型</th>
@@ -851,9 +855,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>频域特征明显</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_14">时序深度模型选择决策</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -893,10 +897,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>实现简单</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/13-RNN与序列建模.html">ML基础 13 RNN 与序列建模</a></td><td>LSTM / GRU / Seq2Seq 的原理，深度时序模型的地基</td></tr><tr><td><a href="../机器学习与深度学习基础/04-决策树与集成学习.html">ML基础 04 决策树与集成学习</a></td><td>树模型在时序竞赛里当主力，先懂它的归纳偏置</td></tr><tr><td><a href="../机器学习与深度学习基础/05-评估与过拟合.html">ML基础 05 评估与过拟合</a></td><td>时序 CV 不能随机划分的理由：随机划分直接造成信息泄漏</td></tr><tr><td><a href="../模型上线之后/04-训练推理一致性.html">模型上线之后 04 训练推理一致性</a></td><td>「预测时点拿不到的信息」在训练时用了——未来函数就是这么产生的</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/13-RNN与序列建模.html">ML基础 13 RNN 与序列建模</a></td><td>LSTM / GRU / Seq2Seq 的原理，深度时序模型的地基</td></tr><tr><td><a href="../机器学习与深度学习基础/04-决策树与集成学习.html">ML基础 04 决策树与集成学习</a></td><td>树模型在时序竞赛里当主力，先懂它的归纳偏置</td></tr><tr><td><a href="../机器学习与深度学习基础/05-评估与过拟合.html">ML基础 05 评估与过拟合</a></td><td>时序 CV 不能随机划分的理由：随机划分直接造成信息泄漏</td></tr><tr><td><a href="../模型上线之后/04-训练推理一致性.html">模型上线之后 04 训练推理一致性</a></td><td>「预测时点拿不到的信息」在训练时用了——未来函数就是这么产生的</td></tr></tbody></table></div>
 <hr />
 <h2 id="ckpt">✅ 检查点</h2>
 <ol>

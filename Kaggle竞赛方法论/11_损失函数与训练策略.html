@@ -176,6 +176,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 
 /* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
 .katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -212,7 +216,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <hr />
 <h2 id="cv_1">一、CV损失函数体系</h2>
 <h3 id="_1">分类损失函数</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>损失函数</th>
@@ -259,9 +263,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>干净标签无额外收益</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="focal-loss">Focal Loss详解</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -294,9 +298,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>Focal Loss在图像分类和语义分割中基本不work，仅在目标检测中有效</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="label-smoothing">Label Smoothing详解</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -329,9 +333,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>分类后期提分，通常提升0.1~0.5个百分点</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="bi-tempered-logistic-loss">Bi-tempered Logistic Loss</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -364,9 +368,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>比CE/Loss Smoothing对噪声标签更鲁棒</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="soft-label">Soft Label</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -391,11 +395,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>训练更稳定，泛化更好</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_2">二、分割损失函数</h2>
 <h3 id="_3">分割损失函数对比</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>损失函数</th>
@@ -436,9 +440,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>分割中Focal收益有限</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="dice-loss">Dice Loss优化</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -467,9 +471,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>分母加smooth(如1e-5)防止除零</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_4">分割损失函数选择建议</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -499,10 +503,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>对噪声更鲁棒</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="lovasz-loss">Lovasz Loss</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -535,9 +539,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>分割任务后期提分，通常比Dice Loss更优0.1~0.3个百分点</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="tversky-loss">Tversky Loss</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -570,9 +574,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>小目标分割、类别极度不均衡</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="arcface-center-loss">ArcFace / Center Loss（分类辅助损失）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>损失</th>
@@ -602,9 +606,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>细粒度分类</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_5">损失函数选择决策</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -649,11 +653,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>增加类间间隔</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_6">三、学习率调度策略</h2>
 <h3 id="_7">调度策略对比</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>策略</th>
@@ -700,9 +704,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>warmup_epochs</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="warmup">WarmUp详解</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -735,9 +739,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>内置WarmUp，默认前3个epoch</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_8">学习率调度选择建议</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>阶段</th>
@@ -767,11 +771,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>收敛最快</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_9">四、训练策略</h2>
 <h3 id="_10">输入尺寸与精度权衡</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -800,9 +804,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>医学大图需从TIF裁剪，裁剪尺寸影响精度</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_11">交叉验证策略</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>策略</th>
@@ -837,9 +841,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>类别不均衡时</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_12">交叉验证与线上分数一致性</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>问题</th>
@@ -868,9 +872,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>以CV分数为主，LB为辅</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="swacv">SWA在CV中的应用</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -895,9 +899,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>有交叉验证时SWA收益更明显</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="ohem">OHEM(在线困难样本挖掘)</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -930,11 +934,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>过拟合训练集，需谨慎使用</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_13">五、自动调参</h2>
 <h3 id="_14">自动调参工具对比</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>工具</th>
@@ -964,9 +968,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>数据增强优化</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_15">需要搜索的关键超参数</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>超参数</th>
@@ -1006,7 +1010,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>低</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="cv_2">六、CV训练实战流程</h2>
 <div class="codehilite"><pre><span></span><code>1. 小尺寸(256)快速验证数据管线和训练流程
@@ -1020,7 +1024,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 </code></pre></div>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/09-优化器与学习率.html">ML基础 09 优化器与学习率</a></td><td>CosineAnnealing / OneCycle / 分层学习率的原理</td></tr><tr><td><a href="../机器学习与深度学习基础/10-正则化全家桶.html">ML基础 10 正则化全家桶</a></td><td>Label Smoothing、Dropout 与损失函数的关系</td></tr><tr><td><a href="../机器学习与深度学习基础/08-反向传播.html">ML基础 08 反向传播</a></td><td>Dice / Focal 这些损失为什么梯度不稳，得从梯度怎么回传看起</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/09-优化器与学习率.html">ML基础 09 优化器与学习率</a></td><td>CosineAnnealing / OneCycle / 分层学习率的原理</td></tr><tr><td><a href="../机器学习与深度学习基础/10-正则化全家桶.html">ML基础 10 正则化全家桶</a></td><td>Label Smoothing、Dropout 与损失函数的关系</td></tr><tr><td><a href="../机器学习与深度学习基础/08-反向传播.html">ML基础 08 反向传播</a></td><td>Dice / Focal 这些损失为什么梯度不稳，得从梯度怎么回传看起</td></tr></tbody></table></div>
 <hr />
 <h2 id="ckpt">✅ 检查点</h2>
 <ol>

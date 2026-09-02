@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,7 +149,7 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
@@ -145,20 +160,20 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -166,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -331,7 +346,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>perf_counter （墙上时间） 0.747 s</p><p>process_time （CPU 时间） 0.172 s</p><p>差值 ≈ 花在等待上的时间 0.575 s</p></div></section>
 <p>⭐ <strong>这个差值本身就是诊断信息</strong>：两者接近，说明你的程序在真算；差得远，说明大部分时间在<strong>等</strong>（网络、磁盘、锁、被别的进程挤掉）。⭐ 这正是 <a href="04-GIL：为什么多线程救不了你.html">04 章</a>那张选择表的入口条件——在等就上 async 或线程，在算才考虑进程。</p>
 <p>📋 <strong>规矩</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>想知道</th>
@@ -352,7 +367,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><code>time.time()</code>（<strong>只用来记录时刻，不用来算间隔</strong>）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_3">⚠️ 二、单次测量是没有信息的</h2>
 <p>这是本章最重要的一节。先看一个真实的翻车。</p>
@@ -427,7 +442,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>15 轮，每轮 20 次，单次耗时（毫秒）：</p><p>0.86 1.09 1.14 1.18 1.22 1.28 1.33 1.38 1.43 1.47 1.61 1.95 2.00 2.25 3.86</p><p>最小值 0.86 ms ｜ 中位数 1.38 ms ｜ 平均 1.60 ms ｜ 最大值 3.86 ms</p><p>最大值比最小值大 347%</p></div></section>
 <p>⭐ <strong>这个分布是单边的</strong>：左边被一堵墙挡住（0.86 ms 是这段代码在这台机器上真正需要的时间，物理上不可能更快），右边拖着一条长尾（3.86 ms 那次是被别的进程抢了 CPU、或者赶上一次 GC、或者缓存被别人挤掉了）。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>统计量</th>
@@ -452,7 +467,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>线上服务的延迟指标</strong>——那是另一件事，见文末链接</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>这不代表最小值就是「真实性能」</strong>。它是<strong>下界</strong>：你的代码在生产环境里只会更慢。最小值适合做 A / B 比较，不适合做容量规划。</p>
 <p><code>timeit</code> 自己也是这个立场——命令行版本直接把结论写在输出里：</p>
 <div class="codehilite"><pre><span></span><code>&gt; python -m timeit -s &quot;data=list(range(20000))&quot; &quot;sum(x*x for x in data)&quot;
@@ -461,7 +476,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <p>⭐ <strong><code>best of 5</code></strong>，不是 average of 5。</p>
 <p>📋 <strong><code>timeit</code> 的三个参数怎么定</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>参数</th>
@@ -486,7 +501,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>造数据、import、定义函数全放这里</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong><code>number</code> 和 <code>repeat</code> 是两件事，最容易混</strong>：<code>repeat(..., repeat=15, number=20)</code> 返回 <strong>15 个数</strong>，每个数是 20 次的总和。要换算成「单次」得自己除以 <code>number</code>——上面那段的 <code>r / 20</code> 就是干这个的。⚠️ 忘了除，你的所有数字会整整大 20 倍，而且看起来毫无破绽。</p>
 <hr />
 <h2 id="_5">⚠️ 四、三样会让你测出假数字的东西</h2>
@@ -521,7 +536,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>import numpy 这一次就要 0.174 s —— 而你想测的那段可能只有几毫秒</li><li>同一句 a.sum() 连测 5 次(ms): 2.77 3.92 1.91 2.01 3.13 ← 最大是最小的 2.1 倍</li><li>带缓存的函数：第一次 0.1842 s ｜ 第二次 0.0000023 s ｜ 「快了」80076 倍</li><li>同一段代码：timeit 默认(GC 关) 2.21 ms ｜ 打开 GC 2.69 ms</li></ol></section>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>#</th>
@@ -550,7 +565,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>大量创建对象的代码，加 <code>setup="import gc; gc.enable()"</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>①里那行「同一句 <code>a.sum()</code> 连测 5 次，最大是最小的 2.1 倍」值得单独看一眼</strong>——那五次之间什么都没变，代码、数据、机器全一样。<strong>2 倍的抖动是本底噪声。</strong> 所以「我改完快了 30%」这种结论，如果只测一次，基本没有意义。</p>
 <hr />
 <!--MIDSTOP-->
@@ -609,7 +624,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>⭐ <strong><code>tottime</code> 和 <code>cumtime</code> 的区别就是全部</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>列</th>
@@ -639,9 +654,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>两列各有一个</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>📋 <strong>怎么用这两列</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>你想问</th>
@@ -666,7 +681,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>热点常常不该改自己，该改<strong>调它 20 万次</strong>的那个人</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong><code>ncalls</code> 那一列经常比 <code>tottime</code> 更有用</strong>。<code>normalize</code> 单次只要 0.1 微秒，问题是它被调了 <strong>20 万次</strong>——能砍掉的不是这个函数，是那 20 万次调用（比如换成向量化的一次运算）。</p>
 <p>💡 <strong>不想改代码就想剖析整个脚本</strong>：</p>
 <section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>python -m cProfile -s tottime your_script.py | head -25</p><p>python -m cProfile -o out.prof your_script.py # 存成文件，再用可视化工具打开</p></div></section>
@@ -714,7 +729,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>原因很直接</strong>：<code>cProfile</code> 是<strong>确定性剖析器</strong>——它在每一次函数进入和退出时插一段记账代码。所以函数调用越密集，被多收的钱越多；纯循环不调用函数，几乎不被收费。</p>
 <p>⚠️ <strong>后果是真实的</strong>：裸跑时两者是 0.049 : 0.031（相差 1.6 倍），在剖析报告里变成 0.290 : 0.029（<strong>相差 10 倍</strong>）。排序没变，但比例被夸张了 6 倍。</p>
 <p>📋 <strong>所以剖析报告的正确读法</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>✅ 可以拿它做</th>
@@ -735,7 +750,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>用它比较「改前 0.29 s vs 改后 0.20 s」</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>固定动作</strong>：<strong>用剖析器定位，用 <code>timeit</code> / <code>perf_counter</code> 验收。</strong> 定位和验收是两件事，用两套工具。</p>
 <p>🗓️ <strong>想要按行看的</strong>（这一节的工具会过期）：<code>line_profiler</code> 装上之后给函数加 <code>@profile</code>、用 <code>kernprof -l -v x.py</code> 跑，能出每一行的耗时和占比；采样式的 <code>py-spy</code> 可以<strong>attach 到一个正在跑的进程</strong>上、开销只有百分之几，适合线上。⚠️ 两个都是第三方包。不想装东西的话，用第二节那个 <code>timed</code> 上下文管理器把可疑的段分块包起来，也能定位到「哪一段」。</p>
 <hr />
@@ -797,7 +812,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>💀 <strong>峰值 43.4 MB，结束时 13.6 MB —— 相差 3.2 倍。</strong> 如果你只在函数返回后量一次，看到的是 13.6，然后在生产上被 OOM 杀掉，因为杀你的是那一瞬间的 43.4。⚠️ 真实场景里这个倍数只会更大：<code>pd.read_csv</code> 之后再 <code>df[df.x &gt; 0]</code>、<code>sorted(big)</code>、<code>list(...)</code> 包一个已经很大的东西——<strong>每一处都是「新老两份同时活着」</strong>。</p>
 <p>⭐ <strong><code>snapshot.statistics("lineno")</code> 那几行是最有用的产出</strong>：它直接告诉你<strong>哪一行代码分配了多少</strong>（<code>p11.py:6</code> 那行占 40.4 MB）。</p>
 <p>📋 <strong>三样工具分工</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>工具</th>
@@ -822,7 +837,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>和「机器给了多少内存」对账。⚠️ 它含解释器本体、C 扩展和 numpy 的缓冲区，<strong>这些 <code>tracemalloc</code> 全看不见</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong><code>tracemalloc</code> 自己也是有开销的</strong>（它给每次分配记账），<strong>别在生产里长开</strong>。</p>
 <hr />
 <!--MIDSTOP-->
@@ -834,7 +849,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_8">📋 八、先量再改：固定四步</h2>
 <p>站内有一整节叫「⚡ 提速」（<a href="../机器学习与深度学习基础/附录B-代码速查.html">机器学习与深度学习基础 附录B</a>），给了 AMP、<code>torch.compile</code>、<code>n_jobs=-1</code> 三招。⭐ <strong>那三招都可能有效，但你按它改完之后，怎么知道改对了？</strong> 这四步就是那半边：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>步</th>
@@ -869,7 +884,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>⚠️ ①用 <code>timeit</code>、④用单次计时，<strong>那就回到第二节那个 6.7 倍 vs 1.5 倍的笑话了</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>两条补充规矩</strong>：</p>
 <ul>
 <li><strong>先确认结果没变</strong>。第二节那段代码最后一行 <code>print("结果一样吗:", out1 == out2)</code> 不是装饰——<strong>优化最常见的失败模式是「快了，但算错了」</strong>，而错误的结果通常也不报错。</li>
@@ -877,7 +892,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 <hr />
 <h2 id="_9">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>相关的地方</th>
@@ -914,7 +929,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>GPU 上「快没快」是另一套判据（算力墙还是带宽墙）。⭐ 本章的工具在 GPU 上会给出误导性结论——<strong>CUDA 调用是异步的，<code>perf_counter</code> 量到的可能只是「发出去」的时间</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_10">✅ 检查点</h2>
 <ol>

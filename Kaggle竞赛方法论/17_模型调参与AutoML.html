@@ -176,6 +176,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 
 /* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
 .katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -215,7 +219,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <p><strong>调参是竞赛里收益最小的一环</strong>——优先级是「赛题理解 &gt; 数据分析 &gt; 特征工程 &gt; 模型选择 &gt; 模型集成 &gt; 调参」。这一章的真正价值不是教你搜出最优参数，而是让你知道<strong>什么时候该停止调参去干更有价值的事</strong>。</p>
 <hr />
 <h2 id="_1">一、调参在竞赛中的定位</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -244,10 +248,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>调参必须依赖验证集，验证集打分是调参的基础</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_2">二、人工调参</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -276,10 +280,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>超参数数量少、搜索空间小、对模型有较深理解时</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="grid-search">三、网格搜索（Grid Search）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -312,10 +316,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>sklearn的GridSearchCV可直接使用</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="random-search">四、随机搜索（Random Search）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -344,10 +348,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>sklearn的RandomizedSearchCV可直接使用</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="bayesian-optimization">五、贝叶斯优化（Bayesian Optimization）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -388,10 +392,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>贝叶斯优化搜索得到的是连续值，需转换为整数（如树深度、树数量）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="lightgbm">六、LightGBM调参示例</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -424,10 +428,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>通常31到127之间，与树深度相关</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="seed">七、随机种子（Seed）的作用</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -452,10 +456,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>不同Seed训练的模型可作为集成学习的多样性来源</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="automl_1">八、AutoML工具</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>工具</th>
@@ -490,10 +494,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>通用超参搜索</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_3">九、调参的注意事项</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -522,11 +526,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>记录每次调参的超参数组合和对应精度，避免重复搜索</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_4">十、高级调参方法</h2>
 <h3 id="hyperband">Hyperband</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -555,9 +559,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>训练成本高的深度学习模型</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="bohbbayesian-optimization-hyperband">BOHB（Bayesian Optimization + Hyperband）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -582,9 +586,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>大规模超参搜索，搜索空间大时</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="ashaasynchronous-successive-halving">ASHA（Asynchronous Successive Halving）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -609,9 +613,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>分布式训练环境</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="population-based-trainingpbt">Population Based Training（PBT）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -640,9 +644,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>长时间训练的模型，如强化学习</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_5">调参方法选择</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -682,10 +686,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>训练调参一体化</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/09-优化器与学习率.html">ML基础 09 优化器与学习率</a></td><td>学习率、batch size 这些超参到底在改什么</td></tr><tr><td><a href="../机器学习的数学原理/08-偏差方差分解.html">数学原理 08 偏差方差分解</a></td><td>调参本质是在偏差和方差之间移动，知道往哪边推就不用瞎搜</td></tr><tr><td><a href="../机器学习与深度学习基础/04-决策树与集成学习.html">ML基础 04 决策树与集成学习</a></td><td>LightGBM 的叶子数、深度、采样率各自控制什么</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/09-优化器与学习率.html">ML基础 09 优化器与学习率</a></td><td>学习率、batch size 这些超参到底在改什么</td></tr><tr><td><a href="../机器学习的数学原理/08-偏差方差分解.html">数学原理 08 偏差方差分解</a></td><td>调参本质是在偏差和方差之间移动，知道往哪边推就不用瞎搜</td></tr><tr><td><a href="../机器学习与深度学习基础/04-决策树与集成学习.html">ML基础 04 决策树与集成学习</a></td><td>LightGBM 的叶子数、深度、采样率各自控制什么</td></tr></tbody></table></div>
 <hr />
 <h2 id="ckpt">✅ 检查点</h2>
 <ol>

@@ -177,6 +177,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .ckpt ol{padding-left:1.3em}.ckpt li{margin:.4em 0}
 .recap{background:var(--quote-bg);border-radius:12px;padding:16px 20px;margin:18px 0 0}
 .recap b{color:var(--accent)}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner"><a href="../index.html">🏠 总目录</a>
@@ -223,7 +227,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><strong>安全提醒：</strong> 「在容器里跑，不要在你的真机上」</li>
 </ul>
 <h2 id="_5">成果数据</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>指标</th>
@@ -256,7 +260,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>x86、ARM、RISC-V</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>功能验证：</strong> 成功引导编译 Linux 6.9 内核（三种架构）；编译 QEMU、FFmpeg、SQLite、PostgreSQL、Redis；GCC torture 测试套件通过率 99%；能跑 Doom。全程「无尘室」实现——只依赖 Rust 标准库、开发期间无互联网访问。</p>
 <p><strong>已知局限：</strong> 无原生 16 位 x86 代码生成（实模式引导借用 GCC）；无自制汇编器和链接器；生成代码效率低于关闭优化的 GCC；Rust 代码质量称职但非专家级。16 位代码生成器超出了 Opus 4.6 在上下文和 token 约束下的实际能力（生成产物超出 32KB bootloader 限制两倍）。</p>
 <h2 id="_6">模型代际进步</h2>

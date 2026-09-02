@@ -176,6 +176,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 
 /* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
 .katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -215,7 +219,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <p>推荐类赛题的第一关是召回——<strong>从几十万甚至上百万候选里，先捞出几百个「可能相关」的</strong>。这一章的方法你在[《推荐算法》教程](../推荐算法/index.html)里大多学过，<strong>差别在于竞赛场景更看重「多路召回的组合」和「召回率上限」</strong>，因为召回没捞到的东西，后面排序再强也救不回来。</p>
 <hr />
 <h2 id="_2">一、推荐系统架构</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>层级</th>
@@ -245,8 +249,8 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>最终展示</td>
 </tr>
 </tbody>
-</table>
-<table>
+</table></div>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>竞赛特点</th>
@@ -267,11 +271,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_3">二、协同过滤</h2>
 <h3 id="itemcf">ItemCF(基于物品的协同过滤)</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -304,8 +308,8 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>物品数远小于用户数、物品相对稳定的场景(电商)</td>
 </tr>
 </tbody>
-</table>
-<table>
+</table></div>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>ItemCF改进</th>
@@ -326,9 +330,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>只推荐与历史物品同类别的物品</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="usercf">UserCF(基于用户的协同过滤)</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -361,8 +365,8 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>用户数远小于物品数、用户兴趣稳定的场景(新闻)</td>
 </tr>
 </tbody>
-</table>
-<table>
+</table></div>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>ItemCF vs UserCF</th>
@@ -392,11 +396,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>新闻、用户兴趣变化快</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_4">三、图嵌入方法</h2>
 <h3 id="deepwalk">DeepWalk</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -429,9 +433,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>随机游走可能偏向高度数节点</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_5">其他图方法</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -452,11 +456,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>阿里出品，融合多种side information的图嵌入</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_6">四、深度学习召回</h2>
 <h3 id="youtube-dnn">YouTube DNN</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -485,9 +489,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>负采样策略、特征工程</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="dssmdeep-structured-semantic-model">DSSM(Deep Structured Semantic Model)</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -512,11 +516,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>两塔交互晚(仅最后内积)，特征交叉不充分</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_7">五、多兴趣召回</h2>
 <h3 id="_8">动机</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>问题</th>
@@ -537,9 +541,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>用多个向量表示用户不同兴趣</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="mindmulti-interest-network">MIND(Multi-Interest Network)</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -568,9 +572,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>用K个兴趣向量分别检索，合并去重</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="comirec">ComiRec</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -591,9 +595,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>ComiRec-Att(注意力) / ComiRec-DR(动态路由)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_9">多兴趣召回实践</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>要点</th>
@@ -618,10 +622,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>Top-K推荐赛题中的关键上分点</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_10">六、向量检索</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -651,10 +655,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>Spotify开源，适合中等规模</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_11">七、竞赛实战要点</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>要点</th>
@@ -683,11 +687,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>新用户/新物品用内容特征做召回，不依赖交互历史</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_12">八、序列感知召回</h2>
 <h3 id="sasrecself-attentive-sequential-recommendation">SASRec（Self-Attentive Sequential Recommendation）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -720,9 +724,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>序列推荐赛题中的强baseline</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="nextitnet">NextItNet</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -747,11 +751,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>对推理速度有要求的序列推荐</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_13">九、图神经网络召回</h2>
 <h3 id="lightgcn">LightGCN</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -780,9 +784,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>推荐系统召回的强baseline</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="gnn-vs">GNN召回 vs 传统召回</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -823,10 +827,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>高</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_14">十、召回竞赛实战策略</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>策略</th>
@@ -859,10 +863,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>LightGCN适合交互数据丰富的场景</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../推荐算法/06-工业架构-召回粗排精排重排.html">推荐算法 06 工业架构</a></td><td>召回在整条链路里的位置和职责，先看这个再看具体算法</td></tr><tr><td><a href="../推荐算法/04-协同过滤-最简单的算法.html">推荐算法 04 协同过滤</a></td><td>ItemCF / UserCF 的完整推导与实现</td></tr><tr><td><a href="../推荐算法/10-向量检索与ANN.html">推荐算法 10 向量检索与 ANN</a></td><td>HNSW / IVF / PQ 的原理，双塔召回落地靠它</td></tr><tr><td><a href="../推荐算法/18-进阶专题-GNN-蒸馏-去偏-强化学习.html">推荐算法 18 进阶专题</a></td><td>图嵌入与 GNN 召回的原理版</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../推荐算法/06-工业架构-召回粗排精排重排.html">推荐算法 06 工业架构</a></td><td>召回在整条链路里的位置和职责，先看这个再看具体算法</td></tr><tr><td><a href="../推荐算法/04-协同过滤-最简单的算法.html">推荐算法 04 协同过滤</a></td><td>ItemCF / UserCF 的完整推导与实现</td></tr><tr><td><a href="../推荐算法/10-向量检索与ANN.html">推荐算法 10 向量检索与 ANN</a></td><td>HNSW / IVF / PQ 的原理，双塔召回落地靠它</td></tr><tr><td><a href="../推荐算法/18-进阶专题-GNN-蒸馏-去偏-强化学习.html">推荐算法 18 进阶专题</a></td><td>图嵌入与 GNN 召回的原理版</td></tr></tbody></table></div>
 <hr />
 <h2 id="ckpt">✅ 检查点</h2>
 <ol>

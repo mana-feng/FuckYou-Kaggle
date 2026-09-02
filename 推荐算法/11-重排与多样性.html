@@ -182,6 +182,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 
 /* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
 .katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -237,7 +241,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 </code></pre></div>
 
 <p><strong>三个具体的伤害</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>问题</th>
@@ -258,7 +262,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>系统永远学不到用户的新兴趣 → 越推越窄</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>🔑 <strong>核心命题：准确性 vs 多样性的权衡（Accuracy-Diversity Tradeoff）</strong>
 这是推荐系统里没有标准答案、必须靠 A/B 实验定夺的经典权衡。</p>
@@ -414,7 +418,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 代表：<strong>Seq2Slate、GRN、PIER</strong>。</p>
 <hr />
 <h2 id="_7">📏 多样性怎么量化</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>指标</th>
@@ -454,7 +458,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>反热门偏置</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">intra_list_diversity</span><span class="p">(</span><span class="n">item_vecs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;ILD：列表内两两余弦距离的平均&quot;&quot;&quot;</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">item_vecs</span><span class="p">)</span>
@@ -503,7 +507,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <hr />
 <h2 id="_9">🌐 更大的问题：信息茧房</h2>
 <p>多样性不只是「体验优化」，它涉及产品伦理。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>现象</th>
@@ -524,7 +528,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>推荐 → 点击 → 训练 → 更极端的推荐 → ……</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>工业界的部分对策</strong>：
 - 强制探索配额（每 N 个位置留 1 个探索位）
 - 兴趣多样性约束（一屏必须覆盖 ≥3 个类目）
@@ -533,7 +537,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <p><strong>但这是个未解决的问题。</strong> 作为从业者，知道这个代价存在，比假装它不存在重要。</p>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../模型上线之后/15-长期效应与代理指标.html">上线之后 15</a></td><td>CTR 只是代理指标：多样性短期负、长期正，正是代理指标与真实目标的帕累托前沿问题</td></tr><tr><td><a href="../模型上线之后/12-AB实验你以为你懂了.html">上线之后 12</a></td><td>2–4 周长周期实验怎么做、新奇效应怎么排除，否则多样性策略第 3 天就被叫停</td></tr><tr><td><a href="../强化学习基础/07-探索与利用.html">强化学习 07</a></td><td>强制探索配额、信息茧房的反馈循环，本质就是只「利用」不「探索」的后果</td></tr><tr><td><a href="../博弈论与集体决策/09-正常形博弈.html">博弈论 09</a></td><td>⭐ <strong>「帕累托」这个词的定义处</strong>。⚠️ <strong>本章正文其实一次都没用过这个词</strong>，但你整章在做的事就是它 —— 「准确性 vs 多样性」那条取舍曲线就是一条<strong>二维帕累托前沿</strong>（λ 一变推出来的东西完全不同，短期 CTR 降 1–2%、长期留存上升）。它到底怎么定义、为什么<strong>不能把两个目标的分数加起来比大小</strong>（答案：效用是序数的，两把尺子不通用），在那一章第五节。⚠️ 顺带纠正一个常见误解：<strong>帕累托最优完全不管公平</strong>——「准确性拉满、多样性归零」也是帕累托最优的</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../模型上线之后/15-长期效应与代理指标.html">上线之后 15</a></td><td>CTR 只是代理指标：多样性短期负、长期正，正是代理指标与真实目标的帕累托前沿问题</td></tr><tr><td><a href="../模型上线之后/12-AB实验你以为你懂了.html">上线之后 12</a></td><td>2–4 周长周期实验怎么做、新奇效应怎么排除，否则多样性策略第 3 天就被叫停</td></tr><tr><td><a href="../强化学习基础/07-探索与利用.html">强化学习 07</a></td><td>强制探索配额、信息茧房的反馈循环，本质就是只「利用」不「探索」的后果</td></tr><tr><td><a href="../博弈论与集体决策/09-正常形博弈.html">博弈论 09</a></td><td>⭐ <strong>「帕累托」这个词的定义处</strong>。⚠️ <strong>本章正文其实一次都没用过这个词</strong>，但你整章在做的事就是它 —— 「准确性 vs 多样性」那条取舍曲线就是一条<strong>二维帕累托前沿</strong>（λ 一变推出来的东西完全不同，短期 CTR 降 1–2%、长期留存上升）。它到底怎么定义、为什么<strong>不能把两个目标的分数加起来比大小</strong>（答案：效用是序数的，两把尺子不通用），在那一章第五节。⚠️ 顺带纠正一个常见误解：<strong>帕累托最优完全不管公平</strong>——「准确性拉满、多样性归零」也是帕累托最优的</td></tr></tbody></table></div>
 <hr />
 <h2 id="_10">✅ 检查点</h2>
 <ol>

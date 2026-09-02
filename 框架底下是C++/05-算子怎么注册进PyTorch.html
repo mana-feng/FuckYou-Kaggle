@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,7 +149,7 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
@@ -145,20 +160,20 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -166,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -314,7 +329,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 </code></pre></div>
 
 <p>⭐ <strong>这一句里有三样东西，正好是本章的三条主线</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>报错里的片段</th>
@@ -339,7 +354,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 <td>第四节</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>两个容易记错的细节</strong>：</p>
 <ul>
 <li>异常类型是 <strong><code>NotImplementedError</code></strong> 而不是 <code>RuntimeError</code>。⭐ 但 Python 里前者是后者的<strong>子类</strong>（实跑 <code>isinstance(e, RuntimeError)</code> 为 <code>True</code>），所以 <code>except RuntimeError</code> 照样接得住 —— 这也是为什么到处都有人写成 RuntimeError。</li>
@@ -369,7 +384,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 </code></pre></div>
 
 <p>实跑结果（✅ = 这一格有 kernel）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>算子</th>
@@ -406,7 +421,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 <td>✅</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️⚠️ <strong><code>CUDA</code> 那一列的 ❌ 是本机的假象，不是 PyTorch 的事实。</strong> 本机装的是 <strong>CPU 版轮子</strong>，<code>torch_cuda</code> 那批库根本不在包里，那些格子从没被填过。⭐ 这恰好演示了更重要的一件事：这张表不是编译期写死的常量表，是运行时一批一批被「加载进来」的 —— 第五节会看到填格子的动作发生在哪一刻。</p>
 <p>⭐ <strong>顺带记住 <code>Meta</code> 这一列</strong>：「只算形状不算数值」的假后端，形状推导和 <code>torch.compile</code> 都靠它，三个算子全有。</p>
 <hr />
@@ -425,7 +440,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 <section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">aten::add.Tensor(Tensor self, Tensor other, *, Scalar alpha=1) -&gt; Tensor</span></div><div class="vb-flow-row"><span class="vb-flow-step">aten::gelu(Tensor self, *, str approximate=&quot;none&quot;) -&gt; Tensor</span></div><div class="vb-flow-row"><span class="vb-flow-step">16 个 add 重载</span></div><div class="vb-flow-row"><span class="vb-flow-step">4362 条 schema</span></div></div></section>
 <p>⚠️ <strong>4362 随版本变</strong>（<code>torch 2.13.0+cpu</code> 上是这个数，你的一定不同），要看的是量级：<strong>四千多条</strong>。</p>
 <p>把第一行拆开：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>片段</th>
@@ -455,10 +470,10 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 <td></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>重载名是字符串，这点反直觉但重要</strong>：<code>aten::add</code> 实跑有 <strong>16 个重载</strong>（<code>Tensor</code> / <code>Scalar</code> / <code>out</code> / <code>default</code> …），而每个重载在 dispatcher 眼里都是独立的一行、独立的一张表。所以 <code>aten::add</code> 不是一行，是十六行。</p>
 <p>schema 里几个必须认得的记号：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>记号</th>
@@ -479,7 +494,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 <td>可以是 <code>None</code> / 一串整数</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>别名标记不是文档，是给编译器看的合同。</strong> <code>torch.compile</code>、functionalization、<code>torch.jit</code> 全靠它判断「这个算子会不会偷改我的输入」。⭐ 自己写算子时<strong>填错它的后果是别的通道上出现随机错误</strong>，而不是当场报错。</p>
 <p>⭐ <strong>schema 是唯一的真相源</strong>：C++ 那边的函数签名、Python 这边的 <code>torch.ops.aten.gelu</code>、类型存根 <code>.pyi</code>、还有 <a href="06-读源码路线图.html">06 章</a>会翻的那堆 <code>ATen/ops/*.h</code>，<strong>全是从同一份 schema 生成的</strong>。这就是为什么改一个算子的签名在 PyTorch 里是件大事。</p>
 <hr />
@@ -499,7 +514,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 <p>⚠️⚠️ <strong>② <code>requires_grad=True</code> 和普通 CPU 的 keyset 完全一样。</strong> 很多人以为「要不要求导」是靠分派键区分的 —— <strong>实测不是</strong>。<code>AutogradCPU</code> 一直都在，走不走那条路取决于运行时的 <code>GradMode</code> 和 tensor 自己的 <code>requires_grad</code> 标志。</p>
 <h3 id="dispatcher">🚦 dispatcher 怎么用这一组键</h3>
 <p>⭐ <strong>规则只有一句：所有键有一个全局优先级，从高到低找第一个「这一行填了格子」的键。</strong> 大致层次：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>层（从先到后）</th>
@@ -529,7 +544,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 <td><strong>不再往下交</strong>，这里出结果</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>上面几层「干完自己的事再往下发一次」的动作叫 redispatch。</strong> ⚠️ 由此得到一条很实用的推论：<strong>「注册一个 CPU kernel」和「让它可导」是两件独立的事</strong> —— 你填的是 <code>CPU</code> 那格，<code>Autograd</code> 那格还空着（第六节）。</p>
 <hr />
 <h2 id="dump">🧩 四、⭐ 直接把那张表 dump 出来</h2>
@@ -576,7 +591,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 </code></pre></div>
 
 <p>⭐ <strong>四个入口，对应表上四种动作</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>写法</th>
@@ -601,7 +616,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 <td>同上，但允许同一命名空间出现多次</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong><code>TORCH_LIBRARY</code> 对同一个命名空间只能出现一次</strong> —— <code>library.h</code> 的注释里明写着「There may only be one TORCH_LIBRARY() for any given namespace」。分好几个文件写就用 <code>TORCH_LIBRARY_FRAGMENT</code>。</p>
 <h3 id="_5">🚦 ⭐ 宏展开成什么 —— 一个静态初始化对象</h3>
 <p>这是本章最该记住的机制。下面是 <code>torch/include/torch/library.h</code> 里的<strong>真实源码</strong>（本机头文件第 975 行起）：</p>
@@ -618,7 +633,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 </code></pre></div>
 
 <p>拆开看：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>展开出来的</th>
@@ -643,14 +658,14 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 <td>⭐ 第四节 dump 里「registered at 文件:行号」的来源</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>重点是中间那行：全局对象的构造函数会在这个动态库被加载时自动执行。</strong></p>
 <blockquote>
 <p>⭐ <strong>注册不是在你调用算子的时候发生的，是在那个 <code>.so</code> / <code>.dll</code> 被载入进程的那一刻发生的。</strong>
 库没加载 = 表上根本没这一行 = 你得到的是「算子不存在」，而不是「算子出错」。</p>
 </blockquote>
 <p>这一条把好几件事串起来了：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>现象</th>
@@ -671,7 +686,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 <td>库没被加载，或者<a href="04-ABI与二进制兼容.html">加载失败了</a> —— ⭐ <strong>04 章那三种报错全发生在这一步之前</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>静态初始化的老毛病这里同样有</strong>：多个库注册同一个格子会互相覆盖（第四节那个 <code>Meta (inactive)</code> 就是活例子），而<strong>谁先谁后取决于加载顺序</strong>，不是你能控制的。</p>
 <h3 id="aten">🚦 给已有的 aten 算子换实现</h3>
 <p>同一套机制，命名空间换成 <code>aten</code>：</p>
@@ -686,7 +701,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 <h2 id="c_1">🧩 六、⭐ 让它可导：C++ 侧的那一半</h2>
 <p>⚠️ <strong>边界先说清楚</strong>：<code>autograd.Function</code> 怎么写、<code>forward</code> 存什么 <code>backward</code> 还什么 —— <strong>那是框架的 Python 接口，归 <a href="../PyTorch这个框架本身/09-自定义算子.html">《PyTorch 这个框架本身》09</a></strong>。本节只讲在 C++ 这边，反向是怎么被挂进那张表的。</p>
 <p>回到第三节的优先级：<code>Autograd</code> 在 backend 之上。所以「填了 CPU 格、没填 Autograd 格」的算子，dispatcher 会直接掉进 CPU kernel，<strong>没人记录反向图</strong>。三条路：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>做法</th>
@@ -711,7 +726,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 <td>⭐ 让它<strong>当场报错</strong>，好过静默丢梯度</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <div class="codehilite"><pre><span></span><code><span class="c1">// 🗓️ 未实跑 —— 本机无编译环境</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;torch/library.h&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;torch/autograd.h&gt;</span>
@@ -751,7 +766,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 
 <p><strong>写 CUDA 难在 kernel 本身</strong>（SM、warp、合并访存归 <a href="../AI基础设施/02-GPU到底是什么.html">AI 基础设施 02</a>），<strong>不难在注册</strong> —— 注册就是上面这三行。</p>
 <p>只想先试一下机制的话，有两条不用自己配编译工程的路：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>路</th>
@@ -771,12 +786,12 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 <td>慢，但能立刻验证「机制对不对」</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>建议顺序：先用 Python 接口把注册跑通、确认分派真的进了你的函数，再决定要不要下到 C++。</strong> 这样出问题时你知道是注册错了还是 kernel 错了。具体写法归 <a href="../PyTorch这个框架本身/09-自定义算子.html">《PyTorch 这个框架本身》09</a>。</p>
 <p>⚠️⚠️ <strong>动手之前先确认你真的需要</strong>：<a href="../AI基础设施/07-算子融合与编译.html">AI 基础设施 07</a> 给了「什么时候值得手写 kernel」的三个条件，<strong>不满足就别写</strong>。这和 <a href="01-Python调C++的那条边界.html">01 章</a>第三节那张反面表是同一件事的两个版本。</p>
 <hr />
 <h2 id="_6">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>相关的地方</th>
@@ -813,7 +828,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 <td>第七节说「难在 kernel 本身不难在注册」—— kernel 那一半归它</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_7">✅ 检查点</h2>
 <ol>

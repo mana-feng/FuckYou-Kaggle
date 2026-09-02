@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,7 +149,7 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
@@ -145,20 +160,20 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -166,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -315,7 +330,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>a = [1, 2, 3, 4]</p><p>a is b: True | id 相同: True</p><p>a = [1, 2, 3, 4] b = [9, 9] | a is b: False</p></div></section>
 <p>⭐ <strong>两行代码的区别就是全部</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>写法</th>
@@ -335,7 +350,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>❌ 看不见 —— <code>a</code> 还贴在老对象上</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ 麻烦的是这两件事在源码里<strong>长得很像</strong>。<code>b += [4]</code> 对列表是<strong>改对象</strong>（相当于 <code>extend</code>），对元组和数字是改名字（造一个新的再绑上去）。同一个 <code>+=</code>，两种行为。</p>
 <blockquote>
 <p>⭐ <strong>背下来这句</strong>：<strong><code>是不是同一个对象</code> 用 <code>is</code> / <code>id()</code> 查；<code>内容一样不一样</code> 用 <code>==</code> 查。</strong>
@@ -363,7 +378,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>push 之后: [1, 2, &#x27;X&#x27;]</p><p>rebind 之后: [1, 2, &#x27;X&#x27;]</p></div></section>
 <p>⭐ <code>rebind</code> 里的 <code>lst.append("Y")</code> 是真的执行了的 —— 只不过它改的是函数内部那个新列表，函数一返回就没人指着它了，被回收掉。</p>
 <p>📋 <strong>由此得到一条实用的写代码规矩</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>你想让调用方看到修改</th>
@@ -380,7 +395,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>返回新对象，不碰传进来的</strong>。这是默认应该选的那个 —— 出问题时能一眼看出谁改了什么</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="0">⚠️ 三、可变默认参数：<code>全站命中 0</code> 的一号杀手</h2>
 <p>默认值是在<strong>执行 <code>def</code> 那一刻</strong>求值一次的，之后所有调用<strong>共用同一个对象</strong>。</p>
@@ -406,7 +421,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>[1]</p><p>[1, 2]</p><p>[1, 2, 3]</p><p>函数对象上挂的那个默认值: ([1, 2, 3],)</p><p>[1] [2] [3]</p></div></section>
 <p>⭐ 最后那行 <code>collect.__defaults__</code> 是全部证据：<strong>那个列表挂在函数对象上</strong>，跟调用次数无关。函数只要还活着，它就一直在那攒。</p>
 <p>💀 <strong>为什么这个 bug 特别难抓</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>特征</th>
@@ -427,7 +442,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>脚本跑完就退出看不出来；服务跑一周，那个 <code>bucket</code> 里攒了几百万条 —— 长得<strong>像内存泄漏</strong>，你会去查别的地方</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ 同族的还有 <code>def f(x, t=time.time())</code>（时间戳冻结在进程启动那一刻）、<code>def f(model=Model())</code>（所有调用共用一个模型实例）。<strong>判据统一是：默认值只要是「会变的东西」或「有构造代价的东西」，就写 <code>None</code> 再在函数体里造。</strong></p>
 <hr />
 <h2 id="copy-deepcopy">🧯 四、<code>copy</code> 和 <code>deepcopy</code>：浅拷贝只复制最外面一层</h2>
@@ -451,7 +466,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>原件 : {&#x27;name&#x27;: &#x27;run2&#x27;, &#x27;layers&#x27;: [64, 64, 128]}</p><p>浅拷贝: {&#x27;name&#x27;: &#x27;run1&#x27;, &#x27;layers&#x27;: [64, 64, 128]}</p><p>深拷贝: {&#x27;name&#x27;: &#x27;run1&#x27;, &#x27;layers&#x27;: [64, 64]}</p><p>内层列表是同一个吗 —— 浅: True 深: False</p></div></section>
 <p>⭐ 看浅拷贝那一行：<strong><code>name</code> 没跟着变（外层复制了），<code>layers</code> 跟着变了（内层还是同一个）</strong>。这种「一半独立一半共享」的对象是最难查的，因为它的表现取决于你改的是哪一层。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>写法</th>
@@ -476,7 +491,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>嵌套结构、或者你不确定有没有嵌套</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <code>deepcopy</code> 的代价是真的：它要递归遍历整个对象图、还要维护一张 memo 表处理循环引用。<strong>在训练循环内部对大对象 <code>deepcopy</code>，会成为剖析报告里排第一的那一行</strong>（怎么确认，见 <a href="05-怎么量：计时、剖析、内存.html">05 章</a>）。</p>
 <p>⚠️ 另外 <code>deepcopy</code> 不是万能的：持有文件句柄、socket、数据库连接、锁的对象，深拷贝出来的那份<strong>要么复制失败，要么复制出一个坏掉的副本</strong>。这类对象要么别拷，要么自己实现 <code>__deepcopy__</code>。</p>
 <hr />
@@ -512,7 +527,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>q : [5.0, 5.0, 5.0]</p><p>target_wrong : [5.0, 5.0, 5.0] is q: True</p><p>target_right : [0.0, 0.0, 0.0] is q: False</p></div></section>
 <p>💀 <strong>事故的完整形状</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>项</th>
@@ -537,7 +552,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>建完 target 之后加一句 <code>assert self.q_target is not self.q</code>；同步权重用 <code>load_state_dict</code>（复制<strong>数值</strong>），而不是重新赋值对象</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ 顺带说那行的写法本身：<code>__import__('copy').deepcopy(net)</code> 是为了省一行 <code>import copy</code> 而用的内联写法，<strong>可读性代价远大于收益</strong>，别学。</p>
 <hr />
 <!--MIDSTOP-->
@@ -602,7 +617,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>同一段代码里的字面量 257 : True</p><p>运行时算出来的 257 : False 而 a == c 是 True</p><p>256 呢 : True</p><p>短字符串字面量 : True</p><p>运行时拼出来的同样内容 : False 而 s3 == s4 是 True</p></div></section>
 <p>⭐ <strong>看第一行和第二行的对比</strong>：同样是 257，<strong>写在源码里的两个 257 是同一个对象，运行时算出来的那个就不是</strong>。原因有两层，都属于 CPython 的实现细节：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>机制</th>
@@ -627,10 +642,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><code>"hello" is "hello"</code> 是 <code>True</code>，<code>"hello world!"</code> 拼出来的就不是</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>💀 <strong>这就是为什么它比一个总是出错的 bug 更贵</strong>：你写 <code>if status is 200</code>，本地测试全过（200 在缓存范围内），上线后遇到从 JSON 解析出来的 <code>200</code>……⚠️ 也可能还是对的，取决于解析器有没有复用对象。<strong>这种「时对时错」是最难排查的一类</strong>。</p>
 <p>📋 <strong>规矩，没有例外</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -651,11 +666,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><code>is</code> —— 而这正是本章前面几节要检查的东西</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_4">📋 八、一张排查表</h2>
 <p>出现「我明明没动它，它怎么变了」的时候，从上往下过：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>现象</th>
@@ -695,11 +710,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>把 <code>is</code> 换成 <code>==</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⛔ <strong>有一类共享不在本章范围内</strong>：NumPy 的切片、<code>reshape</code>、<code>torch.from_numpy</code> 得到的是<strong>同一块内存缓冲区的不同视图</strong>——那不是「两个名字指同一个对象」，是「两个不同的对象指同一块内存」。⭐ <code>copy.deepcopy</code> 和 <code>is</code> 都不是那边的工具，机制和急救写法归 NumPy 那一层。</p>
 <hr />
 <h2 id="_5">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>相关的地方</th>
@@ -736,7 +751,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>⭐ 本章那句「赋值只是把名字重新贴一次」的练手场：反转链表里 <code>nxt = cur.next</code> 必须先写，<code>prev, cur = cur, nxt</code> 为什么能一次换两个</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_6">✅ 检查点</h2>
 <ol>

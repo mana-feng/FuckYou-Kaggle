@@ -176,6 +176,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 
 /* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
 .katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -218,7 +222,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <hr />
 <h2 id="_2">一、文本数据增强方法</h2>
 <h3 id="11">1.1 词级别增强</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -259,9 +263,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>NER任务显著提升</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="12">1.2 句级别增强</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -290,9 +294,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>轻微提升</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="13">1.3 特征空间增强</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -321,9 +325,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>显著提升</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="14">1.4 增强策略选择</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>任务类型</th>
@@ -348,11 +352,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>随机交换（破坏关系）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_3">二、半监督学习与伪标签</h2>
 <h3 id="21-k">2.1 K折伪标签（降噪）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -381,9 +385,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>利用AI群体完成自动纠错和降噪</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="22">2.2 测试集伪标签（冲刺）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -412,9 +416,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>压榨最后一点分数</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="23-fixmatch">2.3 FixMatch半监督框架</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -439,11 +443,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>有大量无标签数据时</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_4">三、基础文本预处理</h2>
 <h3 id="31">3.1 清洗与标准化</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>步骤</th>
@@ -478,9 +482,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td><code>re.sub(r'http\S+', '[URL]', text)</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="32-tf-idf">3.2 TF-IDF特征工程</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -509,10 +513,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>TF-IDF特征可与BERT向量拼接，提供词频先验信息</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_5">四、长文本截断策略</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>策略</th>
@@ -552,7 +556,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>超长文本</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_6">滑动窗口实现</h3>
 <div class="codehilite"><pre><span></span><code>1. 将长文本按步长切分为多个512 Token的窗口
 2. 每个窗口独立预测
@@ -562,7 +566,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 
 <hr />
 <h2 id="_7">五、多语言混合文本处理</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -591,11 +595,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>统一全角/半角、繁体/简体</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="nlp">六、训练稳定性技巧（NLP专项）</h2>
 <h3 id="61">6.1 梯度累加</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -620,9 +624,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>配合梯度截断防止累加梯度爆炸</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="62">6.2 动态填充</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -643,9 +647,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>短文本训练加速约75%</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="63-fp16">6.3 FP16混合精度</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -670,7 +674,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>PyTorch的torch.cuda.amp自动混合精度</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_8">七、数据增强实战流程</h2>
 <div class="codehilite"><pre><span></span><code>1. 基线训练 → 确定数据管线无误
@@ -683,7 +687,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 </code></pre></div>
 
 <h3 id="_9">增强效果预期</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>增强方法</th>
@@ -718,10 +722,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>+0.1~0.2%</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="edaeasy-data-augmentation">八、EDA（Easy Data Augmentation）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -758,10 +762,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>实现极简，无需外部模型，适合快速baseline</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="udaunsupervised-data-augmentation">九、UDA（Unsupervised Data Augmentation）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -794,10 +798,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>有大量无标签数据时，半监督学习效果显著</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_10">十、条件生成式增强</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -834,10 +838,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>需要额外模型，生成速度慢，可能引入噪声</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="adversarial-validation">十一、对抗验证（Adversarial Validation）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -874,11 +878,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>解决线下CV与线上LB不一致的核心方法</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="nlp_1">十二、对抗训练在NLP中的应用</h2>
 <h3 id="fgmfast-gradient-method">FGM（Fast Gradient Method）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -907,9 +911,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>NLP任务中通常提升0.3~0.8个百分点</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="pgdprojected-gradient-descent">PGD（Projected Gradient Descent）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -934,10 +938,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>FGM性价比最高，PGD在冲刺阶段使用</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/10-正则化全家桶.html">ML基础 10 正则化全家桶</a></td><td>数据增强本质是一种正则化：它在告诉模型哪些变换不该改变标签</td></tr><tr><td><a href="../大模型全景导论/03-Tokenizer与上下文.html">大模型导论 03 Tokenizer 与上下文</a></td><td>长文本截断策略、多语言混合文本的处理都取决于分词器</td></tr><tr><td><a href="../模型上线之后/06-数据漂移与概念漂移.html">模型上线之后 06 数据漂移与概念漂移</a></td><td>对抗验证测的就是「训练集和测试集分布差多少」，和漂移检测同一套工具</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/10-正则化全家桶.html">ML基础 10 正则化全家桶</a></td><td>数据增强本质是一种正则化：它在告诉模型哪些变换不该改变标签</td></tr><tr><td><a href="../大模型全景导论/03-Tokenizer与上下文.html">大模型导论 03 Tokenizer 与上下文</a></td><td>长文本截断策略、多语言混合文本的处理都取决于分词器</td></tr><tr><td><a href="../模型上线之后/06-数据漂移与概念漂移.html">模型上线之后 06 数据漂移与概念漂移</a></td><td>对抗验证测的就是「训练集和测试集分布差多少」，和漂移检测同一套工具</td></tr></tbody></table></div>
 <hr />
 <h2 id="ckpt">✅ 检查点</h2>
 <ol>

@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,7 +149,7 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
@@ -145,20 +160,20 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -166,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -356,7 +371,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="24">🧩 三、它解决什么（2–4）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>它解决的</th>
@@ -381,7 +396,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>双写系统必然会漂，且漂了不报错</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>关于"特征复用"，先算一个数再说：</strong></p>
 <section class="visual-block visual-block-flow" aria-label="流程图"><p class="visual-block-title">流程图</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">特征复用率 = 被 ≥ 2 个模型使用的特征数 / 特征总数</span></div><div class="vb-flow-row"><span class="vb-flow-step">＜ 20%</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">⚠️ 复用不是你的问题，别拿它当上 Feature Store 的理由</span></div><div class="vb-flow-row"><span class="vb-flow-step">20%~50%</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">有价值，但一份共享的 SQL 库 + 代码 review 也能解决</span></div><div class="vb-flow-row"><span class="vb-flow-step">＞ 50%</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">⭐ 这时候统一存储才真的开始省人力</span></div></div></section>
 <blockquote>
@@ -393,7 +408,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_3">🚫 四、它<strong>不</strong>解决什么</h2>
 <p><strong>这一节比上面两节更重要，因为期望错了，上了也会失败。</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>它不会</th>
@@ -418,7 +433,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>上游的空值、重复、延迟，它原样传递 —— 前面 04–08 章的工作一件都省不掉</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>而且它会带来四个新问题：</strong></p>
 <section class="visual-block visual-block-calc" aria-label="算一算"><p class="visual-block-title">算一算</p><div class="vb-calc"><p>① 多一层 = 多一个故障点</p><p>⭐ 在线特征服务挂了，你的模型服务跟着挂，</p><p>而它的 SLA 要求比模型服务【更高】</p><p>② 在线存储成本是真金白银</p><p>1000 万实体 × 200 个特征 × 8 字节 ≈ 16 GB 原始</p><p>加 key 开销、索引、副本 → ⭐ 实际需要约 50 GB Redis 内存</p><p>③ 特征&quot;死不掉&quot; 💀</p><p>一个特征定义被 3 个模型引用之后，就没有人敢删了</p><p>⭐ 上线第一天就要有&quot;引用计数 + 下线流程&quot;，否则两年后你有 4000 个特征，</p><p>其中 3000 个没人知道是干什么的</p><p>④ 调试链路变长</p><p>原来&quot;查一下这个特征怎么算的&quot;是打开一个 SQL 文件，</p><p>现在是：定义仓库 → 物化任务 → 离线表 → 同步任务 → 在线库 → SDK</p></div></section>
 <hr />
@@ -430,7 +445,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="_4">💰 五、成本账</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方案</th>
@@ -465,14 +480,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>已经全家桶在某朵云上</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>在线取数的延迟预算，是最容易被低估的一项：</strong></p>
 <section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">模型服务的 P99 预算 100 ms</span></div><div class="vb-tree-row"><span class="vb-tree-node">网络 + 反序列化 15 ms</span></div><div class="vb-tree-row"><span class="vb-tree-node">⭐ 特征取数 ？？</span></div><div class="vb-tree-row"><span class="vb-tree-node">模型推理 25 ms</span></div><div class="vb-tree-row"><span class="vb-tree-node">后处理 + 序列化 10 ms</span></div><div class="vb-tree-row"><span class="vb-tree-node">⭐ 特征取数的 P99 必须压在 10~20 ms 以内，</span></div><div class="vb-tree-row"><span class="vb-tree-node">而这是【一次取 200 个特征】的 P99，不是单 key 的 P99。</span></div><div class="vb-tree-row"><span class="vb-tree-node">⚠️ 单 key 1 ms 不代表 200 key 200 ms —— 但也绝不是 1 ms，</span></div><div class="vb-tree-row"><span class="vb-tree-node">必须按真实批量大小压测。这一项没压测过就上线，是最常见的翻车点。</span></div></div></section>
 <hr />
 <h2 id="_5">🧭 六、⭐ 该不该上：一张判断清单</h2>
 <p><strong>每条符合记 1 分。</strong></p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>[ ] 线上同时跑着 ≥ 10 个模型</p><p>[ ] 有【在线实时】推理服务（不是只有离线批量打分）</p><p>[ ] 特征复用率 ＞ 50%</p><p>[ ] 过去半年出过 ≥ 2 次训练/推理不一致的线上事故 ⭐ 权重最高的一条</p><p>[ ] 有 ≥ 2 个团队在共享特征</p><p>[ ] 需要严格的 point-in-time 回溯（金融、风控、受监管场景）</p><p>[ ] 有至少 1 个人可以长期负责它的运维</p><p>[ ] 特征总数 ＞ 300 且还在快速增长</p></div></section>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>得分</th>
@@ -493,7 +508,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>✅ 可以上，优先开源方案；<strong>但要先把"最后一条"落实（没人维护就别上）</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>注意清单里权重最高的是"出过几次训推不一致事故"</strong>：
 Feature Store 是一个<strong>为已经发生过的疼痛买的保险</strong>。
@@ -505,7 +520,7 @@ Feature Store 是一个<strong>为已经发生过的疼痛买的保险</strong>�
 <h2 id="_6">💀 七、一次真实的事故复盘</h2>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>系统：某电商的「退货风险」模型，决定是否给用户【极速退款】资格</p><p>特征：37 个用户侧聚合特征，用 Spark SQL 从数仓算</p><p>训练样本：跨 6 个月，约 480 万条</p></div></section>
 <p><strong>发生了什么</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>阶段</th>
@@ -534,13 +549,13 @@ Feature Store 是一个<strong>为已经发生过的疼痛买的保险</strong>�
 <td>对 6 个月前的样本，这个特征包含了<strong>那之后 6 个月的退货记录</strong> —— <strong>标签漏进了特征</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>为什么没被发现</strong></p>
 <section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 离线【测试集】也是同一份表算出来的</span></div><div class="vb-flow-row"><span class="vb-flow-step">测试集带着完全一样的穿越</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 于是离线评估不但看不出问题，还会【奖励】这个穿越特征</span></div><div class="vb-flow-row"><span class="vb-flow-step">（它的特征重要性排第 2）</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 特征名叫 &quot;user_return_rate_90d&quot;，所有人都以为</span></div><div class="vb-flow-row"><span class="vb-flow-step">&quot;90d&quot; 是【相对样本时间】的 90 天</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 实际上是【相对跑数时间】的 90 天 —— 名字没说清 as_of 语义</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ ⭐ 最反直觉的一点：在线服务是对的</span></div><div class="vb-flow-row"><span class="vb-flow-step">在线是另一个团队用 Java 从 Redis 读【当前值】，</span></div><div class="vb-flow-row"><span class="vb-flow-step">逻辑上恰好等价于正确的 point-in-time 取值。</span></div><div class="vb-flow-row"><span class="vb-flow-step">所以这不是&quot;线上错了&quot;，是【离线错了、线上对了】</span></div><div class="vb-flow-row"><span class="vb-flow-step">表现为&quot;线上比离线差&quot;，团队一开始一直往</span></div><div class="vb-flow-row"><span class="vb-flow-step">&quot;线上环境有问题&quot;的方向查，浪费了大半时间</span></div></div></section>
 <p><strong>代价</strong></p>
 <section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">离线 AUC 0.83 线上 AUC 0.68</span></div><div class="vb-flow-row"><span class="vb-flow-step">修复后重训 离线 0.71（掉了 0.12，这 0.12 全是穿越）</span></div><div class="vb-flow-row"><span class="vb-flow-step">线上 0.70 ⭐ 离线线上终于对上了</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 也就是说：那个&quot;很好的模型&quot;从来不存在，</span></div><div class="vb-flow-row"><span class="vb-flow-step">真实能力一直是 0.70 左右</span></div><div class="vb-flow-row"><span class="vb-flow-step">业务损失：</span></div><div class="vb-flow-row"><span class="vb-flow-step">错误发放极速退款资格</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">6 周内欺诈性退货</span></div><div class="vb-flow-row"><span class="vb-flow-step">直接损失 ≈ 210 万元</span></div><div class="vb-flow-row"><span class="vb-flow-step">排查成本 3 人 × 2 周</span></div><div class="vb-flow-row"><span class="vb-flow-step">全量重训 + 灰度重来 3 周</span></div></div></section>
 <p><strong>该补什么</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>缺失</th>
@@ -569,7 +584,7 @@ Feature Store 是一个<strong>为已经发生过的疼痛买的保险</strong>�
 <td>取 1000 条线上请求，离线重算同样的特征，<strong>逐字段比对，不一致率 ＞ 0.1% 报警</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>改造之后的收获</strong>：同一套自检跑遍团队里另外 6 个模型，
 <strong>又发现了 2 个有同类穿越</strong>（一个是"用户等级"取了当前值，一个是"商家评分"）。
@@ -582,7 +597,7 @@ Feature Store 是一个<strong>为已经发生过的疼痛买的保险</strong>�
 <hr />
 <h2 id="_7">🪶 八、如果你决定不上：三条轻量替代</h2>
 <p><strong>这三条加起来大约一周，能拿到 Feature Store 八成的价值。</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>做什么</th>
@@ -607,7 +622,7 @@ Feature Store 是一个<strong>为已经发生过的疼痛买的保险</strong>�
 <td>在线离线物理一致</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>① 单独拿出来做，是本章投入产出比最高的一件事。</strong>
 它不需要任何新系统、不需要新人力、不改变任何架构，
@@ -617,7 +632,7 @@ Feature Store 是一个<strong>为已经发生过的疼痛买的保险</strong>�
 </blockquote>
 <hr />
 <h2 id="_8">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>去哪</th>
@@ -654,7 +669,7 @@ Feature Store 是一个<strong>为已经发生过的疼痛买的保险</strong>�
 <td>⭐ <strong>point-in-time 在 SQL 里长什么样</strong>：本章给的是 pandas 实现和「该不该上 Feature Store」的判据，那一章补同一件事的 SQL 写法 —— 右边界钉死在 <code>1 PRECEDING</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_9">✅ 检查点</h2>
 <ol>

@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,7 +149,7 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
@@ -145,20 +160,20 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -166,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -358,7 +373,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>看第二、三行：两条 <code>03-02</code> 的累计和都是 60。</strong>
 不是 30 和 60，是 60 和 60 —— 第一条 <code>03-02</code> 的「累计和」里，<strong>已经包含了排在它后面那条 <code>03-02</code></strong>。</p>
 <p>原因是 SQL 标准规定的默认帧：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>窗口里写了什么</th>
@@ -375,7 +390,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><code>ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING</code>（<strong>整个分区</strong>，实测全是 150）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>关键在 <code>RANGE</code> 这个词上</strong>：它数的不是「行」，是「值」。
 <code>CURRENT ROW</code> 在 <code>RANGE</code> 里的意思<strong>不是「当前这一行」，是「所有和当前行排序值相等的行」</strong>（术语叫 peer / 并列组）。
 两条 <code>03-02</code> 互为并列，所以对它们俩来说，窗口的右边界是同一个位置 —— 都停在第二条 <code>03-02</code> 上。</p>
@@ -398,7 +413,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p><strong>第一个部件：怎么数。</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>关键字</th>
@@ -423,9 +438,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>往回数 2 组，一组 = 排序值相同的一批行</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>第二、三个部件：起点和终点。</strong>各有五种写法：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>端点</th>
@@ -466,7 +481,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>✅</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>起点不能排在终点后面</strong>，否则报错。
 ⭐ <strong>省略 <code>BETWEEN</code> 是合法的简写，终点默认是 <code>CURRENT ROW</code></strong>：</p>
 <div class="codehilite"><pre><span></span><code><span class="k">ROWS</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">PRECEDING</span><span class="w">   </span><span class="err">≡</span><span class="w">   </span><span class="k">ROWS</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">PRECEDING</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="k">CURRENT</span><span class="w"> </span><span class="k">ROW</span>
@@ -527,7 +542,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>四个形状各自的读法：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>想要</th>
@@ -557,7 +572,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>六行加起来 100%</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>最后一行的「还剩」是 <code>None</code> 不是 0。</strong>
 帧里一行都没有时，<code>SUM</code> 给 <code>NULL</code> 而不是 0 —— 这是 <a href="04-NULL与三值逻辑.html">04 章</a>的老规矩：
 <strong>「没有数据」不等于「数据是零」</strong>。想要 0 就套一层 <code>COALESCE(…, 0)</code>，⭐ 但套之前先想清楚这两件事在你的看板上是不是真的一样。</p>
@@ -631,7 +646,7 @@ RANGE 带偏移量时，窗口里只能有一个 ORDER BY 列：
 <li><code>RANGE 2 PRECEDING</code> 找的是 <code>day</code> 落在 <code>[7, 9]</code> 的行 —— <strong>一行都没有</strong>（第 7、8 天不存在），
   于是窗里只有它自己，得 4，<code>COUNT</code> 也诚实地告诉你是 <strong>1</strong>。</li>
 </ul>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -661,7 +676,7 @@ RANGE 带偏移量时，窗口里只能有一个 ORDER BY 列：
 <td>「最近 3 天」</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>判据</strong>：<strong>问题里的单位是「次 / 条 / 单」就用 <code>ROWS</code>，是「天 / 小时 / 元」就用 <code>RANGE</code>。</strong></p>
 <p>⚠️ <strong>两个附带的坑，第二个是不报错的那种：</strong></p>
 <ol>
@@ -730,7 +745,7 @@ RANGE 带偏移量时，窗口里只能有一个 ORDER BY 列：
 你想问的是「这个分区里最后一个值是多少」，它回答的是「到我为止最后一个值是多少」。
 ⚠️ <strong>它不报错，还给了一列长得很像数据的数</strong> —— 而 <code>FIRST_VALUE</code> 恰好没事（左边界本来就是分区第一行），于是同一句 SQL 里一半对一半错，最容易蒙混过关。</p>
 <p>三种修法，按推荐顺序：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>修法</th>
@@ -755,7 +770,7 @@ RANGE 带偏移量时，窗口里只能有一个 ORDER BY 列：
 <td>实测 0.30 / 0.80。啰嗦但意思最直白</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>顺带一个纯赚的语法：<code>WINDOW</code> 子句。</strong>
 上面那句 SQL 里的 <code>OVER w</code> 和结尾的 <code>WINDOW w AS (PARTITION BY uid ORDER BY t)</code> 是一对 ——
 <strong>窗口定义写一次，后面全用名字引用</strong>。</p>
@@ -818,7 +833,7 @@ day  amt   NO OTHERS   CURRENT ROW   GROUP   TIES
 <code>RANGE 1 PRECEDING</code> 找 <code>day ∈ [6, 7]</code>，第 6 天不存在，所以只有自己 → 50；
 <code>GROUPS 1 PRECEDING</code> 找「往回一个并列组」，也就是第 3 天那一组 → <strong>40 + 50 = 90</strong>。</p>
 <p>三者的一句话总结：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -843,9 +858,9 @@ day  amt   NO OTHERS   CURRENT ROW   GROUP   TIES
 <td>「往回 N 个<strong>有数据的</strong>日子」—— ⭐ 跳过缺口，不管缺了几天</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><code>EXCLUDE</code> 的四个选项，把当前行和它的并列组挑出来处理：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>写法</th>
@@ -875,7 +890,7 @@ day  amt   NO OTHERS   CURRENT ROW   GROUP   TIES
 <td>120（= 150 − 30）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong><code>EXCLUDE CURRENT ROW</code> 有一个真实用途</strong>：「这一组里除了我以外的均值」。
 它是 leave-one-out 编码的写法 —— ⚠️ 但请注意 <a href="../数据这一关/14-数据泄漏的七种来源.html">数据这一关 14</a> 的结论：
 类别特征的目标编码<strong>标准解是 out-of-fold，不是 leave-one-out</strong>（那一章实测朴素目标编码把 CV 抬到 0.854、holdout 只有 0.577）。语法给你了，用不用是另一回事。</p>
@@ -983,7 +998,7 @@ bob    2026-03-04   4.0      3.67       3.67       3
 </blockquote>
 <p><strong>③ ⭐ 右边界写 <code>CURRENT ROW</code> 还是 <code>1 PRECEDING</code>，是「特征」和「泄漏」的分界线。</strong></p>
 <p>拿 <code>alice</code> 那两列并排看：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>ts</th>
@@ -1024,7 +1039,7 @@ bob    2026-03-04   4.0      3.67       3.67       3
 <td>3.8</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>把两列错开一行看：右边那列的第 <em>i</em> 行，恰好等于左边那列的第 <em>i+1</em> 行。</strong>
 也就是说，含当前行的写法让每一行提前一格知道了未来 —— 它把「这一单的评分」揉进了「这一单之前的历史均分」里。
 如果你正在预测的就是这一单的评分，那这一列的重要性会排得很靠前，💀 <strong>离线指标好看，上线什么都不是</strong>。</p>
@@ -1037,7 +1052,7 @@ bob    2026-03-04   4.0      3.67       3.67       3
 <hr />
 <h2 id="_5">🧭 八、一张需求 → 帧的对照表</h2>
 <p>写之前先把中文需求念一遍，然后照着抄：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>中文需求</th>
@@ -1082,7 +1097,7 @@ bob    2026-03-04   4.0      3.67       3.67       3
 <td>⭐ <code>FIRST_VALUE(…) OVER (… ORDER BY t DESC)</code>，别用 <code>LAST_VALUE</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>一条能救你很多次的自查</strong>：任何一句带帧的 SQL，<strong>先加一列 <code>COUNT(*) OVER (同一个窗口)</code> 跑一遍</strong>。
 它会直接告诉你「每一行的窗里到底有几行」—— 本章三处实测（<code>1,2,3,3,3,3</code> 的边界缩水 / 缺口表的 <code>1,2,3,1,2,3</code> / <code>alice</code> 的 <code>1,2,3,1,2</code>）
@@ -1090,7 +1105,7 @@ bob    2026-03-04   4.0      3.67       3.67       3
 </blockquote>
 <hr />
 <h2 id="_6">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>相关的地方</th>
@@ -1131,7 +1146,7 @@ bob    2026-03-04   4.0      3.67       3.67       3
 <td>那里用一段对照伪代码说明「同一个特征两套实现会对不齐」；⭐ 本章补上训练侧那一半的<strong>真写法</strong>长什么样</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_7">✅ 检查点</h2>
 <ol>

@@ -182,6 +182,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 
 /* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
 .katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -237,7 +241,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 </blockquote>
 <hr />
 <h2 id="_3">📜 模型演进图谱（一张表看完历史）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>年份</th>
@@ -314,7 +318,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>Scaling Law（第 14 节）⭐</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="1-wide-deep-vs">① Wide &amp; Deep：记忆 vs 泛化 ⭐</h2>
 <p>Google 2016 年的经典，思想比模型本身重要。</p>
@@ -487,7 +491,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 </code></pre></div>
 
 <h3 id="_8">⚠️ 双塔的三个必踩的坑</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>坑</th>
@@ -512,7 +516,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>从 0.05 开始调</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>🔑 <strong>「训练和线上的候选分布要一致」是召回模型的第一原则。</strong> 记住这句，能少走一年弯路。</p>
 </blockquote>
@@ -542,7 +546,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 </ol>
 <hr />
 <h2 id="_9">🗺️ 该用哪个模型？决策表</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -587,10 +591,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>有 Scaling Law</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_10">🔧 训练的实用细节（这些没人写在论文里）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>项目</th>
@@ -627,10 +631,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>工业界普遍做「天级全量 + 小时级/分钟级增量」，模型永远追着最新数据跑</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/07-从线性到神经网络.html">ML基础 07</a></td><td>万能骨架里那个 MLP 到底在干什么，以及为什么 LR 学不到高阶交叉</td></tr><tr><td><a href="../机器学习与深度学习基础/08-反向传播.html">ML基础 08</a></td><td>占了 99% 参数量的 Embedding 表是怎么被稀疏梯度更新的</td></tr><tr><td><a href="../大模型全景导论/02-Transformer原理.html">全景导论 02</a></td><td>DIN 的注意力就是 attention 的推荐版：候选物品当 query，历史行为当 key/value</td></tr><tr><td><a href="../Kaggle竞赛方法论/19_排序与多目标.html#autoint">Kaggle 19 · 排序与多目标</a></td><td>⭐ 本章讲了 DCN 这一条显式交叉的路，<a href="../Kaggle竞赛方法论/19_排序与多目标.html#xdeepfm">另外两条（AutoInt 的自注意力交叉、xDeepFM 的向量级交叉）在那边</a>——三者放一起看才知道「显式交叉」有几种做法</td></tr><tr><td><a href="../Kaggle竞赛方法论/19_排序与多目标.html#_19">Kaggle 19 · 多目标损失权重调优</a></td><td>本章讲了 MMoE/PLE 怎么共享参数，但<strong>多个目标的 loss 该按什么比例相加</strong>没展开。GradNorm / DWA 这类自动配权方法在那一节</td></tr><tr><td><a href="../大模型全景导论/10-多模态.html">全景导论 10 · 多模态</a></td><td>⭐⭐ <strong>你在这一章学的双塔，换个模态就是 CLIP</strong>——用户塔换成图片塔、物品塔换成文字塔，in-batch 负采样一模一样，温度系数 τ 也一模一样。那边给了 InfoNCE 的公式形式和「为什么 batch size 对对比学习特别关键」，<strong>是同一个机制的另一面</strong>，看完会回过头加深对这一章的理解</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/07-从线性到神经网络.html">ML基础 07</a></td><td>万能骨架里那个 MLP 到底在干什么，以及为什么 LR 学不到高阶交叉</td></tr><tr><td><a href="../机器学习与深度学习基础/08-反向传播.html">ML基础 08</a></td><td>占了 99% 参数量的 Embedding 表是怎么被稀疏梯度更新的</td></tr><tr><td><a href="../大模型全景导论/02-Transformer原理.html">全景导论 02</a></td><td>DIN 的注意力就是 attention 的推荐版：候选物品当 query，历史行为当 key/value</td></tr><tr><td><a href="../Kaggle竞赛方法论/19_排序与多目标.html#autoint">Kaggle 19 · 排序与多目标</a></td><td>⭐ 本章讲了 DCN 这一条显式交叉的路，<a href="../Kaggle竞赛方法论/19_排序与多目标.html#xdeepfm">另外两条（AutoInt 的自注意力交叉、xDeepFM 的向量级交叉）在那边</a>——三者放一起看才知道「显式交叉」有几种做法</td></tr><tr><td><a href="../Kaggle竞赛方法论/19_排序与多目标.html#_19">Kaggle 19 · 多目标损失权重调优</a></td><td>本章讲了 MMoE/PLE 怎么共享参数，但<strong>多个目标的 loss 该按什么比例相加</strong>没展开。GradNorm / DWA 这类自动配权方法在那一节</td></tr><tr><td><a href="../大模型全景导论/10-多模态.html">全景导论 10 · 多模态</a></td><td>⭐⭐ <strong>你在这一章学的双塔，换个模态就是 CLIP</strong>——用户塔换成图片塔、物品塔换成文字塔，in-batch 负采样一模一样，温度系数 τ 也一模一样。那边给了 InfoNCE 的公式形式和「为什么 batch size 对对比学习特别关键」，<strong>是同一个机制的另一面</strong>，看完会回过头加深对这一章的理解</td></tr></tbody></table></div>
 <hr />
 <h2 id="_11">✅ 检查点</h2>
 <ol>

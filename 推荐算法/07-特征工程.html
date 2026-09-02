@@ -181,6 +181,10 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 
 /* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
 .katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -255,7 +259,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <code>item_id</code> 可能有 1 亿个 × 32 维 × 4 字节 = 12.8 GB，单机放不下。
 → 工业界用 <strong>参数服务器（Parameter Server）</strong> 分片存储，或哈希分桶压缩。</p>
 <h3 id="2">2. 数值特征 → 必须处理，不能直接扔进去</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>问题</th>
@@ -276,7 +280,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <td><strong>分桶离散化</strong> → 再 Embedding ⭐ 推荐系统最常用</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>为什么推荐系统偏爱分桶？</strong></p>
 <figure class="dia"><svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="数值特征分桶流程：年龄 27 先分桶成 25-30 区间，再查 Embedding 变成向量"><text class="dia-t" x="230" y="52" font-size="12" text-anchor="middle" fill="var(--muted)">分桶</text><text class="dia-t" x="490" y="52" font-size="12" text-anchor="middle" fill="var(--muted)">Embedding</text><rect x="20" y="64" width="170" height="48" rx="10" fill="var(--card)" stroke="var(--border)" stroke-width="1.4"/><text class="dia-t" x="105" y="93" font-size="13" text-anchor="middle" fill="var(--fg)">年龄 = 27</text><line x1="192" y1="88" x2="254" y2="88" stroke="var(--accent)" stroke-width="1.8"/><polygon points="266,88 252,82 252,94" fill="var(--accent)"/><rect x="270" y="64" width="180" height="48" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/><text class="dia-t" x="360" y="93" font-size="13" text-anchor="middle" fill="var(--fg)">bucket = "25-30"</text><line x1="452" y1="88" x2="514" y2="88" stroke="var(--accent)" stroke-width="1.8"/><polygon points="526,88 512,82 512,94" fill="var(--accent)"/><rect x="530" y="64" width="150" height="48" rx="10" fill="var(--card)" stroke="var(--border)" stroke-width="1.4"/><text class="dia-t" x="605" y="93" font-size="13" text-anchor="middle" fill="var(--fg)">[0.4, -0.2, ...]</text><text class="dia-t" x="350" y="152" font-size="12.5" text-anchor="middle" fill="var(--fg)">好处：模型能学出「25-30岁」这个群体的独特模式，</text><text class="dia-t" x="350" y="174" font-size="12.5" text-anchor="middle" fill="var(--muted)">而不是被迫假设「年龄和兴趣是线性关系」（显然不是）</text></svg><figcaption>连续的年龄值先被切成区间，再当成一个<b>类别</b>去查 Embedding。⭐ 该看的是这一步换来了什么：分桶之后模型不必再假设「年龄越大兴趣越强」这种线性关系，每个年龄段都能有自己独立的模式。</figcaption></figure>
 
@@ -287,7 +291,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <hr />
 <h2 id="_4">💥 特征交叉：推荐模型的核心命题</h2>
 <p><strong>为什么需要交叉？</strong> 看这个经典例子：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>特征</th>
@@ -308,7 +312,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <td><strong>点击率飙升</strong> ⭐</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>线性模型（LR）<strong>永远学不到这个</strong>，除非你手动造出这个组合特征。</p>
 <h3 id="_5">交叉方式的演进史（这就是推荐模型的进化史）</h3>
 <div class="codehilite"><pre><span></span><code> ①  人工交叉 (LR 时代)
@@ -421,7 +425,7 @@ $$\text{smoothed\_ctr} = \frac{\text{clicks} + \alpha}{\text{impressions} + \alp
 
 <hr />
 <h2 id="_8">📏 怎么知道一个特征有没有用</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -456,14 +460,14 @@ $$\text{smoothed\_ctr} = \frac{\text{clicks} + \alpha}{\text{impressions} + \alp
 <td>高，但只有它算数</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⚠️ <strong>重要提醒</strong>：离线 AUC 涨了，线上不一定涨（见第 6、12 节）。
 特征上线前的标准流程：覆盖率检查 → 穿越检查 → 离线 AUC → <strong>小流量 A/B</strong>。</p>
 </blockquote>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/16-特征工程基础.html">ML基础 16</a></td><td>分桶、归一化、log 变换、类别编码的通用版，本章只是把它搬到推荐场景</td></tr><tr><td><a href="../模型上线之后/04-训练推理一致性.html">上线之后 04</a></td><td>坑 2「离线/在线特征不一致」的系统解法：Feature Store 与一套代码双产出</td></tr><tr><td><a href="../Kaggle竞赛方法论/01_数据策略与特征工程.html">Kaggle 01</a></td><td>特征穿越在竞赛里怎么被发现，以及目标编码为什么必须用折外统计</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/16-特征工程基础.html">ML基础 16</a></td><td>分桶、归一化、log 变换、类别编码的通用版，本章只是把它搬到推荐场景</td></tr><tr><td><a href="../模型上线之后/04-训练推理一致性.html">上线之后 04</a></td><td>坑 2「离线/在线特征不一致」的系统解法：Feature Store 与一套代码双产出</td></tr><tr><td><a href="../Kaggle竞赛方法论/01_数据策略与特征工程.html">Kaggle 01</a></td><td>特征穿越在竞赛里怎么被发现，以及目标编码为什么必须用折外统计</td></tr></tbody></table></div>
 <hr />
 <h2 id="_9">✅ 检查点</h2>
 <ol>

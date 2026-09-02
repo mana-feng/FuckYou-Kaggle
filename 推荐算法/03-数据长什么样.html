@@ -183,6 +183,10 @@ table.cmp2 td:first-child{white-space:nowrap;color:var(--muted);width:1%}
 
 /* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
 .katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -225,7 +229,7 @@ table.cmp2 td:first-child{white-space:nowrap;color:var(--muted);width:1%}
 
 <p>亿万行这样的日志堆起来，就是推荐系统的全部原料。</p>
 <p>它可以整理成一张<strong>交互表</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>user_id</th>
@@ -260,11 +264,11 @@ table.cmp2 td:first-child{white-space:nowrap;color:var(--muted);width:1%}
 <td>2026-07-27 09:01</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="vs">🔢 显式反馈 vs 隐式反馈（⭐ 必须分清）</h2>
 <p>这是新手最容易搞错、也最影响后果的一个概念。</p>
-<table class="cmp2"><thead><tr><th></th>
+<div class="tw"><table class="cmp2"><thead><tr><th></th>
 <th>显式反馈 Explicit</th><th>隐式反馈 Implicit</th></tr></thead><tbody>
 <tr><td><b>是什么</b></td><td>用户明确表达的偏好</td><td>从行为里推断的偏好</td></tr>
 <tr><td><b>长什么样</b></td>
@@ -274,7 +278,7 @@ table.cmp2 td:first-child{white-space:nowrap;color:var(--muted);width:1%}
  <td>✅ 量大（<b>1000 倍以上</b>）</td></tr>
 <tr><td><b>坏在哪</b></td><td>❌ 极其稀少（&lt;1% 用户会评分）</td>
  <td>❌ 有噪声、<b>几乎没有真负样本</b></td></tr>
-</tbody></table>
+</tbody></table></div>
 
 
 <h3 id="_3">🔥 隐式反馈的核心难题：没有「负样本」</h3>
@@ -308,7 +312,7 @@ table.cmp2 td:first-child{white-space:nowrap;color:var(--muted);width:1%}
 <p>这一句话是矩阵分解、协同过滤、乃至大部分推荐算法的统一视角。</p>
 <h3 id="_4">😱 但这张矩阵大得离谱，而且几乎全空</h3>
 <p>拿真实数据感受一下：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>数据集</th>
@@ -334,12 +338,12 @@ table.cmp2 td:first-child{white-space:nowrap;color:var(--muted);width:1%}
 <td><strong>99.9999%+ 是空的</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>💡 <strong>人话</strong>：这张矩阵<strong>一百万个格子里可能只有一个有数</strong>。
 所有推荐算法的本质，都是在跟这个「极端稀疏」搏斗。</p>
 <hr />
 <h2 id="_5">🧱 除了交互，还有什么数据</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>类别</th>
@@ -374,7 +378,7 @@ table.cmp2 td:first-child{white-space:nowrap;color:var(--muted);width:1%}
 <td>内容理解、冷启动</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_6">🔨 动手：摸一遍真实数据</h2>
 <p>用最经典的 MovieLens 数据集。<strong>下载只要 1MB</strong>（小版本）。</p>
@@ -449,7 +453,7 @@ table.cmp2 td:first-child{white-space:nowrap;color:var(--muted);width:1%}
 <p>✅ <strong>缓解</strong>：把位置作为特征输入训练，预测时统一填成固定值（如位置 1）。</p>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/05-评估与过拟合.html">ML基础 05</a></td><td>时间切分、数据泄漏的通用版本（含三条泄漏路径的图）</td></tr><tr><td><a href="../模型上线之后/04-训练推理一致性.html">上线之后 04</a></td><td>「预测时点真的拿得到这个值吗」—— 特征穿越的生产形态</td></tr><tr><td><a href="../Kaggle竞赛方法论/01_数据策略与特征工程.html">Kaggle 01</a></td><td>竞赛视角的验证集构造</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/05-评估与过拟合.html">ML基础 05</a></td><td>时间切分、数据泄漏的通用版本（含三条泄漏路径的图）</td></tr><tr><td><a href="../模型上线之后/04-训练推理一致性.html">上线之后 04</a></td><td>「预测时点真的拿得到这个值吗」—— 特征穿越的生产形态</td></tr><tr><td><a href="../Kaggle竞赛方法论/01_数据策略与特征工程.html">Kaggle 01</a></td><td>竞赛视角的验证集构造</td></tr></tbody></table></div>
 <hr />
 <h2 id="_9">✅ 检查点</h2>
 <ol>

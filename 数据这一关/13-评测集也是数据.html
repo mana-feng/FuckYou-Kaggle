@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,7 +149,7 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
@@ -145,20 +160,20 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -166,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -335,7 +350,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <figcaption>这一章造尺子，全站另外四处用这把尺子 —— 底层错了，上面四层全部无效</figcaption>
 </figure>
 
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>去哪</th>
@@ -360,7 +375,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>下游那一侧</strong>：五道坎、幸存者偏差、校准与 ECE。尺子测出来是好的、线上却不是时</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>一句话分工</strong>：
 <strong>导论 11 回答「别人的分数能不能信」，智能体 14 回答「怎么给它打分」，
@@ -376,7 +391,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 <p><strong>假设 ③ 值得用数字看一眼</strong>。设想一个搜索场景，query 分三层：
 头部 60%（模型准确率 0.95）、腰部 30%（0.80）、长尾 10%（0.45）。
 600 条的评测集，两种造法：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -402,7 +417,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 <td>±2.55pp</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>这张表是本节的全部内容</strong>：
 <strong>同样 600 条，只是换了个分配方式，长尾层的置信区间从 ±12.59pp 收窄到 ±6.89pp，
@@ -414,7 +429,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 43.5% / 39.9% / 16.6%，总体标准误 ±2.40pp ——
 ⭐ <strong>只比均分好 0.15pp，说明「每层给够」已经拿到了绝大部分收益，别过度优化。</strong></p>
 <p>分层该按什么切（按优先级）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -439,7 +454,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 <td>每一类线上事故都该在评测集里留下一组"回归题"</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⚠️ <strong>一条最容易错、代价也最大的</strong>：<strong>评测集的切分单位要和线上一致。</strong>
 线上遇到的是新用户 → 按用户切；线上永远是老用户的新行为 → 按时间切。
@@ -450,7 +465,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 <h2 id="_4">📏 三、多大才够：把置信区间算出来</h2>
 <p><strong>先接受一件事：任何评测分数都是一个估计，它有误差棒。</strong>
 下面是真跑的 bootstrap（真实准确率 0.82，B = 10000 次重采样）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>评测集 n</th>
@@ -497,7 +512,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 <td>[0.812, 0.827]</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>第二行就是<a href="../大模型全景导论/11-评测体系.html">导论第 11 章</a>那个结论的出处</strong>：
 <strong>100 题的评测集误差棒有 ±7.5 个百分点</strong> ——「A 得 82 分、B 得 79 分」
@@ -506,7 +521,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 ⭐ <strong>准确率这种简单比例用 Wilson；bootstrap 留给 F1/NDCG/AUC 和成对比较。</strong></p>
 </blockquote>
 <p><strong>想分辨 x 个百分点的差距，各需要多少条</strong>（80% 功效、5% 显著性）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>想分辨的差距</th>
@@ -541,10 +556,10 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 <td>💀</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>成对比较：同一套题跑两个模型，然后只看每条题上的胜负差。</strong>
 它能省多少，取决于两个模型有多像：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>两模型判定一致率</th>
@@ -579,7 +594,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 <td>1.4 倍 / 白搭</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>两个模型越像，成对比较越值钱</strong> —— 而日常研发里绝大多数改动
 （换个提示词、多训两个 epoch、加一个特征）<strong>恰恰一致率极高</strong>。
@@ -629,7 +644,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 <p><strong>污染 = 评测集的信息，以某种方式进过训练。</strong> 三种形态，越往下越难查：</p>
 <section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>训练集里混进了评测样本（或它的近似重复）</li><li>—— 回填、多次导出、宽表 join、数据增强都会造成</li><li>⭐ 就是第 14 章的&quot;跨集重复行&quot;，哈希/MinHash 就能查</li><li>评测集被爬进了预训练语料 💀 最常见</li><li>—— 你换了个开源基座，而评测集三年前发在了 GitHub 上</li><li>软污染：你自己反复看着评测集调参 ⭐ 最难查</li><li>—— 没有一条样本泄漏，但【选择】泄漏了（第七节）</li></ol></section>
 <p><strong>污染有多贵？实跑（真实能力 0.72，被污染的题几乎全对）</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>污染率</th>
@@ -662,7 +677,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 <td>0.997 vs 0.729（差 26.7pp）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>注意最后一列比第三列有用得多</strong>：
 <strong>总分的虚高（+0.6pp）在低污染率下小得看不见，但"见过组 vs 没见过组"的差
@@ -670,7 +685,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 💀 <strong>所以查污染不能看总分，要看分组差</strong> —— 这个信号在污染率很低时就已经满格了。</p>
 </blockquote>
 <p>四种探针，从便宜到贵：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>探针</th>
@@ -695,9 +710,9 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 <td>用<strong>发布日期晚于模型训练截止</strong>的题做对照组。新鲜组明显更低 = 老题被背过</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>n 该取多少（实跑：500 条评测题，真污染 70 条 = 40 条原样 + 30 条改了两个词）</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>n</th>
@@ -737,7 +752,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 <td><strong>0.571</strong> ⚠️</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>n 的选择有一个很窄的甜区</strong>：
 <strong>n 太小（2–3）全是误报</strong>（自然语言里短片段本来就到处重合，精确率只有 0.14）；
@@ -745,7 +760,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 <strong>实践取 8–13。</strong> 而且要<strong>同时</strong>跑改写测试，因为 n-gram 对语义级的改写完全无效。</p>
 </blockquote>
 <p><strong>改写测试的实跑</strong>（同一个模型，原题 vs 同义改写题）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>污染率</th>
@@ -780,7 +795,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 <td><strong>+12.5pp</strong> 💀</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>改写测试是这四种探针里唯一不需要访问训练语料的。</strong>
 用开源基座、用别人的 API 时你根本拿不到训练数据，<strong>①② 全部失效，③④ 是你仅有的工具</strong>。
@@ -801,7 +816,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 <strong>这一节讲"对齐"具体怎么做，以及不对齐会亏多少。</strong></p>
 <p>把评委当成一个二分类器，用<strong>一小份人工双标数据</strong>量出它的
 <strong>sens</strong>（真通过的判成通过）和 spec（真不通过的判成不通过）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>评委</th>
@@ -841,7 +856,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 <td>0.672</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💀 <strong>注意第 2、3 行</strong>：两个评委的<strong>一致率几乎一样</strong>（0.901 vs 0.906），
 <strong>但一个把通过率压低 3.9pp，另一个抬高 2.7pp</strong> —— 方向相反。
@@ -849,7 +864,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 因为<strong>偏差的方向完全由它们的不对称决定</strong>。</p>
 </blockquote>
 <p><strong>更贵的一件事：有偏评委会系统性压缩模型之间的差距</strong>（两个模型真实差 5pp）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>评委</th>
@@ -879,7 +894,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 <td><strong>69%</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💀 <strong>和<a href="11-标签噪声.html">第 11 章</a>那个"评测集噪声让真实改进打折"是同一个机制</strong> ——
 评分器不准，本质上就是<strong>给评测集加了一层噪声</strong>。
@@ -937,7 +952,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 但<strong>"提升有 2.5 个点"这个说法不成立</strong>（它可能只有 0.9）。</p>
 </blockquote>
 <p><strong>评测报告的最小字段清单（少一个就退回）</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>字段</th>
@@ -974,13 +989,13 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 <td>第七节的过拟合程度 ⭐</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_8">🔄 七、什么时候该换评测集</h2>
 <p><strong>评测集会磨损。</strong> 磨损的方式不是样本变了，是<strong>你看它的次数变多了</strong>。</p>
 <p>实跑：从 N 个真实水平几乎一样的候选里，挑评测分最高的那个，
 它在一套<strong>新的</strong>评测集上会掉多少（n=500）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>试过的候选数</th>
@@ -1009,7 +1024,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 <td><strong>+4.52pp</strong> 💀</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>这就是 <a href="../Kaggle竞赛方法论/22_竞赛元策略.html">Kaggle 22</a> 讲的 shake-up
 在日常研发里的样子：你的评测集就是 Public LB，线上就是 Private LB。</strong>
@@ -1040,7 +1055,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 <h2 id="69">💀 八、事故复盘：一次涨了 6.9 个点的"重大突破"</h2>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>系统：站内搜索的相关性排序模型</p><p>评测集：2023 Q1 建的 12,000 条 &lt;query, doc, 相关性 0–3&gt; 人工标注</p><p>用法：两年里所有实验都在它上面比，跑过 300+ 次</p><p>⭐ 这套评测集在 2023 年被整理成公开数据集发布过（为了招人和写论文）</p></div></section>
 <p><strong>发生了什么</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>时间</th>
@@ -1065,7 +1080,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 <td>全量 6 周后仍无正向，开始查评测集</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>查出来两件事（一次事故，两个根因）</strong></p>
 <section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 污染</span></div><div class="vb-flow-row"><span class="vb-flow-step">新排序器的预训练语料里，有团队自己两年前公开的那份评测集</span></div><div class="vb-flow-row"><span class="vb-flow-step">13-gram 探针：12,000 条里 3,180 条（26.5%）精确匹配上 💀</span></div><div class="vb-flow-row"><span class="vb-flow-step">分组：命中组 NDCG@10 = 0.923，未命中组 0.729（差 19.4pp）</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 剔除污染后，真实提升是 +1.7pp，不是 +6.9pp</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 老化 + 选择偏差</span></div><div class="vb-flow-row"><span class="vb-flow-step">两年前的 query 分布，而业务已从 3C 扩到生鲜和本地生活</span></div><div class="vb-flow-row"><span class="vb-flow-step">评测集里【0 条】生鲜 query，线上生鲜占 22% 搜索量</span></div><div class="vb-flow-row"><span class="vb-flow-step">加上 300 次实验的选择偏差，按第七节至少再虚高 4pp</span></div></div></section>
 <p><strong>为什么没被发现</strong></p>
@@ -1073,7 +1088,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 <p><strong>代价</strong></p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>回滚前全量运行 6 周，GMV 影响约 −0.4%（按季度反推 ≈ ¥340 万）</p><p>重建评测集 按当前流量分层重抽 15,000 条 + 仲裁，¥41 万，7 周</p><p>⭐ 但最贵的是回溯：</p><p>过去两年 300+ 次实验里，有 47 次的结论落在 ±2pp 以内</p><p>—— 全部无法判断真假 = 两年的方向决策没有有效证据</p></div></section>
 <p><strong>该补什么</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>缺失</th>
@@ -1106,7 +1121,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 <td>⭐ 公开的那份和内部用的必须是<strong>两套不相交的题</strong>；公开即视为"已污染，永久退役"</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💀 <strong>这个事故一句话总结</strong>：
 <strong>他们两年里一直在优化的，不是搜索质量，是那 12,000 条题的分数。</strong>
@@ -1115,7 +1130,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 </blockquote>
 <hr />
 <h2 id="_9">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>去哪</th>
@@ -1172,7 +1187,7 @@ Kaggle 22 回答「排名次时会出什么事」，上线之后 02 回答「测
 <td>⭐ 「尺子本身也会坏」在图像生成上的样子：FID 只用了均值和协方差，⚠️ 那一章实测<strong>同一个分布、真值该是 0，n=100 却算出 21.4</strong>；而高斯 vs 每维只取 ±1 这两个天差地别的分布，FID 几乎没区别</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_10">✅ 检查点</h2>
 <ol>

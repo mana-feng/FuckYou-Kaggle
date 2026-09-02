@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,7 +149,7 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
@@ -145,20 +160,20 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -166,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -321,7 +336,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>x is_leaf True requires_grad True grad_fn None</p><p>y is_leaf False requires_grad True grad_fn &lt;MulBackward0 object at 0x000001C128091AE0&gt;</p><p>z grad_fn &lt;SumBackward0 object at 0x000001C1296599C0&gt;</p><p>y 的上游: ((&lt;AccumulateGrad object at 0x000001C1296C9480&gt;, 0), (None, 0))</p></div></section>
 <p>（内存地址每次跑都不一样，⚠️ 别对着地址找不同。）</p>
 <p>⭐ <strong>三个角色，一次分清</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>角色</th>
@@ -346,7 +361,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>⭐ 真正的「图」。每个节点知道两件事：<strong>怎么反着算</strong>，和<strong>上游是谁</strong>（<code>next_functions</code>）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong><code>AccumulateGrad</code> 这个名字本身就是答案</strong> —— 它不叫 <code>SetGrad</code>，叫「<strong>累加</strong>梯度」。
 第四节会看到这个命名有多要命。</p>
 <p>⭐ <strong>图是从输出往回连的</strong>：<code>z.grad_fn</code> 是 <code>SumBackward0</code>，它的上游是 <code>MulBackward0</code>，
@@ -379,7 +394,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>同一个函数，两次跑出了两张不同的图。</strong> 你可以在 <code>forward</code> 里写 <code>if</code>、写 <code>while</code>、
 写「循环次数取决于输入内容」，autograd 只是跟着你实际走过的那条路记账。</p>
 <p>三个直接后果：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>后果</th>
@@ -400,7 +415,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>建图有开销，而且<strong>图不能提前优化</strong>。<code>torch.compile</code> 想解决的正是这一条（第 10 章）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>一个容易记反的点</strong>：动态不等于「便宜」。图是每一步真的<strong>建出来</strong>的对象，
 第七节会量给你看它有多大。</p>
 <hr />
@@ -421,7 +436,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>实测输出（⭐ <strong>报错是真实原文</strong>）：</p>
 <section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">第一次 backward，a.grad = [6.0]</span></div><div class="vb-flow-row"><span class="vb-flow-step">第二次 backward -&gt; Trying to backward through the graph a second time (or directly access saved tensors after they have already been freed). Saved intermediate values of the graph are freed when you call .backward() or autograd.grad(). Specify retain_graph=True if you need to backward through the graph a second time or if you need to access saved tensors after calling backward.</span></div></div></section>
 <p>⭐ <strong>报错原文里其实把机制说完了</strong>，拆开看：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>原文片段</th>
@@ -442,7 +457,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>修法之一</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>为什么默认要扔</strong>：因为那些中间张量很占地方（第七节实测 44.0 MB）。
 一次训练迭代里，前向存下来的东西反向用完就再也用不到了，留着就是白占显存。
 ⭐ <strong>默认释放是对的设计</strong>，不是缺陷。</p>
@@ -470,7 +485,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_4">🧩 四、梯度是累加的，不是覆盖的</h2>
 <p>⭐ <strong>这是 <code>optimizer.zero_grad()</code> 存在的唯一原因，也是那个节点叫 <code>AccumulateGrad</code> 的原因。</strong></p>
 <p><code>backward()</code> 做的事是 <code>x.grad += 算出来的梯度</code>，<strong>不是</strong> <code>x.grad = 算出来的梯度</code>。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>你以为</th>
@@ -487,11 +502,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>⚠️ 不清零 = <strong>这一步的梯度是历史所有步的和</strong>，训练直接废</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><a href="../机器学习与深度学习基础/15-PyTorch实战手册.html">ML 基础 15 章</a> 的六个高频 Bug 里第一条就是「忘了 <code>optimizer.zero_grad()</code> → 训练完全不收敛」。
 ⭐ <strong>机制就是这一行</strong>。</p>
 <p><strong>那为什么要设计成累加？</strong> 因为累加让两件事变得不需要额外 API：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -508,7 +523,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>比如共享 embedding、多任务多个 loss —— 各条路的梯度<strong>自动加起来</strong>，这正是链式法则要的</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong><code>optimizer.zero_grad()</code> 和 <code>model.zero_grad()</code> 不完全等价</strong>：
 前者只清<strong>这个优化器管着的</strong>参数。如果你有两个优化器管不同部分，只清一个会漏。</p>
 <p>⚠️ <strong>清零的写法</strong>：现在的 <code>zero_grad()</code> 默认是 <code>set_to_none=True</code>，也就是把 <code>.grad</code> 直接设成 <code>None</code>
@@ -538,7 +553,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 💀 <strong>如果你写了个「梯度监控」在打印中间层的 <code>.grad</code>，它会一路打印 <code>None</code> 而不报错。</strong></p>
 <p>⭐ <strong>为什么中间结果的 <code>.grad</code> 默认不留</strong>：一次前向有成千上万个中间张量，
 把它们的梯度全存下来，显存会直接翻倍，而 99% 的场景根本不看。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>你想做的事</th>
@@ -559,10 +574,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>参数是叶子，⭐ <strong>直接 <code>p.grad</code> 就有</strong>，不需要任何额外操作</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>别把 <code>retain_grad</code>（留中间结果的 <code>.grad</code>）和 <code>retain_graph</code>（留图不释放）搞混。</strong>
 名字差一个字母，做的事完全不同。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -585,7 +600,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>⚠️ 整张图的存量都不释放（实测量级见下一节）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <!--MIDSTOP-->
 <blockquote>
@@ -616,7 +631,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 它可以默认填上。向量输出的话，<code>d(向量)/d(向量)</code> 是一个雅可比矩阵，<strong>PyTorch 不知道你想要哪个方向</strong>，
 所以要你自己给一个权重向量（<code>out.backward(v)</code> 算的是 <code>v</code> 和雅可比的乘积）。</p>
 <p>⚠️ <strong>实践中撞到这条，99% 是你忘了求 loss 的均值或和</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>你写的</th>
@@ -633,7 +648,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>⭐ 标量，正常</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>别用 <code>backward(torch.ones_like(out))</code> 去「绕过」这个报错</strong> —— 那等价于 <code>out.sum().backward()</code>，
 也就是把 batch 内的损失求和而不是求平均。⭐ 后果是<strong>有效学习率跟着 batch size 变</strong>，
 换个 batch size 训练行为就变了，而且不报错。</p>
@@ -673,7 +688,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>实测输出：</p>
 <section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>输入不要梯度：存了 15 个张量、44.0 MB</p><p>输入要梯度 ：存了 16 个张量、48.0 MB</p><p>对比：模型参数本身 32.0 MB</p></div></section>
 <p>⭐ <strong>对着账算一遍</strong>（8 层 <code>Linear(1024, 1024)</code>，batch 512，全是 float32）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>存了什么</th>
@@ -702,7 +717,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>44 MB</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>为什么权重只存了 7 个而不是 8 个</strong>：第一层的权重不用存 —— 因为输入 <code>x</code> 不要梯度，
 反向不需要再往 <code>x</code> 回传，那一步的乘法就不必做，权重也就不必留。
 把 <code>x</code> 改成 <code>requires_grad=True</code>，立刻变成 <strong>16 个 / 48.0 MB</strong>，多出来的正好是 4 MB（一个权重）。</p>
@@ -786,7 +801,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="2-loss">假需求 ②：想对同一个 loss 反传两次</h3>
 <p>多半是你的代码结构错了。⭐ 正确做法是<strong>重新前向一次</strong>，得到一张新图。</p>
 <h3 id="_6">真需求：三种</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -807,7 +822,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>序列被切段，段与段之间有共享的隐状态</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong><code>retain_graph=True</code> 的代价就是第七节量出来的那个数</strong>（这个例子里 44 MB 不释放）。
 ⭐ <strong>只在最后一次反向时省掉它</strong>，像第三节那段代码那样：前面几次带 <code>retain_graph=True</code>，最后一次不带。</p>
 <hr />
@@ -836,7 +851,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>实测输出：</p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>一阶 3x^2 在 x=3 处 = 27.0</p><p>二阶 6x 在 x=3 处 = 18.0</p><p>x.grad 还是 None ← autograd.grad 不往 .grad 里写</p></div></section>
 <p>⭐ <strong>两个函数的分工</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -861,12 +876,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>⭐ <strong>没有副作用</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong><code>create_graph=True</code> 是「让这次反向本身也被记账」</strong> —— 只有这样，算出来的梯度 <code>g</code> 才带着 <code>grad_fn</code>，
 才能对它再求一次导。⚠️ 它隐含了 <code>retain_graph=True</code>，<strong>显存开销更大</strong>，别随手加。</p>
 <hr />
 <h2 id="_7">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>相关的地方</th>
@@ -907,7 +922,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>读完这一章再去做那个项目，你要造的正是 <code>grad_fn</code> 和 <code>AccumulateGrad</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_8">✅ 检查点</h2>
 <ol>

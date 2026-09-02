@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,7 +149,7 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
@@ -145,20 +160,20 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -166,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -300,7 +315,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_2">🧩 一、先把那十几倍跑出来</h2>
 <p>⚠️ <strong>先划一条界</strong>，因为这一章和 NumPy 板块隔得很近：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>问题</th>
@@ -317,7 +332,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>这一章</strong>（硬件层）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>这一章从头到尾<strong>只有一块裸内存和一个循环</strong>，不涉及任何数组对象的描述方式。下面这段就是全章的引子：</p>
 <div class="codehilite"><pre><span></span><code><span class="c1">// c03_order.cpp</span>
 <span class="c1">// g++ -O2 -std=c++17 c03_order.cpp -o c03_order</span>
@@ -360,7 +375,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>跑三次的实跑结果（<code>g++ 15.1.0</code>，<code>-O2 -std=c++17</code>）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>次</th>
@@ -389,7 +404,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>17.67 倍</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>两边做的加法一模一样</strong>：同样 1677 万次浮点加，同样的 128 MB 数据，两个和都是 16777216，<strong>连指令都几乎一样</strong>。唯一的差别是访问内存的顺序。</p>
 <p>⚠️ 这不是「优化技巧」，这是<strong>默认状态下你可能白白损失掉的十几倍</strong>。而且注意：写成 ② 那样并不奇怪 —— 「按列求和」是个再自然不过的需求，谁都可能顺手写出来。</p>
 <hr />
@@ -417,7 +432,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>⭐ <strong>64 字节。</strong> 于是第一节那两种走法的差别就清楚了：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -440,7 +455,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>87.5%</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_3">🚦 把这件事直接量出来</h3>
 <p>如果成本真的挂在「搬了多少条」而不是「取了多少个数」上，那就应该能观察到这样一个现象：<strong>取的元素少 16 倍，耗时却不会少 16 倍</strong>。</p>
 <div class="codehilite"><pre><span></span><code><span class="c1">// c03_line.cpp</span>
@@ -480,7 +495,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>实跑（三次结果几乎一致，这里取第一次）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>相邻两次隔多远</th>
@@ -525,7 +540,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>3.81 ms</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>看第一行和第五行</strong>：元素个数从 3355 万掉到 210 万，<strong>少了 16 倍</strong>，耗时却只从 19.21 ms 掉到 6.51 ms，只少了不到 3 倍。</p>
 <p>为什么？因为<strong>这两行搬的 cache line 条数完全一样</strong> —— 间隔在 64 字节以内时，无论你隔多少取一个，128 MB 里的每一条 line 都得被搬进来。省掉的只是「循环本身的指令」，省不掉「搬内存」。</p>
 <p>⚠️ 要等间隔<strong>超过</strong> 64 字节（表里最后两行），才开始有整条 line 被完全跳过，总耗时这才继续往下掉。</p>
@@ -570,7 +585,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>跑两次的实跑结果：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>数据总量</th>
@@ -615,7 +630,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>354.69 ns</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>同一行代码，数据从 8 KB 长到 32 MB，一步的代价涨了大约 100 倍</strong>（3 ns → 344 ns）。台阶的位置就是各级缓存装不下的地方。</p>
 <p>⚠️ <strong>三条诚实声明</strong>：
 - 这些数字<strong>不是纯粹的缓存延迟</strong>，里面还含地址翻译等其它开销；它们回答的是「随机跳一步实际要等多久」，不是硬件手册上的延迟指标。
@@ -671,7 +686,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>字段加起来只有 14 字节，<code>Bad</code> 却占 24 字节 —— 有 10 字节是空洞。</strong> 换个顺序变成 16 字节，<strong>一行逻辑都没改，省了 33%</strong>。</p>
 <p>⚠️ <strong>真正的代价在最后一行</strong>：一条 cache line 装 <code>Bad</code> 只能装 2 个，装 <code>Good</code> 能装 4 个。也就是说<strong>遍历一个 <code>Bad</code> 数组，搬内存的次数是 <code>Good</code> 的两倍</strong> —— 第二节那条判据在这里生效了。</p>
 <p>📋 <strong>两条能直接用的规矩</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>规矩</th>
@@ -688,7 +703,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>它能去掉空洞，但会让某些字段落在没对齐的地址上 —— 在有些平台上性能更差甚至直接出错</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>读源码时的用处</strong>：看到一个结构体的字段顺序「奇怪地按大小排列」，或者中间插着 <code>char _pad[N]</code> 这种看似没用的成员，<strong>那不是风格问题，是有人在控制布局</strong>。</p>
 <hr />
 <!--MIDSTOP-->
@@ -700,7 +715,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="aos-soa">🧩 五、AoS 还是 SoA：同一批数据的两种摆法</h2>
 <p>现在把「怎么摆」放大到一整个数组。假设有 800 万个粒子，每个粒子有 8 个属性。有两种摆法：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>摆法</th>
@@ -720,7 +735,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><code>x x x x …</code> 然后 <code>y y y y …</code> 然后 …</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>如果你的循环只用其中一个属性，这两种摆法的差别是巨大的。</strong></p>
 <div class="codehilite"><pre><span></span><code><span class="c1">// c03_aos.cpp</span>
 <span class="c1">// g++ -O2 -std=c++17 c03_aos.cpp -o c03_aos</span>
@@ -784,7 +799,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>跑三次的实跑结果：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>次</th>
@@ -813,10 +828,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>2.09 倍</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong><code>sizeof(Particle) = 32</code> 字节，一条 line 装 2 个粒子，而你只要 <code>x</code></strong> —— 每搬 64 字节只用得上 8 字节，<strong>87.5% 的带宽是白花的</strong>。SoA 那边则是搬来的 64 字节里 16 个 <code>float</code> 全都要用。</p>
 <p>📋 <strong>该选哪个</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>你的循环</th>
@@ -837,7 +852,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>按<strong>最热的那个循环</strong>选，或者拆成两份</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>这解释了一件你天天在用的事</strong>：为什么框架里的一批数据是「一个 <code>x</code> 张量 + 一个 <code>y</code> 张量」，而不是「一个装着样本对象的列表」。<strong>那就是 SoA。</strong> 深度学习的每个算子都是「对所有元素做同一件事」，正好落在 SoA 那一行。</p>
 <p>⚠️ <strong>GPU 上这件事的名字不一样但道理一样</strong>：<a href="../AI基础设施/02-GPU到底是什么.html">AI 基础设施 02</a> 讲的「非合并访存」说的是「warp 里 32 个线程访问连续地址就合并成 1 次内存事务，否则可能变成 32 次、有效带宽掉到 1/32」—— ⭐ <strong>那一章讲的是后果和怎么避开，这一章讲的是为什么内存非得按固定大小的块搬。</strong> 两边是同一个机制在两种硬件上的样子。</p>
 <hr />
@@ -898,7 +913,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>硬件线程数: 8</p><p>sizeof(Packed)=8 sizeof(Spread)=64</p><p>4 个线程，各自给【自己的】计数器加 20000000 次（互不相干的变量）</p><p>第1次: 挤在一起 1577.45 ms 隔开 211.50 ms 慢 7.46 倍</p><p>第2次: 挤在一起 1824.92 ms 隔开 175.98 ms 慢 10.37 倍</p><p>第3次: 挤在一起 1176.16 ms 隔开 201.48 ms 慢 5.84 倍</p></div></section>
 <p>💀💀 <strong>5.84 到 10.37 倍，而这四个线程之间没有任何逻辑上的共享。</strong> 唯一的区别是 <code>char pad[56]</code> 这一行 —— 把每个计数器撑到 64 字节，让它们各占一条 line。</p>
 <p>⭐ <strong>为什么它特别难查</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -923,7 +938,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>让各线程写的东西<strong>隔开 64 字节</strong>，或者干脆<strong>各自在局部变量里累加，最后合并一次</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>回到 02 章那句话</strong>：<code>shared_ptr</code> 每次拷贝和析构都要原子地改一次引用计数。如果多个线程频繁拷贝<strong>同一个</strong> <code>shared_ptr</code>，它们改的就是同一条 line 上的同一个计数器 —— 这已经不只是 false sharing，是真的在抢同一个数。⭐ 这就是「默认用 <code>unique_ptr</code>，说不清谁最后走才用 <code>shared_ptr</code>」那条建议在性能上的理由。</p>
 <hr />
 <!--MIDSTOP-->
@@ -980,7 +995,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>注意 <code>shuffled</code> 和 <code>objs</code> 装的是【同一批对象】</strong> —— 同样 200 万个 <code>float</code>，同样的和（<code>True</code>），一个字节的数据都没多也没少。<strong>唯一变的是访问它们的顺序</strong>，慢了 2.77 / 2.85 倍。</p>
 <p>⚠️ 而地址差那两行是证据：顺序造出来的对象相邻地址差 <strong>32 字节</strong>（挨着），打乱之后中位数是 <strong>2000 万字节</strong> 级别 —— 每一步都跳到一条全新的 line 上。</p>
 <p>📋 <strong>顺手能用的三条</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>现象</th>
@@ -1001,11 +1016,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>因为 <code>sum()</code> 每取一个还要<strong>造一个 Python float 对象</strong>，那笔开销盖过了布局的差别 —— ⭐ <strong>瓶颈换了地方，布局的收益就被摊薄了</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ 反过来说，<strong>在纯 Python 里追求 cache 友好基本不划算</strong> —— 解释器开销（<a href="01-Python调C++的那条边界.html">01 章</a>那三笔）通常比布局的差别大得多。这一节的意义是<strong>让你认得这个现象</strong>，真要吃到这份收益，得让数据以连续裸内存的形式交给下面那一层。</p>
 <hr />
 <h2 id="_5">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>相关的地方</th>
@@ -1042,7 +1057,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>结构体的布局（第四节）不只是性能问题：<strong>两边对同一个结构体的布局理解不一致，程序会直接读错数据</strong> —— 那是下一章的正题</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_6">✅ 检查点</h2>
 <ol>

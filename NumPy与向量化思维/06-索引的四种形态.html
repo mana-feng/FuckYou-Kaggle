@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,7 +149,7 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
@@ -145,20 +160,20 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -166,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -304,7 +319,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 理由<strong>全部</strong>来自「这次选出来的东西，还能不能写成一份说明书」。</p>
 <hr />
 <h2 id="_2">🧩 一、四种形态，一次看全</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>#</th>
@@ -344,7 +359,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>❌</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
@@ -383,7 +398,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>实跑输出：</p>
 <section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>a (3, 4) (32, 8)</p><p>s (2, 2) (32, 16)</p><p>[[ 4 6]</p><p>[ 8 10]]</p><p>共享内存: True</p><p>s 的第一个元素是 a 的第几个: 4</p></div></section>
 <p>一行一行对照：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>说明书那一栏</th>
@@ -404,7 +419,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>行步长没变还是 32；列步长 <code>8 × 2 = 16</code>（<strong>隔一个取</strong>）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>切片的每一维都是「等差数列」</strong> —— 起点、公差、个数。
 而 strides 能表达的恰好就是等差数列。<strong>两边严丝合缝，所以一个字节都不用搬。</strong></p>
 <p>⭐ <strong>推论：切片写得多花哨都不要紧，照样是视图</strong>（连负步长都行，它只是让 strides 变成负数）：</p>
@@ -500,7 +515,7 @@ strides 只有一个数字的位置，而这里需要<strong>任意一张顺序�
 </code></pre></div>
 
 <p>⭐ <strong>原因是 Python 把这两句编译成了完全不同的调用</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>你写的</th>
@@ -520,7 +535,7 @@ strides 只有一个数字的位置，而这里需要<strong>任意一张顺序�
 <td><strong>按下标直接往原数组里写</strong>，压根没有中间数组</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>💀 <strong>这条区别一旦踩错就是「代码不报错、也不生效」</strong>：</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
@@ -704,7 +719,7 @@ strides 只有一个数字的位置，而这里需要<strong>任意一张顺序�
 
 <p>实跑输出：</p>
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">✅ 正确 a[(a &gt; 3) &amp; (a &lt; 8)] = [4 5 6 7]</span></div><div class="vb-flow-row"><span class="vb-flow-step">❌ 用 and -&gt; The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 少括号 a[(a &gt; 3) &amp; a &lt; 8] = [ 0 1 2 3 4 5 6 7 8 9 10 11]</span></div><div class="vb-flow-row"><span class="vb-flow-step">它算出来的掩码:</span></div><div class="vb-flow-row"><span class="vb-flow-step">[[ True True True True]</span></div><div class="vb-flow-row"><span class="vb-flow-step">[ True True True True]</span></div><div class="vb-flow-row"><span class="vb-flow-step">[ True True True True]]</span></div><div class="vb-flow-row"><span class="vb-flow-step">❌ 掩码长度不对 -&gt; boolean index did not match indexed array along axis 0; size of axis is 3 but size of corresponding boolean axis is 2</span></div></div></section>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>现场</th>
@@ -725,7 +740,7 @@ strides 只有一个数字的位置，而这里需要<strong>任意一张顺序�
 <td>报错，而且报得很清楚（<code>size of axis is 3 but ... is 2</code>）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>💀 <strong>中间那一条最危险。</strong> <code>(a &gt; 3) &amp; a &lt; 8</code> 里 <code>&amp;</code> 的优先级高于 <code>&lt;</code>，
 于是它算的是 <code>((a &gt; 3) &amp; a) &lt; 8</code> —— 先把布尔和整数按位与，再比 8。
 上面实跑的结果是全 True，<code>a[bad]</code> 把 12 个元素一个不落全返回了。
@@ -744,7 +759,7 @@ strides 只有一个数字的位置，而这里需要<strong>任意一张顺序�
 
 <p>实跑输出：</p>
 <section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>花式索引挨着切片，位置不变: (3, 2, 5)</li><li>花式索引被切片隔开: (2, 4)</li><li>两个花式索引挨在一起: (2, 5)</li></ol></section>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>写法</th>
@@ -773,7 +788,7 @@ strides 只有一个数字的位置，而这里需要<strong>任意一张顺序�
 <td>⚠️ <strong>被提到最前面</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>第三行发生了两件事：0 轴和 2 轴的两个索引数组<strong>配对</strong>成 2 个坐标（第六节那条规则），
 然后<strong>因为它们不连续，NumPy 不知道该把这根新轴放回哪一位，索性放最前面</strong>，剩下的 <code>:</code> 那根轴（长度 4）跟在后面。</p>
 <p>⭐ <strong>不用背这条规则，用它的推论就够了：<code>a[[0,1], :, [0,2]]</code> 这种写法本身就是个坏味道。</strong>
@@ -805,7 +820,7 @@ strides 只有一个数字的位置，而这里需要<strong>任意一张顺序�
 
 <p>本机（numpy 2.4.6）实测，三次重跑：</p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>选出的东西一模一样: True</p><p>结果占 15 MB</p><p>切片（视图） 0.14 us</p><p>切片 + .copy() 5595.84 us</p><p>花式索引 5850.59 us</p></div></section>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>写法</th>
@@ -830,7 +845,7 @@ strides 只有一个数字的位置，而这里需要<strong>任意一张顺序�
 <td>同样搬 15 MB</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>后两行几乎一样，这才是重点</strong>：花式索引的开销<strong>就是拷贝的开销，一分不多</strong>。
 它不慢在「花式」，慢在「它必须拷」。而切片快了大约五个数量级，因为它一个字节都没碰。</p>
 <p>⚠️ <strong>但别因此就认定「布尔掩码总是最慢的那个」。</strong> 命中很稀疏时，反过来了：</p>
@@ -869,7 +884,7 @@ strides 只有一个数字的位置，而这里需要<strong>任意一张顺序�
 </blockquote>
 <hr />
 <h2 id="_7">📋 十、一页速记</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>想干的事</th>
@@ -939,7 +954,7 @@ strides 只有一个数字的位置，而这里需要<strong>任意一张顺序�
 <td>—</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>两条判据，记住这两条就够了</strong>：</p>
 <ol>
 <li><strong>视图还是拷贝</strong> → 问「这次选出来的东西，能不能用一组 shape + strides + 起点描述」。
@@ -948,7 +963,7 @@ strides 只有一个数字的位置，而这里需要<strong>任意一张顺序�
 </ol>
 <hr />
 <h2 id="_8">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>相关的地方</th>
@@ -981,7 +996,7 @@ strides 只有一个数字的位置，而这里需要<strong>任意一张顺序�
 <td>⭐ 第 1 题（Softmax + 交叉熵）那行 <code>grad[np.arange(n), y] -= 1.0</code> 是本章第六节的正主。<strong>那是一道题的写法，这一章是它成立的理由</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_9">✅ 检查点</h2>
 <ol>

@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,7 +149,7 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
@@ -145,20 +160,20 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -166,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -358,7 +373,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>💀 <strong>只乘到第 99 个，答案就变成 0 了</strong>——而你要乘 2000 个。之后无论再乘什么，结果都是 0：<strong>你不是「精度差了点」，你是把整个量丢了</strong>。</p>
 <p>⭐ <strong>log 域里，同一个量是 −15314.75，好端端地待在那儿。</strong></p>
 <p>这就是「通解」的意思：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>原始域</th>
@@ -383,7 +398,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>⭐ <strong>直接比 log 值</strong>（log 单调递增，不用换回来）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>最后一行 <code>exp(那个和)</code> 还是 0.0</strong>，这不是 bug：真实答案 e^−15314 本来就远小于 float64 能表示的最小正数。⭐ <strong>结论是：能不换回原始域就别换</strong>。argmax、排序、比较、加权（配合 logsumexp）全都可以在 log 域里做完。</p>
 <hr />
 <h2 id="800">🧩 三、800 这个数是从哪来的：真实的溢出阈值</h2>
@@ -411,7 +426,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>float64 max=1.7976931348623157e+308 log(max)=709.78 eps=2.220e-16 tiny=2.225e-308</p><p>float32 max=3.4028234663852886e+38 log(max)=88.72 eps=1.192e-07 tiny=1.175e-38</p><p>float16 max=65504.0 log(max)=11.09 eps=9.766e-04 tiny=6.104e-05</p><p>exp(float32(88)) = 1.6516363e+38</p><p>exp(float32(89)) = inf</p><p>exp(float64(709)) = 8.218407461554972e+307</p><p>exp(float64(710)) = inf</p><p>exp(float16(11)) = 5.987e+04</p><p>exp(float16(12)) = inf</p><p>下溢那一头 exp(-745.0) = 5e-324</p><p>exp(-746.0) = 0.0</p></div></section>
 <p>⭐ <strong><code>exp</code> 的临界指数就是 <code>log(该 dtype 的最大值)</code></strong>，一个 <code>np.finfo</code> 就查出来：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>dtype</th>
@@ -440,7 +455,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>11</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️⚠️ <strong>这张表是本章最实用的一段，因为三个数差得极远</strong>：</p>
 <div class="codehilite"><pre><span></span><code>np.exp(90) (float64)   = 1.2204032943178408e+39
 np.exp(np.float32(90)) = inf
@@ -481,7 +496,7 @@ np.exp(np.float32(90)) = inf
 <p><strong>成因只有一句</strong>：float64 的 <code>eps</code> 是 <strong>2.22e-16</strong>，意思是「1 附近能分辨的最小间隔」。
 <code>1 + 1e-16</code> 就等于 1（实测 <code>True</code>），所以 <code>log(1 + 1e-16)</code> 只能是 <code>log(1) = 0</code> ——那个 x 在做加法的那一瞬间就被扔掉了，<code>log</code> 是无辜的。</p>
 <p>⭐ <strong>真正难查的不是 <code>x=1e-16</code> 那一行，是 <code>x=1e-10</code> 那一行</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>x</th>
@@ -506,7 +521,7 @@ np.exp(np.float32(90)) = inf
 <td>无所谓</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>💀 <strong>一个「看起来对、其实只剩 8 位有效数字」的中间量，会一路往下游传</strong>，最后表现成「模型指标差了 0.3%，查不出原因」。</p>
 <p>⭐ <strong>判据很简单</strong>：<strong>只要你在算 <code>log(1 + 很小的东西)</code> 或者 <code>exp(很小的东西) - 1</code>，就换成 <code>log1p</code> / <code>expm1</code></strong>。不用先判断它多小，<code>log1p(5.0)</code> 和 <code>log(6.0)</code> 也是一样的答案，换过去没有代价。</p>
 <p>⚠️ <strong><code>log1p</code> 在站内出现过 11 次，全部是特征工程的长尾变换</strong>（把 <code>amount</code> 压平）。那个用途是对的，⭐ <strong>但它顺带还有本节这个数值用途，站里从没提过</strong>。两个用途没有冲突——<code>np.log1p(df["amount"])</code> 同时享受了两者。</p>
@@ -543,7 +558,7 @@ np.exp(np.float32(90)) = inf
 
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>naive log(1+exp(x)) = [ 0. 0. 0.69314718 50. inf] | overflow encountered in exp</p><p>np.logaddexp(0, x) = [0.00000000e+00 1.92874985e-22 6.93147181e-01 5.00000000e+01</p><p>8.00000000e+02]</p><p>naive BCE = [ inf 30. 0.69314718 30.00102056 inf] | 警告 [&#x27;overflow encountered in exp&#x27;, &#x27;divide by zero encountered in log&#x27;, &#x27;divide by zero encountered in log&#x27;]</p><p>stable BCE = [8.00000000e+02 3.00000000e+01 6.93147181e-01 3.00000000e+01</p><p>8.00000000e+02]</p></div></section>
 <p><strong>三处出事，严重程度递增</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>位置</th>
@@ -572,7 +587,7 @@ np.exp(np.float32(90)) = inf
 <td>💀 <strong>既没报错也没出 inf，就是错的</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>💀 <strong>最后一行才是这一节的价值</strong>。<code>p = 1/(1+exp(-30))</code> 约等于 <code>1 − 9.36e-14</code>，接着算 <code>1 - p</code> 时前 13 位全被抵消掉——<strong>这是上一节 <code>log1p</code> 那个坑的同一种病</strong>，只是换了个身份出现。它不报警告、不出 <code>inf</code>、数量级也对，只是从第 4 位小数开始就是错的。</p>
 <p>⭐ <strong><code>np.logaddexp(0, x)</code> 就是 softplus 的正确写法</strong>，也是 <code>log(1+exp(x))</code> 这个式子在 NumPy 里的标准答案。记住这一个搭配，比记住整个推导有用。</p>
 <hr />
@@ -610,7 +625,7 @@ np.exp(np.float32(90)) = inf
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>默认行为 exp(800) = [inf]</p><p>over FloatingPointError: overflow encountered in exp</p><p>invalid FloatingPointError: invalid value encountered in subtract</p><p>divide FloatingPointError: divide by zero encountered in divide</p><p>under FloatingPointError: underflow encountered in exp</p></div></section>
 <section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">nan 的检测 np.isnan([nan, 1.0]) = [ True False]</span></div><div class="vb-flow-row"><span class="vb-flow-step">inf 的检测 np.isfinite([inf, 1.0]) = [False True]</span></div><div class="vb-flow-row"><span class="vb-flow-step">nan == nan -&gt; False 所以只能用 isnan</span></div></div></section>
 <p><strong>四种浮点错误，<code>errstate</code> 全都能变成异常</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>种类</th>
@@ -640,7 +655,7 @@ np.exp(np.float32(90)) = inf
 <td>⚠️ <strong>通常不该</strong>。归一化之后大量小数下溢是正常的，开了会满地噪声</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>推荐用法</strong>：不要全局 <code>np.seterr</code>，用 <code>with np.errstate(...)</code> <strong>只包住你怀疑的那几行</strong>：</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
@@ -662,7 +677,7 @@ np.exp(np.float32(90)) = inf
 <p>💀💀 <strong>一条必须记住的边界</strong>：<strong><code>np.errstate</code> 对整数回绕完全无效</strong>。<a href="08-整数dtype的真相.html">08 章</a>实测过：<code>with np.errstate(all="raise")</code> 包着 <code>int32</code> 最大值加 1，照样静默给出 −2147483648。原因是 <code>errstate</code> 控制的是 IEEE 754 的浮点异常旗标，整数加法根本不走那条路。别把这一节的安全感带到整数那边去。</p>
 <hr />
 <h2 id="_2">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>相关的地方</th>
@@ -695,7 +710,7 @@ np.exp(np.float32(90)) = inf
 <td>那里用 <code>np.log1p</code> 做长尾变换。⭐ 本章第四节说的是同一个函数的<strong>另一个用途</strong>（小量的有效数字），两个用途不冲突，一行代码同时享受</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_3">✅ 检查点</h2>
 <ol>

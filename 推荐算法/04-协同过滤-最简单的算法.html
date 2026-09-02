@@ -181,6 +181,10 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 
 /* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
 .katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -225,7 +229,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <hr />
 <h2 id="usercf5">✏️ 手算一遍 UserCF（5 分钟，值得做）</h2>
 <p>数据：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -258,7 +262,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <td>1</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>（1 = 喜欢，0 = 没交互）</p>
 <p><strong>目标</strong>：该给小刚推 C 还是 D？</p>
 <p><strong>第 1 步：算小刚和每个人的相似度</strong>（用 Jaccard：交集 ÷ 并集）</p>
@@ -296,7 +300,7 @@ D 的得分 = 0.67 × 0(小明没看D) + 0 × 1(小红喜欢D) = 0
 <p><strong>两个公式长得一样</strong>，只是「找相似」的对象换了：一个找人，一个找物。</p>
 <hr />
 <h2 id="_4">🔬 相似度怎么算（三选一，够用了）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -321,7 +325,7 @@ D 的得分 = 0.67 × 0(小明没看D) + 0 × 1(小红喜欢D) = 0
 <td>显式评分，且用户打分习惯差异大时（有人只打 4-5 分）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">cosine</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
@@ -339,7 +343,7 @@ D 的得分 = 0.67 × 0(小明没看D) + 0 × 1(小红喜欢D) = 0
 
 <hr />
 <h2 id="usercf-vs-itemcf">⚔️ UserCF vs ItemCF：怎么选（⭐ 面试常问）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -379,7 +383,7 @@ D 的得分 = 0.67 × 0(小明没看D) + 0 × 1(小红喜欢D) = 0
 <td>好（物品相似度隔天更新即可）✅</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="itemcf_1">🏆 工业界的答案：<strong>ItemCF 用得多得多</strong></h3>
 <p>三个原因：
 1. <strong>物品相似度可以离线算好，存成表</strong>，线上只需查表 + 加权 → 快
@@ -471,7 +475,7 @@ D 的得分 = 0.67 × 0(小明没看D) + 0 × 1(小红喜欢D) = 0
 <p>1 亿物品的两两相似度是 10^16 个数，存不下。只留每个物品最相似的 20–100 个，既省空间又去噪。</p>
 <hr />
 <h2 id="_6">🕳️ 协同过滤的致命缺陷（这是后面所有算法出现的原因）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>缺陷</th>
@@ -506,14 +510,14 @@ D 的得分 = 0.67 × 0(小明没看D) + 0 × 1(小红喜欢D) = 0
 <td>向量检索 ANN（第 10 节）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>🔑 <strong>关键洞察</strong>：ItemCF 的相似度是「数出来的」。
 下一节的矩阵分解，相似度是「学出来的」——这是整个推荐算法史上最重要的一次跃迁。</p>
 </blockquote>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习的数学原理/04-非参数方法.html">数学原理 04</a></td><td>CF 是「惰性学习」的典型：训练只是存数据，预测时才算</td></tr><tr><td><a href="../机器学习的数学原理/05-维度灾难.html">数学原理 05</a></td><td>为什么高维上「最近邻不再更近」—— CF 稀疏时失效的几何原因</td></tr><tr><td><a href="../机器学习的数学原理/06-核技巧.html">数学原理 06</a></td><td>相似度函数的一般形式；RBF 核就是高斯加权的 kNN</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习的数学原理/04-非参数方法.html">数学原理 04</a></td><td>CF 是「惰性学习」的典型：训练只是存数据，预测时才算</td></tr><tr><td><a href="../机器学习的数学原理/05-维度灾难.html">数学原理 05</a></td><td>为什么高维上「最近邻不再更近」—— CF 稀疏时失效的几何原因</td></tr><tr><td><a href="../机器学习的数学原理/06-核技巧.html">数学原理 06</a></td><td>相似度函数的一般形式；RBF 核就是高斯加权的 kNN</td></tr></tbody></table></div>
 <hr />
 <h2 id="_7">✅ 检查点</h2>
 <ol>

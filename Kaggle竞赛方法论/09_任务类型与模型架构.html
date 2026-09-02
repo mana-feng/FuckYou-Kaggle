@@ -176,6 +176,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 
 /* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
 .katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -212,7 +216,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <p>CV 竞赛的第一步不是选模型，是<strong>看清这道题属于哪种任务</strong>——分类、检测、分割、关键点，它们的输出形式、评价指标、后处理链路完全不同。<strong>认错任务类型，后面所有工作都会白费。</strong>这一章就是那张任务→架构的对照表。</p>
 <hr />
 <h2 id="cv_1">一、CV竞赛任务类型总览</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>任务类型</th>
@@ -259,9 +263,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>mAP@K</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_1">任务识别与模型选择决策</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>观察到的特征</th>
@@ -296,9 +300,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>孪生网络/Triple Network</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="cv_2">非典型CV数据的处理</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -323,11 +327,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>神经网络表情识别(face_recognition→CNN)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="cnn">二、CNN基础架构演进</h2>
 <h3 id="_2">卷积核心概念</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>概念</th>
@@ -362,9 +366,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>Max Pooling/Avg Pooling</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_3">经典模型演进路线</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>模型</th>
@@ -417,9 +421,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>检测/分割backbone</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_4">模型选择实战建议</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -469,10 +473,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>CNN的归纳偏置更适合小数据</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="_5">新一代模型架构</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>模型</th>
@@ -513,9 +517,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>自监督预训练+微调范式</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_6">模型选型升级建议</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -556,11 +560,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>更快收敛</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_7">三、目标检测模型详解</h2>
 <h3 id="_8">两阶段检测器</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>模型</th>
@@ -589,9 +593,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>显存消耗大</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_9">单阶段检测器</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>模型</th>
@@ -620,9 +624,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>中等速度</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_10">检测模型关键组件</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>组件</th>
@@ -652,9 +656,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>预设Anchor/Anchor-Free</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="fpn">FPN(特征金字塔网络)</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -683,11 +687,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>BiFPN(加权融合)、PANet(双向传播)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_11">四、语义分割模型详解</h2>
 <h3 id="u-net">U-Net架构</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -716,9 +720,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>肾小球分割中C=1，即前景/背景二分类</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="u-net_1">U-Net改进方向</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>改进点</th>
@@ -753,9 +757,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>缓解梯度消失</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_12">分割模型选型</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -785,11 +789,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>速度优先</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_13">五、图像分类模型详解</h2>
 <h3 id="efficientnet">EfficientNet核心思想</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -814,9 +818,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>B3~B5性价比最高，B7显存消耗大</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="vision-transformer-vit">Vision Transformer (ViT)</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -849,10 +853,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>层级式窗口注意力，更适合检测/分割</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="cv_3">六、CV竞赛通用框架选择</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>框架</th>
@@ -893,10 +897,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>仅做增强</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="baseline">七、赛题类型与Baseline模型速查</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>赛题</th>
@@ -937,10 +941,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>U-Net + EfficientNet + Attention</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/12-CNN.html">ML基础 12 CNN</a></td><td>卷积、池化、感受野、残差——CV 主干网络演进的原理线</td></tr><tr><td><a href="../机器学习与深度学习基础/14-通往Transformer.html">ML基础 14 通往 Transformer</a></td><td>⭐ Transformer 凭什么能替掉 CNN：<strong>归纳偏置强弱 vs 数据量</strong>的权衡，<strong>拐点在 14M 数据附近</strong>——⚠️ 决定了你这次该不该拿 Swin 当 Backbone（⚠️ 那一章不拆 ViT/Swin/DETR 的内部机制，只讲这个权衡）</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/12-CNN.html">ML基础 12 CNN</a></td><td>卷积、池化、感受野、残差——CV 主干网络演进的原理线</td></tr><tr><td><a href="../机器学习与深度学习基础/14-通往Transformer.html">ML基础 14 通往 Transformer</a></td><td>⭐ Transformer 凭什么能替掉 CNN：<strong>归纳偏置强弱 vs 数据量</strong>的权衡，<strong>拐点在 14M 数据附近</strong>——⚠️ 决定了你这次该不该拿 Swin 当 Backbone（⚠️ 那一章不拆 ViT/Swin/DETR 的内部机制，只讲这个权衡）</td></tr></tbody></table></div>
 <hr />
 <h2 id="ckpt">✅ 检查点</h2>
 <ol>

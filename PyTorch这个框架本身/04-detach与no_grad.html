@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,7 +149,7 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
@@ -145,20 +160,20 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -166,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -329,7 +344,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>y = x * 3 requires_grad=True grad_fn=MulBackward0 is_leaf=False</p><p>y.detach() requires_grad=False grad_fn=None is_leaf=True</p><p>no_grad 里 x*3 requires_grad=False grad_fn=None is_leaf=True</p></div></section>
 <p>⭐ <strong>后两行的三个字段一模一样 —— 这就是「它们看起来是同一件事」的来源。</strong>
 但它们是<strong>两条完全不同的路走到同一个结果</strong>的：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -359,7 +374,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>你<strong>接下来这一段</strong>根本不打算求导</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong><code>is_leaf=True</code> 这一列容易误读</strong>：它不代表「这是参数」。
 <a href="02-autograd怎么建图.html">02 章</a>第五节说过，叶子的定义是「<strong>不是由要求导的运算算出来的</strong>」——
 <code>detach</code> 和 <code>no_grad</code> 的产物都符合这个定义，所以它们都是叶子，但它们的 <code>requires_grad</code> 是 <code>False</code>，也就拿不到 <code>.grad</code>。</p>
@@ -390,7 +405,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 「想让一个算出来的变量进入一张不求导的子图，就用 <code>var.detach()</code>」——
 <strong>PyTorch 官方在这里明确告诉你：<code>requires_grad</code> 是给叶子用的，中间结果请用 <code>detach</code>。</strong></p>
 <p>⭐ <strong>三条规则</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>规则</th>
@@ -411,7 +426,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>设一次就一直是那样，⚠️ <strong>不像 <code>no_grad</code> 出了块就恢复</strong>（第三节实测）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong><code>requires_grad=False</code> 的叶子会怎样</strong>：它照样参与前向计算、照样出现在表达式里，
 只是<strong>图里不给它挂 <code>AccumulateGrad</code> 节点</strong>（<a href="02-autograd怎么建图.html">02 章</a>第一节），
 反向走到它就停 —— 所以它的 <code>.grad</code> 永远是 <code>None</code>。</p>
@@ -518,7 +533,7 @@ loss 能算出来、<code>backward()</code> 也不报错，但那一段的参数
 <section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">detach 之后 backward -&gt; element 0 of tensors does not require grad and does not have a grad_fn</span></div></div></section>
 <p>⭐ <strong>这条报错要认得</strong> —— 它的意思是「你让我从一个没有图的东西开始反向」。
 它有两个常见来源，⚠️ <strong>报错原文完全一样，但病因不同</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>来源</th>
@@ -538,7 +553,7 @@ loss 能算出来、<code>backward()</code> 也不报错，但那一段的参数
 <td>把 <code>backward()</code> 挪出块外，或缩小块的范围</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ 还有第三种更隐蔽的：<strong>输入和参数全都 <code>requires_grad=False</code></strong> —— 比如你把整个模型都冻住了，那 loss 本来就没有图。</p>
 <hr />
 <h2 id="_6">🧩 五、⭐ 想冻住一层，到底该用哪个（最容易写反）</h2>
@@ -603,7 +618,7 @@ loss 能算出来、<code>backward()</code> 也不报错，但那一段的参数
 <p>实测输出：</p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>A mid.requires_grad_(False) 上游=有梯度 中间=None 下游=有梯度</p><p>B mid(h.detach()) 上游=None 中间=有梯度 下游=有梯度</p><p>C with no_grad(): mid(h) 上游=None 中间=None 下游=有梯度</p></div></section>
 <p>⭐ <strong>一张表读完这三行</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>写法</th>
@@ -636,7 +651,7 @@ loss 能算出来、<code>backward()</code> 也不报错，但那一段的参数
 <td>⚠️ <strong>连坐</strong>：它把整条回上游的路一起掐了</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>原因一句话</strong>：</p>
 <ul>
 <li><strong>A 只关掉「在这一层的参数上累积梯度」这一件事</strong>，梯度<strong>照样穿过这一层</strong>流回上游 —— 这正是你要的。</li>
@@ -644,7 +659,7 @@ loss 能算出来、<code>backward()</code> 也不报错，但那一段的参数
 <li><strong>C 那一段代码根本没建图</strong>，反向走到 <code>m</code> 就没路了 —— ⚠️ 上游的参数<strong>一起变成 <code>None</code></strong>。</li>
 </ul>
 <h3 id="_8">📋 那么实践里该怎么写</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -669,7 +684,7 @@ loss 能算出来、<code>backward()</code> 也不报错，但那一段的参数
 <td>⭐ 这才是 <code>detach</code> 的正确用途 —— 第六节的目标网络和累加 loss 都是这一类</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>A 还有一件必须配套做的事</strong>：把参数交给优化器时别把冻住的那些也交进去。
 <a href="../机器学习与深度学习基础/17-实战项目.html">ML 基础 17 章</a>「方案 B：冻结主干」用的正是写法 A，
 它的优化器只收了 <code>m.fc.parameters()</code> —— <strong>这不是随手写的，是配套的一半。</strong></p>
@@ -730,7 +745,7 @@ loss 能算出来、<code>backward()</code> 也不报错，但那一段的参数
 每一张都拖着 <a href="02-autograd怎么建图.html">02 章</a>量的那 44.0 MB 量级的存量。</p>
 <p>⭐ <strong>这就是 <code>running_loss += loss.item()</code> 里那个 <code>.item()</code> 的全部意义</strong> ——
 它不是「为了打印好看」，是<strong>唯一切断这条链的地方</strong>。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>写法</th>
@@ -759,7 +774,7 @@ loss 能算出来、<code>backward()</code> 也不报错，但那一段的参数
 <td>✅ <strong>最常见的写法</strong>。⚠️ 它会强制一次 GPU→CPU 同步，循环里频繁调有开销</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong><code>.item()</code> 只能用在标量上</strong>（一个元素）。要留整个张量做统计用 <code>.detach()</code>。</p>
 <h3 id="2-no_grad">② 目标不该被训：<code>no_grad</code> 包住目标那一段</h3>
 <p><a href="../强化学习基础/08-DQN.html">强化学习基础 08 章</a>的 DQN 里，TD 目标是这么算的：</p>
@@ -810,7 +825,7 @@ loss 能算出来、<code>backward()</code> 也不报错，但那一段的参数
 <p>⭐ <strong>区别就在这条报错里</strong>：<code>no_grad</code> 出来的张量还能被后面的图当常数用（实测 <code>w2.grad = [6.0]</code>），
 <code>inference_mode</code> 出来的张量<strong>带一个 <code>is_inference</code> 标记，一旦进入要求导的计算就直接拒绝</strong>。
 它换来的是连版本计数器都不维护（<a href="03-三种就地操作报错.html">03 章</a>第二节那个计数器），所以更快一点。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -840,7 +855,7 @@ loss 能算出来、<code>backward()</code> 也不报错，但那一段的参数
 <td>纯推理服务：进来一个请求、出去一个结果，产物不会再回到训练里</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>别为了那点速度在训练脚本里用 <code>inference_mode</code></strong> —— 一旦你后来想拿验证时算的某个东西参与训练
 （比如做个自蒸馏、算个正则项），就会撞上这条报错，而且它离现场很远。
 ⭐ <strong>报错原文自己给了两条修法</strong>：<code>clone()</code> 一份，或者换回 <code>no_grad()</code>。</p>
@@ -849,7 +864,7 @@ loss 能算出来、<code>backward()</code> 也不报错，但那一段的参数
 <p>⭐ <strong>它们全都只管 autograd。凡是不走 autograd 的状态更新，一个都拦不住。</strong></p>
 <p>最典型的就是 <strong>BatchNorm 的 <code>running_mean</code> / <code>running_var</code></strong>：它们是在<strong>前向</strong>里用滑动平均直接改写的，
 既不是梯度、也不经过反向 —— 所以：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>你以为能拦住的</th>
@@ -874,7 +889,7 @@ loss 能算出来、<code>backward()</code> 也不报错，但那一段的参数
 <td>✅ <strong>只有它能</strong> —— 它切的是那个 <code>training</code> 布尔</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>💀 <strong>这就是 <a href="../机器学习与深度学习基础/17-实战项目.html">ML 基础 17 章</a>那条坑「冻结主干时忘了 <code>bn.eval()</code> → BN 的 running stats 被新数据带跑」的完整机制</strong>：
 你按第五节写法 A 把主干 <code>requires_grad_(False)</code> 了，参数确实一个都没动，但 BN 的统计量在每次前向里被悄悄改掉了，
 ⚠️ <strong>零报错、零梯度，模型的行为却在漂。</strong></p>
@@ -889,7 +904,7 @@ loss 能算出来、<code>backward()</code> 也不报错，但那一段的参数
 </blockquote>
 <hr />
 <h2 id="_11">📋 九、反查表</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>你想干的事</th>
@@ -934,8 +949,8 @@ loss 能算出来、<code>backward()</code> 也不报错，但那一段的参数
 <td>以为 <code>requires_grad_(False)</code> 够了</td>
 </tr>
 </tbody>
-</table>
-<table>
+</table></div>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>报错原文</th>
@@ -956,10 +971,10 @@ loss 能算出来、<code>backward()</code> 也不报错，但那一段的参数
 <td><code>inference_mode</code> 的产物被拿去参与求导 —— ⭐ <code>clone()</code> 一份，或换回 <code>no_grad()</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_12">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>相关的地方</th>
@@ -1008,7 +1023,7 @@ loss 能算出来、<code>backward()</code> 也不报错，但那一段的参数
 <td>⭐ 第六节那个目标网络的实例出自那里；它的坑表第一条「目标里忘了 <code>no_grad</code>」是本章第六节的反面教材</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_13">✅ 检查点</h2>
 <ol>

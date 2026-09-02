@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,7 +149,7 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
@@ -145,20 +160,20 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -166,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -335,7 +350,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <p>实测输出：</p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>a + 1 和 a 同一块内存吗: False</p><p>a.add_(1) 之后 a 还是原来那块吗: True a = [2.0, 3.0]</p><p>y += 1 之后 x = [2.0, 3.0] y is x: True</p><p>q = q + 1 之后 p = [1.0, 2.0] q is p: False</p><p>s[0] = 99 之后 s = [99.0, 2.0, 3.0]</p></div></section>
 <p>⭐ <strong>三种写法都是就地，别只盯着下划线</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>写法</th>
@@ -370,7 +385,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <td>函数名带下划线、或者带 <code>inplace=True</code> 参数</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong><code>y += 1</code> 和 <code>y = y + 1</code> 在纯 Python 的数字上没区别，在张量上是两件事。</strong>
 上面 <code>y += 1</code> 把 <code>x</code> 也改掉了（它们本来就是同一个对象），<code>q = q + 1</code> 没有。
 💀 <strong>这是「我明明没动那个变量，它怎么变了」的头号来源。</strong></p>
@@ -438,7 +453,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <p>实测输出（⭐ <strong>报错是真实原文</strong>）：</p>
 <section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">形态① -&gt; a leaf Variable that requires grad is being used in an in-place operation.</span></div><div class="vb-flow-row"><span class="vb-flow-step">不要梯度的张量: [2.0, 3.0]</span></div><div class="vb-flow-row"><span class="vb-flow-step">no_grad 里改叶子: [0.5, 1.5] is_leaf = True requires_grad = True</span></div></div></section>
 <p>⭐ <strong>关键词：<code>a leaf Variable that requires grad</code></strong>。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>特征</th>
@@ -459,7 +474,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <td>⭐ 包在 <code>torch.no_grad()</code> 里就允许 —— 实测 <code>z</code> 从 <code>[1,2]</code> 变成 <code>[0.5,1.5]</code>，<strong>而且仍然是叶子、仍然 <code>requires_grad=True</code></strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ 那个例外正是优化器的工作方式：<code>optimizer.step()</code> 内部就是在 <code>no_grad</code> 下对参数做就地减法。
 第九节会把这两行手写出来。</p>
 <hr />
@@ -491,7 +506,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 因为 <code>x[0] = v</code> 在底层是两步：先取出 <code>x[0]</code> 这个视图，再往视图里写。
 ⭐ 这也是<a href="01-张量到底是什么.html">第 01 章</a>那句「切片改的只是说明书，底下还是同一块内存」的直接后果 ——
 <strong>你以为你在改 <code>x</code> 的一个元素，autograd 看到的是「有人在改一个视图」。</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>你想做的事</th>
@@ -516,7 +531,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <td>⭐ 各段分别算好，最后 <code>torch.cat</code> / <code>torch.stack</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>最后一行那个模式值得单独记</strong>：很多人写「先开一个 <code>zeros(n, requires_grad=True)</code>，然后一位一位填」，
 这在 NumPy 里是标准写法，在 PyTorch 里<strong>每一次赋值都撞形态②</strong>。
 正确的做法是先把各段算出来，最后拼。</p>
@@ -536,7 +551,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <p>实测输出（⭐ <strong>一字未改</strong>）：</p>
 <section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">形态③ -&gt; one of the variables needed for gradient computation has been modified by an inplace operation: [torch.FloatTensor [2]], which is output 0 of Sigmoid, is at version 1; expected version 0 instead. Hint: enable anomaly detection to find the operation that failed to compute its gradient, with torch.autograd.set_detect_anomaly(True, check_nan=False).</span></div></div></section>
 <p>⭐ <strong>这条报错信息量最大，逐段拆</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>原文片段</th>
@@ -565,7 +580,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <td>第十一节讲怎么用</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️⚠️ <strong>报错的位置和出错的位置差了一整段</strong>：错是 <code>y += 1</code> 犯的，报是 <code>backward()</code> 报的。
 💀 <strong>在真实训练循环里，这意味着报错栈顶是 <code>loss.backward()</code> 那一行，而真凶在几十行之前的 forward 里。</strong>
 第十一节的 <code>set_detect_anomaly</code> 就是干这个的。</p>
@@ -597,7 +612,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <p>实测输出：</p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>x * 2 没报错，x.grad = [4.0, 4.0]</p><p>x ** 2 没报错，x.grad = [4.0, 8.0]</p><p>torch.exp 报错：one of the variables needed for gradient computation has been modified by an inplace ope</p><p>torch.sigmoid 报错：one of the variables needed for gradient computation has been modified by an inplace ope</p><p>torch.tanh 报错：one of the variables needed for gradient computation has been modified by an inplace ope</p><p>torch.relu 报错：one of the variables needed for gradient computation has been modified by an inplace ope</p></div></section>
 <p>⭐ <strong>判据是一句话：这个算子的反向，要不要用它自己的【输出】。</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>算子</th>
@@ -644,7 +659,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <td>💀 <strong>炸</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ 指数族全都存输出，因为它们的导数能用输出本身表达（<code>e^x</code> 的导数就是 <code>e^x</code>），
 这样能少存一份 —— 是个非常划算的优化，代价就是输出不能被动。</p>
 <p>⚠️ <strong>别把「这次没报错」当成安全</strong>。<code>x * 2</code> 那一行 <code>x.grad = [4.0, 4.0]</code> 是对的
@@ -683,7 +698,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 排查「梯度断流」的第一条查的就是 <code>.detach() / .data</code>。⭐ <strong>这就是它排第一的原因。</strong></p>
 <p>⭐ <code>.data</code> 是什么：它是 <code>detach()</code> 的老写法，但比 <code>detach()</code> 更危险 ——
 <code>detach()</code> 共享版本计数器（第八节实测会报错），<code>.data</code> 不共享。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>写法</th>
@@ -706,7 +721,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <td>就地改它 → <strong>静默算错</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>一句话结论：现代 PyTorch 代码里不应该出现 <code>.data</code>。</strong> 要断图用 <code>detach()</code>（<a href="04-detach与no_grad.html">第 04 章</a>），
 要改参数用 <code>with torch.no_grad():</code>。⚠️ 老教程和老仓库里 <code>.data</code> 满地都是，抄的时候要换掉。</p>
 <h3 id="autograd">破法二：前向的值被悄悄改掉（autograd 根本不知情）</h3>
@@ -734,7 +749,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 💀 <strong>接下来你拿 <code>feat</code> 去算辅助 loss / 存特征 / 做可视化，用到的全是 relu 之后的值，
 数值全错、一行报错没有。</strong></p>
 <p>这类事故的三个典型现场：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>现场</th>
@@ -755,7 +770,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <td><a href="01-张量到底是什么.html">第 01 章</a>实测过它们共享内存 —— 就地改 tensor，<strong>原来的 numpy 数组跟着变</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>通用防线一句话：要留着用的张量，先 <code>.clone()</code>。</strong>（上面代码里 <code>before</code> 就是这么来的。）</p>
 <hr />
 <h2 id="no_grad-detach">🧩 八、<code>no_grad</code> 和 <code>detach</code> 都拦不住版本计数器</h2>
@@ -783,7 +798,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <p>实测输出：</p>
 <section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">no_grad 里改 -&gt; one of the variables needed for gradient computation has been modified by an inplace operation:</span></div><div class="vb-flow-row"><span class="vb-flow-step">detach 之后改 -&gt; one of the variables needed for gradient computation has been modified by an inplace operation:</span></div></div></section>
 <p>⭐ <strong>两个都照样报形态③。原因分别是</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>你以为</th>
@@ -800,7 +815,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <td>⭐ 它只是<strong>另一个 Python 对象</strong>，⚠️ <strong>同一块内存、同一个版本计数器</strong>（第二节实测过）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>💀 <strong>这两条合起来解释了一个常见的错误修法</strong>：撞上形态③之后，
 有人把那一行包进 <code>no_grad</code>、或者加个 <code>detach()</code>，然后发现还是报同样的错，就以为报错信息在骗人。
 ⭐ <strong>它没骗你 —— 它抓的是「这块内存的内容变了」，跟你用什么姿势改的无关。</strong></p>
@@ -859,7 +874,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <p>实测输出：</p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>就地更新后 : [0.800000011920929] is_leaf = True grad_fn = None</p><p>非就地更新后: [0.800000011920929] is_leaf = False grad_fn = SubBackward0</p><p>优化器手里那个还是: [1.0]</p></div></section>
 <p>⭐ <strong>两个数值都是 0.8，但后果天差地别</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -884,7 +899,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <td>💀 <strong>看不到</strong> —— 实测优化器手里那个还是 <code>[1.0]</code>，<strong>一步都没更新</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>这就是为什么 <code>optimizer.step()</code> 必须就地改参数</strong>：优化器在构造时记下的是<strong>那些张量对象</strong>，
 你要是换了个新对象，它手里那份就成了孤儿。
 ⚠️ 另一处更常见的就地是 <code>optimizer.zero_grad()</code> / <code>p.grad.zero_()</code> —— 清零也是就地写。</p>
@@ -927,7 +942,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <p>实测输出：</p>
 <section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">Linear 后面接 inplace ReLU：跑通，x.grad 形状 = (2, 4)</span></div><div class="vb-flow-row"><span class="vb-flow-step">Sigmoid 后面接 inplace ReLU -&gt; one of the variables needed for gradient computation has been modified by an inplace operation:</span></div></div></section>
 <p>⭐ <strong>判据还是第六节那一条，只不过要看的是【前一个算子】</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>前一个是谁</th>
@@ -957,7 +972,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <td>💀 炸</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>还有一种情况报错抓不到</strong>：前一个算子的输出你自己还要用（第七节破法二那种）。
 ⭐ <strong>典型是残差连接</strong>：<code>out = x + f(x)</code> 之后，<code>x</code> 还要参与别的分支时，
 一个就地激活会把 <code>x</code> 一起改掉 —— autograd 可能不报错，值已经错了。</p>
@@ -986,7 +1001,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <p>⭐ <strong>它多给了一个东西：那个出问题的算子是在 forward 的哪一行造出来的</strong>（<code>line 5, in &lt;module&gt;</code>）。
 在几百行的模型里，这一句能省掉一小时。</p>
 <p>⚠️ <strong>两个使用注意</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>注意</th>
@@ -1003,9 +1018,9 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <td>这里 warning 说 <code>SigmoidBackward0</code>，<code>RuntimeError</code> 说 <code>output 0 of Sigmoid</code>。⭐ <strong>是同一个东西</strong>，一个是反向节点的类名，一个是前向算子名</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_8">四条修法，按优先级</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>优先级</th>
@@ -1035,14 +1050,14 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <td>⚠️ <strong>只对形态①②有效</strong>（改叶子/改叶子的视图），第八节实测<strong>对形态③无效</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>不在这张表里的两个「修法」</strong>：</p>
 <ul>
 <li>❌ <strong>加 <code>.data</code></strong> —— 它只是让报错消失，第七节实测<strong>梯度从 <code>0.10499362647533417</code> 变成 <code>0.0</code></strong>。💀 这是把报错换成了静默的错误答案。</li>
 <li>❌ <strong>加 <code>retain_graph=True</code></strong> —— 那治的是<a href="02-autograd怎么建图.html">另一个病</a>（图被释放），跟版本号对不上没关系。</li>
 </ul>
 <h3 id="_9">📋 四种形态反查表</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>报错原文关键词</th>
@@ -1082,9 +1097,9 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <td>删掉 <code>.data</code>；要留着用的先 <code>.clone()</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ 另外两条不属于「三种形态」但常撞上的：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>报错原文</th>
@@ -1101,10 +1116,10 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <td>对 <code>expand</code> / <code>broadcast_to</code> 出来的张量就地改 —— ⭐ 那里<strong>多个下标指向同一块内存</strong>，报错自己就把修法（<code>clone()</code>）写出来了</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_10">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>相关的地方</th>
@@ -1141,7 +1156,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <td>⭐ 第九节说 <code>inplace=True</code> 省的只是激活值那一份、<strong>不解决 OOM</strong>；真正的省法（梯度检查点、offload）在那一章</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_11">✅ 检查点</h2>
 <ol>

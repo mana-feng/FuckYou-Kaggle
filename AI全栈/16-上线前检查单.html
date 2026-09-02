@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,7 +149,7 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
@@ -145,20 +160,20 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -166,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -313,7 +328,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="_3">🔐 二、安全</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>检查项</th>
@@ -358,11 +373,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>03 / 14</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_4">💸 三、成本</h2>
 <p>⭐ <strong>三层护栏要一层一层单独验</strong>（第 12 章：限流管「多快」、配额管「多少」、熔断管「今天最多亏多少」）。只验最外层是最常见的自欺。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>检查项</th>
@@ -402,10 +417,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>13</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_5">🧯 四、可靠</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>检查项</th>
@@ -455,10 +470,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>11</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_6">🗄️ 五、数据</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>检查项</th>
@@ -493,10 +508,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><a href="../数据这一关/19-隐私脱敏与留存.html">数据 19</a></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_7">🔭 六、可观测</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>检查项</th>
@@ -536,10 +551,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>14</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_8">📱 七、体验</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>检查项</th>
@@ -579,7 +594,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>01 / 10</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_9">🚦 八、⭐ 如果只做六条</h2>
 <p>时间不够时，按「<strong>不做会当场出事</strong>」排序，这六条优先：</p>
@@ -600,7 +615,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ 这一章开头承诺「每一条都能在十分钟内当场做一次」——<strong>有一条不能</strong>，就是上面六条里的第 4 条。它是这份清单上<strong>唯一一条要单独排一次演练</strong>的，所以在这里展开，而不是塞一句「按数据库官方文档做」。</p>
 <h3 id="_11">🔍 备份是「写」，恢复是「读」，你只验过写那一半</h3>
 <p>「备份任务成功」的真实含义只有一个：<strong>有个文件被写到某个地方去了</strong>。它不保证：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>静默失败</th>
@@ -621,7 +636,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>脚本连的是只读副本，而它两个月前断了复制 —— <strong>每天都成功，备的是两个月前的数据</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>这三种在监控上长得和成功一模一样</strong> —— 就是本章开头那句「最危险的不是没做，是以为做了」。⚠️ <strong>托管数据库不豁免</strong>：托管商按时替你做了快照，但那还是<strong>写</strong>那一半。</p>
 <h3 id="_12">🧯 演练要演到第几步才算数</h3>
 <p>四道关卡，<strong>过不了第 ④ 道就不算演练过</strong>：① 取回文件 → ② 恢复成一个临时库 → ③ 查出数据、确认它停在哪个时间点 → ④ <strong>让应用真的连上去跑通一次读写</strong>。</p>
@@ -646,7 +661,7 @@ psql<span class="w"> </span>restore_drill<span class="w"> </span>-c<span class="
 </ul>
 <p>⭐ <strong>记法：RPO 往前看（丢了多少），RTO 往后看（停了多久）</strong>，它们决定两件完全不同的事。<strong>RPO 决定备份的频率和形式</strong>：每天凌晨 3 点全量一次，RPO 最坏就是 24 小时；想压到分钟级只能开<strong>连续归档 + 时间点恢复</strong>（Postgres 的 WAL 归档、MySQL 的 binlog），⚠️ 那是另一套东西，不是把每天一次改成每天四次。<strong>RTO 决定你得预先准备什么</strong>：恢复一个几百 GB 的库要多久是个物理事实，临场想办法只会更慢 —— 靠的是<strong>脚本已经写好、机器已经在那儿、并且演练时量过真实耗时</strong>。</p>
 <p>⭐ <strong>这两个数是业务判断不是技术判断，要让掏钱的那个人拍板。</strong> 三个可以直接拿去用的起点：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>你的东西</th>
@@ -671,11 +686,11 @@ psql<span class="w"> </span>restore_drill<span class="w"> </span>-c<span class="
 <td>连续归档 + 待命副本，演练更频繁</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>💀 <strong>最常见的自欺是这两个数和实际做法对不上</strong>：文档里写着「RPO 5 分钟」，而备份每天 3 点才跑一次。⭐ <strong>判据很干净：RPO 不可能小于备份间隔。</strong></p>
 <h3 id="_13">📋 演练要留下什么，多久演一次</h3>
 <p>⭐ 记录不是给别人看的，它把「我们能恢复」换成两个<strong>能和目标对拍的数</strong>。留五行就够：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>记什么</th>
@@ -710,7 +725,7 @@ psql<span class="w"> </span>restore_drill<span class="w"> </span>-c<span class="
 <td>对不上就<strong>改方案或改目标</strong>，别挂着</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>实测值比目标值重要</strong> —— 目标是你希望的，实测是你实际有的，出事那天生效的是后者。</p>
 <p><strong>频率不看日历，看变更</strong>：至少每季度一次，外加换数据库版本、换托管商或区域、多一个数据存储、改备份脚本、⭐ <strong>负责的人换了</strong>之后各补一次 —— 最后一条最容易忽略，因为演练同时也在验「除了原作者，还有别人做得了这件事」。</p>
 <h3 id="_14">♻️ 别漏掉第二个库</h3>
@@ -721,7 +736,7 @@ psql<span class="w"> </span>restore_drill<span class="w"> </span>-c<span class="
 </blockquote>
 <p>⚠️ 还有两件不属于「演练」、但要一起写下来的事：<strong>留多久</strong>（只留 7 天，30 天前的误删就救不回来）、<strong>放在哪</strong>（和生产同账号同区域的备份挡不住「整个项目被误删」）。⭐ 保留期要和 🗄️ 数据那组「留存期写下来了」对齐。</p>
 <h3 id="_15">☑️ 这一节自己的验收项</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>检查项</th>
@@ -746,10 +761,10 @@ psql<span class="w"> </span>restore_drill<span class="w"> </span>-c<span class="
 <td>恢复出来的两个库里，<strong>已删的文档检索不到</strong>；备份至少有一份在<strong>另一个账号或区域</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_16">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>去哪</th>
@@ -782,7 +797,7 @@ psql<span class="w"> </span>restore_drill<span class="w"> </span>-c<span class="
 <td>「安全」那组的提示注入、以及输出内容层面的护栏（结构化输出、内容审核）在那边</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_17">✅ 检查点</h2>
 <ol>

@@ -181,6 +181,10 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 
 /* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
 .katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -270,7 +274,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 哪怕第二个是刚发布的新物品。</p>
 </blockquote>
 <h3 id="semantic-id">🎁 Semantic ID 的四个红利</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>红利</th>
@@ -295,7 +299,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <td>推荐、搜索、广告可以共享同一套 token 和同一个预训练骨干</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_3">⚠️ 但也有真实的坑</h3>
 <ul>
 <li><strong>码字冲突</strong>：不同物品可能编到同一个 Semantic ID → 需要加去重后缀</li>
@@ -342,7 +346,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <p><strong>3. M-FALCON 推理优化</strong>
 把多个候选物品的推理批量微融合，大幅降低线上推理成本。</p>
 <h3 id="_6">📊 论文报告的结果</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>指标</th>
@@ -371,7 +375,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <td>效果随训练算力呈<strong>幂律增长</strong>，跨越三个数量级</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>📌 代码开源：<a href="https://github.com/meta-recsys/generative-recommenders">meta-recsys/generative-recommenders</a>
 论文：<a href="https://arxiv.org/abs/2402.17152">arXiv:2402.17152</a></p>
@@ -379,7 +383,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <hr />
 <h2 id="2026">🏭 2026 年的工业界现状</h2>
 <h3 id="_7">已经落地的（不是论文，是线上系统）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>公司</th>
@@ -409,7 +413,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <td>用于播客发现</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="onerec">🔥 OneRec 的意义：漏斗要没了？</h3>
 <figure class="dia"><svg viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="传统四段漏斗架构与 OneRec 端到端生成式架构的对照"><text class="dia-t" x="175" y="28" font-size="14" text-anchor="middle" fill="var(--fg)" font-weight="700">传统多阶段漏斗</text><rect x="45" y="50" width="260" height="40" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.4"/><text class="dia-t" x="175" y="75" font-size="12.5" text-anchor="middle" fill="var(--fg)">召回 · 20 路模型</text><line x1="175" y1="93" x2="175" y2="99" stroke="var(--muted)" stroke-width="1.6"/><polygon points="175.0,106.0 169.8,97.0 180.2,97.0" fill="var(--muted)"/><rect x="65" y="108" width="220" height="40" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.4"/><text class="dia-t" x="175" y="133" font-size="12.5" text-anchor="middle" fill="var(--fg)">粗排 · 1 个模型</text><line x1="175" y1="151" x2="175" y2="157" stroke="var(--muted)" stroke-width="1.6"/><polygon points="175.0,164.0 169.8,155.0 180.2,155.0" fill="var(--muted)"/><rect x="85" y="166" width="180" height="40" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.4"/><text class="dia-t" x="175" y="191" font-size="12.5" text-anchor="middle" fill="var(--fg)">精排 · 多目标大模型</text><line x1="175" y1="209" x2="175" y2="215" stroke="var(--muted)" stroke-width="1.6"/><polygon points="175.0,222.0 169.8,213.0 180.2,213.0" fill="var(--muted)"/><rect x="105" y="224" width="140" height="40" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.4"/><text class="dia-t" x="175" y="249" font-size="12.5" text-anchor="middle" fill="var(--fg)">重排 · 规则 + 模型</text><line x1="175" y1="267" x2="175" y2="273" stroke="var(--muted)" stroke-width="1.6"/><polygon points="175.0,280.0 169.8,271.0 180.2,271.0" fill="var(--muted)"/><rect x="125" y="282" width="100" height="34" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.4"/><text class="dia-t" x="175" y="304" font-size="12.5" text-anchor="middle" fill="var(--fg)">推荐结果</text><text class="dia-t" x="175" y="342" font-size="11.5" text-anchor="middle" fill="var(--muted)">😰 20+ 个模型要维护，每个都可能出 bug</text><text class="dia-t" x="175" y="364" font-size="11.5" text-anchor="middle" fill="var(--muted)">链路不一致 · 调优要跨团队</text><line x1="350" y1="44" x2="350" y2="380" stroke="var(--border)" stroke-width="1.4" stroke-dasharray="6 6"/><circle cx="350" cy="170" r="18" fill="var(--card)" stroke="var(--border)" stroke-width="1.4"/><text class="dia-t" x="350" y="175" font-size="12.5" text-anchor="middle" fill="var(--muted)" font-weight="700">VS</text><text class="dia-t" x="525" y="28" font-size="14" text-anchor="middle" fill="var(--accent)" font-weight="700">OneRec 式端到端</text><rect x="400" y="64" width="250" height="150" rx="12" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><text class="dia-t" x="525" y="100" font-size="17" text-anchor="middle" fill="var(--accent)" font-weight="700">一个端到端</text><text class="dia-t" x="525" y="128" font-size="17" text-anchor="middle" fill="var(--accent)" font-weight="700">生成式模型</text><text class="dia-t" x="525" y="166" font-size="12" text-anchor="middle" fill="var(--fg)">召回 · 粗排 · 精排 · 重排</text><text class="dia-t" x="525" y="190" font-size="12" text-anchor="middle" fill="var(--fg)">全部塌缩进这一个模型</text><line x1="525" y1="218" x2="525" y2="271.5" stroke="var(--accent)" stroke-width="1.8"/><polygon points="525.0,280.0 519.8,271.0 530.2,271.0" fill="var(--accent)"/><rect x="460" y="282" width="130" height="34" rx="8" fill="var(--card)" stroke="var(--accent)" stroke-width="1.4"/><text class="dia-t" x="525" y="304" font-size="12.5" text-anchor="middle" fill="var(--fg)">最终推荐列表</text><text class="dia-t" x="525" y="342" font-size="11.5" text-anchor="middle" fill="var(--muted)">😊 一个模型，多目标天然一致</text><text class="dia-t" x="525" y="364" font-size="11.5" text-anchor="middle" fill="var(--muted)">报告运营成本约为原来的 1/10</text></svg><figcaption>左边每一层都要单独训练、单独调优，链路越长越容易互相打架；OneRec 把整条漏斗塌缩成一个模型，目标天然一致，代价是模型本身极难训。</figcaption></figure>
 
@@ -448,7 +452,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 </blockquote>
 <hr />
 <h2 id="2026_1">🎯 2026 年的活跃研究方向</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方向</th>
@@ -485,11 +489,11 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <td>用 DPO/RLHF 类方法对齐长期用户价值而非短期点击</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_8">⚖️ 泼一盆冷水：你现在该学吗？</h2>
 <h3 id="_9">🚫 大部分人不该从这里开始</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>如果你…</th>
@@ -510,7 +514,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <td>✅ 这就是主战场，赶紧跟</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_10">现实约束</h3>
 <div class="codehilite"><pre><span></span><code>   HSTU / OneRec 的门槛：
      · 数据：亿级用户 × 千亿级行为
@@ -529,7 +533,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 </ol>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../大模型全景导论/02-Transformer原理.html">全景导论 02</a></td><td>TIGER / HSTU / OneRec 骨子里都是 Decoder：self-attention、causal mask、逐 token 生成，先在这里补齐</td></tr><tr><td><a href="../大模型全景导论/03-Tokenizer与上下文.html">全景导论 03</a></td><td>Semantic ID 就是推荐系统的 tokenizer——「码本坍塌」和 LLM 的词表设计问题是同一类病</td></tr><tr><td><a href="../强化学习基础/13-DPO与免RL对齐.html">强化学习 13</a></td><td>OneRec 用 DPO 做偏好对齐：LLM 那套对齐技术被原样搬进了推荐</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../大模型全景导论/02-Transformer原理.html">全景导论 02</a></td><td>TIGER / HSTU / OneRec 骨子里都是 Decoder：self-attention、causal mask、逐 token 生成，先在这里补齐</td></tr><tr><td><a href="../大模型全景导论/03-Tokenizer与上下文.html">全景导论 03</a></td><td>Semantic ID 就是推荐系统的 tokenizer——「码本坍塌」和 LLM 的词表设计问题是同一类病</td></tr><tr><td><a href="../强化学习基础/13-DPO与免RL对齐.html">强化学习 13</a></td><td>OneRec 用 DPO 做偏好对齐：LLM 那套对齐技术被原样搬进了推荐</td></tr></tbody></table></div>
 <hr />
 <h2 id="_12">✅ 检查点</h2>
 <ol>

@@ -176,6 +176,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 
 /* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
 .katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -217,7 +221,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <hr />
 <h2 id="ner_1">一、NER任务概述</h2>
 <h3 id="11">1.1 任务定义</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -242,9 +246,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>Macro-F1（严格匹配：实体文本+位置+类别完全一致才算正确）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="12">1.2 竞赛特殊挑战</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>挑战</th>
@@ -273,11 +277,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>部分竞赛将原始文本脱敏为数字ID</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_1">二、标注方法</h2>
 <h3 id="21-bio">2.1 BIO标注体系</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>标签</th>
@@ -302,9 +306,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>"是" → O</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="22-bioes">2.2 BIOES标注体系</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>标签</th>
@@ -339,9 +343,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>"是" → O</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="23">2.3 标注方法选择</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -371,11 +375,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>边界敏感任务推荐</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_2">三、编码器架构</h2>
 <h3 id="31">3.1 主流编码器</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>编码器</th>
@@ -410,9 +414,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>轻量级方案</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="32">3.2 编码器选择建议</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -437,11 +441,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>BiLSTM + CRF轻量方案</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_3">四、解码器对比</h2>
 <h3 id="41-crf">4.1 CRF（条件随机场）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -474,9 +478,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>Viterbi解码增加少量计算</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="42-linear">4.2 Linear（线性分类头）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -505,9 +509,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>配合后处理规则，效果可接近CRF</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="43-span-based">4.3 Span-based（基于片段的解码）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -532,9 +536,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>嵌套实体、长实体</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="44">4.4 解码器选择建议</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>解码器</th>
@@ -567,11 +571,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>嵌套实体</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="-b">四-B、高级解码器</h2>
 <h3 id="globalpointer">GlobalPointer</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -600,9 +604,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>中文NER竞赛中表现优异，是Span-based的强力替代</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="mrc-nerner">MRC-NER（机器阅读理解式NER）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -631,9 +635,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>嵌套实体、不连续实体、少样本NER</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="biaffine">Biaffine解码器</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -658,9 +662,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>依存解析、语义角色标注、嵌套NER</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_4">解码器选择决策</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -695,10 +699,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>表达能力最强</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="flatner">五、FLAT：中文NER的利器</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -731,10 +735,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>在中文NER基准上显著优于纯字符模型</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="offset-mapping">六、Offset Mapping修正</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -767,10 +771,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>遍历Offset Mapping，跳过(0,0)，合并同一词的子词预测</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_5">七、分词器空格切分修复</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -799,10 +803,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>如果区间结尾是空格，结束位置左移</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="bad-case">八、Bad Case分析</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -831,11 +835,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>大部分后处理规则来源于Bad Case分析</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="ner_2">九、NER模型融合策略</h2>
 <h3 id="91">9.1 融合挑战</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -852,7 +856,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>通过Offset Mapping将Token级预测投射回字符级，在字符级融合</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="92">9.2 字符级融合流程</h3>
 <div class="codehilite"><pre><span></span><code>1. 各模型独立预测 → 得到Token级概率
 2. 通过Offset Mapping → 映射到字符级概率
@@ -861,7 +865,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 </code></pre></div>
 
 <h3 id="93">9.3 融合权重优化</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -886,7 +890,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>用元模型学习最优组合方式</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="ner_3">十、NER竞赛实战要点</h2>
 <h3 id="101">10.1 提分路线图</h3>
@@ -901,7 +905,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 </code></pre></div>
 
 <h3 id="102">10.2 常见踩坑点</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>坑点</th>
@@ -936,10 +940,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>仅在未见过的Fold上生成</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../大模型全景导论/03-Tokenizer与上下文.html">大模型导论 03 Tokenizer 与上下文</a></td><td>Offset Mapping 修正、空格切分踩坑的根源都是 subword 分词</td></tr><tr><td><a href="../大模型全景导论/02-Transformer原理.html">大模型导论 02 Transformer 原理</a></td><td>NER 编码器就是 Transformer Encoder，token 级输出从哪来</td></tr><tr><td><a href="../机器学习与深度学习基础/13-RNN与序列建模.html">ML基础 13 RNN 与序列建模</a></td><td>BiLSTM 编码器和序列标注任务的原始形态</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../大模型全景导论/03-Tokenizer与上下文.html">大模型导论 03 Tokenizer 与上下文</a></td><td>Offset Mapping 修正、空格切分踩坑的根源都是 subword 分词</td></tr><tr><td><a href="../大模型全景导论/02-Transformer原理.html">大模型导论 02 Transformer 原理</a></td><td>NER 编码器就是 Transformer Encoder，token 级输出从哪来</td></tr><tr><td><a href="../机器学习与深度学习基础/13-RNN与序列建模.html">ML基础 13 RNN 与序列建模</a></td><td>BiLSTM 编码器和序列标注任务的原始形态</td></tr></tbody></table></div>
 <hr />
 <h2 id="ckpt">✅ 检查点</h2>
 <ol>

@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,7 +149,7 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
@@ -145,20 +160,20 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -166,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -303,7 +318,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_2">📈 一、线性回归：预测一个数</h2>
 <figure class="dia"><svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="线性回归公式中各项的含义"><rect x="25" y="34" width="710" height="70" rx="14" fill="var(--card)" stroke="var(--border)" stroke-width="2"/><text class="dia-t" x="380" y="78" text-anchor="middle" font-size="23" fill="var(--fg)" font-weight="700">房价 = 0.8 × 面积 + 12 × 地段分 − 3 × 楼龄 + 20</text><path d="M263 105 V145" stroke="var(--accent)" stroke-width="2"/><path d="M415 105 V145" stroke="var(--accent)" stroke-width="2"/><path d="M572 105 V145" stroke="var(--accent)" stroke-width="2"/><path d="M674 105 V145" stroke="var(--accent)" stroke-width="2"/><rect x="181" y="154" width="164" height="52" rx="10" fill="var(--accent-soft)" stroke="var(--accent)"/><text class="dia-t" x="263" y="184" text-anchor="middle" font-size="15" fill="var(--accent)" font-weight="700">0.8：面积的权重</text><rect x="332" y="222" width="166" height="52" rx="10" fill="var(--accent-soft)" stroke="var(--accent)"/><text class="dia-t" x="415" y="252" text-anchor="middle" font-size="15" fill="var(--accent)" font-weight="700">12：地段分的权重</text><rect x="489" y="154" width="166" height="52" rx="10" fill="var(--accent-soft)" stroke="var(--accent)"/><text class="dia-t" x="572" y="184" text-anchor="middle" font-size="15" fill="var(--accent)" font-weight="700">−3：楼龄的权重</text><rect x="604" y="222" width="118" height="52" rx="10" fill="var(--quote-bg)" stroke="var(--border)"/><text class="dia-t" x="663" y="252" text-anchor="middle" font-size="15" fill="var(--fg)" font-weight="700">20：偏置 b</text><text class="dia-t" x="380" y="20" text-anchor="middle" font-size="14" fill="var(--muted)">一条线性模型公式：每个特征都有一个“影响方向和力度”</text></svg><figcaption>先看系数前的正负号，再看绝对值大小；最后那个不乘任何特征的 20，是整体起点。</figcaption></figure>
 
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>看什么</th>
@@ -328,7 +343,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>这里是 20；它不是某个特征的权重</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💡 <strong>不要把权重当成因果结论。</strong> “楼龄权重为负”只是在这份数据里、控制其他特征后，它与房价同向变化的统计关系；不等于楼龄本身单独造成房价下降。
 <strong>损失函数</strong>（第 2 章三要素之二）—— 均方误差 MSE：</p>
@@ -365,7 +380,7 @@ softmax + 交叉熵的反向就是 $p-\text{onehot}(y)$，和这里的 <code>(�
 <div class="rule"><b>先固定方向，别看反：</b><br>
 <strong>λ 小 → 正则弱 → 更容易过拟合；λ 大 → 正则强 → 更容易欠拟合。</strong><br>
 本页代码库用的是 <code>C = 1 / λ</code>，所以方向正好相反：<strong>C 小 → 正则强；C 大 → 正则弱。</strong></div>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>类型</th>
@@ -394,14 +409,14 @@ softmax + 交叉熵的反向就是 $p-\text{onehot}(y)$，和这里的 <code>(�
 <td>特征多且相关性强</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>💡 <strong>为什么限制权重能防过拟合</strong>：</p>
 <blockquote>
 <p>权重特别大 = 模型对某个特征极度敏感 = 输入稍微变一点输出就剧变 = <strong>它在拟合噪声</strong>。
 让权重都小一点，模型就"稳重"了。</p>
 </blockquote>
 <p>🎚️ <strong>λ 怎么调</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>λ 的状态</th>
@@ -426,7 +441,7 @@ softmax + 交叉熵的反向就是 $p-\text{onehot}(y)$，和这里的 <code>(�
 <td>用验证集或交叉验证选择</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p><strong>不要死背一个 λ 数字。</strong> 合理范围会随数据规模、特征缩放和模型实现变化；先用对数尺度试一串候选值，再只根据验证集决定。
 🔗 推荐算法第 5 章矩阵分解里的那个 <code>λ(‖p‖² + ‖q‖²)</code>，就是 L2 正则。</p>
@@ -440,7 +455,7 @@ softmax + 交叉熵的反向就是 $p-\text{onehot}(y)$，和这里的 <code>(�
 <p>线性模型对特征尺度极度敏感：</p>
 <figure class="dia"><svg viewBox="0 0 760 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="标准化让面积和房间数使用同一把尺度"><defs><marker id="scale-arrow__f3" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 Z" fill="var(--accent)"/></marker></defs><text class="dia-t" x="188" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="var(--fg)">原始尺度不同</text><text class="dia-t" x="570" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="var(--fg)">标准化后：同一把尺</text><text class="dia-t" x="42" y="100" font-size="16" font-weight="700" fill="var(--fg)">面积</text><line x1="112" y1="94" x2="300" y2="94" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/><circle cx="112" cy="94" r="6" fill="var(--accent)"/><circle cx="300" cy="94" r="6" fill="var(--accent)"/><text class="dia-t" x="112" y="122" text-anchor="middle" font-size="14" fill="var(--muted)">1 ㎡</text><text class="dia-t" x="300" y="122" text-anchor="middle" font-size="14" fill="var(--muted)">200 ㎡</text><text class="dia-t" x="42" y="192" font-size="16" font-weight="700" fill="var(--fg)">房间数</text><line x1="112" y1="186" x2="168" y2="186" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/><circle cx="112" cy="186" r="6" fill="var(--accent)"/><circle cx="168" cy="186" r="6" fill="var(--accent)"/><text class="dia-t" x="112" y="214" text-anchor="middle" font-size="14" fill="var(--muted)">1 个</text><text class="dia-t" x="168" y="214" text-anchor="middle" font-size="14" fill="var(--muted)">5 个</text><path d="M332 140 H408" fill="none" stroke="var(--accent)" stroke-width="3" marker-end="url(#scale-arrow__f3)"/><rect x="337" y="155" width="67" height="34" rx="9" fill="var(--accent-soft)"/><text class="dia-t" x="370" y="178" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent)">标准化</text><text class="dia-t" x="440" y="100" font-size="16" font-weight="700" fill="var(--fg)">面积</text><line x1="510" y1="94" x2="700" y2="94" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/><circle cx="510" cy="94" r="6" fill="var(--accent)"/><circle cx="605" cy="94" r="6" fill="var(--accent)"/><circle cx="700" cy="94" r="6" fill="var(--accent)"/><text class="dia-t" x="510" y="122" text-anchor="middle" font-size="14" fill="var(--muted)">−1</text><text class="dia-t" x="605" y="122" text-anchor="middle" font-size="14" fill="var(--muted)">0</text><text class="dia-t" x="700" y="122" text-anchor="middle" font-size="14" fill="var(--muted)">+1</text><text class="dia-t" x="440" y="192" font-size="16" font-weight="700" fill="var(--fg)">房间数</text><line x1="510" y1="186" x2="700" y2="186" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/><circle cx="510" cy="186" r="6" fill="var(--accent)"/><circle cx="605" cy="186" r="6" fill="var(--accent)"/><circle cx="700" cy="186" r="6" fill="var(--accent)"/><text class="dia-t" x="510" y="214" text-anchor="middle" font-size="14" fill="var(--muted)">−1</text><text class="dia-t" x="605" y="214" text-anchor="middle" font-size="14" fill="var(--muted)">0</text><text class="dia-t" x="700" y="214" text-anchor="middle" font-size="14" fill="var(--muted)">+1</text><text class="dia-t" x="380" y="288" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">每一列都变成：均值 0、标准差 1</text></svg><figcaption>标准化不改变样本之间的相对关系；它只是让“面积”和“房间数”都用同一把尺说话。</figcaption></figure>
 
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>原始特征</th>
@@ -470,7 +485,7 @@ softmax + 交叉熵的反向就是 $p-\text{onehot}(y)$，和这里的 <code>(�
 <td>尺度差太大时容易走“之”字，训练变慢</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>一句话结论：先标准化，再训练。</strong> 这会让正则化公平、梯度下降也更容易直接朝正确方向走。
 ⚠️ <strong>最经典的坑</strong>：</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># ❌ 错误：用全部数据算均值方差 → 测试集信息泄漏进训练</span>
@@ -529,7 +544,7 @@ softmax + 交叉熵的反向就是 $p-\text{onehot}(y)$，和这里的 <code>(�
 <strong>C = 1：</strong>测试集 98.8%，这是这组数据的甜点区。<br>
 <strong>C = 100：</strong>训练集继续涨、测试集跌到 95.3%，模型开始记住训练集。</div>
 <p><strong>完整实验数据</strong>（只在想核对具体数字时看）</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>C</th>
@@ -583,9 +598,9 @@ softmax + 交叉熵的反向就是 $p-\text{onehot}(y)$，和这里的 <code>(�
 <td>正则太弱，权重膨胀 → 过拟合</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>L1 的额外能力：自动丢掉不重要的特征。</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>C</th>
@@ -614,7 +629,7 @@ softmax + 交叉熵的反向就是 $p-\text{onehot}(y)$，和这里的 <code>(�
 <td><strong>砍掉一半多特征，精度几乎不掉</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <div class="rule"><b>三个值得盯着看的点</b><br>
 <strong>1.</strong> 权重绝对值和从 1.3 一路涨到 107.2 —— 正则放松，权重就爆炸。<br>
 <strong>2.</strong> 测试集在 C=1 达到峰值后开始跌，但训练集还在涨 —— 又是第 1 章那个拐点。<br>

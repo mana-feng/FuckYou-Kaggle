@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,7 +149,7 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
@@ -145,20 +160,20 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -166,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -302,7 +317,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="90-020">🎲 一、为什么不能用同意率：一个 90% 对 0.20 的真实计算</h2>
 <p>某客服工单标注，两个人独立判断「这条是不是投诉」，一共 1,000 条：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -331,7 +346,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>1000</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <section class="visual-block visual-block-calc" aria-label="算一算"><p class="visual-block-title">算一算</p><div class="vb-calc"><p>同意率（两人标得一样的比例）</p><p>Po = (883 + 17) / 1000 = 0.900 ← 90%！验收报告写得很好看</p><p>但先看两个人各自标了多少条&quot;投诉&quot;：</p><p>A 标了 67 条 B 标了 67 条</p><p>⭐ 而两人【同时】认为是投诉的，只有 17 条</p><p>也就是说：一共 117 条被至少一个人认为是投诉，</p><p>两人达成共识的只有 17 条 —— 共识率 14.5%</p></div></section>
 <p><strong>偶然一致率 Pe</strong> —— 如果两人各自闭着眼睛、按各自的比例（都是 6.7% 标投诉）随机乱按：</p>
 <section class="visual-block visual-block-calc" aria-label="算一算"><p class="visual-block-title">算一算</p><div class="vb-calc"><p>Pe = P(两人都随机标非投诉) + P(两人都随机标投诉)</p><p>= 0.933 × 0.933 + 0.067 × 0.067</p><p>= 0.870489 + 0.004489</p><p>= 0.874978 ⭐ 乱按都能有 87.5% 的同意率！</p><p>Cohen&#x27;s Kappa = (Po − Pe) / (1 − Pe)</p><p>= (0.900 − 0.874978) / (1 − 0.874978)</p><p>= 0.025022 / 0.125022</p><p>= 0.2001 💀</p></div></section>
@@ -342,7 +357,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 而理论上最多能挣 12.5 个百分点。<strong>2.5 / 12.5 = 0.20，这就是 Kappa。</strong></p>
 </blockquote>
 <p>拆开正负两类看，更直白：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>指标</th>
@@ -367,7 +382,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>这才是真实水平</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>一句话记法</strong>：
 <strong>同意率问的是「你们多常一致」，Kappa 问的是「你们比按同样比例乱按好了多少」。</strong>
@@ -403,7 +418,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <hr />
 <h2 id="_2">📊 二、四个指标，各管什么场景</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>指标</th>
@@ -443,7 +458,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>1~5 分、严重度 P0~P3、风险等级 —— <strong>必须用</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">怎么选：三个问题就够</span></div><div class="vb-tree-row"><span class="vb-tree-node">标签是有序的吗（分数 / 等级 / 严重度）？</span></div><div class="vb-tree-row"><span class="vb-tree-node">是 → 加权 Kappa（二次权重）或 Krippendorff α(ordinal)</span></div><div class="vb-tree-row"><span class="vb-tree-node">每条样本的标注人数一样吗？有没有缺失？</span></div><div class="vb-tree-row"><span class="vb-tree-node">不一样 / 有缺失 → Krippendorff&#x27;s α ⭐ 别硬凑成 Fleiss</span></div><div class="vb-tree-row"><span class="vb-tree-node">一样，且恰好 2 人 → Cohen&#x27;s Kappa</span></div><div class="vb-tree-row"><span class="vb-tree-node">一样，多于 2 人 → Fleiss&#x27; Kappa</span></div><div class="vb-tree-row"><span class="vb-tree-node">⚠️ 常见错误：多人场景下两两算 Cohen 再取平均</span></div><div class="vb-tree-row"><span class="vb-tree-node">—— 这不等于 Fleiss，在人数不齐时会系统性偏高</span></div></div></section>
 <blockquote>
 <p>⭐ <strong>Fleiss 和 Cohen 的关键区别不是人数，是「谁标的」</strong>：
@@ -454,7 +469,7 @@ Fleiss 只要求<strong>每条样本被 k 个人标</strong>，这 k 个人是�
 <hr />
 <h2 id="_3">🔢 三、实跑：同一批数据，指标能差多少</h2>
 <p><strong>① 指南清楚 vs 指南有歧义（Fleiss，20 个样本 × 3 类 × 5 人）</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -477,7 +492,7 @@ Fleiss 只要求<strong>每条样本被 k 个人标</strong>，这 k 个人是�
 <td><strong>−0.145</strong> 💀</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💀 <strong>Kappa 可以是负数，而且负数有明确含义</strong>：
 <strong>比随机还差。</strong> 这几乎从不是"标注员太笨"，而是
@@ -485,7 +500,7 @@ Fleiss 只要求<strong>每条样本被 k 个人标</strong>，这 k 个人是�
 看到负 Kappa，第一件事是去看混淆矩阵有没有明显的<strong>对角线错位</strong>，不是去换人。</p>
 </blockquote>
 <p><strong>② 有序标签上，加不加权差 0.45（同一份 400 条 1~5 分打分数据，两人）</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>指标</th>
@@ -515,7 +530,7 @@ Fleiss 只要求<strong>每条样本被 k 个人标</strong>，这 k 个人是�
 <td>差一档几乎不罚，差三档罚很重</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⚠️ <strong>有序标签上用无权 Kappa，会把一份很好的标注判成"一般"</strong>：
 这份数据里两人绝大多数分歧只差 1 档 —— 对「情感强度 1~5 分」这类任务，
@@ -525,7 +540,7 @@ Fleiss 只要求<strong>每条样本被 k 个人标</strong>，这 k 个人是�
 报告里要写清楚用的是哪种权重 —— 只写「Kappa = 0.85」是一句没有信息量的话。</p>
 </blockquote>
 <p><strong>③ Krippendorff's α（12 个单元，每单元 2~3 人，人数不齐）</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>数据</th>
@@ -542,7 +557,7 @@ Fleiss 只要求<strong>每条样本被 k 个人标</strong>，这 k 个人是�
 <td><strong>−0.2247</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">cohen_kappa_score</span>
@@ -598,7 +613,7 @@ Fleiss 只要求<strong>每条样本被 k 个人标</strong>，这 k 个人是�
 <hr />
 <h2 id="_4">📏 四、阈值：多少算够</h2>
 <p>学术上的经验分档（Landis &amp; Koch）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>Kappa</th>
@@ -631,9 +646,9 @@ Fleiss 只要求<strong>每条样本被 k 个人标</strong>，这 k 个人是�
 <td>极强</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>但工程上真正要记的是按用途分的这一张</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>用途</th>
@@ -663,7 +678,7 @@ Fleiss 只要求<strong>每条样本被 k 个人标</strong>，这 k 个人是�
 <td>这时该改用<strong>加权 Kappa</strong> 或换成偏好对比</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>这一章最该记住的一句话</strong>：
 <strong>人类之间的一致性，是模型性能的天花板。</strong>
@@ -676,7 +691,7 @@ Fleiss 只要求<strong>每条样本被 k 个人标</strong>，这 k 个人是�
 <hr />
 <h2 id="kappa">🪤 五、Kappa 自己的三个坑</h2>
 <p><strong>① Kappa 悖论：同样的同意率，Kappa 能差 5 倍</strong>（实跑）</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -702,7 +717,7 @@ Fleiss 只要求<strong>每条样本被 k 个人标</strong>，这 k 个人是�
 <td><strong>0.128</strong> 💀</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⚠️ <strong>同样的 Po = 0.850，Kappa 从 0.700 掉到 0.128 —— 分歧的绝对条数完全一样（都是 150 条）。</strong>
 差别只在于类别的<strong>边际分布</strong>。这叫 <strong>prevalence effect（普遍性效应）</strong>。
@@ -775,7 +790,7 @@ Kappa 把「两人各自的标注倾向」吸收进了 Pe。
 <strong>后者更贵，因为它会让你自信地做出一个反向的决策。</strong></p>
 </blockquote>
 <p><strong>该补什么</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>缺失</th>
@@ -808,7 +823,7 @@ Kappa 把「两人各自的标注倾向」吸收进了 Pe。
 <td>评测集的标注员<strong>必须和训练集的不重叠</strong>，否则模型学到的偏好会被当成"正确"</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>最后一条最容易被当成吹毛求疵，但它正是这个事故的引信</strong>：
 模型 B 在训练时学会了那位标注员的宽松倾向，
@@ -817,7 +832,7 @@ Kappa 把「两人各自的标注倾向」吸收进了 Pe。
 </blockquote>
 <hr />
 <h2 id="_7">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>去哪</th>
@@ -850,7 +865,7 @@ Kappa 把「两人各自的标注倾向」吸收进了 Pe。
 <td>LLM-as-judge 同样要测一致性：判官和人的 Kappa 才是这套评测的上限</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_8">✅ 检查点</h2>
 <ol>

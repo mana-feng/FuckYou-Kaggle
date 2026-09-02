@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,7 +149,7 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
@@ -145,20 +160,20 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -166,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -328,7 +343,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="1">⏰ 三、① 时间穿越</h2>
 <p><strong>最常见，也最贵。</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -365,7 +380,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>所有聚合特征加一句「<strong>截止到 T 时刻</strong>」，并在代码里真的实现它</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>上面那个实跑例子里有个细节值得单独说：</p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>随机切分 AUC = 0.810</p><p>按时间切分 = 0.682</p><p>按时间切 + 【把 day 这一列删掉】 = 0.685 ⭐ 几乎没变</p></div></section>
 <blockquote>
@@ -382,7 +397,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 如果<strong>用整个训练集算编码、再在同一份数据上做 CV</strong>，
 每一行的标签都参与了它自己那个类别的均值。</p>
 <p>实跑（2000 个取值、平均每类 4 行、<strong>这个类别和标签完全无关</strong>）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>做法</th>
@@ -402,7 +417,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>0.726</strong> ⭐</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💀 <strong>第一行是所有虚假 CV 分数的教科书样本</strong>：
 一个<strong>完全没有信息的随机 id</strong>，被朴素编码之后，
@@ -415,7 +430,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 如果你的团队按 CV 分数考核，那这个修复动作在流程上就是不可能发生的 ——
 <strong>这是一个组织问题，不是技术问题。</strong></p>
 </blockquote>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -452,13 +467,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>编码器必须进 <code>Pipeline</code>，<strong>不能在切分之前算好</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="3">🧪 五、③ 预处理在切分之前做</h2>
 <p>这一类里最贵的三个：<strong>标准化、缺失填充、重采样（SMOTE）</strong>。</p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>标准化 —— 泄漏了测试集的均值和方差 损失通常很小（0.00x）</p><p>缺失填充 —— 泄漏了测试集的中位数/众数 损失中等</p><p>SMOTE —— 💀 泄漏了测试集正例的【位置】 损失巨大</p></div></section>
 <p>实跑（正例率 8.3%，随机森林）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>做法</th>
@@ -475,7 +490,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>0.849</strong> ⭐</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💀 <strong>为什么 SMOTE 是这三个里最毒的</strong>：
 SMOTE 的合成样本是<strong>两个真实少数类样本之间的插值点</strong>。
@@ -483,7 +498,7 @@ SMOTE 的合成样本是<strong>两个真实少数类样本之间的插值点</s
 模型不需要学规律，只要记住"我见过这个点附近"。
 <strong>而且它的最终指标是在一个被合成样本污染的测试集上算的，双重虚高。</strong></p>
 </blockquote>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -520,12 +535,12 @@ SMOTE 的合成样本是<strong>两个真实少数类样本之间的插值点</s
 <td>⭐ <strong>测试集永远保持原始分布，绝不重采样</strong> —— 重采样只是训练技巧，不是评测口径</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="4">👥 六、④ 分组泄漏：同一个用户跨集</h2>
 <p>同一个人、同一个病例、同一台设备的多条记录，被随机切分拆散到了训练集和测试集。</p>
 <p>实跑（900 个用户 × 12 条记录，用户级随机效应很强）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>切分方式</th>
@@ -542,13 +557,13 @@ SMOTE 的合成样本是<strong>两个真实少数类样本之间的插值点</s
 <td><strong>0.564</strong> ⭐</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>0.706 里有 0.14 是"认人"，不是"预测行为"。</strong>
 模型学到的是「这个用户的另外 8 条记录标签是什么」，
 而线上遇到的是<strong>新用户</strong>，它一条也没见过。</p>
 </blockquote>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -585,7 +600,7 @@ SMOTE 的合成样本是<strong>两个真实少数类样本之间的插值点</s
 <td>⚠️ 组的选择要看<strong>线上会遇到谁</strong>：如果线上大多是新用户，就必须按用户切；如果线上永远是老用户的新行为，那按时间切才对</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⚠️ <strong>医疗和风控里这个坑最贵</strong>：同一个病人的多张影像、同一个人的多笔交易。
 一篇论文报 AUC 0.95，换成按病人切之后是 0.78 —— <strong>这类"复现失败"绝大多数是它。</strong></p>
@@ -594,7 +609,7 @@ SMOTE 的合成样本是<strong>两个真实少数类样本之间的插值点</s
 <h2 id="5">👯 七、⑤ 重复样本跨集</h2>
 <p>数据回填、多次导出、上游重试、宽表 join 出现一对多 —— 重复记录是常态。</p>
 <p>实跑（40% 的行被复制了一份，1-NN 分类器）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>做法</th>
@@ -611,8 +626,8 @@ SMOTE 的合成样本是<strong>两个真实少数类样本之间的插值点</s
 <td><strong>0.605</strong> ⭐</td>
 </tr>
 </tbody>
-</table>
-<table>
+</table></div>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -653,12 +668,12 @@ SMOTE 的合成样本是<strong>两个真实少数类样本之间的插值点</s
 <td>⭐ 去重之后指标会掉，<strong>掉下去的那部分本来就不属于你</strong>（<a href="06-重复与实体解析.html">第 6 章</a>）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="6">🕵️ 八、⑥ 代理变量：一个只有事后才存在的字段</h2>
 <p>这是<strong>落差最大的一种（0.284）</strong>，也是最容易被业务同学一眼看穿的一种。</p>
 <p>实跑：给数据加一列「退款金额」，只有流失用户里 92% 的人非零。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>特征集</th>
@@ -675,14 +690,14 @@ SMOTE 的合成样本是<strong>两个真实少数类样本之间的插值点</s
 <td><strong>0.686</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>常见的代理变量（每一个都在真实项目里出现过）：</p><p>预测流失 ← 「退款金额」「客服工单数」「账号注销申请时间」</p><p>预测欺诈 ← 「风控备注」「人工审核结论」「冻结状态」⭐ 结论字段最毒</p><p>预测疾病 ← 「用药记录」「转诊科室」「住院天数」</p><p>预测违约 ← 「催收次数」「展期申请」</p><p>预测点击 ← 「曝光时长」「页面停留」（这些是点击【之后】才有的）</p></div></section>
 <blockquote>
 <p>💀 <strong>最毒的一类是「人工审核结论」这种字段</strong>：
 它不是"和标签相关"，它<strong>几乎就是标签本身的另一个副本</strong>。
 而且它在数据库里的名字往往看不出来 —— <code>status_code</code>、<code>flag_3</code>、<code>remark_type</code>。</p>
 </blockquote>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -715,7 +730,7 @@ SMOTE 的合成样本是<strong>两个真实少数类样本之间的插值点</s
 <td>⭐ 在数据契约（<a href="03-数据契约.html">第 3 章</a>）里给每个字段登记 <code>produced_at</code>，这是根治的办法</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <!--MIDSTOP-->
 <blockquote>
@@ -727,7 +742,7 @@ SMOTE 的合成样本是<strong>两个真实少数类样本之间的插值点</s
 <h2 id="7">🌍 九、⑦ 外部数据带来的未来信息</h2>
 <p>买来的第三方数据、公开数据集、爬来的补充特征 —— 它们的时间戳<strong>通常是"最后更新时间"，不是"当时的值"</strong>。</p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>典型形态：</p><p>· 企业工商数据 ——「经营状态」是【今天】的状态，</p><p>你却把它当成两年前那笔贷款申请时的状态 💀</p><p>· 第三方信用分 ——供应商每月刷新，历史版本不保留</p><p>· 城市 POI / 房价 ——只有最新一版</p><p>· 爬来的商品评分 ——评分是累计到今天的</p><p>· 预训练模型的语料 ——⭐ 你的评测集可能已经在它的训练语料里了</p></div></section>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -760,11 +775,11 @@ SMOTE 的合成样本是<strong>两个真实少数类样本之间的插值点</s
 <td>⚠️ 用预训练模型做评测时，<strong>先查评测集有没有进过它的语料</strong>（<a href="13-评测集也是数据.html">第 13 章第四节</a>讲了怎么查：去重 / n-gram 重叠 / 改写测试 / 新鲜题对照，⚠️ 拿不到训练语料时只剩后两个）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_4">🩺 十、症状速查：「离线好得离谱」到底长什么样</h2>
 <p><strong>这张表是本章最该被记住的东西。</strong> 你不需要记住七种类型，只需要认得这些形状：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>你看到的现象</th>
@@ -813,7 +828,7 @@ SMOTE 的合成样本是<strong>两个真实少数类样本之间的插值点</s
 <td>时间穿越</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>一条可以当口诀的判据</strong>：
 <strong>「模型好得让你想截图」和「模型好得让你想再验一遍」，应该是同一个反应。</strong>
@@ -823,7 +838,7 @@ SMOTE 的合成样本是<strong>两个真实少数类样本之间的插值点</s
 <h2 id="_5">💀 十一、一次真实的事故复盘</h2>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>系统：某消费信贷的首逾预测模型（预测放款后首期是否逾期）</p><p>数据：申请单 62 万条，跨 26 个月</p><p>团队：3 个算法 + 1 个数据工程</p></div></section>
 <p><strong>发生了什么</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>时间</th>
@@ -856,13 +871,13 @@ SMOTE 的合成样本是<strong>两个真实少数类样本之间的插值点</s
 <td>首批样本到期，<strong>线上 AUC 0.71</strong> —— 比上线前的老模型还低 0.01</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>为什么没被发现</strong></p>
 <section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 5 折 CV 是【随机】切的 —— 26 个月的数据被打散了 泄漏①</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 目标编码在切分之前算好，4 万个商户平均每个 15 单 泄漏②</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 第三方多头数据是【当前快照】，供应商不提供历史版本 泄漏⑦</span></div><div class="vb-flow-row"><span class="vb-flow-step">一个 2023 年的申请人，配的是 2025 年的多头记录</span></div><div class="vb-flow-row"><span class="vb-flow-step">已经逾期的人在 2025 年的多头次数当然更高 💀</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 折间标准差 0.004 反而是【泄漏的证据】而不是稳定性的证据：</span></div><div class="vb-flow-row"><span class="vb-flow-step">泄漏的信息在每一折里都同样存在，所以每一折都同样虚高。</span></div><div class="vb-flow-row"><span class="vb-flow-step">&quot;非常稳定&quot;在这里的意思是&quot;每一折都错得一样多&quot;。</span></div></div></section>
 <p><strong>代价</strong></p>
 <section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">放款金额 这 4 个月按新模型放出去 2.7 亿</span></div><div class="vb-flow-row"><span class="vb-flow-step">实际首逾率 预期 1.9%</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">实际 3.4%</span></div><div class="vb-flow-row"><span class="vb-flow-step">多出来的坏账 约 4050 万 × 回收率折算后 ≈ 2900 万</span></div><div class="vb-flow-row"><span class="vb-flow-step">人力 3 人 × 12 周 白做，加 5 周返工</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 从上线到发现 28 天（等首期到期，这是硬约束）</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 从建模到发现 9 周 ← 真正该压缩的是这一段</span></div></div></section>
 <p><strong>该补什么</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>缺失</th>
@@ -891,7 +906,7 @@ SMOTE 的合成样本是<strong>两个真实少数类样本之间的插值点</s
 <td>改用<strong>按时间的滚动回测</strong>，且必须报「最后一段」的分数</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💀 <strong>这个事故里最值得记住的一句</strong>：
 <strong>「5 折 CV 折间标准差只有 0.004」被当成了模型可靠的证据。</strong>
@@ -978,7 +993,7 @@ SMOTE 的合成样本是<strong>两个真实少数类样本之间的插值点</s
 </blockquote>
 <hr />
 <h2 id="_8">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>去哪</th>
@@ -1011,7 +1026,7 @@ SMOTE 的合成样本是<strong>两个真实少数类样本之间的插值点</s
 <td>⭐ <strong>④ 分组泄漏在科学数据上的样子</strong>：那边同一份数据只改划分，R² 从 0.707 掉到 −1.199。⭐⭐ <strong>区别是「组」给没给你</strong> —— 这里 <code>user_id</code> 是现成一列，一行就能验；那里没有这一列，「哪些算同一组」得自己按序列相似度聚，连阈值都是你的决定</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_9">✅ 检查点</h2>
 <ol>

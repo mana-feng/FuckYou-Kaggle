@@ -176,6 +176,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 
 /* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
 .katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -214,7 +218,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <hr />
 <h2 id="_2">一、数据泄露概述</h2>
 <h3 id="11">1.1 什么是数据泄露</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -239,9 +243,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>合理利用泄露是竞赛技巧，过度依赖泄露是风险</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="12">1.2 数据泄露分类</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>类型</th>
@@ -276,11 +280,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>中等</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_3">二、目标泄露</h2>
 <h3 id="21">2.1 常见目标泄露场景</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -315,9 +319,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>在CV循环内做预处理</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="22">2.2 目标泄露检测方法</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -342,7 +346,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>用随机标签训练，如果还能学到东西则泄露</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="23-pipeline">2.3 防止目标泄露的Pipeline</h3>
 <div class="codehilite"><pre><span></span><code>1. 划分训练集/验证集
 2. 在训练集上fit所有转换器(Scaler/Encoder/Imputer)
@@ -355,7 +359,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <hr />
 <h2 id="_4">三、时间泄露</h2>
 <h3 id="31">3.1 时间泄露场景</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -390,9 +394,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>只用截止时间前的行为</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="32">3.2 时序赛正确验证方式</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>验证方式</th>
@@ -422,9 +426,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>金融时序</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="33-embargopurged-cv">3.3 Embargo与Purged CV</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -444,11 +448,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>适用于金融多期数据</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_5">四、测试集泄露</h2>
 <h3 id="41">4.1 训练集与测试集重叠检测</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -477,9 +481,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>同一用户/物品在训练集和测试集都出现</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="42">4.2 重叠样本的利用策略</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>策略</th>
@@ -509,9 +513,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>中等风险</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="43">4.3 测试集分布探测</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -536,11 +540,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>统计检验训练/测试集特征分布是否一致</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_6">五、外部数据利用</h2>
 <h3 id="51">5.1 外部数据使用原则</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>原则</th>
@@ -565,9 +569,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>外部数据与比赛数据分布不能差异过大</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="52">5.2 外部数据类型</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>类型</th>
@@ -602,9 +606,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>大模型API</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="53">5.3 外部数据有效性验证</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>步骤</th>
@@ -633,9 +637,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>多折验证确认提升稳定</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="54">5.4 外部数据常见陷阱</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>陷阱</th>
@@ -665,7 +669,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>仔细阅读规则</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_7">六、对抗验证实战</h2>
 <h3 id="61">6.1 对抗验证流程</h3>
@@ -682,7 +686,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 </code></pre></div>
 
 <h3 id="62">6.2 对抗验证的应用</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>应用</th>
@@ -711,9 +715,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>分析哪些特征对区分训练/测试贡献最大，考虑删除这些特征</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="63">6.3 对抗验证的局限</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>局限</th>
@@ -734,7 +738,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>过度调整训练分布可能丢失有用信息</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_8">七、伪标签策略</h2>
 <h3 id="71">7.1 伪标签基本流程</h3>
@@ -747,7 +751,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 </code></pre></div>
 
 <h3 id="72">7.2 伪标签策略对比</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>策略</th>
@@ -782,9 +786,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>低风险，最稳定</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="73">7.3 伪标签注意事项</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>注意点</th>
@@ -813,11 +817,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>伪标签可能偏向Public测试集分布</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_9">八、合规边界</h2>
 <h3 id="81">8.1 合规与违规的判断</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>行为</th>
@@ -867,9 +871,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>Code Competition中不允许</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="82">8.2 灰色地带</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>行为</th>
@@ -904,10 +908,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>确认规则允许且数据公开可获取</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/05-评估与过拟合.html">ML基础 05 评估与过拟合</a></td><td>验证集一旦被污染，所有评估数字都不作数</td></tr><tr><td><a href="../模型上线之后/04-训练推理一致性.html">模型上线之后 04 训练推理一致性</a></td><td>目标泄露和时间泄露在生产里的名字叫「用了推理时拿不到的特征」</td></tr><tr><td><a href="../模型上线之后/06-数据漂移与概念漂移.html">模型上线之后 06 数据漂移与概念漂移</a></td><td>对抗验证和漂移检测是同一把尺子，量的都是分布差异</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/05-评估与过拟合.html">ML基础 05 评估与过拟合</a></td><td>验证集一旦被污染，所有评估数字都不作数</td></tr><tr><td><a href="../模型上线之后/04-训练推理一致性.html">模型上线之后 04 训练推理一致性</a></td><td>目标泄露和时间泄露在生产里的名字叫「用了推理时拿不到的特征」</td></tr><tr><td><a href="../模型上线之后/06-数据漂移与概念漂移.html">模型上线之后 06 数据漂移与概念漂移</a></td><td>对抗验证和漂移检测是同一把尺子，量的都是分布差异</td></tr></tbody></table></div>
 <hr />
 <h2 id="ckpt">✅ 检查点</h2>
 <ol>

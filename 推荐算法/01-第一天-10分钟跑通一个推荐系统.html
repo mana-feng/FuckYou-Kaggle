@@ -176,6 +176,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 
 /* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
 .katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -298,7 +302,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <section class="visual-block" aria-label="ItemCF 的三步">
 <p class="visual-block-title">ItemCF 的三步</p>
 <p><strong>① 把每部电影写成评分向量</strong></p>
-<div class="table-scroll"><table><thead><tr><th>电影 / 用户</th><th>小明</th><th>小红</th><th>小刚</th><th>小美</th><th>阿强</th><th>阿丽</th><th>老王</th><th>小张</th></tr></thead><tbody><tr><th>星际穿越</th><td>5</td><td>0</td><td>4</td><td>0</td><td>5</td><td>3</td><td>5</td><td>0</td></tr><tr><th>千与千寻</th><td>4</td><td>5</td><td>0</td><td>5</td><td>0</td><td>5</td><td>3</td><td>4</td></tr></tbody></table></div>
+<div class="table-scroll"><div class="tw"><table><thead><tr><th>电影 / 用户</th><th>小明</th><th>小红</th><th>小刚</th><th>小美</th><th>阿强</th><th>阿丽</th><th>老王</th><th>小张</th></tr></thead><tbody><tr><th>星际穿越</th><td>5</td><td>0</td><td>4</td><td>0</td><td>5</td><td>3</td><td>5</td><td>0</td></tr><tr><th>千与千寻</th><td>4</td><td>5</td><td>0</td><td>5</td><td>0</td><td>5</td><td>3</td><td>4</td></tr></tbody></table></div></div>
 <p class="vb-note">读法：一行就是一部电影的“被谁喜欢、喜欢多少”。被同一批人高分的两行会更像。</p>
 <p><strong>② 用余弦相似度比较两行</strong>：方向完全一样是 1.0，完全无关是 0.0；它关心口味是否同向，不是评分总和多大。</p>
 <p><strong>③ 把相似电影给用户的分数加权</strong>：小刚给《星际穿越》4分，而它和《千与千寻》的相似度是0.6，所以《千与千寻》获得 <strong>4 × 0.6 = 2.4</strong> 分。把小刚看过的每部电影都这样累计，最高分就是推荐结果。</p>
@@ -330,7 +334,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 </ol>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/01-10分钟训练你的第一个模型.html">ML基础 01</a></td><td>同样的「10 分钟先跑通」思路，那边是监督学习版</td></tr><tr><td><a href="../机器学习的数学原理/04-非参数方法.html">数学原理 04</a></td><td>ItemCF 本质是 kNN —— 那一章讲它为什么在高维会失效</td></tr><tr><td><a href="../模型上线之后/02-离线好不等于线上好.html">上线之后 02</a></td><td>你算出的相似度好看，不代表线上有效</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/01-10分钟训练你的第一个模型.html">ML基础 01</a></td><td>同样的「10 分钟先跑通」思路，那边是监督学习版</td></tr><tr><td><a href="../机器学习的数学原理/04-非参数方法.html">数学原理 04</a></td><td>ItemCF 本质是 kNN —— 那一章讲它为什么在高维会失效</td></tr><tr><td><a href="../模型上线之后/02-离线好不等于线上好.html">上线之后 02</a></td><td>你算出的相似度好看，不代表线上有效</td></tr></tbody></table></div>
 <hr />
 <h2 id="_7">✅ 检查点</h2>
 <p>不用写答案，心里过一遍。答不上来就往上翻：</p>
