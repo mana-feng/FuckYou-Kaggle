@@ -442,13 +442,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><strong>这就是随机森林「随机选特征」的数学理由</strong>：</p>
 <section class="visual-block visual-block-flow" aria-label="流程图"><p class="visual-block-title">流程图</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">如果每棵树都能看全部特征</span></div><div class="vb-flow-row"><span class="vb-flow-step">都会先用那个最强的特征分裂</span></div><div class="vb-flow-row"><span class="vb-flow-step">树长得都差不多</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">ρ 很高</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">平均了也没用</span></div><div class="vb-flow-row"><span class="vb-flow-step">强制每次只从随机 k 个特征里选</span></div><div class="vb-flow-row"><span class="vb-flow-step">树被迫变得不一样</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">ρ 下降</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">平均才真正有效 ⭐</span></div></div></section>
 <blockquote>
-<p>🔗 <a href="../机器学习与深度学习基础/04-决策树与集成学习.html">基础教程第 4 章</a>说
+<p>🔗 <a href="../机器学习与深度学习基础/04a-集成学习与GBDT.html">ML 基础 04a · 集成学习与 GBDT</a>说
 "集成的收益来自成员差异"——<strong>差异就是 1−ρ，这里是它的公式。</strong></p>
 </blockquote>
 <h3 id="boosting">Boosting：砍偏差</h3>
 <section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">Boosting 每棵新树拟合前面的残差</span></div><div class="vb-flow-row"><span class="vb-flow-step">逐步降低【偏差】</span></div><div class="vb-flow-row"><span class="vb-flow-step">所以该配【低方差高偏差】的基学习器 = 浅树（深度 3-8）⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">代价：树越多，方差会慢慢上升</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">需要早停</span></div></div></section>
 <blockquote>
-<p>🔗 这解释了<a href="../机器学习与深度学习基础/04-决策树与集成学习.html">基础教程第 4 章</a>那个问题：
+<p>🔗 这解释了<a href="../机器学习与深度学习基础/04a-集成学习与GBDT.html">ML 基础 04a · 集成学习与 GBDT</a>那个问题：
 <strong>为什么 GBDT 的树要浅、随机森林的树要深。</strong>
 <strong>两者在偏差-方差等式里干的是相反的活。</strong></p>
 </blockquote>
