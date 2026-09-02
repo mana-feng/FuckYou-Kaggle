@@ -1,14 +1,24 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>04 · 决策树与集成学习 · 机器学习与深度学习基础</title>
+<title>04 · 决策树：怎么切一刀 · 机器学习与深度学习基础</title>
 <script>(function(){var t=localStorage.getItem('recsys-theme');
 if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
 @font-face{font-family:"CodeCJK";
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -267,9 +284,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
-  <span class="title">04 · 决策树与集成</span>
+  <span class="title">04 · 决策树：怎么切一刀</span>
   <span class="prevnext"><a href="03-线性模型.html">←</a>
-  <a href="04b-XGBoost的推导.html">→</a></span>
+  <a href="04a-集成学习与GBDT.html">→</a></span>
   <button class="js-done-btn">☐ 打卡</button>
   <button id="themeToggle" title="切换深浅色">🌗</button>
 </div></header>
@@ -278,36 +295,34 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><a href="#_1">🎯 一句话</a></li>
 <li><a href="#if-else">🌲 一、决策树：一堆 if-else</a></li>
 <li><a href="#id3-c45-cart">🪓 二、分裂准则的演进：ID3 → C4.5 → CART</a></li>
-<li><a href="#_5">🌳 三、集成学习：三种组合方式</a></li>
-<li><a href="#bagging">🌲 四、随机森林：Bagging + 双重随机</a></li>
-<li><a href="#gbdtboosting">🚀 五、GBDT：Boosting 的核心思想</a></li>
-<li><a href="#_9">🔨 动手：亲眼看集成的威力</a></li>
-<li><a href="#_10">⚠️ 特征重要性的三个坑</a></li>
-<li><a href="#_11">🔗 和站内其他章的关系</a></li>
-<li><a href="#_12">✅ 检查点</a></li>
-<li><a href="#_13">🛑 可以停在这里</a></li>
+<li><a href="#_5">🔗 和站内其他章的关系</a></li>
+<li><a href="#_6">✅ 检查点</a></li>
+<li><a href="#_7">🛑 可以停在这里</a></li>
 </ul>
 </div>
 </details>
-<h1 id="04">04 · 决策树与集成学习</h1>
-<p>⏱ <strong>52 分钟</strong> ｜ ⭐ <strong>表格数据的王者，Kaggle 板块的地基</strong></p>
+<h1 id="04">04 · 决策树：怎么切一刀</h1>
+<p>⏱ <strong>26 分钟</strong> ｜ ⭐ <strong>判据换过三代，主线是同一个毛病：偏好取值多的特征</strong></p>
 <hr />
 <h2 id="_1">🎯 一句话</h2>
-<p>一棵树很弱（第 1 章那个 91.8%），但把几百棵弱树按正确方式组合起来，就是表格数据上至今难以撼动的最强模型——XGBoost / LightGBM 的全部秘密就在这。</p>
-<figure class="dia" data-fig="decision_tree"><svg viewBox="0 0 660 308" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="决策树的轴对齐切分与对应树结构"><defs><marker id="a5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker><marker id="a5l" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--link)"/></marker><marker id="a5g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--done)"/></marker></defs><rect x="50" y="60" width="190" height="190" fill="none" stroke="var(--border)" stroke-width="1.5"/><line x1="137.4" y1="60" x2="137.4" y2="250" stroke="var(--accent)" stroke-width="2.4"/><line x1="137.4" y1="139.8" x2="240" y2="139.8" stroke="var(--accent)" stroke-width="2.4"/><circle cx="136.0" cy="143.6" r="4" fill="var(--muted)"/><circle cx="138.5" cy="153.5" r="4" fill="var(--link)"/><circle cx="85.1" cy="152.7" r="4" fill="var(--link)"/><circle cx="200.7" cy="232.1" r="4" fill="var(--link)"/><circle cx="67.2" cy="96.2" r="4" fill="var(--link)"/><circle cx="58.0" cy="63.4" r="4" fill="var(--muted)"/><circle cx="174.2" cy="133.0" r="4" fill="var(--muted)"/><circle cx="52.9" cy="149.6" r="4" fill="var(--link)"/><circle cx="86.1" cy="204.0" r="4" fill="var(--link)"/><circle cx="138.1" cy="166.3" r="4" fill="var(--muted)"/><circle cx="148.6" cy="128.3" r="4" fill="var(--muted)"/><circle cx="175.9" cy="163.1" r="4" fill="var(--link)"/><circle cx="239.6" cy="60.8" r="4" fill="var(--link)"/><circle cx="184.5" cy="190.1" r="4" fill="var(--link)"/><circle cx="104.9" cy="236.7" r="4" fill="var(--link)"/><circle cx="126.1" cy="89.1" r="4" fill="var(--link)"/><circle cx="232.0" cy="89.0" r="4" fill="var(--muted)"/><circle cx="89.8" cy="77.0" r="4" fill="var(--link)"/><circle cx="236.3" cy="174.5" r="4" fill="var(--link)"/><circle cx="169.6" cy="102.1" r="4" fill="var(--muted)"/><circle cx="66.6" cy="186.8" r="4" fill="var(--muted)"/><circle cx="194.0" cy="227.6" r="4" fill="var(--link)"/><circle cx="69.2" cy="238.6" r="4" fill="var(--link)"/><circle cx="83.8" cy="143.7" r="4" fill="var(--link)"/><circle cx="86.2" cy="110.9" r="4" fill="var(--link)"/><circle cx="172.3" cy="227.9" r="4" fill="var(--link)"/><circle cx="90.4" cy="198.7" r="4" fill="var(--muted)"/><circle cx="202.6" cy="192.2" r="4" fill="var(--muted)"/><circle cx="90.0" cy="175.1" r="4" fill="var(--muted)"/><circle cx="171.9" cy="230.9" r="4" fill="var(--muted)"/><circle cx="90.5" cy="200.9" r="4" fill="var(--link)"/><circle cx="112.5" cy="193.7" r="4" fill="var(--link)"/><circle cx="67.1" cy="139.3" r="4" fill="var(--link)"/><circle cx="164.2" cy="179.4" r="4" fill="var(--link)"/><circle cx="232.2" cy="158.1" r="4" fill="var(--link)"/><circle cx="214.6" cy="215.3" r="4" fill="var(--link)"/><circle cx="222.6" cy="94.6" r="4" fill="var(--muted)"/><circle cx="86.1" cy="109.5" r="4" fill="var(--muted)"/><circle cx="87.4" cy="69.5" r="4" fill="var(--muted)"/><circle cx="164.7" cy="169.9" r="4" fill="var(--link)"/><circle cx="57.4" cy="67.1" r="4" fill="var(--link)"/><circle cx="183.9" cy="201.2" r="4" fill="var(--muted)"/><circle cx="163.3" cy="194.2" r="4" fill="var(--link)"/><circle cx="186.9" cy="236.9" r="4" fill="var(--link)"/><circle cx="156.3" cy="88.0" r="4" fill="var(--muted)"/><circle cx="103.2" cy="75.7" r="4" fill="var(--link)"/><text class="dia-t" x="145.0" y="272" font-size="12" text-anchor="middle" fill="var(--muted)" font-weight="600">特征平面</text><text class="dia-t" x="129.4" y="52" font-size="11" text-anchor="end" fill="var(--accent)" font-weight="700">第①刀</text><text class="dia-t" x="244" y="133.8" font-size="11" text-anchor="end" fill="var(--accent)" font-weight="700">第②刀</text><rect x="344" y="60" width="112" height="36" rx="8" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><text class="dia-t" x="400" y="83" font-size="11.5" text-anchor="middle" fill="var(--fg)" font-weight="600">x₁ &lt; 3.5 ?</text><rect x="300" y="146" width="60" height="32" rx="7" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/><text class="dia-t" x="330" y="167" font-size="12" text-anchor="middle" fill="var(--fg)" font-weight="700">是 → A</text><rect x="434" y="144" width="112" height="36" rx="8" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><text class="dia-t" x="490" y="167" font-size="11.5" text-anchor="middle" fill="var(--fg)" font-weight="600">x₂ &lt; 7 ?</text><rect x="400" y="224" width="60" height="32" rx="7" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/><text class="dia-t" x="430" y="245" font-size="12" text-anchor="middle" fill="var(--fg)" font-weight="700">是 → B</text><rect x="530" y="224" width="60" height="32" rx="7" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/><text class="dia-t" x="560" y="245" font-size="12" text-anchor="middle" fill="var(--fg)" font-weight="700">否 → A</text><line x1="400" y1="96" x2="330" y2="146" stroke="var(--border)" stroke-width="1.6"/><line x1="400" y1="96" x2="490" y2="144" stroke="var(--border)" stroke-width="1.6"/><line x1="490" y1="180" x2="430" y2="224" stroke="var(--border)" stroke-width="1.6"/><line x1="490" y1="180" x2="560" y2="224" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="340" y="30" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">一棵树 = 一串「切一刀」——而且每刀都必须平行于坐标轴</text><text class="dia-t" x="340" y="292" font-size="12.5" text-anchor="middle" fill="var(--accent)" font-weight="700">⭐ 所以斜的决策边界，树要用很多刀去逼近成阶梯 —— 这就是它的归纳偏置</text></svg><figcaption>左边是被切开的特征平面，右边是对应的树 —— 一一对应。⭐ 注意每刀都<b>必须平行于坐标轴</b>：所以斜的决策边界，树只能用很多刀逼近成阶梯。这就是树的归纳偏置。</figcaption></figure>
+<p><strong>决策树就是在特征空间里切方块</strong>：贪心试遍所有切分点，选让子节点最「纯」的那一刀。
+⭐ 而「纯」怎么量，历史上换过三代（ID3 → C4.5 → CART）——
+<strong>这条演进线不是考点，是因为 GBDT / XGBoost / LightGBM 的每一棵树都长在第三代上面。</strong></p>
+<figure class="dia" data-fig="decision_tree"><svg viewBox="0 0 660 308" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="决策树的轴对齐切分与对应树结构"><defs><marker id="a5__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker><marker id="a5l__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--link)"/></marker><marker id="a5g__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--done)"/></marker></defs><rect x="50" y="60" width="190" height="190" fill="none" stroke="var(--border)" stroke-width="1.5"/><line x1="137.4" y1="60" x2="137.4" y2="250" stroke="var(--accent)" stroke-width="2.4"/><line x1="137.4" y1="139.8" x2="240" y2="139.8" stroke="var(--accent)" stroke-width="2.4"/><circle cx="136.0" cy="143.6" r="4" fill="var(--muted)"/><circle cx="138.5" cy="153.5" r="4" fill="var(--link)"/><circle cx="85.1" cy="152.7" r="4" fill="var(--link)"/><circle cx="200.7" cy="232.1" r="4" fill="var(--link)"/><circle cx="67.2" cy="96.2" r="4" fill="var(--link)"/><circle cx="58.0" cy="63.4" r="4" fill="var(--muted)"/><circle cx="174.2" cy="133.0" r="4" fill="var(--muted)"/><circle cx="52.9" cy="149.6" r="4" fill="var(--link)"/><circle cx="86.1" cy="204.0" r="4" fill="var(--link)"/><circle cx="138.1" cy="166.3" r="4" fill="var(--muted)"/><circle cx="148.6" cy="128.3" r="4" fill="var(--muted)"/><circle cx="175.9" cy="163.1" r="4" fill="var(--link)"/><circle cx="239.6" cy="60.8" r="4" fill="var(--link)"/><circle cx="184.5" cy="190.1" r="4" fill="var(--link)"/><circle cx="104.9" cy="236.7" r="4" fill="var(--link)"/><circle cx="126.1" cy="89.1" r="4" fill="var(--link)"/><circle cx="232.0" cy="89.0" r="4" fill="var(--muted)"/><circle cx="89.8" cy="77.0" r="4" fill="var(--link)"/><circle cx="236.3" cy="174.5" r="4" fill="var(--link)"/><circle cx="169.6" cy="102.1" r="4" fill="var(--muted)"/><circle cx="66.6" cy="186.8" r="4" fill="var(--muted)"/><circle cx="194.0" cy="227.6" r="4" fill="var(--link)"/><circle cx="69.2" cy="238.6" r="4" fill="var(--link)"/><circle cx="83.8" cy="143.7" r="4" fill="var(--link)"/><circle cx="86.2" cy="110.9" r="4" fill="var(--link)"/><circle cx="172.3" cy="227.9" r="4" fill="var(--link)"/><circle cx="90.4" cy="198.7" r="4" fill="var(--muted)"/><circle cx="202.6" cy="192.2" r="4" fill="var(--muted)"/><circle cx="90.0" cy="175.1" r="4" fill="var(--muted)"/><circle cx="171.9" cy="230.9" r="4" fill="var(--muted)"/><circle cx="90.5" cy="200.9" r="4" fill="var(--link)"/><circle cx="112.5" cy="193.7" r="4" fill="var(--link)"/><circle cx="67.1" cy="139.3" r="4" fill="var(--link)"/><circle cx="164.2" cy="179.4" r="4" fill="var(--link)"/><circle cx="232.2" cy="158.1" r="4" fill="var(--link)"/><circle cx="214.6" cy="215.3" r="4" fill="var(--link)"/><circle cx="222.6" cy="94.6" r="4" fill="var(--muted)"/><circle cx="86.1" cy="109.5" r="4" fill="var(--muted)"/><circle cx="87.4" cy="69.5" r="4" fill="var(--muted)"/><circle cx="164.7" cy="169.9" r="4" fill="var(--link)"/><circle cx="57.4" cy="67.1" r="4" fill="var(--link)"/><circle cx="183.9" cy="201.2" r="4" fill="var(--muted)"/><circle cx="163.3" cy="194.2" r="4" fill="var(--link)"/><circle cx="186.9" cy="236.9" r="4" fill="var(--link)"/><circle cx="156.3" cy="88.0" r="4" fill="var(--muted)"/><circle cx="103.2" cy="75.7" r="4" fill="var(--link)"/><text class="dia-t" x="145.0" y="272" font-size="12" text-anchor="middle" fill="var(--muted)" font-weight="600">特征平面</text><text class="dia-t" x="129.4" y="52" font-size="11" text-anchor="end" fill="var(--accent)" font-weight="700">第①刀</text><text class="dia-t" x="244" y="133.8" font-size="11" text-anchor="end" fill="var(--accent)" font-weight="700">第②刀</text><rect x="344" y="60" width="112" height="36" rx="8" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><text class="dia-t" x="400" y="83" font-size="11.5" text-anchor="middle" fill="var(--fg)" font-weight="600">x₁ &lt; 3.5 ?</text><rect x="300" y="146" width="60" height="32" rx="7" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/><text class="dia-t" x="330" y="167" font-size="12" text-anchor="middle" fill="var(--fg)" font-weight="700">是 → A</text><rect x="434" y="144" width="112" height="36" rx="8" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><text class="dia-t" x="490" y="167" font-size="11.5" text-anchor="middle" fill="var(--fg)" font-weight="600">x₂ &lt; 7 ?</text><rect x="400" y="224" width="60" height="32" rx="7" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/><text class="dia-t" x="430" y="245" font-size="12" text-anchor="middle" fill="var(--fg)" font-weight="700">是 → B</text><rect x="530" y="224" width="60" height="32" rx="7" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/><text class="dia-t" x="560" y="245" font-size="12" text-anchor="middle" fill="var(--fg)" font-weight="700">否 → A</text><line x1="400" y1="96" x2="330" y2="146" stroke="var(--border)" stroke-width="1.6"/><line x1="400" y1="96" x2="490" y2="144" stroke="var(--border)" stroke-width="1.6"/><line x1="490" y1="180" x2="430" y2="224" stroke="var(--border)" stroke-width="1.6"/><line x1="490" y1="180" x2="560" y2="224" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="340" y="30" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">一棵树 = 一串「切一刀」——而且每刀都必须平行于坐标轴</text><text class="dia-t" x="340" y="292" font-size="12.5" text-anchor="middle" fill="var(--accent)" font-weight="700">⭐ 所以斜的决策边界，树要用很多刀去逼近成阶梯 —— 这就是它的归纳偏置</text></svg><figcaption>左边是被切开的特征平面，右边是对应的树 —— 一一对应。⭐ 注意每刀都<b>必须平行于坐标轴</b>：所以斜的决策边界，树只能用很多刀逼近成阶梯。这就是树的归纳偏置。</figcaption></figure>
 
 <blockquote>
-<p>📍 <strong>这一章的链是</strong>：怎么切一刀（ID3 → C4.5 → CART）→ 怎么把树组合起来（Bagging / Boosting / Stacking）→ GBDT 每棵新树到底在学什么。
-链的最后一环——<strong>「怎么把『下一棵树该怎么长』写成一个能求闭式解的目标函数」</strong>——单独放在 <a href="04b-XGBoost的推导.html">04b · XGBoost 的推导</a>，读完这一章再去。</p>
+<p>📍 <strong>这一章讲一棵树。</strong> 把几百棵组合起来才是表格数据的王者，那是
+<a href="04a-集成学习与GBDT.html">04a · 集成学习与 GBDT</a>；
+再往下「下一棵树该怎么长」的闭式解在 <a href="04b-XGBoost的推导.html">04b · XGBoost 的推导</a>。</p>
 </blockquote>
 <hr />
 <h2 id="if-else">🌲 一、决策树：一堆 if-else</h2>
-<figure class="dia"><svg viewBox="0 0 760 390" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="一个两层决策树根据肿瘤特征依次判断良性或恶性"><defs><marker id="tree-arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 Z" fill="var(--accent)"/></marker></defs><rect x="245" y="24" width="270" height="58" rx="14" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><text class="dia-t" x="380" y="59" text-anchor="middle" font-size="17" font-weight="700" fill="var(--fg)">最差周长 ≤ 106？</text><path d="M335 82 V112 H175 V142 M425 82 V112 H585 V142" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#tree-arrow)"/><text class="dia-t" x="250" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent)">是</text><text class="dia-t" x="510" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent)">否</text><rect x="52" y="152" width="246" height="58" rx="14" fill="var(--card)" stroke="var(--border)" stroke-width="2"/><text class="dia-t" x="175" y="187" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">最差凹点 ≤ 0.14？</text><rect x="472" y="152" width="226" height="58" rx="14" fill="var(--quote-bg)" stroke="var(--danger)" stroke-width="2"/><text class="dia-t" x="585" y="179" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">恶性</text><text class="dia-t" x="585" y="200" text-anchor="middle" font-size="14" fill="var(--muted)">把握 95%</text><path d="M130 210 V248 H88 V278 M220 210 V248 H270 V278" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#tree-arrow)"/><text class="dia-t" x="110" y="241" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent)">是</text><text class="dia-t" x="246" y="241" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent)">否</text><rect x="28" y="288" width="180" height="62" rx="14" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><text class="dia-t" x="118" y="315" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">良性</text><text class="dia-t" x="118" y="338" text-anchor="middle" font-size="14" fill="var(--muted)">把握 98%</text><rect x="238" y="288" width="180" height="62" rx="14" fill="var(--quote-bg)" stroke="var(--danger)" stroke-width="2"/><text class="dia-t" x="328" y="315" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">恶性</text><text class="dia-t" x="328" y="338" text-anchor="middle" font-size="14" fill="var(--muted)">把握 80%</text><text class="dia-t" x="585" y="334" text-anchor="middle" font-size="14" fill="var(--muted)">每经过一个问题，</text><text class="dia-t" x="585" y="356" text-anchor="middle" font-size="14" fill="var(--muted)">样本就被分进更小的一群</text></svg><figcaption>决策树就是一连串可解释的“是／否”问题：先用一个特征粗分，再用下一个特征细分，最后抵达预测结果。</figcaption></figure>
+<figure class="dia"><svg viewBox="0 0 760 390" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="一个两层决策树根据肿瘤特征依次判断良性或恶性"><defs><marker id="tree-arrow__f2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 Z" fill="var(--accent)"/></marker></defs><rect x="245" y="24" width="270" height="58" rx="14" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><text class="dia-t" x="380" y="59" text-anchor="middle" font-size="17" font-weight="700" fill="var(--fg)">最差周长 ≤ 106？</text><path d="M335 82 V112 H175 V142" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#tree-arrow__f2)"/><path d="M425 82 V112 H585 V142" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#tree-arrow__f2)"/><text class="dia-t" x="250" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent)">是</text><text class="dia-t" x="510" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent)">否</text><rect x="52" y="152" width="246" height="58" rx="14" fill="var(--card)" stroke="var(--border)" stroke-width="2"/><text class="dia-t" x="175" y="187" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">最差凹点 ≤ 0.14？</text><rect x="472" y="152" width="226" height="58" rx="14" fill="var(--quote-bg)" stroke="var(--danger)" stroke-width="2"/><text class="dia-t" x="585" y="179" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">恶性</text><text class="dia-t" x="585" y="200" text-anchor="middle" font-size="14" fill="var(--muted)">把握 95%</text><path d="M130 210 V248 H88 V278" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#tree-arrow__f2)"/><path d="M220 210 V248 H270 V278" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#tree-arrow__f2)"/><text class="dia-t" x="110" y="241" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent)">是</text><text class="dia-t" x="246" y="241" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent)">否</text><rect x="28" y="288" width="180" height="62" rx="14" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><text class="dia-t" x="118" y="315" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">良性</text><text class="dia-t" x="118" y="338" text-anchor="middle" font-size="14" fill="var(--muted)">把握 98%</text><rect x="238" y="288" width="180" height="62" rx="14" fill="var(--quote-bg)" stroke="var(--danger)" stroke-width="2"/><text class="dia-t" x="328" y="315" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">恶性</text><text class="dia-t" x="328" y="338" text-anchor="middle" font-size="14" fill="var(--muted)">把握 80%</text><text class="dia-t" x="585" y="334" text-anchor="middle" font-size="14" fill="var(--muted)">每经过一个问题，</text><text class="dia-t" x="585" y="356" text-anchor="middle" font-size="14" fill="var(--muted)">样本就被分进更小的一群</text></svg><figcaption>决策树就是一连串可解释的“是／否”问题：先用一个特征粗分，再用下一个特征细分，最后抵达预测结果。</figcaption></figure>
 <p>💡 <strong>它就是在特征空间里切方块</strong>：每次沿着某个特征切一刀，把数据分成两半。</p>
 <h3 id="_2">怎么决定「切哪个特征、切在哪」</h3>
 <p>贪心：试遍所有特征的所有切分点，选<strong>让子节点最"纯"</strong>的那个。</p>
 <p>「纯度」的两种度量：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>指标</th>
@@ -327,7 +342,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>不确定性。信息增益 = 熵减少了多少</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>💡 <strong>人话</strong>：</p>
 <blockquote>
 <p>切一刀之前左右混在一起（不纯），切完之后左边基本都是良性、右边基本都是恶性（纯）。
@@ -335,7 +350,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 两个指标实践中差别很小，用默认的基尼就行。</p>
 </blockquote>
 <h3 id="_3">关键特性</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>特性</th>
@@ -364,7 +379,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>数据变一点，树的结构可能全变</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>控制过拟合的四个旋钮：<code>max_depth</code>（最常用）、<code>min_samples_leaf</code>、<code>min_samples_split</code>、<code>max_leaf_nodes</code></p>
 <hr />
 <h2 id="id3-c45-cart">🪓 二、分裂准则的演进：ID3 → C4.5 → CART</h2>
@@ -374,7 +389,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>💡 人话：熵 $H$ 是「你还有多不确定」。切一刀，不确定性掉了多少；掉得最多的那一刀就选它。</p>
 <p>⚠️ <strong>但它有一个致命偏好：一个特征的取值越多，信息增益天然越大。</strong></p>
 <p>举个能算的例子。20 个样本，10 正 10 负，所以 $H(D)=1$ bit：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>候选特征</th>
@@ -394,14 +409,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>$1-0=\mathbf{1.000}$ ← 赢了</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>ID3 会毫不犹豫地选用户 ID</strong>，而这棵树在新用户身上一个都答不出来——它把这 20 个样本<strong>背下来</strong>了。</p>
 <h3 id="2-c45">② C4.5：信息增益率——除以「这个特征自己有多碎」</h3>
 <p>C4.5 的补丁很直接：<strong>给切得太碎的特征加罚分</strong>。</p>
-<p>$$\text{GainRatio}(D,a)=\frac{\text{Gain}(D,a)}{IV(a)},\qquad IV(a)=-\sum_v \frac{|D^v|}{|D|}\log_2\frac{|D^v|}{|D|}$$</p>
+<p>$$\text{GainRatio}(D,a)=\frac{\text{Gain}(D,a)}{IV(a)}$$</p>
+<p>$$IV(a)=-\sum_v \frac{|D^v|}{|D|}\log_2\frac{|D^v|}{|D|}$$</p>
 <p>💡 IV（固有值 / intrinsic value）到底是什么：把「样本落进了哪个分支」本身当成一个随机变量，算它的熵。⭐ 注意 IV 和标签 $y$ 一点关系都没有，它纯粹度量「这一刀切得多碎、多均匀」。切成越多份、越均匀，IV 越大。</p>
 <p>接着上面的数算：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>特征</th>
@@ -424,14 +440,30 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>0.231</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>换了判据，A 就赢了。 这就是「为什么要除以固有值」的全部答案：分子奖励「分得准」，分母惩罚「分得碎」。</p>
-<p>⚠️ <strong>但增益率又矫枉过正了</strong>——它反过来偏爱取值少的特征。所以 C4.5 实际用的是<strong>两步启发式</strong>：先筛出信息增益高于平均水平的候选，再在这一批里挑增益率最高的。（面试能说出「C4.5 不是单纯用增益率」是加分项。）</p>
-<p>C4.5 相比 ID3 还多做了三件事：能处理连续特征（排序后取相邻取值的中点当候选切分点）、能处理缺失值（按各分支的样本比例，把缺失样本带权重分到每一支）、有后剪枝。</p>
+<p>⚠️ <strong>但增益率又矫枉过正了</strong>——它反过来偏爱取值少的特征。</p>
+<details>
+<summary>🔍 C4.5 怎么收拾这个矫枉过正，以及它还多做了什么（第一次读可以跳过）</summary>
+<p>C4.5 实际用的是<strong>两步启发式</strong>：先筛出信息增益高于平均水平的候选，再在这一批里挑增益率最高的。
+（面试能说出「C4.5 不是单纯用增益率」是加分项。）</p>
+<p>它相比 ID3 还多做了三件事：</p>
+<ul>
+<li><strong>连续特征</strong>：排序后取相邻取值的中点当候选切分点</li>
+<li><strong>缺失值</strong>：按各分支的样本比例，把缺失样本带权重分到每一支</li>
+<li><strong>后剪枝</strong></li>
+</ul>
+</details>
 <h3 id="3-cart-log">③ CART：基尼系数——把 log 换成乘法</h3>
 <p>$$\text{Gini}(D)=1-\sum_k p_k^2$$</p>
 <p>为什么更快：熵要算 $\log$，基尼只要乘法和减法。一棵树训练时要算几十万次纯度，这个常数差是实打实的。</p>
-<p>为什么可以这么换：把 $-\ln p$ 在 $p=1$ 处做一阶泰勒展开得到 $-\ln p \approx 1-p$，代回熵的定义就成了 $\sum_k p_k(1-p_k)=1-\sum_k p_k^2$。⭐ 基尼就是熵的一阶近似——两条曲线形状几乎重合（二分类下 $p=0.5$ 时熵取最大值 1 bit、基尼取最大值 0.5，最大值在同一点），所以实践中选哪个对结果几乎没影响。</p>
+<p>为什么可以这么换：⭐ <strong>基尼就是熵的一阶近似</strong>，两条曲线形状几乎重合，所以<strong>实践中选哪个对结果几乎没影响</strong>——用默认的基尼就行。</p>
+<details>
+<summary>🔍 「基尼是熵的一阶近似」这句话怎么来的（想看推导再点开）</summary>
+<p>把 $-\ln p$ 在 $p=1$ 处做一阶泰勒展开，得到 $-\ln p \approx 1-p$；
+代回熵的定义就成了 $\sum_k p_k(1-p_k)=1-\sum_k p_k^2$，正是基尼。</p>
+<p>⭐ 两者的最大值也在同一点：二分类下 $p=0.5$ 时，熵取最大值 1 bit、基尼取最大值 0.5。</p>
+</details>
 <p>⚠️ <strong>很多人搞错的一点：基尼并没有解决「偏好多值特征」。</strong> 还是上面那组数——A 的基尼下降是 <strong>0.32</strong>，用户 ID 的基尼下降是 0.50，基尼照样选用户 ID。这个毛病是所有「增益类判据」共有的，不是熵独有的。</p>
 <p><strong>CART 的解法不是换判据，是换结构</strong>：</p>
 <ul>
@@ -443,7 +475,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 CART 只是把病<strong>压住</strong>了，没治好。取值多的特征仍然有更多候选切分点可以试，仍然更容易被选中。</p>
 </blockquote>
 <h3 id="_4">三代对比</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -490,7 +522,7 @@ CART 只是把病<strong>压住</strong>了，没治好。取值多的特征仍�
 <td>代价复杂度剪枝（CCP）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>🔑 <strong>最后一行是本节通向后面所有内容的接口</strong>：
 ⭐ <strong>Boosting 家族里的每一棵树都是 CART 回归树。</strong>
@@ -498,243 +530,9 @@ CART 只是把病<strong>压住</strong>了，没治好。取值多的特征仍�
 <strong>ID3 和 C4.5 只会分类，从一开始就没有资格进这个家族</strong>；sklearn 里也只实现了 CART。</p>
 </blockquote>
 <hr />
-<h2 id="_5">🌳 三、集成学习：三种组合方式</h2>
-<figure class="dia" data-fig="bagging_boosting"><svg viewBox="0 0 700 312" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bagging 与 Boosting 的结构差异"><defs><marker id="a5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker><marker id="a5l" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--link)"/></marker><marker id="a5g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--done)"/></marker></defs><text class="dia-t" x="60" y="74" font-size="13.5" text-anchor="start" fill="var(--link)" font-weight="700">Bagging</text><text class="dia-t" x="60" y="92" font-size="11" text-anchor="start" fill="var(--muted)" font-weight="normal">并行 · 各train各的</text><rect x="228" y="62" width="52" height="34" rx="6" fill="var(--link)" opacity="0.5" stroke="var(--link)" stroke-width="1.4"/><text class="dia-t" x="254.0" y="83.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树1</text><line x1="212" y1="79" x2="224" y2="79" stroke="var(--muted)" stroke-width="1.2" opacity=".5"/><rect x="296" y="62" width="52" height="34" rx="6" fill="var(--link)" opacity="0.5" stroke="var(--link)" stroke-width="1.4"/><text class="dia-t" x="322.0" y="83.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树2</text><line x1="212" y1="79" x2="292" y2="79" stroke="var(--muted)" stroke-width="1.2" opacity=".5"/><rect x="364" y="62" width="52" height="34" rx="6" fill="var(--link)" opacity="0.5" stroke="var(--link)" stroke-width="1.4"/><text class="dia-t" x="390.0" y="83.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树3</text><line x1="212" y1="79" x2="360" y2="79" stroke="var(--muted)" stroke-width="1.2" opacity=".5"/><rect x="432" y="62" width="52" height="34" rx="6" fill="var(--link)" opacity="0.5" stroke="var(--link)" stroke-width="1.4"/><text class="dia-t" x="458.0" y="83.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树4</text><line x1="212" y1="79" x2="428" y2="79" stroke="var(--muted)" stroke-width="1.2" opacity=".5"/><rect x="192" y="60" width="16" height="38" rx="4" fill="var(--muted)" opacity=".4"/><text class="dia-t" x="200" y="116" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">数据</text><text class="dia-t" x="516" y="82" font-size="12" text-anchor="start" fill="var(--link)" font-weight="600">→ 投票/平均</text><text class="dia-t" x="516" y="100" font-size="12" text-anchor="start" fill="var(--link)" font-weight="700">降【方差】</text><text class="dia-t" x="60" y="190" font-size="13.5" text-anchor="start" fill="var(--accent)" font-weight="700">Boosting</text><text class="dia-t" x="60" y="208" font-size="11" text-anchor="start" fill="var(--muted)" font-weight="normal">串行 · 补前一个的错</text><rect x="228" y="178" width="52" height="34" rx="6" fill="var(--accent)" opacity="0.32" stroke="var(--accent)" stroke-width="1.4"/><text class="dia-t" x="254.0" y="199.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树1</text><text class="dia-t" x="254" y="228" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="normal"></text><rect x="296" y="178" width="52" height="34" rx="6" fill="var(--accent)" opacity="0.48" stroke="var(--accent)" stroke-width="1.4"/><text class="dia-t" x="322.0" y="199.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树2</text><line x1="276" y1="195" x2="292" y2="195" stroke="var(--accent)" stroke-width="2" marker-end="url(#a5)"/><text class="dia-t" x="322" y="228" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="normal">补错</text><rect x="364" y="178" width="52" height="34" rx="6" fill="var(--accent)" opacity="0.64" stroke="var(--accent)" stroke-width="1.4"/><text class="dia-t" x="390.0" y="199.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树3</text><line x1="344" y1="195" x2="360" y2="195" stroke="var(--accent)" stroke-width="2" marker-end="url(#a5)"/><text class="dia-t" x="390" y="228" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="normal">再补</text><rect x="432" y="178" width="52" height="34" rx="6" fill="var(--accent)" opacity="0.8" stroke="var(--accent)" stroke-width="1.4"/><text class="dia-t" x="458.0" y="199.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树4</text><line x1="412" y1="195" x2="428" y2="195" stroke="var(--accent)" stroke-width="2" marker-end="url(#a5)"/><text class="dia-t" x="458" y="228" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="normal">再补</text><text class="dia-t" x="516" y="198" font-size="12" text-anchor="start" fill="var(--accent)" font-weight="600">→ 加权求和</text><text class="dia-t" x="516" y="216" font-size="12" text-anchor="start" fill="var(--accent)" font-weight="700">降【偏差】</text><text class="dia-t" x="340" y="30" font-size="13.5" text-anchor="middle" fill="var(--fg)" font-weight="700">都是「很多棵树」，但组织方式和治的病完全不同</text><text class="dia-t" x="340" y="274" font-size="12" text-anchor="middle" fill="var(--accent)" font-weight="700">⭐ Bagging 的树可以并行训、深一点无所谓；Boosting 必须串行、每棵要浅（否则第一棵就过拟合了）</text><text class="dia-t" x="340" y="296" font-size="11.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">所以随机森林调「树多少棵」，GBDT 调「学习率 + 树深」</text></svg><figcaption>都是「很多棵树」，但组织方式和治的病完全不同：<b>Bagging 并行降方差，Boosting 串行降偏差</b>。⭐ 所以随机森林主要调「多少棵」，GBDT 主要调「学习率 + 树深」。</figcaption></figure>
-
-<p>单棵树不稳定又易过拟合。把很多棵组合起来——但怎么组合，分成三条完全不同的路线：</p>
-<div class="panels">
-<div class="panel">
-<div class="ph">① Bagging（并行，降方差）</div>
-<ul class="pl">
-<li><b>怎么组合</b>：同一份数据 → 有放回抽样 3 次 → 分别训出树1 / 树2 / 树3 → 投票 / 平均</li>
-<li><b>代表</b>：随机森林</li>
-</ul>
-<div class="pt">💡 每棵树都在略微不同的数据上训练，它们的错误互相抵消 → 更稳</div>
-</div>
-<div class="panel">
-<div class="ph">② Boosting（串行，降偏差）⭐ 最强</div>
-<ul class="pl">
-<li><b>怎么组合</b>：树1 → 找出树1错在哪 → 树2 专门补这些错 → 找出还错在哪 → 树3 再补 → …</li>
-<li><b>代表</b>：GBDT / XGBoost / LightGBM / CatBoost</li>
-</ul>
-<div class="pt">💡 每棵新树都在「纠正前面所有树的残余错误」</div>
-</div>
-<div class="panel">
-<div class="ph">③ Stacking（分层，学习怎么融合）</div>
-<ul class="pl">
-<li><b>怎么组合</b>：树 + 线性 + 神经网络 → 各自的预测 → 再训一个模型学「怎么组合它们」</li>
-</ul>
-<div class="pt">💡 Kaggle 冲榜常用，工程复杂</div>
-</div>
-</div>
-
-<blockquote>
-<p>🔗 <a href="../Kaggle竞赛方法论/03_模型融合与后处理.html">Kaggle 第 3 章模型融合</a> 讲的就是 ③ 的各种实战技巧。</p>
-</blockquote>
 <hr />
-<h2 id="bagging">🌲 四、随机森林：Bagging + 双重随机</h2>
-<figure class="dia"><svg viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="随机森林通过随机抽样和随机选特征让每棵树产生差异"><defs><marker id="forest-arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 Z" fill="var(--accent)"/></marker></defs><text class="dia-t" x="380" y="28" text-anchor="middle" font-size="18" font-weight="700" fill="var(--fg)">随机森林的两次随机，目的都是：让树彼此不一样</text><rect x="48" y="54" width="292" height="76" rx="14" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><text class="dia-t" x="194" y="84" text-anchor="middle" font-size="17" font-weight="700" fill="var(--fg)">随机 1：Bootstrap 抽样</text><text class="dia-t" x="194" y="110" text-anchor="middle" font-size="14" fill="var(--muted)">每棵树看到的数据样本不同</text><rect x="420" y="54" width="292" height="76" rx="14" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><text class="dia-t" x="566" y="84" text-anchor="middle" font-size="17" font-weight="700" fill="var(--fg)">随机 2：候选特征抽样</text><text class="dia-t" x="566" y="110" text-anchor="middle" font-size="14" fill="var(--muted)">每次分裂只能看随机 k 个特征</text><path d="M194 130 V160 H145 V184 M194 160 V184 M566 130 V160 H615 V184 M566 160 V184" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#forest-arrow)"/><g><rect x="60" y="194" width="170" height="76" rx="12" fill="var(--card)" stroke="var(--border)" stroke-width="2"/><text class="dia-t" x="145" y="223" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">树 A</text><text class="dia-t" x="145" y="250" text-anchor="middle" font-size="14" fill="var(--accent)">先看「面积」</text><rect x="295" y="194" width="170" height="76" rx="12" fill="var(--card)" stroke="var(--border)" stroke-width="2"/><text class="dia-t" x="380" y="223" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">树 B</text><text class="dia-t" x="380" y="250" text-anchor="middle" font-size="14" fill="var(--accent)">先看「楼龄」</text><rect x="530" y="194" width="170" height="76" rx="12" fill="var(--card)" stroke="var(--border)" stroke-width="2"/><text class="dia-t" x="615" y="223" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">树 C</text><text class="dia-t" x="615" y="250" text-anchor="middle" font-size="14" fill="var(--accent)">先看「位置」</text></g><path d="M145 270 V294 H380 M380 270 V294 M615 270 V294 H380 V310" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#forest-arrow)"/><rect x="245" y="320" width="270" height="32" rx="10" fill="var(--accent-soft)"/><text class="dia-t" x="380" y="342" text-anchor="middle" font-size="15" font-weight="700" fill="var(--fg)">不同的树投票／平均，才会真的更稳</text></svg><figcaption>只做 Bootstrap 还不够：每棵树都可能先选到同一个最强特征。随机限制候选特征，才会强迫它们走出不同的判断路径。</figcaption></figure>
-<p>💡 <strong>核心直觉</strong>：<strong>集成的收益来自成员之间的「差异」</strong>。全都一样的树，平均一百次还是那棵树。</p>
-<p>优点：几乎不用调参、不易过拟合、能给特征重要性、可并行
-缺点：精度通常略输 Boosting、模型体积大</p>
-<hr />
-<h2 id="gbdtboosting">🚀 五、GBDT：Boosting 的核心思想</h2>
-<p><strong>这是本章最重要的部分</strong>——Kaggle 的主力算法。</p>
-<h3 id="_6">它在做什么</h3>
-<figure class="dia"><svg viewBox="0 0 760 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="梯度提升树不断学习前一棵树剩下的预测误差"><text class="dia-t" x="380" y="28" text-anchor="middle" font-size="18" font-weight="700" fill="var(--fg)">真实房价 = 100 万：每棵新树只补“还差多少”</text><text class="dia-t" x="112" y="102" text-anchor="end" font-size="16" font-weight="700" fill="var(--fg)">树 1</text><rect x="140" y="72" width="520" height="48" rx="10" fill="var(--quote-bg)" stroke="var(--border)" stroke-width="1.5"/><rect x="140" y="72" width="416" height="48" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/><text class="dia-t" x="348" y="103" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">预测 80 万</text><text class="dia-t" x="608" y="103" text-anchor="middle" font-size="15" font-weight="700" fill="var(--danger)">还差 20 万</text><text class="dia-t" x="112" y="182" text-anchor="end" font-size="16" font-weight="700" fill="var(--fg)">树 1 + 2</text><rect x="140" y="152" width="520" height="48" rx="10" fill="var(--quote-bg)" stroke="var(--border)" stroke-width="1.5"/><rect x="140" y="152" width="416" height="48" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/><rect x="556" y="152" width="78" height="48" fill="var(--card)" stroke="var(--accent)" stroke-width="1.5"/><text class="dia-t" x="348" y="183" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">80 万</text><text class="dia-t" x="595" y="183" text-anchor="middle" font-size="15" font-weight="700" fill="var(--fg)">+15 万</text><text class="dia-t" x="647" y="183" text-anchor="middle" font-size="13" font-weight="700" fill="var(--danger)">差 5</text><text class="dia-t" x="112" y="262" text-anchor="end" font-size="16" font-weight="700" fill="var(--fg)">树 1 + 2 + 3</text><rect x="140" y="232" width="520" height="48" rx="10" fill="var(--quote-bg)" stroke="var(--border)" stroke-width="1.5"/><rect x="140" y="232" width="416" height="48" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/><rect x="556" y="232" width="78" height="48" fill="var(--card)" stroke="var(--accent)" stroke-width="1.5"/><rect x="634" y="232" width="21" height="48" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/><text class="dia-t" x="348" y="263" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">80 万</text><text class="dia-t" x="595" y="263" text-anchor="middle" font-size="15" font-weight="700" fill="var(--fg)">+15 万</text><text class="dia-t" x="644" y="263" text-anchor="middle" font-size="12" font-weight="700" fill="var(--fg)">+4</text><text class="dia-t" x="400" y="316" text-anchor="middle" font-size="15" fill="var(--muted)">每多一棵树，剩余误差就更小；最后的总预测 = 80 + 15 + 4 + … ≈ 100 万</text></svg><figcaption>这就是 Boosting：后面的树不从零猜房价，而是专门学习前面所有树还没解释掉的残差。</figcaption></figure>
-<p>💡 <strong>人话</strong>：</p>
-<blockquote>
-<p><strong>每棵新树不预测答案本身，而是预测「前面所有树加起来还差多少」。</strong>
-像考试订正错题：第一遍做完，专门针对错的部分再学一遍，反复迭代。</p>
-</blockquote>
-<p>数学上：每棵新树拟合的是损失函数的负梯度（所以叫「梯度」提升）。
-用 MSE 损失时，负梯度恰好就是残差——上面那个直觉是严格成立的。</p>
-<h3 id="_7">三个关键超参（调参时主要动这三个）</h3>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>作用</th>
-<th>经验值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>n_estimators</code> 树的数量</td>
-<td>越多拟合越强</td>
-<td>100–2000，配合早停</td>
-</tr>
-<tr>
-<td><code>learning_rate</code> 学习率 ⭐</td>
-<td>每棵树的贡献打几折</td>
-<td>0.01–0.1。<strong>小 lr + 多树 = 更好但更慢</strong></td>
-</tr>
-<tr>
-<td><code>max_depth</code> 树深</td>
-<td>单棵树复杂度</td>
-<td><strong>3–8</strong>（比随机森林浅得多！）</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>🔑 <strong>最重要的一条调参直觉</strong>：
-<strong><code>learning_rate</code> 和 <code>n_estimators</code> 是一对</strong>——学习率减半，树的数量大致要翻倍。
-先固定 lr=0.1 调其他参数，最后再降 lr、加树数换取最后那点精度。</p>
-</blockquote>
-<h3 id="gbdt">为什么 GBDT 的树要浅？</h3>
-<section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">随机森林：每棵树都想【独立解决问题】</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">要深（完全生长）</span></div><div class="vb-flow-row"><span class="vb-flow-step">GBDT： 每棵树只需【纠正一点点错误】</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">要浅（深度 3-8）</span></div><div class="vb-flow-row"><span class="vb-flow-step">GBDT 用浅树是故意的：单棵弱一点，才不会一步跨太大而过拟合</span></div></div></section>
-<h3 id="_8">🚪 这里有一句话故意没讲完</h3>
-<p>「每棵新树拟合负梯度」——⭐ <strong>负梯度只告诉你往哪个方向走，没告诉你该走多远。</strong> GBDT 用 <code>learning_rate</code> 把步子统一压小，是<strong>绕开</strong>这个问题而不是解决它。</p>
-<blockquote>
-<p>👉 <strong><a href="04b-XGBoost的推导.html">04b · XGBoost 的推导：从负梯度到闭式解</a></strong>
-<strong>该去的时候</strong>：要面试（「XGBoost 为什么用二阶泰勒展开」是必考）、要自定义损失函数、或者想知道 LightGBM 凭什么快、CatBoost 在防什么。
-<strong>可以先不去的时候</strong>：只想会调参把分刷上去 —— 直接跳 <a href="../Kaggle竞赛方法论/01_数据策略与特征工程.html">Kaggle 第 1 章</a>，那里有现成模板。
-⚠️ 但<strong>三巨头对比表在 04b</strong>，而且在那里它是<strong>推出来的</strong>不是背的。</p>
-</blockquote>
-<hr />
-<!--MIDSTOP-->
-<blockquote>
-<p>🛑 <strong>读到这里可以停</strong> —— 已经读了约 25 分钟。
-<strong>最后一段还有</strong>（约 26 分钟）：动手：亲眼看集成的威力 · 特征重要性的三个坑 · 检查点与走神救援
-回来的时候不用重读，直接从下一节接着看就行。</p>
-</blockquote>
-<hr />
-<h2 id="_9">🔨 动手：亲眼看集成的威力</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_breast_cancer</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">RandomForestClassifier</span><span class="p">,</span>
-                              <span class="n">GradientBoostingClassifier</span><span class="p">,</span> <span class="n">BaggingClassifier</span><span class="p">)</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_breast_cancer</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">X_tr</span><span class="p">,</span> <span class="n">X_te</span><span class="p">,</span> <span class="n">y_tr</span><span class="p">,</span> <span class="n">y_te</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
-                                          <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;模型&#39;</span><span class="si">:</span><span class="s2">&lt;22</span><span class="si">}{</span><span class="s1">&#39;训练集&#39;</span><span class="si">:</span><span class="s2">&gt;9</span><span class="si">}{</span><span class="s1">&#39;测试集&#39;</span><span class="si">:</span><span class="s2">&gt;9</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s2">&quot;单棵决策树&quot;</span><span class="p">,</span>        <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s2">&quot;Bagging(100棵)&quot;</span><span class="p">,</span>   <span class="n">BaggingClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s2">&quot;随机森林(100棵)&quot;</span><span class="p">,</span>   <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s2">&quot;GBDT(100棵,深度3)&quot;</span><span class="p">,</span> <span class="n">GradientBoostingClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-                                                    <span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
-<span class="p">]:</span>
-    <span class="n">m</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_tr</span><span class="p">,</span> <span class="n">y_tr</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">&lt;22</span><span class="si">}{</span><span class="n">m</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_tr</span><span class="p">,</span><span class="n">y_tr</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;8.1%</span><span class="si">}{</span><span class="n">m</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_te</span><span class="p">,</span><span class="n">y_te</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;9.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">GBDT：学习率与树数量的配合&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;树数&#39;</span><span class="si">:</span><span class="s2">&lt;8</span><span class="si">}{</span><span class="s1">&#39;学习率&#39;</span><span class="si">:</span><span class="s2">&lt;10</span><span class="si">}{</span><span class="s1">&#39;测试集&#39;</span><span class="si">:</span><span class="s2">&gt;9</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">lr</span> <span class="ow">in</span> <span class="p">[(</span><span class="mi">10</span><span class="p">,</span><span class="mf">0.1</span><span class="p">),(</span><span class="mi">50</span><span class="p">,</span><span class="mf">0.1</span><span class="p">),(</span><span class="mi">200</span><span class="p">,</span><span class="mf">0.1</span><span class="p">),(</span><span class="mi">500</span><span class="p">,</span><span class="mf">0.1</span><span class="p">),(</span><span class="mi">500</span><span class="p">,</span><span class="mf">0.01</span><span class="p">)]:</span>
-    <span class="n">m</span> <span class="o">=</span> <span class="n">GradientBoostingClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span>
-                                   <span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_tr</span><span class="p">,</span> <span class="n">y_tr</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">n</span><span class="si">:</span><span class="s2">&lt;8</span><span class="si">}{</span><span class="n">lr</span><span class="si">:</span><span class="s2">&lt;10</span><span class="si">}{</span><span class="n">m</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_te</span><span class="p">,</span><span class="n">y_te</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;8.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">特征重要性 Top5：&quot;</span><span class="p">)</span>
-<span class="n">rf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_tr</span><span class="p">,</span> <span class="n">y_tr</span><span class="p">)</span>
-<span class="n">names</span> <span class="o">=</span> <span class="n">load_breast_cancer</span><span class="p">()</span><span class="o">.</span><span class="n">feature_names</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">rf</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;25</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">rf</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</code></pre></div>
-
-<p>实测结果：</p>
-<section class="result-board" aria-label="集成模型实验结果">
-<p class="result-board-title">① 多棵树，测试集更稳</p>
-<table>
-<caption>同一份乳腺癌数据上的模型对比</caption>
-<thead><tr><th>模型</th><th>训练集</th><th>测试集</th><th>读法</th></tr></thead>
-<tbody>
-<tr><td>单棵决策树</td><td>100.0%</td><td>91.8%</td><td>第 1 章那棵树：把训练集背下来了</td></tr>
-<tr><td>Bagging（100 棵）</td><td>100.0%</td><td>94.2%</td><td>比单棵树高 2.4 个百分点</td></tr>
-<tr><td>随机森林（100 棵）</td><td>100.0%</td><td>94.2%</td><td>随机化让多棵树不再长得一模一样</td></tr>
-<tr><td>GBDT（100 棵、深度 3）</td><td>100.0%</td><td>94.2%</td><td>后面的树专门修正前面的残差</td></tr>
-</tbody>
-</table>
-<p class="result-board-title">② GBDT：学习率和树数要配套</p>
-<table>
-<caption>学习率小，通常要用更多棵树补回来</caption>
-<thead><tr><th>树数</th><th>学习率</th><th>测试集</th><th>读法</th></tr></thead>
-<tbody>
-<tr><td>10</td><td>0.1</td><td>93.0%</td><td>树还不够，来不及修完错误</td></tr>
-<tr><td>200</td><td>0.1</td><td>94.7%</td><td>继续提升</td></tr>
-<tr><td>500</td><td>0.1</td><td>95.3%</td><td>更多树仍然有收益</td></tr>
-<tr><td>500</td><td>0.01</td><td>94.2%</td><td>步子太小，500 棵仍然不够</td></tr>
-</tbody>
-</table>
-<p class="result-board-title">③ 这次随机森林最看重的特征</p>
-<table>
-<caption>特征重要性最高的 3 项</caption>
-<thead><tr><th>特征</th><th>重要性</th></tr></thead>
-<tbody>
-<tr><td>worst perimeter</td><td>0.140</td></tr>
-<tr><td>worst concave points</td><td>0.132</td></tr>
-<tr><td>worst radius</td><td>0.115</td></tr>
-</tbody>
-</table>
-</section>
-<blockquote>
-<p>💡 <strong>注意</strong>：所有集成模型训练集都是 100%，但测试集比单棵树高 2–3.5%。
-<strong>训练集 100% 不等于过拟合</strong>——关键看测试集有没有跟着掉。</p>
-</blockquote>
-<hr />
-<h2 id="_10">⚠️ 特征重要性的三个坑</h2>
-<p>树模型能给特征重要性，但<strong>别太当真</strong>：</p>
-<table>
-<thead>
-<tr>
-<th>坑</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>偏向高基数特征</strong></td>
-<td>取值越多的特征（如 ID）越容易被选中分裂，重要性虚高</td>
-</tr>
-<tr>
-<td><strong>相关特征分摊</strong></td>
-<td>两个高度相关的特征会平分重要性，看起来都不重要</td>
-</tr>
-<tr>
-<td><strong>只反映训练集</strong></td>
-<td>不代表因果，也不代表在新数据上有用</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>⭐ <strong>第一个坑的根就是第二节那件事</strong>：信息增益、增益率、基尼<strong>全都偏爱取值多的特征</strong>（用户 ID 的信息增益能到满分 1.000）。
-CART 靠「只能二叉」把病压住了，但取值多 = 候选切分点多 = 被选中的机会多，<strong>这个偏向从来没被真正消除</strong>。</p>
-</blockquote>
-<p>✅ <strong>更可靠的做法</strong>：<strong>Permutation Importance</strong>（打乱某列看性能掉多少）或 SHAP。</p>
-<hr />
-<h2 id="_11">🔗 和站内其他章的关系</h2>
-<table>
-<thead>
-<tr>
-<th>相关的地方</th>
-<th>根因在这</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="../Kaggle竞赛方法论/01_数据策略与特征工程.html">Kaggle 第 1、2 章</a>大量用 LightGBM</td>
-<td>就是本章的 GBDT</td>
-</tr>
-<tr>
-<td><a href="../Kaggle竞赛方法论/03_模型融合与后处理.html">Kaggle 第 3 章模型融合</a></td>
-<td>Stacking / Blending 的实战版</td>
-</tr>
-<tr>
-<td>推荐算法第 7 章「用 GBDT 看特征重要性」</td>
-<td>本章的特征重要性（连同它的坑）</td>
-</tr>
-<tr>
-<td>推荐算法第 18 章的蒸馏</td>
-<td>Boosting 的"用弱模型逼近强模型"思想有相通处</td>
-</tr>
-</tbody>
-</table>
-<p>看完这一章，接着往哪走：</p>
-<table>
+<h2 id="_5">🔗 和站内其他章的关系</h2>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>去哪</th>
@@ -743,71 +541,58 @@ CART 靠「只能二叉」把病压住了，但取值多 = 候选切分点多 = 
 </thead>
 <tbody>
 <tr>
-<td>⭐ <a href="04b-XGBoost的推导.html">04b · XGBoost 的推导</a></td>
-<td><strong>这一章故意没讲完的那半句在那里</strong>：负梯度只给方向不给步长，XGBoost 怎么用二阶泰勒展开把「下一棵树该怎么长」变成有闭式解的目标函数；三巨头对比表也在那里，而且是<strong>推出来的</strong></td>
+<td>⭐ <a href="04a-集成学习与GBDT.html">04a · 集成学习与 GBDT</a></td>
+<td><strong>单棵树很弱</strong>（实测 91.8%）。把几百棵按 Bagging / Boosting 组合起来才是表格数据的最强模型 —— 而它们每一棵都是这一章的 CART</td>
 </tr>
 <tr>
 <td><a href="16-特征工程基础.html">第 16 章 · 特征工程基础</a></td>
-<td>那里的 <strong>OOF 目标编码</strong>是「怎么用类别特征而不泄漏」的手工做法——树模型碰上高基数类别特征时的标准解</td>
-</tr>
-<tr>
-<td><a href="../机器学习的数学原理/08-偏差方差分解.html">数学原理 · 08 偏差方差分解</a></td>
-<td>本章说 Bagging 降方差、Boosting 降偏差，<strong>那两个词的严格定义和分解式在那里</strong></td>
+<td>⭐ 第二节那个「偏好取值多的特征」在实践里最常见的形态就是<strong>高基数类别特征</strong>，那里的 <strong>OOF 目标编码</strong>是标准解</td>
 </tr>
 <tr>
 <td><a href="05-评估与过拟合.html">第 5 章 · 评估与过拟合</a></td>
-<td>本章实测里「训练集 100% 但测试集只有 91.8%」到底算不算过拟合——判断标准在那一章</td>
+<td>这一章说树「极易过拟合，不限制就每叶一个样本」——<strong>过拟合的判断标准在那一章</strong></td>
 </tr>
 <tr>
-<td><a href="附录C-手撕代码速查.html">附录 C · 手撕代码速查</a></td>
-<td>面试让你<strong>当场写</strong>而不是说的时候用：K-means、AUC、逻辑回归梯度下降都在那里，20–40 行能默写的版本</td>
+<td><a href="03-线性模型.html">第 3 章 · 线性模型</a></td>
+<td>对照着看：线性模型要标准化、要手工造交叉项，树两样都不用</td>
+</tr>
+<tr>
+<td><a href="../机器学习的数学原理/01b-KL散度.html">机器学习的数学原理 01b · KL 散度</a></td>
+<td>信息增益里那个熵 $H$ 的严格来历</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
-<h2 id="_12">✅ 检查点</h2>
+<h2 id="_6">✅ 检查点</h2>
 <ol>
 <li>决策树怎么决定在哪里切分？两种纯度指标是什么？</li>
 <li>ID3 的信息增益有什么致命偏好？C4.5 除以「固有值」是在惩罚什么？</li>
 <li>基尼比熵快在哪？它解决「偏向多值特征」了吗？CART 靠什么压住？</li>
 <li>为什么 Boosting 家族的树只能是 CART，不能是 ID3 / C4.5？</li>
-<li>Bagging 和 Boosting 的根本区别？各降低什么？随机森林为什么要「随机选特征」？</li>
-<li>GBDT 里每棵新树学的是什么？为什么树要比随机森林浅？learning_rate 和 n_estimators 什么关系？</li>
-<li>实测里所有集成模型训练集都是 100%，这算过拟合吗？该看哪个数？</li>
-<li>特征重要性有哪三个坑？其中「偏向高基数特征」的根在本章哪一节？</li>
+<li>控制树过拟合的四个旋钮是什么？最常用的是哪个？</li>
 </ol>
 <details>
 <summary>👀 答案</summary>
 <ol>
 <li>贪心试遍所有特征的所有切分点，选让子节点最纯的那一刀。指标：基尼不纯度（默认）、信息熵。</li>
-<li><strong>取值越多，信息增益天然越大</strong>——20 个样本时「用户 ID」拿满分 1.000，真正有用的二值特征只有 0.531，ID3 会选 ID，等于把样本背下来。固有值 $IV$ 惩罚的是「这一刀切得多碎」，和标签无关：ID 的 IV $=\log_2 20=4.322$，增益率掉到 0.231，二值特征的 0.531 反超。⚠️ 增益率又偏爱少值特征，所以 C4.5 实际是两步：先筛增益高于平均的，再挑增益率最高的。</li>
+<li><strong>取值越多，信息增益天然越大</strong>——20 个样本时「用户 ID」拿满分 1.000，真正有用的二值特征只有 0.531，ID3 会选 ID，等于把样本背下来。固有值 $IV$ 惩罚的是「这一刀切得多碎」，和标签无关：ID 的 IV $=\log_2 20=4.322$，增益率掉到 0.231，二值特征的 0.531 反超。</li>
 <li>快在<strong>不用算 log</strong>（基尼是 $-\ln p\approx 1-p$ 的一阶泰勒近似，和熵曲线几乎重合）。⚠️ 没解决——同一组数里 A 的基尼下降 0.32、用户 ID 是 0.50，照样选 ID。CART 靠只长二叉树（20 个取值也只能切两支）+ <code>min_samples_leaf</code> + 剪枝压住，但没治好。</li>
 <li>因为每棵新树拟合的是<strong>负梯度</strong>——连续实数，不是类别标签，只有 CART 能做回归。sklearn 里也只实现了 CART。</li>
-<li>Bagging 并行、每棵树独立在抽样数据上训练后投票，<strong>降方差</strong>；Boosting 串行、每棵新树纠正前面的错误，降偏差。随机选特征是因为：否则每棵树都先用最强特征分裂、长得都一样，集成的收益全来自成员差异。</li>
-<li>学的是前面所有树的<strong>残差</strong>（严格说是损失的负梯度）。浅是故意的：每棵树只需纠正一点点，深了就一步跨太大而过拟合，所以 3–8 层。lr 和树数是一对：学习率减半，树数大致翻倍。</li>
-<li><strong>不算</strong>。训练集 100% 不等于过拟合，要看测试集有没有跟着掉——这里单棵树是 100.0% / 91.8%，三种集成都是 100.0% / 94.2%，测试集反而涨了 2.4 个点。</li>
-<li>偏向高基数特征、相关特征分摊重要性、只反映训练集不代表因果。用 Permutation Importance 或 SHAP 更可靠。<strong>第一个坑的根在第二节</strong>：信息增益、增益率、基尼全都偏爱取值多的特征（用户 ID 增益能到满分 1.000），CART 只是靠「只能二叉」把它压住，没消除。</li>
+<li><code>max_depth</code>（最常用）、<code>min_samples_leaf</code>、<code>min_samples_split</code>、<code>max_leaf_nodes</code>。</li>
 </ol>
 </details>
 <hr />
-<h2 id="_13">🛑 可以停在这里</h2>
+<h2 id="_7">🛑 可以停在这里</h2>
+<p>读到这里<strong>一棵树你已经完整了</strong>：怎么切、判据换过哪三代、以及那个贯穿三代的毛病。</p>
+<p>⚠️ <strong>什么时候看下一页</strong>：你想知道为什么「几百棵弱树」比一棵强树好用得多。</p>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>决策树就是<strong>切方块</strong>：<strong>贪心试遍所有切分点，选让子节点最纯的那一刀</strong>。不用标准化、自带特征交互；⚠️ 缺点是<strong>极易过拟合</strong>，不限制就长成每叶一个样本。</p>
-<p>⭐ <strong>判据换过三代，主线是同一个毛病：偏好取值多的特征。</strong> 💀 信息增益下「用户 ID」能拿满分，<strong>而那棵树在新用户身上一个都答不出来</strong>。增益率除掉「这一刀切得多碎」来矫正，⚠️ <strong>但它又矫枉过正、偏爱少值特征</strong>——所以那一代实际是<strong>两步启发式</strong>：先筛增益高于平均的，再挑增益率最高的。</p>
-<p><strong>基尼快在不用算对数</strong>（它是熵的一阶近似，两条曲线几乎重合）。⚠️⭐ <strong>但基尼并没有解决多值偏好</strong>——同一组数它照样选 ID；<strong>CART 是靠只长二叉树压住的</strong>。⭐ <strong>这就是「特征重要性偏向高基数」那个坑的根。</strong></p>
-<p>⭐ <strong>Boosting 家族只能用 CART，因为负梯度是连续实数，前两代只会分类。</strong></p>
-<p>集成三条路：<strong>Bagging 并行、降方差</strong>——⭐ <strong>随机森林每次分裂只从随机几个特征里挑，否则每棵树都先用最强特征分裂、长得都一样；集成的收益全部来自成员之间的差异</strong>；<strong>Boosting 串行、降偏差</strong>，每棵新树预测的是「前面所有树加起来还差多少」。GBDT 的树故意长得浅，<strong>因为每棵只需纠正一点点</strong>；⭐ <strong>学习率和树数是一对：学习率减半，树数就要翻倍</strong>，实测学习率压得太小时树数不够根本涨不上去。💡 <strong>训练集 100% 不等于过拟合，关键看测试集有没有跟着掉。</strong></p>
-<p>⚠️ <strong>特征重要性三个坑</strong>：偏向高基数、相关特征互相分摊、只反映训练集——⭐ <strong>改用 Permutation Importance 或 SHAP。</strong></p>
-<p>⭐ 本章故意留了半句：<strong>负梯度只给方向不给步长</strong>，学习率是绕开不是解决——真正解决它的是下一章的二阶泰勒展开。</p>
+<p>决策树就是<strong>切方块</strong>：<strong>贪心试遍所有切分点，选让子节点最纯的那一刀</strong>。不用标准化、自带特征交互、能画给业务看；⚠️ 缺点是<strong>极易过拟合</strong>（不限制就长成每叶一个样本）和<strong>不稳定</strong>（数据变一点结构可能全变）。四个旋钮压过拟合：<code>max_depth</code>（最常用）、<code>min_samples_leaf</code>、<code>min_samples_split</code>、<code>max_leaf_nodes</code>。⭐⭐ <strong>判据换过三代，而主线是同一个毛病：偏好取值多的特征。</strong> 💀 <strong>ID3 的信息增益</strong>下，20 个样本 10 正 10 负时「用户 ID」这种一人一个值的特征能拿<strong>满分 1.000</strong>，而真正有用的二值特征只有 <strong>0.531</strong> —— ID3 会毫不犹豫选 ID，<strong>那棵树在新用户身上一个都答不出来</strong>，它把样本背下来了。<strong>C4.5 的增益率</strong>除以<strong>固有值 IV</strong>来矫正：IV 把「样本落进哪个分支」当随机变量算熵，<strong>和标签一点关系都没有</strong>，纯粹度量「这一刀切得多碎」——用户 ID 的 IV 是 $\log_2 20=4.322$，增益率掉到 <strong>0.231</strong>，二值特征的 <strong>0.531</strong> 反超。⚠️ 但增益率又<strong>矫枉过正、反过来偏爱取值少的特征</strong>。<strong>CART 的基尼</strong>快在<strong>不用算对数</strong>（它是 $-\ln p \approx 1-p$ 的一阶泰勒近似，两条曲线几乎重合）；⚠️⭐ <strong>但基尼并没有解决多值偏好</strong> —— 同一组数里 A 的基尼下降 <strong>0.32</strong>、用户 ID 是 <strong>0.50</strong>，照样选 ID。<strong>CART 的解法不是换判据，是换结构：它永远只长二叉树</strong>，哪怕特征有 20 个取值也只能切成「属于某子集 / 不属于」两支，「切得太碎」这条路被结构堵死。⭐ 这就是后面「特征重要性偏向高基数特征」那个坑的根 —— <strong>只是压住了，没治好</strong>。⭐⭐ 最后一条通向后面所有内容：<strong>Boosting 家族里每一棵树都是 CART 回归树</strong>，因为新树要拟合的是<strong>负梯度</strong>（一串连续实数），<strong>ID3 和 C4.5 只会分类，从一开始就没资格进这个家族</strong>。</p>
 </blockquote>
-<p><strong>下一节</strong> 👉 <a href="04b-XGBoost的推导.html">04b-XGBoost的推导.md</a> ⭐ <strong>本章那半句没讲完的话</strong></p>
-<blockquote>
-<p>🎁 只想会调参、不想看推导的话，也可以从这里直接去 <a href="05-评估与过拟合.html">05-评估与过拟合.md</a>（⭐⭐ 全教程最重要的一章），<strong>04b 随时回来补都行</strong>。</p>
-</blockquote>
+<p><strong>下一节</strong> 👉 <a href="04a-集成学习与GBDT.html">04a-集成学习与GBDT.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
-<nav class="pagenav"><a href="03-线性模型.html"><div class="dir">← 上一节</div>📐 03 · 线性模型</a><a class="next" href="04b-XGBoost的推导.html"><div class="dir">下一节 →</div>🧮 04b · XGBoost 的推导</a></nav>
+<nav class="pagenav"><a href="03-线性模型.html"><div class="dir">← 上一节</div>📐 03 · 线性模型</a><a class="next" href="04a-集成学习与GBDT.html"><div class="dir">下一节 →</div>🌳 04a · 集成学习与 GBDT</a></nav>
 </main>
 <script>(function(){
   var KEY="mlbase-progress", FILE="04-\u51b3\u7b56\u6811\u4e0e\u96c6\u6210\u5b66\u4e60.md";

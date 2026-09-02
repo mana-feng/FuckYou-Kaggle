@@ -1,14 +1,24 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>01 · 第一次打开 Studio Pro：先让它跑起来 · Mendix 低代码开发</title>
+<title>10c · 语音与视频 · 大模型全景导论</title>
 <script>(function(){var t=localStorage.getItem('recsys-theme');
 if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
 @font-face{font-family:"CodeCJK";
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -267,182 +284,161 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
-  <span class="title">01 · 第一次打开 Studio Pro</span>
-  <span class="prevnext"><a href="00-怎么用这份教程.html">←</a>
-  <a href="02-员工和部门怎么保存.html">→</a></span>
+  <span class="title">10c · 语音与视频</span>
+  <span class="prevnext"><a href="10b-图像生成.html">←</a>
+  <a href="11-评测体系.html">→</a></span>
   <button class="js-done-btn">☐ 打卡</button>
   <button id="themeToggle" title="切换深浅色">🌗</button>
 </div></header>
 <main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
 <ul>
 <li><a href="#_1">🎯 一句话</a></li>
-<li><a href="#_2">🧭 你眼前的四块东西分别干什么</a></li>
-<li><a href="#_3">🚦 今天的最小动作</a></li>
-<li><a href="#_4">🧪 跟着做：从零到看到第一张页面</a></li>
-<li><a href="#_5">🧯 卡住时：先按这个顺序排查</a></li>
-<li><a href="#_6">🧷 这一步以后，你知道的东西够做什么</a></li>
-<li><a href="#_7">🧠 “运行”到底发生了什么</a></li>
-<li><a href="#_8">🛑 可以停在这里</a></li>
-<li><a href="#_9">✅ 检查点</a></li>
+<li><a href="#_2">🔊 三、语音</a></li>
+<li><a href="#_3">🎬 四、视频</a></li>
+<li><a href="#_4">📦 深挖的话要学什么</a></li>
+<li><a href="#_5">⚖️ 要不要深挖</a></li>
+<li><a href="#_6">🔗 想再深一层，去哪一套</a></li>
+<li><a href="#_7">✅ 检查点</a></li>
+<li><a href="#_8">🛑 多模态到这里就讲完了</a></li>
 </ul>
 </div>
 </details>
-<h1 id="01-studio-pro">01 · 第一次打开 Studio Pro：先让它跑起来</h1>
-<p>⏱ <strong>14 分钟</strong> ｜ 不理解全部面板，也能开始</p>
+<h1 id="10c">10c · 语音与视频</h1>
+<p>⏱ <strong>20 分钟</strong> ｜ ⭐ <strong>两个模态，一个共同的走向：也被 token 化了</strong></p>
 <hr />
 <h2 id="_1">🎯 一句话</h2>
-<p>Studio Pro 是你搭 Mendix 应用的桌面工作台；第一步不是研究所有按钮，而是确认你能创建、运行并看到一个项目。</p>
+<p>语音和视频这两年的共同变化是：<strong>它们也被切成 token，进了同一个 Transformer</strong>。
+语音因此有了端到端对话（不再走「语音→文字→LLM→文字→语音」那条长链路），
+视频则撞上了 token 爆炸这堵墙。</p>
+<p>⚠️ 这一页不依赖前两页，可以直接看。</p>
 <hr />
-<h2 id="_2">🧭 你眼前的四块东西分别干什么</h2>
-<table>
+<h2 id="_2">🔊 三、语音</h2>
+<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">ASR 语音识别（听）</span></div><div class="vb-tree-row"><span class="vb-tree-node">Whisper 类：音频 → 梅尔频谱图 → Encoder-Decoder → 文字</span></div><div class="vb-tree-row"><span class="vb-tree-node">实际上把音频当&quot;图&quot;处理，再用序列模型转文字</span></div><div class="vb-tree-row"><span class="vb-tree-node">TTS 语音合成（说）</span></div><div class="vb-tree-row"><span class="vb-tree-node">文本 → 声学特征 → 声码器 → 波形</span></div><div class="vb-tree-row"><span class="vb-tree-node">现在流行：直接把音频离散化成 token，用 LLM 的方式生成 ⭐</span></div><div class="vb-tree-row"><span class="vb-tree-node">端到端语音对话（2024+）</span></div><div class="vb-tree-row"><span class="vb-tree-node">不再走 语音→文字→LLM→文字→语音 的链路</span></div><div class="vb-tree-row"><span class="vb-tree-node">而是音频 token 直接进 LLM</span></div><div class="vb-tree-row"><span class="vb-tree-node">✅ 延迟低、能保留语气情绪、可打断</span></div></div></section>
+<blockquote>
+<p>💡 <strong>注意那个趋势</strong>：语音也被「token 化」了——<strong>又回到了第一句话：万物皆 token。</strong></p>
+</blockquote>
+<hr />
+<h2 id="_3">🎬 四、视频</h2>
+<section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">理解：把视频当&quot;一串图片 + 时间维度&quot;</span></div><div class="vb-flow-row"><span class="vb-flow-step">挑战是 token 爆炸（1 分钟视频可能上万 token）</span></div><div class="vb-flow-row"><span class="vb-flow-step">关键技术是时空压缩、关键帧抽取</span></div><div class="vb-flow-row"><span class="vb-flow-step">生成：扩散模型 + 时间维度一致性</span></div><div class="vb-flow-row"><span class="vb-flow-step">挑战是&quot;物体在帧间不能乱变&quot;</span></div><div class="vb-flow-row"><span class="vb-flow-step">时空注意力、3D VAE</span></div></div></section>
+<p>视频是当前算力消耗最大、进展最快的方向之一。</p>
+<hr />
+<h2 id="_4">📦 深挖的话要学什么</h2>
+<blockquote>
+<p>📍 <strong>每条后面标了它在哪</strong>：
+📗 <strong>本库有</strong> = 站内已经讲透，点进去就行；📙 <strong>半有</strong> = 站内讲了一半，另一半得外找；
+📕 <strong>要外找</strong> = 站内没有，得去论文或别处。
+⚠️ <strong>先说结论：这一章是全导论「要外找」比例最高的一章。</strong>
+本库是一套<strong>以语言模型为主干</strong>的教程，图像生成、语音、视频这三块站内几乎是空白——
+与其让你按图索骥扑空，不如在这里说清楚。</p>
+</blockquote>
+<p><strong>视觉理解</strong>（📗 = 本组前几页已讲）：ViT 原理 ｜ 📗 CLIP 的 InfoNCE 与温度系数（<a href="10d-CLIP与对比学习.html">10d</a>）｜ 📗 投影层两条路线：LLaVA 的 MLP vs BLIP-2 的 Q-Former（<a href="10d-CLIP与对比学习.html">10d</a>）｜ 高分辨率处理（切图 / AnyRes 策略）、SigLIP 之后的编码器演进、多模态对齐的数据配方、视频理解、OCR 与文档理解、多模态 RAG</p>
+<p>→ 📙 <strong>半有（只有 ViT 这一项）</strong>：<a href="../机器学习与深度学习基础/14-通往Transformer.html">ML基础 14 · 通往Transformer</a> 讲了 ViT 最该先知道的那件事——<strong>归纳偏置强弱和数据量的关系</strong>：ImageNet(1.3M) 上 ResNet 赢、拐点在 ImageNet-21k(14M) 附近、300M 时 ViT 赢，"苦涩的教训"的但书是「数据和算力足够」。<a href="../Kaggle竞赛方法论/09_任务类型与模型架构.html">Kaggle 09 · 任务类型与模型架构</a> 的表里有 ViT 的参数量和「Patch Embedding」一行，以及数据量 &gt;50K 才考虑 ViT/Swin 的选型判据。但 ViT 的完整架构（patch 怎么切、cls token、位置编码怎么加）站内没有。</p>
+<p>→ 📕 <strong>其余全部要外找</strong>：AnyRes 切图、SigLIP、多模态对齐数据配方、OCR 与文档理解、多模态 RAG，<strong>站内一个字都没有</strong>。⚠️ 其中「OCR 与文档理解 + 多模态 RAG」值得单独提醒——<a href="08d-RAG进阶方向.html">08d · RAG 进阶方向</a> 的深挖清单里「文档解析（PDF/表格/扫描件）」同样是 📕，这两章在这一点上是同一个空洞，做文档问答的话要有心理准备。</p>
+<p>语音：梅尔频谱、Whisper 架构、音频 token 化（残差量化——<strong>和推荐算法第 14 章的 Semantic ID 是同一个技术！</strong>）、TTS 声码器、端到端语音对话、实时流式处理</p>
+<p>→ 📙 <strong>半有（只有残差量化这一项，但它讲得很透）</strong>：<a href="../推荐算法/14-生成式推荐-2026前沿.html">推荐算法 14 · 生成式推荐</a> 的「Semantic ID」一节讲的就是 <strong>RQ-VAE 残差量化</strong>——把连续向量逐层逼近、每层挑一个码字，得到 <code>&lt;c₁=42, c₂=17, c₃=203, c₄=88&gt;</code> 这样从粗到细的离散码。音频 token 化用的是同一套机制，只是被量化的向量来自音频编码器而不是物品编码器。 ⭐ 这是全站跨度最大的一条同构，值得专门去一趟。</p>
+<p>→ 📕 <strong>其余要外找</strong>：梅尔频谱、Whisper 架构、TTS 声码器、端到端语音对话，站内没有。</p>
+<p>视频：时空注意力、3D VAE、关键帧策略、视频生成的一致性</p>
+<p>→ 📕 <strong>整块要外找</strong>：站内<strong>没有任何一章涉及视频</strong>。这是本库最外侧的边界。</p>
+<p>需要的前置：第 2 章 Transformer。图像生成部分需要<strong>一点概率论</strong>（扩散过程），是本导论里数学要求最高的一块。</p>
+<hr />
+<h2 id="_5">⚖️ 要不要深挖</h2>
+<div class="tw"><table>
 <thead>
 <tr>
-<th>你看到的地方</th>
-<th>先把它当成</th>
-<th>现在要不要深究</th>
+<th>你的情况</th>
+<th>建议</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>App Explorer</td>
-<td>应用的文件树</td>
-<td>要：以后所有东西从这里找</td>
+<td>只做文本应用</td>
+<td>⛔ 知道 VLM 怎么工作、图片吃 token 就够</td>
 </tr>
 <tr>
-<td>编辑区</td>
-<td>你正在画的页面或流程</td>
-<td>要：今天主要看这里</td>
+<td>要做图像/设计/创意工具</td>
+<td>✅ 深挖扩散模型</td>
 </tr>
 <tr>
-<td>Properties</td>
-<td>当前选中东西的设置面板</td>
-<td>够用时再改</td>
+<td>要做语音助手/客服/播客工具</td>
+<td>✅ 深挖 ASR/TTS + 端到端语音</td>
 </tr>
 <tr>
-<td>Console</td>
-<td>应用运行时的消息</td>
-<td>出错时才重点看</td>
+<td>要做文档处理（PDF/表格/图表）</td>
+<td>✅ 深挖 VLM + 多模态 RAG（和第 8 章配合）</td>
+</tr>
+<tr>
+<td>想全面了解 AI</td>
+<td>✅ 至少把视觉理解那部分学了</td>
 </tr>
 </tbody>
-</table>
-<p>官方快速入门也是用 Studio Pro 建一个员工数据 Web 应用：先创建项目，再用绿色运行按钮本地启动。你现在只需要得到一个最小的成功信号：<strong>浏览器里真的打开了应用。</strong></p>
+</table></div>
+<blockquote>
+<p>🔑 <strong>我的判断</strong>：这块<strong>独立性最强</strong>——它和站内其余几套的重叠很少，可以完全独立成一套。</p>
+<p>⭐ <strong>但有一个重要的例外</strong>：<strong>如果你做过推荐或搜索，CLIP 的对比学习你其实已经会了</strong>——它就是<a href="../推荐算法/08-深度学习推荐模型.html">推荐算法 08 · 深度学习推荐模型</a>的双塔 in-batch 负采样 + 温度系数。
+所以「<strong>视觉理解</strong>」这半边的入门成本比它看起来低得多；真正陌生的是「<strong>图像生成</strong>」那半边。</p>
+<p>但也正因为独立，<strong>它的优先级取决于你的业务方向</strong>，而不是技术逻辑：
+- 做文本应用 → 优先级最低
+- 做内容/设计/语音产品 → 优先级最高</p>
+<p>另外它内部还能再拆：<strong>视觉理解</strong>（偏应用，容易）和<strong>图像生成</strong>（偏原理，需要概率论）是两个不同难度的东西。</p>
+</blockquote>
 <hr />
-<h2 id="_3">🚦 今天的最小动作</h2>
-<div class="panels">
-<div class="panel"><div class="ph">1 · 新建一个空应用</div><ul class="pl"><li>起一个你看得懂的名字，例如 <b>EmployeeHub</b>。</li><li>不用急着选一堆模板；目标是看懂最小项目。</li></ul></div>
-<div class="panel"><div class="ph">2 · 按运行</div><ul class="pl"><li>让 Studio Pro 在本机启动应用。</li><li>浏览器打开后，先确认页面能出现。</li></ul></div>
-<div class="panel"><div class="ph">3 · 只观察，不要乱改</div><ul class="pl"><li>在 App Explorer 找到主模块。</li><li>记住：以后数据、页面、流程都会放进模块里。</li></ul></div>
-</div>
-
-<p>如果运行失败，先不要把错误当成“我不会”。把它分成两类：<strong>环境没准备好</strong>，或是<strong>项目配置有问题</strong>。第一天大多数问题属于前者；先按提示补全 Studio Pro 所需组件，别跳进业务逻辑里排查。</p>
-<h2 id="_4">🧪 跟着做：从零到看到第一张页面</h2>
-<p>不同版本的按钮文字和模板名称可能略有不同；下面记住的是<strong>动作顺序</strong>，不是死记菜单位置。</p>
-<h3 id="1">第 1 步：创建项目</h3>
-<ol>
-<li>打开 Studio Pro，选择创建新应用。</li>
-<li>给应用取名 <code>EmployeeHub</code>。这个名字之后会出现在项目、应用和部署记录里，先取清楚比取酷更重要。</li>
-<li>选择官方提供的入门或空白 Web 应用模板即可。暂时别挑复杂行业模板：里面已有太多你还不认识的东西。</li>
-<li>选一个自己找得到的本地目录，等项目创建完成。</li>
-</ol>
-<p><strong>你应该看到：</strong> 左边出现 App Explorer；里面至少有一个模块，通常还会有导航、配置和系统模块。看不懂名字没关系，这不是报错。</p>
-<h3 id="2">第 2 步：先认识“模块”</h3>
-<p>把模块想成一个带标签的抽屉。我们这次会把“员工管理”相关的东西放在同一个抽屉里：员工数据、员工页面、保存员工的流程，彼此更容易找到。</p>
-<p>现在只做一件事：在 App Explorer 中找到你的主模块，右键或展开它，确认里面能新建 <strong>Domain Model、Page、Microflow</strong>。不要一次创建三个空东西；知道入口在哪就够了。</p>
-<h3 id="3">第 3 步：运行最小项目</h3>
-<ol>
-<li>点击顶部绿色运行按钮。</li>
-<li>等待 Console 出现启动信息。第一次可能比以后慢，因为需要准备本地运行环境。</li>
-<li>Studio Pro 通常会打开浏览器；如果没有自动打开，留意 Console 给出的本地地址。</li>
-<li>浏览器出现任何能用的初始页面，就算成功。它丑、内容少、英文，都不影响这一步完成。</li>
-</ol>
-<p><strong>成功标准不是“像产品”，而是：</strong> 你能在浏览器打开页面，并且 Console 没有持续滚出红色错误。</p>
-<h3 id="4">第 4 步：故意做一次小观察</h3>
-<p>回到 Studio Pro，在 App Explorer 中点一个已有页面。编辑区会显示页面的结构；再点页面里任意一个控件，右侧 Properties 会变。</p>
-<p>你不需要改任何值。只要观察到“<strong>我选中什么，Properties 就在描述什么</strong>”，以后就不会把右侧面板当成神秘设置墙。</p>
-<h2 id="_5">🧯 卡住时：先按这个顺序排查</h2>
-<table>
+<h2 id="_6">🔗 想再深一层，去哪一套</h2>
+<div class="tw"><table>
 <thead>
 <tr>
-<th>你看到的情况</th>
-<th>先做什么</th>
-<th>别急着做什么</th>
+<th>去哪</th>
+<th>为什么</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>运行按钮灰色或点了没反应</td>
-<td>保存项目，观察 Console 最后一条信息</td>
-<td>不要反复重装整个项目</td>
+<td><a href="03-Tokenizer与上下文.html">主线 1 · 文字怎样进入模型</a></td>
+<td>「万物皆 token」的原版：文字是怎么被切成 token 的，音频和视频照抄的是这套思路</td>
 </tr>
 <tr>
-<td>浏览器没打开</td>
-<td>在 Console 找本地地址，复制到浏览器</td>
-<td>不要以为项目一定没运行</td>
+<td><a href="../推荐算法/14-生成式推荐-2026前沿.html">推荐算法 14 · 生成式推荐</a></td>
+<td>⭐ 音频的残差量化和那一章的 Semantic ID 是<strong>同一个技术</strong></td>
 </tr>
 <tr>
-<td>有红色错误</td>
-<td>只读<strong>第一条</strong>红色错误，找它提到的对象或设置</td>
-<td>不要从最后一条错误开始猜</td>
+<td><a href="../AI基础设施/16-KV-Cache.html">AI基础设施 16 · KV Cache</a></td>
+<td>视频「1 分钟上万 token」为什么是硬约束：每个 token 都要占一份缓存</td>
 </tr>
 <tr>
-<td>浏览器打开但页面空白</td>
-<td>回到 Studio Pro，确认运行进程没有停止</td>
-<td>不要马上重画页面</td>
-</tr>
-<tr>
-<td>模板里的英文看不懂</td>
-<td>先看图标和对象类型；词不懂可以点术语速查</td>
-<td>不要因此跳过整个步骤</td>
+<td><a href="../AI全栈/05-流式输出.html">AI全栈 05 · 流式输出</a></td>
+<td>端到端语音对话「延迟低、可打断」在工程上靠什么实现</td>
 </tr>
 </tbody>
-</table>
-<p>一个很实用的习惯：每次遇到错误，先截一张图，再只改一件事。这样改坏了也知道从哪一步开始坏的。</p>
-<h2 id="_6">🧷 这一步以后，你知道的东西够做什么</h2>
-<p>你还不会做应用，但你已经有了最重要的反馈环：</p>
-<div class="flowchain">
-<div class="fstep"><b>在 Studio Pro 改</b><span>模型、页面或流程</span></div>
-<div class="farrow">→</div>
-<div class="fstep"><b>按运行</b><span>让应用重新启动或刷新</span></div>
-<div class="farrow">→</div>
-<div class="fstep"><b>在浏览器看</b><span>判断结果是否符合预期</span></div>
-</div>
-
-<p>后面每一章都按这个循环。低代码不是“不需要检查”，而是你把原本写在代码里的结构改成图形后，依然要用运行结果验证它。</p>
+</table></div>
 <hr />
-<h2 id="_7">🧠 “运行”到底发生了什么</h2>
-<p>你画出来的模型和页面不是截图。运行时，Mendix 会把它们组合成一个 Web 应用：浏览器负责展示；应用负责处理点击和数据；本地环境暂时负责保存和运行。</p>
-<p>所以每次完成一小步，都建议按一次运行：</p>
-<ul>
-<li>早发现错误，错误范围很小；</li>
-<li>每次看到变化，知道这一步到底改变了什么；</li>
-<li>不会积累十个改动后才发现哪里坏了。</li>
-</ul>
-<hr />
-<h2 id="_8">🛑 可以停在这里</h2>
-<p>现在不用会画页面。只要你能说出：<strong>Studio Pro 是搭应用的地方；浏览器是看应用的地方；App Explorer 是找东西的地方。</strong></p>
-<p>下一章开始决定应用里要保存什么。</p>
-<hr />
-<h2 id="_9">✅ 检查点</h2>
-<p>为什么不要等“全做完”才第一次运行？</p>
+<h2 id="_7">✅ 检查点</h2>
+<ol>
+<li>语音领域「token 化」的趋势体现了什么共同思想？</li>
+<li>端到端语音对话相比「语音→文字→LLM→文字→语音」那条链路，好在哪三点？</li>
+<li>视频理解的主要挑战是什么？靠哪两类技术缓解？</li>
+<li>视频生成比图像生成多了一个什么约束？</li>
+</ol>
 <details>
-<summary>👀 看答案</summary>
-<p>因为早运行能把问题限制在刚刚那一步。你也能立刻看见修改和页面效果的对应关系，不会在一大堆改动里猜哪里出错。</p>
+<summary>👀 答案</summary>
+<ol>
+<li><strong>万物皆 token</strong>——把不同模态离散化成 token 后，都能交给同一个 Transformer 处理。（音频的残差量化和推荐算法 Semantic ID 是同一技术。）</li>
+<li><strong>延迟低、能保留语气情绪、可打断</strong>。因为音频 token 直接进 LLM，不再经过文字这个中转 —— 而文字这一步恰恰会把语气和情绪丢掉。</li>
+<li><strong>token 爆炸</strong>：1 分钟视频可能上万 token。靠<strong>时空压缩</strong>和<strong>关键帧抽取</strong>两类技术缓解。</li>
+<li><strong>时间维度的一致性</strong> —— 物体在帧间不能乱变。对应技术是时空注意力和 3D VAE。</li>
+</ol>
 </details>
 <hr />
+<h2 id="_8">🛑 多模态到这里就讲完了</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<ul>
-<li>Studio Pro 是工作台，浏览器是成品预览。</li>
-<li>App Explorer 是应用的目录树；模块是功能抽屉。</li>
-<li>第一目标不是学会所有面板，而是成功运行一次。</li>
-<li>下一步：决定员工和部门怎么保存。</li>
-</ul>
-<p><strong>继续：</strong> <a href="02-员工和部门怎么保存.html">02 · 先画数据关系</a></p>
+<blockquote>
+<p>语音分三块。<strong>ASR（听）</strong>：Whisper 这类把音频转成梅尔频谱图，再用 Encoder-Decoder 转文字 —— ⭐ <strong>本质是把音频当「图」处理</strong>。<strong>TTS（说）</strong>：文本 → 声学特征 → 声码器 → 波形；⭐ 现在流行的做法是<strong>直接把音频离散化成 token，用 LLM 的方式生成</strong>。<strong>端到端语音对话（2024+）</strong>：不再走「语音→文字→LLM→文字→语音」那条链路，而是<strong>音频 token 直接进 LLM</strong> —— 好处是<strong>延迟低、能保留语气情绪、可打断</strong>，因为文字那一步恰恰会把语气丢掉。💡 注意这个趋势：<strong>语音也被 token 化了，又回到那句「万物皆 token」</strong>。视频分理解和生成两侧。<strong>理解</strong>是把视频当「一串图片 + 时间维度」，⚠️ 主要挑战是 <strong>token 爆炸</strong>（1 分钟视频可能上万 token），靠<strong>时空压缩</strong>和<strong>关键帧抽取</strong>缓解。<strong>生成</strong>是扩散模型加上时间维度一致性，⚠️ 多出来的那个约束是「<strong>物体在帧间不能乱变</strong>」，对应技术是时空注意力和 3D VAE。视频是当前算力消耗最大、进展也最快的方向之一。</p>
+</blockquote>
+<p><strong>下一节</strong> 👉 <a href="11-评测体系.html">11-评测体系.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
-<nav class="pagenav"><a href="00-怎么用这份教程.html"><div class="dir">← 上一节</div>🧭 00 · 怎么用这份教程</a><a class="next" href="02-员工和部门怎么保存.html"><div class="dir">下一节 →</div>🧩 02 · 员工和部门怎么保存</a></nav>
+<nav class="pagenav"><a href="10b-图像生成.html"><div class="dir">← 上一节</div>🎨 10b · 图像生成</a><a class="next" href="11-评测体系.html"><div class="dir">下一节 →</div>📊 11 · 评测体系：榜单</a></nav>
 </main>
 <script>(function(){
-  var KEY="mendix-progress", FILE="01-\u7b2c\u4e00\u6b21\u6253\u5f00Studio-Pro.md";
+  var KEY="overview-progress", FILE="10c-\u8bed\u97f3\u4e0e\u89c6\u9891.md";
   function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
   function refresh(){var d=!!load()[FILE];
     document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);

@@ -173,6 +173,13 @@ table.xref th{text-align:left;background:var(--accent-soft);color:var(--accent);
  padding:8px 12px;border:1px solid var(--border)}
 table.xref td{padding:8px 12px;border:1px solid var(--border);vertical-align:top}
 table.xref td:first-child{white-space:nowrap;font-weight:600}
+
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -218,7 +225,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <hr />
 <h2 id="_2">一、超参数推荐范围</h2>
 <h3 id="11-bert-baselarge">1.1 BERT Base/Large 模型</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -247,9 +254,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>通常设为10轮；预训练微调3 epoch通常足够</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="12-deberta-v3-xlarge">1.2 DeBERTa V3 XLarge 模型</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -278,9 +285,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>通常设为10轮</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="13">1.3 调优要点</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -305,11 +312,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>每次跑一个模型时将验证集结果存下来，5折交叉验证的5份验证集结果平均就是最终CV</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_3">二、调参方法体系</h2>
 <h3 id="21">2.1 调参在竞赛中的定位</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -334,9 +341,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>调参必须依赖验证集，验证集打分是调参的基础</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="22">2.2 人工调参</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -357,9 +364,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>超参数数量少、搜索空间小、对模型有较深理解时</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="23-grid-search">2.3 网格搜索（Grid Search）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -388,9 +395,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>sklearn的GridSearchCV可直接使用</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="24-random-search">2.4 随机搜索（Random Search）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -415,9 +422,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>sklearn的RandomizedSearchCV可直接使用</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="25-bayesian-optimization">2.5 贝叶斯优化（Bayesian Optimization）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -446,9 +453,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>bayesian-optimization库、Optuna等</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="26-automl">2.6 AutoML工具</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>工具</th>
@@ -483,11 +490,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>大规模搜索</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_4">三、混合池化策略</h2>
 <h3 id="31">3.1 池化方法对比</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -522,9 +529,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>保留空间特征</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="32">3.2 胶囊网络动态路由</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -549,9 +556,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>经验最佳值为4个</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="33">3.3 多路池化拼接</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -572,9 +579,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>多维度提取特征能让分类结果更加稳定全面</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="34-flattenpooling">3.4 弃用Flatten()改用降维Pooling</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -599,10 +606,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>模型更容易被有效训练</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_5">四、模型选型天花板</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -627,10 +634,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>在医学文本语境和上下文关系捕捉上具备更优的先天表现</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="robustscaler">五、RobustScaler处理异常值</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -655,10 +662,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>在Lasso、ElasticNet等线性模型前使用，如<code>make_pipeline(RobustScaler(), Lasso(...))</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="k">六、K折交叉验证评估</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -683,10 +690,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>固定random_state确保每次实验可复现</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_6">七、多模型基准对比策略</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -711,10 +718,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>USE等冻结式迁移学习往往性价比最高；传统ML在小数据上不比深度学习差太多</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_7">八、实验记录与结果管理</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -739,10 +746,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>将不同模型的验证集结果存下来，5折交叉验证的5份结果平均就是最终CV</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_8">九、随机种子与可复现性</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -771,10 +778,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>优先调整非Seed参数，Seed调优放在最后</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="ema">十、EMA（指数移动平均）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -807,10 +814,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>在CV和NLP任务中均有效，通常提升0.1~0.3个百分点</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="early-stopping">十一、早停法（Early Stopping）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -843,10 +850,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>先正常训练+早停确定epoch数，再用SWA重训最后几轮</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="gradient-checkpointing">十二、梯度检查点（Gradient Checkpointing）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -879,10 +886,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>DeBERTa XLarge训练时几乎必须开启</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="lr-finder">十三、学习率查找器（LR Finder）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -915,11 +922,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>对新模型/新数据集不确定lr时，先用LR Finder快速定位</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_9">十四、分布式训练与混合精度</h2>
 <h3 id="fp16bf16">混合精度训练（FP16/BF16）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -952,9 +959,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>梯度截断防止FP16下梯度溢出</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_10">分布式训练</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方式</th>
@@ -984,10 +991,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>替代DeepSpeed</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="code-submission">十五、Code Submission内存管理</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1012,10 +1019,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>按各折F1分数排序，高F1模型赋予更高融合权重</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/09-优化器与学习率.html">ML基础 09 优化器与学习率</a></td><td>学习率是唯一必须调的超参，先懂它再谈搜索空间</td></tr><tr><td><a href="../机器学习与深度学习基础/05-评估与过拟合.html">ML基础 05 评估与过拟合</a></td><td>K 折交叉验证在估什么、为什么调参调多了会过拟合验证集</td></tr><tr><td><a href="../模型上线之后/17-版本回溯与可复现.html">模型上线之后 17 版本回溯与可复现</a></td><td>随机种子、环境、数据版本——竞赛的实验记录和生产的可复现是一回事</td></tr><tr><td><a href="../AI基础设施/06-混合精度.html">AI基础设施 06 混合精度</a></td><td>AMP 为什么能省显存又不掉点，以及什么时候会掉点</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/09-优化器与学习率.html">ML基础 09 优化器与学习率</a></td><td>学习率是唯一必须调的超参，先懂它再谈搜索空间</td></tr><tr><td><a href="../机器学习与深度学习基础/05-评估与过拟合.html">ML基础 05 评估与过拟合</a></td><td>K 折交叉验证在估什么、为什么调参调多了会过拟合验证集</td></tr><tr><td><a href="../模型上线之后/17-版本回溯与可复现.html">模型上线之后 17 版本回溯与可复现</a></td><td>随机种子、环境、数据版本——竞赛的实验记录和生产的可复现是一回事</td></tr><tr><td><a href="../AI基础设施/06-混合精度.html">AI基础设施 06 混合精度</a></td><td>AMP 为什么能省显存又不掉点，以及什么时候会掉点</td></tr></tbody></table></div>
 <hr />
 <h2 id="ckpt">✅ 检查点</h2>
 <ol>

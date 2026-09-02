@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>06c · 解码参数怎么调，出问题怎么查 · 大模型全景导论</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">06c · 解码参数怎么调</span>
+  <span class="prevnext"><a href="06b-解码策略.html">←</a>
+  <a href="07-本地部署与开源生态.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#temperature">🌡️ temperature 到底在做什么（数学）</a></li>
+<li><a href="#penalty">🔁 复读机问题与三个 penalty</a></li>
+<li><a href="#_2">🎛️ 几个旋钮怎么配合调</a></li>
+<li><a href="#top-p">🔨 手写一遍：温度 + top-p 采样</a></li>
+<li><a href="#_3">🔗 想再深一层，去哪一套</a></li>
+<li><a href="#_4">📦 深挖的话要学什么</a></li>
+<li><a href="#_5">⚖️ 要不要深挖</a></li>
+<li><a href="#_6">✅ 检查点</a></li>
+<li><a href="#_7">🛑 可以停在这里</a></li>
+</ul>
+</div>
+</details>
+<h1 id="06c">06c · 解码参数怎么调，出问题怎么查</h1>
+<p>⏱ <strong>30 分钟</strong> ｜ ⭐ <strong>一张排查表：输出飘 / 复读 / JSON 崩 / 结果不可复现</strong></p>
+<hr />
+<h2 id="_1">🎯 一句话</h2>
+<p>上一页讲了那几个旋钮各自在做什么。这一页只回答两个操作性问题：
+<strong>该配成多少</strong>，以及<strong>出了问题该怀疑谁</strong>。
+⚠️ 最反直觉的一条先说在前面：<strong><code>temperature=0</code> 也不保证两次运行逐位相同。</strong></p>
+<hr />
+<h2 id="temperature">🌡️ temperature 到底在做什么（数学）</h2>
+<p>$$p_i = \frac{e^{z_i / T}}{\sum_j e^{z_j / T}}$$</p>
+<blockquote>
+<p>🔗 这就是 <a href="15-数学地基.html">第 15 章数学地基</a>里 <code>softmax(x/T)</code> 那一小节的下游用法——那里讲了式子，这里讲它落到 API 参数上是什么后果。</p>
+</blockquote>
+<p>⭐ <strong>最值得记住的一条：温度不改变排序，只改变差距。</strong></p>
+<p>任意两个 token 的概率比是</p>
+<p>$$\frac{p_i}{p_j} = e^{(z_i - z_j)/T}$$</p>
+<p><code>argmax</code> 永远是同一个词，变的是"第二名有多大机会翻盘"：</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>logits 差 2.0 时</th>
+<th>概率比</th>
+<th>直觉</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>T = 0.5</strong></td>
+<td>e⁴ ≈ <strong>54.6 倍</strong></td>
+<td>第二名基本没戏 → 输出收敛、保守</td>
+</tr>
+<tr>
+<td><strong>T = 1</strong>（模型原始分布）</td>
+<td>e² ≈ <strong>7.4 倍</strong></td>
+<td>训练时学到的那个分布</td>
+</tr>
+<tr>
+<td><strong>T = 2</strong></td>
+<td>e ≈ <strong>2.7 倍</strong></td>
+<td>长尾被抬起来 → 输出发散、容易崩</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>🔗 <strong>这件事你在别处见过</strong>：<code>temperature</code> 就是<strong>探索与利用</strong>的生成版——
+T=0 是纯利用（每次都选当前最优），T 大是探索。
+<a href="../强化学习基础/07-探索与利用.html">强化学习 07</a> 讲的是同一个权衡在决策问题上的样子。</p>
+</blockquote>
+<h2 id="penalty">🔁 复读机问题与三个 penalty</h2>
+<p>复读是怎么来的：自回归有一个<strong>自我强化</strong>回路——模型刚写出"非常重要"，这个模式就进了上下文；而"上下文里出现过"这件事本身抬高了它下一次出现的概率；于是越读越读。greedy 和低温最容易掉进去（因为它们永远选那个已经被抬高的词）。</p>
+<p>三个参数长得像，算法完全不同，<strong>面试最爱在这里追问</strong>：</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>怎么算</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>repetition_penalty</code></td>
+<td>出现过的 token，正 logit <strong>除以</strong> λ，负 logit <strong>乘以</strong> λ</td>
+<td><strong>乘性</strong>，只看"出没出现过"——出现 1 次和 100 次罚得一样重</td>
+</tr>
+<tr>
+<td><code>frequency_penalty</code></td>
+<td>logit <strong>减去</strong> α × 已出现次数</td>
+<td>加性，<strong>次数越多罚得越狠</strong></td>
+</tr>
+<tr>
+<td><code>presence_penalty</code></td>
+<td>logit <strong>减去</strong> β × [出现过 = 1]</td>
+<td>加性，只罚"出现过"这个事实 → 推动模型<strong>换新话题</strong></td>
+</tr>
+<tr>
+<td><code>no_repeat_ngram_size = n</code></td>
+<td>已出现过的 n-gram 直接<strong>硬禁</strong></td>
+<td>最粗暴，也最容易误伤</td>
+</tr>
+</tbody>
+</table></div>
+<p>⚠️ <strong>它们最大的问题：不区分「该重复」和「不该重复」。</strong></p>
+<section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">代码生成：for / i / = / ( / ) / return 本来就该反复出现</span></div><div class="vb-flow-row"><span class="vb-flow-step">开 frequency_penalty = 模型被逼着换写法 = 语法错误</span></div><div class="vb-flow-row"><span class="vb-flow-step">结构化输出：JSON 的 { } &quot; : 和字段名必须重复</span></div><div class="vb-flow-row"><span class="vb-flow-step">惩罚会把 JSON 打坏，而且是【间歇性】打坏，最难查</span></div><div class="vb-flow-row"><span class="vb-flow-step">中文：的、是、了、在 天生就是高频字</span></div><div class="vb-flow-row"><span class="vb-flow-step">惩罚一大，句子开始变得别扭</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 结论：代码 / JSON / 工具调用场景，这三个参数一律留 0。</span></div></div></section>
+<blockquote>
+<p>🔑 <strong>更根本的一条</strong>：<strong>复读常常是"没东西可说"的症状，不是解码的病。</strong>
+上下文里信息不够时，模型会退回到最安全的模式反复念。
+这时候加惩罚只是把症状换个样子——该做的是查提示词和检索（<a href="08-RAG深水区.html">第 8 章</a>）。</p>
+</blockquote>
+<h2 id="_2">🎛️ 几个旋钮怎么配合调</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>temperature</th>
+<th>top_p</th>
+<th>penalty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>抽取 / 分类 / 工具调用 / JSON</strong></td>
+<td><strong>0</strong></td>
+<td>—</td>
+<td><strong>全 0</strong> ⭐</td>
+</tr>
+<tr>
+<td><strong>代码生成</strong></td>
+<td>0 ~ 0.2</td>
+<td>0.95</td>
+<td><strong>全 0</strong> ⭐ 绝不要开</td>
+</tr>
+<tr>
+<td><strong>RAG 问答 / 客服</strong></td>
+<td>0 ~ 0.3</td>
+<td>0.9</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>通用对话</strong></td>
+<td>0.7</td>
+<td>0.9</td>
+<td>presence 0 ~ 0.3</td>
+</tr>
+<tr>
+<td><strong>创意写作 / 头脑风暴</strong></td>
+<td>0.9 ~ 1.1</td>
+<td>0.95</td>
+<td>presence 0.3 ~ 0.6</td>
+</tr>
+<tr>
+<td><strong>要 n 个不同的候选</strong></td>
+<td>0.8 ~ 1.0，<strong>采样 n 次</strong></td>
+<td>0.95</td>
+<td>❌ 别用 beam search</td>
+</tr>
+</tbody>
+</table></div>
+<p>⭐ <strong>三条规则，比上面这张表更值钱</strong>：</p>
+<ol>
+<li><strong><code>temperature</code> 和 <code>top_p</code> 只调一个。</strong> 两个一起动，出了问题你分不清是谁干的。常见做法是把 <code>top_p</code> 钉死在 0.9，只调 T。</li>
+<li><strong>先固定随机性，再调提示词。</strong> T=0 时你改一句提示词、输出变了，那就是提示词的功劳；T=0.9 时你根本不知道是提示词起效了还是抽签换了个结果。<strong>这条是提示词工程能不能做下去的前提。</strong></li>
+<li>⚠️ <strong>T=0 也不保证 100% 可复现。</strong> GPU 上浮点加法<strong>不满足结合律</strong>，而每一步的归约顺序会随 batch 的组成变化——同样的输入，和不同的请求拼在一个 batch 里，可能算出不同的 logits，恰好卡在两个候选分数极接近时就会输出不同。
+   🔗 而 batch 组成是动态的，正是<a href="06-推理优化.html">第 6 章的<strong>武器二 · 连续批处理</strong></a>造成的：<strong>吞吐优化和逐位复现是一对天然矛盾</strong>。要严格复现只能牺牲吞吐（固定 batch、关掉连续批处理）。</li>
+</ol>
+<h2 id="top-p">🔨 手写一遍：温度 + top-p 采样</h2>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">sample_next</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">top_p</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;从一步 logits 里采一个 token id。顺序：温度 → top-p → 归一化 → 抽签&quot;&quot;&quot;</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">rng</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">temperature</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>                    <span class="c1"># ⭐ T=0 就是 greedy，不抽签</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
+
+    <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">/</span> <span class="n">temperature</span>                     <span class="c1"># ⭐ ① 温度先改分布形状</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">-</span> <span class="n">z</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>                         <span class="c1"># 数值稳定：防 exp 溢出</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">z</span><span class="p">);</span> <span class="n">p</span> <span class="o">/=</span> <span class="n">p</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">p</span><span class="p">)</span>                  <span class="c1"># 概率从大到小</span>
+    <span class="n">cum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">order</span><span class="p">])</span>
+    <span class="n">keep</span> <span class="o">=</span> <span class="n">order</span><span class="p">[:</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">cum</span><span class="p">,</span> <span class="n">top_p</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>   <span class="c1"># ⭐ ② 累计刚过 p 就停手</span>
+
+    <span class="n">q</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="n">keep</span><span class="p">]</span> <span class="o">/</span> <span class="n">p</span><span class="p">[</span><span class="n">keep</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>             <span class="c1"># ⭐ ③ 只在核里重新归一化</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">keep</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">q</span><span class="p">))</span>
+
+
+<span class="n">logits</span> <span class="o">=</span> <span class="p">[</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">1.75</span><span class="p">,</span> <span class="mf">1.35</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">]</span>   <span class="c1"># 就是 06b 那张图里的 8 个</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sample_next</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">top_p</span><span class="o">=</span><span class="mf">0.9</span><span class="p">))</span>     <span class="c1"># 核里 6 个候选</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sample_next</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">top_p</span><span class="o">=</span><span class="mf">0.9</span><span class="p">))</span>     <span class="c1"># 核里只剩 2 个 ⭐</span>
+</code></pre></div>
+
+<p>💡 <strong>十行代码把 <a href="06b-解码策略.html">06b</a> 那张图跑了一遍</strong>：同一组 logits，只把 T 从 1.0 降到 0.3，核就从 6 个缩到 2 个——<strong>温度和截断是串起来的，不是两个独立开关。</strong></p>
+<hr />
+<h2 id="_3">🔗 想再深一层，去哪一套</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>去哪</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="06-推理优化.html">06 · 推理优化</a></td>
+<td>⭐ 「T=0 也不保证复现」的根源在那一章：连续批处理让 batch 组成动态变化，GPU 浮点归约顺序跟着变 —— <strong>吞吐优化和逐位复现是一对天然矛盾</strong></td>
+</tr>
+<tr>
+<td><a href="../智能体工程教程/16c-接进真实产品.html">智能体工程教程 16c · 接进真实产品</a></td>
+<td>结构化输出为什么会崩、护栏该怎么设计 —— penalty 留 0 只是其中最便宜的一条</td>
+</tr>
+<tr>
+<td><a href="../数据这一关/13-评测集也是数据.html">数据这一关 13 · 评测集也是数据</a></td>
+<td>「先固定随机性再调提示词」的下一步：没有固定的评测集，你连「改好了没有」都判断不了</td>
+</tr>
+<tr>
+<td><a href="../扩散模型/06-条件控制与CFG.html">扩散模型 06 · 条件控制与 CFG</a></td>
+<td>⭐ <strong>同一类旋钮的另一副面孔</strong>：图像那边的 guidance scale <code>s</code> 和这一页的 <code>temperature</code> 都在「多听话 vs 多自由」之间取舍，都没有安全默认值。⚠️ 但机制不同 —— <code>s&gt;1</code> 是<strong>外推</strong>，而温度只是缩放 logits</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_4">📦 深挖的话要学什么</h2>
+<ul>
+<li><strong>约束解码</strong>：JSON 模式 / 正则约束是怎么用 <strong>logits mask</strong> 实现的、它和 Function Calling 的关系、约束会不会伤害质量</li>
+<li><strong>更多采样方法</strong>：<code>min_p</code>、typical sampling、对比解码（contrastive decoding）、镜像采样</li>
+<li><strong>beam search 的细节</strong>：长度惩罚 α 怎么定、覆盖惩罚、beam 内去重</li>
+<li><strong>批量采样</strong>：一次生成 n 个候选时的 KV 块共享，以及 Self-Consistency 为什么必须配采样而不能用 greedy</li>
+<li><strong>和评测的关系</strong>：pass@k 为什么必须配温度、温度选错会让评测结论整个反过来</li>
+</ul>
+<p>需要的前置：知道模型最后一层输出 logits（第 2 章）+ decode 是逐 token 的（第 6 章）。<strong>不需要新数学</strong>，本章唯一的公式就是 softmax。</p>
+<hr />
+<h2 id="_5">⚖️ 要不要深挖</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>你的情况</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>只调 API 做应用</td>
+<td>✅ <strong>这一章就是给你写的</strong>，全读，而且是本导论里<strong>当天就能用上</strong>的少数几章之一</td>
+</tr>
+<tr>
+<td>做结构化输出 / 工具调用 / 代码生成</td>
+<td>✅ <strong>重点看 penalty 那一节和调参表</strong>——这里最容易埋雷</td>
+</tr>
+<tr>
+<td>自建推理服务</td>
+<td>✅ 再往下补约束解码和批量采样</td>
+</tr>
+<tr>
+<td>只关心成本和吞吐</td>
+<td>🟡 看完「四个动作」和最后那三条规则就够</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>🔑 <strong>我的判断</strong>：这一章的<strong>投入产出比是整本导论里最高的</strong>——
+二十分钟，换掉的是"参数瞎试、出了问题不知道该动哪个"的状态。
+而且它<strong>不需要 GPU、不需要新数学、不需要重新部署</strong>，改一个数字就能验证。</p>
+</blockquote>
+<hr />
+<h2 id="_6">✅ 检查点</h2>
+<ol>
+<li><code>temperature</code> 在数学上改变了什么、没改变什么？logits 差 2.0 时，T=0.5 和 T=2 的概率比各是多少？</li>
+<li>复读机是怎么形成的？<code>frequency_penalty</code> 和 <code>presence_penalty</code> 的区别？哪些场景这几个参数必须留 0？</li>
+<li>调参的三条规则是什么？为什么"先固定随机性再调提示词"不只是习惯问题？</li>
+<li>T=0 就一定能逐位复现吗？这件事和推理优化的哪个手段有关？</li>
+</ol>
+<details>
+<summary>👀 答案</summary>
+<ol>
+<li>改变的是<strong>差距</strong>，没改变排序（<code>argmax</code> 永远是同一个词）。概率比 $p_i/p_j = e^{(z_i-z_j)/T}$：logits 差 2.0 时，T=0.5 → e⁴ ≈ 54.6 倍，T=1 → e² ≈ 7.4 倍，T=2 → e ≈ 2.7 倍。</li>
+<li><strong>自我强化回路</strong>：模型刚写出的模式进了上下文，"出现过"本身抬高了它再次出现的概率，greedy 和低温尤其容易掉进去。<code>frequency_penalty</code> 按出现次数累加地罚（次数越多越狠）；<code>presence_penalty</code> 只罚"出现过"这个事实，作用是推动换话题；<code>repetition_penalty</code> 是乘性的，出现 1 次和 100 次罚得一样。代码 / JSON / 工具调用场景一律留 0——那些 token 本来就该重复。更根本的是：复读常常是"没东西可说"的症状，不是解码的病。</li>
+<li>①<strong><code>temperature</code> 和 <code>top_p</code> 只调一个</strong>（常见做法是把 top_p 钉死在 0.9 只调 T），两个一起动就分不清是谁干的；②先固定随机性再调提示词；③T=0 也不保证逐位复现。第二条不只是习惯问题：T=0.9 时你根本不知道输出变化是提示词起效了还是抽签换了个结果——没有归因，提示词工程就无法迭代。</li>
+<li><strong>不保证。</strong> GPU 浮点加法不满足结合律，归约顺序会随 batch 组成变化，同样输入拼进不同 batch 可能算出不同 logits。而 batch 组成动态变化正是<a href="06-推理优化.html">06 章武器二连续批处理</a>造成的——吞吐优化和逐位复现是一对天然矛盾，要严格复现只能牺牲吞吐。</li>
+</ol>
+</details>
+<hr />
+<h2 id="_7">🛑 可以停在这里</h2>
+<p>读完这一页，你手上有一张可以直接用的排查表：<strong>输出飘 → 先看 T 和 top_p；复读 → 先问是不是没东西可说，再考虑 penalty；JSON 崩 → penalty 是不是没留 0；结果不可复现 → 那不是你的 bug。</strong></p>
+<p>⚠️ <strong>什么时候回来</strong>：这些都调过了输出还是不行，那问题多半不在解码，在提示词或检索 —— 去 08 系列。</p>
+<p>⚡ <strong>走神救援</strong></p>
+<blockquote>
+<p><code>temperature</code> 的数学是 $p_i = e^{z_i/T} / \sum_j e^{z_j/T}$：它改变的是<strong>候选之间的差距</strong>，<strong>没改变排序</strong>（<code>argmax</code> 永远是同一个词）。概率比 $p_i/p_j = e^{(z_i-z_j)/T}$ —— logits 差 2.0 时，T=0.5 放大到 <strong>e⁴ ≈ 54.6 倍</strong>，T=1 是 <strong>e² ≈ 7.4 倍</strong>，T=2 压到 <strong>e ≈ 2.7 倍</strong>。<strong>复读机</strong>的成因是<strong>自我强化回路</strong>：模型刚写出的模式进了上下文，「出现过」这件事本身抬高了它再次出现的概率，greedy 和低温尤其容易掉进去。三个 penalty 的区别：<code>frequency_penalty</code> 按出现<strong>次数</strong>累加地罚（越多越狠），<code>presence_penalty</code> 只罚「出现过」这个事实、作用是推动换话题，<code>repetition_penalty</code> 是乘性的、出现 1 次和 100 次罚得一样。⚠️ <strong>代码 / JSON / 工具调用场景一律留 0</strong> —— 那些 token 本来就该重复。⭐ 更根本的一条：复读常常是「没东西可说」的症状，不是解码的病。调参三条规则：<strong>① <code>temperature</code> 和 <code>top_p</code> 只调一个</strong>（常见做法是把 top_p 钉死在 0.9 只调 T），②<strong>先固定随机性再调提示词</strong>，③<strong>T=0 也不保证逐位复现</strong>。第二条不只是习惯问题：T=0.9 时你分不清输出变化是提示词起效了还是抽签换了结果，<strong>没有归因，提示词工程就无法迭代</strong>。💀 第三条的根源在推理优化那一章：GPU 浮点加法不满足结合律，归约顺序随 batch 组成变化，而 batch 组成动态变化正是<strong>连续批处理</strong>造成的 —— <strong>吞吐优化和逐位复现是一对天然矛盾</strong>。</p>
+</blockquote>
+<p><strong>下一节</strong> 👉 <a href="07-本地部署与开源生态.html">07-本地部署与开源生态.md</a></p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="06b-解码策略.html"><div class="dir">← 上一节</div>🎲 06b · 解码策略</a><a class="next" href="07-本地部署与开源生态.html"><div class="dir">下一节 →</div>💻 07 · 本地部署与生态</a></nav>
+</main>
+<script>(function(){
+  var KEY="overview-progress", FILE="06c-\u89e3\u7801\u53c2\u6570\u600e\u4e48\u8c03.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+</body></html>

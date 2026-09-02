@@ -173,6 +173,13 @@ table.xref th{text-align:left;background:var(--accent-soft);color:var(--accent);
  padding:8px 12px;border:1px solid var(--border)}
 table.xref td{padding:8px 12px;border:1px solid var(--border);vertical-align:top}
 table.xref td:first-child{white-space:nowrap;font-weight:600}
+
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -213,7 +220,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <hr />
 <h2 id="_2">一、主流预训练模型对比</h2>
 <h3 id="11">1.1 模型特性总览</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>模型</th>
@@ -267,7 +274,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>中文长文本</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="12">1.2 选型决策树</h3>
 <figure class="dia" aria-label="预训练模型选型决策树">
 <svg viewBox="0 0 800 430" role="img" aria-labelledby="model-tree-title model-tree-desc">
@@ -286,7 +293,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <hr />
 <h2 id="bert">二、BERT架构详解</h2>
 <h3 id="21">2.1 核心组件</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>组件</th>
@@ -315,9 +322,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>预训练时的掩码标记</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="22">2.2 预训练任务</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>任务</th>
@@ -346,11 +353,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>ALBERT使用</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="deberta">三、DeBERTa核心创新</h2>
 <h3 id="31-disentangled-attention">3.1 注意力解耦（Disentangled Attention）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -375,9 +382,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>更好地捕捉Token间的相对位置关系，对长距离依赖建模更强</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="32-maskemd">3.2 增强型Mask解码器（EMD）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -398,9 +405,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>弥补解耦注意力对绝对位置的忽视</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="33-deberta-v3">3.3 DeBERTa V3改进</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -425,10 +432,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>比MLM更高效的预训练信号</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="roberta">四、RoBERTa改进要点</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>改进</th>
@@ -468,9 +475,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>覆盖更多Unicode字符</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="byte-level-bpe">Byte-level BPE详解</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -499,11 +506,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>RoBERTa使用Byte-level BPE，词表大小50265</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_3">五、中文预训练模型对比</h2>
 <h3 id="51-macbert">5.1 MacBERT</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -532,9 +539,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>消除预训练与微调之间的Mask差异</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="52-ernie">5.2 ERNIE</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -559,9 +566,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>知识密集型任务（如实体识别、关系抽取）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="53-nezha">5.3 NEZHA</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -582,7 +589,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>对长文本和位置敏感任务更优</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_4">六、预训练模型微调范式</h2>
 <h3 id="61">6.1 标准微调流程</h3>
@@ -594,7 +601,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 </code></pre></div>
 
 <h3 id="62">6.2 冻结策略</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>策略</th>
@@ -624,9 +631,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>多任务场景</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="63">6.3 分层学习率设置</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>层</th>
@@ -651,10 +658,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>随机初始化，需快速学习</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_5">七、模型规模与性能权衡</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>模型规模</th>
@@ -694,9 +701,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>最高</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_6">实战建议</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -721,11 +728,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>考虑模型蒸馏或Self-Distillation压缩模型</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_7">八、其他重要预训练模型</h2>
 <h3 id="electra">ELECTRA</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -750,9 +757,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>适合计算资源有限时，同等参数量下效果更好</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="albert">ALBERT</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -777,9 +784,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>显存受限时可选，但推理速度不比BERT快(层数未减少)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="xlnet">XLNet</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -804,9 +811,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>长文本任务中有优势，但训练资源消耗大</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="longformer-bigbird">Longformer / BigBird</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -831,11 +838,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>长文档分类、长文本NER等超过512 Token限制的任务</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="peft">九、参数高效微调（PEFT）</h2>
 <h3 id="loralow-rank-adaptation">LoRA（Low-Rank Adaptation）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -868,9 +875,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td><code>peft.LoraConfig</code> + <code>get_peft_model()</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="p-tuning-prefix-tuning">P-Tuning / Prefix Tuning</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -900,9 +907,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>适中</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="adapter">Adapter</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -927,9 +934,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>增加推理延迟(额外前向传播)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="peft_1">PEFT方法选择</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -959,10 +966,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>最少参数，最快训练</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="dapt">十、领域自适应预训练（DAPT）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -995,7 +1002,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>医疗NER等强领域任务中，DAPT可带来1~3个百分点的提升</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="dapt_1">DAPT实战流程</h3>
 <div class="codehilite"><pre><span></span><code>1. 收集领域无标注语料(如医疗文本、法律文书)
 2. 加载通用预训练模型(如bert-base-chinese)
@@ -1005,7 +1012,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 </code></pre></div>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../大模型全景导论/02-Transformer原理.html">大模型导论 02 Transformer 原理</a></td><td>BERT / RoBERTa / DeBERTa 的共同底座，注意力和位置编码在这里</td></tr><tr><td><a href="../大模型全景导论/04-训练三阶段.html">大模型导论 04 训练三阶段</a></td><td>预训练→微调这个范式本身是怎么来的</td></tr><tr><td><a href="../大模型全景导论/05-微调与LoRA.html">大模型导论 05 微调与 LoRA</a></td><td>PEFT / LoRA / Adapter 的原理与显存账</td></tr><tr><td><a href="../机器学习与深度学习基础/14-通往Transformer.html">ML基础 14 通往 Transformer</a></td><td>从 RNN 到注意力的过渡，想补更前面的基础走这条</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../大模型全景导论/02-Transformer原理.html">大模型导论 02 Transformer 原理</a></td><td>BERT / RoBERTa / DeBERTa 的共同底座，注意力和位置编码在这里</td></tr><tr><td><a href="../大模型全景导论/04-训练三阶段.html">大模型导论 04 训练三阶段</a></td><td>预训练→微调这个范式本身是怎么来的</td></tr><tr><td><a href="../大模型全景导论/05-微调与LoRA.html">大模型导论 05 微调与 LoRA</a></td><td>PEFT / LoRA / Adapter 的原理与显存账</td></tr><tr><td><a href="../机器学习与深度学习基础/14-通往Transformer.html">ML基础 14 通往 Transformer</a></td><td>从 RNN 到注意力的过渡，想补更前面的基础走这条</td></tr></tbody></table></div>
 <hr />
 <h2 id="ckpt">✅ 检查点</h2>
 <ol>

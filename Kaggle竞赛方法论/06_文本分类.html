@@ -173,6 +173,13 @@ table.xref th{text-align:left;background:var(--accent-soft);color:var(--accent);
  padding:8px 12px;border:1px solid var(--border)}
 table.xref td{padding:8px 12px;border:1px solid var(--border);vertical-align:top}
 table.xref td:first-child{white-space:nowrap;font-weight:600}
+
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -218,7 +225,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <hr />
 <h2 id="_2">一、文本分类任务建模</h2>
 <h3 id="11">1.1 任务类型</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>类型</th>
@@ -248,9 +255,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>商品分类</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="12">1.2 分类头设计</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -280,9 +287,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>序列空间特征丰富</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="13">1.3 多标签分类</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -303,11 +310,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>可用Classifier Chain或Label Powerset建模标签间依赖</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="nlp">二、样本不均衡处理（NLP专项）</h2>
 <h3 id="21">2.1 文本分类中的不均衡</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -332,9 +339,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>自动关注难分样本，对小类样本给予更多关注</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="22-nlp">2.2 验证集构造（NLP专项）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -355,11 +362,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>固定随机种子确保实验可复现</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_3">三、模型选择实践</h2>
 <h3 id="31">3.1 模型对比基准</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>模型</th>
@@ -400,9 +407,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>8x</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="32">3.2 模型选型天花板</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -427,10 +434,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>先用Base快速验证，确认有效后切换Large/XLarge</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="qa">四、QA输入顺序调换</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -459,10 +466,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>问答匹配、文本相似度等成对文本任务</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="use">五、USE冻结式迁移学习</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -491,10 +498,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>性能天花板低于BERT微调</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_4">六、社交媒体特征融合</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -527,11 +534,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>使用StandardScaler对非文本特征标准化</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_5">七、混合池化策略（文本分类专项）</h2>
 <h3 id="71">7.1 多路池化拼接</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -552,9 +559,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>多维度提取特征能让分类结果更加稳定全面</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="72-flattenpooling">7.2 弃用Flatten()改用降维Pooling</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -579,10 +586,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>模型更容易被有效训练</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="id">八、脱敏ID还原与词频映射</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -615,10 +622,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>让脱敏语料也能利用开源预训练模型的强大初始权重</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_6">九、长文本截断策略</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>策略</th>
@@ -653,7 +660,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>NER任务</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_7">十、分类任务实战流程</h2>
 <div class="codehilite"><pre><span></span><code>1. EDA → 分析类别分布、文本长度、数据质量
@@ -668,7 +675,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 
 <hr />
 <h2 id="_8">十一、对比学习在分类中的应用</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -701,10 +708,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>医疗/法律等特定领域，对比学习预训练可提升0.5~1个百分点</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="curriculum-learning">十二、课程学习（Curriculum Learning）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -733,10 +740,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>课程学习可辅助伪标签筛选，先学高置信度伪标签样本</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_9">十三、少样本/零样本分类</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -771,7 +778,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>数据量不足</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="prompt">Prompt分类示例</h3>
 <div class="codehilite"><pre><span></span><code>模板: &quot;这篇评论的情感是[MASK]。&quot;
 标签映射: [MASK]=&quot;积极&quot; → 正面, [MASK]=&quot;消极&quot; → 负面
@@ -780,7 +787,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 
 <hr />
 <h2 id="_10">十四、多任务学习在分类中的应用</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -809,10 +816,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>多任务是显式不同任务，多标签是同一任务多输出</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_11">十五、文本分类常见踩坑点</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>坑点</th>
@@ -852,10 +859,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>置信度阈值0.9+ + 多模型投票生成</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="05_预训练模型详解.html">Kaggle 05 预训练模型详解</a></td><td>⭐ <code>[CLS]</code> 到底是什么——BERT 架构里它被训成「句子级表征，用于分类任务」，这正是本章第七节拿它当默认池化、又要拿别的池化去比的前提</td></tr><tr><td><a href="../大模型全景导论/02-Transformer原理.html">大模型导论 02 Transformer 原理</a></td><td>注意力和一层 Transformer 里到底在算什么（⚠️ 那一章是 decoder-only 视角，<code>[CLS]</code> 和池化不在里面，那两件事看上一行和本章第七节）</td></tr><tr><td><a href="../大模型全景导论/03-Tokenizer与上下文.html">大模型导论 03 Tokenizer 与上下文</a></td><td>长文本截断、max_len、脱敏 ID 还原都绕不开分词器</td></tr><tr><td><a href="../机器学习与深度学习基础/05-评估与过拟合.html">ML基础 05 评估与过拟合</a></td><td>类别不均衡下 accuracy / F1 / AUC 各自失效在哪</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="05_预训练模型详解.html">Kaggle 05 预训练模型详解</a></td><td>⭐ <code>[CLS]</code> 到底是什么——BERT 架构里它被训成「句子级表征，用于分类任务」，这正是本章第七节拿它当默认池化、又要拿别的池化去比的前提</td></tr><tr><td><a href="../大模型全景导论/02-Transformer原理.html">大模型导论 02 Transformer 原理</a></td><td>注意力和一层 Transformer 里到底在算什么（⚠️ 那一章是 decoder-only 视角，<code>[CLS]</code> 和池化不在里面，那两件事看上一行和本章第七节）</td></tr><tr><td><a href="../大模型全景导论/03-Tokenizer与上下文.html">大模型导论 03 Tokenizer 与上下文</a></td><td>长文本截断、max_len、脱敏 ID 还原都绕不开分词器</td></tr><tr><td><a href="../机器学习与深度学习基础/05-评估与过拟合.html">ML基础 05 评估与过拟合</a></td><td>类别不均衡下 accuracy / F1 / AUC 各自失效在哪</td></tr></tbody></table></div>
 <hr />
 <h2 id="ckpt">✅ 检查点</h2>
 <ol>

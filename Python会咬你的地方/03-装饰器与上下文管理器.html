@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -332,7 +349,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>--- 开始定义函数 ---</p><p>[deco 被执行了] 拿到的是: add</p><p>--- 定义完了，还没调用过 ---</p><p>[wrapper 被执行了]</p><p>调用结果: 3</p><p>[deco 被执行了] 拿到的是: sub</p><p>[wrapper 被执行了]</p><p>手写等价: 2</p><p>add 现在指向的是: wrapper</p></div></section>
 <p>⭐ <strong>看 <code>[deco 被执行了]</code> 的位置</strong>：它夹在两条分隔线中间，<code>add(1, 2)</code> 还没发生。这跟上一章的生成器<strong>正好相反</strong> —— 生成器是「调用了也不执行」，装饰器是「没调用就已经执行了」。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>你写的</th>
@@ -353,7 +370,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><code>wrapper</code> 决定调它的时候（可能一次、多次、或者零次）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>「定义时执行」不是缺陷，它就是装饰器最大的用途</strong> —— 注册表：</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># 「定义时执行」的用处和代价：注册表模式</span>
 <span class="n">REGISTRY</span> <span class="o">=</span> <span class="p">{}</span>
@@ -419,7 +436,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">[原函数]</span></div><div class="vb-flow-row"><span class="vb-flow-step">__name__ = original</span></div><div class="vb-flow-row"><span class="vb-flow-step">__doc__ = &#x27;把 a 和 b 加起来再乘以 scale。&#x27;</span></div><div class="vb-flow-row"><span class="vb-flow-step">签名 = (a, b=10, *, scale=1.0)</span></div><div class="vb-flow-row"><span class="vb-flow-step">参数名 = [&#x27;a&#x27;, &#x27;b&#x27;, &#x27;scale&#x27;]</span></div><div class="vb-flow-row"><span class="vb-flow-step">[naked]</span></div><div class="vb-flow-row"><span class="vb-flow-step">__name__ = wrapper</span></div><div class="vb-flow-row"><span class="vb-flow-step">__doc__ = None</span></div><div class="vb-flow-row"><span class="vb-flow-step">签名 = (*args, **kwargs)</span></div><div class="vb-flow-row"><span class="vb-flow-step">参数名 = [&#x27;args&#x27;, &#x27;kwargs&#x27;]</span></div><div class="vb-flow-row"><span class="vb-flow-step">[wraps]</span></div><div class="vb-flow-row"><span class="vb-flow-step">__name__ = original</span></div><div class="vb-flow-row"><span class="vb-flow-step">__doc__ = &#x27;把 a 和 b 加起来再乘以 scale。&#x27;</span></div><div class="vb-flow-row"><span class="vb-flow-step">签名 = (a, b=10, *, scale=1.0)</span></div><div class="vb-flow-row"><span class="vb-flow-step">参数名 = [&#x27;a&#x27;, &#x27;b&#x27;, &#x27;scale&#x27;]</span></div><div class="vb-flow-row"><span class="vb-flow-step">__qualname__ : naked -&gt; naked.&lt;locals&gt;.wrapper | wraps -&gt; original</span></div><div class="vb-flow-row"><span class="vb-flow-step">__wrapped__ : naked 有吗 False | wraps 指回原函数 True</span></div></div></section>
 <p>💀 <strong>事故的完整形状</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>项</th>
@@ -444,7 +461,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>装饰器内层函数上加一行 <code>@functools.wraps(fn)</code>。<strong>没有例外</strong>——即使这个装饰器现在只是打个日志</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>最要命的那一格是签名</strong>。<a href="06-类型标注是给工具看的.html"><code>06 章</code></a> 里那个 30 行的 <code>@tool</code> 实现，<code>name</code> 取自 <code>fn.__name__</code>、<code>description</code> 取自 <code>fn.__doc__</code>、参数取自 <code>inspect.signature(fn)</code> —— <strong>上表 <code>naked</code> 那三行全是坏的</strong>：名字变成 <code>wrapper</code>、文档变成 <code>None</code>、参数名变成 <code>['args', 'kwargs']</code>。模型收到的工具描述会是「一个叫 wrapper、没有说明、参数叫 args 和 kwargs 的工具」。</p>
 <p>⭐ <code>wraps</code> 还额外挂了一个 <code>__wrapped__</code> 指回原函数，<code>inspect.signature</code> 就是顺着它找回真签名的。想拿到没被包装的那一层（比如测试里想跳过缓存），用 <code>f.__wrapped__</code>。</p>
 <hr />
@@ -498,7 +515,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>--- 定义 flaky ---</p><p>[1] retry(times) 执行，times = 3</p><p>[2] decorator(fn) 执行，fn = flaky</p><p>--- 定义完了 ---</p><p>[3] 第 1 次失败: 第 1 次不行</p><p>[3] 第 2 次失败: 第 2 次不行</p><p>结果: 第 3 次成功</p><p>[1] retry(times) 执行，times = 3</p><p>[2] decorator(fn) 执行，fn = flaky2</p><p>手写等价: ok</p></div></section>
 <p>⭐ <strong>三层对应三批参数，一句话记住</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>层</th>
@@ -523,7 +540,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>⭐ <strong>每次调用</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>少写一对括号，装饰那一步不会报错，报错的地方在很后面</strong>：</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># ⚠️ 少写一对括号：@retry 和 @retry(3) 差一层调用</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
@@ -679,7 +696,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>Python 3.13.14</p><p>从类上调 C.bad_static(3) : 6</p><p>从实例上调 c.bad_static(3): TypeError : C.bad_static() takes 1 positional argument but 2 were given</p></div></section>
 <p>💀 <strong>事故的完整形状</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>项</th>
@@ -708,7 +725,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>⭐ <strong><code>@staticmethod</code> / <code>@classmethod</code> 永远写在最外层（最上面）</strong>。检查一行代码：<code>type(C.__dict__["名字"])</code>，应该是 <code>staticmethod</code> 而不是 <code>function</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>🗓️ <strong>这条还带版本差异</strong>：<code>bad_static</code> 能从类上调通是因为 <strong>Python 3.10 之后 <code>staticmethod</code> 对象自己变成可调用的了</strong>。在 3.9 及更早，同样的代码会直接抛 <code>'staticmethod' object is not callable</code>。⚠️ 所以这段代码在新版本上更危险 —— 老版本当场炸，新版本让你带着它上线。</p>
 <!--MIDSTOP-->
 <blockquote>
@@ -799,7 +816,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>=== 手写 try/finally（等价物）===</p><p>开 A</p><p>用 A</p><p>关 A</p><p>=== 一行开两个：B 成功、C 失败 ===</p><p>开 B</p><p>关 B</p><p>捕获: C 打不开 —— ⭐ 注意 B 已经被关掉了</p><p>=== 数量不定：ExitStack ===</p><p>开 D</p><p>开 E</p><p>开 F</p><p>一共开了 3 个</p><p>关 F</p><p>关 E</p><p>关 D</p><p>⭐ 退出时按【相反顺序】全部关掉</p></div></section>
 <p>⚠️ 上面第一段只是<strong>近似</strong>展开 —— 真正的 <code>with</code> 还会把异常三元组传给 <code>__exit__</code>，并<strong>看它的返回值决定要不要继续抛</strong>（那正是下一节的坑）。</p>
 <p>⭐ <strong>既然是 <code>try/finally</code>，为什么还要 <code>with</code>？三件它多干的事</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>多干的</th>
@@ -820,7 +837,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>要打开 N 个文件（N 运行时才知道）没法写 N 层 <code>with</code>。<code>ExitStack.enter_context</code> 逐个登记，退出时<strong>按相反顺序</strong>全部关掉</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>📋 <strong>判据</strong>：<strong>一对操作只要「必须成双」（开/关、加锁/解锁、进事务/提交、改全局状态/还原），就写成上下文管理器</strong>，不要靠人记得写 <code>finally</code>。已经是上下文管理器的常见对象：文件、<code>threading.Lock</code>（<a href="04-GIL：为什么多线程救不了你.html">04 章</a> 那些锁都能直接 <code>with</code>）、数据库连接与游标、<code>torch.no_grad()</code>、<code>tempfile.TemporaryDirectory()</code>。</p>
 <hr />
 <h2 id="__exit__-true">💀 八、<code>__exit__</code> 返回 True 会把异常吞掉</h2>
@@ -870,7 +887,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">Swallow : ⚠️ with 块【正常结束】了，代码继续往下跑</span></div><div class="vb-flow-row"><span class="vb-flow-step">Swallow : 实际写进去 1 条 -&gt; [&#x27;第一条&#x27;]</span></div><div class="vb-flow-row"><span class="vb-flow-step">---</span></div><div class="vb-flow-row"><span class="vb-flow-step">Propagate: 外面捕获到 OSError: 磁盘满了</span></div><div class="vb-flow-row"><span class="vb-flow-step">Propagate: 实际写进去 1 条 -&gt; [&#x27;第一条&#x27;]</span></div><div class="vb-flow-row"><span class="vb-flow-step">--- 真想吞，用 contextlib.suppress，写明吞哪一种 ---</span></div><div class="vb-flow-row"><span class="vb-flow-step">FileNotFoundError 被吞了，程序还在跑</span></div><div class="vb-flow-row"><span class="vb-flow-step">PermissionError 没被吞: 别的异常照样往外走</span></div></div></section>
 <p>⭐ <strong>两行输出的差别就是全部</strong>：两边<strong>都只写进去 1 条</strong>（数据同样是坏的），但 <code>Swallow</code> 那边程序认为 <code>with</code> 块正常结束了，接着往下执行 —— 你会拿着一份只写了一半的数据继续算、继续提交、继续返回 200。</p>
 <p>💀 <strong>事故的完整形状</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>项</th>
@@ -895,7 +912,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>⭐ <strong><code>__exit__</code> 一律不写 <code>return</code></strong>（隐式返回 <code>None</code>，等价于 <code>False</code>）。真要吞异常，用 <code>contextlib.suppress(具体的异常类型)</code>，它在源码里<strong>写明了吞哪一种</strong>，别的照样往外走</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ 这和 <a href="07-异常traceback和调试.html"><code>07 章</code></a> 讲的 <code>except Exception: pass</code> 是同一类问题的两副面孔，但 <code>__exit__</code> 这一副<strong>更隐蔽</strong>：<code>except: pass</code> 至少在源码里显眼地写着，而 <code>return True</code> 藏在一个叫「上下文管理器」的、看起来只负责收尾的方法里。</p>
 <hr />
 <h2 id="contextlibcontextmanageryield">🧯 九、<code>contextlib.contextmanager</code>：<code>yield</code> 把函数劈成两半</h2>
@@ -1003,7 +1020,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① with 那一行就抛了: ValueError : 只支持 csv</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 两个 yield -&gt; RuntimeError : generator didn&#x27;t stop</span></div><div class="vb-flow-row"><span class="vb-flow-step">打开 a.csv</span></div><div class="vb-flow-row"><span class="vb-flow-step">关闭 a.csv</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 同一个对象用第二次 -&gt; AttributeError</span></div></div></section>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>坑</th>
@@ -1028,7 +1045,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>⭐ <strong>别把它存进变量重复用</strong>，每次 <code>with</code> 都重新调一次工厂函数：<code>with check("a.csv"):</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ 坑 ③ 报的是什么错<strong>取决于版本</strong>（本机 3.13 是 <code>AttributeError</code>），⭐ <strong>别指望靠错误信息认出它</strong>，靠的是「<code>cm = xxx()</code> 存进变量」这个写法本身。</p>
 <p>⭐ <strong>好消息在这里</strong>：<code>@contextmanager</code> 造出来的对象<strong>同时也是个装饰器</strong>（它继承了 <code>ContextDecorator</code>），而且当装饰器用时每次调用都会自己重建一个新生成器，不受坑 ③ 影响。</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># ⭐ 同一个东西既能 with 也能 @：contextmanager 造出来的对象自带 ContextDecorator</span>
@@ -1133,7 +1150,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="_6">📋 十二、一张排查表</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>现象</th>
@@ -1198,10 +1215,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>检查注册模块有没有真的被 import</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_7">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>相关的地方</th>
@@ -1246,7 +1263,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>⭐ 它有一张表把 <code>with</code> / <code>__exit__</code> / <code>try-finally</code> 一一对应到 C++ 的 RAII 和析构函数。<strong>C++ 没有 <code>finally</code>，因为析构函数覆盖了它的用途</strong> —— 反过来看能理解 <code>with</code> 到底在补什么</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_8">✅ 检查点</h2>
 <ol>

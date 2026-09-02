@@ -173,6 +173,13 @@ table.xref th{text-align:left;background:var(--accent-soft);color:var(--accent);
  padding:8px 12px;border:1px solid var(--border)}
 table.xref td{padding:8px 12px;border:1px solid var(--border);vertical-align:top}
 table.xref td:first-child{white-space:nowrap;font-weight:600}
+
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -215,7 +222,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <div class="codehilite"><pre><span></span><code>多模型预测 → 置信度过滤(OOF选阈值) → 框融合(NMS/WBF/Soft-NMS) → 最终结果
 </code></pre></div>
 
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>步骤</th>
@@ -240,11 +247,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>提升最终精度</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="nms">二、NMS(非极大值抑制)</h2>
 <h3 id="nms_1">标准NMS</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -269,9 +276,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>密集目标场景下误删相邻真实目标</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="soft-nms">Soft-NMS</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -304,9 +311,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>小麦穗检测等密集目标场景</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="nms_2">NMS变体选择</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -331,11 +338,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>见下节</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="wbf">三、WBF(加权框融合)</h2>
 <h3 id="wbf_1">WBF原理</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -364,9 +371,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>多模型融合时比NMS/Soft-NMS更好</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="wbf-vs-nms-vs-soft-nms">WBF vs NMS vs Soft-NMS</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -395,9 +402,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>多模型融合</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="wbf_2">WBF参数</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>参数</th>
@@ -427,11 +434,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>'avg'或'max'</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="oof">四、OOF(最优置信度阈值选择)</h2>
 <h3 id="oof_1">OOF原理</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -456,9 +463,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>找到使最终评价指标最优的阈值</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="oof_2">OOF实现方法</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -479,9 +486,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>用贝叶斯方法高效搜索阈值空间</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_4">阈值选择建议</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -506,11 +513,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>融合后置信度分布变化</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="cv">五、伪标签在CV中的应用</h2>
 <h3 id="_5">伪标签使用场景</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -535,7 +542,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>-</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_6">伪标签实现流程</h3>
 <div class="codehilite"><pre><span></span><code>1. 用当前最优模型对测试集预测
 2. 筛选高置信度(&gt;0.9)预测结果
@@ -545,7 +552,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 </code></pre></div>
 
 <h3 id="_7">伪标签注意事项</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>注意点</th>
@@ -574,11 +581,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>部分比赛禁止使用测试集伪标签</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_8">六、分割后处理</h2>
 <h3 id="_9">分割后处理方法</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -613,7 +620,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>概率图→二值掩码</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_10">医学大图后处理流程</h3>
 <div class="codehilite"><pre><span></span><code>1. 切片预测结果拼回大图坐标空间
 2. 重叠区域取平均或取最大值
@@ -634,7 +641,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 </code></pre></div>
 
 <h3 id="_12">融合多样性保证</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -659,10 +666,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>不同TTA变换的预测结果</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="sahi">八、SAHI（切片辅助推理）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -703,7 +710,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>小麦穗检测、海星检测等小目标场景几乎必须使用</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="sahi_1">SAHI实战流程</h3>
 <div class="codehilite"><pre><span></span><code>1. 加载训练好的检测模型
 2. 将测试大图切片(如1024x1024, overlap=0.25)
@@ -715,7 +722,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 
 <hr />
 <h2 id="_13">九、检测竞赛常见踩坑点</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>坑点</th>
@@ -760,10 +767,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>只用可逆变换(翻转/缩放)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="09_任务类型与模型架构.html">Kaggle 09 任务类型与模型架构</a></td><td>⭐ 框和置信度是从哪儿吐出来的——Head 的<strong>分类分支+回归分支</strong>、以及 Anchor 这个候选框先验；先有这一层，本章的 NMS 才有意义</td></tr><tr><td><a href="../机器学习与深度学习基础/12-CNN.html">ML基础 12 CNN</a></td><td>检测模型 Backbone 那一层在算什么（⚠️ 那一章只讲卷积和分类网络，<strong>不含检测头</strong>，检测部分看上一行）</td></tr><tr><td><a href="../机器学习与深度学习基础/05-评估与过拟合.html">ML基础 05 评估与过拟合</a></td><td>置信度阈值在 OOF 上搜出来，本身就是一次会过拟合的调参</td></tr><tr><td><a href="../模型上线之后/02-离线好不等于线上好.html">模型上线之后 02 离线好不等于线上好</a></td><td>阈值在验证集调到最优、换个分布就失效，这是同一个坑</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="09_任务类型与模型架构.html">Kaggle 09 任务类型与模型架构</a></td><td>⭐ 框和置信度是从哪儿吐出来的——Head 的<strong>分类分支+回归分支</strong>、以及 Anchor 这个候选框先验；先有这一层，本章的 NMS 才有意义</td></tr><tr><td><a href="../机器学习与深度学习基础/12-CNN.html">ML基础 12 CNN</a></td><td>检测模型 Backbone 那一层在算什么（⚠️ 那一章只讲卷积和分类网络，<strong>不含检测头</strong>，检测部分看上一行）</td></tr><tr><td><a href="../机器学习与深度学习基础/05-评估与过拟合.html">ML基础 05 评估与过拟合</a></td><td>置信度阈值在 OOF 上搜出来，本身就是一次会过拟合的调参</td></tr><tr><td><a href="../模型上线之后/02-离线好不等于线上好.html">模型上线之后 02 离线好不等于线上好</a></td><td>阈值在验证集调到最优、换个分布就失效，这是同一个坑</td></tr></tbody></table></div>
 <hr />
 <h2 id="ckpt">✅ 检查点</h2>
 <ol>

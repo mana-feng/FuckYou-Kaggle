@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -305,7 +322,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><a href="04-上下文工程.html">第 4 章</a>的四件武器（压缩 / 外置笔记 / 子 Agent / 渐进式披露）回答的是
 「<strong>这一个会话里，有限的注意力预算怎么花</strong>」。记忆回答的是另一个问题：
 「<strong>这个会话没了之后，什么应该还活着</strong>」。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>你遇到的问题</th>
@@ -340,14 +357,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>本章</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>🔑 <strong>一句话分界</strong>：<strong>上下文工程管「进」，记忆管「留」。</strong>
 第 4 章的「结构化笔记（外置记忆）」其实就是记忆的一种实现，只是那一章从<strong>省上下文</strong>的角度讲；
 这一章从<strong>跨会话</strong>的角度重讲一遍。同一件东西的两个面。</p>
 </blockquote>
 <h3 id="rag">边界二：和 RAG ⭐（最容易混，也是面试最爱问的一条）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -392,7 +409,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>几乎完全一样</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>🔑 <strong>压成一句</strong>：<strong>检索技术可以完全一样，治理规则完全不一样。</strong>
 你可以把第 11 章那一整套（混合检索、RRF 融合、Cross-Encoder 重排）原封不动搬来做记忆检索，
@@ -404,7 +421,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 「嗯好的」「那就这样吧」的库。</p>
 <h3 id="_3">边界三：和长上下文</h3>
 <p>「窗口 100 万 token 了，把所有历史都带上不就有记忆了？」——不行，四个理由：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>理由</th>
@@ -429,7 +446,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>长上下文只能让它「不忘」，不能让它「忘掉该忘的」</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>最后一条最本质：用户去年的地址、上个月已经作废的方案，在长上下文里和最新信息<strong>平等地</strong>占着注意力。
 <strong>记忆系统的价值有一半在删除权</strong>——这一点长上下文永远给不了。</p>
 <hr />
@@ -460,7 +477,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <h3 id="3">③ 长期记忆：跨会话的事实与偏好</h3>
 <p>是什么：稳定的、和某个具体任务无关的东西。分三类：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>类别</th>
@@ -481,7 +498,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>「这个 API 的分页从 0 开始」「这个仓库跑测试要先起 docker」——Agent 自己踩出来的操作经验</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>存在哪</strong>：少量、结构化、要精确命中的放 KV 或关系库；多、模糊、要语义检索的放向量库。
 活多久：跨会话，直到被推翻或过期。
 坏掉的样子：⭐ 把<strong>一次性的东西记成了永久偏好</strong>——用户说了一次「这次简短点」，从此半年惜字如金。</p>
@@ -524,7 +541,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-flow" aria-label="流程图"><p class="visual-block-title">流程图</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 跨会话仍然成立</span></div><div class="vb-flow-row"><span class="vb-flow-step">「把这段翻译成英文」</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">不成立，是一次性指令</span></div><div class="vb-flow-row"><span class="vb-flow-step">「我的母语是中文」</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">成立</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 未来还会被用到</span></div><div class="vb-flow-row"><span class="vb-flow-step">临时算出来的中间值、这次的文件路径</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">不会</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ ⭐ 重新问一遍的代价 &gt; 记错的代价</span></div><div class="vb-flow-row"><span class="vb-flow-step">直接问用户只要 3 秒的事，别记</span></div><div class="vb-flow-row"><span class="vb-flow-step">—— 记错了要跟着他半年</span></div></div></section>
 <p>第 ③ 条最容易被忽略，也最能砍掉垃圾。<strong>能便宜地重新获取的信息，不要记。</strong></p>
 <h3 id="_8">不该进长期记忆的东西</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>别记</th>
@@ -559,10 +576,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>短期记忆足够</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_9">谁来决定写</h3>
 <p>三种方式，实际系统通常混用：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方式</th>
@@ -591,7 +608,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>覆盖率低</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>🔑 <strong>一个稳的默认配置</strong>：规则抽取管结构化字段 ＋ 模型自判但必须过一遍
 「<strong>这句话能不能脱离本次对话独立成立</strong>」的过滤 ＋ 长期记忆对用户<strong>可见可删</strong>。
@@ -621,7 +638,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <h3 id="_11">什么时候写</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>时机</th>
@@ -651,11 +668,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>用户的显式指令优先级最高</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_12">📖 四、读出：怎么把记忆送回上下文</h2>
 <h3 id="_13">三种读法</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>读法</th>
@@ -684,7 +701,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>要维护「什么算核心」</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>🔑 <strong>为什么分层是默认答案</strong>：有一类记忆是<strong>每一轮都必须生效</strong>的
 （说中文、不用 emoji、生产环境不许动），它们靠检索<strong>根本不可靠</strong>——
@@ -718,7 +735,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="_18">💀 一个真实形态的事故</h3>
 <p>一个企业内部助理 Agent。用户在某次对话里说：「这个季度我们暂时不做移动端。」
 模型判断这值得长期记住，<strong>但写进去的是「用户不负责移动端」</strong>——限定词被抹掉了。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -743,13 +760,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>① 写入时<strong>保留限定词</strong>（「这个季度」不能被抹掉）② 每条记忆带 TTL 或复核期 ③ ⭐ <strong>在追踪里记录「这一轮用上了哪几条记忆」</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>🔑 第 ③ 条要单独记住：<strong>记忆是全链路里唯一一个能悄悄改变行为、却不在任何日志里露面的东西。</strong>
 工具调用会留痕、检索会留痕、提示词会留痕，只有「因为记着某件事所以没做某件事」不会。</p>
 </blockquote>
 <h3 id="_19">过期怎么判（三种策略叠加用）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>策略</th>
@@ -774,7 +791,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>兜底，防无限增长</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>一条实践建议：淘汰用降权，不要物理删除。</strong>
 降权可以回滚，删除不能；而且被删掉的记忆没留下「曾经存在过」的痕迹，日后排查会一头雾水。
@@ -785,7 +802,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>四步裁决，<strong>顺序不能换</strong>：</p>
 <section class="visual-block visual-block-flow" aria-label="流程图"><p class="visual-block-title">流程图</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 是不是【真冲突】？</span></div><div class="vb-flow-row"><span class="vb-flow-step">「喜欢 Python」和「喜欢 Go」</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">可以同时成立，是补充</span></div><div class="vb-flow-row"><span class="vb-flow-step">「在北京」和「在上海」</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">同一属性 + 互斥取值，才是冲突</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 跳过这一步的后果：把补充当冲突处理，记忆库越记越少</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 谁更新？</span></div><div class="vb-flow-row"><span class="vb-flow-step">默认新的赢 —— 但带时间限定的旧记忆</span></div><div class="vb-flow-row"><span class="vb-flow-step">不会被一条无限定的新记忆推翻</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 谁更可信？</span></div><div class="vb-flow-row"><span class="vb-flow-step">用户明说 &gt; 规则抽取 &gt; 模型推断</span></div><div class="vb-flow-row"><span class="vb-flow-step">④ ⭐ 别删旧的，填 superseded_by 指向新的</span></div><div class="vb-flow-row"><span class="vb-flow-step">留下这条链，你才能回答「它为什么突然改口了」</span></div></div></section>
 <h3 id="memory-crudupdate">Memory 的 CRUD：Update 才是难的那个</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>操作</th>
@@ -810,7 +827,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>技术不难，难在合规和可解释性（见上面那条建议）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>🔑 <strong>一个能判断系统成熟度的问题</strong>：问它「用户改了一个偏好，你的系统是<strong>新增一条</strong>还是<strong>改一条</strong>」。
 答「新增」的，跑三个月后记忆库里会躺着五条互相矛盾的偏好，而且检索时它们会一起被召回。</p>
@@ -818,7 +835,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_21">💀 六、记忆带来的新失败模式</h2>
 <p>前五节讲怎么做对。这一节讲的是：<strong>加了记忆之后，你多了哪些原来没有的风险。</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>新风险</th>
@@ -853,7 +870,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>见《数据这一关》19 章</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>🔑 <strong>整张表压成一句</strong>：
 <strong>记忆把「一次性的错」变成了「持续性的错」，把「一次性的攻击」变成了「持久化的后门」。</strong>
@@ -862,7 +879,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_22">🧭 七、你到底需不需要一个记忆系统</h2>
 <p>延续<a href="06-工作流还是Agent.html">第 6 章</a>的态度：<strong>先证明必要，别为了「看起来像个助理」而上记忆。</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>你观察到的症状</th>
@@ -891,7 +908,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>⭐ <strong>都不需要</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>🔑 <strong>最小可用的记忆系统长什么样</strong>：一张表、几个字段，规则抽取三到五个固定偏好，
 全量注入系统提示词，用户可见可删。<strong>没有向量库，没有模型自判，没有遗忘策略。</strong>
@@ -910,7 +927,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ol>
 <hr />
 <h2 id="_23">🕳️ 九、六个常见坑</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>坑</th>
@@ -950,10 +967,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>隔离键下沉到存储层强制</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_24">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>去哪</th>
@@ -986,7 +1003,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>长期记忆是长期存着的个人数据。留存多久、怎么删、删到什么程度算删干净，按那一章办</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_25">✅ 检查点</h2>
 <ol>

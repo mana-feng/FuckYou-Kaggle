@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>00 · 怎么用这份教程 · 扩散模型</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">00 · 怎么用这份教程</span>
+  <span class="prevnext">
+  <a href="01-第一天-从噪声里捞出一张图.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">🕳️ 一、它填的是哪个洞</a></li>
+<li><a href="#_3">🚧 二、和站内别的板块的分界</a></li>
+<li><a href="#_4">⛔ 三、它不讲什么</a></li>
+<li><a href="#11">🗺️ 四、章节地图（连本章共 11 页）</a></li>
+<li><a href="#_5">🚦 五、三条读法</a></li>
+<li><a href="#_6">🧰 六、你需要准备什么</a></li>
+<li><a href="#_7">🔗 这一章连到哪里</a></li>
+<li><a href="#_8">✅ 检查点</a></li>
+<li><a href="#_9">🛑 可以停在这里</a></li>
+</ul>
+</div>
+</details>
+<h1 id="00">00 · 怎么用这份教程</h1>
+<p>⏱ <strong>20 分钟</strong> ｜ ⭐ <strong>站点自己写下「整块要外找」的那一块，就在这里补上</strong></p>
+<hr />
+<h2 id="_1">🎯 一句话</h2>
+<p><strong>这套教程只回答一个问题：从一团纯随机的噪声里，怎么可能长出一张具体的图。</strong>
+它不教提示词、不横评产品、不教任何 WebUI —— 它讲<strong>这套东西为什么能工作，以及它的代价</strong>。</p>
+<hr />
+<h2 id="_2">🕳️ 一、它填的是哪个洞</h2>
+<p>站内《大模型全景导论》有一页 14 分钟的 <a href="../大模型全景导论/10b-图像生成.html">10b · 图像生成</a>。那一页末尾的「📦 深挖的话要学什么」清单，对整个图像生成方向给出的标注是：</p>
+<blockquote>
+<p>📕 <strong>整块要外找</strong>。全站搜 DDPM / DDIM / Latent Diffusion / ControlNet，唯一的命中就是上面这一行清单本身。</p>
+</blockquote>
+<p>被标成「要外找」的那一行列的是：<strong>扩散过程的数学、DDPM→DDIM 采样加速、Latent Diffusion、DiT、ControlNet、风格 LoRA 训练、图生图／局部重绘、评估（FID／CLIP Score）</strong>。⭐ 那正是本板块的目录。</p>
+<p>⭐ <strong>立项理由不是「扩散很火」</strong>——那对任何主题都成立、等于没有理由；理由是<strong>站点自己声明了这个缺口，还指名了它的边界</strong>。同一段还写着：站内能帮你的<strong>只有前置数学</strong>（KL 散度、ELBO）。⭐ <strong>地基铺好了、楼没盖 —— 这就是那栋楼。</strong></p>
+<hr />
+<h2 id="_3">🚧 二、和站内别的板块的分界</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>那边</th>
+<th>这里</th>
+<th>分界</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../大模型全景导论/10b-图像生成.html">全景导论 10b</a>：14 分钟，U-Net／VAE／CFG／ControlNet 一人一行</td>
+<td>那一行行的展开：各自<strong>解决什么问题、代价是什么、什么时候失效</strong></td>
+<td><strong>索引 vs 深挖</strong>（那页自己标了「整块要外找」）</td>
+</tr>
+<tr>
+<td><a href="../大模型全景导论/02-Transformer原理.html">全景导论主线 2</a>：注意力＋残差＋FFN，一个词一个词往下写</td>
+<td>从纯噪声开始，<strong>所有像素同时</strong>变清晰</td>
+<td><strong>两种范式</strong>。⚠️ 不是替代：07 章的 DiT 用回的正是它</td>
+</tr>
+<tr>
+<td><a href="../机器学习的数学原理/01b-KL散度.html">数学原理 01b</a> 讲 KL、<a href="../机器学习的数学原理/13-EM与高斯混合.html">13</a> 讲 ELBO</td>
+<td>直接<strong>拿来用</strong>：训练目标是一串 KL，简化后塌成一行均方误差</td>
+<td><strong>前置数学 vs 用法</strong>，这里不重讲 KL 是什么</td>
+</tr>
+<tr>
+<td><a href="../机器学习与深度学习基础/12-CNN.html">ML 基础 12 · CNN</a>：卷积、感受野、池化、残差</td>
+<td>U-Net 怎么在这些零件上加<strong>跳跃连接和上采样</strong></td>
+<td><strong>零件 vs 装配</strong>。⚠️ 上采样站内没有，归 07 章</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_4">⛔ 三、它不讲什么</h2>
+<p>❌ 提示词怎么写、各种咒语 ❌ 横评哪个模型／服务更好 ❌ 某个 WebUI 的按钮在哪 ❌ 视频与 3D 生成的完整方案（09 章只提一句共同骨架）。</p>
+<p>⭐ <strong>判断标准只有一条：换个产品就得重写的不写，换个产品照样成立的才写。</strong> 所以 06 章不讲怎么拖 CFG 那个滑块，只讲<strong>它在数学上到底在调什么</strong>。</p>
+<hr />
+<h2 id="11">🗺️ 四、章节地图（连本章共 11 页）</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>章</th>
+<th>它回答的问题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>01</strong> 第一天：从噪声里捞出一张图</td>
+<td>⭐ 几十行 PyTorch、CPU 十几秒，亲眼看见纯噪声变回原来的分布</td>
+</tr>
+<tr>
+<td><strong>02</strong> 加噪与去噪</td>
+<td>前向为什么能一步到位，反向为什么必须一步步走</td>
+</tr>
+<tr>
+<td><strong>03</strong> 训练目标为什么是「预测噪声」</td>
+<td>变分下界怎么塌成一行均方误差</td>
+</tr>
+<tr>
+<td><strong>04</strong> DDIM 与采样加速</td>
+<td>50 步和 1000 步差在哪，确定性采样换来了什么</td>
+</tr>
+<tr>
+<td><strong>05</strong> Latent Diffusion</td>
+<td>省的到底是哪部分开销，VAE 又带来什么损失</td>
+</tr>
+<tr>
+<td><strong>06</strong> 条件控制：文本与 CFG</td>
+<td>提示词塞在哪一层，CFG 的两次前向各算什么</td>
+</tr>
+<tr>
+<td><strong>07</strong> 去噪主干：U-Net 与 DiT</td>
+<td>为什么去噪偏爱 U 形，换成 Transformer 得到了什么</td>
+</tr>
+<tr>
+<td><strong>08</strong> ControlNet 与风格 LoRA</td>
+<td>「照这个骨架画」和「照这个画风画」是两件事</td>
+</tr>
+<tr>
+<td><strong>09</strong> 怎么评估：FID / CLIP Score</td>
+<td>这两个数字各自看不见什么</td>
+</tr>
+<tr>
+<td><strong>附录A</strong> 速查</td>
+<td>公式、符号、调参项、常见报错</td>
+</tr>
+</tbody>
+</table></div>
+<p>⭐ <strong>01 → 03 是一条链</strong>（03 的推导要用 02 的记号）；<strong>04 之后每章都能单独读</strong>。</p>
+<figure class="dia"><svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="从一个起点分出三条岔路，分别通向第一天、原理推导、参数调试"><text class="dia-t" x="350" y="24" font-size="14" text-anchor="middle" fill="var(--fg)" font-weight="700">你今天想解决哪件事？</text><rect x="270" y="46" width="160" height="44" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/><text class="dia-t" x="350" y="73" font-size="13" text-anchor="middle" fill="var(--accent)" font-weight="700">从这里开始</text><line x1="350" y1="90" x2="130" y2="111" stroke="var(--accent)" stroke-width="2"/><polygon points="350,120 345,111 355,111" fill="var(--accent)"/><rect x="30" y="124" width="200" height="44" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="130" y="151" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">想先看见它动</text><line x1="130" y1="168" x2="130" y2="187" stroke="var(--accent)" stroke-width="2"/><polygon points="130,196 125,187 135,187" fill="var(--accent)"/><rect x="30" y="200" width="200" height="52" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/><text class="dia-t" x="130" y="226" font-size="13" text-anchor="middle" fill="var(--accent)" font-weight="700">01 第一天</text><text class="dia-t" x="130" y="245" font-size="11.5" text-anchor="middle" fill="var(--muted)">CPU 十几秒训一个出来</text><line x1="350" y1="90" x2="350" y2="111" stroke="var(--accent)" stroke-width="2"/><polygon points="350,120 345,111 355,111" fill="var(--accent)"/><rect x="250" y="124" width="200" height="44" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="350" y="151" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">想能自己推出来</text><line x1="350" y1="168" x2="350" y2="187" stroke="var(--accent)" stroke-width="2"/><polygon points="350,196 345,187 355,187" fill="var(--accent)"/><rect x="250" y="200" width="200" height="52" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/><text class="dia-t" x="350" y="226" font-size="13" text-anchor="middle" fill="var(--accent)" font-weight="700">02 → 03</text><text class="dia-t" x="350" y="245" font-size="11.5" text-anchor="middle" fill="var(--muted)">加噪去噪 + 变分下界</text><line x1="350" y1="90" x2="570" y2="111" stroke="var(--accent)" stroke-width="2"/><polygon points="350,120 345,111 355,111" fill="var(--accent)"/><rect x="470" y="124" width="200" height="44" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="570" y="151" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">想搞懂手上的参数</text><line x1="570" y1="168" x2="570" y2="187" stroke="var(--accent)" stroke-width="2"/><polygon points="570,196 565,187 575,187" fill="var(--accent)"/><rect x="470" y="200" width="200" height="52" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/><text class="dia-t" x="570" y="226" font-size="13" text-anchor="middle" fill="var(--accent)" font-weight="700">04 → 06</text><text class="dia-t" x="570" y="245" font-size="11.5" text-anchor="middle" fill="var(--muted)">步数 / 种子 / CFG scale</text><text class="dia-t" x="350" y="286" font-size="12.5" text-anchor="middle" fill="var(--done)" font-weight="700">⭐ 三条路互不依赖，走完任意一条都能停 —— 不必按顺序读完全部 11 页</text></svg><figcaption>按**你现在的问题**选一条，不必按顺序读。⭐ 三条路互不依赖 —— 只想调参的人不需要先啃完变分下界。</figcaption></figure>
+
+<hr />
+<h2 id="_5">🚦 五、三条读法</h2>
+<p><strong>① 想先看见它动</strong>（第一次接触推荐这条）
+👉 <code>01</code> → <code>02</code> → <code>05</code>。01 让你跑出一个真的扩散模型，02 解释你刚跑的那些行，05 说清从玩具到真实图片还差哪一步。</p>
+<p><strong>② 想搞懂数学、能自己推</strong>
+👉 <code>02</code> → <code>03</code> → <code>04</code>。一条推导链：加噪的闭式解 → 下界怎么塌成均方误差 → 放松「必须一步步走」会怎样。⚠️ 卡住就回 <a href="../机器学习的数学原理/01b-KL散度.html">数学原理 01b</a> 和 <a href="../机器学习的数学原理/13-EM与高斯混合.html">13</a>。</p>
+<p><strong>③ 只想搞明白手上那些参数和插件</strong>
+👉 <code>06</code> → <code>08</code> → <code>04</code>，需要时补 <code>09</code>。前面五章<strong>都不是硬前置</strong>，06 会把记号重新交代一遍。</p>
+<hr />
+<h2 id="_6">🧰 六、你需要准备什么</h2>
+<ul>
+<li><strong>Python + PyTorch（CPU 版就够）</strong>。⭐ 本板块能跑的代码全在 CPU 上跑得完，最长一段十几秒。</li>
+<li><strong>知道什么是神经网络和训练循环</strong>。不熟就先去 <a href="../机器学习与深度学习基础/15-PyTorch实战手册.html">ML 基础 15 · PyTorch 实战手册</a>，那里有可直接抄的完整模板。</li>
+<li><strong>高中概率</strong>。数学都给，但每条公式配一句人话，推导放折叠块里，不看也能往下走。</li>
+<li>⚠️ <strong>不需要 GPU，不需要下载任何模型权重</strong> —— 代价是 01 章用<strong>二维玩具数据</strong>而不是真图片，但机制是同一套。</li>
+<li><strong>不需要读过站内任何别的板块</strong>。</li>
+</ul>
+<hr />
+<h2 id="_7">🔗 这一章连到哪里</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>相关的地方</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../大模型全景导论/10b-图像生成.html">全景导论 10b · 图像生成</a></td>
+<td>⭐ <strong>立项证据就在那一页</strong>：它把这一整块标成「📕 整块要外找」。想先要个 14 分钟的鸟瞰就先看它</td>
+</tr>
+<tr>
+<td><a href="../大模型全景导论/02-Transformer原理.html">全景导论主线 2 · 模型怎样看懂一句话</a></td>
+<td>另一种生成范式。⭐ 那张「注意力 → 残差 → FFN」的信息路径图，正是 07 章 DiT 的骨架</td>
+</tr>
+<tr>
+<td><a href="../机器学习的数学原理/01b-KL散度.html">数学原理 01b · KL 散度</a></td>
+<td>那一章讲了<strong>前向 KL 逼你盖住所有峰、反向 KL 允许只蹲一个峰</strong>，这个区别 03 章会直接用</td>
+</tr>
+<tr>
+<td><a href="../机器学习的数学原理/13-EM与高斯混合.html">数学原理 13 · EM 与高斯混合</a></td>
+<td>ELBO 的正式出处：<strong>E 步把下界顶到贴着似然、M 步抬高下界</strong>。扩散的变分下界是同一套换了场景</td>
+</tr>
+<tr>
+<td><a href="../机器学习与深度学习基础/12-CNN.html">ML 基础 12 · CNN 处理图像</a></td>
+<td>U-Net 的零件全在那儿：卷积、感受野、池化、⭐ 残差连接</td>
+</tr>
+<tr>
+<td><a href="../大模型全景导论/15-数学地基.html">全景导论 15 · 数学地基</a></td>
+<td>它的清单里「马尔可夫链 / 变分推断」备注写着「<strong>只有挖图像生成才需要</strong>」—— 你正在挖的就是它</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_8">✅ 检查点</h2>
+<ol>
+<li>这个板块的立项理由是什么？为什么「扩散模型很火」不能当理由？</li>
+<li>全景导论 10b 和本板块是不是重复？分界在哪？</li>
+<li>本板块不讲哪四类东西？判断标准是哪一句？</li>
+<li>扩散和自回归是两种范式，它们在本板块里有交汇的地方吗？在第几章？</li>
+<li>KL 散度和 ELBO 归哪个板块？本板块拿它们做什么？</li>
+<li>跑本板块的代码需要 GPU 吗？代价是什么？</li>
+</ol>
+<details>
+<summary>👀 答案</summary>
+<ol>
+<li>理由是<strong>站点自己声明了这个缺口</strong>：全景导论 10b 的深挖清单把整个图像生成方向标成「📕 整块要外找」，还列出了具体条目。「很火」对任何主题都成立、等于没有理由；「站内某一页白纸黑字说这里缺一块」是<strong>能被核对的</strong>。</li>
+<li>不重复。<strong>索引 vs 深挖</strong>：10b 只有 14 分钟，把 U-Net／VAE／CFG／ControlNet 一人一行列完；本板块展开每一行的「解决什么问题、代价、什么时候失效」。</li>
+<li>① 提示词 ② 横评模型／服务 ③ WebUI 操作 ④ 视频／3D 的完整方案。标准：<strong>换个产品就得重写的不写，换个产品照样成立的才写。</strong></li>
+<li>有 —— <strong>07 章的 DiT</strong>：去噪主干换成 Transformer，用的正是自回归那套里的同一种结构。两者不是替代关系。</li>
+<li>归 <strong>《机器学习的数学原理》</strong>：01b 讲 KL（含前向／反向 KL 的行为差异），13 讲 ELBO（E 步顶下界、M 步抬下界）。本板块<strong>直接拿来用</strong>：训练目标是一串 KL，简化后塌成一行均方误差。</li>
+<li><strong>不需要</strong>，所有能跑的代码 CPU 上跑得完，最长一段十几秒。代价是 01 章用<strong>二维玩具数据</strong>而不是真图片 —— 机制是同一套。</li>
+</ol>
+</details>
+<hr />
+<h2 id="_9">🛑 可以停在这里</h2>
+<p>读到这里你已经知道这个板块干什么、不干什么，以及自己该从哪一章进去。<strong>下一章就开始动手</strong>，不用再准备任何东西。
+⚠️ 如果后面觉得「这些符号完全跟不上」，回来看第六节 —— 大概率是缺了 KL 或训练循环那一块，回站内对应章补比硬啃快得多。</p>
+<p>⚡ <strong>走神救援</strong></p>
+<blockquote>
+<p>⭐ <strong>这个板块只回答一个问题：从一团纯噪声里怎么可能长出一张具体的图。</strong> 讲<strong>为什么能工作、代价是什么</strong>，不讲提示词、不横评产品、不教 WebUI —— 标准是「<strong>换个产品就得重写的不写，换个产品照样成立的才写</strong>」。</p>
+<p>🕳️ <strong>立项理由是站点自己写下的</strong>：《大模型全景导论》10b 图像生成那一页的深挖清单标着「📕 <strong>整块要外找</strong>，全站搜 DDPM / DDIM / Latent Diffusion / ControlNet，唯一的命中就是上面这一行清单本身」，而那一行列的正是本板块目录。⭐ 前置数学站里齐全（KL、ELBO），<strong>地基铺好了、楼没盖 —— 这就是那栋楼</strong>。</p>
+<p>🚧 <strong>四条分界</strong>：10b 是索引、这里是深挖；自回归和扩散是<strong>两种范式而非替代</strong>（07 章 DiT 用回 Transformer）；KL 与 ELBO 归《数学原理》01b 和 13，这里只拿来用；卷积／感受野／池化／残差归《ML 基础》12，<strong>上采样和跳跃连接站内没有、归 07 章</strong>。</p>
+<p>🗺️ <strong>11 页</strong>：01 动手 → 02 加噪去噪 → 03 训练目标 → 04 DDIM 跳步 → 05 潜空间 → 06 条件与 CFG → 07 U-Net 与 DiT → 08 ControlNet 与 LoRA → 09 评估 → 附录A。⭐ <strong>01→03 是一条链</strong>，04 之后每章能单独读。三条读法：想看见它动 01→02→05；想能自己推 02→03→04；只想搞懂手上的参数 06→08→04。</p>
+<p>🧰 <strong>准备</strong>：CPU 版 PyTorch 就够，<strong>不需要 GPU、不需要下载权重</strong>，最长一段十几秒；代价是 01 章用二维玩具数据而非真图片。不假设你读过站内别的板块。</p>
+</blockquote>
+<p><strong>下一节</strong> 👉 <a href="01-第一天-从噪声里捞出一张图.html">01-第一天-从噪声里捞出一张图.md</a></p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="index.html"><div class="dir">← 返回</div>🏠 本教程首页</a><a class="next" href="01-第一天-从噪声里捞出一张图.html"><div class="dir">下一节 →</div>🎨 01 · 第一天：从噪声里捞出一张图</a></nav>
+</main>
+<script>(function(){
+  var KEY="diff-progress", FILE="00-\u600e\u4e48\u7528\u8fd9\u4efd\u6559\u7a0b.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+</body></html>

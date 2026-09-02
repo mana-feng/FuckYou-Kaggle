@@ -1,14 +1,24 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>06 · 怎么连接外部系统：别让应用变成一座孤岛 · Mendix 低代码开发</title>
+<title>附录A · 速查 · 科学问题怎么变成模型</title>
 <script>(function(){var t=localStorage.getItem('recsys-theme');
 if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
 @font-face{font-family:"CodeCJK";
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -267,220 +284,335 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
-  <span class="title">06 · 怎么连接外部系统</span>
-  <span class="prevnext"><a href="05-谁能看见和修改什么.html">←</a>
-  <a href="07-让它真的交付出去.html">→</a></span>
+  <span class="title">附录A · 速查</span>
+  <span class="prevnext"><a href="08-数据实验模型飞轮.html">←</a>
+  </span>
   <button class="js-done-btn">☐ 打卡</button>
   <button id="themeToggle" title="切换深浅色">🌗</button>
 </div></header>
 <main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
 <ul>
 <li><a href="#_1">🎯 一句话</a></li>
-<li><a href="#_2">🧭 员工工具最常见的三种连接</a></li>
-<li><a href="#_3">🔁 用一张问题单代替一堆术语</a></li>
-<li><a href="#marketplace">🧱 Marketplace 的正确位置</a></li>
-<li><a href="#_4">🧪 先不连：把“同步部门”讲清楚</a></li>
-<li><a href="#_5">🧭 三种常见做法，该怎么选</a></li>
-<li><a href="#_6">🔐 凭据和个人信息放在哪里</a></li>
-<li><a href="#_7">🧯 集成失败时先问的四件事</a></li>
-<li><a href="#_9">🛑 可以停在这里</a></li>
-<li><a href="#_10">✅ 检查点</a></li>
+<li><a href="#_2">📊 一、全书实测数字总表</a></li>
+<li><a href="#_3">🚦 二、判据速查</a></li>
+<li><a href="#_4">⛔ 三、红线：这些事一做就错</a></li>
+<li><a href="#_5">🧪 四、正确划分的四步</a></li>
+<li><a href="#_6">🗓️ 五、这一页里会过期的东西</a></li>
+<li><a href="#_7">🔗 这一章连到哪里</a></li>
 </ul>
 </div>
 </details>
-<h1 id="06">06 · 怎么连接外部系统：别让应用变成一座孤岛</h1>
-<p>⏱ <strong>14 分钟</strong> ｜ 先知道该找谁，不急着背协议</p>
+<h1 id="a">附录A · 速查</h1>
+<p>⏱ <strong>10 分钟</strong> ｜ ⭐ <strong>全书的实测数字和判据，集中在一页</strong></p>
 <hr />
 <h2 id="_1">🎯 一句话</h2>
-<p>集成是在让两个系统交换信息；先说清“谁提供什么、谁需要什么、什么时候出错”，再决定用 REST、导入导出还是 Marketplace 组件。</p>
+<p><strong>这一页是查表用的，不是读的。</strong>
+全书八章的实测数字、判据和红线都在这里，⭐ 每一条都注明出处章节。</p>
 <hr />
-<h2 id="_2">🧭 员工工具最常见的三种连接</h2>
-<table>
+<h2 id="_2">📊 一、全书实测数字总表</h2>
+<p>⭐ <strong>每一个都是真跑出来的</strong>，代码在对应章节里，都能复制到空文件直接跑。</p>
+<div class="tw"><table>
 <thead>
 <tr>
-<th>你的目标</th>
-<th>更像哪种方式</th>
-<th>先问的问题</th>
+<th>出处</th>
+<th>量的是什么</th>
+<th>结果</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>从 HR 系统同步部门</td>
-<td>REST 服务</td>
-<td>对方提供什么地址和数据格式？</td>
+<td><a href="01-第一天.html">01</a></td>
+<td>450 条数据，加一列疏水性</td>
+<td>R² <strong>0.319 → 0.515</strong></td>
 </tr>
 <tr>
-<td>一次性导入历史员工表</td>
-<td>文件导入</td>
-<td>谁负责清洗重复、空值和错误行？</td>
+<td><a href="01-第一天.html">01</a></td>
+<td>纯 one-hot 翻倍到 900 条</td>
+<td>R² <strong>0.535</strong> ⭐ 和上面相当 → <strong>一列先验 ≈ 一倍数据</strong></td>
 </tr>
 <tr>
-<td>增加成熟的通用能力</td>
-<td>Marketplace 模块或组件</td>
-<td>版本、权限和维护者可靠吗？</td>
+<td><a href="01-第一天.html">01</a></td>
+<td>1800 条时两种方案</td>
+<td>都是 <strong>0.705</strong> ⭐ 优势归零</td>
+</tr>
+<tr>
+<td><a href="01-第一天.html">01</a></td>
+<td>涨到 0.748 就不动</td>
+<td>⚠️ 模型形式限制，不是数据不够</td>
+</tr>
+<tr>
+<td><a href="02-序列不是文本.html">02</a></td>
+<td>随机两条序列的相同率</td>
+<td><strong>0.05</strong> ＝ 1/20 背景值</td>
+</tr>
+<tr>
+<td><a href="02-序列不是文本.html">02</a></td>
+<td>每条序列和它最近邻的相同率</td>
+<td><strong>0.71</strong> ⭐ 有 ≥50% 近亲的占 <strong>100%</strong></td>
+</tr>
+<tr>
+<td><a href="02-序列不是文本.html">02</a></td>
+<td>200 残基按子词切</td>
+<td><strong>113.9</strong> 个 token</td>
+</tr>
+<tr>
+<td><a href="03-蛋白质语言模型.html">03</a></td>
+<td>真实接触对的互信息</td>
+<td><strong>约 3.5 bit</strong></td>
+</tr>
+<tr>
+<td><a href="03-蛋白质语言模型.html">03</a></td>
+<td>其余 777 对的背景</td>
+<td><strong>0.066 bit</strong> ⭐ 五十倍分离</td>
+</tr>
+<tr>
+<td><a href="03-蛋白质语言模型.html">03</a></td>
+<td>💀 间接相关的假接触</td>
+<td><strong>2.973 bit</strong>，排第三</td>
+</tr>
+<tr>
+<td><a href="04-从序列到结构.html">04</a></td>
+<td>MDS 恢复的距离矩阵偏差</td>
+<td><strong>1.07e-14</strong> ⭐ 信息没丢</td>
+</tr>
+<tr>
+<td><a href="04-从序列到结构.html">04</a></td>
+<td>坐标本身偏差</td>
+<td><strong>23.145</strong></td>
+</tr>
+<tr>
+<td><a href="04-从序列到结构.html">04</a></td>
+<td>刚体对齐之后</td>
+<td><strong>8.88e-15</strong> ⭐ 差的只是刚体变换</td>
+</tr>
+<tr>
+<td><a href="05-等变与不变.html">05</a></td>
+<td>坐标模型，64 倍增强数据</td>
+<td>RMSE <strong>0.6521 → 0.3924</strong></td>
+</tr>
+<tr>
+<td><a href="05-等变与不变.html">05</a></td>
+<td>距离模型，同样的数据</td>
+<td>⭐ <strong>0.1592 一个数字没动</strong></td>
+</tr>
+<tr>
+<td><a href="05-等变与不变.html">05</a></td>
+<td>💀 同一分子 32 个朝向，坐标模型预测 std</td>
+<td><strong>0.1861</strong>（标签 std 才 0.7182）</td>
+</tr>
+<tr>
+<td><a href="06-小数据这一关.html">06</a></td>
+<td>20 条标签，one-hot vs 冻结表示</td>
+<td><strong>0.374 → 0.696</strong></td>
+</tr>
+<tr>
+<td><a href="06-小数据这一关.html">06</a></td>
+<td>3000 条标签时</td>
+<td><strong>0.878 vs 0.884</strong> ⭐ 收敛</td>
+</tr>
+<tr>
+<td><a href="07-评测的坑.html">07</a></td>
+<td>💀 随机划分 vs 按家族划分</td>
+<td>R² <strong>0.707 → −1.199</strong></td>
+</tr>
+<tr>
+<td><a href="07-评测的坑.html">07</a></td>
+<td>加大正则化 (lam 1→100)</td>
+<td>只从 −1.20 抬到 <strong>−0.248</strong>，⚠️ 仍是负的</td>
+</tr>
+<tr>
+<td><a href="08-数据实验模型飞轮.html">08</a></td>
+<td>贪心挑候选</td>
+<td><strong>2/8 次</strong>成功</td>
+</tr>
+<tr>
+<td><a href="08-数据实验模型飞轮.html">08</a></td>
+<td>UCB (κ=2)</td>
+<td>⭐ <strong>8/8 次</strong>成功，平均第 7 轮</td>
 </tr>
 </tbody>
-</table>
-<p>不要把“能连上”误认为“集成完成”。真正完成意味着：数据含义对得上、失败时有处理办法、以后更新不会悄悄把旧数据弄乱。</p>
+</table></div>
 <hr />
-<h2 id="_3">🔁 用一张问题单代替一堆术语</h2>
-<p>在接任何外部系统前，先回答五个问题：</p>
+<h2 id="_3">🚦 二、判据速查</h2>
+<p><strong>遇到问题时按这个查该往哪个方向使劲。</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>症状</th>
+<th>说明什么</th>
+<th>该做的</th>
+<th>出处</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>加特征立刻涨</td>
+<td>数据不够，先验有空间</td>
+<td>继续挖领域知识（最便宜）</td>
+<td><a href="01-第一天.html">01</a></td>
+</tr>
+<tr>
+<td>加特征没反应、加数据还涨</td>
+<td>先验饱和</td>
+<td>搞数据，或用预训练表示</td>
+<td><a href="01-第一天.html">01</a> <a href="06-小数据这一关.html">06</a></td>
+</tr>
+<tr>
+<td>加数据也不涨</td>
+<td>⚠️ <strong>模型形式表达不了</strong></td>
+<td>换结构</td>
+<td><a href="01-第一天.html">01</a></td>
+</tr>
+<tr>
+<td>指标好得可疑</td>
+<td>💀 大概率是同源泄漏</td>
+<td>按家族重新划分再量</td>
+<td><a href="07-评测的坑.html">07</a></td>
+</tr>
+<tr>
+<td>标签只有几十条</td>
+<td><code>n &lt; p</code></td>
+<td>冻结 + 小头</td>
+<td><a href="06-小数据这一关.html">06</a></td>
+</tr>
+<tr>
+<td>输出是几何对象</td>
+<td>输出空间有对称性</td>
+<td>换目标 或 内建等变</td>
+<td><a href="04-从序列到结构.html">04</a> <a href="05-等变与不变.html">05</a></td>
+</tr>
+<tr>
+<td>每轮指标都在涨但没突破</td>
+<td>⚠️ 可能一直在错的区域</td>
+<td>加大 κ</td>
+<td><a href="08-数据实验模型飞轮.html">08</a></td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_4">⛔ 三、红线：这些事一做就错</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>💀 别做</th>
+<th>为什么</th>
+<th>出处</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>随机划分训练/测试集</strong></td>
+<td>同源序列跨集，指标全虚</td>
+<td><a href="07-评测的坑.html">07</a></td>
+</tr>
+<tr>
+<td>只把测试集按组切、验证集还随机切</td>
+<td>调参那一步照样泄漏</td>
+<td><a href="07-评测的坑.html">07</a></td>
+</tr>
+<tr>
+<td>报指标不报相似度阈值</td>
+<td>30% 和 90% 是两个难度，数字不可比</td>
+<td><a href="07-评测的坑.html">07</a></td>
+</tr>
+<tr>
+<td><strong>直接回归三维坐标 + MSE</strong></td>
+<td>在惩罚「答对但朝向不同」</td>
+<td><a href="04-从序列到结构.html">04</a></td>
+</tr>
+<tr>
+<td>拿互信息最高的当接触</td>
+<td>间接相关会伪装成接触（2.973 bit）</td>
+<td><a href="03-蛋白质语言模型.html">03</a></td>
+</tr>
+<tr>
+<td>几十条标签做全量微调</td>
+<td>参数量级配不上样本量</td>
+<td><a href="06-小数据这一关.html">06</a></td>
+</tr>
+<tr>
+<td>随便换个残基当数据增强</td>
+<td>标签会变，增强必须保标签</td>
+<td><a href="06-小数据这一关.html">06</a> <a href="05-等变与不变.html">05</a></td>
+</tr>
+<tr>
+<td><strong>批量挑 top-N 候选</strong></td>
+<td>会挤在一起，N 次实验只买 1 条信息</td>
+<td><a href="08-数据实验模型飞轮.html">08</a></td>
+</tr>
+<tr>
+<td>拿飞轮产生的新数据当测试集</td>
+<td>分布已经被你的模型筛过</td>
+<td><a href="08-数据实验模型飞轮.html">08</a></td>
+</tr>
+<tr>
+<td>试多种划分挑一个好看的</td>
+<td>测试集已被污染</td>
+<td><a href="06-小数据这一关.html">06</a></td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_5">🧪 四、正确划分的四步</h2>
+<p>⭐ 全书最要紧的一条操作规范，来自 <a href="07-评测的坑.html">07 章</a>：</p>
 <ol>
-<li>谁是数据的权威来源？</li>
-<li>这次传的是一个对象，还是一批对象？</li>
-<li>对方缺字段或返回错误时，应用怎么办？</li>
-<li>同一条请求重试两次，会不会制造两名重复员工？</li>
-<li>哪些凭据不能写在页面或流程里？</li>
+<li><strong>先按相似度聚类，再整簇分配</strong>到训练/验证/测试。</li>
+<li><strong>报告时必须同时报相似度阈值</strong>，否则数字之间不可比。</li>
+<li>⚠️ <strong>验证集也要按组切</strong> —— 只切测试集，调参那一步照样泄漏。</li>
+<li><strong>用别人的公开划分前，先问它是怎么划的。</strong></li>
 </ol>
-<p>这些问题比“先选哪个连接器”更早，也更重要。</p>
+<blockquote>
+<p>⭐ 和 <a href="../数据这一关/14-数据泄漏的七种来源.html">数据这一关 14 · 数据泄漏的七种来源</a> 的
+<strong>④ 分组泄漏</strong>是同一个机制（那边随机切 AUC 0.706、按用户 <code>GroupKFold</code> 只剩 0.564）。
+⭐⭐ <strong>唯一的区别是「组」给没给你</strong>：那边 <code>user_id</code> 是现成的一列，
+一行 <code>len(set(uid_train) &amp; set(uid_test))</code> 就能验；这边<strong>没有这一列</strong>，
+「哪些算同一组」得你自己按相似度聚出来，<strong>连阈值定在哪都是你的决定</strong>。</p>
+</blockquote>
 <hr />
-<h2 id="marketplace">🧱 Marketplace 的正确位置</h2>
-<p>Marketplace 像一个经过社区或官方发布的零件库。它适合减少重复造轮子，例如常见连接器、界面组件或通用模块。</p>
-<p>但装入一个模块不是“把问题交出去”。仍要看三件事：它是否兼容当前 Studio Pro 版本、它带来了哪些依赖、它要访问哪些数据或权限。对不熟悉的模块，先在小项目试，不要直接塞进重要应用。</p>
-<h2 id="_4">🧪 先不连：把“同步部门”讲清楚</h2>
-<p>假设公司已经有一个 HR 系统，部门名单应以它为准。你希望 EmployeeHub 显示这些部门，但不希望两边各自乱改。</p>
-<p>先把需求写成下面这个表。表填不出来，就还不应该动连接器。</p>
-<table>
+<h2 id="_6">🗓️ 五、这一页里会过期的东西</h2>
+<p>⚠️ <strong>几乎没有</strong> —— 这是刻意的。全书<strong>不含任何榜单成绩、模型参数量、SOTA 数字</strong>。
+上面那张总表全是<strong>在你自己机器上能重跑出来的合成实验</strong>，不依赖任何外部服务或数据集版本。</p>
+<p>⭐ 会过期的只有一类：<strong>具体该用哪个预训练模型</strong>。
+书里提到模型名的地方都标了 🗓️ 并写着「请去查最新的」，
+⭐ <strong>不变的是用法</strong>：先冻结、先量一下它比 one-hot 好多少，再决定要不要投入微调。</p>
+<hr />
+<h2 id="_7">🔗 这一章连到哪里</h2>
+<div class="tw"><table>
 <thead>
 <tr>
-<th>问题</th>
-<th>EmployeeHub 的示例答案</th>
+<th>去哪</th>
+<th>为什么</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>谁是权威来源？</td>
-<td>HR 系统；EmployeeHub 只读取/同步部门</td>
+<td><a href="00-怎么用这份教程.html">00 · 怎么用这份教程</a></td>
+<td>按你手上的问题选入口的那张表</td>
 </tr>
 <tr>
-<td>什么时候同步？</td>
-<td>每天凌晨，或管理员手动点击“同步部门”</td>
+<td><a href="07-评测的坑.html">07 · 评测的坑</a></td>
+<td>💀 上面红线表里前三条的完整论证</td>
 </tr>
 <tr>
-<td>对方给什么？</td>
-<td>部门编号、部门名称、负责人名称</td>
+<td><a href="../数据这一关/14-数据泄漏的七种来源.html">数据这一关 14 · 数据泄漏的七种来源</a></td>
+<td>第四节那个「同一个机制、组给没给你」的对照</td>
 </tr>
 <tr>
-<td>本地怎么对应？</td>
-<td>用外部部门编号找到同一个 Department</td>
+<td><a href="../数据这一关/12-标注预算与主动学习.html">数据这一关 12 · 标注预算与主动学习</a></td>
+<td>飞轮那一章的近亲，候选池给定的版本</td>
 </tr>
 <tr>
-<td>对方暂时不可用？</td>
-<td>不覆盖旧数据，记录失败，让管理员稍后重试</td>
-</tr>
-<tr>
-<td>同步两次会怎样？</td>
-<td>更新同一部门，不新建两条重复记录</td>
+<td><a href="../强化学习基础/07-探索与利用.html">强化学习基础 07 · 探索与利用</a></td>
+<td>κ 那个参数的完整来历</td>
 </tr>
 </tbody>
-</table>
-<p>这里已经出现了集成最核心的三件事：<strong>数据所有权、字段映射、失败策略</strong>。REST 只是实现它的其中一种工具。</p>
-<h2 id="_5">🧭 三种常见做法，该怎么选</h2>
-<h3 id="a">做法 A：一次性文件导入</h3>
-<p>适合：你只需要把历史 Excel/CSV 变成第一批 Employee 或 Department 数据。</p>
-<p>跟做顺序：先拿 5 行脱敏样例 → 对照每一列映射到哪个属性 → 决定空值怎么处理 → 先导入测试环境 → 检查有没有重复或乱码 → 再导正式数据。</p>
-<p>它的优点是简单、可控；缺点是不会自动持续同步。不要把“每周人工导文件”误称为实时集成。</p>
-<h3 id="b-rest">做法 B：调用外部 REST 服务</h3>
-<p>适合：对方系统有稳定接口，你需要定期或按按钮拉取信息。</p>
-<p>在 Mendix 中通常会经历：导入或描述服务 → 定义请求和响应的数据结构 → 调用服务 → 把响应映射到本地对象 → 处理成功和失败。先把对方提供的样例响应保存下来，再做映射；没有样例就不要猜字段名和日期格式。</p>
-<p><strong>第一版只做一个只读请求。</strong> 例如读取部门清单并显示。确认读对以后，再考虑把本地改动写回外部系统；“能写”会带来冲突和重复的额外责任。</p>
-<h3 id="c-marketplace">做法 C：用 Marketplace 复用成熟能力</h3>
-<p>适合：你需要常见身份认证、Excel 导入、连接器或 UI 控件，而官方/社区已有维护中的模块。</p>
-<p>安装前做 4 个检查：</p>
-<ol>
-<li>支持的 Studio Pro 版本是否覆盖你现在的版本；</li>
-<li>最近维护时间和发布者是否可信；</li>
-<li>它会新增哪些模块与依赖；</li>
-<li>它需要哪些权限、网络地址或密钥。</li>
-</ol>
-<p>安装后先运行项目并读 Consistency Errors，再做一次最小功能测试。不要等到把它接进三条核心流程后才第一次运行。</p>
-<h2 id="_6">🔐 凭据和个人信息放在哪里</h2>
-<table>
-<thead>
-<tr>
-<th>不能这样做</th>
-<th>为什么危险</th>
-<th>应该怎么想</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>把密码或 API key 写在页面文字里</td>
-<td>浏览器/截图/版本记录可能泄露</td>
-<td>使用平台提供的受控配置或密钥管理方式</td>
-</tr>
-<tr>
-<td>把完整员工信息随便写进日志</td>
-<td>日志访问范围常比业务数据更广</td>
-<td>只记必要的请求标识和错误摘要</td>
-</tr>
-<tr>
-<td>失败时把原始响应直接展示给用户</td>
-<td>可能暴露技术细节或敏感字段</td>
-<td>给用户可行动提示，把技术细节留在受控日志</td>
-</tr>
-</tbody>
-</table>
-<p>对于外部服务，安全不止是“连得上”。如果你发布 REST 服务给别的应用，Mendix 也支持不同认证方式，并会生成可交互的服务文档；这些能力需要和角色、数据范围一起设计。<a href="https://docs.mendix.com/refguide/published-rest-services/">官方 Published REST Services 文档</a></p>
-<h2 id="_7">🧯 集成失败时先问的四件事</h2>
-<table>
-<thead>
-<tr>
-<th>现象</th>
-<th>不要先假设</th>
-<th>先查什么</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>调用失败</td>
-<td>“一定是 Mendix 坏了”</td>
-<td>地址、认证、网络、对方服务状态</td>
-</tr>
-<tr>
-<td>返回成功但页面没数据</td>
-<td>“接口没给数据”</td>
-<td>响应映射是否把字段放进本地对象</td>
-</tr>
-<tr>
-<td>同步后重复数据</td>
-<td>“数据库坏了”</td>
-<td>用来识别同一条外部记录的唯一编号</td>
-</tr>
-<tr>
-<td>某些中文或日期不对</td>
-<td>“页面显示问题”</td>
-<td>对方格式、时区、字符编码和属性类型</td>
-</tr>
-</tbody>
-</table>
-<h3 id="_8">本章的完成标准</h3>
-<p>你不用今天真的接上企业 HR 系统。只要能清楚回答：<strong>谁是部门数据的权威、我们何时拉取、用哪个外部编号去重、失败后保留什么并告诉谁</strong>，你已经比“只会点连接器”更接近可用的集成设计。</p>
-<hr />
-<h2 id="_9">🛑 可以停在这里</h2>
-<p>集成的目标不是让你的应用连接得更多，而是让需要的数据和能力可靠地进来。最后一章把这个已经能用的应用跑起来、交付出去。</p>
-<hr />
-<h2 id="_10">✅ 检查点</h2>
-<p>为什么在选 REST 或 Marketplace 之前，要先确定“谁是数据的权威来源”？</p>
-<details>
-<summary>👀 看答案</summary>
-<p>因为两个系统都能改同一份信息时，迟早会出现冲突。先确定权威来源，才能知道谁负责更新、谁只是读取或同步，以及冲突该怎么处理。</p>
-</details>
-<hr />
-<p>⚡ <strong>走神救援</strong></p>
-<ul>
-<li>集成是两个系统交换信息，不是“连通了就结束”。</li>
-<li>先问数据来源、失败处理、重复请求和凭据放哪。</li>
-<li>Marketplace 能省时间，但要看版本、依赖和权限。</li>
-<li>下一步：运行、测试、发布并和别人协作。</li>
-</ul>
-<p><strong>继续：</strong> <a href="07-让它真的交付出去.html">07 · 让它真的交付出去</a></p>
+</table></div>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
-<nav class="pagenav"><a href="05-谁能看见和修改什么.html"><div class="dir">← 上一节</div>🔐 05 · 谁能看见和修改什么</a><a class="next" href="07-让它真的交付出去.html"><div class="dir">下一节 →</div>📦 07 · 让它真的交付出去</a></nav>
+<nav class="pagenav"><a href="08-数据实验模型飞轮.html"><div class="dir">← 上一节</div>♻️ 08 · 数据、实验、模型的飞轮</a><a class="next" href="index.html"><div class="dir">完成 →</div>🏠 回首页看进度</a></nav>
 </main>
 <script>(function(){
-  var KEY="mendix-progress", FILE="06-\u600e\u4e48\u8fde\u63a5\u5916\u90e8\u7cfb\u7edf.md";
+  var KEY="sci-progress", FILE="\u9644\u5f55A-\u901f\u67e5.md";
   function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
   function refresh(){var d=!!load()[FILE];
     document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);

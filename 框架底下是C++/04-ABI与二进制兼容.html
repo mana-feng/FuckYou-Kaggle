@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -300,7 +317,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_2">🧩 一、先划界：「装不上」其实有两半</h2>
 <p>⚠️ 「我装不上这个包」是个复合症状，它的两半归两个不同的板块：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>哪一半</th>
@@ -320,14 +337,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>这一章</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>这一章的立项依据是站内一句留了半边的话。<a href="../AI全栈/14-容器化与部署.html">《AI 全栈》14</a> 在讲「在我机器上能跑」的三种死法时，第二种写着：</p>
 <blockquote>
 <p>⚠️ <strong>系统库不一样</strong>：某个 pip 包依赖 <code>libpq</code> / <code>libgomp</code>。你机器上早有（因为你装过别的东西），干净的服务器上没有 → <code>ImportError: libxxx.so.1: cannot open shared object file</code></p>
 </blockquote>
 <p>那一章给的解药是<strong>容器</strong>，并且明确写了容器<strong>不</strong>解决什么，其中第二条是「GPU 驱动 / CUDA 是宿主机的事」。⭐ 也就是说：最高频的那一类装不上，被划到了它自己的范围之外。 这一章接的就是那个位置。</p>
 <p>📋 <strong>本章要拆的三道关</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>关</th>
@@ -352,7 +369,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>没有报错</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="c">🧩 二、C++ 的函数名，不是你写的那个</h2>
 <p>要理解 ① 得先知道一件事：<strong>你写的函数名不会原样出现在编译产物里。</strong></p>
@@ -436,7 +453,7 @@ mylib::helper(mylib::Engine const&amp;, double)
 <hr />
 <h2 id="api-abi">🧩 三、API 和 ABI 差在哪</h2>
 <p>现在可以给 ABI 一个准确的说法了。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -466,7 +483,7 @@ mylib::helper(mylib::Engine const&amp;, double)
 <td>⚠️ <strong>没人</strong>（链接器只对名字，不对含义）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>一句话：API 兼容 = 能重新编译；ABI 兼容 = 不用重新编译就能换。</strong></p>
 <p>⚠️ <strong>能悄悄改变 ABI 的东西比你想的多</strong>：编译器版本、C++ 标准版本、标准库的实现和版本、优化选项、是否开异常、结构体里加一个字段、给函数加一个默认参数、给类加一个虚函数……<strong>其中大部分都不会让源码编译失败。</strong></p>
 <hr />
@@ -550,7 +567,7 @@ _GLIBCXX_USE_CXX11_ABI = True
 <p>💀 <strong>注意 ① 那句报错：它说找不到 <code>c04dyn.dll</code>，可那个文件明明就在那儿。</strong> 缺的是它的依赖 <code>libstdc++-6.dll</code>。括号里那句 <code>or one of its dependencies</code> 是唯一的线索，而它太容易被忽略了。</p>
 <p>⭐ <strong>Linux 上的同一件事长这样</strong>：<code>ImportError: libxxx.so.1: cannot open shared object file</code> —— 报错里那个 <code>libxxx.so.1</code> <strong>通常不是你 import 的那个模块</strong>，而是它依赖的系统库。这正是《AI 全栈》14 章描述的那个症状。</p>
 <p>📋 <strong>三种解法，各有代价</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>解法</th>
@@ -575,7 +592,7 @@ _GLIBCXX_USE_CXX11_ABI = True
 <td>标准做法，<code>auditwheel</code> 干这活</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>一个 Windows 专有的坑</strong>：Python 3.8 之后，<code>ctypes</code> / 扩展模块在 Windows 上<strong>不再用 <code>PATH</code> 找依赖</strong>，要用 <code>os.add_dll_directory()</code>。所以「我把它加进 PATH 了啊」在新版本 Python 上是无效操作 —— 上面实验 ② 用的就是正确写法。</p>
 <hr />
 <h2 id="_5">🧩 六、💀 第三道关：什么都不报，数据是错的</h2>
@@ -620,7 +637,7 @@ _GLIBCXX_USE_CXX11_ABI = True
 <li>⭐ <strong>它有时候会碰巧正确。</strong> 我第一版实验里新字段是 <code>int</code>，正好填进了旧结构体因为对齐留下的 4 字节空洞（<a href="03-cache与数据布局.html">03 章</a>讲的那种），于是<strong>三个字段读出来全对</strong>。⚠️ 「测了一下没问题」在这道关上完全不能作为证据 —— 换个字段类型、换个平台、换个编译器，它就变成上面那样。</li>
 </ul>
 <p>📋 <strong>这就是为什么生态里有那么多看起来很啰嗦的规矩</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>规矩</th>
@@ -645,7 +662,7 @@ _GLIBCXX_USE_CXX11_ABI = True
 <td>避免混用</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="wheel-manylinux">🧩 七、于是有了 wheel 标签和 manylinux</h2>
 <p>上面三道关合起来说明一件事：<strong>一个编译好的二进制，不是「哪都能跑」的。</strong> 那 pip 装轮子的时候是怎么知道该给你哪一个的？</p>
@@ -664,7 +681,7 @@ _GLIBCXX_USE_CXX11_ABI = True
 <p>pip 认得的完整标签列表也能直接问：</p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>$ python -m pip debug --verbose</p><p>Compatible tags: 45</p><p>cp313-cp313-win_amd64</p><p>cp313-abi3-win_amd64</p><p>cp313-none-win_amd64</p><p>cp312-abi3-win_amd64</p><p>cp311-abi3-win_amd64</p><p>·</p></div></section>
 <p>⭐ <strong>标签有三段：<code>cp313</code>（哪个 Python）· <code>cp313 / abi3 / none</code>（对 ABI 的要求）· <code>win_amd64</code>（哪个平台）。</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>中间那段</th>
@@ -685,7 +702,7 @@ _GLIBCXX_USE_CXX11_ABI = True
 <td>不含扩展模块，纯 Python</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong><code>win_amd64</code> 这一段在 Linux 上要难得多</strong>：Windows 和 macOS 各自的系统库比较统一，而 Linux 发行版之间 glibc 版本天差地别 —— <strong>在新系统上编的轮子，拿到老系统上就是「找不到符号」</strong>（第①道关（符号对不上）的另一种形态：glibc 的符号是带版本号的）。</p>
 <p>⭐ <strong><code>manylinux</code> 就是为这件事发明的标签</strong>，思路只有两句：</p>
 <ol>
@@ -695,7 +712,7 @@ _GLIBCXX_USE_CXX11_ABI = True
 <p>标签的命名换过一次：早期是 <code>manylinux1</code> / <code>manylinux2010</code> / <code>manylinux2014</code> 这种按「年份」的写法，后来改成<strong>直接写 glibc 版本</strong>的 <code>manylinux_x_y</code> 形式（例如 <code>manylinux_2_17</code>、<code>manylinux_2_28</code>），因为按年份根本看不出兼容边界在哪。⭐ 两套是对应的，<code>manylinux2014</code> 就是 <code>manylinux_2_17</code>。做这件事的工具叫 <strong><code>auditwheel</code></strong>：它检查你的 wheel 依赖了哪些库、把不在白名单里的复制进去、再把搜索路径改好。</p>
 <p>🗓️ <strong>这一小段没法在本机演示</strong> —— 上面的标签输出是 Windows 的，<code>manylinux</code> 是 Linux 侧的规范。⚠️ <strong>规范本身会变</strong>（新的 glibc 基线会不断加进来），用之前查一下当前状态。</p>
 <p>📋 <strong>回到最开头那几个「老是装不上」的包</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>现象</th>
@@ -720,7 +737,7 @@ _GLIBCXX_USE_CXX11_ABI = True
 <td>💀 ③ 布局对不上</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>绝大多数情况下最省事的解法是：不要自己编，去找和你这套（Python 版本 + torch 版本 + CUDA 版本 + 平台）完全匹配的预编译轮子。</strong> 那些项目通常有一个很长的下载表，⚠️ <strong>表里那些后缀不是装饰，是上面三道关的编号。</strong></p>
 <hr />
 <!--MIDSTOP-->
@@ -732,7 +749,7 @@ _GLIBCXX_USE_CXX11_ABI = True
 <hr />
 <h2 id="_6">🧩 八、📋 一张排查表</h2>
 <p>拿到一个二进制层面的报错，按这个顺序走：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>症状里有</th>
@@ -772,10 +789,10 @@ _GLIBCXX_USE_CXX11_ABI = True
 <td>检查头文件和二进制是不是同一个版本；重新编译<strong>所有</strong>扩展</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_7">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>相关的地方</th>
@@ -808,7 +825,7 @@ _GLIBCXX_USE_CXX11_ABI = True
 <td>它的「前置知识」清单里把 CUDA 编程列为「❌ 不需要」，而 <code>-cu121</code> 这类轮子的装不上问题落在本章第七节</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_8">✅ 检查点</h2>
 <ol>

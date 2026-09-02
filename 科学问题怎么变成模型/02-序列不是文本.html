@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>02 · 序列不是文本 · 科学问题怎么变成模型</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">02 · 序列不是文本</span>
+  <span class="prevnext"><a href="01-第一天.html">←</a>
+  <a href="03-蛋白质语言模型.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">🧬 一、生物学部分，一段就讲完</a></li>
+<li><a href="#_3">🔤 二、五条直觉，逐条要改</a></li>
+<li><a href="#_4">✂️ 三、为什么不切子词</a></li>
+<li><a href="#_5">👯 四、库里躺着的全是近亲</a></li>
+<li><a href="#_6">🧲 五、剩下两条：远距离，和位置</a></li>
+<li><a href="#_7">🔗 这一章连到哪里</a></li>
+<li><a href="#_8">✅ 检查点</a></li>
+<li><a href="#_9">🛑 可以停在这里</a></li>
+</ul>
+</div>
+</details>
+<h1 id="02">02 · 序列不是文本</h1>
+<p>⏱ <strong>26 分钟</strong> ｜ ⭐ 它长得像句子，NLP 的工具全都接得上 —— 但接得上不等于该照搬</p>
+<hr />
+<h2 id="_1">🎯 一句话</h2>
+<p><strong>蛋白质写出来就是一串字母，于是 tokenizer、Transformer、预训练那一整套当场就能跑；问题是你从自然语言带来的默认设置，几乎每一条都要改。</strong> 词表只有 20 个、每个位置本身就是标签、库里躺着大量近亲 —— 这三件事分别改掉了分词、位置处理和数据划分。</p>
+<hr />
+<h2 id="_2">🧬 一、生物学部分，一段就讲完</h2>
+<p>蛋白质是一条链，链上的单元叫<strong>残基</strong>（residue），标准的有 20 种，每种写成一个大写字母（A、C、D … Y）。所以一个蛋白质就是<strong>一个 20 字母表上的字符串</strong>，几十到几千个字符长。这条链会折叠成三维形状，形状决定功能。DNA 是同一个故事的 4 字母版本（A/C/G/T）。</p>
+<p>⭐ <strong>以上就是这一章需要的全部生物学</strong>，后面全是建模问题。</p>
+<hr />
+<h2 id="_3">🔤 二、五条直觉，逐条要改</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>NLP 里的做法</th>
+<th>在序列上变成什么</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BPE 切子词</td>
+<td>⭐ <strong>不切，一残基一 token</strong></td>
+<td>压长尾的动机不存在，切了还破坏位置对齐</td>
+</tr>
+<tr>
+<td>词表几万到十几万</td>
+<td><strong>20 出头</strong></td>
+<td>字母表就这么大，没有生词</td>
+</tr>
+<tr>
+<td>上下文几千到几十万</td>
+<td>几百到几千个残基</td>
+<td>但注意力仍是平方复杂度，要同时喂一批同源序列就不短</td>
+</tr>
+<tr>
+<td>相邻的更相关</td>
+<td>⚠️ <strong>隔一百多个位置的两个残基，三维里可能贴在一起</strong></td>
+<td>链会折叠</td>
+</tr>
+<tr>
+<td>语料是自然文本</td>
+<td>库里<strong>高度冗余</strong></td>
+<td>测序偏向被研究得多的家族</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_4">✂️ 三、为什么不切子词</h2>
+<p>站内<a href="../大模型全景导论/03-Tokenizer与上下文.html">主线 1 · 文字怎样进入模型</a>把 BPE 的动机说得很清楚：一字一 token 永远不会遇到生词，但句子太长；一词一 token 够短，却要面对无限多的新词和拼写错误。<strong>子词是这两端之间的折中。</strong></p>
+<p>⭐ 到了残基序列上<strong>两端的压力同时消失</strong>：字母表只有 20 个，永远没有生词；一残基一 token 确实让序列变长，可蛋白质本来就只有几百到几千个残基。</p>
+<p>而<strong>切了还要倒付一笔</strong>：这一行很多任务是<strong>逐残基</strong>的（这个位置露在外面还是埋在里面、是不是结合位点），字符级下"第 47 个 token"就是"第 47 号残基"；切了之后边界会跟着上下文乱跑。</p>
+<figure class="dia"><svg viewBox="0 0 760 316" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="同一段七残基片段在三个不同上下文里，BPE 的第一个 token 分别被切成 HK、QK、K，而字符级每个残基各占一格、编号稳定"><text class="dia-t" x="24" y="34" font-size="13" fill="var(--done)" font-weight="700">字符级：一残基一格，编号钉死</text><rect x="130" y="48" width="46" height="34" rx="5" fill="var(--card)" stroke="var(--done)" stroke-width="1.8"/><text class="dia-t" x="153" y="70" font-size="14" text-anchor="middle" fill="var(--fg)" font-weight="700">K</text><text class="dia-t" x="153" y="96" font-size="11" text-anchor="middle" fill="var(--muted)">47</text><rect x="182" y="48" width="46" height="34" rx="5" fill="var(--card)" stroke="var(--done)" stroke-width="1.8"/><text class="dia-t" x="205" y="70" font-size="14" text-anchor="middle" fill="var(--fg)" font-weight="700">T</text><text class="dia-t" x="205" y="96" font-size="11" text-anchor="middle" fill="var(--muted)">48</text><rect x="234" y="48" width="46" height="34" rx="5" fill="var(--card)" stroke="var(--done)" stroke-width="1.8"/><text class="dia-t" x="257" y="70" font-size="14" text-anchor="middle" fill="var(--fg)" font-weight="700">A</text><text class="dia-t" x="257" y="96" font-size="11" text-anchor="middle" fill="var(--muted)">49</text><rect x="286" y="48" width="46" height="34" rx="5" fill="var(--card)" stroke="var(--done)" stroke-width="1.8"/><text class="dia-t" x="309" y="70" font-size="14" text-anchor="middle" fill="var(--fg)" font-weight="700">Y</text><text class="dia-t" x="309" y="96" font-size="11" text-anchor="middle" fill="var(--muted)">50</text><rect x="338" y="48" width="46" height="34" rx="5" fill="var(--card)" stroke="var(--done)" stroke-width="1.8"/><text class="dia-t" x="361" y="70" font-size="14" text-anchor="middle" fill="var(--fg)" font-weight="700">I</text><text class="dia-t" x="361" y="96" font-size="11" text-anchor="middle" fill="var(--muted)">51</text><rect x="390" y="48" width="46" height="34" rx="5" fill="var(--card)" stroke="var(--done)" stroke-width="1.8"/><text class="dia-t" x="413" y="70" font-size="14" text-anchor="middle" fill="var(--fg)" font-weight="700">A</text><text class="dia-t" x="413" y="96" font-size="11" text-anchor="middle" fill="var(--muted)">52</text><rect x="442" y="48" width="46" height="34" rx="5" fill="var(--card)" stroke="var(--done)" stroke-width="1.8"/><text class="dia-t" x="465" y="70" font-size="14" text-anchor="middle" fill="var(--fg)" font-weight="700">K</text><text class="dia-t" x="465" y="96" font-size="11" text-anchor="middle" fill="var(--muted)">53</text><text class="dia-t" x="520" y="70" font-size="12" fill="var(--done)">第 47 号 token = 第 47 号残基</text><line x1="24" y1="116" x2="736" y2="116" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="4 4"/><text class="dia-t" x="24" y="142" font-size="13" fill="var(--danger,#e5534b)" font-weight="700">BPE：同一段 KTAYIAK，边界跟着上下文跑</text><text class="dia-t" x="24" y="182" font-size="12.5" fill="var(--muted)">HHH…</text><rect x="88" y="160" width="82" height="32" rx="5" fill="var(--accent-soft)" stroke="var(--danger,#e5534b)" stroke-width="2.2"/><text class="dia-t" x="129" y="181" font-size="13.5" text-anchor="middle" fill="var(--danger,#e5534b)" font-weight="700">HK</text><rect x="177" y="160" width="82" height="32" rx="5" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/><text class="dia-t" x="218" y="181" font-size="13.5" text-anchor="middle" fill="var(--fg)" font-weight="600">TA</text><rect x="266" y="160" width="82" height="32" rx="5" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/><text class="dia-t" x="307" y="181" font-size="13.5" text-anchor="middle" fill="var(--fg)" font-weight="600">YI</text><rect x="355" y="160" width="82" height="32" rx="5" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/><text class="dia-t" x="396" y="181" font-size="13.5" text-anchor="middle" fill="var(--fg)" font-weight="600">AK</text><text class="dia-t" x="454" y="181" font-size="11.5" fill="var(--muted)">前面的 H 把 K 吃掉了</text><text class="dia-t" x="24" y="226" font-size="12.5" fill="var(--muted)">QQQ…</text><rect x="88" y="204" width="82" height="32" rx="5" fill="var(--accent-soft)" stroke="var(--danger,#e5534b)" stroke-width="2.2"/><text class="dia-t" x="129" y="225" font-size="13.5" text-anchor="middle" fill="var(--danger,#e5534b)" font-weight="700">QK</text><rect x="177" y="204" width="82" height="32" rx="5" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/><text class="dia-t" x="218" y="225" font-size="13.5" text-anchor="middle" fill="var(--fg)" font-weight="600">TA</text><rect x="266" y="204" width="82" height="32" rx="5" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/><text class="dia-t" x="307" y="225" font-size="13.5" text-anchor="middle" fill="var(--fg)" font-weight="600">YI</text><rect x="355" y="204" width="82" height="32" rx="5" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/><text class="dia-t" x="396" y="225" font-size="13.5" text-anchor="middle" fill="var(--fg)" font-weight="600">AK</text><text class="dia-t" x="454" y="225" font-size="11.5" fill="var(--muted)">换成 Q，吃法也换了</text><text class="dia-t" x="24" y="270" font-size="12.5" fill="var(--muted)">AAA…</text><rect x="88" y="248" width="56" height="32" rx="5" fill="var(--accent-soft)" stroke="var(--danger,#e5534b)" stroke-width="2.2"/><text class="dia-t" x="116" y="269" font-size="13.5" text-anchor="middle" fill="var(--danger,#e5534b)" font-weight="700">K</text><rect x="151" y="248" width="82" height="32" rx="5" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/><text class="dia-t" x="192" y="269" font-size="13.5" text-anchor="middle" fill="var(--fg)" font-weight="600">TA</text><rect x="240" y="248" width="82" height="32" rx="5" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/><text class="dia-t" x="281" y="269" font-size="13.5" text-anchor="middle" fill="var(--fg)" font-weight="600">YI</text><rect x="329" y="248" width="82" height="32" rx="5" fill="var(--card)" stroke="var(--border)" stroke-width="1.5"/><text class="dia-t" x="370" y="269" font-size="13.5" text-anchor="middle" fill="var(--fg)" font-weight="600">AK</text><text class="dia-t" x="428" y="269" font-size="11.5" fill="var(--muted)">这次 K 才自己独立成格</text><text class="dia-t" x="24" y="304" font-size="12.5" fill="var(--fg)">压缩率的回报也很薄：200 残基只切成 <tspan font-weight="700">113.9</tspan> 个 token</text></svg><figcaption>只看每行<b>第一个红框</b>：同一段 <code>KTAYIAK</code>，开头那个 K 一会儿被并进 <b>HK</b>、一会儿 <b>QK</b>、一会儿自己独立 —— ⭐「这个片段从第几个 token 开始」<b>没有稳定答案</b>。而逐残基任务是这一行的主流，字符级下第 47 号 token 就是第 47 号残基。</figcaption></figure>
+
+<p>自己写一个几十行的 BPE 就看得到：</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">collections</span><span class="o">,</span><span class="w"> </span><span class="nn">random</span><span class="o">,</span><span class="w"> </span><span class="nn">re</span>
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="n">AA</span> <span class="o">=</span> <span class="s2">&quot;ACDEFGHIKLMNPQRSTVWY&quot;</span>      <span class="c1"># 20 种氨基酸 = 全部词表</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">cut</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>                                   <span class="c1"># 合并 w 里所有的 p 这一对</span>
+    <span class="n">pat</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(?&lt;!\S)&quot;</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">p</span><span class="p">))</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;(?!\S)&quot;</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pat</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">w</span><span class="p">))</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+
+<span class="n">corpus</span> <span class="o">=</span> <span class="p">[[</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">AA</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">200</span><span class="p">)]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">300</span><span class="p">)]</span>   <span class="c1"># 合成序列</span>
+<span class="n">ms</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">400</span><span class="p">):</span>                             <span class="c1"># 每轮合并一次最高频的相邻对</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">:</span> <span class="n">c</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+    <span class="n">ms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">corpus</span> <span class="o">=</span> <span class="p">[</span><span class="n">cut</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">ms</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">]</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">enc</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ms</span><span class="p">:</span> <span class="n">w</span> <span class="o">=</span> <span class="n">cut</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">w</span>
+
+<span class="k">for</span> <span class="n">L</span><span class="p">,</span> <span class="n">R</span> <span class="ow">in</span> <span class="p">[(</span><span class="s2">&quot;MGSSHHHH&quot;</span><span class="p">,</span> <span class="s2">&quot;DEFGHIKL&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;QQQ&quot;</span><span class="p">,</span> <span class="s2">&quot;WWWWWWWW&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;AAAAAAAAAAAA&quot;</span><span class="p">,</span> <span class="s2">&quot;MM&quot;</span><span class="p">)]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">L</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span> <span class="o">+</span> <span class="s2">&quot;[KTAYIAK]&quot;</span> <span class="o">+</span> <span class="n">R</span><span class="p">[:</span><span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;-&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">enc</span><span class="p">(</span><span class="n">L</span> <span class="o">+</span> <span class="s2">&quot;KTAYIAK&quot;</span> <span class="o">+</span> <span class="n">R</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;200 残基切成&quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">)</span> <span class="o">/</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;个 token&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>HHH[KTAYIAK]DEF -&gt; M|GS|SH|HH|HK|TA|YI|AK|DE|F|GH|IK|L
+QQQ[KTAYIAK]WWW -&gt; QQ|QK|TA|YI|AK|WW|WW|WW|WW
+AAA[KTAYIAK]MM -&gt; AA|AA|AA|AA|AA|AA|K|TA|YI|AK|MM
+200 残基切成 113.9 个 token
+</code></pre></div>
+
+<blockquote>
+<p>⭐ 同一段 <code>KTAYIAK</code>，三次切出来的第一个 token 分别是 <code>HK</code>、<code>QK</code>、<code>K</code> ——
+开头那个残基被<strong>前面的邻居吃掉了</strong>，吃法取决于上下文。
+"这个片段从第几个 token 开始"，<strong>没有稳定答案</strong>。</p>
+</blockquote>
+<p>⚠️ 收益也不好看：200 个残基只压到 113.9 个，不到两倍，而压缩率本来是 BPE 的主要卖点。另外语料是<strong>随机生成</strong>的，那 400 条规则没有任何生物学含义 —— <strong>BPE 只统计共现，它不知道自己在切什么。</strong></p>
+<hr />
+<h2 id="_5">👯 四、库里躺着的全是近亲</h2>
+<p>序列数据库不是独立同分布采样出来的：研究得多的物种和家族会留下大量彼此高度相似的条目。这不是"清洗没做干净"，是数据来源本身的形状。造一批看看 —— 10 个家族，大小从 80 到 2 极不均匀，每条从祖先点突变 20%。</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">random</span><span class="o">,</span><span class="w"> </span><span class="nn">statistics</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">Random</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span> <span class="n">AA</span> <span class="o">=</span> <span class="s2">&quot;ACDEFGHIKLMNPQRSTVWY&quot;</span>
+<span class="n">seqs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">80</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>                 <span class="c1"># 家族大小极不均匀</span>
+    <span class="n">anc</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">AA</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">150</span><span class="p">))</span>          <span class="c1"># 这个家族的祖先</span>
+    <span class="n">seqs</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">AA</span><span class="p">)</span> <span class="k">if</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">.2</span> <span class="k">else</span> <span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">anc</span><span class="p">)</span>
+             <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>                                <span class="c1"># 点突变 20% 得到亲戚</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">idt</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>          <span class="c1"># 长度一样就按位比；真实序列要先做比对</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seqs</span><span class="p">)</span>
+<span class="n">allp</span> <span class="o">=</span> <span class="p">[</span><span class="n">idt</span><span class="p">(</span><span class="n">seqs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">seqs</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)]</span>
+<span class="n">best</span> <span class="o">=</span> <span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">idt</span><span class="p">(</span><span class="n">seqs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">seqs</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="k">if</span> <span class="n">j</span> <span class="o">!=</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;随机抽一对   相同率中位数 </span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">statistics</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">allp</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;每条的最近邻 相同率中位数 </span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">statistics</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">best</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;有 &gt;=50</span><span class="si">%%</span><span class="s2"> 近亲的序列占 </span><span class="si">%.0f%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">b</span> <span class="o">&gt;=</span> <span class="mf">.5</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">best</span><span class="p">)</span> <span class="o">/</span> <span class="n">N</span><span class="p">))</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>随机抽一对   相同率中位数 0.05
+每条的最近邻 相同率中位数 0.71
+有 &gt;=50% 近亲的序列占 100%
+</code></pre></div>
+
+<p>⭐ <strong>这三行必须一起读。</strong> 第一行看着毫无问题：随机抽两条相同率中位数只有 0.05，正好是 1/20 —— 无关序列在 20 字母表上的背景值，<strong>按这个指标它"一点都不冗余"</strong>。换个问法就翻过来：每条的最近邻中位数 0.71，<strong>100% 的序列都有一个 50% 以上的近亲</strong>。</p>
+<blockquote>
+<p>⭐⭐ <strong>冗余不是"平均相似"，是"每一条都有近亲"。</strong>
+而随机划分训练集和测试集，正好是<strong>按条</strong>抽的 —— 抽走一条，近亲还留在另一边。</p>
+</blockquote>
+<figure class="dia"><svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="左边十个大小极不均匀的家族气泡，右边一条相同率数轴上，随机一对的中位数落在 0.05，每条序列最近邻的中位数落在 0.71"><text class="dia-t" x="20" y="30" font-size="13" fill="var(--fg)" font-weight="700">10 个家族，大小极不均匀</text><circle cx="53" cy="120" r="27.5" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/><text class="dia-t" x="53" y="124" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="700">80</text><circle cx="111" cy="120" r="20.6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/><text class="dia-t" x="111" y="124" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="700">40</text><circle cx="157" cy="120" r="17.2" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/><text class="dia-t" x="157" y="124" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="700">25</text><circle cx="198" cy="120" r="14.3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/><text class="dia-t" x="198" y="124" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="700">15</text><circle cx="234" cy="120" r="12.4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/><text class="dia-t" x="234" y="124" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="700">10</text><circle cx="267" cy="120" r="12.4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/><text class="dia-t" x="267" y="124" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="700">10</text><circle cx="38" cy="196" r="11.6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/><text class="dia-t" x="38" y="200" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="700">8</text><circle cx="69" cy="196" r="10.6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/><text class="dia-t" x="69" y="200" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="700">6</text><circle cx="98" cy="196" r="9.4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/><text class="dia-t" x="98" y="200" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="700">4</text><circle cx="124" cy="196" r="7.9" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/><text class="dia-t" x="124" y="200" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="700">2</text><text class="dia-t" x="20" y="248" font-size="11.5" fill="var(--muted)">共 200 条，每条从本家族祖先点突变 20%</text><text class="dia-t" x="330" y="30" font-size="13" fill="var(--fg)" font-weight="700">两种问法，同一批数据</text><line x1="330" y1="150" x2="726" y2="150" stroke="var(--border)" stroke-width="2"/><line x1="330" y1="150" x2="330" y2="156" stroke="var(--border)" stroke-width="1.2"/><text class="dia-t" x="330" y="172" font-size="11" text-anchor="middle" fill="var(--muted)">0.00</text><line x1="429" y1="150" x2="429" y2="156" stroke="var(--border)" stroke-width="1.2"/><text class="dia-t" x="429" y="172" font-size="11" text-anchor="middle" fill="var(--muted)">0.25</text><line x1="528" y1="150" x2="528" y2="156" stroke="var(--border)" stroke-width="1.2"/><text class="dia-t" x="528" y="172" font-size="11" text-anchor="middle" fill="var(--muted)">0.50</text><line x1="627" y1="150" x2="627" y2="156" stroke="var(--border)" stroke-width="1.2"/><text class="dia-t" x="627" y="172" font-size="11" text-anchor="middle" fill="var(--muted)">0.75</text><line x1="726" y1="150" x2="726" y2="156" stroke="var(--border)" stroke-width="1.2"/><text class="dia-t" x="726" y="172" font-size="11" text-anchor="middle" fill="var(--muted)">1.00</text><text class="dia-t" x="528" y="192" font-size="11.5" text-anchor="middle" fill="var(--muted)">序列相同率</text><line x1="528" y1="54" x2="528" y2="150" stroke="var(--muted)" stroke-width="1.4" stroke-dasharray="5 4"/><polygon points="350,144 343,130 357,130" fill="var(--muted)"/><text class="dia-t" x="346" y="120" font-size="12" fill="var(--muted)">随机抽一对：中位数 0.05</text><text class="dia-t" x="346" y="102" font-size="11.5" fill="var(--muted)">= 1/20，20 字母表的背景值</text><polygon points="611,144 603,128 619,128" fill="var(--danger,#e5534b)"/><text class="dia-t" x="726" y="66" font-size="12.5" text-anchor="end" fill="var(--danger,#e5534b)" font-weight="700">每条的最近邻：中位数 0.71</text><text class="dia-t" x="726" y="86" font-size="12" text-anchor="end" fill="var(--danger,#e5534b)" font-weight="700">100% 的序列都有 ≥50% 的近亲</text><text class="dia-t" x="528" y="46" font-size="11" text-anchor="middle" fill="var(--muted)">50%</text><text class="dia-t" x="330" y="248" font-size="12.5" fill="var(--fg)" font-weight="700">⚠️ 而随机划分正好是【按条】抽的</text><text class="dia-t" x="330" y="270" font-size="12" fill="var(--muted)">抽走一条，它的近亲还留在另一边</text></svg><figcaption>两个箭头都要看：左边那个说这批数据「<b>一点都不冗余</b>」，右边那个说「<b>每一条都有近亲</b>」—— 同一批数据，两种问法。⭐ 冗余不是「平均相似」，所以按平均值做的检查<b>查不出它</b>。（轴上只标中位数，因为章里量的就是中位数。）</figcaption></figure>
+
+<p>这条线接到本板块第 7 章（随机划分会虚高多少、按什么划分才诚实）。⚠️ 上面能直接按位比是因为合成序列等长；真实序列要先做<strong>序列比对</strong>，那是后面几章的事。</p>
+<hr />
+<h2 id="_6">🧲 五、剩下两条：远距离，和位置</h2>
+<p><strong>远距离。</strong> 链会折起来，序列上隔一百多个位置的两个残基在三维里完全可能贴在一起，所以"相邻的更相关"这个卷积式的先验在这里是<strong>错的</strong>。⭐ 而注意力恰好不预设距离 —— 每个位置对所有位置打分，谁相关由数据说了算，机制和<a href="../大模型全景导论/02-Transformer原理.html">主线 2 · 模型怎样看懂一句话</a>里"它指谁"那个例子完全相同。<strong>注意力用在这里不是因为它流行，是因为这里的相关性本来就不看距离。</strong></p>
+<p><strong>位置。</strong> 一句话换个语序常常还读得懂，序列里两个残基对调却是另一个蛋白质。注意力对顺序无感，位置必须显式加进去 —— 怎么加、为什么相对位置更好用，看<a href="../大模型全景导论/02f-RoPE与位置感.html">专题 C · RoPE：位置感</a>。</p>
+<hr />
+<h2 id="_7">🔗 这一章连到哪里</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>去哪</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../大模型全景导论/03-Tokenizer与上下文.html">大模型全景导论 · 主线 1 · 文字怎样进入模型</a></td>
+<td>⭐ 它把 BPE 的动机写成"词表不能无限大 vs 句子不能太长"的折中 —— 看清那个动机，才看得懂它在 20 个字母上为什么失效</td>
+</tr>
+<tr>
+<td><a href="../大模型全景导论/02-Transformer原理.html">大模型全景导论 · 主线 2 · 模型怎样看懂一句话</a></td>
+<td>"对所有可见位置打分"正是"远距离也可能相关"需要的机制，那一章讲了它怎么算</td>
+</tr>
+<tr>
+<td><a href="../大模型全景导论/02f-RoPE与位置感.html">大模型全景导论 · 专题 C · RoPE：位置感</a></td>
+<td>逐残基任务对位置格外敏感，位置怎么编码在这里不是可选专题</td>
+</tr>
+<tr>
+<td><a href="../数据这一关/06-重复与实体解析.html">数据这一关 · 06 · 重复与实体解析</a></td>
+<td>同一条数据的两个副本分别落进训练集和验证集 —— 序列库的冗余就是这个事故，只是这里是常态</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_8">✅ 检查点</h2>
+<ol>
+<li>为什么残基序列上一般不做子词切分？给出两条独立的理由。</li>
+<li>上面那段输出里，同一个 <code>KTAYIAK</code> 的第一个 token 为什么会变？说明了什么问题？</li>
+<li>200 个残基被切成多少个 token？这个数字为什么值得留意？</li>
+<li>"随机抽一对中位数 0.05"和"100% 的序列都有 50% 以上的近亲"为什么不矛盾？哪一个和数据划分有关？</li>
+<li>为什么"相邻的更相关"在这里是错的？这件事怎么解释注意力合适？</li>
+</ol>
+<details>
+<summary>👀 答案</summary>
+<ol>
+<li>① 字母表只有 20 个、永远没有生词，<strong>压长尾的动机不存在</strong>；② 很多任务是逐残基的，切了会破坏"第 N 个 token = 第 N 号残基"。</li>
+<li>三次分别是 <code>HK</code>、<code>QK</code>、<code>K</code> —— 开头那个残基被<strong>前面的邻居吃掉了</strong>，所以"从第几个 token 开始"没有稳定答案。</li>
+<li><strong>113.9 个</strong>，不到两倍。压缩率本来是 BPE 的主要卖点，这里不怎么兑现。</li>
+<li>量的是两件事：0.05 是<strong>随机两条</strong>的相同率，等于 1/20 的背景值；0.71 是每条的<strong>最近邻</strong>。⭐ 随机划分按条抽，相关的是后者。</li>
+<li>链会折叠，隔很远的残基三维里可能贴在一起，相关性不看序列距离；而注意力对所有位置打分、不预设距离。</li>
+</ol>
+</details>
+<hr />
+<h2 id="_9">🛑 可以停在这里</h2>
+<p>为什么大多一残基一 token、为什么随机划分危险、注意力为什么合适 —— <strong>这三条足够读懂下一章。</strong> 序列比对怎么做、同源泄漏虚高多少，都在后面。</p>
+<p>⚡ <strong>走神救援</strong></p>
+<blockquote>
+<p>蛋白质是一条链，单元叫残基，标准的 20 种、每种一个大写字母；DNA 是 4 字母版本。它长得像文本，NLP 工具全接得上，但默认设置几乎每条都要改。<strong>一是分词</strong>：BPE 的存在理由是在"词表不能无限大"和"句子不能太长"之间折中，而这里字母表只有 20 个、永远没有生词，蛋白质也只有几百到几千个残基 —— 两端的压力同时消失。切了还倒付：训一个 400 轮的极简 BPE 就看得到，同一段 <code>KTAYIAK</code> 放进三个上下文，第一个 token 分别切成 <code>HK</code>、<code>QK</code>、<code>K</code>，开头那个残基被前面的邻居吃掉了，"从第几个 token 开始"没有稳定答案；而逐残基任务是主流，字符级下第 47 个 token 就是第 47 号残基。压缩率也只有 200 压到 113.9。<strong>二是数据划分</strong>：造 10 个大小从 80 到 2 的家族、每条从祖先点突变 20%，随机抽一对的相同率中位数只有 0.05，正好是 1/20 的背景值，看着一点不冗余；可每条的最近邻中位数 0.71，100% 的序列都有一个 50% 以上的近亲 —— 冗余不是"平均相似"，是"每一条都有近亲"，而随机划分正好按条抽。<strong>三是结构</strong>：链会折叠，隔一百多个位置的残基三维里可能贴在一起，"相邻的更相关"这个卷积先验是错的；注意力对所有位置打分、不预设距离，正好合适。</p>
+</blockquote>
+<p><strong>下一节</strong> 👉 <a href="03-蛋白质语言模型.html">03-蛋白质语言模型.md</a></p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="01-第一天.html"><div class="dir">← 上一节</div>🧪 01 · 第一天：一列领域知识值多少数据</a><a class="next" href="03-蛋白质语言模型.html"><div class="dir">下一节 →</div>🔤 03 · 蛋白质语言模型</a></nav>
+</main>
+<script>(function(){
+  var KEY="sci-progress", FILE="02-\u5e8f\u5217\u4e0d\u662f\u6587\u672c.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+</body></html>

@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -303,7 +320,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_2">⚠️ 〇、先消歧：站内的「广播」有两个意思</h2>
 <p><a href="00-怎么用这份教程.html">第 00 章</a>钉过两个同名不同物（「向量化」和「stride」），<strong>这里是第三个</strong>，
 而且它比前两个更容易混，因为两边都在讲「一份数据被很多地方用到」：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>站内出处</th>
@@ -333,7 +350,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>1 处</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>注意最后两行的分布</strong>：NumPy 义的 10 处里有 <strong>9 处集中在 <code>ml_md/18</code></strong>，
 而那一章要你做的事是 —— 实现广播的反向传播：</p>
 <blockquote>
@@ -347,7 +364,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_3">📏 一、三条规则</h2>
 <p>拿到两个形状不同的数组做逐元素运算（<code>+ - * /</code> 和一切 ufunc），NumPy 只做这三步：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>#</th>
@@ -372,7 +389,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>是 1 的那一位，被拉伸到对方的长度。⭐ <strong>拉伸不复制内存</strong>（第三节证明）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>规则 ① 只往左边补，永远不往右边补。</strong> 这一条是后面所有坑的根源 ——
 <code>(3,4)</code> 和 <code>(4,)</code> 能算（<code>(4,)</code> 补成 <code>(1,4)</code>，对上了），
 <code>(3,4)</code> 和 <code>(3,)</code> 就不能（<code>(3,)</code> 补成 <code>(1,3)</code>，末位 4 对 3，炸）。</p>
@@ -439,7 +456,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>实跑输出：</p>
 <section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">(3, 4) + (4,) -&gt; (3, 4)</span></div><div class="vb-flow-row"><span class="vb-flow-step">(3, 4) + (3,) -&gt; ValueError: shape mismatch: objects cannot be broadcast to a single shape. Mismatch is between arg 0 with shape (3, 4) and arg 1 with shape (3,).</span></div><div class="vb-flow-row"><span class="vb-flow-step">(3, 4) + (3, 1) -&gt; (3, 4)</span></div><div class="vb-flow-row"><span class="vb-flow-step">(3, 1) + (1, 4) -&gt; (3, 4)</span></div><div class="vb-flow-row"><span class="vb-flow-step">(2, 3, 4) + (4,) -&gt; (2, 3, 4)</span></div><div class="vb-flow-row"><span class="vb-flow-step">(2, 3, 4) + (3, 1) -&gt; (2, 3, 4)</span></div><div class="vb-flow-row"><span class="vb-flow-step">(2, 3, 4) + (2, 1, 4) -&gt; (2, 3, 4)</span></div><div class="vb-flow-row"><span class="vb-flow-step">(2, 3, 4) + (2, 3) -&gt; ValueError: shape mismatch: objects cannot be broadcast to a single shape. Mismatch is between arg 0 with shape (2, 3, 4) and arg 1 with shape (2, 3).</span></div><div class="vb-flow-row"><span class="vb-flow-step">(5,) + (5, 1) -&gt; (5, 5)</span></div></div></section>
 <p>手算的时候把两个形状<strong>右对齐</strong>写成两行，比对着看：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>例子</th>
@@ -474,7 +491,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>末位 4 对 3 → ❌（⚠️ <strong><code>(2,3)</code> 看着像前两位，实际被补到了后两位</strong>）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>倒数第二行是最反直觉的一条</strong>：<code>(2,3,4)</code> 和 <code>(2,3)</code> 看起来「前两维完全一样，应该能算」，
 但规则 ① 是<strong>往左补</strong>，<code>(2,3)</code> 变成 <code>(1,2,3)</code> 而不是 <code>(2,3,1)</code>。
 要表达「前两维对齐」得自己写成 <code>(2,3,1)</code>，也就是 <code>y[..., None]</code>。</p>
@@ -555,7 +572,7 @@ NumPy 干脆禁掉这个歧义。这一条在第六节还会以另一副面孔�
 <a href="01-为什么写循环是错的.html">第 01 章</a>也是给的区间。<strong>「快几十倍」是结论，「44」不是。</strong>
 两版结果最大差是 <code>0.0</code>（完全相同，不是「误差很小」），说明改写没有引入任何数值差异。</p>
 <p><strong>怎么读 <code>X[:, None, :] - X[None, :, :]</code></strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>写法</th>
@@ -590,7 +607,7 @@ NumPy 干脆禁掉这个歧义。这一条在第六节还会以另一副面孔�
 <td>完整的距离矩阵</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>这个模式的通用形状是「把要配对的两个东西分别塞进相邻的两根轴，中间用 <code>None</code> 隔开」。</strong>
 <a href="../机器学习与深度学习基础/附录C-手撕代码速查.html">ML 基础 附录 C</a> 第 399 行的 K-means
 <code>d = ((X[:, None, :] - C[None, :, :]) ** 2).sum(-1)</code> 就是它（那里配对的是样本和聚类中心，
@@ -639,7 +656,7 @@ sklearn 某些 <code>predict</code> 的返回、<code>keepdims=True</code> 的�
 数据库读出来的单列、<code>reshape(-1, 1)</code> 之后的特征。
 而 <code>(n,)</code> 是标签的天然形状。<strong>两者相遇，就是一张 n×n 的表。</strong></p>
 <p>⭐ <strong>三条防线，按可靠性排序</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>防线</th>
@@ -664,7 +681,7 @@ sklearn 某些 <code>predict</code> 的返回、<code>keepdims=True</code> 的�
 <td>调试时用，看到 <code>(5,5)</code> 就知道错了</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>不要指望「结果形状不对我会看见」</strong> —— <code>.mean()</code> 之后就是一个标量，
 <strong>形状信息在报出指标之前就已经被 <code>mean()</code> 抹掉了</strong>。</p>
 <hr />
@@ -790,7 +807,7 @@ sklearn 某些 <code>predict</code> 的返回、<code>keepdims=True</code> 的�
 <p>实跑输出：</p>
 <section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">前向: (32,64) + (64,) -&gt; (32, 64)</span></div><div class="vb-flow-row"><span class="vb-flow-step">还给 W 的梯度: (32, 64) 前 3 个 = [1. 1. 1.]</span></div><div class="vb-flow-row"><span class="vb-flow-step">还给 bias 的梯度: (64,) 前 3 个 = [32. 32. 32.] &lt;- 每个 bias 被 32 行共用</span></div><div class="vb-flow-row"><span class="vb-flow-step">前向: (3,1) + (1,4) -&gt; (3, 4)</span></div><div class="vb-flow-row"><span class="vb-flow-step">还给 (3,1): (3, 1) 值 = [4. 4. 4.] &lt;- 每个被 4 列共用</span></div><div class="vb-flow-row"><span class="vb-flow-step">还给 (1,4): (1, 4) 值 = [3. 3. 3. 3.] &lt;- 每个被 3 行共用</span></div></div></section>
 <p>⭐ <strong>两行代码，两条规则，严格一一对应</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th><code>unbroadcast</code> 那一行</th>
@@ -810,7 +827,7 @@ sklearn 某些 <code>predict</code> 的返回、<code>keepdims=True</code> 的�
 <td>同理，拉伸多少份就加多少份；<code>keepdims=True</code> 保住那根长度 1 的轴</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>规则 ② 不需要撤销</strong> —— 它只是个检查，不改变任何形状。</p>
 <p><strong>为什么梯度是 <code>sum</code> 不是 <code>mean</code></strong>：广播是复用同一份数据，
 <code>bias[0]</code> 这一个数真的参与了 32 行的计算，32 条路径的梯度按链式法则要相加。
@@ -831,7 +848,7 @@ sklearn 某些 <code>predict</code> 的返回、<code>keepdims=True</code> 的�
 </blockquote>
 <hr />
 <h2 id="_9">📋 九、一页速记</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>想干的事 / 遇到的事</th>
@@ -880,13 +897,13 @@ sklearn 某些 <code>predict</code> 的返回、<code>keepdims=True</code> 的�
 <td><code>sum</code> 回去：补出来的轴 <code>sum(axis=0)</code>，长度 1 的轴 <code>sum(axis=i, keepdims=True)</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>一条容易漏的</strong>：广播只管<strong>形状</strong>，不管 dtype。
 <code>int8</code> 数组和 <code>int8</code> 数组广播完还是 <code>int8</code>，该溢出照样溢出 ——
 那是 <a href="08-整数dtype的真相.html">第 08 章</a> 的题。</p>
 <hr />
 <h2 id="_10">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>相关的地方</th>
@@ -935,7 +952,7 @@ sklearn 某些 <code>predict</code> 的返回、<code>keepdims=True</code> 的�
 <td>⚠️ <strong>同名不同物</strong>：那里的「Håstad 广播攻击」是把同一条消息发给多个人</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_11">✅ 检查点</h2>
 <ol>

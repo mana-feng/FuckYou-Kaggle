@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>06 · 条件控制：文本与 CFG · 扩散模型</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">06 · 条件控制与 CFG</span>
+  <span class="prevnext"><a href="05-Latent-Diffusion.html">←</a>
+  <a href="07-去噪主干-UNet与DiT.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">📝 一、文本先变成一串向量</a></li>
+<li><a href="#_3">🔀 二、交叉注意力：每个位置自己决定听哪个词</a></li>
+<li><a href="#cfg">🎚️ 三、CFG：同一步跑两次</a></li>
+<li><a href="#s">📉 四、s 调大之后坏在哪</a></li>
+<li><a href="#_4">💰 五、代价：每步计算量翻倍</a></li>
+<li><a href="#temperature">🌡️ 六、它和 temperature 是同一类旋钮</a></li>
+<li><a href="#_5">🔗 这一章连到哪里</a></li>
+<li><a href="#_6">✅ 检查点</a></li>
+<li><a href="#_7">🛑 可以停在这里</a></li>
+</ul>
+</div>
+</details>
+<h1 id="06-cfg">06 · 条件控制：文本与 CFG</h1>
+<p>⏱ <strong>22 分钟</strong> ｜ ⭐ <strong>你在任何 UI 上拖的那个 guidance scale，这一页讲清它在算什么</strong></p>
+<hr />
+<h2 id="_1">🎯 一句话</h2>
+<p><strong>提示词不是一次性的「输入」，而是每一步去噪时都在旁边说话的那个人；而 guidance scale 更奇怪 —— 它让模型同一步跑两次，一次听提示词、一次装作没听见，再朝两者的差外推。</strong>
+外推多远，就是那个滑块。</p>
+<p>前面几章的去噪循环里没出现过一个字的提示词，跑完得到的是「训练分布里的某一张图」—— 哪一张，随缘。这一章把提示词接进去。</p>
+<hr />
+<h2 id="_2">📝 一、文本先变成一串向量</h2>
+<p>第一步和扩散无关：把提示词交给一个<strong>已经训好、并且冻住</strong>的文本编码器（Stable Diffusion 1.x 用 CLIP 的文本塔）。</p>
+<p>⭐ <strong>它吐出来的不是一个向量，是一串。</strong> CLIP ViT-L/14 固定输出 <strong>77 个位置 × 768 维</strong>，不足补齐、超了截断 —— 早期「提示词写太长后面不起作用」的传说，根就在这个 77 上。</p>
+<p>为什么必须是一串？因为下一步要做<strong>对齐</strong>：「戴红帽子的猫」里「红」该影响帽子那片像素、不该影响爪子；压成一个向量这信息就没了。</p>
+<hr />
+<h2 id="_3">🔀 二、交叉注意力：每个位置自己决定听哪个词</h2>
+<p>条件要在<strong>每一层、每一步</strong>都参与，靠的是交叉注意力。</p>
+<figure class="dia"><svg viewBox="0 0 760 238" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="左边一个四乘四的图像特征网格标 Q，中间一列文本向量标 K 与 V，右边是它们相乘得到的打分矩阵"><text class="dia-t" x="380" y="24" font-size="14" text-anchor="middle" fill="var(--fg)" font-weight="700">每个图像位置自己决定听哪个词</text><text class="dia-t" x="112" y="52" font-size="12.5" text-anchor="middle" fill="var(--accent)" font-weight="700">图像特征（Q）</text><rect x="60" y="66" width="24" height="24" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/><rect x="88" y="66" width="24" height="24" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/><rect x="116" y="66" width="24" height="24" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/><rect x="144" y="66" width="24" height="24" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/><rect x="60" y="94" width="24" height="24" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/><rect x="88" y="94" width="24" height="24" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/><rect x="116" y="94" width="24" height="24" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/><rect x="144" y="94" width="24" height="24" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/><rect x="60" y="122" width="24" height="24" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/><rect x="88" y="122" width="24" height="24" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/><rect x="116" y="122" width="24" height="24" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/><rect x="144" y="122" width="24" height="24" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/><rect x="60" y="150" width="24" height="24" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/><rect x="88" y="150" width="24" height="24" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/><rect x="116" y="150" width="24" height="24" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/><rect x="144" y="150" width="24" height="24" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/><text class="dia-t" x="112" y="196" font-size="11.5" text-anchor="middle" fill="var(--muted)">h × w 个位置</text><text class="dia-t" x="300" y="52" font-size="12.5" text-anchor="middle" fill="var(--link)" font-weight="700">文本（K / V）</text><rect x="272" y="66" width="56" height="18" rx="3" fill="var(--card)" stroke="var(--border)" stroke-width="1.2"/><rect x="272" y="90" width="56" height="18" rx="3" fill="var(--card)" stroke="var(--border)" stroke-width="1.2"/><rect x="272" y="114" width="56" height="18" rx="3" fill="var(--card)" stroke="var(--border)" stroke-width="1.2"/><rect x="272" y="138" width="56" height="18" rx="3" fill="var(--card)" stroke="var(--border)" stroke-width="1.2"/><rect x="272" y="162" width="56" height="18" rx="3" fill="var(--card)" stroke="var(--border)" stroke-width="1.2"/><text class="dia-t" x="300" y="196" font-size="11.5" text-anchor="middle" fill="var(--muted)">77 个 token 位</text><line x1="180" y1="122" x2="253" y2="122" stroke="var(--accent)" stroke-width="2"/><polygon points="262,122 253,117 253,127" fill="var(--accent)"/><line x1="340" y1="122" x2="413" y2="122" stroke="var(--accent)" stroke-width="2"/><polygon points="422,122 413,117 413,127" fill="var(--accent)"/><rect x="426" y="66" width="200" height="112" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/><text class="dia-t" x="526" y="122" font-size="15" text-anchor="middle" fill="var(--accent)" font-weight="700">打分矩阵</text><text class="dia-t" x="526" y="141" font-size="11.5" text-anchor="middle" fill="var(--muted)">(h·w) × 77</text><text class="dia-t" x="526" y="196" font-size="11.5" text-anchor="middle" fill="var(--muted)">每行一个图像位置，每列一个词</text><text class="dia-t" x="380" y="226" font-size="12.5" text-anchor="middle" fill="var(--done)" font-weight="700">⭐ 每一层都有、每一步都重算 —— 条件不是起点，是全程偏置</text></svg><figcaption>看矩阵的<b>形状</b>：行是图像位置、列是词。⭐ 所以「听哪个词」是<b>每个位置各自算的</b>，不是整张图共用一个答案 —— 这就是提示词能控制局部的机制。</figcaption></figure>
+
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>从哪来</th>
+<th>有多少</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Q</strong>（我想找什么）</td>
+<td>当前<strong>图像特征</strong>，每个空间位置一个</td>
+<td>h × w 个</td>
+</tr>
+<tr>
+<td><strong>K / V</strong>（能提供什么）</td>
+<td><strong>文本编码器的输出</strong></td>
+<td>77 个</td>
+</tr>
+</tbody>
+</table></div>
+<p>打分矩阵因此是 <strong>(h·w) × 77</strong>：每个图像位置对 77 个文本位置各打一个分，softmax 成权重后把 V 加权取回 —— 所以「帽子」那片特征会大量取走「红」，爪子那片不会。</p>
+<p>⭐ <strong>「提示词塞在哪一层」的答案是：哪一层都塞了</strong>，条件不是起点而是<strong>全程施加的偏置</strong>。⚠️ 时间步 <code>t</code> 不走这条路，它和主干结构一起放在下一章。</p>
+<hr />
+<h2 id="cfg">🎚️ 三、CFG：同一步跑两次</h2>
+<p>光靠交叉注意力，<strong>服从度往往不够</strong>。CFG（classifier-free guidance）在<strong>采样时</strong>动手：带提示词跑一次得 <code>ε_cond</code>，带<strong>空提示词</strong>再跑一次得 <code>ε_uncond</code>，然后合成：</p>
+<figure class="dia"><svg viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="数轴上标出不带条件与带条件两点，箭头沿这个方向继续外推到 s=7.5 和 s=15"><text class="dia-t" x="380" y="24" font-size="14" text-anchor="middle" fill="var(--fg)" font-weight="700">CFG 不是在两者之间插值，是沿着方向外推</text><line x1="60" y1="96" x2="700" y2="96" stroke="var(--border)" stroke-width="2"/><circle cx="140" cy="96" r="7" fill="var(--muted)"/><text class="dia-t" x="140" y="78" font-size="12.5" text-anchor="middle" fill="var(--muted)" font-weight="700">ε_uncond</text><text class="dia-t" x="140" y="122" font-size="11.5" text-anchor="middle" fill="var(--muted)">不带条件</text><circle cx="300" cy="96" r="7" fill="var(--accent)"/><text class="dia-t" x="300" y="78" font-size="12.5" text-anchor="middle" fill="var(--accent)" font-weight="700">ε_cond</text><text class="dia-t" x="300" y="122" font-size="11.5" text-anchor="middle" fill="var(--muted)">带条件</text><circle cx="620" cy="96" r="7" fill="var(--danger,#e5534b)"/><text class="dia-t" x="620" y="78" font-size="12.5" text-anchor="middle" fill="var(--danger,#e5534b)" font-weight="700">s = 15</text><text class="dia-t" x="620" y="122" font-size="11.5" text-anchor="middle" fill="var(--muted)">过饱和、构图崩</text><circle cx="460" cy="96" r="7" fill="var(--done)"/><text class="dia-t" x="460" y="78" font-size="12.5" text-anchor="middle" fill="var(--done)" font-weight="700">s = 7.5</text><text class="dia-t" x="460" y="122" font-size="11.5" text-anchor="middle" fill="var(--muted)">常用区间</text><line x1="300" y1="152" x2="691" y2="152" stroke="var(--accent)" stroke-width="2.2"/><polygon points="700,152 691,147 691,157" fill="var(--accent)"/><text class="dia-t" x="500" y="144" font-size="12" text-anchor="middle" fill="var(--accent)" font-weight="700">s 越大走得越远</text><text class="dia-t" x="220" y="152" font-size="11.5" text-anchor="middle" fill="var(--muted)">s = 1 停在这里</text><text class="dia-t" x="380" y="186" font-size="12" text-anchor="middle" fill="var(--muted)">实测：s=1 范数 15.81（训练尺度的 0.99 倍）→ s=15 涨到 91.65（5.73 倍）</text><text class="dia-t" x="380" y="208" font-size="12.5" text-anchor="middle" fill="var(--danger,#e5534b)" font-weight="700">⚠️ s 太大就合成出了模型训练时从没见过的 ε</text></svg><figcaption>看 <b>s=1 的位置</b>：它就停在带条件那一点上，等于没引导。⭐ 再往右全是<b>外推</b>而不是插值 —— 所以调大 s 不是「更接近条件」，是<b>越过它</b>，越过太多就出了训练分布。</figcaption></figure>
+
+<p>$$\tilde{\varepsilon} = \varepsilon_{\text{uncond}} + s \cdot (\varepsilon_{\text{cond}} - \varepsilon_{\text{uncond}})$$</p>
+<p>💡 <strong>人话</strong>：括号里是「有提示词和没提示词，预测差在哪」，也就是<strong>条件把画面往哪拽</strong>；<code>s</code> 决定沿这个方向走多远。</p>
+<p>整理成 <code>(1−s)·ε_uncond + s·ε_cond</code> 更能看出问题：⭐ <strong><code>s = 1</code> 时它就等于 <code>ε_cond</code>，即完全不做引导</strong>；<code>s &gt; 1</code> 时 <code>ε_uncond</code> 的系数变负 —— 这<strong>不是插值，是越过 <code>ε_cond</code> 往外推</strong>。UI 上默认的 7.5，就是沿条件方向走出那么远。</p>
+<details>
+<summary>👀 名字里的 free 指什么（可跳过）</summary>
+<p>前身 classifier guidance 要另训一个看得懂带噪图的分类器；CFG 改成训练时<strong>以约 10% 的概率把条件丢掉</strong>，同一个网络就兼职学会了无条件预测，<strong>不需要额外分类器</strong>。</p>
+<p>⭐ 另外：「空提示词」<strong>不是全零张量</strong>，是把空字符串真送进文本编码器得到的那串向量。把它换成负面提示词，那一支就成了「往反面推」—— 负面提示词的全部机制就在这里。</p>
+</details>
+<hr />
+<h2 id="s">📉 四、<code>s</code> 调大之后坏在哪</h2>
+<p>用两个假的预测张量，看合成那一行把结果放大成什么样：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># CFG 合成出来的 ε，随 s 被放大成什么样</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">D</span> <span class="o">=</span> <span class="mi">256</span>                                <span class="c1"># 假装是展平的潜变量</span>
+<span class="n">eps_uncond</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>            <span class="c1"># 空提示词那次前向的输出</span>
+<span class="n">eps_cond</span> <span class="o">=</span> <span class="n">eps_uncond</span> <span class="o">+</span> <span class="mf">0.35</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>   <span class="c1"># 带条件那次</span>
+<span class="n">base</span> <span class="o">=</span> <span class="n">D</span> <span class="o">**</span> <span class="mf">0.5</span>                        <span class="c1"># 训练时 ε~N(0,I)，范数期望 sqrt(256)=16</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;训练时见过的 ε：范数约 </span><span class="si">{</span><span class="n">base</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">，几乎没有分量超过 3&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">):</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="n">eps_uncond</span> <span class="o">+</span> <span class="n">s</span> <span class="o">*</span> <span class="p">(</span><span class="n">eps_cond</span> <span class="o">-</span> <span class="n">eps_uncond</span><span class="p">)</span>   <span class="c1"># ⭐ 就是 CFG 那一行</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">eps</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;s=</span><span class="si">{</span><span class="n">s</span><span class="si">:</span><span class="s2">4.1f</span><span class="si">}</span><span class="s2">  范数 </span><span class="si">{</span><span class="n">n</span><span class="si">:</span><span class="s2">6.2f</span><span class="si">}</span><span class="s2">（训练尺度的 </span><span class="si">{</span><span class="n">n</span><span class="o">/</span><span class="n">base</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> 倍）&quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;  越过 3 的分量 </span><span class="si">{</span><span class="nb">int</span><span class="p">((</span><span class="n">eps</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="si">:</span><span class="s2">3d</span><span class="si">}</span><span class="s2"> 个&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>训练时见过的 ε：范数约 16.0，几乎没有分量超过 3
+s= 1.0  范数  15.81（训练尺度的 0.99 倍）  越过 3 的分量   0 个
+s= 3.0  范数  22.84（训练尺度的 1.43 倍）  越过 3 的分量   9 个
+s= 7.5  范数  47.13（训练尺度的 2.95 倍）  越过 3 的分量  70 个
+s=15.0  范数  91.65（训练尺度的 5.73 倍）  越过 3 的分量 152 个
+</code></pre></div>
+
+<p>⭐ <strong>关键不是「变大了」，是「变成了模型没见过的东西」</strong>：<code>s=7.5</code> 合成出的范数已是训练尺度的 <strong>2.95 倍</strong>、<strong>70 个分量越过 3</strong>，<code>s=15</code> 是 <strong>5.73 倍</strong> —— 而每一步都要减掉它，误差还逐步累积。</p>
+<p>落到图上是三个症状：<strong>过饱和</strong>（颜色发死、对比拉爆）、<strong>构图崩坏</strong>（结构变形、纹理反复）、⚠️ <strong>多样性塌缩</strong>（换十个种子出十张越来越像的图）。第三条最容易漏掉，因为<strong>单看一张图发现不了</strong>。</p>
+<blockquote>
+<p>⭐ <strong>「调大一点更听话」只在一段区间里成立</strong>，过了那段换来的是一张更响亮的坏图。</p>
+</blockquote>
+<hr />
+<h2 id="_4">💰 五、代价：每步计算量翻倍</h2>
+<p>CFG 每步跑两次前向，<strong>50 步就是 100 次网络调用</strong> —— 不是常数开销，是<strong>乘 2</strong>。实现上一般把两次拼成 batch=2 一起送：权重只从显存搬一次，省的是<strong>访存</strong>；乘加实实在在两份，<strong>算力那份省不掉</strong>。</p>
+<p>⭐ 于是<strong>很多「加速采样」的比较是不公平的</strong>：有的把「一步」算成一次网络调用，有的算成一次去噪步（＝两次调用）。看到「20 步出图」先问是 20 次还是 40 次。</p>
+<hr />
+<h2 id="temperature">🌡️ 六、它和 temperature 是同一类旋钮</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>语言模型的 <code>temperature</code></th>
+<th>扩散的 <code>s</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>在调什么</td>
+<td>采样分布的尖锐程度</td>
+<td>条件方向被外推多远</td>
+</tr>
+<tr>
+<td><strong>更听话</strong>往哪调</td>
+<td>⚠️ 调<strong>小</strong></td>
+<td>⚠️ 调<strong>大</strong>（方向相反，别记混）</td>
+</tr>
+<tr>
+<td>走极端</td>
+<td>复读、干瘪</td>
+<td>过饱和、构图崩、多样性塌缩</td>
+</tr>
+<tr>
+<td>额外算力代价</td>
+<td>没有</td>
+<td>⚠️ 每步两次前向</td>
+</tr>
+</tbody>
+</table></div>
+<p>共同点才是重点：<strong>都在「多听话」和「多自由」之间取舍，都没有安全默认值，都得按任务调。</strong></p>
+<p>⚠️ <strong>这是类比不是等同</strong>：<code>temperature</code> 改的是分布形状，<code>s</code> 改的是预测向量的方向和长度，可迁移的只有那个权衡结构。但正因结构一样，那边的规矩这边也成立：<strong>别两个旋钮一起动</strong>，出问题先调回默认。</p>
+<hr />
+<h2 id="_5">🔗 这一章连到哪里</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>去哪</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../大模型全景导论/06c-解码参数怎么调.html">大模型全景导论 06c · 解码参数怎么调</a></td>
+<td>⭐⭐ 上一节那个类比的另一半：它把 <code>temperature</code> 的数学摊开了（logits 差 2.0 时 T=0.5 把概率比放大到 54.6 倍），并给了一条这里也适用的规矩 —— <strong>和 <code>top_p</code> 只调一个</strong></td>
+</tr>
+<tr>
+<td><a href="../大模型全景导论/02-Transformer原理.html">大模型全景导论 主线 2 · 模型怎样看懂一句话</a></td>
+<td>交叉注意力的底子：那页把 Q/K/V 讲成三个角色（我想找什么／能被怎样匹配／能提供什么内容），本章只是把它们拆到两个东西上</td>
+</tr>
+<tr>
+<td><a href="../大模型全景导论/10d-CLIP与对比学习.html">大模型全景导论 10d · CLIP 与对比学习</a></td>
+<td>那个「已训好并冻住」的文本编码器<strong>是怎么来的</strong>：几亿对（图片，描述）用 InfoNCE 训，一个 batch 的 N 对编成 N×N 相似度矩阵、要求对角线最大</td>
+</tr>
+<tr>
+<td><a href="../大模型全景导论/06-推理优化.html">大模型全景导论 06 · 推理优化：省显存</a></td>
+<td>「计算量翻倍」这类账在语言模型那边怎么算：核心是<strong>瓶颈分两种</strong>（算力密集 vs 访存密集），正是「batch=2 省搬权重、不省乘加」背后的判据</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_6">✅ 检查点</h2>
+<ol>
+<li>文本编码器输出的是一个向量还是一串？为什么这个区别关键？</li>
+<li>交叉注意力里 Q、K、V 各来自哪边？打分矩阵是什么形状？</li>
+<li>CFG 的合成公式是什么？<code>s = 1</code> 时会发生什么？为什么说 <code>s &gt; 1</code> 是外推不是插值？</li>
+<li><code>s</code> 调得很大会坏成什么样？其中哪一条单看一张图发现不了？</li>
+<li>CFG 的算力代价是多少？拼成 batch=2 之后省掉的是什么、没省掉的是什么？</li>
+</ol>
+<details>
+<summary>👀 答案</summary>
+<ol>
+<li>是<strong>一串</strong>：CLIP ViT-L/14 固定输出 <strong>77 × 768</strong>。因为交叉注意力要做<strong>对齐</strong> —— 「红」要影响帽子那片像素、不影响爪子。</li>
+<li><strong>Q 来自图像特征</strong>（每个空间位置一个，共 h×w 个），<strong>K/V 来自文本编码器输出</strong>（77 个）。打分矩阵是 <strong>(h·w) × 77</strong>。</li>
+<li><code>ε = ε_uncond + s·(ε_cond − ε_uncond)</code>，<strong><code>s = 1</code> 时等于 <code>ε_cond</code>，即完全不引导</strong>。整理成 <code>(1−s)·ε_uncond + s·ε_cond</code> 就看得出 <code>s &gt; 1</code> 时前一项系数是<strong>负数</strong>，结果落在 <code>ε_cond</code> <strong>之外</strong>。</li>
+<li><strong>过饱和、构图崩坏、多样性塌缩</strong>，第三条单看一张图发现不了。数值上 <code>s=7.5</code> 合成出的范数是训练尺度的 <strong>2.95 倍</strong>、<strong>70 个分量越过 3</strong>。</li>
+<li><strong>翻倍</strong>（50 步 = 100 次调用）。省掉的是<strong>访存</strong>，<strong>乘加那份省不掉</strong>。</li>
+</ol>
+</details>
+<hr />
+<h2 id="_7">🛑 可以停在这里</h2>
+<p>你已经能解释一张图怎么「听懂」提示词：文本编码器 → 每层每步的交叉注意力 → 采样时的两次前向外推。⚠️ <strong>什么时候回来</strong>：图颜色发死、结构反复、换种子也总是那几张 —— 先把 <code>s</code> 调回默认再查别的。</p>
+<p>⚡ <strong>走神救援</strong></p>
+<blockquote>
+<p>提示词先由一个<strong>已训好并冻住</strong>的文本编码器变成<strong>一串</strong>向量（CLIP ViT-L/14 是 <strong>77 × 768</strong>），必须是一串才能做<strong>对齐</strong>。条件靠<strong>交叉注意力</strong>进来：<strong>Q 来自图像特征</strong>、<strong>K/V 来自文本</strong>（77 个），打分矩阵 <strong>(h·w) × 77</strong> —— 每个图像位置自己决定听哪个词；每一层都有、每一步都重算，所以条件是<strong>全程偏置</strong>不是起点。⭐⭐ <strong>CFG</strong> 在同一步跑<strong>两次</strong>去噪，得 <code>ε_cond</code> 和空提示词的 <code>ε_uncond</code>，合成 <code>ε = ε_uncond + s·(ε_cond − ε_uncond)</code>；写成 <code>(1−s)·ε_uncond + s·ε_cond</code> 就看得出 <strong><code>s=1</code> 等于不引导</strong>、<strong><code>s&gt;1</code> 是外推不是插值</strong>（UI 默认 7.5）。free 指训练时以约 <strong>10%</strong> 概率丢掉条件，让同一个网络兼职做无条件预测。⚠️ 代价两头都实在：训练时 ε 范数约 <strong>16</strong>、几乎没有分量超过 3，而 <code>s=7.5</code> 合成出的已是 <strong>2.95 倍</strong>、<strong>70 个分量越过 3</strong>，于是<strong>过饱和、构图崩坏、多样性塌缩</strong>（最后一条单看一张图发现不了）；算力上<strong>每步两次前向＝翻倍</strong>，batch=2 只省访存不省乘加。⭐ 最该带走的：<code>s</code> 和 <code>temperature</code> 是<strong>同一类旋钮</strong>，都没有安全默认值 —— ⚠️ 但<strong>方向相反</strong>：T 调小才听话，<code>s</code> 调大才听话。</p>
+</blockquote>
+<p><strong>下一节</strong> 👉 <a href="07-去噪主干-UNet与DiT.html">07-去噪主干-UNet与DiT.md</a></p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="05-Latent-Diffusion.html"><div class="dir">← 上一节</div>🗜️ 05 · Latent Diffusion</a><a class="next" href="07-去噪主干-UNet与DiT.html"><div class="dir">下一节 →</div>🏗️ 07 · 去噪主干：U-Net 与 DiT</a></nav>
+</main>
+<script>(function(){
+  var KEY="diff-progress", FILE="06-\u6761\u4ef6\u63a7\u5236\u4e0eCFG.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+</body></html>

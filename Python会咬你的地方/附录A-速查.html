@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>附录A · 速查 · Python 会咬你的地方</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">附录A · 报错反查与速查</span>
+  <span class="prevnext"><a href="10-编码、路径和文件.html">←</a>
+  </span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">🧯 一、报错原文 → 它到底在说什么</a></li>
+<li><a href="#_3">🔍 二、症状 → 大概率是哪一章</a></li>
+<li><a href="#_4">📋 三、几条没有例外的规矩</a></li>
+<li><a href="#_5">⏱️ 四、量一段代码：工具和参数</a></li>
+<li><a href="#_6">🚦 五、并发怎么选，以及可复现的两件事</a></li>
+<li><a href="#key">🗃️ 六、容器：复杂度、顺序、能不能当 key</a></li>
+<li><a href="#_7">📦 七、「我这能跑，你那不能跑」：五步定位</a></li>
+<li><a href="#_8">🧠 八、让解释器多说一点</a></li>
+<li><a href="#_9">🔖 九、类型标注：词汇表和该标哪</a></li>
+<li><a href="#_10">🔗 这一页连到哪里</a></li>
+</ul>
+</div>
+</details>
+<h1 id="a">附录A · 速查</h1>
+<p>⏱ <strong>52 分钟</strong> ｜ ⭐ <strong>把报错原文和「它到底在说什么」排在一起，Ctrl+F 就能查</strong></p>
+<blockquote>
+<p>📌 这一页是<strong>查</strong>的，不是读的。所有条目都能指回某一章。</p>
+</blockquote>
+<hr />
+<h2 id="_1">🎯 一句话</h2>
+<p><strong>正文各章负责让你懂，这一页负责让你快。</strong> 它只做三件事：把<strong>报错原文</strong>按「你看到什么」排好，把<strong>症状</strong>按「大概率是哪一章」排好，把几条<strong>没有例外的规矩</strong>放在一处。</p>
+<p>⚠️ 页里所有数字都来自各章的实跑输出，机器是 Windows 11 + CPython 3.13。<strong>绝对值会随机器变，要看的是倍数和方向。</strong></p>
+<hr />
+<h2 id="_2">🧯 一、报错原文 → 它到底在说什么</h2>
+<blockquote>
+<p>用法：把你看到的报错<strong>开头几个词</strong>在这一节 Ctrl+F。</p>
+</blockquote>
+<h3 id="typeerror-object-of-type-generator-has-no-len"><code>TypeError: object of type 'generator' has no len()</code></h3>
+<p>生成器<strong>没有长度</strong>，因为它根本不知道自己有多少个 —— 值是边走边产的。
+→ 真要计数就 <code>sum(1 for _ in g)</code>，⚠️ <strong>但那一次遍历会把它耗光</strong>。详见 <a href="02-生成器与惰性求值.html">02 · 生成器与惰性求值</a>第三节。</p>
+<h3 id="typeerror-retrylocalsdecorator-missing-1-required-positional-argument-fn"><code>TypeError: retry.&lt;locals&gt;.decorator() missing 1 required positional argument: 'fn'</code></h3>
+<p>⭐ <strong>判据是错误信息里出现了装饰器内部的函数名</strong>（<code>decorator</code> / <code>wrapper</code>）：八成是<strong>带参数的装饰器少写了那对括号</strong>，<code>@retry</code> 应该写成 <code>@retry(3)</code>。
+⚠️ 装饰那一步<strong>不报错</strong>，报错发生在第一次调用被装饰的函数时。详见 <a href="03-装饰器与上下文管理器.html">03 · 装饰器与上下文管理器</a>第三节。</p>
+<h3 id="runtimeerror-generator-didnt-stop"><code>RuntimeError: generator didn't stop</code></h3>
+<p><code>@contextlib.contextmanager</code> 修饰的生成器里有<strong>两个 <code>yield</code></strong>。一个上下文管理器只管一对进出。
+→ 数一遍 <code>yield</code> 的个数。要嵌套就嵌套 <code>with</code>，或者用 <code>ExitStack</code>。详见 <a href="03-装饰器与上下文管理器.html">03 章</a>第十节。</p>
+<h3 id="typeerror-classmethod-object-is-not-callable-chelper-takes-1-positional-argument-but-2-were-given"><code>TypeError: 'classmethod' object is not callable</code> / <code>C.helper() takes 1 positional argument but 2 were given</code></h3>
+<p>⭐ <strong><code>@staticmethod</code> / <code>@classmethod</code> 没写在最外层。</strong> 装饰器叠起来是从下往上应用的，你自己的 <code>@log</code> 写在外面时，类字典里存的就是普通 <code>function</code> 而不是 <code>staticmethod</code>。
+→ 验证一行：<code>type(C.__dict__["helper"])</code> 应该是 <code>staticmethod</code>。⚠️ <strong>从类上调可能是对的，从实例上调才炸</strong> —— 所以它能躲过一半的测试。详见 <a href="03-装饰器与上下文管理器.html">03 章</a>第五节。</p>
+<h3 id="attributeerror-nonetype-object-has-no-attribute-with-as-x"><code>AttributeError: 'NoneType' object has no attribute ...</code>（紧跟在 <code>with ... as x</code> 之后）</h3>
+<p><code>__enter__</code> 里忘了 <code>return self</code>，<code>as x</code> 拿到的是 <code>None</code>。⭐ <strong><code>as x</code> 绑的是 <code>__enter__</code> 的返回值，不是那个对象本身。</strong>
+→ 在 <code>with</code> 块第一行 <code>print(x)</code> 就能确认。详见 <a href="03-装饰器与上下文管理器.html">03 章</a>第六节。</p>
+<h3 id="runtimeerror-an-attempt-has-been-made-to-start-a-new-process-before-the-current-process-has-finished-its-bootstrapping-phase"><code>RuntimeError: An attempt has been made to start a new process before the current process has finished its bootstrapping phase</code></h3>
+<p>训练脚本 / 建进程池那一行<strong>没被 <code>if __name__ == "__main__"</code> 守住</strong>，子进程重新 import 主模块时又执行了一遍，无限递归。
+💀 <strong>难查的原因</strong>：你在终端里<strong>先看到的是 <code>BrokenProcessPool: A process in the process pool was terminated abruptly</code></strong> —— 字面像资源不足，而真正的 <code>RuntimeError</code> 埋在一堆 <code>multiprocessing/spawn.py</code> 栈帧中间；在 Notebook / IDE 里子进程的 stderr 常常根本不显示。详见 <a href="04-GIL：为什么多线程救不了你.html">04 · GIL</a>第五节。</p>
+<h3 id="picklingerror-typeerror-cannot-pickle"><code>PicklingError</code> / <code>TypeError: cannot pickle ...</code></h3>
+<p>要送进子进程的东西<strong>不能被 pickle</strong>：lambda、局部函数、打开的文件句柄、数据库连接、<code>threading.Lock</code> 都不行。详见 <a href="04-GIL：为什么多线程救不了你.html">04 章</a>第六节。</p>
+<h3 id="valueerror-invalid-literal-for-int-with-base-10-na"><code>ValueError: invalid literal for int() with base 10: 'n/a'</code></h3>
+<p>⭐ 报错<strong>已经告诉了你是哪个值坏了</strong>（<code>'n/a'</code>）。别急着往上翻，先看最后一行。
+⭐ 3.11 之后 traceback 里那几行 <code>~~~^^^</code> 会<strong>指出一行里到底是哪个调用炸的</strong> —— <code>return int(v) / 100</code> 底下标在 <code>int(v)</code> 上，说明不是除法的问题。详见 <a href="07-异常traceback和调试.html">07 · 异常、traceback 和调试</a>第一节。</p>
+<h3 id="modulenotfounderror-no-module-named-xxx"><code>ModuleNotFoundError: No module named 'xxx'</code></h3>
+<p>⚠️ <strong>它只告诉你「没找到」，从不告诉你「在哪找过」。</strong> 自己打出来：
+<code>python -c "import importlib.util as u; print(u.find_spec('xxx'))"</code>，再打 <code>sys.path</code>。
+⭐ <strong>十次里有一次是名字问题</strong>：<code>pip install pyyaml</code> → <code>import yaml</code>；<code>scikit-learn</code> → <code>sklearn</code>；<code>opencv-python</code> → <code>cv2</code>；<code>Pillow</code> → <code>PIL</code>。<strong>去 PyPI 页面抄那行 import，别猜。</strong> 详见 <a href="08-环境、依赖和import.html">08 · 环境、依赖和 import</a>第一节。</p>
+<h3 id="unicodedecodeerror-gbk-codec-cant-decode-byte-0x8c-in-position-14"><code>UnicodeDecodeError: 'gbk' codec can't decode byte 0x8c in position 14</code></h3>
+<p>⭐ <strong>你从头到尾没提过 GBK，是 <code>open()</code> 替你选的。</strong> Windows 上 <code>open()</code> 用的是 <code>locale.getpreferredencoding(False)</code>（本机 <code>cp936</code>），不是 <code>sys.getdefaultencoding()</code>（那个管的是 str/bytes 互转，跟读文件没关系）。
+→ 一律显式写 <code>encoding="utf-8"</code>。详见 <a href="10-编码、路径和文件.html">10 · 编码、路径和文件</a>第一节。</p>
+<h3 id="unicodeencodeerror-gbk-codec-cant-encode-character-u2705"><code>UnicodeEncodeError: 'gbk' codec can't encode character '\u2705'</code></h3>
+<p><strong>你 print 了一个 emoji，而控制台编码不是 UTF-8。</strong>
+💀 本项目的真实事故：构建最后一步因为打印一个对勾崩了，而外层的 <code>except</code> 打印的是「不影响其他内容」—— <strong>在站点已经坏掉时报了平安</strong>，全站 156 张图当场只剩 75 张。
+→ 脚本开头钉死输出编码，并且 <strong><code>errors="replace"</code> 那半句同样重要</strong>：打个问号也别抛异常。详见 <a href="10-编码、路径和文件.html">10 章</a>第三节。</p>
+<h3 id="syntaxwarning-invalid-escape-sequencewindows"><code>SyntaxWarning: invalid escape sequence</code>（Windows 路径里）</h3>
+<p><code>"C:\data\new\test.txt"</code> 里的 <code>\n</code> <code>\t</code> 已经变成换行和制表符了。⭐ 3.12 起解释器会先警告你一句 —— <strong>别忽略它，那就是在报这个坑。</strong>
+→ 用 <code>r"C:\data\new"</code>，或者干脆用正斜杠（Windows API 两种都收），最好用 <code>pathlib</code>。详见 <a href="10-编码、路径和文件.html">10 章</a>第六节。</p>
+<h3 id="assertionerror"><code>AssertionError</code> 在生产上「消失了」</h3>
+<p>⚠️ 加了 <code>-O</code>（或 <code>PYTHONOPTIMIZE=1</code>）之后，<strong><code>assert</code> 那一行在编译期就被整条删掉</strong>，不是「不抛异常」。实跑对照：不带参数退出码 1、报 <code>AssertionError</code>；带 <code>-O</code> 退出码 0，负数一路进了数据。
+→ <strong>校验外部数据一律用 <code>if not ...: raise ValueError(...)</code></strong>，<code>assert</code> 只用来写「我认为这里不可能发生」。详见 <a href="07-异常traceback和调试.html">07 章</a>第四节。</p>
+<h3 id="undefined-symbol-dll-load-failed-glibc_232-not-found">没有报错，但 <code>undefined symbol</code> / <code>DLL load failed</code> / <code>GLIBC_2.32 not found</code></h3>
+<p>⭐ <strong>这一整类不归本板块。</strong> 分界线很清楚：<strong>报错里出现文件路径是 <a href="08-环境、依赖和import.html">08 章</a>；报错里出现符号名 / 版本号 / <code>.so</code> / <code>.dll</code> 是</strong>
+<a href="../框架底下是C++/04-ABI与二进制兼容.html">框架底下是 C++ · 04 · ABI 与二进制兼容</a>。</p>
+<hr />
+<h2 id="_3">🔍 二、症状 → 大概率是哪一章</h2>
+<p>⭐ <strong>没有报错的那些，全在这张表里。</strong> 这是本页最该扫一遍的一节。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>你观察到的现象</th>
+<th>大概率是</th>
+<th>一行验证</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>改了 <code>b</code>，<code>a</code> 跟着变</td>
+<td><a href="01-名字、对象和绑定.html">01</a> 赋值只是贴标签</td>
+<td><code>print(a is b)</code></td>
+</tr>
+<tr>
+<td>函数调用完，传进去的东西被改了</td>
+<td><a href="01-名字、对象和绑定.html">01</a> 形参是同一个对象的又一个名字</td>
+<td>改成返回新对象</td>
+</tr>
+<tr>
+<td>⭐ 函数<strong>第二次</strong>调用结果就不对</td>
+<td><a href="01-名字、对象和绑定.html">01</a> 可变默认参数</td>
+<td><code>print(f.__defaults__)</code></td>
+</tr>
+<tr>
+<td>改了内层，拷贝出来那份也变了</td>
+<td><a href="01-名字、对象和绑定.html">01</a> 浅拷贝只复制外层</td>
+<td><code>print(new["k"] is old["k"])</code></td>
+</tr>
+<tr>
+<td>模型 / 缓存 / 计数器在多个实例间串了</td>
+<td><a href="01-名字、对象和绑定.html">01</a> 类属性被所有实例共享</td>
+<td><code>print(a.attr is b.attr)</code></td>
+</tr>
+<tr>
+<td>⭐ 判断时对时错，换个输入就不灵</td>
+<td><a href="01-名字、对象和绑定.html">01</a> 拿 <code>is</code> 当 <code>==</code> 用</td>
+<td>把 <code>is</code> 换成 <code>==</code></td>
+</tr>
+<tr>
+<td>⭐ 第二个统计量总是 0 / 空列表，<strong>不报错</strong></td>
+<td><a href="02-生成器与惰性求值.html">02</a> 生成器只能走一次</td>
+<td>第一次遍历前 <code>rows = list(rows)</code></td>
+</tr>
+<tr>
+<td>参数明明不合法，调用却没抛异常</td>
+<td><a href="02-生成器与惰性求值.html">02</a> 校验被推迟到第一次 <code>next</code></td>
+<td>拆两层：普通函数校验 + 内层生成器产数据</td>
+</tr>
+<tr>
+<td>流式接口出错，返回的是 200 不是 500</td>
+<td><a href="02-生成器与惰性求值.html">02</a> 状态码早发出去了</td>
+<td>把校验挪到返回响应对象<strong>之前</strong></td>
+</tr>
+<tr>
+<td>分组结果「键都对、内容全空」</td>
+<td><a href="02-生成器与惰性求值.html">02</a> <code>groupby</code> 的惰性游标</td>
+<td>别 <code>list(groupby(...))</code>，在循环体里当场消费</td>
+</tr>
+<tr>
+<td>用了生成器但内存没降</td>
+<td><a href="02-生成器与惰性求值.html">02</a> 最里层已经物化</td>
+<td>找 <code>readlines()</code> / <code>list()</code> / <code>sorted()</code></td>
+</tr>
+<tr>
+<td>日志里函数名全是 <code>wrapper</code></td>
+<td><a href="03-装饰器与上下文管理器.html">03</a> 忘了 <code>functools.wraps</code></td>
+<td><code>print(f.__name__)</code></td>
+</tr>
+<tr>
+<td>⭐ <code>@tool</code> 生成的 schema 全错 / FastAPI 校验形同虚设</td>
+<td><a href="03-装饰器与上下文管理器.html">03</a> 签名被吃成 <code>(*args, **kwargs)</code></td>
+<td><code>print(inspect.signature(f))</code></td>
+</tr>
+<tr>
+<td>💀 <strong>数据静默少一半，没有任何 traceback</strong></td>
+<td><a href="03-装饰器与上下文管理器.html">03</a> <code>__exit__</code> 返回了真值</td>
+<td>删掉 <code>return True</code>，改用 <code>contextlib.suppress</code></td>
+</tr>
+<tr>
+<td>出异常时连接没关 / 锁没放</td>
+<td><a href="03-装饰器与上下文管理器.html">03</a> <code>@contextmanager</code> 里没写 <code>try/finally</code></td>
+<td>看 <code>yield</code> 是不是裸的</td>
+</tr>
+<tr>
+<td>函数明明写了，框架说找不到</td>
+<td><a href="03-装饰器与上下文管理器.html">03</a> 模块没被 import，装饰器没跑</td>
+<td>检查注册模块有没有真的被 import</td>
+</tr>
+<tr>
+<td>开了 8 个线程，CPU 还是只占一个核</td>
+<td><a href="04-GIL：为什么多线程救不了你.html">04</a> 活在解释器里跑</td>
+<td>换 4 进程再测，快了就是 GIL</td>
+</tr>
+<tr>
+<td>同事说线程池管用，我这儿不管用</td>
+<td>⭐ <a href="04-GIL：为什么多线程救不了你.html">04</a> 他的活放 GIL，你的不放</td>
+<td>串行 / 4 线程各测一次，看倍数</td>
+</tr>
+<tr>
+<td>4 个进程比串行慢十几倍</td>
+<td><a href="04-GIL：为什么多线程救不了你.html">04</a> pickle 的账</td>
+<td><code>len(pickle.dumps(arg))</code></td>
+</tr>
+<tr>
+<td>顶层的模型加载被执行了 5 次</td>
+<td><a href="04-GIL：为什么多线程救不了你.html">04</a> spawn 会重新 import 主模块</td>
+<td>顶层打一行 <code>print(os.getpid())</code></td>
+</tr>
+<tr>
+<td>计数器偶尔少几条，重跑就好了</td>
+<td>⭐ <a href="04-GIL：为什么多线程救不了你.html">04</a> GIL 不等于线程安全</td>
+<td><code>sys.setswitchinterval(1e-6)</code> 放大概率</td>
+</tr>
+<tr>
+<td>「我改完快了 30%」但换台机器就没了</td>
+<td><a href="05-怎么量：计时、剖析、内存.html">05</a> 单次测量没有信息</td>
+<td>同一句连测 5 次，本底抖动就有 2.1 倍</td>
+</tr>
+<tr>
+<td>第二次测「快了 8 万倍」</td>
+<td><a href="05-怎么量：计时、剖析、内存.html">05</a> <code>lru_cache</code> 让你测的不是同一件事</td>
+<td>每轮换输入，或 <code>fn.cache_clear()</code></td>
+</tr>
+<tr>
+<td>⭐ 「种子固定了，结果还是不一样」</td>
+<td><a href="09-容器、哈希与顺序.html">09</a> <code>set</code> 的迭代顺序每次进程启动都变</td>
+<td>见下面第五节</td>
+</tr>
+<tr>
+<td><code>Counter</code> 出来只有两类而不是四类</td>
+<td><a href="09-容器、哈希与顺序.html">09</a> <code>1</code> / <code>1.0</code> / <code>True</code> 是同一个 key</td>
+<td><code>print({1:'a', True:'b'})</code></td>
+</tr>
+<tr>
+<td>本地跑得好好的，上 Linux 就 <code>FileNotFoundError</code></td>
+<td><a href="10-编码、路径和文件.html">10</a> Windows 文件名大小写不敏感</td>
+<td>文件名一律小写</td>
+</tr>
+<tr>
+<td>同一个脚本换个目录跑，读到的文件不一样</td>
+<td>⭐ <a href="10-编码、路径和文件.html">10</a> 相对路径相对的是<strong>工作目录</strong></td>
+<td><code>print(os.getcwd())</code> 对比 <code>__file__</code></td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_4">📋 三、几条没有例外的规矩</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>场合</th>
+<th>规矩</th>
+<th>不守会怎样</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>比较</td>
+<td>只有和 <code>None</code> / <code>True</code> / <code>False</code> 比才用 <code>is</code>，其余一律 <code>==</code></td>
+<td>⭐ 小整数缓存（−5～256）和字面量合并让 <code>is</code> <strong>时对时错</strong></td>
+</tr>
+<tr>
+<td>默认参数</td>
+<td>默认值只能是不可变对象；要空列表就写 <code>None</code> 再在函数体里造</td>
+<td>默认值在<strong>定义那一刻</strong>求值一次，被所有调用共用</td>
+</tr>
+<tr>
+<td>装饰器</td>
+<td>写包装函数一律加 <code>functools.wraps</code></td>
+<td>函数名、docstring、<strong>签名</strong>全被吃掉，schema 生成器和框架校验跟着废</td>
+</tr>
+<tr>
+<td>上下文管理器</td>
+<td><code>@contextmanager</code> 里 <code>yield</code> 必须包在 <code>try/finally</code> 里</td>
+<td>出异常时清理代码<strong>一次都不会跑</strong></td>
+</tr>
+<tr>
+<td>异常转抛</td>
+<td>默认写 <code>raise X from e</code></td>
+<td><code>from None</code> 会把根因<strong>整段删掉</strong>，只剩一句没用的业务话</td>
+</tr>
+<tr>
+<td><code>except</code> 范围</td>
+<td>⭐ <strong>白名单，不是黑名单</strong></td>
+<td><code>except Exception: retry</code> 会把「prompt 超长」这种确定性错误也重试三遍</td>
+</tr>
+<tr>
+<td>校验</td>
+<td>外部数据用 <code>raise</code>，<code>assert</code> 只写内部不变量</td>
+<td><code>-O</code> 下 <code>assert</code> 整条消失</td>
+</tr>
+<tr>
+<td>打开文本文件</td>
+<td>一律显式 <code>encoding="utf-8"</code>（<code>read_text</code> / <code>write_text</code> 也要）</td>
+<td>不写不是「最好写」，是「<strong>bug 还没被触发</strong>」</td>
+</tr>
+<tr>
+<td>路径</td>
+<td><code>pathlib</code>；要读「和脚本放一起」的文件用 <code>Path(__file__).resolve().parent</code></td>
+<td>💀 本项目栽过：硬编码 ROOT，<strong>读新的写旧的，两边都不报错</strong></td>
+</tr>
+<tr>
+<td>进程池</td>
+<td>建池那一行必须在 <code>if __name__ == "__main__"</code> 里面</td>
+<td>子进程重新 import 主模块 → 无限递归</td>
+</tr>
+</tbody>
+</table></div>
+<p>⚠️ <strong><code>裸 except:</code> 和 <code>except Exception</code> 差在哪</strong>：前者连 <code>KeyboardInterrupt</code>（Ctrl-C）和 <code>SystemExit</code> 一起吞掉 —— 那两个<strong>不是</strong> <code>Exception</code> 的子类。想让程序还能被停下来，就别写裸的。</p>
+<hr />
+<h2 id="_5">⏱️ 四、量一段代码：工具和参数</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>想知道</th>
+<th>用哪个</th>
+<th>⚠️</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>一段代码跑了多久</td>
+<td>⭐ <code>time.perf_counter()</code>，无一例外</td>
+<td>单调，不会被 NTP / 夏令时 / 虚拟机挂起改掉</td>
+</tr>
+<tr>
+<td>这段时间 CPU 真为我干了多少活</td>
+<td><code>time.process_time()</code></td>
+<td>⭐ <strong>两者的差值就是「花在等待上的时间」</strong>，它本身就是诊断信息</td>
+</tr>
+<tr>
+<td>现在几点、日志时间戳</td>
+<td><code>time.time()</code></td>
+<td><strong>只记录时刻，不用来算间隔</strong></td>
+</tr>
+<tr>
+<td>比较两种写法</td>
+<td><code>timeit.repeat(...)</code> 取<strong>最小值</strong></td>
+<td>噪声只往上加不往下减；命令行版直接印 <code>best of 5</code></td>
+</tr>
+<tr>
+<td>时间花在哪个函数</td>
+<td><code>cProfile</code> + <code>pstats</code></td>
+<td>见下面三条</td>
+</tr>
+<tr>
+<td>内存峰值</td>
+<td><code>tracemalloc</code>（要的是峰值不是结束时）</td>
+<td>杀死进程的是峰值</td>
+</tr>
+</tbody>
+</table></div>
+<p>⭐ <strong><code>timeit</code> 三个参数</strong>：<code>number</code> 是「一轮跑几次」（让<strong>一轮</strong>总时长落在 0.1～1 秒），<code>repeat</code> 是「跑几轮」（至少 5），<code>setup</code> 里的东西不计时。
+⚠️ <strong><code>repeat(..., repeat=15, number=20)</code> 返回 15 个数，每个是 20 次的总和</strong> —— 忘了除以 <code>number</code>，你所有数字会整整大 20 倍而且看起来毫无破绽。</p>
+<p>📋 <strong>剖析报告怎么读</strong>：</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>列</th>
+<th>含义</th>
+<th>什么时候排它</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tottime</code></td>
+<td><strong>这个函数自己</strong>用掉的，不含子调用</td>
+<td>找真正的热点，决定改哪一行</td>
+</tr>
+<tr>
+<td><code>cumtime</code></td>
+<td>从进到出总共过去多久，含子调用</td>
+<td>找该整块砍掉的环节</td>
+</tr>
+<tr>
+<td>⭐ <code>ncalls</code></td>
+<td>被调了几次</td>
+<td><strong>常常比 <code>tottime</code> 更有用</strong> —— 该砍的是那 20 万次调用，不是那个函数</td>
+</tr>
+</tbody>
+</table></div>
+<p>💀 <strong>剖析器自己要钱，而且收费不均</strong>：实跑里一百万次函数调用的那段被放大 <strong>5.9 倍</strong>，同样一百万次的纯循环 <strong>1.0 倍</strong>（几乎没变）。裸跑 0.049 : 0.031 到了报告里变成 0.290 : 0.029。⭐ <strong>排序没变，比例被夸张了 6 倍</strong> —— 所以<strong>用剖析器定位、用 <code>timeit</code> 验收</strong>，是两件事两套工具。</p>
+<p>⚠️ <strong>三样会让你测出假数字的东西</strong>（<a href="05-怎么量：计时、剖析、内存.html">05 章</a>实跑）：① 一次性的钱混进来了（<code>import numpy</code> 一次就要 0.174 秒，而被测的 <code>a.sum()</code> 只有 2 毫秒）；② 缓存让你第二次量的不是同一件事（<code>lru_cache</code> 下「快了 8 万倍」）；③ <strong><code>timeit</code> 默认把 GC 关了</strong>（同一段代码 2.21 ms → 2.69 ms，差 22%），而你的程序里 GC 是开着的。</p>
+<hr />
+<h2 id="_6">🚦 五、并发怎么选，以及可复现的两件事</h2>
+<p>⭐ <strong>判据只有一句：这段活里有没有在造 Python 对象。</strong> 有，就抢 GIL，线程没用；没有，C 扩展会把锁放开，线程真能并行。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>你的活</th>
+<th>选什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>在等网络 / 磁盘，且库是 async 的</td>
+<td>⭐ async</td>
+</tr>
+<tr>
+<td>在等，但库是同步的（<code>requests</code>、老驱动）</td>
+<td>⭐ 线程池（别为了 async 硬换库）</td>
+</tr>
+<tr>
+<td>在算，算的是 numpy / torch / 压缩 / 哈希</td>
+<td>⭐ <strong>线程池</strong> —— 底层放锁，还不用付 pickle 的钱</td>
+</tr>
+<tr>
+<td>在算，纯 Python（解析、循环、正则）</td>
+<td>⭐ 进程池</td>
+</tr>
+<tr>
+<td>在算，纯 Python，但数据非常大</td>
+<td>⚠️ 先算 pickle 的账</td>
+</tr>
+</tbody>
+</table></div>
+<p>实测倍数（同一函数，串行一次、4 线程一次，取最小值）：</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>串行</th>
+<th>4 线程</th>
+<th>倍数</th>
+<th>放不放锁</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>np.sort</code> 排 800 万 float</td>
+<td>0.80 s</td>
+<td>0.25 s</td>
+<td><strong>3.2×</strong></td>
+<td>✅ 放</td>
+</tr>
+<tr>
+<td><code>zlib.compress</code> 压 10 MB</td>
+<td>0.240 s</td>
+<td>0.086 s</td>
+<td><strong>2.78×</strong></td>
+<td>✅ 放</td>
+</tr>
+<tr>
+<td><code>hashlib.sha256</code> 摘要 50 MB</td>
+<td>0.174 s</td>
+<td>0.110 s</td>
+<td><strong>1.58×</strong></td>
+<td>✅ 放（数据小时收益被调用开销吃掉）</td>
+</tr>
+<tr>
+<td><code>json.loads</code> 解析 13.7 MB</td>
+<td>1.51 s</td>
+<td>1.45 s</td>
+<td><strong>1.04×</strong></td>
+<td>❌ 不放（全程在造 dict / list / str）</td>
+</tr>
+<tr>
+<td><code>re.findall</code> 在 320 万字符上</td>
+<td>0.223 s</td>
+<td>0.217 s</td>
+<td><strong>1.03×</strong></td>
+<td>❌ 不放</td>
+</tr>
+</tbody>
+</table></div>
+<p>⭐ <strong>不确定就量</strong>：同一个函数串行一次、四线程一次，倍数接近核数就是放锁的，接近 1 就是不放的。</p>
+<p>💀 <strong>「种子固定了、结果还是不一样」的那个洞</strong>：<code>set</code> 的迭代顺序取决于<strong>哈希种子</strong>，而<strong>哈希种子是解释器启动时读一次就定死的</strong>。所以在 <code>set_seed()</code> 里写 <code>os.environ["PYTHONHASHSEED"] = "0"</code> 一点用都没有 —— 实跑里 <code>hash('a')</code> 照样三次三个值，<strong>而且会让你以为已经修好了</strong>。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>正确设法</th>
+<th>写法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>⭐ 命令行</td>
+<td><code>PYTHONHASHSEED=0 python train.py</code>（PowerShell 先 <code>$env:PYTHONHASHSEED=0</code>）</td>
+</tr>
+<tr>
+<td>容器 / CI</td>
+<td><code>ENV PYTHONHASHSEED=0</code></td>
+</tr>
+<tr>
+<td>脚本自己重启</td>
+<td>检测到没设就带着 env <code>os.execve</code> 重起自己</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="key">🗃️ 六、容器：复杂度、顺序、能不能当 key</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>操作</th>
+<th><code>list</code></th>
+<th><code>tuple</code></th>
+<th><code>dict</code></th>
+<th><code>set</code></th>
+<th><code>deque</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x in c</code></td>
+<td><strong>O(n)</strong></td>
+<td><strong>O(n)</strong></td>
+<td>O(1)＊</td>
+<td>O(1)＊</td>
+<td><strong>O(n)</strong></td>
+</tr>
+<tr>
+<td>按下标</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>—</td>
+<td>—</td>
+<td><strong>O(n)</strong>（两端 O(1)）</td>
+</tr>
+<tr>
+<td>尾部追加</td>
+<td>O(1) 均摊</td>
+<td>不可变</td>
+<td>—</td>
+<td>O(1)＊</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td><strong>头部</strong>插入 / 弹出</td>
+<td><strong>O(n)</strong></td>
+<td>不可变</td>
+<td>—</td>
+<td>—</td>
+<td>⭐ <strong>O(1)</strong></td>
+</tr>
+<tr>
+<td>按值 / 按键删除</td>
+<td><strong>O(n)</strong></td>
+<td>不可变</td>
+<td>O(1)＊</td>
+<td>O(1)＊</td>
+<td><strong>O(n)</strong></td>
+</tr>
+<tr>
+<td>能当 dict 的 key</td>
+<td>❌</td>
+<td>✅（内部全不可变时）</td>
+<td>❌</td>
+<td>❌（用 <code>frozenset</code>）</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>迭代顺序</td>
+<td>位置序</td>
+<td>位置序</td>
+<td>⭐ 插入序（3.7+）</td>
+<td>⚠️ <strong>无保证</strong></td>
+<td>位置序</td>
+</tr>
+</tbody>
+</table></div>
+<p>＊ 平均情况，大量碰撞时退化成 O(n)。</p>
+<p>⭐ <strong>最高频的一次改写</strong>：把被查的那一侧先转成 <code>set</code>。实跑 2 万 × 2 万规模，<code>x in list</code> <strong>1.6106 秒</strong> → <code>x in set</code> <strong>0.0021 秒</strong>，快 774 倍，结果一模一样。
+⚠️ <strong>但 <code>set(other)</code> 本身是 O(n)</strong>：只查一次时白转，而且必须把它<strong>提到循环外面</strong> —— 写成 <code>if x in set(other)</code> 等于每轮重建一次集合，比原来还慢。</p>
+<p>⭐ <strong>能当 key 的两条契约</strong>：① 能算 <code>hash()</code>；② ⚠️ <strong>在它当 key 期间 hash 值不许变</strong>（字典先按哈希找槽再用 <code>==</code> 确认，哈希变了等于换了个槽去找，原来那格永远够不着）。写 <code>__hash__</code> 时<strong>和 <code>__eq__</code> 用同一批字段</strong>。</p>
+<p>💀 <strong><code>{1: 'int', 1.0: 'float', True: 'bool'}</code> 实跑得到 <code>{1: 'bool'}</code></strong> —— 三个 key 塌成一个，而且不对称：<strong>key 保留最先插入的（<code>int</code> 的 <code>1</code>），value 用最后写入的</strong>。标签列里混了 <code>True/False</code> 和 <code>1/0</code> 时，<code>Counter</code> 出来只有两类而不是四类，<strong>没有任何报错</strong>。</p>
+<hr />
+<h2 id="_7">📦 七、「我这能跑，你那不能跑」：五步定位</h2>
+<p>⭐ <strong>照这个顺序问，五步之内能定位到具体是哪一类</strong>（<a href="08-环境、依赖和import.html">08 章</a>第八节）：</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>步</th>
+<th>命令</th>
+<th>排除掉什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>①</td>
+<td><code>python -c "import sys; print(sys.executable)"</code></td>
+<td>⭐ <strong>两边是不是同一个解释器</strong>。八成的问题在这一步就结束</td>
+</tr>
+<tr>
+<td>②</td>
+<td><code>python -c "import sys; print(sys.prefix != sys.base_prefix)"</code></td>
+<td>有没有真的在 venv 里（<strong>激活了 ≠ 你的工具在用它</strong>）</td>
+</tr>
+<tr>
+<td>③</td>
+<td><code>python -c "import 那个包 as m; print(m.__file__)"</code></td>
+<td>是没装，还是导到了另一个同名的东西</td>
+</tr>
+<tr>
+<td>④</td>
+<td><code>python -m pip list</code></td>
+<td>版本对不对。⚠️ <strong>一定带 <code>-m</code></strong></td>
+</tr>
+<tr>
+<td>⑤</td>
+<td><code>python -c "import sys; print(*sys.path, sep=chr(10))"</code></td>
+<td>路径顺序、有没有莫名其妙的 <code>PYTHONPATH</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>⚠️ <strong><code>sys.path[0]</code> 排在标准库前面</strong> —— 你自己写的 <code>random.py</code> / <code>json.py</code> 会顶掉标准库。而 <code>[0]</code> 是<strong>入口决定</strong>的：<code>python x.py</code> 是 x.py 所在目录，<code>python -m pkg</code> 是当前工作目录。</p>
+<p>💡 <strong>两个附加动作</strong>：怀疑缓存就删 <code>__pycache__</code>（它认的是 <strong>mtime 和字节数</strong>，不是内容）；<code>import</code> 慢就 <code>python -X importtime -c "import 那个包"</code>。</p>
+<hr />
+<h2 id="_8">🧠 八、让解释器多说一点</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>开关</th>
+<th>干什么</th>
+<th>什么时候用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>⭐ <code>-X dev</code></td>
+<td>把平时静音的 <code>ResourceWarning</code> 等放出来</td>
+<td>「文件句柄没关」会一路积累到 <code>Too many open files</code>，而<strong>那个报错的位置和真正的泄漏点完全无关</strong></td>
+</tr>
+<tr>
+<td><code>-W error</code></td>
+<td>把警告变成异常</td>
+<td>想拿到 <code>DeprecationWarning</code> 出事的<strong>那一行</strong>，而不是一行字</td>
+</tr>
+<tr>
+<td><code>-X importtime</code></td>
+<td>按毫秒列出每个子模块的导入耗时</td>
+<td>启动慢</td>
+</tr>
+<tr>
+<td><code>-O</code></td>
+<td>⚠️ <strong>删掉所有 <code>assert</code></strong></td>
+<td>知道它存在就行，别依赖 assert 做校验</td>
+</tr>
+<tr>
+<td><code>breakpoint()</code></td>
+<td>调 <code>sys.breakpointhook()</code></td>
+<td>⭐ <strong>可以换掉那个 hook</strong>，做成「不打断执行的观察点」</td>
+</tr>
+</tbody>
+</table></div>
+<p>📋 <strong>真进了 pdb，六个命令够用</strong>：<code>l</code>（看源码，先搞清自己在哪）· <code>p</code> / <code>pp</code>（打印）· <code>n</code>（下一行，不进函数）· <code>s</code>（进函数）· <code>c</code>（继续）· <code>w</code>（打印调用栈）。
+⭐ <strong>最常用的组合是 <code>w</code> → <code>u</code> → <code>p 变量</code></strong>：先看栈，用 <code>u</code> 跳到你自己的那一层，再看变量。</p>
+<hr />
+<h2 id="_9">🔖 九、类型标注：词汇表和该标哪</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>写法</th>
+<th>意思</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>list[str]</code> <code>dict[str, int]</code></td>
+<td>⭐ 3.9+ 直接用内置名，不用 <code>typing.List</code></td>
+</tr>
+<tr>
+<td><code>str</code> 竖线 <code>None</code></td>
+<td>要么 str 要么 None，等价于老写法 <code>Optional[str]</code></td>
+</tr>
+<tr>
+<td><code>Literal["fast", "quality"]</code></td>
+<td>⭐ <strong>只能是这几个字面值</strong> —— 在 Agent 工具里直接变成 JSON schema 的 <code>enum</code>，模型就不会瞎编第三个值</td>
+</tr>
+<tr>
+<td><code>Callable[[str], int]</code></td>
+<td>收一个 str 返回 int 的函数</td>
+</tr>
+<tr>
+<td><code>Any</code></td>
+<td>⚠️ 它<strong>关掉</strong>这一处的检查，不是「什么都行」的安全写法</td>
+</tr>
+</tbody>
+</table></div>
+<p>⭐ <strong>该不该标，判据只有一条：这个函数的类型信息会不会被「你以外的人或程序」读？</strong>
+一定标：包的对外函数、<strong>Agent 工具函数</strong>（标注直接变成 schema）、Web 请求/响应模型、数据类。
+别标：一次性实验脚本、notebook 单元格、局部变量。</p>
+<p>⚠️ <strong>标注 ≠ 校验</strong>。mypy 在<strong>代码没运行时</strong>读源码，挡的是「我把 <code>None</code> 传给了要 <code>str</code> 的函数」；pydantic 在<strong>每次构造对象时</strong>跑，挡的是「用户传了 <code>max_tokens: "很多"</code>」。⭐ <strong>最坏的形态是过时的标注</strong> —— 它比没有标注更糟，因为读的人会信它。标了就要让 CI 跑检查。</p>
+<hr />
+<h2 id="_10">🔗 这一页连到哪里</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>相关的地方</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="00-怎么用这份教程.html">00 · 怎么用这份教程</a></td>
+<td>三条读法路线和四条分工线（什么归这里、什么不归）在那里定义</td>
+</tr>
+<tr>
+<td><a href="04-GIL：为什么多线程救不了你.html">04 · GIL：为什么多线程救不了你</a></td>
+<td>第五节那张「放不放锁」表的完整版，含每一行怎么自己量</td>
+</tr>
+<tr>
+<td><a href="08-环境、依赖和import.html">08 · 环境、依赖和 import</a></td>
+<td>第七节那五步的展开，以及 venv 到底只做了哪一件事</td>
+</tr>
+<tr>
+<td><a href="../NumPy与向量化思维/附录A-速查.html">NumPy 与向量化思维 · 附录A 速查</a></td>
+<td>⭐ <strong>同样是报错反查页</strong>，那边覆盖广播、视图/拷贝、dtype 溢出 —— 数组相关的报错去那边查</td>
+</tr>
+<tr>
+<td><a href="../框架底下是C++/04-ABI与二进制兼容.html">框架底下是 C++ · 04 · ABI 与二进制兼容</a></td>
+<td>⭐ 「装不上」的另一半：报错里出现符号名、<code>.so</code> / <code>.dll</code>、glibc 版本号时，本页第一节的最后一条把你送去那里</td>
+</tr>
+<tr>
+<td><a href="../代码题拆解/附录A-速查.html">代码题拆解 · 附录A 速查</a></td>
+<td>同一批容器（<code>deque</code> / <code>Counter</code> / <code>heapq</code>）在刷题场景里的固定用法</td>
+</tr>
+<tr>
+<td><a href="../AI全栈/15b-怎么测不确定的系统.html">AI 全栈 · 15b · 怎么测不确定的系统</a></td>
+<td>本页第三节说「测试里的断言用 <code>assert</code> 合适」，那一章讲这类测试整体怎么组织</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<p>🗓️ <strong>这一页会过期的部分</strong>：Python 3.15 起 <code>open()</code> 默认编码会改成 UTF-8（PEP 686）；GIL 的去留还在变。
+⭐ <strong>不会过期的部分</strong>：第二节那张症状表、第三节那十条规矩 —— 它们由对象模型和执行顺序决定，比任何一个小版本活得久。</p>
+<p><strong>下一节</strong> 👉 <a href="index.html">回到板块索引</a></p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="10-编码、路径和文件.html"><div class="dir">← 上一节</div>📄 10 · 编码、路径和文件</a><a class="next" href="index.html"><div class="dir">完成 →</div>🏠 回首页看进度</a></nav>
+</main>
+<script>(function(){
+  var KEY="py-progress", FILE="\u9644\u5f55A-\u901f\u67e5.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+</body></html>

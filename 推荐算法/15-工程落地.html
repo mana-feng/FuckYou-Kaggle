@@ -178,6 +178,13 @@ figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 aut
 figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -239,7 +246,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <hr />
 <h2 id="_3">⚡ 组件二：在线服务（延迟是生命线）</h2>
 <h3 id="_4">延迟预算表（真实系统的样子）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>环节</th>
@@ -289,7 +296,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <td>预算 200ms，留 30ms buffer</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_5">🛡️ 降级策略（必须设计，不是可选项）</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">recommend</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">deadline_ms</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;带超时降级的推荐服务骨架&quot;&quot;&quot;</span>
@@ -320,7 +327,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <hr />
 <h2 id="_6">🧠 组件三：模型服务</h2>
 <h3 id="_7">推理优化清单</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>手段</th>
@@ -360,7 +367,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <td>热门用户/物品的结果缓存几秒</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="embedding">Embedding 表太大怎么办</h3>
 <div class="codehilite"><pre><span></span><code>   问题：item_id Embedding = 1 亿 × 64 维 × 4 字节 = 25.6 GB
          单机装不下，GPU 显存更装不下
@@ -446,7 +453,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <p><strong>这个指标能在业务指标（CTR）掉下来之前几小时就报警</strong>，是最有价值的早期信号。</p>
 <hr />
 <h2 id="_14">🧯 事故手册（真实世界会发生的事）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>事故</th>
@@ -491,7 +498,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <td>曝光分布监控 + 自动熔断</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>🔑 <strong>黄金规则</strong>：<strong>每一个上线都必须能在 5 分钟内回滚。</strong>
 模型、配置、代码、实验开关——全都要有一键回滚。</p>
@@ -523,7 +530,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <p><strong>每一步都要能停下来回滚。</strong> 跳过 ② 和 ③ 是新人最常犯的错误。</p>
 <hr />
 <h2 id="2026">🛠️ 技术选型速查（2026）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>环节</th>
@@ -576,7 +583,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <td>Prometheus + Grafana</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💡 <strong>小团队的最小可用方案</strong>：
 PostgreSQL(+pgvector) + Redis + Python 服务 + 一个 cron 训练脚本。
@@ -584,7 +591,7 @@ PostgreSQL(+pgvector) + Redis + Python 服务 + 一个 cron 训练脚本。
 </blockquote>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../AI基础设施/20-推理服务化.html">AI 基础设施 20</a></td><td>「批量推理 5–20×」的完整版：动态 batching、并发模型、服务化架构怎么把 GPU 喂饱</td></tr><tr><td><a href="../模型上线之后/03-灰度影子与回滚.html">上线之后 03</a></td><td>本节 SOP 里的影子流量 / 1% 灰度 / 5 分钟回滚，在这里有可直接照做的操作细节</td></tr><tr><td><a href="../模型上线之后/05-该监控什么.html">上线之后 05</a></td><td>三层监控的通用版：为什么「预估分数分布」比 CTR 早几小时报警，阈值怎么定</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../AI基础设施/20-推理服务化.html">AI 基础设施 20</a></td><td>「批量推理 5–20×」的完整版：动态 batching、并发模型、服务化架构怎么把 GPU 喂饱</td></tr><tr><td><a href="../模型上线之后/03-灰度影子与回滚.html">上线之后 03</a></td><td>本节 SOP 里的影子流量 / 1% 灰度 / 5 分钟回滚，在这里有可直接照做的操作细节</td></tr><tr><td><a href="../模型上线之后/05-该监控什么.html">上线之后 05</a></td><td>三层监控的通用版：为什么「预估分数分布」比 CTR 早几小时报警，阈值怎么定</td></tr></tbody></table></div>
 <hr />
 <h2 id="_15">✅ 检查点</h2>
 <ol>

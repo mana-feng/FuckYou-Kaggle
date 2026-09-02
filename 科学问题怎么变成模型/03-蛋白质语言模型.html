@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 · 蛋白质语言模型：它到底学到了什么 · 科学问题怎么变成模型</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">03 · 蛋白质语言模型</span>
+  <span class="prevnext"><a href="02-序列不是文本.html">←</a>
+  <a href="04-从序列到结构.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">🔁 一、目标可以照搬，别的都变了</a></li>
+<li><a href="#_3">🧬 二、共进化：这一章的题眼</a></li>
+<li><a href="#_4">⚠️ 三、但互信息会撒谎：间接相关</a></li>
+<li><a href="#_5">🧊 四、拿它当特征用</a></li>
+<li><a href="#_6">🚧 五、它不能做什么</a></li>
+<li><a href="#_7">🔗 这一章连到哪里</a></li>
+<li><a href="#_8">✅ 检查点</a></li>
+<li><a href="#_9">🛑 可以停在这里</a></li>
+</ul>
+</div>
+</details>
+<h1 id="03">03 · 蛋白质语言模型：它到底学到了什么</h1>
+<p>⏱ <strong>24 分钟</strong> ｜ ⭐ <strong>掩码语言建模被迫学会的是共进化，而共进化就是结构约束</strong></p>
+<hr />
+<h2 id="_1">🎯 一句话</h2>
+<p><strong>把序列喂给一个 Transformer 做完形填空，它学到的不是「语法」，是哪些位置必须一起变。</strong>
+而「必须一起变」在三维空间里就意味着<strong>这两个残基挨着</strong> ——
+⭐ 这一条就是从序列一路通到结构的那座桥。</p>
+<hr />
+<h2 id="_2">🔁 一、目标可以照搬，别的都变了</h2>
+<p>掩码语言建模的目标函数<strong>原样搬过来就能用</strong>：遮住一部分，让模型猜。
+但 <a href="02-序列不是文本.html">02 章</a>已经说清楚，输入这一侧和自然语言完全不同：</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>自然语言</th>
+<th>蛋白序列</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>词表</td>
+<td>几万到几十万</td>
+<td>⭐ <strong>20 出头</strong></td>
+</tr>
+<tr>
+<td>词边界</td>
+<td>有（空格、BPE）</td>
+<td>⚠️ <strong>没有</strong>，切在哪都是人为的</td>
+</tr>
+<tr>
+<td>长度</td>
+<td>几百 token</td>
+<td>几百到几千个残基</td>
+</tr>
+<tr>
+<td>「语法」从哪来</td>
+<td>人类用法</td>
+<td>⭐ <strong>物理和演化的约束</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>⭐ 最后一行才是重点。语言里「猫追老鼠」比「老鼠追猫」常见是<strong>习惯</strong>；
+而序列里某两个位置必须配合，是因为<strong>配不上的那些个体活不下来</strong> ——
+它们从来没进过数据库。<strong>数据集本身就是一台筛选器。</strong></p>
+<hr />
+<h2 id="_3">🧬 二、共进化：这一章的题眼</h2>
+<p>同一个蛋白在几千个物种里都有自己的版本。把它们对齐摞成一张表（这叫 MSA，多序列比对），
+<strong>列与列之间的相关性就是结构信息</strong>：</p>
+<p>如果位置 i 的残基变大了一号，而位置 j 必须跟着变小一号才不至于把结构撑坏，
+那么在这几千条序列里，<strong>i 和 j 这两列就会呈现出很强的统计相关</strong>。</p>
+<p>⭐ <strong>完形填空被迫学会这件事</strong> —— 想把遮住的位置猜准，模型没有别的办法。</p>
+<p>下面这段把它跑出来：造 4000 条序列，只让<strong>三对</strong>位置真正耦合，
+然后用<strong>互信息</strong>把它们找出来。</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">L</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">4000</span>        <span class="c1"># 40 个位置，20 种氨基酸，4000 条序列</span>
+<span class="n">TRUE_PAIRS</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">27</span><span class="p">),</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">34</span><span class="p">),</span> <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">22</span><span class="p">)]</span>   <span class="c1"># ⭐ 只有这三对在三维空间里挨着</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">msa</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">L</span><span class="p">))</span>         <span class="c1"># 先随机</span>
+
+<span class="c1"># 让配对的两个位置强相关：j 的取值跟着 i 走（否则&quot;结构塌了&quot;，这条序列不会存在）</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">TRUE_PAIRS</span><span class="p">:</span>
+    <span class="n">keep</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.9</span>                <span class="c1"># 90% 的序列遵守约束</span>
+    <span class="n">msa</span><span class="p">[</span><span class="n">keep</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">Q</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">msa</span><span class="p">[</span><span class="n">keep</span><span class="p">,</span> <span class="n">i</span><span class="p">])</span>     <span class="c1"># 一个简单的&quot;互补&quot;规则</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">mutual_info</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;两列之间的互信息，单位 bit。&quot;&quot;&quot;</span>
+    <span class="n">joint</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Q</span><span class="p">,</span> <span class="n">Q</span><span class="p">))</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">joint</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">joint</span> <span class="o">/=</span> <span class="n">joint</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">pa</span><span class="p">,</span> <span class="n">pb</span> <span class="o">=</span> <span class="n">joint</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">joint</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">nz</span> <span class="o">=</span> <span class="n">joint</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">((</span><span class="n">joint</span><span class="p">[</span><span class="n">nz</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">joint</span><span class="p">[</span><span class="n">nz</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">pa</span> <span class="o">@</span> <span class="n">pb</span><span class="p">)[</span><span class="n">nz</span><span class="p">]))</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+
+
+<span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">L</span><span class="p">):</span>
+        <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">mutual_info</span><span class="p">(</span><span class="n">msa</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">msa</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]),</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span>
+<span class="n">scores</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;互信息最高的 6 对位置：&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">mi</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">[:</span><span class="mi">6</span><span class="p">]:</span>
+    <span class="n">tag</span> <span class="o">=</span> <span class="s2">&quot;  &lt;== 真实接触对&quot;</span> <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="ow">in</span> <span class="n">TRUE_PAIRS</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  (</span><span class="si">%2d</span><span class="s2">,</span><span class="si">%2d</span><span class="s2">)  MI = </span><span class="si">%.3f</span><span class="s2"> bit</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">mi</span><span class="p">,</span> <span class="n">tag</span><span class="p">))</span>
+
+<span class="n">bg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">TRUE_PAIRS</span><span class="p">):]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">背景（其余 </span><span class="si">%d</span><span class="s2"> 对）平均 MI = </span><span class="si">%.3f</span><span class="s2"> bit&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">TRUE_PAIRS</span><span class="p">),</span> <span class="n">bg</span><span class="p">))</span>
+</code></pre></div>
+
+<p>真实输出：</p>
+<div class="codehilite"><pre><span></span><code>互信息最高的 6 对位置：
+  (11,34)  MI = 3.566 bit  &lt;== 真实接触对
+  ( 3,27)  MI = 3.531 bit  &lt;== 真实接触对
+  (18,22)  MI = 3.494 bit  &lt;== 真实接触对
+  ( 4,18)  MI = 0.085 bit
+  (22,28)  MI = 0.081 bit
+  (13,15)  MI = 0.080 bit
+
+背景（其余 777 对）平均 MI = 0.066 bit
+</code></pre></div>
+
+<p>⭐ <strong>三对真实接触整整齐齐排在 1、2、3</strong>，MI 约 <strong>3.5 bit</strong>，
+而其余 777 对的背景是 <strong>0.066 bit</strong> —— <strong>五十倍以上的分离</strong>。
+<strong>结构信息真的躺在序列统计里</strong>，不需要任何标签就能捞出来。</p>
+<hr />
+<h2 id="_4">⚠️ 三、但互信息会撒谎：间接相关</h2>
+<p>⭐⭐ <strong>这是这一章最值得记住的一个坑。</strong> 假设 5 和 15 接触、15 和 25 接触，
+<strong>而 5 和 25 离得很远</strong>。互信息会怎么说？实测：</p>
+<div class="codehilite"><pre><span></span><code>互信息最高的 5 对：
+  (15,25)  MI = 3.579 bit  &lt;== 真实接触
+  ( 5,15)  MI = 3.528 bit  &lt;== 真实接触
+  ( 5,25)  MI = 2.973 bit  &lt;== ⚠️ 间接相关，并不接触
+  ( 4,18)  MI = 0.085 bit
+  ( 5, 7)  MI = 0.080 bit
+</code></pre></div>
+
+<p>💀 <strong>(5,25) 拿到 2.973 bit、排名第三</strong>，而它<strong>根本不接触</strong> ——
+相关性顺着 5→15→25 传递过去了，背景才 0.085，它高出四十倍，<strong>看起来和真接触一模一样</strong>。</p>
+<figure class="dia"><svg viewBox="0 0 760 306" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="五对位置的互信息条形图：两个真接触约 3.5 bit，一个并不接触的假接触 2.973 bit 几乎一样高，两个背景对只有 0.08"><text class="dia-t" x="20" y="34" font-size="13" fill="var(--fg)" font-weight="700">5&#8211;15 接触、15&#8211;25 接触，而 5 和 25 离得很远</text><text class="dia-t" x="140" y="88" font-size="12.5" text-anchor="end" fill="var(--fg)" font-weight="500">(15,25)</text><rect x="150" y="66" width="497.1" height="34" rx="4" fill="var(--done)" opacity="0.95"/><text class="dia-t" x="655.1" y="88" font-size="12.5" fill="var(--done)" font-weight="700">3.579</text><text class="dia-t" x="713.1" y="88" font-size="11.5" fill="var(--done)">真接触</text><text class="dia-t" x="140" y="134" font-size="12.5" text-anchor="end" fill="var(--fg)" font-weight="500">(5,15)</text><rect x="150" y="112" width="490.0" height="34" rx="4" fill="var(--done)" opacity="0.95"/><text class="dia-t" x="648.0" y="134" font-size="12.5" fill="var(--done)" font-weight="700">3.528</text><text class="dia-t" x="706.0" y="134" font-size="11.5" fill="var(--done)">真接触</text><text class="dia-t" x="140" y="180" font-size="12.5" text-anchor="end" fill="var(--fg)" font-weight="700">(5,25)</text><rect x="150" y="158" width="412.9" height="34" rx="4" fill="var(--danger,#e5534b)" opacity="0.95"/><text class="dia-t" x="570.9" y="180" font-size="12.5" fill="var(--danger,#e5534b)" font-weight="700">2.973</text><text class="dia-t" x="628.9" y="180" font-size="11.5" fill="var(--danger,#e5534b)">⚠️ 并不接触</text><text class="dia-t" x="140" y="226" font-size="12.5" text-anchor="end" fill="var(--fg)" font-weight="500">(4,18)</text><rect x="150" y="204" width="11.8" height="34" rx="4" fill="var(--muted)" opacity="0.55"/><text class="dia-t" x="169.8" y="226" font-size="12.5" fill="var(--muted)" font-weight="700">0.085</text><text class="dia-t" x="227.8" y="226" font-size="11.5" fill="var(--muted)">背景</text><text class="dia-t" x="140" y="272" font-size="12.5" text-anchor="end" fill="var(--fg)" font-weight="500">(5,7)</text><rect x="150" y="250" width="11.1" height="34" rx="4" fill="var(--muted)" opacity="0.55"/><text class="dia-t" x="169.1" y="272" font-size="12.5" fill="var(--muted)" font-weight="700">0.080</text><text class="dia-t" x="227.1" y="272" font-size="11.5" fill="var(--muted)">背景</text><text class="dia-t" x="20" y="284" font-size="12.5" fill="var(--danger,#e5534b)" font-weight="700">假接触是背景的 35 倍，只比真接触低 16%</text><text class="dia-t" x="430" y="284" font-size="12" fill="var(--muted)">相关性顺着 5 → 15 → 25 传过去了</text></svg><figcaption>只比<b>第三根和上面两根的长度</b>：红色那对<b>根本不接触</b>，却几乎和真接触一样高，而背景只有 0.08。⭐ 这就是「直接耦合分析」被发明的原因 ——要问的不是「相关吗」，是<b>「扣掉其他位置的中介之后还直接相关吗」</b>。</figcaption></figure>
+
+<p>⭐ <strong>这就是「直接耦合分析」（DCA）这一整类方法被发明出来的原因</strong>：
+它们要回答的不是「i 和 j 相关吗」，而是「<strong>扣掉所有其他位置的中介之后，i 和 j 还直接相关吗</strong>」。</p>
+<p>⭐⭐ <strong>而这也正是深度模型的优势所在</strong>：注意力机制在同一层里让所有位置互相看，
+天然是在<strong>联合建模</strong>而不是逐对统计，<strong>间接相关会被其他位置解释掉</strong>。
+⚠️ 有工作观察到某些注意力头的高分位置和真实残基接触高度重合 ——
+机制是清楚的，<strong>但具体重合到什么程度依模型和层而异，这里不给数字</strong>。</p>
+<hr />
+<h2 id="_5">🧊 四、拿它当特征用</h2>
+<p>对绝大多数人来说，蛋白语言模型的用法<strong>不是自己训一个</strong>，而是：</p>
+<p><strong>拿一个训好的主干 → 冻结 → 取出 embedding → 上面接一个小模型。</strong></p>
+<p>⭐ 这是小数据场景的默认做法，理由和实测在 <a href="06-小数据这一关.html">06 章</a>：
+20 条标签时，冻结表示把 R² 从 <strong>0.374</strong> 抬到 <strong>0.696</strong>，而那个表示<strong>一个标签都没用</strong>。</p>
+<blockquote>
+<p>🗓️ <strong>模型选型会过期，这里不给推荐。</strong> ESM 系列、ProtTrans 系列是常见的起点，
+但<strong>具体哪一代、哪个尺寸最合适，请去查最新的</strong>。⭐ 不变的是用法：
+<strong>先冻结、先量一下它比 one-hot 好多少</strong>，再决定要不要投入微调。</p>
+</blockquote>
+<hr />
+<h2 id="_6">🚧 五、它不能做什么</h2>
+<p>⚠️ 这一节比上面几节更重要，因为<strong>高估它的代价很大</strong>。</p>
+<p><strong>① 它不理解能量学。</strong> 模型学的是「什么序列在数据库里出现过」，
+不是「这个突变会让自由能变化多少」。<strong>两者相关但不等价。</strong></p>
+<p><strong>② 对设计出来的序列不可靠。</strong> 数据库里全是<strong>演化产物</strong>；
+你新设计的序列可能落在分布之外，⚠️ 模型给出的高分<strong>在那里没有校准过</strong>。</p>
+<p><strong>③ embedding 里带着数据库的采样偏差。</strong> 被研究得多的家族样本多、表示好；
+冷门家族表示差。⚠️ 而这个差别<strong>不会体现在你的平均指标上</strong> ——
+除非你按家族分组去看。⭐ 这和 <a href="07-评测的坑.html">07 章</a>是同一件事的两面。</p>
+<hr />
+<h2 id="_7">🔗 这一章连到哪里</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>去哪</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="02-序列不是文本.html">02 · 序列不是文本</a></td>
+<td>第一节那张对照表的完整版：词表、词边界、长度各自带来什么后果</td>
+</tr>
+<tr>
+<td><a href="04-从序列到结构.html">04 · 从序列到结构</a></td>
+<td>⭐ 共进化捞出来的接触信息，下一章讲怎么把它变成三维坐标</td>
+</tr>
+<tr>
+<td><a href="06-小数据这一关.html">06 · 小数据这一关</a></td>
+<td>「冻结 + 小头」的实测账：20 条标签时 0.374 → 0.696</td>
+</tr>
+<tr>
+<td><a href="07-评测的坑.html">07 · 评测的坑</a></td>
+<td>⚠️ 第五节第三条的展开：平均指标看不见冷门家族的表现</td>
+</tr>
+<tr>
+<td><a href="../机器学习的数学原理/01b-KL散度.html">机器学习的数学原理 01b · KL 散度</a></td>
+<td>第二节用的互信息就是一个 KL 散度 —— 联合分布和「假装两列独立」之间的距离</td>
+</tr>
+<tr>
+<td><a href="../大模型全景导论/02-Transformer原理.html">大模型全景导论 主线 2 · 模型怎样看懂一句话</a></td>
+<td>注意力为什么天然在做联合建模（第三节最后那个论点的机制）</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_8">✅ 检查点</h2>
+<ol>
+<li>掩码语言建模搬到蛋白序列上，什么没变、什么变了？</li>
+<li>什么是共进化？为什么完形填空这个目标<strong>被迫</strong>学会它？</li>
+<li>实验里三对真实接触的 MI 是多少？背景是多少？差多少倍？</li>
+<li>💀 互信息会怎么撒谎？实验里那个假接触拿了多少分、排第几？</li>
+<li>这个问题催生了哪一类方法？深度模型为什么在这件事上有优势？</li>
+<li>蛋白语言模型有哪三件事做不了？第三件为什么在平均指标上看不出来？</li>
+</ol>
+<details>
+<summary>👀 答案</summary>
+<ol>
+<li><strong>目标函数没变</strong>，原样搬过来就能用。变的是输入：词表只有 20 出头、<strong>没有词边界</strong>（切在哪都是人为的）、长度几百到几千。⭐ 最关键的是「语法」的来源变了 —— 语言里是<strong>人类习惯</strong>，序列里是<strong>物理和演化的约束</strong>（配不上的个体活不下来，从来没进过数据库）。</li>
+<li>同一个蛋白在几千个物种里各有版本，摞成 MSA 之后，<strong>如果两个残基在空间上挨着，一个变了另一个必须跟着变</strong>，于是这两列呈现强相关。⭐ 完形填空要把遮住的位置猜准，<strong>没有别的办法</strong>，只能学会这种成对约束。</li>
+<li>三对真实接触 MI 约 <strong>3.5 bit</strong>（3.566 / 3.531 / 3.494），整齐排在 1、2、3；其余 777 对背景平均 <strong>0.066 bit</strong> —— <strong>五十倍以上的分离</strong>。</li>
+<li><strong>间接相关</strong>：5-15 接触、15-25 接触，而 5 和 25 并不接触，但相关性顺着传递过去 —— <strong>(5,25) 拿到 2.973 bit，排第三</strong>，比背景 0.085 高四十倍，看起来和真接触一样。</li>
+<li>催生了<strong>直接耦合分析（DCA）</strong>这一类方法：问的不是「i 和 j 相关吗」，而是「<strong>扣掉其他位置的中介之后还直接相关吗</strong>」。⭐ 深度模型的优势在于注意力让所有位置在同一层互相看，天然是<strong>联合建模</strong>而不是逐对统计，间接相关会被其他位置解释掉。</li>
+<li>①<strong>不理解能量学</strong>（学的是「出现过什么」不是「自由能变多少」）②<strong>对设计序列不可靠</strong>（数据库全是演化产物，新设计的序列在分布外、高分没校准过）③<strong>embedding 带着数据库的采样偏差</strong>（热门家族表示好、冷门差）。⭐ 第三件看不出来是因为<strong>平均指标会把冷门家族的差表现摊平</strong>，除非你按家族分组去看。</li>
+</ol>
+</details>
+<hr />
+<h2 id="_9">🛑 可以停在这里</h2>
+<p>到这里你已经知道这类模型<strong>学到的是什么</strong>（共进化 = 结构约束）、<strong>怎么用</strong>（冻结取特征）、
+以及<strong>不能指望它什么</strong>。⭐ 光是「互信息会因为间接相关而撒谎」这一条，
+就够你在读任何一篇讲接触预测的东西时不被绕进去。</p>
+<p>⚠️ <strong>什么时候看下一页</strong>：你想知道从「哪些残基挨着」到「三维坐标」中间还差什么。</p>
+<p>⚡ <strong>走神救援</strong></p>
+<blockquote>
+<p><strong>掩码语言建模的目标搬到蛋白序列上原样能用，但「语法」的来源变了</strong> —— 语言里是人类习惯，序列里是<strong>物理和演化的约束</strong>：配不上的个体活不下来、从来没进过数据库，⭐ <strong>数据集本身就是一台筛选器</strong>。⭐⭐ 题眼是<strong>共进化</strong>：同一个蛋白在几千个物种里各有版本，摞成 MSA 之后，<strong>空间上挨着的两个残基必须一起变</strong>，于是那两列强相关 —— 而完形填空要猜准就<strong>被迫</strong>学会这件事。实测：4000 条序列、只让三对位置真耦合，用<strong>互信息</strong>去捞，三对真实接触整齐排在 <strong>1、2、3</strong>，MI 约 <strong>3.5 bit</strong>，其余 777 对背景只有 <strong>0.066 bit</strong>，<strong>五十倍以上的分离</strong> —— 结构信息真的躺在序列统计里，不需要任何标签。💀 <strong>但互信息会撒谎</strong>：5-15 接触、15-25 接触而 5 和 25 并不接触时，<strong>(5,25) 拿到 2.973 bit 排第三</strong>，比背景高四十倍，看起来和真接触一模一样 —— 相关性顺着中介传递过去了。⭐ <strong>这就是直接耦合分析（DCA）被发明的原因</strong>：要问的是「扣掉其他位置的中介后还直接相关吗」。⭐⭐ 也正是深度模型的优势：注意力让所有位置在同一层互相看，天然<strong>联合建模</strong>而非逐对统计，间接相关会被其他位置解释掉。<strong>用法</strong>上，绝大多数人不该自己训，而是<strong>拿训好的主干冻结、取 embedding、上面接小模型</strong> —— 06 章实测 20 条标签时把 R² 从 <strong>0.374</strong> 抬到 <strong>0.696</strong>。⚠️ <strong>三件它做不了的</strong>：不理解能量学（学的是「出现过什么」不是「自由能变多少」）、对分布外的设计序列不可靠（高分没校准过）、embedding 带着数据库采样偏差（热门家族表示好、冷门差，<strong>而平均指标会把这个差别摊平</strong>）。</p>
+</blockquote>
+<p><strong>下一节</strong> 👉 <a href="04-从序列到结构.html">04-从序列到结构.md</a></p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="02-序列不是文本.html"><div class="dir">← 上一节</div>🧬 02 · 序列不是文本</a><a class="next" href="04-从序列到结构.html"><div class="dir">下一节 →</div>📐 04 · 从序列到结构</a></nav>
+</main>
+<script>(function(){
+  var KEY="sci-progress", FILE="03-\u86cb\u767d\u8d28\u8bed\u8a00\u6a21\u578b.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+</body></html>

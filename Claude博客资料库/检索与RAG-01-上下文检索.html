@@ -177,6 +177,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .ckpt ol{padding-left:1.3em}.ckpt li{margin:.4em 0}
 .recap{background:var(--quote-bg);border-radius:12px;padding:16px 20px;margin:18px 0 0}
 .recap b{color:var(--accent)}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner"><a href="../index.html">🏠 总目录</a>
@@ -216,7 +220,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>同样的上下文信息也加到词法索引之前。BM25 用精确词项匹配，能抓住语义嵌入可能错过的精确标识符（如错误码、技术规格）。两种方式通过<strong>排序融合（rank fusion）</strong>结合，实现全面检索。</p>
 <h2 id="_3">基准数据</h2>
 <p>以「1 减去 recall@20」衡量（即相关文档未出现在前 20 个检索结果中的比例）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方案</th>
@@ -246,7 +250,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>↓67%</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>成本：</strong> 使用 prompt caching 时，生成上下文化块的预处理成本约为<strong>每百万文档 token $1.02</strong>——规模化下经济可行。</p>
 <h2 id="_4">什么时候才需要它</h2>
 <p><strong>实用阈值：</strong> 知识库小于 20 万 token（约 500 页）时，直接用 prompt caching 把整个库放进提示词即可。<strong>超过这个规模，才需要上下文检索。</strong></p>

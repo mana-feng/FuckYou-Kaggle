@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -300,7 +317,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>尤其是埋点：它是产品团队写的，口径随时会变，而没人会通知你。</strong></p>
 <hr />
 <h2 id="_2">🧭 一、五种来源，一眼看清</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>来源</th>
@@ -341,7 +358,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>边缘分布像，<strong>联合分布和因果结构不像</strong> ⚠️</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>🔑 <strong>一条贯穿全章的判断法</strong>：
 拿到任何一列，先问 <strong>「这一列是为谁的 KPI 服务的？」</strong>
@@ -361,7 +378,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="31">3.1 埋点要穿过三层，每层都能改</h3>
 <section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">①客户端 SDK ②网关/采集层 ③数仓 ODS</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">DWD</span></div><div class="vb-flow-row"></div><div class="vb-flow-row"><span class="vb-flow-step">谁改：客户端开发 谁改：数据工程 谁改：数仓</span></div><div class="vb-flow-row"><span class="vb-flow-step">改什么： 改什么： 改什么：</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 上报时机 ⭐ · 采样率 ⭐ · 字段重命名</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 参数增删 · 去重策略 · 口径重算</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 事件名合并 · 丢弃规则 · 补数/回溯</span></div><div class="vb-flow-row"><span class="vb-flow-step">通知你吗：不会 通知你吗：可能 通知你吗：偶尔</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 你在第 ③ 层看到的表，是三层改动叠加后的产物。</span></div><div class="vb-flow-row"><span class="vb-flow-step">表结构没变，不代表①②没变。</span></div></div></section>
 <h3 id="32">3.2 埋点漂移的四种，按恶心程度排序</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>形态</th>
@@ -391,7 +408,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>❌ <strong>完全不能</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💀 <strong>「上报时机变化」是所有数据事故里最难查的一类</strong>：
 字段名没变、类型没变、非空率没变、行数只是「少了一些」——
@@ -459,7 +476,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>看到一份标注数据，必须问清六件事：</li><li>标注指南是哪一版？现在线上用的是哪一版？ ⭐（第1章那个事故）</li><li>每条标了几遍？一致性（Kappa）是多少？ （第10章）</li><li>标注员是谁？外包还是业务专家？流失率多少？</li><li>样本是怎么抽的？随机还是按某种规则挑的？ （第15章）</li><li>有没有&quot;不确定&quot;这个选项？它被怎么处理了？</li><li>标注时标注员能看到什么？会不会看到答案？ ⚠️ 泄漏</li><li>⭐ 六个问题里，第①和第②决定了这份数据的【天花板】：</li><li>标注员之间都对不齐的东西，模型不可能学对。</li></ol></section>
 <hr />
 <h2 id="_6">💰 六、外购数据：三个必问，一个必查</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>必问</th>
@@ -480,7 +497,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>能不能用于模型训练、能不能跨境、留存多久（第 19 章）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>一个必查：</p>
 <section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 外部数据里有没有混进你的目标？</span></div><div class="vb-flow-row"><span class="vb-flow-step">典型：买了一份&quot;企业风险评分&quot;来做信贷模型</span></div><div class="vb-flow-row"><span class="vb-flow-step">结果这份评分本身就用了【是否已逾期】做输入</span></div><div class="vb-flow-row"><span class="vb-flow-step">你的模型 AUC 从 0.76 跳到 0.91</span></div><div class="vb-flow-row"><span class="vb-flow-step">上线后崩到 0.68（新客户还没逾期，评分是空的）</span></div><div class="vb-flow-row"><span class="vb-flow-step">✅ 查法：把外部特征单独拿出来训一个模型，</span></div><div class="vb-flow-row"><span class="vb-flow-step">如果【单它一个】就能到 0.85+，几乎一定有问题（第14章）</span></div></div></section>
 <hr />
@@ -498,7 +515,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="_8">发生了什么</h3>
 <section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">系统：信息流推荐的 CTR 预估模型，日均请求 2.6 亿</span></div><div class="vb-flow-row"><span class="vb-flow-step">训练数据：曝光日志 × 点击日志 join，曝光为负样本、点击为正样本</span></div><div class="vb-flow-row"><span class="vb-flow-step">3 月 12 日，产品上线了一个&quot;曝光质量优化&quot;：</span></div><div class="vb-flow-row"><span class="vb-flow-step">曝光定义： item 进入视口 （旧）</span></div><div class="vb-flow-row"><span class="vb-flow-step">item 在视口内停留 ≥1s （新）</span></div><div class="vb-flow-row"><span class="vb-flow-step">目的：让报表里的 CTR 更&quot;真实&quot;，对齐竞品口径</span></div><div class="vb-flow-row"><span class="vb-flow-step">埋点字段名：impression —— 没改</span></div><div class="vb-flow-row"><span class="vb-flow-step">埋点参数： 类型、必填性 —— 没改</span></div><div class="vb-flow-row"><span class="vb-flow-step">通知了谁：产品群、数据看板群 —— 算法团队不在里面 ⚠️</span></div></div></section>
 <h3 id="_9">为什么没被发现</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>校验项</th>
@@ -545,7 +562,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>没有人告警 ——因为它变"好"了</strong> 💀💀</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">⭐ 训练侧的连锁反应：</span></div><div class="vb-flow-row"><span class="vb-flow-step">曝光（负样本）少了 34%，点击（正样本）几乎没变</span></div><div class="vb-flow-row"><span class="vb-flow-step">正样本比例 4.1%</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">6.2%，涨了 51%</span></div><div class="vb-flow-row"><span class="vb-flow-step">模型预估的绝对值整体抬高约 1.5 倍</span></div><div class="vb-flow-row"><span class="vb-flow-step">而下游的【竞价出价】和【冷启动流量阈值】是按绝对预估值配的固定阈值</span></div><div class="vb-flow-row"><span class="vb-flow-step">阈值全部失效：低质内容被判定为&quot;高预估 CTR&quot;，拿到了大量流量</span></div></div></section>
 <h3 id="_10">怎么发现的</h3>
 <p><strong>不是监控发现的。</strong> 是 3 月 31 日一个运营在群里问：
@@ -554,7 +571,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="_11">代价</h3>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>19 天 × 2.6 亿请求 ≈ 49 亿次受影响的曝光</p><p>低质内容分发占比从 3.2% 涨到 11.7%</p><p>次日留存 -0.9pp（事后用断点回归估的，见《模型上线之后》13）</p><p>重建训练集 + 回溯 60 天曝光 + 重训 + 灰度：14 人日</p><p>⭐ 真正的修复只用了 14 人日；19 天全花在&quot;没人知道&quot;上</p></div></section>
 <h3 id="_12">该补什么</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>缺失</th>
@@ -583,7 +600,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>预估分的分位数进监控（<a href="../模型上线之后/05-该监控什么.html">模型上线之后 05</a>）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>这个事故最该记住的一句话</strong>：
 <strong>「指标变好了」从来不是「不用查」的理由。</strong>
@@ -595,7 +612,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>| 字段 | 来源层 | 产出方 | 口径定义链接 | 更新频率 | 最近变更 | 我们的用途 |</p><p>|------|--------|--------|-------------|---------|---------|-----------|</p><p>| impression | 埋点 | 客户端-Feed组 | wiki/xxx | 实时 | 2026-03-12 ⚠️ | 负样本 |</p><p>| order_amt | 业务 | 交易服务 | wiki/yyy | T+1 | 2025-11-03 | 特征 |</p><p>| risk_score | 外购 | XX数据 | 合同附件3 | 月更 | 未知 ⚠️ | 特征 |</p><p>⭐ 「最近变更」那一列如果写着&quot;未知&quot;，就是一个待办事项。</p><p>⭐ 这张表本身就是第 3 章数据契约的雏形，也是第 17 章血缘的人工版。</p></div></section>
 <hr />
 <h2 id="_14">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>去哪</th>
@@ -620,7 +637,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>采样、去重、补数这些动作发生在哪一层</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_15">✅ 检查点</h2>
 <ol>

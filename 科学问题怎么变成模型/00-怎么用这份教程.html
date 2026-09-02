@@ -1,14 +1,24 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>07 · 让它真的交付出去：从“我这里能跑”到“别人能用” · Mendix 低代码开发</title>
+<title>00 · 怎么用这份教程 · 科学问题怎么变成模型</title>
 <script>(function(){var t=localStorage.getItem('recsys-theme');
 if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
 @font-face{font-family:"CodeCJK";
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -267,303 +284,267 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
-  <span class="title">07 · 让它真的交付出去</span>
-  <span class="prevnext"><a href="06-怎么连接外部系统.html">←</a>
-  </span>
+  <span class="title">00 · 怎么用这份教程</span>
+  <span class="prevnext">
+  <a href="01-第一天.html">→</a></span>
   <button class="js-done-btn">☐ 打卡</button>
   <button id="themeToggle" title="切换深浅色">🌗</button>
 </div></header>
 <main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
 <ul>
 <li><a href="#_1">🎯 一句话</a></li>
-<li><a href="#_2">🚦 先区分三种“能跑”</a></li>
-<li><a href="#_3">📋 上线前的最小检查单</a></li>
-<li><a href="#_4">🤝 协作时，别把“版本”当成文件名</a></li>
-<li><a href="#employeehub">🧪 跟着做：为 EmployeeHub 做一次“交付演练”</a></li>
-<li><a href="#_5">🧯 用真实故障替代“看起来没问题”</a></li>
-<li><a href="#_6">🗂️ 交接给别人时，至少留四样东西</a></li>
-<li><a href="#_7">🧭 学到这里以后，怎么继续才不迷路</a></li>
-<li><a href="#_8">🎓 你现在已经站在哪里</a></li>
+<li><a href="#_2">🧭 一、你现在的问题是哪一个</a></li>
+<li><a href="#_3">📚 二、八章各讲什么</a></li>
+<li><a href="#_4">🔬 三、这个板块的四条主张</a></li>
+<li><a href="#_5">🚧 四、这份教程刻意不讲什么</a></li>
+<li><a href="#_6">🧱 五、需要什么基础</a></li>
+<li><a href="#_7">🔗 这一章连到哪里</a></li>
+<li><a href="#_8">✅ 检查点</a></li>
 <li><a href="#_9">🛑 可以停在这里</a></li>
-<li><a href="#_10">✅ 检查点</a></li>
 </ul>
 </div>
 </details>
-<h1 id="07">07 · 让它真的交付出去：从“我这里能跑”到“别人能用”</h1>
-<p>⏱ <strong>14 分钟</strong> ｜ 这一步让项目从练习变成应用</p>
+<h1 id="00">00 · 怎么用这份教程</h1>
+<p>⏱ <strong>12 分钟</strong> ｜ ⭐ <strong>其他板块教你从数据里学，这一套教你在【数据很贵】的时候怎么办</strong></p>
 <hr />
 <h2 id="_1">🎯 一句话</h2>
-<p>交付不是点一次发布按钮；它是确认应用在正确环境里，以正确权限，带着可回退的版本，被真实用户完成真实任务。</p>
+<p><strong>这套教程讲的是：当一条标签意味着一次真实的实验时，机器学习要怎么改。</strong>
+不是讲生物学，也不是讲某个具体模型 ——
+⭐ 讲的是<strong>科学问题变成建模问题的那一步</strong>，以及那一步上四个反直觉的地方。</p>
 <hr />
-<h2 id="_2">🚦 先区分三种“能跑”</h2>
-<table>
+<h2 id="_2">🧭 一、你现在的问题是哪一个</h2>
+<p>⭐ <strong>按你手上的问题进，不要按技术名词进。</strong> 每条路线都从站内真实存在的页开始：</p>
+<div class="tw"><table>
 <thead>
 <tr>
-<th>状态</th>
-<th>说明</th>
-<th>还缺什么</th>
+<th>你现在的问题</th>
+<th>第一站</th>
+<th>最短能走通的路线</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>本地能跑</td>
-<td>你自己的 Studio Pro 能打开它</td>
-<td>不代表别人能登录或看到正确数据</td>
+<td>⭐ <strong>只是想知道这和普通 ML 差在哪</strong></td>
+<td><a href="01-第一天.html">01 · 第一天</a></td>
+<td>01 → 07。<strong>两章，56 分钟</strong>，拿到全套核心直觉</td>
 </tr>
 <tr>
-<td>测试环境能跑</td>
-<td>团队可以试用流程</td>
-<td>需要准备测试数据和反馈方式</td>
+<td>我的数据只有几十条</td>
+<td><a href="06-小数据这一关.html">06 · 小数据这一关</a></td>
+<td>06 → 07 → 08（80 分钟）</td>
 </tr>
 <tr>
-<td>正式环境能跑</td>
-<td>真实用户开始依赖它</td>
-<td>需要权限、监控、回退和责任边界</td>
+<td>我的模型指标好得可疑</td>
+<td><a href="07-评测的坑.html">07 · 评测的坑</a></td>
+<td>⚠️ <strong>先读这一章</strong>，别先调模型</td>
+</tr>
+<tr>
+<td>我要处理序列数据</td>
+<td><a href="02-序列不是文本.html">02 · 序列不是文本</a></td>
+<td>02 → 03 → 06（74 分钟）</td>
+</tr>
+<tr>
+<td>我在做分子/结构相关的东西</td>
+<td><a href="04-从序列到结构.html">04 · 从序列到结构</a></td>
+<td>04 → 05（62 分钟）</td>
+</tr>
+<tr>
+<td>实验做完了，下一批做什么</td>
+<td><a href="08-数据实验模型飞轮.html">08 · 飞轮</a></td>
+<td>08（可先补 06）</td>
 </tr>
 </tbody>
-</table>
-<p>官方 Quick Start 也把“本地运行”和“发布到云端”分开：前者验证你正在做的东西，后者才是让其他人访问它。不要跳过前者；每次小改动先在本地验证，发布才不变成猜谜。</p>
+</table></div>
+<blockquote>
+<p>💀 <strong>如果你只有时间读一章，读 <a href="07-评测的坑.html">07</a>。</strong>
+它讲的那个坑会让你的所有指标都是假的，而且<strong>默认设置下你看不出来</strong>。</p>
+</blockquote>
 <hr />
-<h2 id="_3">📋 上线前的最小检查单</h2>
-<div class="panels">
-<div class="panel"><div class="ph">数据</div><ul class="pl"><li>有没有测试用的员工和部门？错误数据会不会误导别人？</li></ul></div>
-<div class="panel"><div class="ph">角色</div><ul class="pl"><li>普通员工和管理员分别实际登录过吗？</li></ul></div>
-<div class="panel"><div class="ph">关键路径</div><ul class="pl"><li>新建、编辑、保存、搜索各走一遍。</li></ul></div>
-<div class="panel"><div class="ph">失败方式</div><ul class="pl"><li>故意漏填、断开外部服务时，用户能看懂下一步吗？</li></ul></div>
-</div>
-
-<p>这不是“为了测试而测试”。它是在替未来的你减少最贵的沟通：用户遇到问题时，你能知道它发生在哪条路径上。</p>
-<hr />
-<h2 id="_4">🤝 协作时，别把“版本”当成文件名</h2>
-<p>应用不该靠 <code>final-final-v3</code> 这种文件名协作。每次变化都应该能回答：谁改了什么、为什么改、出现问题能否回到上一版。</p>
-<p>对个人练习而言，最重要的习惯是：<strong>每完成一个能运行的小目标，就留一个可回来的版本。</strong> 对团队而言，这会发展成更完整的分支、审查和发布流程；但核心没变——不要把所有改变堆成一次不可理解的大提交。</p>
-<h2 id="employeehub">🧪 跟着做：为 EmployeeHub 做一次“交付演练”</h2>
-<p>这不是要求你今天购买云资源。你要做的是把“我电脑上能看到”变成一组可验证的交付条件。把下面清单逐条勾掉，才算本章完成。</p>
-<h3 id="1">第 1 步：写出一条最关键的用户路径</h3>
-<p>这条教程的路径可以是：</p>
-<div class="flowchain">
-<div class="fstep"><b>HR 登录</b><span>看到员工管理入口</span></div>
-<div class="farrow">→</div>
-<div class="fstep"><b>新建员工</b><span>填写姓名、部门、职位</span></div>
-<div class="farrow">→</div>
-<div class="fstep"><b>保存</b><span>空姓名被拦住；完整信息被保存</span></div>
-<div class="farrow">→</div>
-<div class="fstep"><b>回列表</b><span>看到刚创建的员工</span></div>
-</div>
-
-<p>把这条路径从头走一遍，不要跳步。只要其中某一步需要你“凭感觉补一下”，那就是交付前需要补的说明或功能。</p>
-<h3 id="2">第 2 步：准备可重复的测试数据</h3>
-<p>测试数据不必多，但必须故意覆盖几种情况：</p>
-<table>
+<h2 id="_3">📚 二、八章各讲什么</h2>
+<div class="tw"><table>
 <thead>
 <tr>
-<th>数据</th>
-<th>用来验证什么</th>
+<th>章</th>
+<th>一句话</th>
+<th>什么时候需要它</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>两个部门</td>
-<td>部门选择和关联是否正确</td>
+<td><a href="01-第一天.html">01 · 第一天</a></td>
+<td>领域知识和数据可以互换，兑换率能量出来</td>
+<td>⭐ 入门，也是全板块的钩子</td>
 </tr>
 <tr>
-<td>两名在职员工</td>
-<td>列表、详情和编辑是否可用</td>
+<td><a href="02-序列不是文本.html">02 · 序列不是文本</a></td>
+<td>五条来自 NLP 的直觉，逐条要改</td>
+<td>你要处理序列</td>
 </tr>
 <tr>
-<td>一名离职员工</td>
-<td><code>IsActive</code> 显示/筛选是否符合预期</td>
+<td><a href="03-蛋白质语言模型.html">03 · 蛋白质语言模型</a></td>
+<td>完形填空学到的是共进化，而共进化就是结构约束</td>
+<td>你想用预训练表示</td>
 </tr>
 <tr>
-<td>一份空姓名表单</td>
-<td>校验是否真的阻止保存</td>
+<td><a href="04-从序列到结构.html">04 · 从序列到结构</a></td>
+<td>别预测坐标，预测距离</td>
+<td>你的输出是几何对象</td>
 </tr>
 <tr>
-<td>一个普通用户、一个 HR 用户</td>
-<td>角色边界是否生效</td>
+<td><a href="05-等变与不变.html">05 · 等变与不变</a></td>
+<td>把对称性写进网络，而不是靠数据增强</td>
+<td>同上，另一条路</td>
+</tr>
+<tr>
+<td><a href="06-小数据这一关.html">06 · 小数据这一关</a></td>
+<td>冻结 + 小头，让无标注数据出力</td>
+<td>⭐ 标签只有几十条</td>
+</tr>
+<tr>
+<td><a href="07-评测的坑.html">07 · 评测的坑</a></td>
+<td>随机划分在这里是作弊</td>
+<td>💀 <strong>所有人都需要</strong></td>
+</tr>
+<tr>
+<td><a href="08-数据实验模型飞轮.html">08 · 飞轮</a></td>
+<td>挑候选不是挑分数最高的</td>
+<td>你能去做新实验</td>
 </tr>
 </tbody>
-</table>
-<p>每次测试前从同一组数据开始，会比“我刚才随便点了几下”更容易复现问题。</p>
-<h3 id="3">第 3 步：把环境说清楚</h3>
-<table>
+</table></div>
+<p>外加 <a href="附录A-速查.html">附录A · 速查</a>：所有实测数字和判据集中在一页，<strong>查表用</strong>。</p>
+<p>⭐ <strong>全书正文 8 章合计 3.6 小时</strong>（连导读和附录 4.0 小时）。</p>
+<hr />
+<h2 id="_4">🔬 三、这个板块的四条主张</h2>
+<p>它们贯穿全部八章，⭐ <strong>每一条都有实跑数字撑着</strong>，不是观点。</p>
+<p><strong>① 先验和数据可以互换，而且买的是速度不是上限。</strong>
+<a href="01-第一天.html">01 章</a>实测：一列领域知识特征 ≈ 把训练集翻一倍；
+而数据一多，那一列就白给了。<a href="06-小数据这一关.html">06 章</a>在预训练表示上量到同一条曲线。</p>
+<p><strong>② 有对称性的问题，要么换目标，要么改结构 —— 别指望数据增强。</strong>
+<a href="04-从序列到结构.html">04 章</a>走第一条路（预测距离而不是坐标），
+<a href="05-等变与不变.html">05 章</a>走第二条。</p>
+<p><strong>③ 随机划分在这里是作弊。</strong>
+<a href="07-评测的坑.html">07 章</a>实测：同一份数据、同一个模型，只改划分方式，
+R² 从 <strong>0.707</strong> 掉到 <strong>−1.199</strong>（负数 = 还不如猜均值）。</p>
+<p><strong>④ 数据是你去生产的，所以「挑什么去做」本身就是个建模问题。</strong>
+<a href="08-数据实验模型飞轮.html">08 章</a>实测：贪心挑候选 8 次只成功 2 次，UCB 8 次全中。</p>
+<hr />
+<h2 id="_5">🚧 四、这份教程刻意不讲什么</h2>
+<p>⚠️ <strong>写清楚边界，比多写两章有用。</strong></p>
+<div class="tw"><table>
 <thead>
 <tr>
-<th>环境</th>
-<th>可以做什么</th>
-<th>不应该做什么</th>
+<th>不讲</th>
+<th>为什么</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>本地</td>
-<td>快速试页面、模型和流程</td>
-<td>当作真实多人环境</td>
+<td><strong>生物学本身</strong></td>
+<td>不是教程的目的，也不是我的领域。氨基酸、二级结构这些只给一句够用的</td>
 </tr>
 <tr>
-<td>测试</td>
-<td>给同事或测试者验证完整路径</td>
-<td>随意放真实敏感员工数据</td>
+<td><strong>具体模型的榜单成绩</strong></td>
+<td>🗓️ 半年就过期。⭐ <strong>全书没有一个榜单数字</strong>，模型名一律标「请查最新的」</td>
 </tr>
 <tr>
-<td>正式</td>
-<td>让真实用户完成工作</td>
-<td>直接试验未验证的改动</td>
+<td><strong>具体软件的用法</strong></td>
+<td>同上。讲的是<strong>形状</strong>不是 API</td>
+</tr>
+<tr>
+<td><strong>神经网络基础</strong></td>
+<td>站内已有更好的：<a href="../机器学习与深度学习基础/index.html">机器学习与深度学习基础</a></td>
 </tr>
 </tbody>
-</table>
-<p>如果你暂时只有本地环境，也可以完成前两行思考：假如明天交给同事，你要给他什么地址、什么测试账号、什么操作说明？答不出来的部分，就是从“练习”到“交付”缺的内容。</p>
-<h3 id="4">第 4 步：每次发布前只问五个问题</h3>
+</table></div>
+<p>⭐ <strong>留下的是不会过期的那部分</strong>：怎么把一个科学问题变成一个建模问题，
+以及那一步上会踩的坑。</p>
+<hr />
+<h2 id="_6">🧱 五、需要什么基础</h2>
+<p><strong>必需的很少</strong>：会 numpy，知道什么是训练集测试集、什么是过拟合。
+⭐ 全书的代码<strong>只用 numpy</strong>，没有一行需要 GPU 或安装深度学习框架 ——
+每一段都能直接复制到空文件跑。</p>
+<p><strong>不确定的话</strong>，这两章补一下就够：</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>补什么</th>
+<th>去哪</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>线性回归、正则化（书里到处在用岭回归）</td>
+<td><a href="../机器学习与深度学习基础/03-线性模型.html">机器学习与深度学习基础 03 · 线性模型</a></td>
+</tr>
+<tr>
+<td>训练/测试划分、过拟合、交叉验证</td>
+<td><a href="../机器学习与深度学习基础/05-评估与过拟合.html">机器学习与深度学习基础 05 · 评估与过拟合</a></td>
+</tr>
+</tbody>
+</table></div>
+<p>⚠️ <strong>但注意</strong>：第二条里那个「随机划分」在这个板块<strong>不能直接用</strong> —— 那正是 <a href="07-评测的坑.html">07 章</a>的正题。</p>
+<hr />
+<h2 id="_7">🔗 这一章连到哪里</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>去哪</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../数据这一关/14-数据泄漏的七种来源.html">数据这一关 14 · 数据泄漏的七种来源</a></td>
+<td>⭐ 本板块 07 章是它 <strong>④ 分组泄漏</strong>在科学数据上的实例。<strong>区别是「组」给没给你</strong> —— 那边 <code>user_id</code> 是现成一列，这边得自己按相似度聚</td>
+</tr>
+<tr>
+<td><a href="../数据这一关/12-标注预算与主动学习.html">数据这一关 12 · 标注预算与主动学习</a></td>
+<td>08 章飞轮的近亲：那边候选池给定，这边样本是你造出来的</td>
+</tr>
+<tr>
+<td><a href="../强化学习基础/07-探索与利用.html">强化学习基础 07 · 探索与利用</a></td>
+<td>08 章那个 <code>预测值 + κ × 不确定性</code> 的完整形态</td>
+</tr>
+<tr>
+<td><a href="../机器学习与深度学习基础/index.html">机器学习与深度学习基础</a></td>
+<td>⭐ 承重墙。这个板块假定你会那里前几章的内容</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_8">✅ 检查点</h2>
 <ol>
-<li>这次具体改了哪条用户路径？</li>
-<li>这条路径我刚刚真的走过吗？</li>
-<li>什么角色会受影响？</li>
-<li>失败时用户会看见什么、我会在哪里发现？</li>
-<li>有问题时回到上一版的办法是什么？</li>
+<li>这个板块和其他板块最根本的区别是什么？</li>
+<li>只有时间读一章的话该读哪一章？为什么？</li>
+<li>四条主张分别是什么？各由哪一章的什么数字撑着？</li>
+<li>这份教程刻意不讲哪四类东西？</li>
+<li>需要什么基础？代码需要装什么？</li>
 </ol>
-<p>这五个问题比“有没有点 Publish”重要。发布是一个动作；交付是让人愿意依赖这个动作的证据。</p>
-<h2 id="_5">🧯 用真实故障替代“看起来没问题”</h2>
-<p>请故意测试至少三次失败：</p>
-<table>
-<thead>
-<tr>
-<th>故意制造的情况</th>
-<th>你想看到的正确反应</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>不填姓名就保存</td>
-<td>留在表单，提示要补什么，不生成空员工</td>
-</tr>
-<tr>
-<td>普通员工尝试进入管理页</td>
-<td>看不到入口，且不能通过其他路径打开或执行管理动作</td>
-</tr>
-<tr>
-<td>外部部门同步失败</td>
-<td>不清空已有部门；管理员能知道同步失败而不是以为数据消失</td>
-</tr>
-</tbody>
-</table>
-<p>“错误时仍然可理解”是产品质量的一部分。尤其对内部工具，用户不知道怎么继续时，最终会把问题带到人身上，而不是带回系统。</p>
-<h2 id="_6">🗂️ 交接给别人时，至少留四样东西</h2>
-<table>
-<thead>
-<tr>
-<th>留下什么</th>
-<th>写到什么程度</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>应用目的</td>
-<td>一句话：它替谁解决什么工作</td>
-</tr>
-<tr>
-<td>角色说明</td>
-<td>谁能看、谁能改、谁负责开账号</td>
-</tr>
-<tr>
-<td>关键路径</td>
-<td>从登录到完成一件事的步骤</td>
-</tr>
-<tr>
-<td>已知限制</td>
-<td>例如“部门当前来自测试数据，尚未接 HR 系统”</td>
-</tr>
-</tbody>
-</table>
-<p>这比几十页背景介绍更有用。下一位维护者首先需要知道：应用为什么存在、现在可靠到什么程度、哪里还不能碰。</p>
-<h2 id="_7">🧭 学到这里以后，怎么继续才不迷路</h2>
-<p>不要同时开五条新学习线。用你的下一个真实需求做选择：</p>
-<table>
-<thead>
-<tr>
-<th>你卡住的真实问题</th>
-<th>先补这一块</th>
-<th>先别急着学</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>用户要在手机上操作</td>
-<td>Native Mobile 的页面与离线限制</td>
-<td>复杂企业集成</td>
-</tr>
-<tr>
-<td>要对接现有系统</td>
-<td>REST、数据映射、认证、失败重试</td>
-<td>新建十个 UI 动画</td>
-</tr>
-<tr>
-<td>多人开始依赖应用</td>
-<td>环境、部署、监控、版本协作</td>
-<td>把每个模块都重写一遍</td>
-</tr>
-<tr>
-<td>权限规则越来越细</td>
-<td>用户、角色、实体访问和约束</td>
-<td>先堆更多业务字段</td>
-</tr>
-</tbody>
-</table>
-<p>官方 Academy 将学习路径按目标、角色和技能层级组织；完成基础项目后按需求选路径，比“把所有课程刷完”更有效。<a href="https://docs.mendix.com/academy/">Mendix Academy 总览</a></p>
-<hr />
-<h2 id="_8">🎓 你现在已经站在哪里</h2>
-<p>你已经走完 Rapid Developer 风格的骨架：用 Studio Pro 建项目，建数据、做页面、画逻辑、配权限、接外部能力并发布。官方认证阶梯后面还有 Intermediate、Advanced 和 Expert；它们不是“必须立刻刷完的关卡”，而是在你真的开始交付复杂应用后，给你补更深的工程能力。</p>
-<p>下一步请按真实需求选：</p>
-<table>
-<thead>
-<tr>
-<th>真实需求</th>
-<th>下一步应该补什么</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>要做手机端</td>
-<td>Native Mobile</td>
-</tr>
-<tr>
-<td>要接企业系统</td>
-<td>REST、OData、身份与错误处理</td>
-</tr>
-<tr>
-<td>要承受更多用户和环境</td>
-<td>部署、监控、性能与治理</td>
-</tr>
-<tr>
-<td>要做 AI 功能</td>
-<td>先明确业务流程，再看 Mendix 的 AI / GenAI 相关学习路径</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="_9">🛑 可以停在这里</h2>
-<p>你不必“全学完 Mendix”才算开始。现在最有价值的下一步是：选一个真实但小的业务问题，用这条线再做一次，然后只补它缺的那块能力。</p>
-<hr />
-<h2 id="_10">✅ 检查点</h2>
-<p>为什么“本地打开过一次”不能等同于“已经可以交付”？</p>
 <details>
-<summary>👀 看答案</summary>
-<p>因为本地运行只证明你的当前环境能启动它。交付还要确认真实角色、真实数据、关键流程、失败反馈、环境配置和回退方式都成立。</p>
+<summary>👀 答案</summary>
+<ol>
+<li>其他板块讲「从给定的数据里学」，这一套讲<strong>一条标签意味着一次真实实验</strong>时该怎么办 —— 数据贵、量少，而且<strong>数据是你去生产的</strong>。</li>
+<li><strong><a href="07-评测的坑.html">07 · 评测的坑</a>。</strong> 因为它讲的那个坑会让你<strong>所有指标都是假的</strong>，而且默认设置下看不出来。</li>
+<li>①先验和数据可互换、买速度不买上限（01：一列特征 ≈ 翻一倍数据；06：同样的曲线）②有对称性要么换目标要么改结构（04 / 05）③随机划分是作弊（07：R² 0.707 → −1.199）④挑什么去做本身是建模问题（08：贪心 2/8，UCB 8/8）。</li>
+<li>生物学本身、具体模型的榜单成绩（🗓️ 会过期，全书零榜单数字）、具体软件用法、神经网络基础（站内已有更好的）。</li>
+<li>会 numpy + 知道训练/测试划分和过拟合。⭐ <strong>代码只用 numpy</strong>，不需要 GPU 或深度学习框架，每段都能复制到空文件直接跑。</li>
+</ol>
 </details>
 <hr />
+<h2 id="_9">🛑 可以停在这里</h2>
+<p>⭐ 读完这一页你该做的就一件事：<strong>回到第一节那张表，挑一行，点进去。</strong></p>
 <p>⚡ <strong>走神救援</strong></p>
-<ul>
-<li>本地能跑、测试可用、正式交付是三件不同的事。</li>
-<li>上线前至少检查数据、角色、关键路径和失败反馈。</li>
-<li>复杂度上来后再按需求选移动端、集成、治理或 AI，不要一次全学。</li>
-<li>你已经完成一条从想法到应用的基础主线。</li>
-</ul>
-<p><strong>回到：</strong> <a href="index.html">Mendix 教程首页</a></p>
+<blockquote>
+<p>这个板块讲的是<strong>当一条标签意味着一次真实实验时，机器学习要怎么改</strong> —— 不讲生物学、不讲具体模型，讲<strong>科学问题变成建模问题的那一步</strong>。⭐ <strong>入口按你手上的问题分</strong>：只想知道差在哪 → <strong>01 → 07，两章 56 分钟</strong>；数据只有几十条 → 06；指标好得可疑 → <strong>先读 07 别先调模型</strong>；处理序列 → 02 → 03 → 06；做分子结构 → 04 → 05；下一批实验做什么 → 08。💀 <strong>只读一章的话读 07</strong> —— 它讲的坑会让你所有指标都是假的，而且默认设置下看不出来。<strong>四条主张，每条都有实跑数字</strong>：①<strong>先验和数据可互换，买的是速度不是上限</strong>（01 章：一列领域知识特征 ≈ 把训练集翻一倍，而数据一多就白给；06 章在预训练表示上量到同一条曲线）②<strong>有对称性的问题要么换预测目标、要么把对称性写进网络，别指望数据增强</strong>（04 走第一条，05 走第二条）③<strong>随机划分在这里是作弊</strong>（07 章：同一份数据同一个模型，只改划分，R² 从 <strong>0.707</strong> 掉到 <strong>−1.199</strong>，负数意味着还不如猜均值）④<strong>数据是你去生产的，所以「挑什么去做」本身是个建模问题</strong>（08 章：贪心挑候选 8 次只成功 2 次，UCB 8 次全中）。⚠️ <strong>刻意不讲</strong>：生物学本身、具体模型的榜单成绩（🗓️ 半年过期，<strong>全书零榜单数字</strong>）、软件 API、神经网络基础（站内已有更好的）。<strong>基础要求很低</strong>：会 numpy、知道训练测试划分和过拟合就够 —— ⭐ <strong>全书代码只用 numpy，不需要 GPU 或任何深度学习框架，每段都能复制到空文件直接跑。</strong></p>
+</blockquote>
+<p><strong>下一节</strong> 👉 <a href="01-第一天.html">01-第一天.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
-<nav class="pagenav"><a href="06-怎么连接外部系统.html"><div class="dir">← 上一节</div>🔌 06 · 怎么连接外部系统</a><a class="next" href="index.html"><div class="dir">完成 →</div>🏠 回首页看进度</a></nav>
+<nav class="pagenav"><a href="index.html"><div class="dir">← 返回</div>🏠 本教程首页</a><a class="next" href="01-第一天.html"><div class="dir">下一节 →</div>🧪 01 · 第一天：一列领域知识值多少数据</a></nav>
 </main>
 <script>(function(){
-  var KEY="mendix-progress", FILE="07-\u8ba9\u5b83\u771f\u7684\u4ea4\u4ed8\u51fa\u53bb.md";
+  var KEY="sci-progress", FILE="00-\u600e\u4e48\u7528\u8fd9\u4efd\u6559\u7a0b.md";
   function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
   function refresh(){var d=!!load()[FILE];
     document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);

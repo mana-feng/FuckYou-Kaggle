@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -296,7 +313,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_1">🎯 一句话</h2>
 <p>机器学习里 90% 的翻车，不是模型不好，而是<strong>你以为的好是假的</strong>。这一章教你怎么不骗自己。</p>
-<figure class="dia" data-fig="overfit_curves"><svg viewBox="0 0 700 306" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="欠拟合与过拟合曲线"><defs><marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker><marker id="a3l" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--link)"/></marker></defs><line x1="100" y1="260" x2="620" y2="260" stroke="var(--border)" stroke-width="1.5"/><line x1="100" y1="260" x2="100" y2="42" stroke="var(--border)" stroke-width="1.5"/><text class="dia-t" x="360.0" y="292" font-size="12.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">模型复杂度 / 训练轮数  →</text><text class="dia-t" x="88" y="60" font-size="12.5" text-anchor="end" fill="var(--muted)" font-weight="normal">误差</text><polyline points="100.0,75.2 105.2,80.7 110.4,86.1 115.6,91.2 120.8,96.3 126.0,101.1 131.2,105.9 136.4,110.4 141.6,114.9 146.8,119.2 152.0,123.3 157.2,127.4 162.4,131.3 167.6,135.1 172.8,138.8 178.0,142.4 183.2,145.8 188.4,149.2 193.6,152.4 198.8,155.6 204.0,158.6 209.2,161.6 214.4,164.5 219.6,167.3 224.8,170.0 230.0,172.6 235.2,175.1 240.4,177.6 245.6,180.0 250.8,182.3 256.0,184.5 261.2,186.7 266.4,188.8 271.6,190.9 276.8,192.9 282.0,194.8 287.2,196.6 292.4,198.4 297.6,200.2 302.8,201.9 308.0,203.5 313.2,205.1 318.4,206.7 323.6,208.2 328.8,209.6 334.0,211.0 339.2,212.4 344.4,213.7 349.6,215.0 354.8,216.3 360.0,217.5 365.2,218.6 370.4,219.8 375.6,220.9 380.8,221.9 386.0,223.0 391.2,224.0 396.4,224.9 401.6,225.9 406.8,226.8 412.0,227.7 417.2,228.5 422.4,229.4 427.6,230.2 432.8,231.0 438.0,231.7 443.2,232.5 448.4,233.2 453.6,233.9 458.8,234.5 464.0,235.2 469.2,235.8 474.4,236.4 479.6,237.0 484.8,237.6 490.0,238.1 495.2,238.7 500.4,239.2 505.6,239.7 510.8,240.2 516.0,240.7 521.2,241.1 526.4,241.6 531.6,242.0 536.8,242.4 542.0,242.8 547.2,243.2 552.4,243.6 557.6,244.0 562.8,244.4 568.0,244.7 573.2,245.0 578.4,245.4 583.6,245.7 588.8,246.0 594.0,246.3 599.2,246.6 604.4,246.9 609.6,247.1 614.8,247.4 620.0,247.7" fill="none" stroke="var(--link)" stroke-width="3" stroke-linecap="round"/><polyline points="100.0,75.2 105.2,80.7 110.4,86.0 115.6,91.2 120.8,96.2 126.0,101.0 131.2,105.7 136.4,110.2 141.6,114.5 146.8,118.7 152.0,122.7 157.2,126.6 162.4,130.4 167.6,134.0 172.8,137.4 178.0,140.8 183.2,144.0 188.4,147.0 193.6,150.0 198.8,152.8 204.0,155.5 209.2,158.0 214.4,160.5 219.6,162.8 224.8,165.1 230.0,167.2 235.2,169.2 240.4,171.1 245.6,172.9 250.8,174.5 256.0,176.1 261.2,177.6 266.4,179.0 271.6,180.3 276.8,181.5 282.0,182.6 287.2,183.6 292.4,184.5 297.6,185.4 302.8,186.1 308.0,186.8 313.2,187.3 318.4,187.8 323.6,188.2 328.8,188.6 334.0,188.8 339.2,189.0 344.4,189.0 349.6,189.0 354.8,189.0 360.0,188.8 365.2,188.6 370.4,188.3 375.6,187.9 380.8,187.5 386.0,187.0 391.2,186.4 396.4,185.7 401.6,185.0 406.8,184.2 412.0,183.3 417.2,182.4 422.4,181.4 427.6,180.3 432.8,179.2 438.0,178.0 443.2,176.7 448.4,175.3 453.6,173.9 458.8,172.5 464.0,170.9 469.2,169.3 474.4,167.7 479.6,166.0 484.8,164.2 490.0,162.3 495.2,160.4 500.4,158.5 505.6,156.4 510.8,154.3 516.0,152.2 521.2,150.0 526.4,147.7 531.6,145.3 536.8,142.9 542.0,140.5 547.2,138.0 552.4,135.4 557.6,132.7 562.8,130.0 568.0,127.3 573.2,124.5 578.4,121.6 583.6,118.7 588.8,115.7 594.0,112.6 599.2,109.5 604.4,106.3 609.6,103.1 614.8,99.8 620.0,96.5" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="347.0" y1="260" x2="347.0" y2="189.1" stroke="var(--done)" stroke-width="1.8" stroke-dasharray="5 4"/><circle cx="347.0" cy="189.1" r="6" fill="var(--done)"/><text class="dia-t" x="347.0" y="280" font-size="12" text-anchor="middle" fill="var(--done)" font-weight="700">最优点</text><text class="dia-t" x="170" y="84" font-size="13" text-anchor="middle" fill="var(--muted)" font-weight="700">欠拟合</text><text class="dia-t" x="170" y="102" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">两边都差</text><text class="dia-t" x="554" y="84" font-size="13" text-anchor="middle" fill="var(--accent)" font-weight="700">过拟合</text><text class="dia-t" x="554" y="102" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="normal">训练好 / 验证差</text><text class="dia-t" x="612" y="233.66411404772347" font-size="12" text-anchor="end" fill="var(--link)" font-weight="700">训练误差</text><text class="dia-t" x="612" y="118.46411404772346" font-size="12" text-anchor="end" fill="var(--accent)" font-weight="700">验证误差</text><text class="dia-t" x="360" y="30" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">训练误差一路降，验证误差却是 U 形 —— 两者的差就是过拟合</text></svg><figcaption>训练误差一路降，验证误差却是 <b>U 形</b>。⭐ 两条线之间的<b>缝隙</b>就是过拟合的量 —— 你要找的不是训练误差最低的点，而是绿色那条竖线所在的位置。</figcaption></figure>
+<figure class="dia" data-fig="overfit_curves"><svg viewBox="0 0 700 306" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="欠拟合与过拟合曲线"><defs><marker id="a3__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker><marker id="a3l__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--link)"/></marker></defs><line x1="100" y1="260" x2="620" y2="260" stroke="var(--border)" stroke-width="1.5"/><line x1="100" y1="260" x2="100" y2="42" stroke="var(--border)" stroke-width="1.5"/><text class="dia-t" x="360.0" y="292" font-size="12.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">模型复杂度 / 训练轮数  →</text><text class="dia-t" x="88" y="60" font-size="12.5" text-anchor="end" fill="var(--muted)" font-weight="normal">误差</text><polyline points="100.0,75.2 105.2,80.7 110.4,86.1 115.6,91.2 120.8,96.3 126.0,101.1 131.2,105.9 136.4,110.4 141.6,114.9 146.8,119.2 152.0,123.3 157.2,127.4 162.4,131.3 167.6,135.1 172.8,138.8 178.0,142.4 183.2,145.8 188.4,149.2 193.6,152.4 198.8,155.6 204.0,158.6 209.2,161.6 214.4,164.5 219.6,167.3 224.8,170.0 230.0,172.6 235.2,175.1 240.4,177.6 245.6,180.0 250.8,182.3 256.0,184.5 261.2,186.7 266.4,188.8 271.6,190.9 276.8,192.9 282.0,194.8 287.2,196.6 292.4,198.4 297.6,200.2 302.8,201.9 308.0,203.5 313.2,205.1 318.4,206.7 323.6,208.2 328.8,209.6 334.0,211.0 339.2,212.4 344.4,213.7 349.6,215.0 354.8,216.3 360.0,217.5 365.2,218.6 370.4,219.8 375.6,220.9 380.8,221.9 386.0,223.0 391.2,224.0 396.4,224.9 401.6,225.9 406.8,226.8 412.0,227.7 417.2,228.5 422.4,229.4 427.6,230.2 432.8,231.0 438.0,231.7 443.2,232.5 448.4,233.2 453.6,233.9 458.8,234.5 464.0,235.2 469.2,235.8 474.4,236.4 479.6,237.0 484.8,237.6 490.0,238.1 495.2,238.7 500.4,239.2 505.6,239.7 510.8,240.2 516.0,240.7 521.2,241.1 526.4,241.6 531.6,242.0 536.8,242.4 542.0,242.8 547.2,243.2 552.4,243.6 557.6,244.0 562.8,244.4 568.0,244.7 573.2,245.0 578.4,245.4 583.6,245.7 588.8,246.0 594.0,246.3 599.2,246.6 604.4,246.9 609.6,247.1 614.8,247.4 620.0,247.7" fill="none" stroke="var(--link)" stroke-width="3" stroke-linecap="round"/><polyline points="100.0,75.2 105.2,80.7 110.4,86.0 115.6,91.2 120.8,96.2 126.0,101.0 131.2,105.7 136.4,110.2 141.6,114.5 146.8,118.7 152.0,122.7 157.2,126.6 162.4,130.4 167.6,134.0 172.8,137.4 178.0,140.8 183.2,144.0 188.4,147.0 193.6,150.0 198.8,152.8 204.0,155.5 209.2,158.0 214.4,160.5 219.6,162.8 224.8,165.1 230.0,167.2 235.2,169.2 240.4,171.1 245.6,172.9 250.8,174.5 256.0,176.1 261.2,177.6 266.4,179.0 271.6,180.3 276.8,181.5 282.0,182.6 287.2,183.6 292.4,184.5 297.6,185.4 302.8,186.1 308.0,186.8 313.2,187.3 318.4,187.8 323.6,188.2 328.8,188.6 334.0,188.8 339.2,189.0 344.4,189.0 349.6,189.0 354.8,189.0 360.0,188.8 365.2,188.6 370.4,188.3 375.6,187.9 380.8,187.5 386.0,187.0 391.2,186.4 396.4,185.7 401.6,185.0 406.8,184.2 412.0,183.3 417.2,182.4 422.4,181.4 427.6,180.3 432.8,179.2 438.0,178.0 443.2,176.7 448.4,175.3 453.6,173.9 458.8,172.5 464.0,170.9 469.2,169.3 474.4,167.7 479.6,166.0 484.8,164.2 490.0,162.3 495.2,160.4 500.4,158.5 505.6,156.4 510.8,154.3 516.0,152.2 521.2,150.0 526.4,147.7 531.6,145.3 536.8,142.9 542.0,140.5 547.2,138.0 552.4,135.4 557.6,132.7 562.8,130.0 568.0,127.3 573.2,124.5 578.4,121.6 583.6,118.7 588.8,115.7 594.0,112.6 599.2,109.5 604.4,106.3 609.6,103.1 614.8,99.8 620.0,96.5" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><line x1="347.0" y1="260" x2="347.0" y2="189.1" stroke="var(--done)" stroke-width="1.8" stroke-dasharray="5 4"/><circle cx="347.0" cy="189.1" r="6" fill="var(--done)"/><text class="dia-t" x="347.0" y="280" font-size="12" text-anchor="middle" fill="var(--done)" font-weight="700">最优点</text><text class="dia-t" x="170" y="84" font-size="13" text-anchor="middle" fill="var(--muted)" font-weight="700">欠拟合</text><text class="dia-t" x="170" y="102" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">两边都差</text><text class="dia-t" x="554" y="84" font-size="13" text-anchor="middle" fill="var(--accent)" font-weight="700">过拟合</text><text class="dia-t" x="554" y="102" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="normal">训练好 / 验证差</text><text class="dia-t" x="612" y="233.66411404772347" font-size="12" text-anchor="end" fill="var(--link)" font-weight="700">训练误差</text><text class="dia-t" x="612" y="118.46411404772346" font-size="12" text-anchor="end" fill="var(--accent)" font-weight="700">验证误差</text><text class="dia-t" x="360" y="30" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">训练误差一路降，验证误差却是 U 形 —— 两者的差就是过拟合</text></svg><figcaption>训练误差一路降，验证误差却是 <b>U 形</b>。⭐ 两条线之间的<b>缝隙</b>就是过拟合的量 —— 你要找的不是训练误差最低的点，而是绿色那条竖线所在的位置。</figcaption></figure>
 
 <hr />
 <h2 id="-">⚖️ 一、偏差-方差：过拟合的根源</h2>
@@ -313,7 +330,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 见<a href="../机器学习的数学原理/08-偏差方差分解.html">《机器学习的数学原理》第 8 章</a>。</p>
 </blockquote>
 <p>怎么判断自己在哪一侧：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>现象</th>
@@ -343,7 +360,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>查代码</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💡 <strong>加数据是唯一同时降低方差又不增加偏差的手段</strong>——所以它永远是第一选择。</p>
 </blockquote>
@@ -360,7 +377,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="k">K 折交叉验证</h3>
 <section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">全部数据切成 5 份：</span></div><div class="vb-flow-row"><span class="vb-flow-step">第1折： [测试][训练][训练][训练][训练]</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">分数1</span></div><div class="vb-flow-row"><span class="vb-flow-step">第2折： [训练][测试][训练][训练][训练]</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">分数2</span></div><div class="vb-flow-row"><span class="vb-flow-step">·</span></div><div class="vb-flow-row"><span class="vb-flow-step">第5折： [训练][训练][训练][训练][测试]</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">分数5</span></div><div class="vb-flow-row"><span class="vb-flow-step">最终 = 5 个分数的均值 ± 标准差</span></div><div class="vb-flow-row"><span class="vb-flow-step">每个样本都当过一次测试，分数更稳</span></div></div></section>
 <p><strong>变体，选对了才有意义</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>类型</th>
@@ -385,7 +402,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>时间序列必须用</strong>——只能用过去预测未来</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>🔗 推荐算法第 3 章说的「按时间切分，别随机切」，就是 TimeSeriesSplit 的思想。
 <a href="../Kaggle竞赛方法论/01_数据策略与特征工程.html">Kaggle 第 1 章</a>讲的「验证集构造」讲的也是这件事——
@@ -393,7 +410,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="_3">💀 三、数据泄漏：最致命的错误</h2>
-<figure class="dia" data-fig="data_leakage"><svg viewBox="0 0 700 322" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="数据泄漏的三条路径"><defs><marker id="a6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker><marker id="a6l" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--link)"/></marker><marker id="a6d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--danger,#e5534b)"/></marker></defs><rect x="30" y="76" width="200" height="150" rx="10" fill="var(--card)" stroke="var(--danger,#e5534b)" stroke-width="1.9"/><text class="dia-t" x="130" y="104" font-size="13" text-anchor="middle" fill="var(--danger,#e5534b)" font-weight="700">① 时间穿越</text><text class="dia-t" x="130" y="130" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="normal">用了预测时点</text><text class="dia-t" x="130" y="148" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="normal">之后才有的信息</text><text class="dia-t" x="130" y="184" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">「用户总订单数」</text><text class="dia-t" x="130" y="201" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">包含了未来订单</text><rect x="250" y="76" width="200" height="150" rx="10" fill="var(--card)" stroke="var(--danger,#e5534b)" stroke-width="1.9"/><text class="dia-t" x="350" y="104" font-size="13" text-anchor="middle" fill="var(--danger,#e5534b)" font-weight="700">② 预处理泄漏</text><text class="dia-t" x="350" y="130" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="normal">在全量数据上</text><text class="dia-t" x="350" y="148" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="normal">fit 了转换器</text><text class="dia-t" x="350" y="184" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">标准化/PCA/目标编码</text><text class="dia-t" x="350" y="201" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">偷看了验证集分布</text><rect x="470" y="76" width="200" height="150" rx="10" fill="var(--card)" stroke="var(--danger,#e5534b)" stroke-width="1.9"/><text class="dia-t" x="570" y="104" font-size="13" text-anchor="middle" fill="var(--danger,#e5534b)" font-weight="700">③ 分组泄漏</text><text class="dia-t" x="570" y="130" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="normal">同一实体的数据</text><text class="dia-t" x="570" y="148" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="normal">同时在训练和验证</text><text class="dia-t" x="570" y="184" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">同一用户的两条记录</text><text class="dia-t" x="570" y="201" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">被随机切到了两边</text><text class="dia-t" x="340" y="30" font-size="13.5" text-anchor="middle" fill="var(--fg)" font-weight="700">三条路径不同，症状却一样：离线分数好得不真实</text><text class="dia-t" x="340" y="256" font-size="12.5" text-anchor="middle" fill="var(--accent)" font-weight="700">⭐ 一个通用自检：把特征逐个问一遍「预测的那一刻，这个值真的已经存在了吗？」</text><text class="dia-t" x="340" y="280" font-size="11.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">以及：所有预处理都放进 Pipeline，让交叉验证自动隔离</text><text class="dia-t" x="340" y="306" font-size="12" text-anchor="middle" fill="var(--danger,#e5534b)" font-weight="700">💀 实测：纯噪声数据（真实准确率 50%），泄漏时能跑出 76.5%</text></svg><figcaption>三条路径不同，症状却一样：<b>离线分数好得不真实</b>。⭐ 通用自检：把特征逐个问一遍「预测的那一刻，这个值真的已经存在了吗？」并把所有预处理放进 Pipeline，让交叉验证自动隔离。</figcaption></figure>
+<figure class="dia" data-fig="data_leakage"><svg viewBox="0 0 700 322" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="数据泄漏的三条路径"><defs><marker id="a6__f4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker><marker id="a6l__f4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--link)"/></marker><marker id="a6d__f4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--danger,#e5534b)"/></marker></defs><rect x="30" y="76" width="200" height="150" rx="10" fill="var(--card)" stroke="var(--danger,#e5534b)" stroke-width="1.9"/><text class="dia-t" x="130" y="104" font-size="13" text-anchor="middle" fill="var(--danger,#e5534b)" font-weight="700">① 时间穿越</text><text class="dia-t" x="130" y="130" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="normal">用了预测时点</text><text class="dia-t" x="130" y="148" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="normal">之后才有的信息</text><text class="dia-t" x="130" y="184" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">「用户总订单数」</text><text class="dia-t" x="130" y="201" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">包含了未来订单</text><rect x="250" y="76" width="200" height="150" rx="10" fill="var(--card)" stroke="var(--danger,#e5534b)" stroke-width="1.9"/><text class="dia-t" x="350" y="104" font-size="13" text-anchor="middle" fill="var(--danger,#e5534b)" font-weight="700">② 预处理泄漏</text><text class="dia-t" x="350" y="130" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="normal">在全量数据上</text><text class="dia-t" x="350" y="148" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="normal">fit 了转换器</text><text class="dia-t" x="350" y="184" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">标准化/PCA/目标编码</text><text class="dia-t" x="350" y="201" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">偷看了验证集分布</text><rect x="470" y="76" width="200" height="150" rx="10" fill="var(--card)" stroke="var(--danger,#e5534b)" stroke-width="1.9"/><text class="dia-t" x="570" y="104" font-size="13" text-anchor="middle" fill="var(--danger,#e5534b)" font-weight="700">③ 分组泄漏</text><text class="dia-t" x="570" y="130" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="normal">同一实体的数据</text><text class="dia-t" x="570" y="148" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="normal">同时在训练和验证</text><text class="dia-t" x="570" y="184" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">同一用户的两条记录</text><text class="dia-t" x="570" y="201" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">被随机切到了两边</text><text class="dia-t" x="340" y="30" font-size="13.5" text-anchor="middle" fill="var(--fg)" font-weight="700">三条路径不同，症状却一样：离线分数好得不真实</text><text class="dia-t" x="340" y="256" font-size="12.5" text-anchor="middle" fill="var(--accent)" font-weight="700">⭐ 一个通用自检：把特征逐个问一遍「预测的那一刻，这个值真的已经存在了吗？」</text><text class="dia-t" x="340" y="280" font-size="11.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">以及：所有预处理都放进 Pipeline，让交叉验证自动隔离</text><text class="dia-t" x="340" y="306" font-size="12" text-anchor="middle" fill="var(--danger,#e5534b)" font-weight="700">💀 实测：纯噪声数据（真实准确率 50%），泄漏时能跑出 76.5%</text></svg><figcaption>三条路径不同，症状却一样：<b>离线分数好得不真实</b>。⭐ 通用自检：把特征逐个问一遍「预测的那一刻，这个值真的已经存在了吗？」并把所有预处理放进 Pipeline，让交叉验证自动隔离。</figcaption></figure>
 
 <p>定义：训练时用到了「本不该知道的信息」，导致离线分数虚高、上线暴死。</p>
 <h3 id="_4">🔨 一个会让你后背发凉的实验</h3>
@@ -432,7 +449,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>都必须放进 Pipeline，让它们在每折内部重新执行。</strong></p>
 </blockquote>
 <h3 id="_5">常见泄漏清单</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>泄漏形式</th>
@@ -461,8 +478,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>去重没做干净，同一条数据两边都有</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
+<blockquote>
+<p>⚠️ <strong>这一章讲的随机划分，有一整类数据上不能直接用。</strong>
+当样本彼此<strong>同源</strong>（同一个用户的多条记录、同一个家族的多条蛋白序列），
+随机切会把「几乎一样的东西」分到训练集和测试集两边 —— 测的是记忆不是泛化。
+⭐ 两个方向的展开：<a href="../数据这一关/14-数据泄漏的七种来源.html">数据这一关 14 · 数据泄漏的七种来源</a>
+讲全部七种；<a href="../科学问题怎么变成模型/07-评测的坑.html">科学问题怎么变成模型 07 · 评测的坑</a>
+实测了它最狠的样子 —— 同一份数据只改划分方式，<strong>R² 从 0.707 掉到 −1.199</strong>（负数 = 还不如猜均值）。</p>
+</blockquote>
 <h2 id="_6">📏 四、选对指标（准确率是个陷阱）</h2>
 <figure class="dia" data-fig="roc_curve"><svg viewBox="0 0 720 322" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ROC 曲线与 AUC"><rect x="130" y="70" width="200" height="200" fill="none" stroke="var(--border)" stroke-width="1.5"/><line x1="130" y1="270" x2="330" y2="70" stroke="var(--muted)" stroke-width="1.6" stroke-dasharray="6 5"/><polyline points="130.0,270.0 133.3,220.3 136.7,207.1 140.0,197.8 143.3,190.4 146.7,184.1 150.0,178.6 153.3,173.7 156.7,169.2 160.0,165.1 163.3,161.2 166.7,157.7 170.0,154.3 173.3,151.1 176.7,148.1 180.0,145.2 183.3,142.4 186.7,139.7 190.0,137.2 193.3,134.7 196.7,132.3 200.0,130.0 203.3,127.8 206.7,125.6 210.0,123.5 213.3,121.5 216.7,119.5 220.0,117.6 223.3,115.7 226.7,113.8 230.0,112.0 233.3,110.2 236.7,108.5 240.0,106.8 243.3,105.1 246.7,103.5 250.0,101.9 253.3,100.3 256.7,98.8 260.0,97.2 263.3,95.8 266.7,94.3 270.0,92.8 273.3,91.4 276.7,90.0 280.0,88.6 283.3,87.3 286.7,85.9 290.0,84.6 293.3,83.3 296.7,82.0 300.0,80.8 303.3,79.5 306.7,78.3 310.0,77.0 313.3,75.8 316.7,74.6 320.0,73.5 323.3,72.3 326.7,71.1 330.0,70.0" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/><polygon points="130.0,270.0 133.3,220.3 136.7,207.1 140.0,197.8 143.3,190.4 146.7,184.1 150.0,178.6 153.3,173.7 156.7,169.2 160.0,165.1 163.3,161.2 166.7,157.7 170.0,154.3 173.3,151.1 176.7,148.1 180.0,145.2 183.3,142.4 186.7,139.7 190.0,137.2 193.3,134.7 196.7,132.3 200.0,130.0 203.3,127.8 206.7,125.6 210.0,123.5 213.3,121.5 216.7,119.5 220.0,117.6 223.3,115.7 226.7,113.8 230.0,112.0 233.3,110.2 236.7,108.5 240.0,106.8 243.3,105.1 246.7,103.5 250.0,101.9 253.3,100.3 256.7,98.8 260.0,97.2 263.3,95.8 266.7,94.3 270.0,92.8 273.3,91.4 276.7,90.0 280.0,88.6 283.3,87.3 286.7,85.9 290.0,84.6 293.3,83.3 296.7,82.0 300.0,80.8 303.3,79.5 306.7,78.3 310.0,77.0 313.3,75.8 316.7,74.6 320.0,73.5 323.3,72.3 326.7,71.1 330.0,70.0 330,270 130,270" fill="var(--accent)" opacity=".10"/><circle cx="166.0" cy="158.4" r="6" fill="var(--link)"/><line x1="130" y1="158.4" x2="166.0" y2="158.4" stroke="var(--link)" stroke-width="1.2" stroke-dasharray="4 3"/><line x1="166.0" y1="270" x2="166.0" y2="158.4" stroke="var(--link)" stroke-width="1.2" stroke-dasharray="4 3"/><text class="dia-t" x="230.0" y="296" font-size="12" text-anchor="middle" fill="var(--muted)" font-weight="normal">假正率 FPR（把好的误判成坏的）</text><text class="dia-t" x="116" y="170.0" font-size="12" text-anchor="end" fill="var(--muted)" font-weight="normal">真正率</text><text class="dia-t" x="116" y="186.0" font-size="12" text-anchor="end" fill="var(--muted)" font-weight="normal">TPR</text><text class="dia-t" x="346" y="162.35927519407554" font-size="12" text-anchor="start" fill="var(--link)" font-weight="600">← 一个阈值 = 一个点</text><text class="dia-t" x="346" y="182.35927519407554" font-size="11.5" text-anchor="start" fill="var(--muted)" font-weight="normal">调阈值就是在这条线上滑</text><text class="dia-t" x="240" y="224" font-size="12.5" text-anchor="middle" fill="var(--accent)" font-weight="700">AUC = 这块面积</text><text class="dia-t" x="282" y="142" font-size="11.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">随机猜</text><text class="dia-t" x="360" y="30" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">AUC 只看排序，不看分数准不准</text><text class="dia-t" x="360" y="306" font-size="12" text-anchor="middle" fill="var(--accent)" font-weight="600">⚠️ 两个模型 AUC 一样，概率校准可能天差地别 —— 要做阈值决策时必须另看校准</text></svg><figcaption>曲线上<b>每一个点对应一个阈值</b>，调阈值就是在这条线上滑。AUC 是曲线下的面积。⚠️ 但 AUC <b>只看排序</b> —— 两个模型 AUC 一样，概率校准可能天差地别。</figcaption></figure>
 
@@ -476,7 +501,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><strong>PR-AUC 只有 0.07</strong> —— 比 AUC 诚实得多。<strong>类别极不平衡时看 PR-AUC，别看 AUC</strong></li>
 </ol>
 <h3 id="_7">指标速查</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>指标</th>
@@ -516,7 +541,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>类别极不平衡时比 AUC 可靠</strong> ⭐</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>🔗 推荐算法第 12 章的 <strong>GAUC</strong> 就是 AUC 的分组版本——
 因为推荐场景要看的是「每个用户自己的列表里排得对不对」。</p>
@@ -538,7 +563,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <section class="result-board" aria-label="学习曲线数据">
 <p class="result-board-title">学习曲线：样本变多后发生了什么</p>
-<table>
+<div class="tw"><table>
 <caption>训练集和测试集的分数，以及两者差距</caption>
 <thead><tr><th>训练样本数</th><th>训练集</th><th>测试集</th><th>差距</th></tr></thead>
 <tbody>
@@ -547,7 +572,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <tr><td>159</td><td>100.0%</td><td>94.7%</td><td>5.3%</td></tr>
 <tr><td>398</td><td>100.0%</td><td>94.2%</td><td>5.8%</td></tr>
 </tbody>
-</table>
+</table></div>
 </section>
 <p><strong>怎么读这张表</strong>：</p>
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">测试集还在明显上升</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">✅ 加数据有用，去搞数据</span></div><div class="vb-flow-row"><span class="vb-flow-step">测试集已经平了</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">❌ 加数据没用了，去改模型/特征</span></div><div class="vb-flow-row"><span class="vb-flow-step">两条线差距很大且不收敛</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">高方差，加数据或加正则</span></div><div class="vb-flow-row"><span class="vb-flow-step">两条线都低且贴在一起</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">高偏差，模型太弱，换更强的</span></div></div></section>

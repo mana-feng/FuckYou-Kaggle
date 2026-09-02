@@ -173,6 +173,13 @@ table.xref th{text-align:left;background:var(--accent-soft);color:var(--accent);
  padding:8px 12px;border:1px solid var(--border)}
 table.xref td{padding:8px 12px;border:1px solid var(--border);vertical-align:top}
 table.xref td:first-child{white-space:nowrap;font-weight:600}
+
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -235,7 +242,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <section class="visual-block visual-block-compare" aria-label="策略清单"><p class="visual-block-title">策略清单</p><p class="vb-note">读法：先用 Baseline 跑通；其余每行是遇到对应情况时再加的做法，它们可以组合，不是只能沿一条分支走到底。</p><div class="vb-compare"><p><strong>频谱图/热力图</strong>：直接当图像输入CNN</p><p><strong>人脸表情</strong>：先人脸检测裁剪→再分类</p><p><strong>图像检索</strong>：孪生网络 / ArcFace</p></div></section>
 
 <h3 id="cv_2">CV按比赛阶段</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>阶段</th>
@@ -320,7 +327,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>显存允许时加大输入尺寸</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_8">三、时间序列任务决策路径</h2>
 <h3 id="_9">数据预处理</h3>
@@ -381,7 +388,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <section class="visual-block visual-block-compare" aria-label="策略清单"><p class="visual-block-title">策略清单</p><p class="vb-note">读法：先用 Baseline 跑通；其余每行是遇到对应情况时再加的做法，它们可以组合，不是只能沿一条分支走到底。</p><div class="vb-compare"><p><strong>分类冲分</strong>：EfficientNetV2-M/L(比V1快5~11倍)</p><p><strong>ViT替代</strong>：ConvNeXt(CNN归纳偏置+ViT设计)</p><p><strong>检测backbone</strong>：ConvNeXt-T/S</p><p><strong>分割backbone</strong>：Swin Transformer</p><p><strong>快速验证</strong>：EfficientNetV2-S</p></div></section>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../大模型全景导论/02-Transformer原理.html">大模型导论 02 Transformer 原理</a></td><td>NLP 决策路径最后都通向它</td></tr><tr><td><a href="../机器学习与深度学习基础/12-CNN.html">ML基础 12 CNN</a></td><td>CV 决策路径的主干网络原理</td></tr><tr><td><a href="../机器学习与深度学习基础/13-RNN与序列建模.html">ML基础 13 RNN 与序列建模</a></td><td>时序决策路径里深度模型分支的地基</td></tr><tr><td><a href="../推荐算法/06-工业架构-召回粗排精排重排.html">推荐算法 06 工业架构</a></td><td>推荐决策路径的整体框架，先分清召回还是排序</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../大模型全景导论/02-Transformer原理.html">大模型导论 02 Transformer 原理</a></td><td>NLP 决策路径最后都通向它</td></tr><tr><td><a href="../机器学习与深度学习基础/12-CNN.html">ML基础 12 CNN</a></td><td>CV 决策路径的主干网络原理</td></tr><tr><td><a href="../机器学习与深度学习基础/13-RNN与序列建模.html">ML基础 13 RNN 与序列建模</a></td><td>时序决策路径里深度模型分支的地基</td></tr><tr><td><a href="../推荐算法/06-工业架构-召回粗排精排重排.html">推荐算法 06 工业架构</a></td><td>推荐决策路径的整体框架，先分清召回还是排序</td></tr></tbody></table></div>
 <hr />
 <h2 id="ckpt">✅ 检查点</h2>
 <ol>

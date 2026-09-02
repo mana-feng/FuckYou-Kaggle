@@ -1,14 +1,24 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>10 · 多模态：视觉、语音与生成 · 大模型全景导论</title>
+<title>10 · 多模态：视觉理解（VLM） · 大模型全景导论</title>
 <script>(function(){var t=localStorage.getItem('recsys-theme');
 if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
 @font-face{font-family:"CodeCJK";
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -267,39 +284,71 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
-  <span class="title">10 · 多模态</span>
+  <span class="title">10 · 多模态：视觉理解</span>
   <span class="prevnext"><a href="09-推理范式.html">←</a>
-  <a href="11-评测体系.html">→</a></span>
+  <a href="10d-CLIP与对比学习.html">→</a></span>
   <button class="js-done-btn">☐ 打卡</button>
   <button id="themeToggle" title="切换深浅色">🌗</button>
 </div></header>
 <main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
 <ul>
 <li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">🧭 先选你要做哪个模态</a></li>
 <li><a href="#vlm">🖼️ 一、视觉理解（VLM）</a></li>
-<li><a href="#_5">🎨 二、图像生成（扩散模型）</a></li>
-<li><a href="#_7">🔊 三、语音</a></li>
-<li><a href="#_8">🎬 四、视频</a></li>
-<li><a href="#_9">🔗 和站内其他章的关系</a></li>
-<li><a href="#_10">📦 深挖的话要学什么</a></li>
-<li><a href="#_11">⚖️ 要不要深挖</a></li>
-<li><a href="#_12">✅ 检查点</a></li>
-<li><a href="#_13">🛑 可以停在这里</a></li>
+<li><a href="#_4">🔗 和站内其他章的关系</a></li>
+<li><a href="#_5">✅ 检查点</a></li>
+<li><a href="#_6">🛑 可以停在这里</a></li>
 </ul>
 </div>
 </details>
-<h1 id="10">10 · 多模态：视觉、语音与生成</h1>
-<p>⏱ <strong>54 分钟</strong> ｜ ⭐ <strong>独立性最强的一块，可以单独成套</strong></p>
+<h1 id="10-vlm">10 · 多模态：视觉理解（VLM）</h1>
+<p>⏱ <strong>20 分钟</strong> ｜ ⭐ <strong>图片进模型之后变成什么，以及什么时候不该用 VLM</strong></p>
 <hr />
 <h2 id="_1">🎯 一句话</h2>
-<p>多模态的核心思路只有一个：<strong>把图像、语音、视频都变成「token」，然后交给同一个 Transformer 处理</strong>。理解了这句话，整个领域的结构就清楚了。</p>
-<figure class="dia" data-fig="gan"><svg viewBox="0 0 740 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GAN 的对抗训练结构"><defs><marker id="a8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker><marker id="a8l" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--link)"/></marker><marker id="a8g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--done)"/></marker></defs><rect x="40" y="130" width="150" height="66" rx="11" fill="var(--card)" stroke="var(--link)" stroke-width="2.2"/><text class="dia-t" x="115" y="158" font-size="13.5" text-anchor="middle" fill="var(--link)" font-weight="700">生成器 G</text><text class="dia-t" x="115" y="178" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">造假的</text><rect x="430" y="130" width="150" height="66" rx="11" fill="var(--card)" stroke="var(--accent)" stroke-width="2.2"/><text class="dia-t" x="505" y="158" font-size="13.5" text-anchor="middle" fill="var(--accent)" font-weight="700">判别器 D</text><text class="dia-t" x="505" y="178" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">辨真假</text><rect x="236" y="140" width="140" height="46" rx="9" fill="var(--accent-soft)" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="306" y="168" font-size="12" text-anchor="middle" fill="var(--fg)" font-weight="600">假样本</text><line x1="192" y1="163" x2="232" y2="163" stroke="var(--link)" stroke-width="2.2" marker-end="url(#a8l)"/><line x1="380" y1="163" x2="426" y2="163" stroke="var(--muted)" stroke-width="2.2" marker-end="url(#a8)"/><rect x="236" y="66" width="140" height="40" rx="9" fill="var(--card)" stroke="var(--done)" stroke-width="1.6"/><text class="dia-t" x="306" y="91" font-size="12" text-anchor="middle" fill="var(--done)" font-weight="600">真实样本</text><line x1="380" y1="88" x2="470" y2="126" stroke="var(--done)" stroke-width="2" marker-end="url(#a8g)"/><path d="M470 200 L470 250 L115 250 L115 202" fill="none" stroke="var(--link)" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#a8l)"/><text class="dia-t" x="292" y="268" font-size="11.5" text-anchor="middle" fill="var(--link)" font-weight="600">G 的梯度：想骗过 D</text><text class="dia-t" x="608" y="148" font-size="11.5" text-anchor="start" fill="var(--accent)" font-weight="700">D 的目标：</text><text class="dia-t" x="608" y="166" font-size="11" text-anchor="start" fill="var(--muted)" font-weight="normal">真的判真</text><text class="dia-t" x="608" y="183" font-size="11" text-anchor="start" fill="var(--muted)" font-weight="normal">假的判假</text><text class="dia-t" x="340" y="32" font-size="13.5" text-anchor="middle" fill="var(--fg)" font-weight="700">两个网络互为对手，谁也不能赢太多</text><text class="dia-t" x="340" y="300" font-size="12.5" text-anchor="middle" fill="var(--accent)" font-weight="700">⭐ 训练目标不是「让某一方最优」，而是让两者达到【均衡】</text><text class="dia-t" x="340" y="322" font-size="11.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">⚠️ 这就是 GAN 难训的根源：D 太强 G 学不到梯度，G 太强 D 失去区分力</text><text class="dia-t" x="340" y="344" font-size="11.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">对比扩散模型：那边是稳定的回归目标，所以更好训 —— 这也是它后来居上的原因</text></svg><figcaption>两个网络互为对手：G 想骗过 D，D 想抓出 G。⭐ 训练目标不是「让某一方最优」，而是让两者达到<b>均衡</b> —— ⚠️ 这也是 GAN 难训的根源：D 太强 G 学不到梯度，G 太强 D 失去区分力。对比之下扩散模型是稳定的回归目标，所以后来居上。</figcaption></figure>
-
-<figure class="dia" data-fig="diffusion"><svg viewBox="0 0 684 272" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="扩散模型的加噪与去噪过程"><defs><marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker><marker id="a3l" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--link)"/></marker></defs><rect x="70" y="76" width="88" height="88" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><rect x="110.4" y="90.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="93.2" y="99.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="101.8" y="99.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="110.4" y="99.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="119.0" y="99.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="127.6" y="99.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="93.2" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="101.8" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="110.4" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="119.0" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="127.6" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="84.6" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="93.2" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="101.8" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="110.4" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="119.0" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="127.6" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="136.2" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="93.2" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="101.8" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="110.4" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="119.0" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="127.6" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="93.2" y="133.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="101.8" y="133.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="110.4" y="133.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="119.0" y="133.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="127.6" y="133.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="110.4" y="142.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><text class="dia-t" x="114" y="184" font-size="12" text-anchor="middle" fill="var(--muted)" font-weight="600">原图</text><rect x="200" y="76" width="88" height="88" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><rect x="214.6" y="82.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="266.2" y="82.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="240.4" y="90.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="223.2" y="99.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="231.8" y="99.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="240.4" y="99.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="249.0" y="99.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="257.6" y="99.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="266.2" y="99.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="223.2" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="231.8" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="240.4" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="249.0" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="257.6" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="266.2" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="214.6" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="223.2" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="231.8" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="240.4" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="257.6" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="206.0" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="214.6" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="223.2" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="231.8" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="249.0" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="223.2" y="133.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="231.8" y="133.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="240.4" y="133.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="249.0" y="133.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="257.6" y="133.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="214.6" y="142.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="249.0" y="142.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><text class="dia-t" x="244" y="184" font-size="12" text-anchor="middle" fill="var(--muted)" font-weight="600"></text><rect x="330" y="76" width="88" height="88" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><rect x="336.0" y="90.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="344.6" y="90.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="370.4" y="90.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="361.8" y="99.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="370.4" y="99.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="379.0" y="99.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="387.6" y="99.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="344.6" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="353.2" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="361.8" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="370.4" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="379.0" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="387.6" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="396.2" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="344.6" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="353.2" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="370.4" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="379.0" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="387.6" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="336.0" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="353.2" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="361.8" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="379.0" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="387.6" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="353.2" y="133.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="361.8" y="133.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="387.6" y="133.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="336.0" y="142.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="370.4" y="142.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="353.2" y="150.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="370.4" y="150.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="379.0" y="150.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="396.2" y="150.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><text class="dia-t" x="374" y="184" font-size="12" text-anchor="middle" fill="var(--muted)" font-weight="600"></text><rect x="460" y="76" width="88" height="88" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><rect x="517.6" y="82.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="534.8" y="82.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="466.0" y="90.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="500.4" y="90.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="500.4" y="99.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="509.0" y="99.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="517.6" y="99.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="526.2" y="99.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="483.2" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="491.8" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="500.4" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="517.6" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="526.2" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="483.2" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="509.0" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="517.6" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="474.6" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="500.4" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="517.6" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="474.6" y="133.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="483.2" y="133.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="491.8" y="133.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="500.4" y="133.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="517.6" y="133.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="526.2" y="133.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="534.8" y="133.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="491.8" y="142.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="517.6" y="142.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="474.6" y="150.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="491.8" y="150.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><text class="dia-t" x="504" y="184" font-size="12" text-anchor="middle" fill="var(--muted)" font-weight="600"></text><rect x="590" y="76" width="88" height="88" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><rect x="596.0" y="82.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="604.6" y="82.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="621.8" y="82.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="630.4" y="82.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="639.0" y="82.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="647.6" y="82.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="656.2" y="82.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="664.8" y="82.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="596.0" y="90.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="613.2" y="90.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="630.4" y="90.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="639.0" y="90.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="647.6" y="90.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="656.2" y="90.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="604.6" y="99.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="639.0" y="99.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="664.8" y="99.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="613.2" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="621.8" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="630.4" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="639.0" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="647.6" y="107.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="604.6" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="639.0" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="647.6" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="656.2" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.85"/><rect x="664.8" y="116.4" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="596.0" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="604.6" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="621.8" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="630.4" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="639.0" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="647.6" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="656.2" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="664.8" y="125.0" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="596.0" y="133.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="630.4" y="133.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="664.8" y="133.6" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="630.4" y="142.2" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="639.0" y="150.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="647.6" y="150.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="656.2" y="150.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><rect x="664.8" y="150.8" width="7" height="7" rx="1.5" fill="var(--accent)" opacity="0.5"/><text class="dia-t" x="634" y="184" font-size="12" text-anchor="middle" fill="var(--muted)" font-weight="600">纯噪声</text><line x1="70" y1="46" x2="614" y2="46" stroke="var(--muted)" stroke-width="2" marker-end="url(#a3)" opacity=".7"/><text class="dia-t" x="342" y="36" font-size="12.5" text-anchor="middle" fill="var(--muted)" font-weight="600">前向：一步步加噪（这一步是固定的，不用学）</text><line x1="614" y1="212" x2="70" y2="212" stroke="var(--accent)" stroke-width="2.6" marker-end="url(#a3)"/><text class="dia-t" x="342" y="232" font-size="12.5" text-anchor="middle" fill="var(--accent)" font-weight="700">反向：学一个网络「预测这一步加了什么噪声」，然后减掉</text><text class="dia-t" x="342" y="256" font-size="11.5" text-anchor="middle" fill="var(--fg)" font-weight="600">⭐ 模型学的不是「怎么画画」，是「怎么去掉一点噪声」——重复几十次，噪声就变成了图</text></svg><figcaption>向右是加噪（固定规则，不用学），向左是去噪（这才是模型学的）。⭐ 模型学的<b>不是「怎么画画」，而是「怎么去掉一点噪声」</b> —— 重复几十次，纯噪声就变成了图。</figcaption></figure>
-
+<p>多模态的共同思想只有一句：<strong>万物皆 token</strong> —— 图像、音频、视频都被切成 token 之后，
+就都能交给同一个 Transformer 处理。</p>
+<hr />
+<h2 id="_2">🧭 先选你要做哪个模态</h2>
+<p>⚠️ <strong>这三页互不依赖，直接跳到你要的那一页就行</strong>，不必顺着读。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>你要做的东西</th>
+<th>去哪一页</th>
+<th>它讲什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>让模型看懂图片、截图、表格、文档</td>
+<td><strong>本页</strong></td>
+<td>VLM 三段式架构、图片怎么变 token、三个常见误判</td>
+</tr>
+<tr>
+<td>想懂图文为什么能对齐、要自己训 VLM</td>
+<td><a href="10d-CLIP与对比学习.html">10d · CLIP 与对比学习</a></td>
+<td>InfoNCE、温度系数、LLaVA 两阶段训练</td>
+</tr>
+<tr>
+<td>文生图、图生图、风格控制</td>
+<td><a href="10b-图像生成.html">10b · 图像生成</a></td>
+<td>扩散模型：从噪声一步步擦出图像</td>
+</tr>
+<tr>
+<td>语音识别、语音合成、语音对话</td>
+<td><a href="10c-语音与视频.html">10c · 语音与视频</a></td>
+<td>ASR / TTS / 端到端语音，以及视频的 token 爆炸问题</td>
+</tr>
+<tr>
+<td>视频理解或视频生成</td>
+<td><a href="10c-语音与视频.html">10c · 语音与视频</a></td>
+<td>同上</td>
+</tr>
+</tbody>
+</table></div>
 <hr />
 <h2 id="vlm">🖼️ 一、视觉理解（VLM）</h2>
-<h3 id="_2">架构：三段式</h3>
+<h3 id="_3">架构：三段式</h3>
 <figure class="dia">
 <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="VLM 三段式架构：图片经视觉编码器 ViT 编码，再经投影层翻译成 token，最后与文字一起送入语言模型">
   <rect x="40" y="12" width="130" height="32" rx="8" fill="none" stroke="var(--border)" stroke-width="1.4"/>
@@ -338,12 +387,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>💡 <strong>核心洞察</strong>：<strong>图片被翻译成了「视觉单词」，和文字并排放进同一个上下文。</strong>
 所以做文本应用时的那一整套（上下文管理、提示词、工具，本站《智能体工程教程》讲的就是这些）全部适用。</p>
 <p>📌 <strong>这张图有名字</strong>：这套「ViT → 投影层 → LLM」的结构就是 LLaVA，也是目前开源多模态模型的默认长相。
-另一条路线（BLIP-2 的 <strong>Q-Former</strong>）改的只有中间那一层——两者的差别在本章后面单独讲。</p>
+另一条路线（BLIP-2 的 <strong>Q-Former</strong>）改的只有中间那一层——两者的差别在 <a href="10d-CLIP与对比学习.html">10d · CLIP 与对比学习</a> 那一页。</p>
 <p>⚠️ <strong>实用推论</strong>：一张高分辨率图可能消耗 <strong>1000+ token</strong>。多图对话烧 token 极快——上下文预算意识（智能体第 4 章）在这里更重要。</p>
 <h3 id="token">💰 图片的 token 账（做视觉应用前先算这笔）</h3>
 <section class="visual-block visual-block-calc" aria-label="算一算"><p class="visual-block-title">算一算</p><div class="vb-calc"><p>图片 token 数 ≈ (宽/patch) × (高/patch)，patch 通常 14~16 像素</p><p>512×512 → 约 1,000 token</p><p>1024×1024 → 约 4,000 token ⭐ 翻倍分辨率 = 4 倍 token</p><p>一段 10 张图的对话 → 轻松几万 token</p><p>💡 所以主流做法是【先缩放到模型的最优分辨率】再传</p><p>盲目传原图 = 白烧几倍的钱</p></div></section>
 <h3 id="vlm_1">⚠️ VLM 的三个常见误判（知道了能省很多调试时间）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -368,190 +417,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>和文本模型数字母是同类问题——<strong>给工具，别让它数</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>🔑 <strong>一条通用建议</strong>：<strong>VLM 擅长"理解这张图在说什么"，不擅长"精确读出图里的每个数"。</strong>
 需要精确的场景（发票、表格、图纸），<strong>用 OCR + VLM 组合</strong>，别只靠 VLM。</p>
 </blockquote>
-<h3 id="clip">CLIP：图文对齐的地基</h3>
-<section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">训练：几亿对（图片，描述文字）</span></div><div class="vb-flow-row"><span class="vb-flow-step">目标：让匹配的图文向量靠近，不匹配的远离（对比学习）</span></div><div class="vb-flow-row"><span class="vb-flow-step">结果：图片和文字进入**同一个向量空间**</span></div><div class="vb-flow-row"><span class="vb-flow-step">可以用文字搜图、用图搜图、零样本分类</span></div></div></section>
-<blockquote>
-<p>🔗 这就是推荐算法第 10 章向量检索的多模态版本——<strong>同一套 ANN 基础设施</strong>。</p>
-</blockquote>
-<h4 id="infonce-batch">训练目标 InfoNCE：说白了是一道 batch 内的多选题</h4>
-<p>拿一个 batch 的 N 对（图片，描述）。把 N 张图和 N 段文字各自编码、L2 归一化，得到一个 <strong>N×N 的相似度矩阵</strong>，然后要求<strong>对角线最大</strong>：</p>
-<p>$$\mathcal{L} = -\frac{1}{N}\sum_{i=1}^{N} \log \frac{\exp(\text{sim}(I_i, T_i)/\tau)}{\sum_{j=1}^{N} \exp(\text{sim}(I_i, T_j)/\tau)}$$</p>
-<p>💡 <strong>人话</strong>：<strong>对角线是正确答案，同一个 batch 里其他所有文字都是干扰项。</strong> 这个式子就是"N 选 1 选对"的交叉熵；训练时图找文、文找图各算一次取平均（所以是对称的）。</p>
-<p>⭐ <strong>关键在于负样本是白捡的</strong>：不用专门去采负样本——<strong>同一批次里别人的正样本，就是我的负样本</strong>（in-batch 负采样）。这是对比学习最省事的地方，也正是它对 batch size 极度敏感的原因。</p>
-<h4 id="_3">温度系数 τ 到底在干什么</h4>
-<p>$\tau$ 就是<a href="06-推理优化.html">第 6 章解码策略</a>里那个 temperature，只不过用在了训练的 loss 上：</p>
-<table>
-<thead>
-<tr>
-<th>τ</th>
-<th>分布</th>
-<th>后果</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>小</strong>（如 0.01）</td>
-<td>尖锐</td>
-<td>把<strong>最难的那个负样本</strong>的梯度放到极大 → 学得"锋利"，但对错标极敏感、容易训崩</td>
-</tr>
-<tr>
-<td><strong>大</strong>（如 0.5）</td>
-<td>平坦</td>
-<td>所有负样本一视同仁 → 训练稳，但区分度不够，向量都挤在一起</td>
-</tr>
-</tbody>
-</table>
-<p>⭐ CLIP 的做法是<strong>把 τ 当成可学习参数</strong>（存它的对数，并夹住上限防止训练时自己跑飞）——<strong>它重要到值得让模型自己学</strong>。</p>
-<h4 id="batch-size">为什么 batch size 对对比学习特别重要</h4>
-<section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">batch = 256</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">每张图面对 255 个干扰项</span></div><div class="vb-flow-row"><span class="vb-flow-step">batch = 32768</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">每张图面对 32767 个干扰项 ⭐ CLIP 用的就是这个量级</span></div><div class="vb-flow-row"><span class="vb-flow-step">干扰项越多</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">这道多选题越难</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">学到的向量必须分得越开</span></div><div class="vb-flow-row"><span class="vb-flow-step">这是对比学习【最直接的效果杠杆】，比改网络结构管用</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 代价是显存：N×N 相似度矩阵 + N 份激活，batch 一大就必须多卡</span></div><div class="vb-flow-row"><span class="vb-flow-step">（把各卡的特征 all-gather 到一起再算 loss，通信量还不小）</span></div></div></section>
-<p>⚠️ <strong>SigLIP 就是冲着这一条来的</strong>：它把 softmax 对比损失换成<strong>逐对的 sigmoid 二分类损失</strong>——每一对图文自己判断"配不配"，不再需要对整行做归一化。于是不必凑齐全局负样本，小 batch 也能训、多卡通信也省了。现在很多新模型的视觉编码器用的是 SigLIP 而不是 CLIP。</p>
-<h4 id="_4">⭐ 一条跨板块的连线（这一章最值钱的一句）</h4>
-<blockquote>
-<p><strong>CLIP 的训练方式，和推荐系统的双塔召回是同一个东西。</strong></p>
-<table>
-<thead>
-<tr>
-<th>CLIP</th>
-<th>推荐算法的双塔</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>图片编码器 / 文本编码器</td>
-<td>用户塔 / 物品塔</td>
-</tr>
-<tr>
-<td>in-batch 负采样（别人的正样本当我的负样本）</td>
-<td>一模一样</td>
-</tr>
-<tr>
-<td>温度系数 τ</td>
-<td>一模一样（那边建议从 <strong>0.05</strong> 开始调）</td>
-</tr>
-<tr>
-<td>图文进同一空间 → 用文字搜图</td>
-<td>用户物品进同一空间 → ANN 召回</td>
-</tr>
-</tbody>
-</table>
-<p>连<strong>坑</strong>都一样：热门样本会被过度当成负样本（推荐那边用 <strong>LogQ 校正</strong> 修）、负样本选错会训废、batch 越大越好。</p>
-<p>🔗 <a href="../推荐算法/08-深度学习推荐模型.html">推荐算法第 8 章</a>有一段可跑的「双塔 + In-batch 负采样」代码——
-<strong>把"用户"换成"图片"、"物品"换成"文字"，那就是 CLIP 的训练循环。</strong> 想动手复现对比学习，去那一节抄。</p>
-</blockquote>
-<h3 id="llava-vs-q-former">🔌 LLaVA vs Q-Former：投影层的两条路线</h3>
-<p>三段式里中间那一层有两种主流实现，<strong>差别在于视觉 token 有没有被压过</strong>：</p>
-<table>
-<thead>
-<tr>
-<th>路线</th>
-<th>代表</th>
-<th>投影层是什么</th>
-<th>视觉 token 数</th>
-<th>取舍</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>直接投影</strong></td>
-<td><strong>LLaVA</strong></td>
-<td>一个 MLP（最早的版本就是一层线性）</td>
-<td><strong>等于 ViT 的 patch 数</strong>（几百个）</td>
-<td>✅ 简单、训得快、细节不丢<br>❌ 吃 token</td>
-</tr>
-<tr>
-<td><strong>查询压缩</strong></td>
-<td><strong>BLIP-2 的 Q-Former</strong></td>
-<td>一个小 Transformer，带一组<strong>可学习的 query 向量</strong>，用交叉注意力去"问"视觉特征</td>
-<td><strong>等于 query 个数</strong>（比如固定 32 个）</td>
-<td>✅ token 少、多图/长上下文友好<br>❌ 结构复杂、压缩必然丢细节（<strong>OCR 和小字场景最明显</strong>）</td>
-</tr>
-</tbody>
-</table>
-<p><strong>LLaVA 的两阶段训练</strong>（"多模态模型怎么训"这道题的标准答案）：</p>
-<section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">阶段一：只训投影层 ← 视觉编码器和 LLM 全部冻住</span></div><div class="vb-flow-row"><span class="vb-flow-step">数据：大量【图片</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">简短描述】</span></div><div class="vb-flow-row"><span class="vb-flow-step">目标：把视觉向量对齐到 LLM 的词空间</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 这一阶段本质上就是在训一个「翻译器」</span></div><div class="vb-flow-row"><span class="vb-flow-step">阶段二：训投影层 + LLM ← 视觉编码器仍然冻住</span></div><div class="vb-flow-row"><span class="vb-flow-step">数据：【图片 + 多轮指令问答】</span></div><div class="vb-flow-row"><span class="vb-flow-step">从&quot;能描述图片&quot;变成&quot;能按指令回答关于图片的问题&quot;</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 视觉编码器（CLIP / SigLIP 的那个 ViT）通常全程不解冻，</span></div><div class="vb-flow-row"><span class="vb-flow-step">或只在最后小幅解冻 —— 它的表征是几亿图文对训出来的，</span></div><div class="vb-flow-row"><span class="vb-flow-step">随便动会把好不容易对齐的空间破坏掉</span></div></div></section>
-<blockquote>
-<p>🔑 <strong>为什么 LLaVA 这条"看起来太简单"的路线赢了</strong>：Q-Former 那一坨结构要单独预训练，而 MLP 投影层<strong>几乎没有超参</strong>、几个小时就训完，效果还不差。
-⭐ 现在的主流做法是「<strong>LLaVA 式直接投影 + 想省 token 时在 ViT 输出上做池化或切图</strong>」——把复杂度留在<strong>数据和分辨率策略</strong>上，而不是留在结构上。</p>
-</blockquote>
-<hr />
-<h2 id="_5">🎨 二、图像生成（扩散模型）</h2>
-<p>和 LLM 完全不同的范式：</p>
-<p class="dia-lead"><b>LLM</b>：一个词一个词地「写」出来（自回归）。<br><b>扩散模型</b>：从纯噪声开始，一步步「擦」出图像 ——</p>
-
-<div class="flowchain">
-<div class="fstep"><b>雪花噪声</b><span>t = T</span></div>
-<div class="farrow">→</div>
-<div class="fstep"><b>朦胧色块</b><span>…</span></div>
-<div class="farrow">→</div>
-<div class="fstep"><b>轮廓成形</b><span>…</span></div>
-<div class="farrow">→</div>
-<div class="fstep"><b>清晰图像</b><span>t = 0</span></div>
-</div>
-
-<p class="dia-note"><b>训练</b>：给干净图片加噪声，让模型学会「预测加了什么噪声」。<br><b>生成</b>：反过来，一步步去噪。</p>
-
-<p>关键组件：</p>
-<table>
-<thead>
-<tr>
-<th>组件</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>U-Net / DiT</strong></td>
-<td>去噪的主干网络（DiT = 用 Transformer 做去噪，现在的主流）</td>
-</tr>
-<tr>
-<td><strong>VAE</strong></td>
-<td>把图压缩到低维「潜空间」再扩散，省算力（Latent Diffusion）</td>
-</tr>
-<tr>
-<td><strong>文本编码器</strong></td>
-<td>把提示词变成条件，引导生成方向</td>
-</tr>
-<tr>
-<td><strong>CFG</strong></td>
-<td>分类器自由引导，控制「多听话 vs 多自由」</td>
-</tr>
-<tr>
-<td><strong>ControlNet / LoRA</strong></td>
-<td>精确控制构图 / 注入特定风格（LoRA 和第 5 章同源！）</td>
-</tr>
-</tbody>
-</table>
-<h3 id="_6">💡 为什么扩散比自回归更适合图像</h3>
-<section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">自回归生成图像：像素/patch 一个一个生成</span></div><div class="vb-flow-row"><span class="vb-flow-step">一张 1024×1024 的图有 400 万像素，生成得等到天荒地老</span></div><div class="vb-flow-row"><span class="vb-flow-step">而且【左上角决定右下角】这个假设对图像很别扭</span></div><div class="vb-flow-row"><span class="vb-flow-step">扩散：所有像素【同时】一点点变清晰</span></div><div class="vb-flow-row"><span class="vb-flow-step">全局一致性天然更好（不会左边画完右边对不上）</span></div><div class="vb-flow-row"><span class="vb-flow-step">步数可控（20 步快、50 步精细）⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 根本原因：语言【天然有顺序】，图像【天然没有】</span></div></div></section>
-<blockquote>
-<p>🔗 <strong>和第 2 章对照着看</strong>：
-自回归适合语言是因为语言本来就是线性的；
-<strong>图像没有"下一个像素"这个概念，所以强行自回归是在给它加一个不存在的约束。</strong></p>
-</blockquote>
-<p>⚠️ <strong>但两者正在互相靠拢</strong>：</p>
-<blockquote>
-<p>图像生成开始用 Transformer 做去噪主干（DiT），
-而语言模型也在探索扩散式生成。<strong>"哪种范式适合哪种数据"还没有定论。</strong></p>
-</blockquote>
-<hr />
-<h2 id="_7">🔊 三、语音</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">ASR 语音识别（听）</span></div><div class="vb-tree-row"><span class="vb-tree-node">Whisper 类：音频 → 梅尔频谱图 → Encoder-Decoder → 文字</span></div><div class="vb-tree-row"><span class="vb-tree-node">实际上把音频当&quot;图&quot;处理，再用序列模型转文字</span></div><div class="vb-tree-row"><span class="vb-tree-node">TTS 语音合成（说）</span></div><div class="vb-tree-row"><span class="vb-tree-node">文本 → 声学特征 → 声码器 → 波形</span></div><div class="vb-tree-row"><span class="vb-tree-node">现在流行：直接把音频离散化成 token，用 LLM 的方式生成 ⭐</span></div><div class="vb-tree-row"><span class="vb-tree-node">端到端语音对话（2024+）</span></div><div class="vb-tree-row"><span class="vb-tree-node">不再走 语音→文字→LLM→文字→语音 的链路</span></div><div class="vb-tree-row"><span class="vb-tree-node">而是音频 token 直接进 LLM</span></div><div class="vb-tree-row"><span class="vb-tree-node">✅ 延迟低、能保留语气情绪、可打断</span></div></div></section>
-<blockquote>
-<p>💡 <strong>注意那个趋势</strong>：语音也被「token 化」了——<strong>又回到了第一句话：万物皆 token。</strong></p>
-</blockquote>
-<hr />
-<h2 id="_8">🎬 四、视频</h2>
-<section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">理解：把视频当&quot;一串图片 + 时间维度&quot;</span></div><div class="vb-flow-row"><span class="vb-flow-step">挑战是 token 爆炸（1 分钟视频可能上万 token）</span></div><div class="vb-flow-row"><span class="vb-flow-step">关键技术是时空压缩、关键帧抽取</span></div><div class="vb-flow-row"><span class="vb-flow-step">生成：扩散模型 + 时间维度一致性</span></div><div class="vb-flow-row"><span class="vb-flow-step">挑战是&quot;物体在帧间不能乱变&quot;</span></div><div class="vb-flow-row"><span class="vb-flow-step">时空注意力、3D VAE</span></div></div></section>
-<p>视频是当前算力消耗最大、进展最快的方向之一。</p>
-<hr />
-<h2 id="_9">🔗 和站内其他章的关系</h2>
+<h2 id="_4">🔗 和站内其他章的关系</h2>
 <p>左列有的来自日常用 LLM 的经验，有的在站内别的板块讲过——<strong>碰上过哪几条就从哪几条接进来，一条没碰过也不影响读这一章</strong>。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>你可能已经知道的</th>
@@ -588,10 +461,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>CLIP 的 τ 是同一个式子，只是用在 loss 上</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <!--XREF-->
 <p><strong>想接着深挖，去这几处</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>去哪</th>
@@ -616,129 +489,42 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>CLIP 对齐出来的图文向量，最终要落进向量库才有用</td>
 </tr>
 <tr>
-<td><a href="06-推理优化.html">第 6 章 推理优化</a></td>
-<td>τ 和你调 API 的 <code>temperature</code> 是同一个东西；那一章讲它落在<strong>采样</strong>上是什么样</td>
+<td><a href="06c-解码参数怎么调.html">06c · 解码参数怎么调</a></td>
+<td>τ 和你调 API 的 <code>temperature</code> 是同一个东西；那一页讲它落在<strong>采样</strong>上是什么样、以及为什么它和 <code>top_p</code> 不是两个独立开关</td>
+</tr>
+<tr>
+<td><a href="../扩散模型/index.html">扩散模型（整套 11 页）</a></td>
+<td>⭐ 图像生成那一支的深挖：从加噪去噪一路到 ControlNet 和 FID 的坑。本页的 10b 是索引，那一套是它点名要外找的正文</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
-<!--MIDSTOP-->
-<blockquote>
-<p>🛑 <strong>读到这里可以停</strong> —— 已经读了约 27 分钟。
-<strong>最后一段还有</strong>（约 26 分钟）：深挖的话要学什么 · 要不要深挖 · 检查点与走神救援
-回来的时候不用重读，直接从下一节接着看就行。</p>
-</blockquote>
-<hr />
-<h2 id="_10">📦 深挖的话要学什么</h2>
-<blockquote>
-<p>📍 <strong>每条后面标了它在哪</strong>：
-📗 <strong>本库有</strong> = 站内已经讲透，点进去就行；📙 <strong>半有</strong> = 站内讲了一半，另一半得外找；
-📕 <strong>要外找</strong> = 站内没有，得去论文或别处。
-⚠️ <strong>先说结论：这一章是全导论「要外找」比例最高的一章。</strong>
-本库是一套<strong>以语言模型为主干</strong>的教程，图像生成、语音、视频这三块站内几乎是空白——
-与其让你按图索骥扑空，不如在这里说清楚。</p>
-</blockquote>
-<p><strong>视觉理解</strong>（✅ = 本章正文已讲）：ViT 原理 ｜ ✅ CLIP 的 InfoNCE 与温度系数 ｜ ✅ 投影层两条路线（LLaVA 的 MLP vs BLIP-2 的 Q-Former）｜ 高分辨率处理（切图 / AnyRes 策略）、SigLIP 之后的编码器演进、多模态对齐的数据配方、视频理解、OCR 与文档理解、多模态 RAG</p>
-<p>→ 📙 <strong>半有（只有 ViT 这一项）</strong>：<a href="../机器学习与深度学习基础/14-通往Transformer.html">ML基础 14 · 通往Transformer</a> 讲了 ViT 最该先知道的那件事——<strong>归纳偏置强弱和数据量的关系</strong>：ImageNet(1.3M) 上 ResNet 赢、拐点在 ImageNet-21k(14M) 附近、300M 时 ViT 赢，"苦涩的教训"的但书是「数据和算力足够」。<a href="../Kaggle竞赛方法论/09_任务类型与模型架构.html">Kaggle 09 · 任务类型与模型架构</a> 的表里有 ViT 的参数量和「Patch Embedding」一行，以及数据量 &gt;50K 才考虑 ViT/Swin 的选型判据。但 ViT 的完整架构（patch 怎么切、cls token、位置编码怎么加）站内没有。</p>
-<p>→ 📕 <strong>其余全部要外找</strong>：AnyRes 切图、SigLIP、多模态对齐数据配方、OCR 与文档理解、多模态 RAG，<strong>站内一个字都没有</strong>。⚠️ 其中「OCR 与文档理解 + 多模态 RAG」值得单独提醒——<a href="08-RAG深水区.html">08 · RAG深水区</a> 的深挖清单里「文档解析（PDF/表格/扫描件）」同样是 📕，这两章在这一点上是同一个空洞，做文档问答的话要有心理准备。</p>
-<p>图像生成：扩散过程的数学（前向加噪/反向去噪）、DDPM→DDIM 采样加速、Latent Diffusion、DiT、ControlNet、风格 LoRA 训练、图生图/局部重绘、评估（FID/CLIP Score）</p>
-<p>→ 📕 <strong>整块要外找</strong>。全站搜 DDPM / DDIM / Latent Diffusion / ControlNet，唯一的命中就是上面这一行清单本身。站内能帮你的只有<strong>前置数学</strong>：<a href="../机器学习的数学原理/01b-KL散度.html">数学原理 01b · KL散度</a>（扩散的变分下界整个建在 KL 上，而 KL 在全站被引用过六次却直到那一章才被定义）、<a href="../机器学习的数学原理/13-EM与高斯混合.html">数学原理 13 · EM与高斯混合</a>（变分推断的同一套思路）。<a href="15-数学地基.html">15 · 数学地基</a> 也明说了「马尔可夫链 / 变分推断——只有挖图像生成才需要」。把这两章当地基，然后去 DDPM 和 DDIM 两篇原论文。</p>
-<p>语音：梅尔频谱、Whisper 架构、音频 token 化（残差量化——<strong>和推荐算法第 14 章的 Semantic ID 是同一个技术！</strong>）、TTS 声码器、端到端语音对话、实时流式处理</p>
-<p>→ 📙 <strong>半有（只有残差量化这一项，但它讲得很透）</strong>：<a href="../推荐算法/14-生成式推荐-2026前沿.html">推荐算法 14 · 生成式推荐</a> 的「Semantic ID」一节讲的就是 <strong>RQ-VAE 残差量化</strong>——把连续向量逐层逼近、每层挑一个码字，得到 <code>&lt;c₁=42, c₂=17, c₃=203, c₄=88&gt;</code> 这样从粗到细的离散码。音频 token 化用的是同一套机制，只是被量化的向量来自音频编码器而不是物品编码器。 ⭐ 这是全站跨度最大的一条同构，值得专门去一趟。</p>
-<p>→ 📕 <strong>其余要外找</strong>：梅尔频谱、Whisper 架构、TTS 声码器、端到端语音对话，站内没有。</p>
-<p>视频：时空注意力、3D VAE、关键帧策略、视频生成的一致性</p>
-<p>→ 📕 <strong>整块要外找</strong>：站内<strong>没有任何一章涉及视频</strong>。这是本库最外侧的边界。</p>
-<p>需要的前置：第 2 章 Transformer。图像生成部分需要<strong>一点概率论</strong>（扩散过程），是本导论里数学要求最高的一块。</p>
-<hr />
-<h2 id="_11">⚖️ 要不要深挖</h2>
-<table>
-<thead>
-<tr>
-<th>你的情况</th>
-<th>建议</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>只做文本应用</td>
-<td>⛔ 知道 VLM 怎么工作、图片吃 token 就够</td>
-</tr>
-<tr>
-<td>要做图像/设计/创意工具</td>
-<td>✅ 深挖扩散模型</td>
-</tr>
-<tr>
-<td>要做语音助手/客服/播客工具</td>
-<td>✅ 深挖 ASR/TTS + 端到端语音</td>
-</tr>
-<tr>
-<td>要做文档处理（PDF/表格/图表）</td>
-<td>✅ 深挖 VLM + 多模态 RAG（和第 8 章配合）</td>
-</tr>
-<tr>
-<td>想全面了解 AI</td>
-<td>✅ 至少把视觉理解那部分学了</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>🔑 <strong>我的判断</strong>：这块<strong>独立性最强</strong>——它和你现有的两套教程几乎不重叠，可以完全独立成一套。</p>
-<p>⭐ <strong>但有一个重要的例外</strong>：<strong>CLIP 的对比学习你其实已经会了</strong>——它就是推荐算法第 8 章的双塔 in-batch 负采样 + 温度系数。
-所以「<strong>视觉理解</strong>」这半边的入门成本比它看起来低得多；真正陌生的是「<strong>图像生成</strong>」那半边。</p>
-<p>但也正因为独立，<strong>它的优先级取决于你的业务方向</strong>，而不是技术逻辑：
-- 做文本应用 → 优先级最低
-- 做内容/设计/语音产品 → 优先级最高</p>
-<p>另外它内部还能再拆：<strong>视觉理解</strong>（偏应用，容易）和<strong>图像生成</strong>（偏原理，需要概率论）是两个不同难度的东西。</p>
-</blockquote>
-<hr />
-<h2 id="_12">✅ 检查点</h2>
+<h2 id="_5">✅ 检查点</h2>
 <ol>
 <li>VLM 的三段式架构是什么？投影层的作用？</li>
 <li>图片在语言模型看来是什么？分辨率翻倍，token 变几倍？</li>
 <li>VLM 的三个常见误判是什么？需要精确读取时该怎么做？</li>
-<li>扩散模型和 LLM 的生成范式有什么根本不同？为什么图像更适合扩散？</li>
-<li>CLIP 训练出来的是什么？能用来做什么？</li>
-<li>语音领域「token 化」的趋势体现了什么共同思想？</li>
-<li>CLIP 的 InfoNCE 在优化什么？它的负样本从哪里来？</li>
-<li>温度系数 τ 调小、调大分别有什么后果？CLIP 是怎么处理 τ 的？</li>
-<li>为什么 batch size 对对比学习特别重要？SigLIP 改了什么来绕开这个限制？</li>
-<li>⭐ CLIP 的训练方式和推荐系统的哪个模型是同一套？列出至少三条对应关系。</li>
-<li>LLaVA 和 BLIP-2 的 Q-Former 在投影层上有什么区别？各自的取舍是什么？</li>
-<li>LLaVA 的两个训练阶段分别训什么、冻什么？为什么视觉编码器通常不解冻？</li>
 </ol>
 <details>
 <summary>👀 答案</summary>
 <ol>
 <li><strong>视觉编码器（ViT，把图切 patch 当词）→ 投影层 → 语言模型</strong>。投影层把视觉向量翻译成 LLM 能理解的 token 空间。</li>
-<li>就是一串"<strong>视觉单词</strong>"，和文字并排放在同一个上下文里。分辨率翻倍 → token 变 4 倍（512×512 约 1000，1024×1024 约 4000）。所以要先缩放到模型最优分辨率再传，盲目传原图是白烧钱。</li>
-<li>①<strong>密集小字/表格读错</strong>（分辨率压缩后细节丢失 → 切图分块传）②精确空间关系说不准（patch 化削弱位置感）③计数超过 5~6 个就不准。需要精确时用 OCR + VLM 组合——VLM 擅长"理解图在说什么"，不擅长"精确读出每个数"。</li>
-<li>LLM 是<strong>自回归</strong>（一个一个生成）；扩散是从纯噪声开始迭代去噪，所有像素同时变清晰。图像更适合扩散是因为语言天然有顺序，图像天然没有——强行自回归是给它加一个不存在的约束；而且扩散的全局一致性天然更好、步数可控。</li>
-<li>让<strong>图片和文字进入同一个向量空间</strong>。可以用文字搜图、图搜图、零样本分类，且能复用同一套向量检索基础设施。</li>
-<li><strong>万物皆 token</strong>——把不同模态离散化成 token 后，都能交给同一个 Transformer 处理。（音频的残差量化和推荐算法 Semantic ID 是同一技术。）</li>
-<li>一个 batch 的 N 对图文编码后得到 <strong>N×N 相似度矩阵</strong>，InfoNCE 要求对角线最大——本质是"N 选 1 选对"的交叉熵（图找文、文找图各算一次取平均）。负样本是白捡的：同一批次里别人的正样本就是我的负样本（in-batch 负采样）。</li>
-<li><strong>τ 小（0.01）→ 分布尖锐</strong>，最难的负样本梯度极大，学得锋利但对错标极敏感、容易训崩；τ 大（0.5）→ 分布平坦，所有负样本一视同仁，训得稳但区分度不够、向量挤在一起。CLIP 把它做成可学习参数（存对数值并夹住上限），说明它重要到值得让模型自己学。</li>
-<li>因为负样本就是 batch 里的其他样本：<strong>batch=256 只有 255 个干扰项，batch=32768 有 32767 个</strong>（CLIP 用的量级）。干扰项越多多选题越难，向量必须分得越开——这是对比学习最直接的效果杠杆。代价是显存（N×N 矩阵，得多卡 all-gather）。SigLIP 把 softmax 对比损失换成逐对的 sigmoid 二分类，每对自己判"配不配"，不再需要对整行归一化，于是小 batch 也能训。</li>
-<li><strong>推荐算法第 8 章的双塔召回。</strong> 对应关系：图片/文本编码器 ↔ 用户塔/物品塔；in-batch 负采样一模一样；温度系数 τ 一模一样（那边从 0.05 开始调）；图文进同一空间用文字搜图 ↔ 用户物品进同一空间做 ANN 召回。连坑都一样（热门样本被过度当负样本 → LogQ 校正、负样本选错会训废、batch 越大越好）。</li>
-<li><strong>LLaVA 是一个 MLP 直接投影</strong>，视觉 token 数 = ViT 的 patch 数（几百个）——简单、训得快、细节不丢，但吃 token；Q-Former 是一个带可学习 query 的小 Transformer，用交叉注意力把视觉特征压成固定个数（比如 32 个）——省 token、多图友好，但结构复杂且压缩必然丢细节，OCR 和小字场景最明显。主流赢家是 LLaVA 这条：MLP 几乎没有超参、几小时训完。</li>
-<li><strong>阶段一只训投影层</strong>（视觉编码器和 LLM 全冻），用【图片 → 简短描述】把视觉向量对齐到 LLM 的词空间，本质是训一个"翻译器"；阶段二训投影层 + LLM（视觉编码器仍冻），用【图片 + 多轮指令问答】做指令微调。视觉编码器不解冻是因为它的表征是几亿图文对训出来的，随便动会破坏好不容易对齐的空间。</li>
+<li>就是一串“<strong>视觉单词</strong>”，和文字并排放在同一个上下文里。分辨率翻倍 → token 变 4 倍（512×512 约 1000，1024×1024 约 4000）。所以要先缩放到模型最优分辨率再传，盲目传原图是白烧钱。</li>
+<li>①<strong>密集小字/表格读错</strong>（分辨率压缩后细节丢失 → 切图分块传）②精确空间关系说不准（patch 化削弱位置感）③计数超过 5~6 个就不准。需要精确时用 OCR + VLM 组合——VLM 擅长“理解图在说什么”，不擅长“精确读出每个数”。</li>
 </ol>
 </details>
 <hr />
-<h2 id="_13">🛑 可以停在这里</h2>
+<h2 id="_6">🛑 可以停在这里</h2>
+<p>到这里你已经能设计一个视觉应用了：知道图片进去变成什么、要花多少 token、以及<strong>什么时候不该用 VLM</strong>（精确读数交给 OCR）。</p>
+<p>⚠️ <strong>什么时候看下一页</strong>：你想知道「图片和文字为什么能进同一个向量空间」，或者要自己训 / 微调一个 VLM。那是原理层，做应用不必先看。</p>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>⭐ <strong>核心：万物皆 token</strong>——图、音、视频都变成 token 交给同一个 Transformer。</p>
-<p>① <strong>VLM 是三段式</strong>：视觉编码器把图切成 patch 当词、投影层翻译到 LLM 空间、然后就是普通的 LLM。⭐ <strong>分辨率翻倍，token 变四倍</strong>——<strong>先缩放到最优分辨率再传，别盲目传原图</strong>。⚠️ 三个误判：密集小字表格读错、精确空间关系说不准、数量一多就数不准。⭐ <strong>一句话：VLM 擅长「理解图在说什么」，不擅长「精确读出每个数」——要精确就 OCR 加 VLM 组合。</strong></p>
-<p>② <strong>CLIP 让图文进同一向量空间</strong>，于是可以复用普通的向量检索。训练目标是让相似度矩阵的对角线最大，⭐ <strong>负样本是白捡的——别人的正样本就是我的负样本</strong>；⭐ <strong>所以 batch 越大越好，这是对比学习最直接的效果杠杆。</strong></p>
-<p>⭐⭐ <strong>全章最值钱的一句：CLIP 的训练方式和推荐算法那边的双塔召回是同一个东西</strong>——编码器对应两个塔、批内负采样一样、温度一样、<strong>连坑都一样</strong>（热门被过度当负样本）。⭐ <strong>想复现对比学习，直接去那一节抄代码，把「用户」换成「图片」就行。</strong></p>
-<p>投影层两条路线：⭐ <strong>直接投影简单、训得快、细节不丢但吃 token（主流赢家）；压成固定几十个 query 省 token，但压缩必然丢细节，小字最明显。</strong> ⚠️ 两阶段训练里<strong>视觉编码器全程不解冻</strong>——<strong>它的表征是几亿图文对训出来的，动了会破坏对齐</strong>。</p>
-<p>③ <strong>图像生成是扩散</strong>：从噪声迭代去噪，所有像素同时变清晰。⭐⭐ <strong>为什么图像适合扩散：语言天然有顺序，图像天然没有——强行自回归是加一个不存在的约束。</strong></p>
-<p>④ 语音这一路是把音频当图来处理，趋势是音频直接 token 化进 LLM。⭐ 这一章独立性最强，可以单独成套，<strong>优先级看业务方向</strong>。</p>
+<p>多模态的共同思想是<strong>万物皆 token</strong>。<strong>VLM 是三段式</strong>：<strong>视觉编码器（ViT，把图切成 patch 当词用）→ 投影层 → 语言模型</strong>，投影层负责把视觉向量翻译成 LLM 能懂的 token 空间。⭐ 所以<strong>图片在语言模型看来就是一串「视觉单词」</strong>，和文字并排放在同一个上下文里。⚠️ 做视觉应用之前先算 token 账：<strong>分辨率翻倍，token 变 4 倍</strong>（512×512 约 1000 个，1024×1024 约 4000 个）—— 盲目传原图是白烧钱，应该先缩放到模型的最优分辨率。VLM 有三个常见误判，知道了能省很多调试时间：<strong>密集小字和表格会读错</strong>（分辨率压缩把细节丢了，解法是切图分块传）、<strong>精确的空间关系说不准</strong>（patch 化本身就削弱了位置感）、<strong>计数超过 5~6 个就不准</strong>。⭐ 所以需要精确读数时用 <strong>OCR + VLM 组合</strong>：VLM 擅长「理解这张图在说什么」，不擅长「精确读出每一个数」—— 这两件事分开交给不同工具，比换更大的模型有效得多。</p>
 </blockquote>
-<p><strong>下一节</strong> 👉 <a href="11-评测体系.html">11-评测体系.md</a></p>
+<p><strong>下一节</strong> 👉 <a href="10d-CLIP与对比学习.html">10d-CLIP与对比学习.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
-<nav class="pagenav"><a href="09-推理范式.html"><div class="dir">← 上一节</div>🧩 09 · 推理范式</a><a class="next" href="11-评测体系.html"><div class="dir">下一节 →</div>📊 11 · 评测体系</a></nav>
+<nav class="pagenav"><a href="09-推理范式.html"><div class="dir">← 上一节</div>🧩 09 · 推理范式</a><a class="next" href="10d-CLIP与对比学习.html"><div class="dir">下一节 →</div>🧲 10d · CLIP 与对比学习</a></nav>
 </main>
 <script>(function(){
   var KEY="overview-progress", FILE="10-\u591a\u6a21\u6001.md";

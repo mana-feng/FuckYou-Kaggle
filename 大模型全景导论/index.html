@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -251,11 +268,11 @@ h2.stage span{font-size:.78em;font-weight:400;color:var(--muted)}
 </div>
 <blockquote><b>⚠️ 时效提醒</b>：原理和方法论长期有效；具体的工具名、模型名、性能数字
 半年就可能过期 —— <b>只当量级感看</b>。</blockquote>
-<section class="stage"><h2>入口<small>先看这两章，建立坐标系</small></h2><div class="cards"><a class="card" href="00-怎么用这份导论.html" data-md="00-怎么用这份导论.md"><span class="check">☐</span><span class="badge">🧭</span><span class="cname">00 · 怎么用这份导论</span><span class='time'>⏱18 分钟</span></a><a class="card" href="01-一张图看懂大模型全景.html" data-md="01-一张图看懂大模型全景.md"><span class="check">☐</span><span class="badge">🗺️</span><span class="cname">01 · 一张图看懂大模型全景</span><span class='time'>⏱20 分钟</span></a></div></section><section class="stage"><h2>底层 · 模型是怎么造出来的<small>先走 01–05 主线；现代架构专题按需阅读</small></h2><div class="cards"><a class="card" href="03-Tokenizer与上下文.html" data-md="03-Tokenizer与上下文.md"><span class="check">☐</span><span class="badge">🔤</span><span class="cname">主线 1 · 文字怎样进入模型</span><span class='time'>⏱9 分钟</span></a><a class="card" href="02-Transformer原理.html" data-md="02-Transformer原理.md"><span class="check">☐</span><span class="badge">⚙️</span><span class="cname">主线 2 · 模型怎样看懂一句话</span><span class='time'>⏱12 分钟</span></a><a class="card" href="02c-为什么都是Decoder-only.html" data-md="02c-为什么都是Decoder-only.md"><span class="check">☐</span><span class="badge">➡️</span><span class="cname">主线 3 · 模型怎样一个字一个字写下去</span><span class='time'>⏱9 分钟</span></a><a class="card" href="04-训练三阶段.html" data-md="04-训练三阶段.md"><span class="check">☐</span><span class="badge">🏭</span><span class="cname">主线 4 · 它怎样从续写机变成助手</span><span class='time'>⏱11 分钟</span></a><a class="card" href="05-微调与LoRA.html" data-md="05-微调与LoRA.md"><span class="check">☐</span><span class="badge">🎯</span><span class="cname">主线 5 · 怎样把模型变成你的助手</span><span class='time'>⏱10 分钟</span></a><a class="card" href="02b-现代LLM架构的四处改动.html" data-md="02b-现代LLM架构的四处改动.md"><span class="check">☐</span><span class="badge">🔩</span><span class="cname">专题 A · 现代模型为什么更容易训稳</span><span class='time'>⏱8 分钟</span></a><a class="card" href="02e-SwiGLU与RoPE.html" data-md="02e-SwiGLU与RoPE.md"><span class="check">☐</span><span class="badge">🚪</span><span class="cname">专题 B · SwiGLU：模型怎样筛选信息</span><span class='time'>⏱8 分钟</span></a><a class="card" href="02f-RoPE与位置感.html" data-md="02f-RoPE与位置感.md"><span class="check">☐</span><span class="badge">🌀</span><span class="cname">专题 C · RoPE：模型怎样知道位置</span><span class='time'>⏱9 分钟</span></a><a class="card" href="02d-MoE混合专家.html" data-md="02d-MoE混合专家.md"><span class="check">☐</span><span class="badge">🧑‍🔬</span><span class="cname">专题 D · MoE：怎样把模型做大而不每次全开</span><span class='time'>⏱10 分钟</span></a></div></section><section class="stage"><h2>中层 · 怎么让它跑起来<small>推理优化 / 本地部署</small></h2><div class="cards"><a class="card" href="06-推理优化.html" data-md="06-推理优化.md"><span class="check">☐</span><span class="badge">⚡</span><span class="cname">06 · 推理优化：让它跑得快、跑得起</span><span class='time'>⏱40 分钟</span></a><a class="card" href="06b-解码策略.html" data-md="06b-解码策略.md"><span class="check">☐</span><span class="badge">🎲</span><span class="cname">06b · 解码策略：模型是怎么选出下一个词的</span><span class='time'>⏱46 分钟</span></a><a class="card" href="07-本地部署与开源生态.html" data-md="07-本地部署与开源生态.md"><span class="check">☐</span><span class="badge">💻</span><span class="cname">07 · 本地部署与开源生态</span><span class='time'>⏱32 分钟</span></a></div></section><section class="stage"><h2>上层 · 怎么用好它<small>RAG / 推理范式 / 多模态</small></h2><div class="cards"><a class="card" href="08-RAG深水区.html" data-md="08-RAG深水区.md"><span class="check">☐</span><span class="badge">🔍</span><span class="cname">08 · RAG 深水区</span><span class='time'>⏱76 分钟</span></a><a class="card" href="09-推理范式.html" data-md="09-推理范式.md"><span class="check">☐</span><span class="badge">🧩</span><span class="cname">09 · 推理范式：让它想清楚再答</span><span class='time'>⏱28 分钟</span></a><a class="card" href="10-多模态.html" data-md="10-多模态.md"><span class="check">☐</span><span class="badge">🎨</span><span class="cname">10 · 多模态：视觉、语音与生成</span><span class='time'>⏱54 分钟</span></a></div></section><section class="stage"><h2>外围 · 怎么放心用<small>评测 / 安全 / 运维 / 合规</small></h2><div class="cards"><a class="card" href="11-评测体系.html" data-md="11-评测体系.md"><span class="check">☐</span><span class="badge">📊</span><span class="cname">11 · 评测体系：Benchmark 的真相</span><span class='time'>⏱32 分钟</span></a><a class="card" href="12-对齐与AI安全.html" data-md="12-对齐与AI安全.md"><span class="check">☐</span><span class="badge">🛡️</span><span class="cname">12 · 对齐与 AI 安全</span><span class='time'>⏱32 分钟</span></a><a class="card" href="13-LLMOps.html" data-md="13-LLMOps.md"><span class="check">☐</span><span class="badge">🔧</span><span class="cname">13 · LLMOps：把它当软件来运维</span><span class='time'>⏱28 分钟</span></a><a class="card" href="14-合规与伦理.html" data-md="14-合规与伦理.md"><span class="check">☐</span><span class="badge">⚖️</span><span class="cname">14 · 合规、法律与伦理</span><span class='time'>⏱28 分钟</span></a></div></section><section class="stage"><h2>地基<small>只补真正必需的数学</small></h2><div class="cards"><a class="card" href="15-数学地基.html" data-md="15-数学地基.md"><span class="check">☐</span><span class="badge">➗</span><span class="cname">15 · 数学地基：只补真正必需的</span><span class='time'>⏱22 分钟</span></a></div></section><section class="stage"><h2>决策<small>⭐ 整份导论的目的：帮你选出要深挖的方向</small></h2><div class="cards"><a class="card" href="16-你该挖哪一块.html" data-md="16-你该挖哪一块.md"><span class="check">☐</span><span class="badge">🎓</span><span class="cname">16 · 你该挖哪一块</span><span class='time'>⏱20 分钟</span></a></div></section>
+<section class="stage"><h2>入口<small>先看这两章，建立坐标系</small></h2><div class="cards"><a class="card" href="00-怎么用这份导论.html" data-md="00-怎么用这份导论.md"><span class="check">☐</span><span class="badge">🧭</span><span class="cname">00 · 怎么用这份导论</span><span class='time'>⏱32 分钟</span></a><a class="card" href="01-一张图看懂大模型全景.html" data-md="01-一张图看懂大模型全景.md"><span class="check">☐</span><span class="badge">🗺️</span><span class="cname">01 · 一张图看懂大模型全景</span><span class='time'>⏱20 分钟</span></a></div></section><section class="stage"><h2>底层 · 模型是怎么造出来的<small>先走【主线 1–5】五页；四个现代架构专题按需再看</small></h2><div class="cards"><a class="card" href="03-Tokenizer与上下文.html" data-md="03-Tokenizer与上下文.md"><span class="check">☐</span><span class="badge">🔤</span><span class="cname">主线 1 · 文字怎样进入模型</span><span class='time'>⏱9 分钟</span></a><a class="card" href="02-Transformer原理.html" data-md="02-Transformer原理.md"><span class="check">☐</span><span class="badge">⚙️</span><span class="cname">主线 2 · 模型怎样看懂一句话</span><span class='time'>⏱12 分钟</span></a><a class="card" href="02c-为什么都是Decoder-only.html" data-md="02c-为什么都是Decoder-only.md"><span class="check">☐</span><span class="badge">➡️</span><span class="cname">主线 3 · 模型怎样一个字一个字写下去</span><span class='time'>⏱9 分钟</span></a><a class="card" href="04-训练三阶段.html" data-md="04-训练三阶段.md"><span class="check">☐</span><span class="badge">🏭</span><span class="cname">主线 4 · 它怎样从续写机变成助手</span><span class='time'>⏱11 分钟</span></a><a class="card" href="05-微调与LoRA.html" data-md="05-微调与LoRA.md"><span class="check">☐</span><span class="badge">🎯</span><span class="cname">主线 5 · 怎样把模型变成你的助手</span><span class='time'>⏱10 分钟</span></a><a class="card" href="02b-现代LLM架构的四处改动.html" data-md="02b-现代LLM架构的四处改动.md"><span class="check">☐</span><span class="badge">🔩</span><span class="cname">专题 A · 现代模型为什么更容易训稳</span><span class='time'>⏱8 分钟</span></a><a class="card" href="02e-SwiGLU与RoPE.html" data-md="02e-SwiGLU与RoPE.md"><span class="check">☐</span><span class="badge">🚪</span><span class="cname">专题 B · SwiGLU：模型怎样筛选信息</span><span class='time'>⏱8 分钟</span></a><a class="card" href="02f-RoPE与位置感.html" data-md="02f-RoPE与位置感.md"><span class="check">☐</span><span class="badge">🌀</span><span class="cname">专题 C · RoPE：模型怎样知道位置</span><span class='time'>⏱9 分钟</span></a><a class="card" href="02d-MoE混合专家.html" data-md="02d-MoE混合专家.md"><span class="check">☐</span><span class="badge">🧑‍🔬</span><span class="cname">专题 D · MoE：怎样把模型做大而不每次全开</span><span class='time'>⏱10 分钟</span></a></div></section><section class="stage"><h2>中层 · 怎么让它跑起来<small>推理优化 / 本地部署</small></h2><div class="cards"><a class="card" href="06-推理优化.html" data-md="06-推理优化.md"><span class="check">☐</span><span class="badge">⚡</span><span class="cname">06 · 推理优化：先弄清瓶颈，再省显存</span><span class='time'>⏱22 分钟</span></a><a class="card" href="06d-降延迟与三个指标.html" data-md="06d-降延迟与三个指标.md"><span class="check">☐</span><span class="badge">🏎️</span><span class="cname">06d · 降延迟，以及三个指标怎么权衡</span><span class='time'>⏱26 分钟</span></a><a class="card" href="06b-解码策略.html" data-md="06b-解码策略.md"><span class="check">☐</span><span class="badge">🎲</span><span class="cname">06b · 解码策略：模型是怎么选出下一个词的</span><span class='time'>⏱24 分钟</span></a><a class="card" href="06c-解码参数怎么调.html" data-md="06c-解码参数怎么调.md"><span class="check">☐</span><span class="badge">🎛️</span><span class="cname">06c · 解码参数怎么调，出问题怎么查</span><span class='time'>⏱30 分钟</span></a><a class="card" href="07-本地部署与开源生态.html" data-md="07-本地部署与开源生态.md"><span class="check">☐</span><span class="badge">💻</span><span class="cname">07 · 本地部署：把模型跑在自己机器上</span><span class='time'>⏱22 分钟</span></a><a class="card" href="07b-开源生态怎么选.html" data-md="07b-开源生态怎么选.md"><span class="check">☐</span><span class="badge">🧰</span><span class="cname">07b · 开源生态怎么选，以及要不要自建</span><span class='time'>⏱26 分钟</span></a></div></section><section class="stage"><h2>上层 · 怎么用好它<small>RAG / 推理范式 / 多模态</small></h2><div class="cards"><a class="card" href="08-RAG深水区.html" data-md="08-RAG深水区.md"><span class="check">☐</span><span class="badge">🔍</span><span class="cname">08 · RAG：先搭出一个能用的</span><span class='time'>⏱22 分钟</span></a><a class="card" href="08b-重排与Embedding选型.html" data-md="08b-重排与Embedding选型.md"><span class="check">☐</span><span class="badge">🎯</span><span class="cname">08b · 重排与 Embedding 选型</span><span class='time'>⏱26 分钟</span></a><a class="card" href="08c-RAG怎么评估.html" data-md="08c-RAG怎么评估.md"><span class="check">☐</span><span class="badge">🧪</span><span class="cname">08c · 查询侧处理，和 RAG 怎么评估</span><span class='time'>⏱24 分钟</span></a><a class="card" href="08d-RAG进阶方向.html" data-md="08d-RAG进阶方向.md"><span class="check">☐</span><span class="badge">🕸️</span><span class="cname">08d · RAG 进阶方向</span><span class='time'>⏱22 分钟</span></a><a class="card" href="09-推理范式.html" data-md="09-推理范式.md"><span class="check">☐</span><span class="badge">🧩</span><span class="cname">09 · 推理范式：让它想清楚再答</span><span class='time'>⏱28 分钟</span></a><a class="card" href="10-多模态.html" data-md="10-多模态.md"><span class="check">☐</span><span class="badge">🖼️</span><span class="cname">10 · 多模态：视觉理解（VLM）</span><span class='time'>⏱20 分钟</span></a><a class="card" href="10d-CLIP与对比学习.html" data-md="10d-CLIP与对比学习.md"><span class="check">☐</span><span class="badge">🧲</span><span class="cname">10d · CLIP 与对比学习</span><span class='time'>⏱26 分钟</span></a><a class="card" href="10b-图像生成.html" data-md="10b-图像生成.md"><span class="check">☐</span><span class="badge">🎨</span><span class="cname">10b · 图像生成：扩散模型</span><span class='time'>⏱14 分钟</span></a><a class="card" href="10c-语音与视频.html" data-md="10c-语音与视频.md"><span class="check">☐</span><span class="badge">🔊</span><span class="cname">10c · 语音与视频</span><span class='time'>⏱20 分钟</span></a></div></section><section class="stage"><h2>外围 · 怎么放心用<small>评测 / 安全 / 运维 / 合规</small></h2><div class="cards"><a class="card" href="11-评测体系.html" data-md="11-评测体系.md"><span class="check">☐</span><span class="badge">📊</span><span class="cname">11 · 评测体系：Benchmark 的真相</span><span class='time'>⏱26 分钟</span></a><a class="card" href="11b-私有评测集怎么建.html" data-md="11b-私有评测集怎么建.md"><span class="check">☐</span><span class="badge">🔨</span><span class="cname">11b · 私有评测集：建一把自己的尺子</span><span class='time'>⏱18 分钟</span></a><a class="card" href="12-对齐与AI安全.html" data-md="12-对齐与AI安全.md"><span class="check">☐</span><span class="badge">🛡️</span><span class="cname">12 · 对齐：让模型长成想要的样子</span><span class='time'>⏱30 分钟</span></a><a class="card" href="12b-越狱与纵深防御.html" data-md="12b-越狱与纵深防御.md"><span class="check">☐</span><span class="badge">🥷</span><span class="cname">12b · 越狱、红队与纵深防御</span><span class='time'>⏱12 分钟</span></a><a class="card" href="13-LLMOps.html" data-md="13-LLMOps.md"><span class="check">☐</span><span class="badge">🔧</span><span class="cname">13 · LLMOps：把它当软件来运维</span><span class='time'>⏱28 分钟</span></a><a class="card" href="14-合规与伦理.html" data-md="14-合规与伦理.md"><span class="check">☐</span><span class="badge">⚖️</span><span class="cname">14 · 合规、法律与伦理</span><span class='time'>⏱28 分钟</span></a></div></section><section class="stage"><h2>地基<small>只补真正必需的数学</small></h2><div class="cards"><a class="card" href="15-数学地基.html" data-md="15-数学地基.md"><span class="check">☐</span><span class="badge">➗</span><span class="cname">15 · 数学地基：只补真正必需的</span><span class='time'>⏱22 分钟</span></a></div></section><section class="stage"><h2>决策<small>⭐ 整份导论的目的：帮你选出要深挖的方向</small></h2><div class="cards"><a class="card" href="16-你该挖哪一块.html" data-md="16-你该挖哪一块.md"><span class="check">☐</span><span class="badge">🎓</span><span class="cname">16 · 你该挖哪一块</span><span class='time'>⏱20 分钟</span></a></div></section>
 <footer>打卡数据只存在你自己的浏览器里 · <a href="../index.html">返回总目录</a></footer>
 </main>
 <script>(function(){
-  var KEY="overview-progress",FILES=["00-怎么用这份导论.md", "01-一张图看懂大模型全景.md", "03-Tokenizer与上下文.md", "02-Transformer原理.md", "02c-为什么都是Decoder-only.md", "04-训练三阶段.md", "05-微调与LoRA.md", "02b-现代LLM架构的四处改动.md", "02e-SwiGLU与RoPE.md", "02f-RoPE与位置感.md", "02d-MoE混合专家.md", "06-推理优化.md", "06b-解码策略.md", "07-本地部署与开源生态.md", "08-RAG深水区.md", "09-推理范式.md", "10-多模态.md", "11-评测体系.md", "12-对齐与AI安全.md", "13-LLMOps.md", "14-合规与伦理.md", "15-数学地基.md", "16-你该挖哪一块.md"],F2H={"00-怎么用这份导论.md": "00-怎么用这份导论.html", "01-一张图看懂大模型全景.md": "01-一张图看懂大模型全景.html", "03-Tokenizer与上下文.md": "03-Tokenizer与上下文.html", "02-Transformer原理.md": "02-Transformer原理.html", "02c-为什么都是Decoder-only.md": "02c-为什么都是Decoder-only.html", "04-训练三阶段.md": "04-训练三阶段.html", "05-微调与LoRA.md": "05-微调与LoRA.html", "02b-现代LLM架构的四处改动.md": "02b-现代LLM架构的四处改动.html", "02e-SwiGLU与RoPE.md": "02e-SwiGLU与RoPE.html", "02f-RoPE与位置感.md": "02f-RoPE与位置感.html", "02d-MoE混合专家.md": "02d-MoE混合专家.html", "06-推理优化.md": "06-推理优化.html", "06b-解码策略.md": "06b-解码策略.html", "07-本地部署与开源生态.md": "07-本地部署与开源生态.html", "08-RAG深水区.md": "08-RAG深水区.html", "09-推理范式.md": "09-推理范式.html", "10-多模态.md": "10-多模态.html", "11-评测体系.md": "11-评测体系.html", "12-对齐与AI安全.md": "12-对齐与AI安全.html", "13-LLMOps.md": "13-LLMOps.html", "14-合规与伦理.md": "14-合规与伦理.html", "15-数学地基.md": "15-数学地基.html", "16-你该挖哪一块.md": "16-你该挖哪一块.html"};
+  var KEY="overview-progress",FILES=["00-怎么用这份导论.md", "01-一张图看懂大模型全景.md", "03-Tokenizer与上下文.md", "02-Transformer原理.md", "02c-为什么都是Decoder-only.md", "04-训练三阶段.md", "05-微调与LoRA.md", "02b-现代LLM架构的四处改动.md", "02e-SwiGLU与RoPE.md", "02f-RoPE与位置感.md", "02d-MoE混合专家.md", "06-推理优化.md", "06d-降延迟与三个指标.md", "06b-解码策略.md", "06c-解码参数怎么调.md", "07-本地部署与开源生态.md", "07b-开源生态怎么选.md", "08-RAG深水区.md", "08b-重排与Embedding选型.md", "08c-RAG怎么评估.md", "08d-RAG进阶方向.md", "09-推理范式.md", "10-多模态.md", "10d-CLIP与对比学习.md", "10b-图像生成.md", "10c-语音与视频.md", "11-评测体系.md", "11b-私有评测集怎么建.md", "12-对齐与AI安全.md", "12b-越狱与纵深防御.md", "13-LLMOps.md", "14-合规与伦理.md", "15-数学地基.md", "16-你该挖哪一块.md"],F2H={"00-怎么用这份导论.md": "00-怎么用这份导论.html", "01-一张图看懂大模型全景.md": "01-一张图看懂大模型全景.html", "03-Tokenizer与上下文.md": "03-Tokenizer与上下文.html", "02-Transformer原理.md": "02-Transformer原理.html", "02c-为什么都是Decoder-only.md": "02c-为什么都是Decoder-only.html", "04-训练三阶段.md": "04-训练三阶段.html", "05-微调与LoRA.md": "05-微调与LoRA.html", "02b-现代LLM架构的四处改动.md": "02b-现代LLM架构的四处改动.html", "02e-SwiGLU与RoPE.md": "02e-SwiGLU与RoPE.html", "02f-RoPE与位置感.md": "02f-RoPE与位置感.html", "02d-MoE混合专家.md": "02d-MoE混合专家.html", "06-推理优化.md": "06-推理优化.html", "06d-降延迟与三个指标.md": "06d-降延迟与三个指标.html", "06b-解码策略.md": "06b-解码策略.html", "06c-解码参数怎么调.md": "06c-解码参数怎么调.html", "07-本地部署与开源生态.md": "07-本地部署与开源生态.html", "07b-开源生态怎么选.md": "07b-开源生态怎么选.html", "08-RAG深水区.md": "08-RAG深水区.html", "08b-重排与Embedding选型.md": "08b-重排与Embedding选型.html", "08c-RAG怎么评估.md": "08c-RAG怎么评估.html", "08d-RAG进阶方向.md": "08d-RAG进阶方向.html", "09-推理范式.md": "09-推理范式.html", "10-多模态.md": "10-多模态.html", "10d-CLIP与对比学习.md": "10d-CLIP与对比学习.html", "10b-图像生成.md": "10b-图像生成.html", "10c-语音与视频.md": "10c-语音与视频.html", "11-评测体系.md": "11-评测体系.html", "11b-私有评测集怎么建.md": "11b-私有评测集怎么建.html", "12-对齐与AI安全.md": "12-对齐与AI安全.html", "12b-越狱与纵深防御.md": "12b-越狱与纵深防御.html", "13-LLMOps.md": "13-LLMOps.html", "14-合规与伦理.md": "14-合规与伦理.html", "15-数学地基.md": "15-数学地基.html", "16-你该挖哪一块.md": "16-你该挖哪一块.html"};
   function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
   var p=load(),done=0;
   document.querySelectorAll('.card').forEach(function(c){

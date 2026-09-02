@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>04 · 从序列到结构：换一个没有对称性的预测目标 · 科学问题怎么变成模型</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">04 · 从序列到结构</span>
+  <span class="prevnext"><a href="03-蛋白质语言模型.html">←</a>
+  <a href="05-等变与不变.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">🎯 一、为什么不能直接回归坐标</a></li>
+<li><a href="#_3">📏 二、于是先预测距离</a></li>
+<li><a href="#_4">🔄 三、距离真的够吗：跑一遍</a></li>
+<li><a href="#_5">🧬 四、距离信息从哪来</a></li>
+<li><a href="#_6">🔗 五、为什么端到端最后赢了</a></li>
+<li><a href="#_7">⚠️ 六、拿到预测结构之后</a></li>
+<li><a href="#_8">🔗 这一章连到哪里</a></li>
+<li><a href="#_9">✅ 检查点</a></li>
+<li><a href="#_10">🛑 可以停在这里</a></li>
+</ul>
+</div>
+</details>
+<h1 id="04">04 · 从序列到结构：换一个没有对称性的预测目标</h1>
+<p>⏱ <strong>24 分钟</strong> ｜ ⭐ <strong>别预测坐标，预测距离 —— 因为坐标有对称性而距离没有</strong></p>
+<hr />
+<h2 id="_1">🎯 一句话</h2>
+<p><strong>结构预测最难的一点不在网络，在于输出空间。</strong>
+你要输出几千个原子的三维坐标，<strong>而整体旋转平移之后是同一个答案</strong> ——
+⭐ 直接回归坐标 + MSE 是错的。整章讲一个通用的绕法：<strong>换一个等价但没有对称性的预测目标。</strong></p>
+<hr />
+<h2 id="_2">🎯 一、为什么不能直接回归坐标</h2>
+<p>分类问题输出一个类别，回归输出一个数，都是<strong>唯一确定</strong>的。
+而结构不是：把整个分子<strong>旋转 30 度、再平移 10 埃</strong>，它还是同一个分子、同一个答案。</p>
+<p>于是麻烦来了：</p>
+<blockquote>
+<p>💀 <strong>同一个正确答案有无穷多组坐标，而 MSE 只认其中一组。</strong>
+网络输出了一个<strong>完全正确但朝向不同</strong>的结构，损失函数会给它一个巨大的惩罚。
+⭐ 你在惩罚它答对。</p>
+</blockquote>
+<p>⚠️ 这不是「训练慢一点」的问题，是<strong>梯度在教它错的东西</strong>。
+你可以每步都先做一次最优对齐再算损失（后面第 3 节那个 Kabsch 就是干这个的），
+但那让损失变得不平滑、也更难并行。</p>
+<hr />
+<h2 id="_3">📏 二、于是先预测距离</h2>
+<p>⭐ <strong>距离矩阵对旋转平移天然不变。</strong> 两个原子隔多远，你怎么转怎么挪它都不变。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>坐标 $(N \times 3)$</th>
+<th>距离矩阵 $(N \times N)$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>同一个结构有几种表示</td>
+<td>⚠️ <strong>无穷多</strong></td>
+<td>⭐ <strong>一种</strong></td>
+</tr>
+<tr>
+<td>能直接上 MSE 吗</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>大小</td>
+<td>小</td>
+<td>大（平方级）</td>
+</tr>
+<tr>
+<td>是不是完整信息</td>
+<td>是</td>
+<td>⭐ 几乎是（见下一节）</td>
+</tr>
+</tbody>
+</table></div>
+<p>⭐⭐ <strong>这就是全站可复用的那招</strong>：
+<strong>当输出空间带着一个对称性、而你的损失函数不认它时，
+换一个对这个对称性不变的等价目标去预测。</strong></p>
+<p>更省的做法是只预测<strong>接触图</strong>（距离小于某个阈值就算 1），
+把回归变成二分类 —— 信息少了，但更好学，早期的方法大多从这里入手。</p>
+<hr />
+<h2 id="_4">🔄 三、距离真的够吗：跑一遍</h2>
+<p>「几乎是」这个说法要验一下。下面从坐标算出距离矩阵，<strong>再只用距离矩阵</strong>把坐标恢复出来：</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="n">coords</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span> <span class="o">*</span> <span class="mf">5.0</span>                       <span class="c1"># 真实的 12 个原子坐标</span>
+
+<span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">coords</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">coords</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>   <span class="c1"># 距离矩阵</span>
+
+<span class="c1"># ---- 经典 MDS：只用距离矩阵，把坐标恢复出来 ----</span>
+<span class="n">J</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span> <span class="o">/</span> <span class="n">N</span>                          <span class="c1"># 中心化算子</span>
+<span class="n">B</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">J</span> <span class="o">@</span> <span class="p">(</span><span class="n">D</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">@</span> <span class="n">J</span>                                  <span class="c1"># 双中心化</span>
+<span class="n">vals</span><span class="p">,</span> <span class="n">vecs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+<span class="n">top</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">vals</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="mi">3</span><span class="p">]</span>                             <span class="c1"># 取最大的 3 个特征值</span>
+<span class="n">rec</span> <span class="o">=</span> <span class="n">vecs</span><span class="p">[:,</span> <span class="n">top</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="n">top</span><span class="p">],</span> <span class="mi">0</span><span class="p">))</span>       <span class="c1"># 恢复出的坐标</span>
+
+<span class="n">D_rec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">rec</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">rec</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;距离矩阵最大偏差 : </span><span class="si">%.2e</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">D</span> <span class="o">-</span> <span class="n">D_rec</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;坐标本身最大偏差 : </span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">coords</span> <span class="o">-</span> <span class="n">rec</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;原坐标第 0 个原子 :&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;恢复第 0 个原子   :&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">rec</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&gt; 距离完全一致，坐标却对不上 —— 差的正是一个整体刚体变换。&quot;</span><span class="p">)</span>
+
+<span class="c1"># 验证：把恢复的坐标做最优刚体对齐（Kabsch）之后，坐标也对得上了</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">coords</span> <span class="o">-</span> <span class="n">coords</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">Bc</span> <span class="o">=</span> <span class="n">rec</span> <span class="o">-</span> <span class="n">rec</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">U</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">Vt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">Bc</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">A</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">U</span> <span class="o">@</span> <span class="n">Vt</span><span class="p">))</span>
+<span class="n">R</span> <span class="o">=</span> <span class="n">U</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="p">])</span> <span class="o">@</span> <span class="n">Vt</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;刚体对齐之后坐标最大偏差 : </span><span class="si">%.2e</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">A</span> <span class="o">-</span> <span class="n">Bc</span> <span class="o">@</span> <span class="n">R</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+</code></pre></div>
+
+<p>真实输出：</p>
+<div class="codehilite"><pre><span></span><code>距离矩阵最大偏差 : 1.07e-14
+坐标本身最大偏差 : 23.145
+
+原坐标第 0 个原子 : [ 0.629 -0.661  3.202]
+恢复第 0 个原子   : [-1.686 -2.989 -1.984]
+
+=&gt; 距离完全一致，坐标却对不上 —— 差的正是一个整体刚体变换。
+刚体对齐之后坐标最大偏差 : 8.88e-15
+</code></pre></div>
+
+<figure class="dia"><svg viewBox="0 0 760 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="同一个三角形的两个朝向，坐标各不相同，但三条边的距离逐个相同"><line x1="70.0" y1="190.0" x2="196.0" y2="164.8" stroke="var(--fg)" stroke-width="2.2"/><line x1="70.0" y1="190.0" x2="120.4" y2="89.2" stroke="var(--fg)" stroke-width="2.2"/><line x1="196.0" y1="164.8" x2="120.4" y2="89.2" stroke="var(--fg)" stroke-width="2.2"/><circle cx="70.0" cy="190.0" r="6" fill="var(--fg)"/><text class="dia-t" x="70.0" y="194.0" font-size="11" text-anchor="middle" fill="var(--card)" font-weight="700">1</text><circle cx="196.0" cy="164.8" r="6" fill="var(--fg)"/><text class="dia-t" x="196.0" y="168.8" font-size="11" text-anchor="middle" fill="var(--card)" font-weight="700">2</text><circle cx="120.4" cy="89.2" r="6" fill="var(--fg)"/><text class="dia-t" x="120.4" y="93.2" font-size="11" text-anchor="middle" fill="var(--card)" font-weight="700">3</text><text class="dia-t" x="148" y="38" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">朝向 A</text><text class="dia-t" x="148" y="216" font-size="11.5" text-anchor="middle" fill="var(--muted)">1: (0.0, 0.0)</text><text class="dia-t" x="148" y="234" font-size="11.5" text-anchor="middle" fill="var(--muted)">2: (3.0, 0.6)</text><text class="dia-t" x="148" y="252" font-size="11.5" text-anchor="middle" fill="var(--muted)">3: (1.2, 2.4)</text><line x1="358.8" y1="169.0" x2="416.5" y2="54.2" stroke="var(--accent)" stroke-width="2.2"/><line x1="358.8" y1="169.0" x2="310.4" y2="67.2" stroke="var(--accent)" stroke-width="2.2"/><line x1="416.5" y1="54.2" x2="310.4" y2="67.2" stroke="var(--accent)" stroke-width="2.2"/><circle cx="358.8" cy="169.0" r="6" fill="var(--accent)"/><text class="dia-t" x="358.8" y="173.0" font-size="11" text-anchor="middle" fill="var(--card)" font-weight="700">1</text><circle cx="416.5" cy="54.2" r="6" fill="var(--accent)"/><text class="dia-t" x="416.5" y="58.2" font-size="11" text-anchor="middle" fill="var(--card)" font-weight="700">2</text><circle cx="310.4" cy="67.2" r="6" fill="var(--accent)"/><text class="dia-t" x="310.4" y="71.2" font-size="11" text-anchor="middle" fill="var(--card)" font-weight="700">3</text><text class="dia-t" x="378" y="38" font-size="13" text-anchor="middle" fill="var(--accent)" font-weight="700">朝向 B（转了 52 度）</text><text class="dia-t" x="378" y="216" font-size="11.5" text-anchor="middle" fill="var(--muted)">1: (1.4, 0.5)</text><text class="dia-t" x="378" y="234" font-size="11.5" text-anchor="middle" fill="var(--muted)">2: (2.8, 3.2)</text><text class="dia-t" x="378" y="252" font-size="11.5" text-anchor="middle" fill="var(--muted)">3: (0.2, 2.9)</text><line x1="238" y1="120" x2="282" y2="120" stroke="var(--muted)" stroke-width="2"/><polygon points="292,120 280,115 280,125" fill="var(--muted)"/><text class="dia-t" x="265" y="110" font-size="11.5" text-anchor="middle" fill="var(--muted)">旋转</text><rect x="530" y="52" width="196" height="150" rx="10" fill="var(--card)" stroke="var(--done)" stroke-width="2"/><text class="dia-t" x="628" y="78" font-size="13" text-anchor="middle" fill="var(--done)" font-weight="700">三条边的长度</text><text class="dia-t" x="628" y="108" font-size="12.5" text-anchor="middle" fill="var(--fg)">1&#8211;2 ： 3.0594</text><text class="dia-t" x="628" y="132" font-size="12.5" text-anchor="middle" fill="var(--fg)">1&#8211;3 ： 2.6833</text><text class="dia-t" x="628" y="156" font-size="12.5" text-anchor="middle" fill="var(--fg)">2&#8211;3 ： 2.5456</text><text class="dia-t" x="628" y="186" font-size="12" text-anchor="middle" fill="var(--done)" font-weight="700">A 和 B 逐位相同</text><text class="dia-t" x="380" y="288" font-size="12.5" text-anchor="middle" fill="var(--danger,#e5534b)" font-weight="700">坐标：6 个数全都不一样 → MSE 会重罚一个正确答案</text><text class="dia-t" x="380" y="312" font-size="12.5" text-anchor="middle" fill="var(--done)" font-weight="700">距离：一个数都没变 → 可以直接上 MSE</text></svg><figcaption>对比左右两栏<b>底下那六个坐标数字</b>和右框里<b>那三个长度</b>：同一个形状转个身，坐标全变、距离一个没动。⭐ 这就是「换一个对该对称性不变的等价目标」——把无穷多种合法答案，压成唯一的一种。</figcaption></figure>
+
+<p>⭐⭐ <strong>这三个数把整章的论点钉死了</strong>：</p>
+<ul>
+<li>距离矩阵恢复到 <strong>1.07e-14</strong> —— 机器精度，<strong>信息一点没丢</strong></li>
+<li>坐标本身差 <strong>23.145</strong> —— 因为差着一个整体旋转平移</li>
+<li>做完刚体对齐后回到 <strong>8.88e-15</strong> —— ⭐ <strong>差的确实【只】是那个刚体变换，别的什么都没差</strong></li>
+</ul>
+<p>⚠️ <strong>两个真实的限制</strong>：
+① 距离分不出<strong>镜像</strong>（把结构照镜子，所有距离不变），而分子的手性是真实的，要另外处理。
+② 真实场景里预测出的距离矩阵<strong>带噪、还不一定自洽</strong>（不满足三角不等式），
+恢复出来的构型没有这里这么干净。</p>
+<hr />
+<h2 id="_5">🧬 四、距离信息从哪来</h2>
+<p>回到 <a href="03-蛋白质语言模型.html">03 章</a>：<strong>共进化就是接触信号</strong>。
+MSA 里两列强相关 → 这两个残基大概率挨着 → 这是距离矩阵里的一格。</p>
+<p>⚠️ 而 03 章也验过那个坑：<strong>互信息会把间接相关误报成接触</strong>
+（实验里假接触拿到 2.973 bit，比背景高四十倍）。
+⭐ 所以从 MSA 到接触图这一步本身就需要「扣掉中介」，不是简单统计。</p>
+<hr />
+<h2 id="_6">🔗 五、为什么端到端最后赢了</h2>
+<p>早期是<strong>分段</strong>的：MSA → 接触图 → 距离几何 → 结构。每一段单独优化。
+后来的做法把这些合进一个网络一起训，思路上有三个改变：</p>
+<ol>
+<li><strong>序列表示和结构表示互相更新</strong> —— 不是单向的流水线，而是反复来回。</li>
+<li>⭐ <strong>等变性内建进结构模块</strong> —— 网络直接输出三维的东西，
+   但<strong>它的层被设计成「输入转一下、输出跟着转」</strong>，于是不再需要靠损失函数去消化对称性。
+   这是 <a href="05-等变与不变.html">05 章</a>的正题。</li>
+<li><strong>端到端的梯度</strong> —— 中间表示为最终目标服务，而不是为某个中间指标。</li>
+</ol>
+<blockquote>
+<p>🗓️ <strong>具体是哪一代模型、当前最好的是什么，请去查最新的。</strong>
+⭐ 不会过期的是这三条思路本身，以及第 2 条和第 1 节那个矛盾的关系 ——
+<strong>要么换一个没有对称性的目标（第 2 节），要么把对称性内建进网络（第 5 节第 2 条）。</strong>
+这两条路解决的是同一个问题。</p>
+</blockquote>
+<hr />
+<h2 id="_7">⚠️ 六、拿到预测结构之后</h2>
+<p><strong>① 置信度不是均匀的。</strong> 这类模型通常会给每个残基一个置信分数，
+⚠️ 而<strong>天生无序的区域</strong>分数一定低 —— 那不是模型没预测好，是那个区域本来就没有固定构象。
+💀 把低分区域当成「模型的错」去修，是在修一个不存在的问题。</p>
+<p><strong>② 预测结构不等于实验结构。</strong> 骨架大致对，不代表侧链朝向、结合口袋的细节能直接用。
+⚠️ 拿它去做对接和虚拟筛选时，误差会被放大。</p>
+<p><strong>③ 对分布外的序列不可靠。</strong> 和 <a href="03-蛋白质语言模型.html">03 章</a>第五节同一条：
+数据库里全是演化产物，<strong>你设计出来的序列不在那个分布里</strong>。</p>
+<hr />
+<h2 id="_8">🔗 这一章连到哪里</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>去哪</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="05-等变与不变.html">05 · 等变与不变</a></td>
+<td>⭐⭐ <strong>同一个问题的另一条路</strong>。这一章：换一个对旋转不变的<strong>预测目标</strong>绕开对称性；那一章：把等变性<strong>内建进网络结构</strong>。第 5 节第 2 条就是那一章的入口</td>
+</tr>
+<tr>
+<td><a href="03-蛋白质语言模型.html">03 · 蛋白质语言模型</a></td>
+<td>距离信息从哪来 —— 共进化，以及互信息会把间接相关误报成接触那个坑</td>
+</tr>
+<tr>
+<td><a href="07-评测的坑.html">07 · 评测的坑</a></td>
+<td>⚠️ 结构预测的评估同样受同源泄漏影响：测试蛋白在训练集里有近亲，指标就是虚的</td>
+</tr>
+<tr>
+<td><a href="../机器学习的数学原理/05b-PCA的推导.html">机器学习的数学原理 05b · PCA 的推导</a></td>
+<td>第三节的经典 MDS 和 PCA 是同一套特征分解 —— 双中心化之后取最大的几个特征向量</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_9">✅ 检查点</h2>
+<ol>
+<li>为什么不能直接回归三维坐标 + MSE？说清机制。</li>
+<li>距离矩阵解决了什么问题？它相比坐标付出了什么代价？</li>
+<li>实验里三个数字各是多少？它们分别证明了什么？</li>
+<li>距离矩阵有哪两个真实限制？</li>
+<li>端到端做法的三个改变是什么？其中哪一条和第 2 节是「同一个问题的两条路」？</li>
+<li>预测结构里置信度低的区域，一定是模型没预测好吗？</li>
+</ol>
+<details>
+<summary>👀 答案</summary>
+<ol>
+<li>因为<strong>整体旋转平移之后是同一个结构</strong> —— 同一个正确答案有<strong>无穷多组坐标</strong>，而 MSE 只认其中一组。💀 网络输出一个<strong>完全正确但朝向不同</strong>的结构会被给巨大惩罚，<strong>你在惩罚它答对</strong>。这不是训练慢的问题，是梯度在教错的东西。</li>
+<li><strong>距离对旋转平移天然不变</strong>，同一个结构只有一种表示，可以直接上 MSE。代价是<strong>大小变成平方级</strong>（$N \times N$ 而不是 $N \times 3$）。</li>
+<li>距离矩阵恢复偏差 <strong>1.07e-14</strong>（机器精度，信息没丢）；坐标本身偏差 <strong>23.145</strong>（差着整体旋转平移）；刚体对齐后回到 <strong>8.88e-15</strong> —— ⭐ 证明差的<strong>只是</strong>那个刚体变换，别的什么都没差。</li>
+<li>①<strong>分不出镜像</strong>（照镜子所有距离不变），而手性是真实的；②真实预测出的距离矩阵<strong>带噪且不一定自洽</strong>（不满足三角不等式），恢复的构型没有实验里这么干净。</li>
+<li>①序列表示和结构表示<strong>互相更新</strong>（不是单向流水线）②<strong>等变性内建进结构模块</strong>③端到端的梯度。⭐ 第 2 条和第 2 节是同一个问题的两条路：<strong>要么换一个没有对称性的目标，要么把对称性内建进网络</strong>。</li>
+<li><strong>不一定。</strong> 天生<strong>无序的区域</strong>置信分数一定低 —— 那不是模型没预测好，是那个区域本来就没有固定构象。💀 把它当成「模型的错」去修，是在修一个不存在的问题。</li>
+</ol>
+</details>
+<hr />
+<h2 id="_10">🛑 可以停在这里</h2>
+<p>到这里你拿到了一个<strong>远不止用在结构预测上</strong>的招式：
+<strong>输出空间带对称性、而损失函数不认它时，换一个对该对称性不变的等价目标。</strong>
+⭐ 这条思路在任何「预测几何对象」的问题上都成立。</p>
+<p>⚠️ <strong>什么时候看下一页</strong>：你想知道<strong>另一条路</strong> —— 不换目标，而是把对称性直接写进网络结构。</p>
+<p>⚡ <strong>走神救援</strong></p>
+<blockquote>
+<p><strong>结构预测最难的一点在输出空间，不在网络。</strong> 你要输出几千个原子的三维坐标，<strong>而整体旋转平移之后是同一个答案</strong> —— 于是<strong>同一个正确答案有无穷多组坐标，MSE 只认其中一组</strong>：💀 网络输出一个完全正确但朝向不同的结构，损失函数会重罚它，<strong>你在惩罚它答对</strong>，梯度在教错的东西。⭐ <strong>绕法是先预测距离矩阵</strong>：距离对旋转平移天然不变，同一个结构只有一种表示，可以直接上 MSE；代价是大小从 $N \times 3$ 变成平方级的 $N \times N$。⭐⭐ <strong>这是全站可复用的招式：输出空间带对称性而损失不认它时，换一个对该对称性不变的等价目标。</strong> 更省的版本是只预测<strong>接触图</strong>（距离小于阈值算 1），把回归变二分类。<strong>距离够不够？实测</strong>：从 12 个原子的坐标算出距离矩阵，再只用距离矩阵做<strong>经典 MDS</strong> 恢复坐标 —— 距离矩阵恢复偏差 <strong>1.07e-14</strong>（机器精度，<strong>信息一点没丢</strong>），坐标本身却差 <strong>23.145</strong>，而做完<strong>刚体对齐（Kabsch）后回到 8.88e-15</strong> —— ⭐ 证明差的<strong>只是</strong>那个整体旋转平移。⚠️ 两个真限制：<strong>分不出镜像</strong>（照镜子所有距离不变，而手性是真的）、真实预测的距离矩阵<strong>带噪且不一定自洽</strong>。距离信息来自<strong>共进化</strong>（03 章），但要注意互信息会把间接相关误报成接触。<strong>端到端后来赢了</strong>，三个改变：序列表示和结构表示<strong>互相更新</strong>、<strong>等变性内建进结构模块</strong>（05 章正题）、端到端梯度 —— ⭐ 其中第二条和「换目标」是<strong>同一个问题的两条路</strong>。⚠️ 拿到预测结构后：<strong>置信度不均匀</strong>（无序区天生低，那不是模型的错，💀 去修是在修一个不存在的问题）、<strong>预测结构不等于实验结构</strong>（侧链和口袋细节不能直接用）、<strong>对你设计出来的序列不可靠</strong>。</p>
+</blockquote>
+<p><strong>下一节</strong> 👉 <a href="05-等变与不变.html">05-等变与不变.md</a></p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="03-蛋白质语言模型.html"><div class="dir">← 上一节</div>🔤 03 · 蛋白质语言模型</a><a class="next" href="05-等变与不变.html"><div class="dir">下一节 →</div>🔄 05 · 等变与不变</a></nav>
+</main>
+<script>(function(){
+  var KEY="sci-progress", FILE="04-\u4ece\u5e8f\u5217\u5230\u7ed3\u6784.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+</body></html>

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>07b · 开源生态怎么选，以及要不要自建 · 大模型全景导论</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">07b · 开源生态怎么选</span>
+  <span class="prevnext"><a href="07-本地部署与开源生态.html">←</a>
+  <a href="08-RAG深水区.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">🚦 决策：什么时候该自建</a></li>
+<li><a href="#_4">🌍 开源模型生态（会变，记结构别记名字）</a></li>
+<li><a href="#_5">🔗 想再深一层，去哪一套</a></li>
+<li><a href="#_6">📦 深挖的话要学什么</a></li>
+<li><a href="#_7">⚖️ 要不要深挖</a></li>
+<li><a href="#_8">✅ 检查点</a></li>
+<li><a href="#_9">🛑 可以停在这里</a></li>
+</ul>
+</div>
+</details>
+<h1 id="07b">07b · 开源生态怎么选，以及要不要自建</h1>
+<p>⏱ <strong>26 分钟</strong> ｜ ⭐ <strong>自建往往不是「更便宜」，而是「用钱换控制权」</strong></p>
+<hr />
+<h2 id="_1">🎯 一句话</h2>
+<p><strong>上一页证明了「能跑」，这一页回答「值不值得一直这么跑」。</strong>
+把隐性成本算进去之后，多数场景自建并不更省钱——它买的是合规、隐私和可控；而真要在开源模型里挑一个，最容易踩的坑不是能力，是许可证。</p>
+<hr />
+<h2 id="_2">🚦 决策：什么时候该自建</h2>
+<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">✅ 该本地/自建的场景</span></div><div class="vb-tree-row"><span class="vb-tree-node">数据不能出内网（医疗、金融、政务、法务）</span></div><div class="vb-tree-row"><span class="vb-tree-node">稳定大流量，自建单价远低于 API</span></div><div class="vb-tree-row"><span class="vb-tree-node">需要微调后的专有模型（第 5 章）</span></div><div class="vb-tree-row"><span class="vb-tree-node">需要极低延迟（本地无网络往返）</span></div><div class="vb-tree-row"><span class="vb-tree-node">离线环境</span></div><div class="vb-tree-row"><span class="vb-tree-node">学习和实验（免费随便玩 ⭐）</span></div><div class="vb-tree-row"><span class="vb-tree-node">⛔ 不该的场景</span></div><div class="vb-tree-row"><span class="vb-tree-node">流量小且不稳定 → API 按量付费更划算</span></div><div class="vb-tree-row"><span class="vb-tree-node">需要最强能力 → 顶尖闭源模型仍有优势</span></div><div class="vb-tree-row"><span class="vb-tree-node">团队没有运维能力 → 自建的隐性成本是人力</span></div><div class="vb-tree-row"><span class="vb-tree-node">快速验证想法阶段 → 先用 API 跑通再说</span></div></div></section>
+<blockquote>
+<p>💰 <strong>粗算一笔账</strong>：一张 24GB 消费级显卡 ≈ 几千到万把块。
+如果你每月 API 花费不到几百块，自建在经济上不成立——<strong>但作为学习投资另说</strong>。</p>
+</blockquote>
+<h3 id="_3">💸 自建的"隐性成本"清单（算账时最容易漏）</h3>
+<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">显性成本：显卡 / 云 GPU 租金</span></div><div class="vb-tree-row"><span class="vb-tree-node">⭐ 隐性成本（往往更贵）：</span></div><div class="vb-tree-row"><span class="vb-tree-node">运维人力：模型更新、故障排查、扩容（这是最大的一笔）</span></div><div class="vb-tree-row"><span class="vb-tree-node">闲置成本：GPU 按小时计费，流量低谷时也在烧钱</span></div><div class="vb-tree-row"><span class="vb-tree-node">能力差距：自建模型效果不如顶尖闭源，可能需要更多工程弥补</span></div><div class="vb-tree-row"><span class="vb-tree-node">迭代速度：闭源模型每几个月免费变强，自建的不会</span></div><div class="vb-tree-row"><span class="vb-tree-node">机会成本：花在运维上的时间没花在产品上</span></div></div></section>
+<blockquote>
+<p>🔑 <strong>一个反直觉的结论</strong>：<strong>自建往往不是"更便宜"，而是"用钱换控制权"。</strong>
+如果你的真实需求是<strong>合规、隐私、可控</strong>，自建就值；
+如果只是"觉得 API 贵"，先去做 Prefix Caching 和提示词优化（<a href="06d-降延迟与三个指标.html">06d · 降延迟与指标</a>），
+<strong>那些的投入产出比高得多。</strong></p>
+</blockquote>
+<hr />
+<h2 id="_4">🌍 开源模型生态（会变，记结构别记名字）</h2>
+<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">主要开源系列（2026 年前后的格局）</span></div><div class="vb-tree-row"><span class="vb-tree-node">Qwen（阿里） —— 中文强、尺寸齐全、生态活跃</span></div><div class="vb-tree-row"><span class="vb-tree-node">DeepSeek —— 推理和代码能力突出、MoE 架构</span></div><div class="vb-tree-row"><span class="vb-tree-node">Llama（Meta） —— 生态最广、工具链最全</span></div><div class="vb-tree-row"><span class="vb-tree-node">Mistral —— 欧洲、效率导向</span></div><div class="vb-tree-row"><span class="vb-tree-node">Gemma（Google） —— 小尺寸质量高</span></div><div class="vb-tree-row"><span class="vb-tree-node">各种垂直微调版本 —— 代码/医疗/法律等</span></div></div></section>
+<p><strong>选型看四点</strong>：
+1. 许可证 ⭐ —— 能不能商用？有没有用户数限制？<strong>这是最容易踩的坑</strong>
+2. 中文能力 —— 中文场景优先看国产系列
+3. 尺寸 —— 有没有适合你硬件的档位
+4. 生态 —— 有没有现成的量化版本、微调脚本、社区支持</p>
+<blockquote>
+<p>⚠️ <strong>时效警告</strong>：模型名字和排名<strong>几个月就变</strong>。上面的列表只用来理解「有哪几类玩家」。
+实际选型时去看当前的开源榜单（第 11 章讲怎么正确看榜）。</p>
+</blockquote>
+<hr />
+<h2 id="_5">🔗 想再深一层，去哪一套</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>去哪</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../AI基础设施/20-推理服务化.html">AI基础设施 20 · 推理服务化</a></td>
+<td>⭐ 这一页回答「要不要自建」，那一章回答<strong>决定自建之后用哪个引擎</strong>：引擎横评 + 一棵四问决策树</td>
+</tr>
+<tr>
+<td><a href="../模型上线之后/18-成本与容量.html">模型上线之后 18 · 成本与容量</a></td>
+<td>「隐性成本清单」的容量侧：峰值该按什么算、闲置到底烧掉多少，把每一项变成数字</td>
+</tr>
+<tr>
+<td><a href="11-评测体系.html">全景导论 11 · 评测体系</a></td>
+<td>「时效警告」的兑现方式：榜单该怎么看、为什么不能照着排名直接选</td>
+</tr>
+<tr>
+<td><a href="../密码学与信息安全/22-云密码学.html">密码学与信息安全 22 · 云密码学</a></td>
+<td>「数据不能出内网又想借云端算力」的另一条路（同态加密 / 安全多方计算）——⚠️ 那一章自己也说，现实里多数场景本地部署便宜好几个数量级，所以先在这里算完账再去看</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_6">📦 深挖的话要学什么</h2>
+<blockquote>
+<p>📍 <strong>每条后面标了它在哪</strong>：
+📗 <strong>本库有</strong> = 站内已经讲透，点进去就行；📙 <strong>半有</strong> = 站内讲了一半，另一半得外找；
+📕 <strong>要外找</strong> = 站内没有，得去论文或别处。
+（这份清单以前只列词不说去哪，指到的坑有些站内根本没挖过，按图索骥会扑空。）</p>
+</blockquote>
+<ul>
+<li><strong>部署工程</strong>：Docker 化、多卡张量并行、负载均衡、健康检查、模型热切换
+  → 📙 <strong>半有</strong>：多卡张量并行在 <a href="../AI基础设施/12-张量并行.html">AI基础设施 12 · 张量并行</a>（<strong>一台机器装不下 70B 时，权重具体怎么切、切完要付多少通信代价</strong>——这正是上一页那张硬件对照表背后的那笔账）；健康检查和负载均衡在 <a href="../AI基础设施/20-推理服务化.html">AI基础设施 20 · 推理服务化</a> 的「生产必备的五件事」里，⚠️ 那里点出两个反直觉的点：健康检查不能只 ping，要真跑一次推理；客户端断开必须立刻停止生成并释放 KV Cache（用户关了页面服务器还在生成 2000 token，占着槽位不放，高并发下显著吃容量）。只有 Docker 化和模型热切换的具体做法站内没有，要外找</li>
+<li><strong>性能压测</strong>：吞吐/TTFT/TPOT 测量、容量规划、成本建模
+  → 📗 <strong>本库有</strong>：<a href="../AI基础设施/20-推理服务化.html">AI基础设施 20 · 推理服务化</a> 的「先定 SLO 再谈优化」+「压测：画出你的延迟-吞吐曲线」，该监控什么也在同一章（⭐ <strong>KV Cache 使用率是最该盯的容量预警信号</strong>）；成本模型在 <a href="../AI基础设施/23-可观测性与成本.html">AI基础设施 23 · 可观测性与成本</a>。本页那张"隐性成本清单"是提醒你别漏项，这两章是教你怎么把每一项算成数字</li>
+<li><strong>量化实操</strong>：不同量化档位的质量-速度实测对比（自己跑一遍最有说服力）
+  → 📗 <strong>本库有</strong>：<a href="../AI基础设施/18-量化.html">AI基础设施 18 · 量化</a> 的「质量评估：这一步不能省」。⚠️ 里面有一条直接关系到你自建成败的坑：<strong>"别人测 AWQ 几乎无损，到我这里就掉了"，通常不是方法问题，是校准集不是你的分布</strong>——所以质量评估必须用你自己的业务数据跑，抄别人的档位结论没用</li>
+<li><strong>多 LoRA 服务</strong>：一个基座热挂多个适配器（配合第 5 章）。
+  🔗 <strong>这一条不用等「深挖」，<a href="../AI基础设施/20-推理服务化.html">AI基础设施 20 · 推理服务化</a> 已经写了</strong>：
+  它省的是「<strong>每个租户开一份完整实例</strong>」的显存，而且<strong>主流引擎大多支持，但要在选型时单独确认</strong>——
+  这是那一章明确点出的一个「容易漏掉的能力」，等部署完再发现引擎不支持就要重来。
+  同一节还有<strong>七个推理引擎的横评 + 一棵四问决策树</strong>，回答的正是这一章刻意没展开的「决定自建之后，到底用 vLLM 还是 SGLang 还是 TensorRT-LLM」。
+  ⚠️ 顺带纠一个常见误判：<strong>引擎之间通常只差 20–50%，而配置有没有调对差的是几倍</strong>——先调配置再换引擎。
+  （即 📗 <strong>本库有</strong>。）</li>
+<li><strong>边缘部署</strong>：手机/嵌入式设备、ONNX/CoreML/TensorRT 转换
+  → 📙 <strong>半有</strong>：<strong>「怎么把模型导出成一个文件」站内有了</strong> —— <a href="../PyTorch这个框架本身/10-把模型交出去.html">PyTorch 这个框架本身 10 · 把模型交出去</a> 讲了 <code>torch.save</code> 存模型和存 <code>state_dict</code> 的区别、TorchScript 的 trace 与 script、ONNX 导出（含 onnxruntime 实跑对拍） 以及 <code>torch.compile</code> 到底做了什么。⚠️ 但「转完之后」那半段仍要外找：CoreML / TensorRT 怎么转、量化后精度掉多少、手机端 runtime 怎么选、端侧内存怎么压 —— 站内没有</li>
+<li><strong>私有化整套方案</strong>：模型 + 向量库 + 网关 + 监控的完整内网架构
+  → 📙 <strong>半有</strong>：这套架构的<strong>每一块</strong>站内都有——模型服务在 <a href="../AI基础设施/20-推理服务化.html">AI基础设施 20</a>，向量库选型在 <a href="../推荐算法/10-向量检索与ANN.html">推荐算法 10 · 向量检索与ANN</a>，监控在 <a href="../AI基础设施/23-可观测性与成本.html">AI基础设施 23 · 可观测性与成本</a> 和 <a href="../模型上线之后/05-该监控什么.html">模型上线之后 05 · 该监控什么</a>。缺的恰恰是"把它们接起来"的那张图：网关层怎么设计、内网怎么隔离、各组件之间的失败怎么兜——这部分要外找</li>
+</ul>
+<p>需要的前置：Linux + Docker 基础。<strong>几乎不需要理论</strong>，纯工程。</p>
+<hr />
+<h2 id="_7">⚖️ 要不要深挖</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>你的情况</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>从没跑过本地模型</td>
+<td>✅ <strong>强烈建议按上一页那条 30 分钟路线跑一次</strong>——认知冲击很大，且免费</td>
+</tr>
+<tr>
+<td>有合规/隐私硬需求</td>
+<td>✅ 必须深挖，配合第 6 章</td>
+</tr>
+<tr>
+<td>想省 API 钱</td>
+<td>🟡 先算账，多数个人场景自建不划算</td>
+</tr>
+<tr>
+<td>做企业私有化交付</td>
+<td>✅ 这是核心交付能力</td>
+</tr>
+<tr>
+<td>纯做应用、用云 API</td>
+<td>⛔ 知道有这回事就行</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>🔑 <strong>我的判断</strong>：这块<strong>知识密度最低但体验价值最高</strong>。
+它不值得单独做一整套教程（内容撑不满，且工具变化快），
+但<strong>「花半小时跑一次本地模型」这件事本身，对建立直觉很有用</strong>——
+你会立刻理解量化、显存、速度这些抽象概念到底意味着什么。</p>
+<p><strong>建议：并入第 6 章推理优化，作为它的实操部分。</strong></p>
+</blockquote>
+<hr />
+<h2 id="_8">✅ 检查点</h2>
+<ol>
+<li>什么情况下该自建、什么情况下不该？</li>
+<li>自建的「隐性成本」有哪些？为什么说自建往往不是「更便宜」而是「用钱换控制权」？</li>
+<li>只是觉得 API 贵，第一步该做什么？</li>
+<li>开源模型选型要看哪四点？哪一点最容易踩坑？</li>
+<li>为什么这一页的模型名单只让你「记结构别记名字」？实际选型该看什么？</li>
+</ol>
+<details>
+<summary>👀 答案</summary>
+<ol>
+<li>该：数据不出内网（医疗/金融/政务/法务）、稳定大流量、需要微调后的专有模型、需要极低延迟、离线环境、学习和实验。不该：流量小且不稳定、需要最强能力、团队没有运维能力、还在快速验证想法的阶段。</li>
+<li>隐性成本：<strong>运维人力（最大的一笔）、GPU 闲置成本、能力差距、迭代速度落后、机会成本</strong>。算上它们之后经济优势往往就没了——真实价值在合规、隐私、可控，所以是用钱换控制权而不是省钱。</li>
+<li><strong>先做 Prefix Caching 和提示词优化</strong>（<a href="06d-降延迟与三个指标.html">06d · 降延迟与指标</a>）——投入产出比高得多，而且不需要任何运维。</li>
+<li>许可证、中文能力、尺寸档位、生态支持。⭐ <strong>许可证最容易踩坑</strong>（能不能商用、有没有用户数限制）。</li>
+<li>因为模型名字和排名<strong>几个月就变</strong>，名单只用来理解「有哪几类玩家」（中文强的、推理和代码强的、生态最全的、效率导向的、小尺寸质量高的）。实际选型要去看当前的开源榜单，而怎么正确看榜是<a href="11-评测体系.html">第 11 章</a>的事。</li>
+</ol>
+</details>
+<hr />
+<h2 id="_9">🛑 可以停在这里</h2>
+<p>到这里你能给出一个有依据的答案：这件事该自建还是该继续用 API，以及要自建的话从哪个开源系列起步。</p>
+<p>⚠️ <strong>什么时候回来</strong>：账算完、模型也选好了，但你发现真正的问题是「模型答不上我们自己的资料」——那不是部署问题，是检索问题，去 08 系列。</p>
+<p>⚡ <strong>走神救援</strong></p>
+<blockquote>
+<p>该自建的场景：<strong>数据不能出内网</strong>（医疗/金融/政务/法务）、稳定大流量、需要微调后的专有模型、需要极低延迟、离线环境，以及学习和实验（免费随便玩）。不该自建的：流量小且不稳定、需要最强能力、团队没有运维能力、还在快速验证想法。💰 粗算一笔账：一张 24GB 消费级显卡几千到万把块，<strong>如果每月 API 花费不到几百块，自建在经济上就不成立</strong>（当学习投资另说）。⭐ 真正的分水岭是<strong>隐性成本</strong>，五项最容易漏：<strong>运维人力（最大的一笔）</strong>、GPU 闲置成本（流量低谷时也在烧钱）、能力差距（自建效果不如顶尖闭源，要更多工程去弥补）、迭代速度（闭源模型每几个月免费变强，自建的不会）、机会成本（花在运维上的时间没花在产品上）。所以<strong>自建往往不是「更便宜」，而是「用钱换控制权」</strong>——需求真是合规、隐私、可控就值；只是觉得 API 贵的话，先去做 <strong>Prefix Caching 和提示词优化</strong>，投入产出比高得多，而且不需要任何运维。开源生态<strong>记结构别记名字</strong>：Qwen（中文强、尺寸齐全）、DeepSeek（推理和代码、MoE 架构）、Llama（生态最广、工具链最全）、Mistral（效率导向）、Gemma（小尺寸质量高），外加各种垂直微调版本。<strong>选型看四点</strong>：⭐ <strong>许可证（最容易踩的坑——能不能商用、有没有用户数限制）</strong>、中文能力、有没有适合你硬件的尺寸档位、生态（现成的量化版本 / 微调脚本 / 社区支持）。⚠️ 模型名字和排名<strong>几个月就变</strong>，上面的名单只用来认清「有哪几类玩家」，实际选型要看当前榜单，而怎么正确看榜是第 11 章的事。</p>
+</blockquote>
+<p><strong>下一节</strong> 👉 <a href="08-RAG深水区.html">08-RAG深水区.md</a></p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="07-本地部署与开源生态.html"><div class="dir">← 上一节</div>💻 07 · 本地部署与生态</a><a class="next" href="08-RAG深水区.html"><div class="dir">下一节 →</div>🔍 08 · RAG 最小闭环</a></nav>
+</main>
+<script>(function(){
+  var KEY="overview-progress", FILE="07b-\u5f00\u6e90\u751f\u6001\u600e\u4e48\u9009.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+</body></html>

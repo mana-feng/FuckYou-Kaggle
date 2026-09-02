@@ -179,6 +179,13 @@ table.xref th{text-align:left;background:var(--accent-soft);color:var(--accent);
  padding:8px 12px;border:1px solid var(--border)}
 table.xref td{padding:8px 12px;border:1px solid var(--border);vertical-align:top}
 table.xref td:first-child{white-space:nowrap;font-weight:600}
+
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -224,7 +231,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <hr />
 <h2 id="_3">🤔 为什么必须分层？（一道算术题）</h2>
 <p>假设你的精排模型对<strong>一个</strong> (用户, 物品) 打分要 <strong>0.1 毫秒</strong>。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方案</th>
@@ -244,7 +251,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>✅</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>核心权衡</strong>：</p>
 <figure class="dia" aria-label="召回到重排的准确度与候选数量权衡">
 <svg viewBox="0 0 800 350" role="img" aria-labelledby="ranking-tradeoff-title ranking-tradeoff-desc" xmlns="http://www.w3.org/2000/svg">
@@ -275,7 +282,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <p>所以召回的指标是<strong>召回率</strong>，不是准确率。</p>
 <h3 id="_5">典型的多路召回配置</h3>
 <p>一个真实的信息流产品会同时跑 <strong>20–50 路</strong>召回，每路出几百个：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>召回路</th>
@@ -330,7 +337,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>打破茧房，收集无偏数据</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>合并方式</strong>：各路取 TopN → 去重 → 打上「来源」标记 → 送入粗排。</p>
 <blockquote>
 <p>🔧 <strong>实战经验</strong>：加一路新召回通常比调优现有模型的收益更大。
@@ -341,7 +348,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <p>粗排本质是个<strong>工程妥协</strong>：召回出了 1 万个，但精排模型只跑得动 500 个，中间需要一刀。</p>
 <p><strong>关键设计约束</strong>：粗排必须比精排<strong>快至少 10 倍</strong>，同时尽可能像精排。</p>
 <h3 id="_6">常见做法</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>做法</th>
@@ -362,7 +369,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>特征筛选 + 网络裁剪 + 工程优化协同设计</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_7">粗排的正确指标</h3>
 <p>❌ 不是 AUC。
 ✅ 是 <strong>「粗排 Top-K 和精排 Top-K 的重合度」</strong>（一致性 / Recall@K vs 精排）。</p>
@@ -371,7 +378,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <h2 id="3">③ 精排：全系统的核心战场</h2>
 <p>这里是模型最复杂、投入最大、收益最直接的地方。</p>
 <h3 id="_8">特征规模</h3>
-<div class="table-scroll"><table><thead><tr><th>特征类型</th><th>典型内容</th><th>规模</th></tr></thead><tbody><tr><th>用户特征</th><td>ID、画像、长期兴趣、近 500 次短期行为序列</td><td>约百维</td></tr><tr><th>物品特征</th><td>ID、类目、作者、时长、统计特征、多模态 Embedding</td><td>约百维</td></tr><tr><th>上下文特征</th><td>时间、地点、设备、网络、当前会话</td><td>约几十维</td></tr><tr><th>交叉特征</th><td>用户类目偏好 × 物品类目、用户价格带 × 物品价格</td><td>约几百维</td></tr></tbody></table></div>
+<div class="table-scroll"><div class="tw"><table><thead><tr><th>特征类型</th><th>典型内容</th><th>规模</th></tr></thead><tbody><tr><th>用户特征</th><td>ID、画像、长期兴趣、近 500 次短期行为序列</td><td>约百维</td></tr><tr><th>物品特征</th><td>ID、类目、作者、时长、统计特征、多模态 Embedding</td><td>约百维</td></tr><tr><th>上下文特征</th><td>时间、地点、设备、网络、当前会话</td><td>约几十维</td></tr><tr><th>交叉特征</th><td>用户类目偏好 × 物品类目、用户价格带 × 物品价格</td><td>约几百维</td></tr></tbody></table></div></div>
 <p class="dia-lead">合起来是几百到几千维；真正占大头的往往是 Embedding 表，规模可达 TB 级。</p>
 
 <h3 id="_9">⭐ 多目标：精排真正复杂的地方</h3>
@@ -406,7 +413,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <hr />
 <h2 id="4">④ 重排：模型管不了的事，规则来管</h2>
 <p>精排给出了「每个物品单独看有多好」，但<strong>最终展示的是一个列表</strong>，列表有列表的问题：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>问题</th>
@@ -443,7 +450,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>一个物品排在什么东西旁边，点击率会变（Context-aware Reranking）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_11">现代做法：不只是规则</h3>
 <ul>
 <li><strong>PRM (Personalized Re-ranking)</strong>：用 Transformer 建模整个列表，考虑物品间的相互影响</li>
@@ -489,7 +496,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <p>→ <strong>一切以 A/B 实验为准</strong>（第 12 节）。</p>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../AI基础设施/15-推理和训练是两回事.html">AI基础设施 15</a></td><td>精排的 200ms 预算是推理侧约束：延迟 vs 吞吐、批量打分、超时降级都源于此</td></tr><tr><td><a href="../模型上线之后/03-灰度影子与回滚.html">上线之后 03</a></td><td>新链路上线先走影子流量验证一致性，再灰度放量，永远留回滚开关</td></tr><tr><td><a href="../模型上线之后/05-该监控什么.html">上线之后 05</a></td><td>四层漏斗每层的耗时、降级率、空结果率该怎么监控才不至于出事没人知道</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../AI基础设施/15-推理和训练是两回事.html">AI基础设施 15</a></td><td>精排的 200ms 预算是推理侧约束：延迟 vs 吞吐、批量打分、超时降级都源于此</td></tr><tr><td><a href="../模型上线之后/03-灰度影子与回滚.html">上线之后 03</a></td><td>新链路上线先走影子流量验证一致性，再灰度放量，永远留回滚开关</td></tr><tr><td><a href="../模型上线之后/05-该监控什么.html">上线之后 05</a></td><td>四层漏斗每层的耗时、降级率、空结果率该怎么监控才不至于出事没人知道</td></tr></tbody></table></div>
 <hr />
 <h2 id="_14">✅ 检查点</h2>
 <p><strong>这几题请务必答出来，面试必考：</strong></p>

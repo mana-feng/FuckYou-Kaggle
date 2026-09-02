@@ -178,6 +178,13 @@ figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 aut
 figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -267,7 +274,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 </code></pre></div>
 
 <h3 id="gnn">什么时候值得用 GNN</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>情况</th>
@@ -292,7 +299,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <td>❌ 图要频繁重建，工程代价大</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>📌 <strong>现实定位</strong>：LightGCN 是学术界最强的 CF baseline 之一；工业界通常把它当<strong>召回的其中一路</strong>，而不是主力。</p>
 </blockquote>
@@ -355,7 +362,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 </code></pre></div>
 
 <h3 id="_6">推荐系统蒸馏的三种姿势</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>姿势</th>
@@ -380,7 +387,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <td>Embedding 压缩</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
 
@@ -452,7 +459,7 @@ IPS 类方法在评估（Off-Policy Evaluation）里比在训练里更常用。<
 </code></pre></div>
 
 <h3 id="_11">现实中的三大拦路虎</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>难题</th>
@@ -473,7 +480,7 @@ IPS 类方法在评估（Off-Policy Evaluation）里比在训练里更常用。<
 <td>「三个月后还留存」这个奖励信号要等三个月</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_12">工业界实际在用的形态（务实版）</h3>
 <ol>
 <li><strong>YouTube 的 Top-K REINFORCE</strong>（2019）：策略梯度 + 重要性采样纠偏，用于召回。是最著名的成功案例</li>
@@ -501,7 +508,7 @@ IPS 类方法在评估（Off-Policy Evaluation）里比在训练里更常用。<
 3. 用 Embedding 时注意降维（768 维太大，PCA/SVD 到 64 维再入模型）</p>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../强化学习基础/14-RL在推荐与智能体里.html">强化学习 14</a></td><td>专题五的展开版：离线 RL 为什么难、动作空间怎么压、什么时候真的该上 RL</td></tr><tr><td><a href="../模型上线之后/13-不能做AB时的因果推断.html">上线之后 13</a></td><td>专题四的完整版：倾向得分怎么估、SNIPS / Doubly Robust 为什么能压住方差</td></tr><tr><td><a href="../模型上线之后/18-成本与容量.html">上线之后 18</a></td><td>专题三的落地账：蒸馏在降本清单里排最后一位——先 profile、缓存、请求分级，那三步就能拿 70% 收益</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../强化学习基础/14-RL在推荐与智能体里.html">强化学习 14</a></td><td>专题五的展开版：离线 RL 为什么难、动作空间怎么压、什么时候真的该上 RL</td></tr><tr><td><a href="../模型上线之后/13-不能做AB时的因果推断.html">上线之后 13</a></td><td>专题四的完整版：倾向得分怎么估、SNIPS / Doubly Robust 为什么能压住方差</td></tr><tr><td><a href="../模型上线之后/18-成本与容量.html">上线之后 18</a></td><td>专题三的落地账：蒸馏在降本清单里排最后一位——先 profile、缓存、请求分级，那三步就能拿 70% 收益</td></tr></tbody></table></div>
 <hr />
 <h2 id="_13">✅ 检查点</h2>
 <ol>

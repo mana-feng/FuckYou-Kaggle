@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>07 · 去噪主干：U-Net 与 DiT · 扩散模型</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">07 · 去噪主干：U-Net 与 DiT</span>
+  <span class="prevnext"><a href="06-条件控制与CFG.html">←</a>
+  <a href="08-ControlNet与风格LoRA.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">🧱 一、先把接口钉死：三进一出</a></li>
+<li><a href="#u-net">🪜 二、U-Net：先压下去，再抬回来</a></li>
+<li><a href="#_3">✂️ 三、跳跃连接到底救了什么</a></li>
+<li><a href="#dit-token">🧩 四、DiT：把潜空间切成 token</a></li>
+<li><a href="#dit">🏁 五、为什么后来是 DiT 赢了</a></li>
+<li><a href="#_4">🚧 六、一个特别容易搞混的点</a></li>
+<li><a href="#_5">🔗 这一章连到哪里</a></li>
+<li><a href="#_6">✅ 检查点</a></li>
+<li><a href="#_7">🛑 可以停在这里</a></li>
+</ul>
+</div>
+</details>
+<h1 id="07-u-net-dit">07 · 去噪主干：U-Net 与 DiT</h1>
+<p>⏱ <strong>34 分钟</strong> ｜ ⭐ <strong>前面六章一直在说「让模型预测噪声」，这一章打开那个模型</strong></p>
+<hr />
+<h2 id="_1">🎯 一句话</h2>
+<p><strong>去噪网络只是一个接口固定的函数：进 <code>(带噪的图, 第几步, 条件)</code>，出「这里面加了什么噪声」—— 里面用什么结构实现，扩散本身完全不关心。</strong>
+所以主干从 U-Net 换成 Transformer（DiT），上一章的 CFG、之前的加噪公式和 DDIM 跳步，一行都不用改。</p>
+<hr />
+<h2 id="_2">🧱 一、先把接口钉死：三进一出</h2>
+<p>上一章的 CFG 要跑两次去噪网络，一次带条件一次不带。那两次调用长这样：</p>
+<figure class="dia"><svg viewBox="0 0 760 244" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="三个输入带噪图、时间步、条件汇进一个去噪网络方框，输出一张与输入同形状的预测噪声"><text class="dia-t" x="380" y="24" font-size="14" text-anchor="middle" fill="var(--fg)" font-weight="700">接口是固定的，所以主干可以随便换</text><rect x="30" y="36" width="150" height="44" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="105" y="58" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">带噪图 x_t</text><text class="dia-t" x="105" y="77" font-size="11.5" text-anchor="middle" fill="var(--muted)">要去噪的东西</text><line x1="180" y1="58" x2="259" y2="58" stroke="var(--accent)" stroke-width="2"/><polygon points="268,58 259,53 259,63" fill="var(--accent)"/><rect x="30" y="94" width="150" height="44" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="105" y="116" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">时间步 t</text><text class="dia-t" x="105" y="135" font-size="11.5" text-anchor="middle" fill="var(--muted)">现在噪声有多重</text><line x1="180" y1="116" x2="259" y2="116" stroke="var(--accent)" stroke-width="2"/><polygon points="268,116 259,111 259,121" fill="var(--accent)"/><rect x="30" y="152" width="150" height="44" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="105" y="174" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">条件 c</text><text class="dia-t" x="105" y="193" font-size="11.5" text-anchor="middle" fill="var(--muted)">提示词等</text><line x1="180" y1="174" x2="259" y2="174" stroke="var(--accent)" stroke-width="2"/><polygon points="268,174 259,169 259,179" fill="var(--accent)"/><rect x="272" y="74" width="150" height="96" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/><text class="dia-t" x="347" y="122" font-size="15" text-anchor="middle" fill="var(--accent)" font-weight="700">去噪网络</text><text class="dia-t" x="347" y="141" font-size="11.5" text-anchor="middle" fill="var(--muted)">U-Net 或 DiT</text><line x1="422" y1="122" x2="503" y2="122" stroke="var(--accent)" stroke-width="2"/><polygon points="512,122 503,117 503,127" fill="var(--accent)"/><rect x="516" y="96" width="160" height="52" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="596" y="122" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">预测的噪声 ε̂</text><text class="dia-t" x="596" y="141" font-size="11.5" text-anchor="middle" fill="var(--muted)">和 x_t 同形状</text><text class="dia-t" x="380" y="210" font-size="12.5" text-anchor="middle" fill="var(--muted)">扩散那套数学（加噪公式、DDIM 跳步、CFG）全在这个方框外面</text><text class="dia-t" x="380" y="232" font-size="12.5" text-anchor="middle" fill="var(--done)" font-weight="700">⭐ 所以换主干不用改任何公式 —— U-Net 换成 DiT，接口一个字没变</text></svg><figcaption>先看方框<b>外面</b>：三进一出，形状固定。⭐ 扩散的全部数学都在框外，框里那个函数只负责「看着这三样，把噪声认出来」—— <b>这就是主干能随便换的原因</b>。</figcaption></figure>
+
+<div class="tw"><table>
+<thead>
+<tr>
+<th>输入</th>
+<th>是什么</th>
+<th>形状</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x_t</code></td>
+<td>第 t 步的带噪图（潜空间里就是潜变量）</td>
+<td>和输出<strong>同形</strong>，比如 4×64×64</td>
+</tr>
+<tr>
+<td><code>t</code></td>
+<td>走到第几步了</td>
+<td>一个整数，先变成向量再送进去</td>
+</tr>
+<tr>
+<td><code>c</code></td>
+<td>条件：文本嵌入、类别、别的图……</td>
+<td>一串向量</td>
+</tr>
+</tbody>
+</table></div>
+<p>输出<strong>只有一个</strong>：一张和 <code>x_t</code> 同形状的预测噪声。</p>
+<blockquote>
+<p>⭐ <strong>这个接口就是「扩散」和「网络」之间的那道缝。</strong>
+加噪是固定公式、采样是固定循环，只有这个函数是学出来的 —— 换主干时<strong>调用方一个字都不用动</strong>。</p>
+</blockquote>
+<p>⚠️ 有件事接口里没写出来：<strong><code>t</code> 不能只在输入端塞一次</strong>。
+它要影响的是<strong>每一层</strong>的行为（<code>t</code> 大时该输出接近纯噪声，<code>t</code> 小时只该修细节）。
+所以标准做法是把 <code>t</code> 变成向量，在每个块<strong>内部</strong>注入。下面两种主干注入方式不同，目的一样。</p>
+<hr />
+<h2 id="u-net">🪜 二、U-Net：先压下去，再抬回来</h2>
+<figure class="dia"><svg viewBox="0 0 760 322" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="左臂三级下采样、底部瓶颈、右臂三级上采样，三条绿色虚线把同级左右臂直接连起来"><text class="dia-t" x="380" y="24" font-size="14" text-anchor="middle" fill="var(--fg)" font-weight="700">U-Net：压下去再抬回来，跳跃连接把细节直接送过去</text><rect x="60" y="56" width="96" height="42" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="108" y="77" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">64×64</text><text class="dia-t" x="108" y="94" font-size="11.5" text-anchor="middle" fill="var(--muted)">128 通道</text><rect x="150" y="106" width="96" height="42" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="198" y="127" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">32×32</text><text class="dia-t" x="198" y="144" font-size="11.5" text-anchor="middle" fill="var(--muted)">256</text><rect x="240" y="156" width="96" height="42" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="288" y="177" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">16×16</text><text class="dia-t" x="288" y="194" font-size="11.5" text-anchor="middle" fill="var(--muted)">512</text><line x1="108" y1="98" x2="198" y2="97" stroke="var(--accent)" stroke-width="2"/><polygon points="108,106 103,97 113,97" fill="var(--accent)"/><line x1="198" y1="148" x2="288" y2="147" stroke="var(--accent)" stroke-width="2"/><polygon points="198,156 193,147 203,147" fill="var(--accent)"/><rect x="330" y="206" width="100" height="42" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/><text class="dia-t" x="380" y="227" font-size="13" text-anchor="middle" fill="var(--accent)" font-weight="700">瓶颈</text><text class="dia-t" x="380" y="244" font-size="11.5" text-anchor="middle" fill="var(--muted)">自注意力</text><line x1="288" y1="198" x2="380" y2="197" stroke="var(--accent)" stroke-width="2"/><polygon points="288,206 283,197 293,197" fill="var(--accent)"/><rect x="464" y="156" width="96" height="42" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="512" y="177" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">16×16</text><text class="dia-t" x="512" y="194" font-size="11.5" text-anchor="middle" fill="var(--muted)">512</text><rect x="554" y="106" width="96" height="42" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="602" y="127" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">32×32</text><text class="dia-t" x="602" y="144" font-size="11.5" text-anchor="middle" fill="var(--muted)">256</text><rect x="644" y="56" width="96" height="42" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="692" y="77" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">64×64</text><text class="dia-t" x="692" y="94" font-size="11.5" text-anchor="middle" fill="var(--muted)">128+64</text><line x1="430" y1="227" x2="464" y2="199" stroke="var(--accent)" stroke-width="2"/><polygon points="430,190 425,199 435,199" fill="var(--accent)"/><line x1="512" y1="156" x2="602" y2="157" stroke="var(--accent)" stroke-width="2"/><polygon points="512,148 507,157 517,157" fill="var(--accent)"/><line x1="602" y1="106" x2="692" y2="107" stroke="var(--accent)" stroke-width="2"/><polygon points="602,98 597,107 607,107" fill="var(--accent)"/><path d="M156 77 L 644 77" fill="none" stroke="var(--done)" stroke-width="2" stroke-dasharray="6 4"/><path d="M246 127 L 554 127" fill="none" stroke="var(--done)" stroke-width="2" stroke-dasharray="6 4"/><path d="M336 177 L 464 177" fill="none" stroke="var(--done)" stroke-width="2" stroke-dasharray="6 4"/><text class="dia-t" x="380" y="288" font-size="12" text-anchor="middle" fill="var(--muted)">绿色虚线就是跳跃连接 —— 它是拼接不是相加，所以右臂入口通道是 128+64=192</text><text class="dia-t" x="380" y="310" font-size="12.5" text-anchor="middle" fill="var(--done)" font-weight="700">实测 8 倍下采样后高频保留 0.0000，一点不剩 —— 跳跃连接救的正是这个</text></svg><figcaption>看那三条绿色虚线：它们<b>绕过了瓶颈</b>。⭐ 下采样会把高频细节压没（实测保留 0.0000），而扩散在 t 小的那几步干的正好是补细节 —— 没有跳跃连接，那些细节根本没有来源。</figcaption></figure>
+
+<p><strong>左臂（编码器）</strong>几轮「卷积块 → 下采样」，分辨率一路减半、通道一路翻倍；<strong>底部（瓶颈）</strong>分辨率最低，⭐ 自注意力通常只插在这附近 —— 注意力的代价是 token 数的平方，压小之后才付得起；<strong>右臂（解码器）</strong>几轮「上采样 → 卷积块」抬回原分辨率。条件走交叉注意力进来：Query 来自图像特征，Key/Value 来自文本嵌入。</p>
+<p>跳跃连接把左臂每一级送到右臂同分辨率那一级。⭐ <strong>它用的是拼接，不是残差那种相加</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 跳跃连接把通道数变成了多少</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="n">h1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>                 <span class="c1"># 编码器一级：存下来</span>
+<span class="n">h2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)(</span><span class="n">h1</span><span class="p">)</span>    <span class="c1"># 下采样：32×32 → 16×16</span>
+<span class="n">cat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">nn</span><span class="o">.</span><span class="n">Upsample</span><span class="p">(</span><span class="n">scale_factor</span><span class="o">=</span><span class="mi">2</span><span class="p">)(</span><span class="n">h2</span><span class="p">),</span> <span class="n">h1</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>   <span class="c1"># ⭐ 拼接，不是相加</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;编码器 h1&quot;</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">h1</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">瓶颈   h2&quot;</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">h2</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span>
+      <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">拼接后   &quot;</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">cat</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="s2">&quot;← 128 + 64 = 192&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>编码器 h1 (1, 64, 32, 32)
+瓶颈   h2 (1, 128, 16, 16)
+拼接后    (1, 192, 32, 32) ← 128 + 64 = 192
+</code></pre></div>
+
+<p>所以解码器每一级的输入通道是「上采样上来的 + 编码器同级存下的」。写代码时最容易在这里对不上。</p>
+<hr />
+<h2 id="_3">✂️ 三、跳跃连接到底救了什么</h2>
+<p>标准答案是「保留细节」。这句话可以量出来 —— 下面这段几秒钟跑完：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 下采样到底压掉了什么：把细纹和粗块一起送进 8 倍下采样再还原</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">H</span> <span class="o">=</span> <span class="mi">64</span>
+<span class="n">yy</span><span class="p">,</span> <span class="n">xx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">H</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">H</span><span class="p">),</span> <span class="n">indexing</span><span class="o">=</span><span class="s2">&quot;ij&quot;</span><span class="p">)</span>
+<span class="n">coarse</span> <span class="o">=</span> <span class="p">((</span><span class="n">xx</span> <span class="o">-</span> <span class="mi">32</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">yy</span> <span class="o">-</span> <span class="mi">32</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="mi">20</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>   <span class="c1"># 低频：一个大圆</span>
+<span class="n">fine</span> <span class="o">=</span> <span class="p">((</span><span class="n">xx</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span>                     <span class="c1"># 高频：2 像素周期条纹</span>
+<span class="n">img</span> <span class="o">=</span> <span class="p">(</span><span class="n">coarse</span> <span class="o">+</span> <span class="n">fine</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">H</span><span class="p">)</span>
+
+<span class="n">small</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">avg_pool2d</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>                                   <span class="c1"># ⭐ 8 倍下采样</span>
+<span class="n">back</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">small</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">H</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;bilinear&quot;</span><span class="p">,</span> <span class="n">align_corners</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">keep</span><span class="p">(</span><span class="n">sig</span><span class="p">):</span>        <span class="c1"># 还原后这部分信号还剩多少（1.0 = 完好，0 = 全没了）</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">((</span><span class="n">back</span> <span class="o">*</span> <span class="n">sig</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">sig</span> <span class="o">*</span> <span class="n">sig</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;低频（大圆）保留   </span><span class="si">{</span><span class="n">keep</span><span class="p">(</span><span class="n">coarse</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">H</span><span class="p">,</span><span class="n">H</span><span class="p">))</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;高频（细条纹）保留 </span><span class="si">{</span><span class="n">keep</span><span class="p">(</span><span class="n">fine</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">H</span><span class="p">,</span><span class="n">H</span><span class="p">))</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>低频（大圆）保留   0.830
+高频（细条纹）保留 0.0000
+</code></pre></div>
+
+<blockquote>
+<p>⭐ <strong>高频那一行是 <code>0.0000</code>，不是「变小了」，是【一点不剩】。</strong>
+走瓶颈那条路只带得回「这是一只猫、它在画面中间」这类低频信息；
+「猫毛往哪个方向长」在下采样那一步就没了，<strong>再精巧的解码器也变不回来</strong>。</p>
+</blockquote>
+<p>⚠️ 而扩散模型在 <code>t</code> 很小的那几步，干的<strong>正好就是补高频</strong>（轮廓早在大 <code>t</code> 时就定了）。
+所以跳跃连接不是锦上添花，是<strong>去噪这个任务本身要求的</strong>。</p>
+<hr />
+<h2 id="dit-token">🧩 四、DiT：把潜空间切成 token</h2>
+<p>DiT 把整个 U 形扔掉，换成一摞完全一样的 Transformer 块。关键是开头和结尾那两步转换：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># DiT 的第一步和最后一步：把潜空间切成 token，过完 Transformer 再拼回去</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">384</span>       <span class="c1"># 潜空间 4×32×32，patch 边长 2，token 384 维</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+<span class="n">tok</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="n">P</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>   <span class="c1"># ⭐ 切块+投影一步完成</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;潜空间&quot;</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="s2">&quot;→ token&quot;</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">tok</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span>
+      <span class="sa">f</span><span class="s2">&quot;  N = (</span><span class="si">{</span><span class="n">H</span><span class="si">}</span><span class="s2">//</span><span class="si">{</span><span class="n">P</span><span class="si">}</span><span class="s2">)×(</span><span class="si">{</span><span class="n">W</span><span class="si">}</span><span class="s2">//</span><span class="si">{</span><span class="n">P</span><span class="si">}</span><span class="s2">) = </span><span class="si">{</span><span class="p">(</span><span class="n">H</span><span class="o">//</span><span class="n">P</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">W</span><span class="o">//</span><span class="n">P</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">tok</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">TransformerEncoderLayer</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">D</span><span class="p">,</span> <span class="n">batch_first</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">norm_first</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">tok</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;过完一层&quot;</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">tok</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="s2">&quot; 形状不变，所以能一直堆下去&quot;</span><span class="p">)</span>
+
+<span class="n">out</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">P</span> <span class="o">*</span> <span class="n">P</span> <span class="o">*</span> <span class="n">C</span><span class="p">)(</span><span class="n">tok</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">H</span> <span class="o">//</span> <span class="n">P</span><span class="p">,</span> <span class="n">W</span> <span class="o">//</span> <span class="n">P</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>            <span class="c1"># 拼回整图</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;拼回去  &quot;</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="s2">&quot; 和输入同形 =&quot;</span><span class="p">,</span> <span class="n">out</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>潜空间 (1, 4, 32, 32) → token (1, 256, 384)   N = (32//2)×(32//2) = 256
+过完一层 (1, 256, 384)  形状不变，所以能一直堆下去
+拼回去   (1, 4, 32, 32)  和输入同形 = True
+</code></pre></div>
+
+<p>⭐ <strong>patch 边长是这里最贵的旋钮</strong>：边长从 2 减到 1，token 数 256 → 1024（×4），
+而注意力是 token 数的平方 —— 代价 <strong>×16</strong>。<code>DiT-XL/2</code> 那个 <code>/2</code> 说的就是这个数。</p>
+<p><strong><code>t</code> 和 <code>c</code> 怎么进</strong>：不用交叉注意力，而是把两者合成一个向量，去生成每一层 LayerNorm 的缩放平移、以及每个残差分支上的门控系数（adaLN-Zero）。
+⭐ 那个门控是<strong>零初始化</strong>的，训练刚开始时每个块都是恒等映射 —— <strong>下一章 ControlNet 的零初始化卷积是同一个想法</strong>。</p>
+<hr />
+<h2 id="dit">🏁 五、为什么后来是 DiT 赢了</h2>
+<p>不是因为「Transformer 比卷积聪明」。三条都很具体：</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>理由</th>
+<th>具体是什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>scaling 更可预测</strong> ⭐</td>
+<td>加宽、加深、加数据能换回多少收益，Transformer 这条线上有大量现成曲线；U-Net「通道加到多少算够」从来没有类似共识</td>
+</tr>
+<tr>
+<td><strong>工程栈白捡</strong> ⭐</td>
+<td>FlashAttention、序列并行、混合精度配方、各种融合 kernel —— 都是为语言模型造的，DiT 拿来即用</td>
+</tr>
+<tr>
+<td><strong>归纳偏置更少</strong></td>
+<td>数据足够多时「少假设 + 更多数据」通常赢；换分辨率对 DiT 也只是 token 数变了</td>
+</tr>
+</tbody>
+</table></div>
+<p>⚠️ <strong>代价很实在</strong>：注意力是平方复杂度，token 一多就付不起。所以 DiT 几乎总是长在<strong>潜空间</strong>里（第 5 章那一套）—— 直接在 512×512 像素上切 patch，token 数是六位数，没人跑得起。<strong>是 Latent Diffusion 先把图压小了，DiT 才成立。</strong>
+💡 所以也不是「U-Net 过时了」：数据少算力少时卷积那两条先验是白送的，老一代开源模型周边的控制生态（下一章的主题）也大多是给 U-Net 写的。<strong>想往大了堆才是 DiT 的主场。</strong></p>
+<hr />
+<h2 id="_4">🚧 六、一个特别容易搞混的点</h2>
+<p><strong>DiT 不是「用 Transformer 生成图像」。</strong> 自回归图像生成也用 Transformer —— 把图切成 token 一个接一个地吐 —— 但那是<strong>另一种范式</strong>：</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>自回归图像生成</th>
+<th>DiT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>训练目标</td>
+<td>预测下一个 token</td>
+<td><strong>预测噪声</strong>（和前面几章一模一样）</td>
+</tr>
+<tr>
+<td>怎么出图</td>
+<td>逐 token 解码</td>
+<td><strong>DDPM / DDIM 那个去噪循环，一行不改</strong></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>⭐ <strong>换主干就像把一段程序里的排序从快排换成归并</strong>：复杂度和常数变了，调用方一个字不用动。
+<strong>DiT 换掉的只是那个预测噪声的函数的实现，扩散那套数学一条都没动。</strong></p>
+</blockquote>
+<hr />
+<h2 id="_5">🔗 这一章连到哪里</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>去哪</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../机器学习与深度学习基础/12-CNN.html">机器学习与深度学习基础 12 · CNN 处理图像</a></td>
+<td>U-Net 的左臂就是那一章的零件堆起来的。⭐ 尤其去看它「感受野」那一节：<strong>加一次 stride=2 的下采样，之后每层的感受野翻倍增长</strong> —— 这既是 U-Net 敢把分辨率一路压小的理由，也是本章第三节那个 <code>0.0000</code> 的代价来源</td>
+</tr>
+<tr>
+<td><a href="../大模型全景导论/02-Transformer原理.html">大模型全景导论 主线 2 · 模型怎样看懂一句话</a></td>
+<td>DiT 的每一块就是那一章那张图：<strong>注意力 → 残差 → FFN</strong>，结构一层没改，差别只在序列里装的不是词而是图像 patch。它讲的 Q/K/V 各自的角色，本章的交叉注意力（Query 来自图像、Key/Value 来自文本）直接用得上</td>
+</tr>
+<tr>
+<td><a href="../大模型全景导论/10b-图像生成.html">大模型全景导论 10b · 图像生成</a></td>
+<td>14 分钟的索引版。它的组件表里「U-Net / DiT」只占一行、写着「DiT = 用 Transformer 做去噪，现在的主流」—— 本章是那一行的展开，也是对它最容易被误读成「Transformer 生成图像」的纠偏</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_6">✅ 检查点</h2>
+<ol>
+<li>去噪网络的输入有哪三样？输出的形状和谁一样？</li>
+<li>为什么时间步 <code>t</code> 不能只在输入端塞进去一次？</li>
+<li>U-Net 的跳跃连接用的是拼接还是相加？这对解码器的通道数有什么影响？</li>
+<li>第三节那段代码里，8 倍下采样之后高频信号保留了多少？这个数说明跳跃连接在防什么？</li>
+<li>DiT 里 patch 边长从 2 减到 1，token 数和注意力代价各变成几倍？</li>
+<li>为什么说「DiT 不是用 Transformer 生成图像」？它又为什么几乎总要配合潜空间？</li>
+</ol>
+<details>
+<summary>👀 答案</summary>
+<ol>
+<li><code>x_t</code>（带噪图）、<code>t</code>（第几步）、<code>c</code>（条件）。输出和 <code>x_t</code> <strong>同形</strong>，比如 4×64×64 进、4×64×64 出。</li>
+<li>因为 <code>t</code> 要影响<strong>每一层</strong>的行为 —— <code>t</code> 大时该输出接近纯噪声、<code>t</code> 小时只修细节。所以它变成向量后在每个块内部注入（U-Net 加进残差块，DiT 用 adaLN 生成每层的缩放平移）。</li>
+<li><strong>拼接</strong>（<code>torch.cat</code>，通道维）。所以解码器每一级的输入通道 = 上采样上来的 + 编码器同级存下的；代码里是 <code>128 + 64 = 192</code>。</li>
+<li><strong><code>0.0000</code>，一点不剩</strong>（同一次实验里低频保留 0.830）。说明瓶颈那条路只带得动低频，高频细节必须绕过瓶颈直接送到解码器 —— 而扩散在 <code>t</code> 小的那几步干的正好是补高频。</li>
+<li>token 数 256 → 1024（<strong>×4</strong>），注意力是 token 数的平方，所以代价 <strong>×16</strong>。<code>DiT-XL/2</code> 的 <code>/2</code> 说的就是 patch 边长。</li>
+<li>因为它<strong>仍然是扩散</strong>：训练目标是预测噪声，出图还是 DDPM/DDIM 那个去噪循环；自回归图像生成的目标是预测下一个 token。至于潜空间：注意力是 token 数的平方复杂度，直接在 512×512 像素上切 patch，token 数是六位数，跑不起 —— <strong>先由 Latent Diffusion 把图压小，DiT 才成立。</strong></li>
+</ol>
+</details>
+<hr />
+<h2 id="_7">🛑 可以停在这里</h2>
+<p>读到这里，你已经能看懂一份扩散模型配置在说什么：<code>unet</code> 那串通道数是左臂的每一级，<code>attention_resolutions</code> 是注意力插在哪几级，DiT 那边的 <code>patch_size</code> 和 <code>hidden_size</code> 各自在换什么代价。</p>
+<p><strong>什么时候回来</strong>：生成图<strong>大结构对、细节糊</strong>时回看第三节（那通常是跳跃连接这条路上的问题）；要<strong>换分辨率</strong>或<strong>估显存</strong>时回看第四节的 token 数和第五节那条平方复杂度。</p>
+<p>⚡ <strong>走神救援</strong></p>
+<blockquote>
+<p>去噪网络是一个接口固定的函数：进 <code>(x_t, t, c)</code>，出一张和 <code>x_t</code> 同形状的预测噪声。扩散那套数学（加噪公式、DDIM 跳步、CFG）全在这个函数外面，所以主干能随便换。<code>t</code> 不能只从输入端塞一次 —— 它要影响每一层，所以变成向量后在每个块内部注入；条件在 U-Net 里走交叉注意力（Query 来自图像、Key/Value 来自文本），在 DiT 里和 <code>t</code> 一起去生成每层 LayerNorm 的缩放平移（adaLN-Zero，那个门控零初始化，和下一章 ControlNet 是同一个想法）。<strong>U-Net</strong> 是 U 形：左臂几轮「卷积 + 下采样」压小分辨率、翻倍通道，只有在被压小的瓶颈附近才插得起自注意力，右臂再抬回来；跳跃连接是<strong>拼接</strong>不是相加，所以解码器入口通道是 <code>128 + 64 = 192</code>。它救的是高频：实测把一张含 2 像素周期条纹的图做 8 倍下采样再还原，低频保留 <strong>0.830</strong>，<strong>高频保留 <code>0.0000</code> —— 一点不剩</strong>，而扩散在 <code>t</code> 小的那几步干的正好是补细节。<strong>DiT</strong> 把潜空间切成 patch 当 token：4×32×32 按边长 2 切得到 <strong>256 个 token</strong>，过完 Transformer 形状不变所以能一直堆，最后每个 token 线性映回自己那一小块拼成整图；patch 边长减半 → token ×4 → 注意力代价 <strong>×16</strong>，<code>DiT-XL/2</code> 的 <code>/2</code> 就是它。它赢在 scaling 可预测、语言模型的工程栈白捡、归纳偏置更少；代价是平方复杂度，所以它几乎总要长在潜空间里。⚠️ 最容易搞混的一条：<strong>DiT 不是「用 Transformer 生成图像」</strong> —— 训练目标还是预测噪声，出图还是那个去噪循环，换的只是实现，就像把快排换成归并。</p>
+</blockquote>
+<p><strong>下一节</strong> 👉 <a href="08-ControlNet与风格LoRA.html">08-ControlNet与风格LoRA.md</a></p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="06-条件控制与CFG.html"><div class="dir">← 上一节</div>🎚️ 06 · 条件控制与 CFG</a><a class="next" href="08-ControlNet与风格LoRA.html"><div class="dir">下一节 →</div>🎛️ 08 · ControlNet 与风格 LoRA</a></nav>
+</main>
+<script>(function(){
+  var KEY="diff-progress", FILE="07-\u53bb\u566a\u4e3b\u5e72-UNet\u4e0eDiT.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+</body></html>

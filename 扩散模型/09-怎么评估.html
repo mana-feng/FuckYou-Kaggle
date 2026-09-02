@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>09 · 怎么评估：FID 与 CLIP Score · 扩散模型</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">09 · 怎么评估</span>
+  <span class="prevnext"><a href="08-ControlNet与风格LoRA.html">←</a>
+  <a href="附录A-速查.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#fid">📏 一、FID 到底在算什么</a></li>
+<li><a href="#1">🕳️ 二、坑①：它对样本量极敏感（这一条可以直接跑出来）</a></li>
+<li><a href="#_2">🕳️ 三、另外两个坑</a></li>
+<li><a href="#clip-score">🧲 四、CLIP Score：另一个方向的一半</a></li>
+<li><a href="#_3">⚖️ 五、人评怎么做才不浪费</a></li>
+<li><a href="#_4">🔭 六、最要紧的一条：尺子本身也会坏</a></li>
+<li><a href="#_5">🔗 这一章连到哪里</a></li>
+<li><a href="#_6">✅ 检查点</a></li>
+<li><a href="#_7">🛑 可以停在这里</a></li>
+</ul>
+</div>
+</details>
+<h1 id="09-fid-clip-score">09 · 怎么评估：FID 与 CLIP Score</h1>
+<p>⏱ <strong>38 分钟</strong> ｜ ⭐ 两个几乎每篇论文都在报的数字，以及它们各自看不见什么</p>
+<hr />
+<h2 id="_1">🎯 一句话</h2>
+<p><strong>FID 量「这一批图整体像不像真图」，CLIP Score 量「这一张图对不对得上提示词」—— 而你真正在乎的构图、手指、小字、审美，两个都不测。</strong></p>
+<p>前面几章讲的全是怎么把图生成出来。这一章讲最后一件事：<strong>生成出来之后，你凭什么说这一版比上一版好。</strong></p>
+<hr />
+<h2 id="fid">📏 一、FID 到底在算什么</h2>
+<p>FID（Fréchet Inception Distance）分三步：</p>
+<ol>
+<li>把<strong>真图</strong>和<strong>生成图</strong>都送进同一个 Inception 网络，取倒数第二层的输出 —— 每张图变成一个 <strong>2048 维</strong>向量。</li>
+<li>真图那一堆向量当成一个高斯分布（均值 $\mu_r$、协方差 $\Sigma_r$），生成图那一堆当成另一个（$\mu_g,\Sigma_g$）。</li>
+<li>算这两个高斯之间的 <strong>Fréchet 距离</strong>：</li>
+</ol>
+<p>$$\mathrm{FID}=\lVert\mu_r-\mu_g\rVert^2+\mathrm{Tr}\!\left(\Sigma_r+\Sigma_g-2\left(\Sigma_r\Sigma_g\right)^{1/2}\right)$$</p>
+<blockquote>
+<p>⭐ <strong>人话翻译</strong>：第一项是「两堆点的<strong>中心</strong>差多远」，第二项是「两堆点的<strong>形状</strong>（往哪些方向散、散多开）差多少」。两项都为 0 才是 0。<strong>越小越好。</strong></p>
+</blockquote>
+<p>⚠️ 注意这里的措辞：<strong>FID 从头到尾只用了均值和协方差</strong>。它把两堆图各压成了「一个中心 + 一个椭球」，除此之外的一切信息都被丢掉了。这一句是下面四个坑的共同来源。</p>
+<figure class="dia"><svg viewBox="0 0 700 306" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="两团特征点云各自拟合一个椭球，中间一条虚线表示它们的距离"><text class="dia-t" x="350" y="24" font-size="14" text-anchor="middle" fill="var(--fg)" font-weight="700">FID 只比较两团点的中心和形状，不看任何一张图</text><circle cx="161.3" cy="160.229" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="162.313" cy="143.699" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="138.379" cy="145.734" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="207.805" cy="158.483" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="205.254" cy="154.978" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="183.422" cy="153.707" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="113.354" cy="167.105" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="187.217" cy="159.976" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="112.494" cy="115.122" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="139.753" cy="140.636" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="180.385" cy="149.082" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="187.713" cy="137.155" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="180.496" cy="157.883" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="147.521" cy="184.351" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="188.925" cy="173.94" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="148.909" cy="135.21" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="158.302" cy="147.872" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="191.491" cy="154.969" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="154.79" cy="130.862" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="152.3" cy="174.418" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="142.53" cy="154.895" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="184.502" cy="120.205" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="171.648" cy="176.125" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="101.512" cy="143.568" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="166.391" cy="133.655" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="186.911" cy="148.754" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="120.202" cy="166.557" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="192.757" cy="168.917" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="218.98" cy="157.245" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="174.055" cy="124.017" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="190.925" cy="137.765" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="154.608" cy="124.704" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="137.101" cy="139.378" r="2.6" fill="var(--accent)" opacity=".62"/><circle cx="213.82" cy="109.364" r="2.6" fill="var(--accent)" opacity=".62"/><ellipse cx="170" cy="150" rx="66" ry="40" fill="none" stroke="var(--accent)" stroke-width="2.4"/><text class="dia-t" x="170" y="216" font-size="12.5" text-anchor="middle" fill="var(--accent)" font-weight="700">真图特征</text><circle cx="450.438" cy="154.787" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="549.074" cy="161.57" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="435.402" cy="99.6353" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="512.152" cy="135.275" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="461.927" cy="169.547" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="537.461" cy="153.145" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="508.356" cy="158.687" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="554.196" cy="162.381" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="517.634" cy="160.955" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="446.677" cy="175.635" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="532.473" cy="160.592" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="432.888" cy="137.326" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="528.638" cy="113.776" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="493.743" cy="170.391" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="455.42" cy="182.202" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="518.767" cy="146.997" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="511.045" cy="162.997" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="504.093" cy="172.913" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="477.507" cy="141.705" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="535.417" cy="150.536" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="470.064" cy="168.929" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="549.827" cy="141.103" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="453.08" cy="147.305" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="494.933" cy="144.04" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="547.762" cy="129.461" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="542.86" cy="124.634" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="473.241" cy="162.63" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="538.375" cy="167.18" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="511.738" cy="152.847" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="505.184" cy="161.506" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="494.009" cy="155.549" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="519.473" cy="150.017" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="525.975" cy="161.318" r="2.6" fill="var(--done)" opacity=".62"/><circle cx="568.361" cy="156.499" r="2.6" fill="var(--done)" opacity=".62"/><ellipse cx="500" cy="150" rx="66" ry="40" fill="none" stroke="var(--done)" stroke-width="2.4"/><text class="dia-t" x="500" y="216" font-size="12.5" text-anchor="middle" fill="var(--done)" font-weight="700">生成图特征</text><line x1="236" y1="150" x2="434" y2="150" stroke="var(--fg)" stroke-width="2" stroke-dasharray="6 4"/><text class="dia-t" x="335" y="142" font-size="12" text-anchor="middle" fill="var(--fg)" font-weight="700">中心差多远 + 形状差多少</text><text class="dia-t" x="350" y="242" font-size="13" text-anchor="middle" fill="var(--done)" font-weight="700">⭐ 全程只用了均值和协方差 —— 四个坑全从这一句来</text><text class="dia-t" x="350" y="266" font-size="12" text-anchor="middle" fill="var(--muted)">实测：两组来自同一分布、真值该是 0，n=100 却算出 21.4，n=10000 才降到 0.214</text><text class="dia-t" x="350" y="290" font-size="12" text-anchor="middle" fill="var(--danger,#e5534b)">⚠️ 而高斯 vs 每维只取 ±1（两阶矩一样、形状天差地别）FID 只有 0.1127，基线 0.1088</text></svg><figcaption>看这张图**没画什么**：它没有一张具体的图像。⭐ FID 只拿两团点的**中心和形状**做比较 —— 所以「每张都很怪但整体分布对」照样能拿高分。</figcaption></figure>
+
+<hr />
+<h2 id="1">🕳️ 二、坑①：它对样本量极敏感（这一条可以直接跑出来）</h2>
+<p>下面这段用<strong>两组来自同一个分布</strong>的随机特征算 Fréchet 距离。既然是同一个分布，理论上答案该是 <strong>0</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 09 章：Fréchet 距离对样本量有多敏感</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">frechet</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;两堆特征各当成一个高斯，算它们之间的 Fréchet 距离（FID 的算法本体）&quot;&quot;&quot;</span>
+    <span class="n">mu1</span><span class="p">,</span> <span class="n">mu2</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">b</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">rowvar</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">rowvar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">mu1</span> <span class="o">-</span> <span class="n">mu2</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span>                       <span class="c1"># ⭐ 用对称形式算 (S1·S2)^{1/2} 的迹，避开复数</span>
+    <span class="n">s1h</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)))</span> <span class="o">@</span> <span class="n">v</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">ev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvalsh</span><span class="p">(</span><span class="n">s1h</span> <span class="o">@</span> <span class="n">s2</span> <span class="o">@</span> <span class="n">s1h</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">d</span> <span class="o">@</span> <span class="n">d</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">s1</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span>
+                 <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">ev</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">D</span> <span class="o">=</span> <span class="mi">64</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;A. 两组样本来自【同一个分布】，理论上 FID 应该是 0&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">50000</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   n =</span><span class="si">%6d</span><span class="s2">   FID = </span><span class="si">%7.3f</span><span class="s2">&quot;</span>
+          <span class="o">%</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">frechet</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">D</span><span class="p">)),</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">D</span><span class="p">)))))</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">20000</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">B. n=20000 时：&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   同一分布（基线）              FID = </span><span class="si">%.4f</span><span class="s2">&quot;</span>
+      <span class="o">%</span> <span class="n">frechet</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">D</span><span class="p">)),</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">D</span><span class="p">))))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   高斯 vs 每维只取 +1/-1        FID = </span><span class="si">%.4f</span><span class="s2">&quot;</span>
+      <span class="o">%</span> <span class="n">frechet</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">D</span><span class="p">)),</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">D</span><span class="p">))))</span>
+</code></pre></div>
+
+<p>实测输出：</p>
+<div class="codehilite"><pre><span></span><code>A. 两组样本来自【同一个分布】，理论上 FID 应该是 0
+   n =   100   FID =  21.422
+   n =   500   FID =   4.346
+   n =  1000   FID =   2.129
+   n =  2000   FID =   1.098
+   n =  5000   FID =   0.446
+   n = 10000   FID =   0.214
+   n = 50000   FID =   0.044
+
+B. n=20000 时：
+   同一分布（基线）              FID = 0.1088
+   高斯 vs 每维只取 +1/-1        FID = 0.1127
+</code></pre></div>
+
+<p><strong>A 段怎么读</strong>：真值是 0，而 n=100 时算出 <strong>21.4</strong>，n=10000 时才降到 <strong>0.214</strong> —— 相差约一百倍，<strong>全部是样本量造成的虚高</strong>，和图好不好没有半点关系。规律大致是「样本翻倍、虚高减半」。</p>
+<blockquote>
+<p>💀 <strong>所以：用 1000 张算出来的 FID 和用 50000 张算出来的 FID，不是同一把尺子上的两个数，是两把不同的尺子。</strong> 业界惯例是 <strong>50000 张</strong>，低于 10000 张的 FID 基本不该拿来做横向比较。
+⚠️ 更要命的是这个偏差<strong>永远是正的</strong>：少抽样本只会让 FID 变大，不会让它变小。于是「我这版样本少一点」不是「误差大一点」，是<strong>系统性地把自己算差</strong>。</p>
+</blockquote>
+<p><strong>B 段是坑③</strong>：右边那组每一维只取 +1 或 −1 —— 一个长在 64 维超立方体顶点上的分布，和高斯<strong>形状完全不同</strong>，但它俩的均值和协方差<strong>一模一样</strong>。结果 FID 是 <strong>0.1127</strong>，而同一个分布的基线是 <strong>0.1088</strong>。⭐ <strong>两个天差地别的分布，得分和「完全相同」没有区别</strong> —— 因为 FID 只看均值和协方差，它在设计上就看不见别的。</p>
+<blockquote>
+<p>💀 <strong>落到图上就是</strong>：只要整批图的特征分布对得上，<strong>每一张单独看都很怪</strong>（六根手指、糊掉的招牌字）也能拿到漂亮的 FID。FID 从来不评价任何一张图。</p>
+</blockquote>
+<hr />
+<h2 id="_2">🕳️ 三、另外两个坑</h2>
+<p><strong>坑②：它依赖那个特征提取网络。</strong> FID 里的「Inception」不是修饰词，是<strong>尺子本身</strong>。换一个骨干（CLIP 特征、DINOv2 特征），甚至换一个 Inception 的权重版本，分数就变，排名也可能跟着变。⭐ 换句话说，FID 测的其实是「<strong>在 Inception 眼里</strong>像不像」，而 Inception 是拿 ImageNet 分类训出来的 —— 它对<strong>纹理</strong>敏感，对<strong>版式和文字</strong>基本无感。</p>
+<p><strong>坑④：跨论文不可比。</strong> 上面两条叠加，再加上大家的<strong>预处理</strong>不一致：resize 到 299 用的插值方式（双线性 / 双三次 / Lanczos）、要不要中心裁剪、JPEG 压缩质量、真图那一侧用的是训练集还是验证集。这些每一样都能动几个点。</p>
+<blockquote>
+<p>⭐ <strong>判据</strong>：论文表格里的 FID，<strong>只有在同一行实验设置下才有意义</strong>。看到别人报的 FID，先找三件事：<strong>样本量多少、真图那一侧是什么、预处理怎么做的</strong>。找不到 → 那个数字只能当广告看。</p>
+</blockquote>
+<hr />
+<h2 id="clip-score">🧲 四、CLIP Score：另一个方向的一半</h2>
+<p>FID 完全不看提示词。CLIP Score 补的就是这一半：把图过 CLIP 的图像编码器、提示词过文本编码器，两个向量算<strong>余弦相似度</strong>（通常再乘 100、并把负值截成 0）。<strong>越大越好。</strong></p>
+<p>⚠️ <strong>它的坑只有一条，但很致命：它只测「对不对」，不测「好不好看」。</strong> 一张构图糟糕、光线奇怪、手指畸形的图，只要内容确实是「一只戴帽子的猫」，就能拿到和精美版本一样的分。</p>
+<p>⚠️ 还有一条实操上会咬人的：<strong>CLIP Score 和 CFG 强度基本是单调关系</strong> —— 把 CFG 往上拉，图越来越贴提示词，CLIP Score 一路涨，而画面开始过饱和、细节崩坏，FID 同时变差。所以论文里常见的不是一个点，是一条 <strong>FID–CLIP 权衡曲线</strong>：⭐ <strong>你不是在挑「最好的模型」，是在挑这条曲线上停在哪。</strong>（这个滑块本身在本板块 06 章讲过。）</p>
+<hr />
+<h2 id="_3">⚖️ 五、人评怎么做才不浪费</h2>
+<p>图像生成里，人评不是「补充」，是<strong>唯一直接测你在乎的东西的办法</strong>。但它很贵，所以三条规矩必须守住：</p>
+<ul>
+<li>⭐ <strong>成对比较 &gt; 打分。</strong> 让评委在两张图里选一张，不要让他打 1–5 分。绝对刻度在人和人之间不可比，而且<strong>同一个人的刻度会随着看过的图漂移</strong>（看了二十张好图之后，第七分变成第五分）。成对比较只要求排序，再用 Elo / Bradley–Terry 汇总成一个可比的分数。</li>
+<li>⭐ <strong>必须盲评。</strong> 不告诉评委哪张来自哪个模型，<strong>并且左右顺序随机</strong> —— 否则位置偏好和品牌预期会盖过真实差距。</li>
+<li>⭐ <strong>题目集要固定，而且来自真实用法。</strong> 每次评测用同一批提示词，否则你比的是提示词不是模型；提示词要从真实请求里捞，<strong>不要自己编</strong> —— 编的题总是太规整。</li>
+</ul>
+<p>⚠️ 还有一条容易被忽略：<strong>人评同样受样本量限制</strong>。30 组对比只够判断「明显更好 / 明显更差」，分辨不了「好 3 个百分点」。</p>
+<hr />
+<h2 id="_4">🔭 六、最要紧的一条：尺子本身也会坏</h2>
+<p>站内《数据这一关》第 13 章把这件事说成一句话：<strong>评测集是你唯一的尺子，而尺子本身也是一份数据 —— 它会被抽错、被污染、被磨损。</strong> 这条判据在这里一字不改地成立，而且加倍成立，因为 FID 和 CLIP Score <strong>都不是你的目标，只是代理</strong>。</p>
+<p>⭐ <strong>磨损</strong>是最容易忽略的一种坏法。那一章跑过一个实验：从一堆真实水平几乎一样的候选里，每次挑评测分最高的那个 —— 试过 200 个候选之后，被选中那个的分数<strong>至少虚高 4.5 个百分点</strong>，而这个虚高<strong>不会出现在任何置信区间里</strong>（置信区间只管抽样误差，不管选择偏差）。你每天拿 FID 挑 checkpoint、挑调度器、挑 CFG，干的正是这件事。</p>
+<p>⭐ <strong>对策便宜到没有借口不做</strong>：把评测提示词集<strong>切成 dev 和 test</strong>。dev 随便调随便看；test 有配额，每季度只准跑三次并记录在案。</p>
+<p>⭐ <strong>而最后一条判据来自《模型上线之后》第 15 章</strong>：代理指标必须<strong>定期回验</strong>它和真实目标的相关性还在不在。做法是攒 5–10 组「FID 变化 vs 人评变化」画散点 —— <strong>相关性一旦消失，这把尺子就已经不指向你要的东西了</strong>，而你还会继续做出一串「成功」的实验。</p>
+<hr />
+<h2 id="_5">🔗 这一章连到哪里</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>去哪</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../数据这一关/13-评测集也是数据.html">数据这一关 13 · 评测集也是数据</a></td>
+<td>⭐ 本节那条「尺子本身也会坏」的完整版，也是全站评测方法论的总入口。80 分钟，里面有本章用到的那个<strong>磨损实验</strong>（试 200 个候选虚高 4.5pp）、分层抽样把长尾层的置信区间从 ±12.59pp 收到 ±6.89pp 的对照表、四种查污染的办法，以及一次「FID 涨了却没用」的同类事故复盘（NDCG 从 0.712 跳到 0.781，灰度后满意度纹丝不动）</td>
+</tr>
+<tr>
+<td><a href="../大模型全景导论/11-评测体系.html">大模型全景导论 11 · 评测体系</a></td>
+<td>榜单那一侧的通用陷阱。本章坑④（跨论文不可比）在那里叫<strong>「报告条件不对等」</strong>，它给的检查法直接能搬过来：看到任何对比图，先找「用的什么提示词 / 跑了几次怎么取 / 温度是多少」。它还算过一笔本章第五节要用的账：<strong>100 题的评测集只能分辨 8 个百分点以上的差距，想分辨 3 个点需要约 700 题</strong></td>
+</tr>
+<tr>
+<td><a href="../大模型全景导论/11b-私有评测集怎么建.html">大模型全景导论 11b · 私有评测集怎么建</a></td>
+<td>怎么建自己那把尺子的入门版：从真实失败里捞 20–50 个案例、分维度打标签、按「能写代码判 / 判不了但有标准 / 主观」三档定评分方式。⚠️ 它点名的三个错误本章全会撞上：<strong>只放难题</strong>（分数全挤在一起）、<strong>只放当前模型答错的</strong>（换模型就失效）、<strong>不分维度只看总分</strong></td>
+</tr>
+<tr>
+<td><a href="../模型上线之后/15-长期效应与代理指标.html">模型上线之后 15 · 长期效应与代理指标</a></td>
+<td>「代理指标不等于真实目标」这条判据的出处。它给了可执行的门槛（相关系数 ρ &gt; 0.7 且方向一致率 &gt; 85% 才能拿来做决策），也给了不回验的代价：一个跑了 <strong>14 个月</strong>才被发现的代理失效。⭐ 它那条「半年一次重新验证整条指标链」，就是本章末尾那个散点图该多久画一次</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_6">✅ 检查点</h2>
+<ol>
+<li>FID 计算时，每张图被压成了多少维的向量？这个向量来自哪个网络？</li>
+<li>FID 公式里的两项各自在量什么？</li>
+<li>两组样本来自<strong>同一个分布</strong>时，FID 的理论值是多少？实测 n=100 和 n=10000 分别算出多少？</li>
+<li>为什么说「每一张图都很怪」和「FID 很好看」可以同时成立？B 段那个实验怎么证明这一点？</li>
+<li>CLIP Score 高，能说明图好看吗？把 CFG 拉高会让这两个指标各自往哪走？</li>
+<li>人评为什么要用成对比较而不是 1–5 打分？</li>
+<li>什么叫评测集「磨损」？一个便宜的对策是什么？</li>
+</ol>
+<details>
+<summary>👀 答案</summary>
+<ol>
+<li><strong>2048 维</strong>，来自 <strong>Inception</strong> 网络倒数第二层。⭐ 所以 FID 测的是「在 Inception 眼里像不像」，而 Inception 是 ImageNet 分类模型，对纹理敏感、对版式和文字基本无感。</li>
+<li>第一项 $\lVert\mu_r-\mu_g\rVert^2$ 量两堆特征的<strong>中心</strong>差多远；第二项那个迹量两堆的<strong>形状</strong>（往哪些方向散、散多开）差多少。⭐ 除了均值和协方差，别的信息一概没用上。</li>
+<li>理论值 <strong>0</strong>。实测 n=100 是 <strong>21.4</strong>，n=10000 是 <strong>0.214</strong> —— 差约一百倍，全部是样本量造成的虚高。而且偏差<strong>永远是正的</strong>，样本少只会把自己算差。</li>
+<li>因为 FID 只比较两个分布的均值和协方差，<strong>从不评价任何单张图</strong>。B 段：右边那组每维只取 +1/−1（长在超立方体顶点上），和高斯形状完全不同但两阶矩一模一样 —— 算出 <strong>0.1127</strong>，而同一分布的基线是 <strong>0.1088</strong>，两者没有区别。</li>
+<li><strong>不能。</strong> CLIP Score 只测「图和提示词对不对得上」，一张丑但内容对的图照样高分。把 CFG 拉高：CLIP Score <strong>一路涨</strong>，FID <strong>变差</strong> —— 论文里那条 FID–CLIP 权衡曲线就是这么来的，你是在选停在曲线的哪一点。</li>
+<li>因为 1–5 的<strong>绝对刻度在人和人之间不可比</strong>，而且同一个人的刻度会随看过的图<strong>漂移</strong>。成对比较只要求排序，再用 Elo / Bradley–Terry 汇总。另外两条同样是硬要求：<strong>盲评 + 左右顺序随机</strong>，<strong>题目集固定且来自真实请求</strong>。</li>
+<li>磨损 = <strong>样本没变，但你看它的次数变多了</strong>。《数据这一关》13 的实验：从 200 个真实水平相当的候选里挑分最高的那个，分数至少虚高 <strong>4.5 个百分点</strong>，而这个虚高不出现在任何置信区间里。对策：把评测集<strong>切成 dev / test</strong>，dev 随便看，test 每季度只准跑三次并记录在案。</li>
+</ol>
+</details>
+<hr />
+<h2 id="_7">🛑 可以停在这里</h2>
+<p>读到这里，你已经能看懂论文表格里那两列数字在说什么、以及它们各自漏掉了什么，也能给自己那套图搭一个不至于骗自己的评测流程：<strong>固定的提示词集 + 盲评成对比较 + FID/CLIP 只当粗筛 + dev/test 分开</strong>。</p>
+<p><strong>什么时候回来</strong>：看到别人报的 FID 想判断能不能信时，回看第二、三节那三个要先问的问题（样本量、真图那一侧、预处理）；发现「指标一直在涨、图看着没变好」时，回看第六节 —— 那基本就是尺子磨损或者代理失效。</p>
+<p>⚡ <strong>走神救援</strong></p>
+<blockquote>
+<p>FID 分三步：真图和生成图都过 Inception 取 <strong>2048 维</strong>特征 → 两堆特征各当成一个高斯 → 算两个高斯的 Fréchet 距离，<strong>越小越好</strong>。公式两项分别是「中心差多远」和「形状差多少」，⭐ <strong>全程只用了均值和协方差</strong>，四个坑全从这一句来。<strong>坑①对样本量极敏感</strong>：两组来自同一分布、真值该是 0 的特征，实测 n=100 算出 <strong>21.4</strong>、n=10000 才降到 <strong>0.214</strong>，样本翻倍虚高减半，而且偏差永远是正的 —— 所以业界惯例是 50000 张，低于一万张的 FID 不该拿来横比。<strong>坑②依赖特征网络</strong>：换 CLIP 或 DINOv2 特征分数就变，Inception 是 ImageNet 分类模型，对纹理敏感、对文字版式无感。<strong>坑③只看分布不看单张</strong>：实测一组高斯 vs 一组每维只取 ±1 的样本（形状完全不同、两阶矩一模一样）FID 是 <strong>0.1127</strong>，而同一分布的基线是 <strong>0.1088</strong> —— 两个天差地别的分布得分毫无区别，所以「每张都很怪但整体分布对」照样能拿高分。<strong>坑④跨论文不可比</strong>：样本量、真图取自哪、resize 与裁剪方式各家都不同，看到 FID 先问这三件事。<strong>CLIP Score</strong> 是图和提示词两个编码器输出的余弦相似度，越大越好，坑是<strong>只测对不对、不测好不好看</strong>；而且它和 CFG 强度单调相关，CFG 拉高则 CLIP Score 涨、FID 差，论文里那条 FID–CLIP 权衡曲线就是它。<strong>人评</strong>三条：成对比较胜过 1–5 打分（绝对刻度不可比且会漂移）、必须盲评且左右顺序随机、题目集固定并来自真实请求。⭐ <strong>最要紧的收尾</strong>：这两个指标都不测构图、手指、小字和审美，它们只是<strong>代理</strong>；《数据这一关》13 那句「尺子本身也是一份数据，会被抽错、被污染、被磨损」在这里加倍成立 —— 拿评测分挑过 200 次候选，分数至少虚高 <strong>4.5 个百分点</strong>且不出现在任何置信区间里。对策是把提示词集切成 dev/test（test 每季度只跑三次），并定期拿「FID 变化 vs 人评变化」画散点回验相关性。</p>
+</blockquote>
+<p><strong>下一节</strong> 👉 <a href="附录A-速查.html">附录A-速查.md</a></p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="08-ControlNet与风格LoRA.html"><div class="dir">← 上一节</div>🎛️ 08 · ControlNet 与风格 LoRA</a><a class="next" href="附录A-速查.html"><div class="dir">下一节 →</div>📖 附录A · 速查</a></nav>
+</main>
+<script>(function(){
+  var KEY="diff-progress", FILE="09-\u600e\u4e48\u8bc4\u4f30.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+</body></html>

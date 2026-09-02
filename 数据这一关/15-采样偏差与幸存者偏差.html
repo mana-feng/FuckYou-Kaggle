@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -311,7 +328,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="_3">🎭 二、三个场景，同一个结构</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -340,7 +357,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>从没被推过的物品会不会被点</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>三个场景剥开之后是同一件事：</p><p>一个【旧的决策系统】 S 决定了谁能进入你的数据集</p><p>你训练出的新模型 M，只在 S 放行过的人身上学过</p><p>然后你要用 M 去替换 S ——</p><p>⭐ 也就是让它去决策一群它从来没见过的人</p></div></section>
 <blockquote>
 <p>🔑 <strong>这个结构有个名字叫「反事实缺失」</strong>：
@@ -354,7 +371,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>模拟一个信贷场景：老策略只看 <code>x1</code>（收入类）和 <code>x2</code>（负债类）打分，批 40%。
 新模型能看到 <code>x1, x2, x3</code> 三个特征（<code>x3</code> 老策略没用过但真的有预测力）。
 只用「批过的人」训练：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>评估对象</th>
@@ -375,7 +392,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>0.821</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>看第二行和第三行：一模一样。</strong>
 <strong>在这个设定下，选择偏差没有造成任何损失。</strong>
@@ -394,7 +411,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>真实的审批不只有模型分，还有<strong>人工复核</strong> —— 审批员看了流水照片、听了电话、感觉不对就拒了。
 这些「感觉」既影响了谁被选中，<strong>也真的和还款相关</strong>，但它们不在你的特征里。</p>
 <p>实跑（给旧策略加一个模型看不到的变量 <code>u</code>，<code>u</code> 同时影响放行和还款）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>评估</th>
@@ -411,12 +428,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>0.019</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="c">情况 C：真实关系是非线性的，而选择切掉了一整段区间</h3>
 <p>这是<strong>最贵的一种</strong>，而且在业务里非常普遍：老策略把某个特征区间整段拒光了，
 你的模型在那一段上<strong>从来没有一个样本</strong>，只能靠外推。</p>
 <p>实跑（真实关系带一个二次项，老策略切掉了低分段）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>评估对象</th>
@@ -439,7 +456,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>0.057</strong> 💀</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💀 <strong>看最后一行：在你最需要它的地方，模型差 0.057。</strong>
 而「被老策略拒掉的人群」恰恰是<strong>新模型上线后要重新审视的人群</strong> ——
@@ -451,7 +468,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>唯一能真正补上那块缺失的办法，是<strong>故意放行一小撮本该被拒的样本</strong>。
 业界叫法很多：随机流量、探索流量、reject inference 的黄金层、holdout 放款。</p>
 <p><strong>收益</strong>（同一组实验，随机放行被拒人群的 5%）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>情况</th>
@@ -484,7 +501,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>83%</strong> ⭐</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>这张表是本章最有价值的三行</strong>：
 <strong>5% 的随机流量，在"区间被切断"这种情况下补回了 83% 的能力缺口。</strong>
@@ -493,7 +510,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <p><strong>代价</strong>（同一份模拟里算出来的真实账）：</p>
 <section class="visual-block visual-block-calc" aria-label="算一算"><p class="visual-block-title">算一算</p><div class="vb-calc"><p>全体申请人的&quot;好客户&quot;比例 · 33.1%</p><p>被老策略【通过】的人里好客户比例 · 54.2%</p><p>被老策略【拒绝】的人里好客户比例 · 19.0% ⭐ 这就是代价的来源</p><p>随机放行被拒人群的 5%：</p><p>覆盖全部申请人的 5% × 60% = 3.0%</p><p>这 3% 里约 81% 是坏客户</p><p>→ 相对于全部放款量（40%），额外坏账敞口 ≈ 3.0% × 81% / 40% ≈ 6.1%</p></div></section>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>怎么把代价压下来</th>
@@ -518,7 +535,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>只对「老策略从没见过的特征组合」开口子</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>「分层抽样」这条能把代价砍掉一大半</strong>：
 你真正需要信息的是<strong>决策边界附近</strong>，不是那些明显不该批的人。
@@ -528,7 +545,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="ipw">🧮 六、这一章唯一的一个公式：逆倾向加权（IPW）</h2>
 <p>如果你能<strong>估计出</strong>每个样本被选中的概率，就可以给样本加权，把分布掰回全体：</p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>记 π(x) = P(被选中 | x) ← 叫&quot;倾向分&quot; propensity</p><p>在【全体人群】上的期望损失，可以用【被选中的样本】估出来：</p><p>1 s_i</p><p>E[ℓ] ≈ · Σ · ℓ_i</p><p>N π(x_i)</p><p>↑</p><p>被选中概率越低的样本，权重越大</p><p>（因为它代表了一大群没被选中的同类）</p><p>s_i = 1 表示第 i 个样本被选中（有标签），Σ 只对这些样本求和</p></div></section>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>用它的前提</th>
@@ -549,7 +566,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>情况 B（不可观测混杂）下 IPW 也纠不回来</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💀 <strong>正性假设是 IPW 最常被忽略的死穴，也是它和随机流量的分工所在</strong>：
 <strong>老策略是硬规则（比如"征信查询次数＞8 直接拒"）时，那一段的 π 严格等于 0</strong>，
@@ -580,7 +597,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="reject-inference">🔁 七、拒绝推断（reject inference）的四种做法</h2>
 <p>风控行业专门为这个问题起了名字。四种做法，<strong>质量从低到高</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>做法</th>
@@ -610,7 +627,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>✅✅ <strong>唯一能产生新信息的办法</strong>，也是唯一有成本的办法</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>一句话总结这张表</strong>：
 <strong>前三种都是在已有信息里重新分配，只有第四种在制造新信息。</strong>
@@ -622,7 +639,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_7">💀 八、一次真实的事故复盘</h2>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>系统：某招聘平台的&quot;简历-岗位&quot;匹配打分模型</p><p>目标：预测候选人投递后是否会【通过面试并入职】</p><p>训练数据：过去 3 年的 HR 系统记录，41 万条投递</p></div></section>
 <p><strong>发生了什么</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>阶段</th>
@@ -651,13 +668,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>HR 反馈：<strong>推上来的人越来越像同一种人</strong>；入职转化率从 12.1% 降到 <strong>9.4%</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>为什么没被发现</strong></p>
 <section class="visual-block visual-block-flow" aria-label="流程图"><p class="visual-block-title">流程图</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 93.2% 的负样本里，绝大多数只是【HR 没来得及看】，不是&quot;不合适&quot; 💀</span></div><div class="vb-flow-row"><span class="vb-flow-step">模型学到的其实是「HR 过去会不会点开这份简历」，</span></div><div class="vb-flow-row"><span class="vb-flow-step">而不是「这个人能不能干好这个活」</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 离线 AUC 0.88 是在【同一个偏差数据】上算的 ——</span></div><div class="vb-flow-row"><span class="vb-flow-step">模型完美复现了老 HR 的筛选习惯，所以它当然很准 ⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 4 个月里形成了反馈回路：</span></div><div class="vb-flow-row"><span class="vb-flow-step">模型推上来的人</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">HR 面试</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">产生新标签</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">下次训练</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 越来越窄：第 4 个月推荐结果里，</span></div><div class="vb-flow-row"><span class="vb-flow-step">候选人的学校分布熵从 3.1 降到 2.2（降了 29%）</span></div></div></section>
 <p><strong>代价</strong></p>
 <section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">入职转化率 12.1%</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">9.4% （相对下降 22%）</span></div><div class="vb-flow-row"><span class="vb-flow-step">月均入职 约 340 人</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">264 人</span></div><div class="vb-flow-row"><span class="vb-flow-step">4 个月少入职 约 300 人</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 更贵的是不可见的部分：</span></div><div class="vb-flow-row"><span class="vb-flow-step">被系统性排在后面的那批候选人，永远不会产生&quot;其实他很好&quot;的证据 ——</span></div><div class="vb-flow-row"><span class="vb-flow-step">这个损失【在任何指标上都看不到】</span></div></div></section>
 <p><strong>该补什么</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>缺失</th>
@@ -686,7 +703,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>模型评审新增一问：<strong>「哪些人不会出现在你的训练数据里？」</strong> ⭐</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>改进后的关键数字</strong>：加上 3 个随机位（6% 的展示量）之后，
 用随机位数据评估出来的<strong>真实 AUC 是 0.71</strong>，不是 0.88。
@@ -694,7 +711,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="_8">🧭 九、一张判断表：要不要处理，怎么处理</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>先问这个</th>
@@ -734,7 +751,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>⚠️ 反馈回路，问题会<strong>逐月加重</strong>，必须有分布熵之类的监控</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>最后一行是最容易被忽略的</strong>：
 选择偏差如果不管，<strong>它不是一个静态的偏差，它会自我加强</strong>。
@@ -742,7 +759,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="_9">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>去哪</th>
@@ -766,8 +783,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><a href="../模型上线之后/14-辛普森悖论与七个陷阱.html">模型上线之后 14 辛普森悖论与七个陷阱</a></td>
 <td>另一类「数据全对但结论是错的」问题，和本章是同一个家族</td>
 </tr>
+<tr>
+<td><a href="../SQL查询这一关/10-拿SQL审问一份数据.html">SQL 查询这一关 10 拿 SQL 审问一份数据</a></td>
+<td>⭐ <strong>加权之前得先知道偏在哪个方向、偏了多少</strong>：那一章第五节把每一个 <code>WHERE</code> 挡掉的行捞回来看一眼是谁，正是本章 IPW 之前缺的那一步</td>
+</tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_10">✅ 检查点</h2>
 <ol>

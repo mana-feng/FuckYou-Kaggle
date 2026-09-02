@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>06d · 降延迟，以及三个指标怎么权衡 · 大模型全景导论</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">06d · 降延迟与指标</span>
+  <span class="prevnext"><a href="06-推理优化.html">←</a>
+  <a href="06b-解码策略.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">⚡ 武器三：投机解码（降低延迟）</a></li>
+<li><a href="#_3">🧰 其他常用手段</a></li>
+<li><a href="#_4">🎯 三个指标，别只盯一个</a></li>
+<li><a href="#_5">🔗 想再深一层，去哪一套</a></li>
+<li><a href="#_6">📦 深挖的话要学什么</a></li>
+<li><a href="#_7">⚖️ 要不要深挖</a></li>
+<li><a href="#_8">✅ 检查点</a></li>
+<li><a href="#_9">🛑 可以停在这里</a></li>
+</ul>
+</div>
+</details>
+<h1 id="06d">06d · 降延迟，以及三个指标怎么权衡</h1>
+<p>⏱ <strong>26 分钟</strong> ｜ ⭐ <strong>显存和吞吐都够了，用户还是觉得慢的时候看这页</strong></p>
+<hr />
+<h2 id="_1">🎯 一句话</h2>
+<p>上一页把模型压小、把卡榨满，解决的是「装不装得下、够不够多」。
+这一页解决<strong>「够不够快」</strong> —— 投机解码和几种缓存怎么降延迟，以及为什么
+<strong>TTFT、TPOT、吞吐这三个指标不可能同时最优</strong>，你必须先挑一个。</p>
+<hr />
+<h2 id="_2">⚡ 武器三：投机解码（降低延迟）</h2>
+<section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">常规：大模型一次吐 1 个 token，每次都要搬 140GB 权重</span></div><div class="vb-flow-row"><span class="vb-flow-step">投机解码：</span></div><div class="vb-flow-row"><span class="vb-flow-step">① 让一个小模型（草稿模型）快速猜 5 个 token</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 大模型一次性并行验证这 5 个 ← 关键：验证和生成 1 个的成本差不多！</span></div><div class="vb-flow-row"><span class="vb-flow-step">（因为瓶颈是搬权重，不是算力）</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 猜对的部分直接采纳，第一个猜错的地方开始重来</span></div><div class="vb-flow-row"><span class="vb-flow-step">猜中率高时，延迟降低 2–3 倍，且输出分布严格等价 ✅</span></div></div></section>
+<p>💡 <strong>为什么能白赚</strong>：正因为 decode 是访存密集的，GPU 算力本来就在空转——<strong>并行验证 5 个 token 几乎不额外花时间</strong>。</p>
+<p>变体：Medusa（多头并行预测）、EAGLE、n-gram 查表（无需额外模型）。</p>
+<blockquote>
+<p>🎲 <strong>三大武器管的都是「这一步跑得多快」——但还有一半不在这一章。</strong>
+Decode 每一步吐出来的其实是一个<strong>概率分布</strong>，「从分布里挑哪个词」是完全另一套东西：
+<code>temperature</code>、<code>top_p</code>、那几个 penalty 全住在那里，和速度优化<strong>正交</strong>。
+<strong>两章的分工看现象就能分清</strong>：慢、贵、显存不够 → 留在这一章；
+<strong>输出飘、复读、每次结果不一样、JSON 间歇性打不开 → 去 <a href="06b-解码策略.html">06b · 解码策略</a>。</strong>
+⚠️ 顺带说，两章有一个真实的交集：<strong>T=0 也不保证逐位复现</strong>——归约顺序会随 batch 组成变化，
+而动态 batch 正是上面<strong>武器二连续批处理</strong>造成的。<strong>吞吐优化和逐位复现是一对天然矛盾</strong>，那条在 06b 讲透。</p>
+</blockquote>
+<hr />
+<h2 id="_3">🧰 其他常用手段</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>手段</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>GQA/MQA</strong></td>
+<td>多个 Q 头共享 K/V 头 → KV Cache 省好几倍（原理见<a href="02-Transformer原理.html">主线 2 · 模型怎样看懂一句话</a>，完整展开见<a href="../AI基础设施/16-KV-Cache.html">AI基础设施 16</a>）</td>
+</tr>
+<tr>
+<td><strong>Prefix Caching</strong></td>
+<td>相同的系统提示词只算一次，多请求复用 ⭐ 省钱利器</td>
+</tr>
+<tr>
+<td><strong>FlashAttention</strong></td>
+<td>减少显存读写，长上下文提速明显</td>
+</tr>
+<tr>
+<td><strong>张量并行</strong></td>
+<td>一个模型切到多张卡上（放不下时的必选）</td>
+</tr>
+<tr>
+<td><strong>算子融合 / CUDA Graph</strong></td>
+<td>减少 kernel 启动开销</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>💰 <strong>Prefix Caching 对做 Agent 的人特别重要</strong>：Agent 每轮都重发完整历史（智能体教程第 1 章），
+前缀完全相同——缓存后能省掉绝大部分 prefill 成本。这也是为什么「稳定内容放前面、动态内容放后面」是条金规则。</p>
+</blockquote>
+<h3 id="prefix-caching">🚨 Prefix Caching 的杀手：三个会让命中率归零的写法</h3>
+<section class="visual-block visual-block-flow" aria-label="流程图"><p class="visual-block-title">流程图</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">❌ 系统提示词开头放当前时间</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">每次前缀都不同，命中率 0%</span></div><div class="vb-flow-row"><span class="vb-flow-step">❌ 每次动态排序工具列表</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">顺序一变前缀就变</span></div><div class="vb-flow-row"><span class="vb-flow-step">❌ 把用户 ID / 会话 ID 放最前面</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">每个用户各自一份缓存，等于没缓存</span></div><div class="vb-flow-row"><span class="vb-flow-step">✅ 正确布局：</span></div><div class="vb-flow-row"><span class="vb-flow-step">[固定的系统提示词]</span></div><div class="vb-flow-row"><span class="vb-flow-step">[固定的工具定义]</span></div><div class="vb-flow-row"><span class="vb-flow-step">[很少变的背景资料]</span></div><div class="vb-flow-row"><span class="vb-flow-step">缓存边界大致在这里</span></div><div class="vb-flow-row"><span class="vb-flow-step">[会话历史]</span></div><div class="vb-flow-row"><span class="vb-flow-step">[当前时间、用户信息等动态内容]</span></div><div class="vb-flow-row"><span class="vb-flow-step">[用户问题]</span></div></div></section>
+<blockquote>
+<p>🔑 <strong>一句话</strong>：<strong>前缀一个字符变了，从那里往后的缓存全部失效。</strong>
+这是最容易犯、代价最大、也最容易修的一个错——<strong>改一下顺序就能省掉大半账单。</strong></p>
+</blockquote>
+<hr />
+<h2 id="_4">🎯 三个指标，别只盯一个</h2>
+<section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">TTFT（首字延迟） ← 用户感知&quot;它反应快不快&quot;</span></div><div class="vb-flow-row"><span class="vb-flow-step">TPOT（每字延迟） ← 用户感知&quot;它打字快不快&quot;</span></div><div class="vb-flow-row"><span class="vb-flow-step">吞吐（总 token/秒） ← 你感知&quot;这张卡能服务多少人&quot;</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 它们互相冲突：</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 加大 batch</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">吞吐↑ 但 TTFT 和 TPOT</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">（要排队）</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 减小 batch</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">延迟</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">但吞吐</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">（卡在空转）</span></div></div></section>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>你的场景</th>
+<th>该优先什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>对话产品</strong>（有人在等）</td>
+<td><strong>TTFT</strong> ⭐ ——首字出来得快，用户就觉得快</td>
+</tr>
+<tr>
+<td><strong>Agent / 批处理任务</strong></td>
+<td><strong>吞吐</strong> ——没人盯着，把卡榨满</td>
+</tr>
+<tr>
+<td><strong>代码补全</strong></td>
+<td><strong>TPOT</strong> ——要跟得上打字速度</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>💡 <strong>一个便宜的心理学优化</strong>：<strong>开流式输出</strong>。
+总时长没变，但用户看到字在动，<strong>感知延迟大幅下降</strong>——
+这往往比任何推理优化都划算。</p>
+</blockquote>
+<hr />
+<h2 id="_5">🔗 想再深一层，去哪一套</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>去哪</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../AI基础设施/19-投机解码.html">AI基础设施 19 · 投机解码</a></td>
+<td>⭐ 武器三的完整展开：接受-拒绝规则、加速比公式、什么场景是白赚</td>
+</tr>
+<tr>
+<td><a href="../模型上线之后/18-成本与容量.html">模型上线之后 18 · 成本与容量</a></td>
+<td>⭐ 省下来的算力怎么换算成容量：排队、超时、雪崩</td>
+</tr>
+<tr>
+<td><a href="../智能体工程教程/04-上下文工程.html">智能体工程教程 04 · 上下文工程</a></td>
+<td>Prefix Caching 为什么对 Agent 特别值钱 —— 那一章的原话是「Agent 每轮都重发完整历史，前缀完全相同 → 可以被缓存复用」，并给了「稳定内容在前、动态在后」的写法</td>
+</tr>
+<tr>
+<td><a href="../AI全栈/05-流式输出.html">AI全栈 05 · 流式输出</a></td>
+<td>「最便宜的延迟优化是开流式」那一条，工程上怎么真的接起来</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_6">📦 深挖的话要学什么</h2>
+<blockquote>
+<p>📍 <strong>每条后面标了它在哪</strong>：
+📗 <strong>本库有</strong> = 站内已经讲透，点进去就行；📙 <strong>半有</strong> = 站内讲了一半，另一半得外找；
+📕 <strong>要外找</strong> = 站内没有，得去论文或别处。
+（这份清单以前只列词不说去哪，指到的坑有些站内根本没挖过，按图索骥会扑空。）
+⭐ <strong>这一章是全导论「本库有」比例最高的一章</strong>——《AI基础设施》基本是它的完整展开版。</p>
+</blockquote>
+<ul>
+<li><strong>原理</strong>：Roofline 模型（算力 vs 带宽瓶颈分析）、算术强度
+  → 📗 <strong>本库有</strong>：<a href="../AI基础设施/04-Roofline与MFU.html">AI基础设施 04 · Roofline与MFU</a> + <a href="../AI基础设施/03-显存与带宽墙.html">03 · 显存与带宽墙</a>。<strong>本章开头"Prefill 受算力限制、Decode 受带宽限制"是结论，Roofline 是那个能让你自己算出来的工具</strong>——知道算术强度怎么算，你就能在买卡之前判断某个负载到底卡在哪一边</li>
+<li><strong>量化</strong>：对称/非对称、per-tensor/per-channel/per-group、GPTQ 与 AWQ 的算法差异、KV Cache 量化、量化感知训练
+  → 📗 <strong>本库有，整条都有</strong>：<a href="../AI基础设施/18-量化.html">AI基础设施 18 · 量化</a>——离群值为什么是 LLM 量化的核心难题、<strong>per-group（每 128 个权重一组）为什么成了主流</strong>、AWQ 的"只有 1% 的权重重要"、GPTQ、KV Cache 量化，以及 PTQ vs QAT（⭐ 结论是 LLM 时代 PTQ 一边倒，因为 QAT 要重训，70B 重训一遍的成本和"掉的那 1 分"完全不成比例——所以这一项你多半不会用到，但值得知道为什么不用）</li>
+<li><strong>服务框架</strong>：vLLM / SGLang / TensorRT-LLM / TGI 的架构与选型
+  → 📗 <strong>本库有</strong>：<a href="../AI基础设施/20-推理服务化.html">AI基础设施 20 · 推理服务化</a> 的<strong>七引擎横评 + 四问决策树</strong>，TGI 也在里面（它属于"生态贴合"型选择——不是更快，是你已经在 HF 那套里了）。⚠️ 去之前先记住那一章最反直觉的一条：引擎之间通常只差 20–50%，而配置有没有调对差的是几倍——大部分"快 3 倍"的评测拆开看都是一边开了连续批处理一边没开。先调配置，再换引擎</li>
+<li><strong>调度</strong>：连续批处理、PagedAttention、分块预填充（chunked prefill）、prefill/decode 分离部署
+  → 📗 <strong>本库有</strong>：<a href="../AI基础设施/17-连续批处理与PagedAttention.html">AI基础设施 17 · 连续批处理与PagedAttention</a> 四项全覆盖，还多给了一笔本章没有的账——<strong>P/D 分离不是免费午餐：分开之后 KV 要跨机搬，而 InfiniBand 带宽只有 HBM 的约 1/60</strong></li>
+<li><strong>投机解码</strong>：草稿模型选择、接受率优化、Medusa/EAGLE
+  → 📗 <strong>本库有</strong>：<a href="../AI基础设施/19-投机解码.html">AI基础设施 19 · 投机解码</a>。<strong>本章「武器三」讲了它为什么有效，那一章讲的是怎么让它真的有效</strong>：加速比由接受率 α 和草稿成本 c 两个变量决定（c 通常要 ≤1/10 才划算；代码任务因为模式可预测，α 能到 0.85 以上），Medusa（加预测头，草稿成本近零但猜得糙）和 EAGLE（把自回归挪到特征层换接受率）各自的位置</li>
+<li><strong>性能工程</strong>：压测方法、TTFT/TPOT/吞吐三角权衡、成本建模
+  → 📗 <strong>本库有</strong>：<a href="../AI基础设施/20-推理服务化.html">AI基础设施 20 · 推理服务化</a> 的「先定 SLO 再谈优化」和「压测：画出你的延迟-吞吐曲线」，成本那一侧在 <a href="../AI基础设施/23-可观测性与成本.html">AI基础设施 23 · 可观测性与成本</a>。<strong>本章的"三个指标别只盯一个"到这里变成可执行的流程</strong></li>
+<li><strong>实操</strong>：用 vLLM 部署一个模型，做一次完整压测
+  → 📙 <strong>半有</strong>：该开哪些参数、压测该画什么曲线、上线检查清单，<a href="../AI基础设施/17-连续批处理与PagedAttention.html">AI基础设施 17</a> 和 <a href="../AI基础设施/20-推理服务化.html">20</a> 都给了（含 <code>enable_chunked_prefill</code> / <code>enable_prefix_caching</code> / <code>kv_cache_dtype</code> 这几个具体开关）；<a href="../AI基础设施/24-实战与挑战项目.html">AI基础设施 24 · 实战与挑战项目</a> 有对应的动手项目。<strong>但"从零装一台机器跑起来"这段环境搭建站内没有，要外找</strong>（vLLM 官方 quickstart）</li>
+</ul>
+<p>需要的前置：第 2 章 Transformer + Linux/GPU 基础。<strong>不需要</strong>深厚数学。</p>
+<hr />
+<h2 id="_7">⚖️ 要不要深挖</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>你的情况</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>只用 API，量不大</td>
+<td>⛔ 不用。知道 Prefix Caching 会用就行</td>
+</tr>
+<tr>
+<td>API 账单开始肉疼</td>
+<td>🟡 先做提示词优化和缓存，再考虑自建</td>
+</tr>
+<tr>
+<td>数据不能出内网 / 有合规要求</td>
+<td>✅ <strong>必须</strong>，配合第 7 章</td>
+</tr>
+<tr>
+<td>有稳定的大流量，自建更划算</td>
+<td>✅ <strong>必须</strong>，这块直接省真金白银</td>
+</tr>
+<tr>
+<td>做 AI 基础设施 / 平台岗</td>
+<td>✅ 核心技能</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>🔑 <strong>我的判断</strong>：这块<strong>工程性极强、几乎不涉及数学</strong>，对有后端背景的人上手很快。
+价值判断很简单：<strong>看你的账单</strong>。如果每月 API 花费还不够租一张 GPU，就别折腾自建。
+但「Prefix Caching + 提示词结构优化」是<strong>所有人现在就该做的</strong>，本章内容已经够。</p>
+</blockquote>
+<hr />
+<h2 id="_8">✅ 检查点</h2>
+<ol>
+<li>投机解码为什么能「白赚」速度？</li>
+<li>Prefix Caching 对 Agent 场景为什么特别有价值？哪三个写法会让命中率归零？</li>
+<li>TTFT / TPOT / 吞吐三个指标怎么互相冲突？对话产品该优先哪个？</li>
+<li>最便宜的「延迟优化」是什么？为什么它有效？</li>
+</ol>
+<details>
+<summary>👀 答案</summary>
+<ol>
+<li>因为 <strong>decode 是访存密集的，GPU 算力本来就在空转</strong> —— 大模型并行验证 5 个 token 和生成 1 个 token 的耗时几乎一样，所以只要小模型猜中率够高就是净赚，而且输出分布和原模型完全一致。</li>
+<li>Agent 每轮都重发完整历史，<strong>前缀完全相同</strong>，缓存后能省掉绝大部分 prefill 成本。三个会让命中率归零的写法见正文那一节 —— 共同点都是<strong>把会变的东西放到了前面</strong>。</li>
+<li><strong>加大 batch → 吞吐↑ 但 TTFT 和 TPOT 变差</strong>（要排队）；<strong>减小 batch → 延迟↓ 但吞吐↓</strong>（卡在空转）。对话产品该优先 <strong>TTFT</strong>：首字出来得快，用户就觉得快。</li>
+<li><strong>开流式输出</strong>。总时长一点没变，但用户看到字在动，<strong>感知延迟大幅下降</strong> —— 这往往比任何推理优化都划算。</li>
+</ol>
+</details>
+<hr />
+<h2 id="_9">🛑 可以停在这里</h2>
+<p>⚠️ <strong>什么时候回来</strong>：你已经知道该优化哪个指标了，但<strong>输出本身有问题</strong> —— 一会儿飘一会儿复读、同样的输入两次结果不一样。那不是推理优化的事，是解码策略的事，从 06b 进去。</p>
+<p>⚡ <strong>走神救援</strong></p>
+<blockquote>
+<p><strong>武器三是投机解码</strong>：让一个小模型先连猜几个 token，大模型一次前向把这几个一起验证，对的部分直接采用。它之所以是白赚，是因为 <strong>decode 阶段 GPU 算力本来就在空转</strong> —— 验 5 个和生成 1 个耗时几乎一样，而且输出分布和原模型<strong>完全一致</strong>。其他常用手段里最值钱的是 <strong>Prefix Caching</strong>：相同前缀的 prefill 结果直接复用。⭐ 它对 Agent 场景价值特别大，因为 Agent 每轮都重发完整历史、前缀完全相同；⚠️ 但有三个写法会让命中率直接归零，共同点是<strong>把会变的东西放到了前面</strong>（时间戳、随机 ID、每次都变的系统提示）。最后是三个指标：<strong>TTFT</strong> 是首字延迟（用户感知「它反应快不快」）、<strong>TPOT</strong> 是每字延迟（「它打字快不快」）、<strong>吞吐</strong>是这张卡能服务多少人。⚠️ <strong>它们互相冲突</strong>：加大 batch 吞吐涨但两个延迟都变差，减小 batch 反过来。所以必须按场景挑：<strong>对话产品优先 TTFT，Agent 和批处理任务优先吞吐，代码补全优先 TPOT</strong>。💡 还有一个几乎不花钱的办法：<strong>开流式输出</strong> —— 总时长没变，但用户看到字在动，感知延迟大幅下降，往往比任何推理优化都划算。</p>
+</blockquote>
+<p><strong>下一节</strong> 👉 <a href="06b-解码策略.html">06b-解码策略.md</a></p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="06-推理优化.html"><div class="dir">← 上一节</div>⚡ 06 · 推理优化：省显存</a><a class="next" href="06b-解码策略.html"><div class="dir">下一节 →</div>🎲 06b · 解码策略</a></nav>
+</main>
+<script>(function(){
+  var KEY="overview-progress", FILE="06d-\u964d\u5ef6\u8fdf\u4e0e\u4e09\u4e2a\u6307\u6807.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+</body></html>

@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -293,15 +310,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_1">🎯 一句话</h2>
 <p>有了梯度（第 8 章），还得决定<strong>怎么迈这一步</strong>。
 <strong>学习率是全深度学习最重要的超参数</strong>——没有之一。</p>
-<figure class="dia" data-fig="optimizer_paths"><svg viewBox="0 0 720 390" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="三种优化器在狭长山谷上的轨迹"><defs><marker id="a9" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker><marker id="a9l" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--link)"/></marker><marker id="a9g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--done)"/></marker></defs><ellipse cx="340" cy="190" rx="46" ry="13" fill="none" stroke="var(--border)" stroke-width="1.2" opacity="0.75"/><ellipse cx="340" cy="190" rx="96" ry="26" fill="none" stroke="var(--border)" stroke-width="1.2" opacity="0.64"/><ellipse cx="340" cy="190" rx="149" ry="40" fill="none" stroke="var(--border)" stroke-width="1.2" opacity="0.53"/><ellipse cx="340" cy="190" rx="205" ry="55" fill="none" stroke="var(--border)" stroke-width="1.2" opacity="0.42"/><ellipse cx="340" cy="190" rx="264" ry="71" fill="none" stroke="var(--border)" stroke-width="1.2" opacity="0.31"/><circle cx="340" cy="190" r="6" fill="var(--done)"/><text class="dia-t" x="340" y="210" font-size="11" text-anchor="middle" fill="var(--done)" font-weight="700">最优</text><polyline points="80.0,118.0 80.0,84.0 100.0,153.1 120.0,94.8 140.0,155.4 160.0,105.6 180.0,157.7 200.0,116.4 220.0,160.0 240.0,127.2 260.0,162.3 280.0,138.0" fill="none" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="80.0" cy="118.0" r="3" fill="var(--muted)"/><circle cx="100.0" cy="153.1" r="3" fill="var(--muted)"/><circle cx="140.0" cy="155.4" r="3" fill="var(--muted)"/><circle cx="180.0" cy="157.7" r="3" fill="var(--muted)"/><circle cx="220.0" cy="160.0" r="3" fill="var(--muted)"/><circle cx="260.0" cy="162.3" r="3" fill="var(--muted)"/><text class="dia-t" x="600" y="84" font-size="12" text-anchor="start" fill="var(--muted)" font-weight="700">SGD</text><polyline points="80.0,118.0 116.0,150.0 162.0,172.0 216.0,182.0 272.0,188.0 322.0,190.0" fill="none" stroke="var(--link)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="80.0" cy="118.0" r="3" fill="var(--link)"/><circle cx="162.0" cy="172.0" r="3" fill="var(--link)"/><circle cx="272.0" cy="188.0" r="3" fill="var(--link)"/><text class="dia-t" x="600" y="132" font-size="12" text-anchor="start" fill="var(--link)" font-weight="700">Momentum</text><polyline points="80.0,118.0 140.0,154.0 204.0,174.0 266.0,184.0 322.0,189.0" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="80.0" cy="118.0" r="3" fill="var(--accent)"/><circle cx="204.0" cy="174.0" r="3" fill="var(--accent)"/><circle cx="322.0" cy="189.0" r="3" fill="var(--accent)"/><text class="dia-t" x="600" y="180" font-size="12" text-anchor="start" fill="var(--accent)" font-weight="700">Adam</text><text class="dia-t" x="600" y="102" font-size="11" text-anchor="start" fill="var(--muted)" font-weight="normal">来回横跳</text><text class="dia-t" x="600" y="150" font-size="11" text-anchor="start" fill="var(--link)" font-weight="normal">惯性抵消震荡</text><text class="dia-t" x="600" y="198" font-size="11" text-anchor="start" fill="var(--accent)" font-weight="normal">每维自适应步长</text><text class="dia-t" x="340" y="32" font-size="13.5" text-anchor="middle" fill="var(--fg)" font-weight="700">在这种「狭长山谷」地形上，三个优化器走出完全不同的路</text><text class="dia-t" x="340" y="330" font-size="12.5" text-anchor="middle" fill="var(--accent)" font-weight="700">⭐ 问题不在「学习率大小」，在于&lt;各个方向的陡峭程度差太多&gt;</text><text class="dia-t" x="340" y="352" font-size="11.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">SGD 只有一个全局步长：够小才不震荡，但那样在平缓方向就几乎不动</text><text class="dia-t" x="340" y="374" font-size="11.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">Adam 给每个维度各自的步长 —— 这就是它在实践中好用的核心原因</text></svg><figcaption>在「狭长山谷」地形上，三个优化器走出完全不同的路。⭐ 问题不在学习率大小，在于<b>各个方向的陡峭程度差太多</b> —— SGD 只有一个全局步长，够小才不震荡，但那样在平缓方向几乎不动。Adam 给每个维度各自的步长，这才是它好用的核心原因。</figcaption></figure>
+<figure class="dia" data-fig="optimizer_paths"><svg viewBox="0 0 720 390" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="三种优化器在狭长山谷上的轨迹"><defs><marker id="a9__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker><marker id="a9l__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--link)"/></marker><marker id="a9g__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--done)"/></marker></defs><ellipse cx="340" cy="190" rx="46" ry="13" fill="none" stroke="var(--border)" stroke-width="1.2" opacity="0.75"/><ellipse cx="340" cy="190" rx="96" ry="26" fill="none" stroke="var(--border)" stroke-width="1.2" opacity="0.64"/><ellipse cx="340" cy="190" rx="149" ry="40" fill="none" stroke="var(--border)" stroke-width="1.2" opacity="0.53"/><ellipse cx="340" cy="190" rx="205" ry="55" fill="none" stroke="var(--border)" stroke-width="1.2" opacity="0.42"/><ellipse cx="340" cy="190" rx="264" ry="71" fill="none" stroke="var(--border)" stroke-width="1.2" opacity="0.31"/><circle cx="340" cy="190" r="6" fill="var(--done)"/><text class="dia-t" x="340" y="210" font-size="11" text-anchor="middle" fill="var(--done)" font-weight="700">最优</text><polyline points="80.0,118.0 80.0,84.0 100.0,153.1 120.0,94.8 140.0,155.4 160.0,105.6 180.0,157.7 200.0,116.4 220.0,160.0 240.0,127.2 260.0,162.3 280.0,138.0" fill="none" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="80.0" cy="118.0" r="3" fill="var(--muted)"/><circle cx="100.0" cy="153.1" r="3" fill="var(--muted)"/><circle cx="140.0" cy="155.4" r="3" fill="var(--muted)"/><circle cx="180.0" cy="157.7" r="3" fill="var(--muted)"/><circle cx="220.0" cy="160.0" r="3" fill="var(--muted)"/><circle cx="260.0" cy="162.3" r="3" fill="var(--muted)"/><text class="dia-t" x="600" y="84" font-size="12" text-anchor="start" fill="var(--muted)" font-weight="700">SGD</text><polyline points="80.0,118.0 116.0,150.0 162.0,172.0 216.0,182.0 272.0,188.0 322.0,190.0" fill="none" stroke="var(--link)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="80.0" cy="118.0" r="3" fill="var(--link)"/><circle cx="162.0" cy="172.0" r="3" fill="var(--link)"/><circle cx="272.0" cy="188.0" r="3" fill="var(--link)"/><text class="dia-t" x="600" y="132" font-size="12" text-anchor="start" fill="var(--link)" font-weight="700">Momentum</text><polyline points="80.0,118.0 140.0,154.0 204.0,174.0 266.0,184.0 322.0,189.0" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="80.0" cy="118.0" r="3" fill="var(--accent)"/><circle cx="204.0" cy="174.0" r="3" fill="var(--accent)"/><circle cx="322.0" cy="189.0" r="3" fill="var(--accent)"/><text class="dia-t" x="600" y="180" font-size="12" text-anchor="start" fill="var(--accent)" font-weight="700">Adam</text><text class="dia-t" x="600" y="102" font-size="11" text-anchor="start" fill="var(--muted)" font-weight="normal">来回横跳</text><text class="dia-t" x="600" y="150" font-size="11" text-anchor="start" fill="var(--link)" font-weight="normal">惯性抵消震荡</text><text class="dia-t" x="600" y="198" font-size="11" text-anchor="start" fill="var(--accent)" font-weight="normal">每维自适应步长</text><text class="dia-t" x="340" y="32" font-size="13.5" text-anchor="middle" fill="var(--fg)" font-weight="700">在这种「狭长山谷」地形上，三个优化器走出完全不同的路</text><text class="dia-t" x="340" y="330" font-size="12.5" text-anchor="middle" fill="var(--accent)" font-weight="700">⭐ 问题不在「学习率大小」，在于&lt;各个方向的陡峭程度差太多&gt;</text><text class="dia-t" x="340" y="352" font-size="11.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">SGD 只有一个全局步长：够小才不震荡，但那样在平缓方向就几乎不动</text><text class="dia-t" x="340" y="374" font-size="11.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">Adam 给每个维度各自的步长 —— 这就是它在实践中好用的核心原因</text></svg><figcaption>在「狭长山谷」地形上，三个优化器走出完全不同的路。⭐ 问题不在学习率大小，在于<b>各个方向的陡峭程度差太多</b> —— SGD 只有一个全局步长，够小才不震荡，但那样在平缓方向几乎不动。Adam 给每个维度各自的步长，这才是它好用的核心原因。</figcaption></figure>
 
-<figure class="dia" data-fig="learning_rate"><svg viewBox="0 0 700 290" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="不同学习率下的收敛行为"><defs><marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker><marker id="a3l" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--link)"/></marker></defs><polyline points="52.0,94.0 54.6,100.3 57.2,106.4 59.8,112.2 62.4,117.9 65.0,123.3 67.6,128.6 70.2,133.6 72.8,138.4 75.4,143.0 78.0,147.3 80.6,151.5 83.2,155.4 85.8,159.2 88.4,162.7 91.0,166.0 93.6,169.1 96.2,172.0 98.8,174.6 101.4,177.1 104.0,179.3 106.6,181.4 109.2,183.2 111.8,184.8 114.4,186.2 117.0,187.3 119.6,188.3 122.2,189.0 124.8,189.6 127.4,189.9 130.0,190.0 132.6,189.9 135.2,189.6 137.8,189.0 140.4,188.3 143.0,187.3 145.6,186.2 148.2,184.8 150.8,183.2 153.4,181.4 156.0,179.3 158.6,177.1 161.2,174.6 163.8,172.0 166.4,169.1 169.0,166.0 171.6,162.7 174.2,159.2 176.8,155.4 179.4,151.5 182.0,147.3 184.6,143.0 187.2,138.4 189.8,133.6 192.4,128.6 195.0,123.3 197.6,117.9 200.2,112.2 202.8,106.4 205.4,100.3 208.0,94.0" fill="none" stroke="var(--border)" stroke-width="2"/><circle cx="55.9" cy="103.4" r="4.2" fill="var(--muted)"/><line x1="55.9" y1="103.4" x2="62.9" y2="119.0" stroke="var(--muted)" stroke-width="1.8" opacity=".7"/><circle cx="62.9" cy="119.0" r="4.2" fill="var(--muted)"/><line x1="62.9" y1="119.0" x2="69.2" y2="131.6" stroke="var(--muted)" stroke-width="1.8" opacity=".7"/><circle cx="69.2" cy="131.6" r="4.2" fill="var(--muted)"/><line x1="69.2" y1="131.6" x2="75.4" y2="143.0" stroke="var(--muted)" stroke-width="1.8" opacity=".7"/><circle cx="75.4" cy="143.0" r="4.2" fill="var(--muted)"/><line x1="75.4" y1="143.0" x2="80.9" y2="151.9" stroke="var(--muted)" stroke-width="1.8" opacity=".7"/><circle cx="80.9" cy="151.9" r="4.2" fill="var(--muted)"/><line x1="80.9" y1="151.9" x2="85.5" y2="158.8" stroke="var(--muted)" stroke-width="1.8" opacity=".7"/><circle cx="85.5" cy="158.8" r="4.2" fill="var(--muted)"/><line x1="85.5" y1="158.8" x2="90.2" y2="165.0" stroke="var(--muted)" stroke-width="1.8" opacity=".7"/><circle cx="90.2" cy="165.0" r="4.2" fill="var(--muted)"/><text class="dia-t" x="130" y="224" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">太小</text><text class="dia-t" x="130" y="243" font-size="11.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">走一辈子也到不了底</text><polyline points="272.0,94.0 274.6,100.3 277.2,106.4 279.8,112.2 282.4,117.9 285.0,123.3 287.6,128.6 290.2,133.6 292.8,138.4 295.4,143.0 298.0,147.3 300.6,151.5 303.2,155.4 305.8,159.2 308.4,162.7 311.0,166.0 313.6,169.1 316.2,172.0 318.8,174.6 321.4,177.1 324.0,179.3 326.6,181.4 329.2,183.2 331.8,184.8 334.4,186.2 337.0,187.3 339.6,188.3 342.2,189.0 344.8,189.6 347.4,189.9 350.0,190.0 352.6,189.9 355.2,189.6 357.8,189.0 360.4,188.3 363.0,187.3 365.6,186.2 368.2,184.8 370.8,183.2 373.4,181.4 376.0,179.3 378.6,177.1 381.2,174.6 383.8,172.0 386.4,169.1 389.0,166.0 391.6,162.7 394.2,159.2 396.8,155.4 399.4,151.5 402.0,147.3 404.6,143.0 407.2,138.4 409.8,133.6 412.4,128.6 415.0,123.3 417.6,117.9 420.2,112.2 422.8,106.4 425.4,100.3 428.0,94.0" fill="none" stroke="var(--border)" stroke-width="2"/><circle cx="275.9" cy="103.4" r="4.2" fill="var(--done)"/><line x1="275.9" y1="103.4" x2="309.4" y2="164.0" stroke="var(--done)" stroke-width="1.8" opacity=".7"/><circle cx="309.4" cy="164.0" r="4.2" fill="var(--done)"/><line x1="309.4" y1="164.0" x2="330.5" y2="184.0" stroke="var(--done)" stroke-width="1.8" opacity=".7"/><circle cx="330.5" cy="184.0" r="4.2" fill="var(--done)"/><line x1="330.5" y1="184.0" x2="342.2" y2="189.0" stroke="var(--done)" stroke-width="1.8" opacity=".7"/><circle cx="342.2" cy="189.0" r="4.2" fill="var(--done)"/><line x1="342.2" y1="189.0" x2="347.7" y2="189.9" stroke="var(--done)" stroke-width="1.8" opacity=".7"/><circle cx="347.7" cy="189.9" r="4.2" fill="var(--done)"/><text class="dia-t" x="350" y="224" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">刚好</text><text class="dia-t" x="350" y="243" font-size="11.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">稳稳下到谷底</text><polyline points="492.0,94.0 494.6,100.3 497.2,106.4 499.8,112.2 502.4,117.9 505.0,123.3 507.6,128.6 510.2,133.6 512.8,138.4 515.4,143.0 518.0,147.3 520.6,151.5 523.2,155.4 525.8,159.2 528.4,162.7 531.0,166.0 533.6,169.1 536.2,172.0 538.8,174.6 541.4,177.1 544.0,179.3 546.6,181.4 549.2,183.2 551.8,184.8 554.4,186.2 557.0,187.3 559.6,188.3 562.2,189.0 564.8,189.6 567.4,189.9 570.0,190.0 572.6,189.9 575.2,189.6 577.8,189.0 580.4,188.3 583.0,187.3 585.6,186.2 588.2,184.8 590.8,183.2 593.4,181.4 596.0,179.3 598.6,177.1 601.2,174.6 603.8,172.0 606.4,169.1 609.0,166.0 611.6,162.7 614.2,159.2 616.8,155.4 619.4,151.5 622.0,147.3 624.6,143.0 627.2,138.4 629.8,133.6 632.4,128.6 635.0,123.3 637.6,117.9 640.2,112.2 642.8,106.4 645.4,100.3 648.0,94.0" fill="none" stroke="var(--border)" stroke-width="2"/><circle cx="499.8" cy="112.2" r="4.2" fill="var(--accent)"/><line x1="499.8" y1="112.2" x2="647.2" y2="95.9" stroke="var(--accent)" stroke-width="1.8" opacity=".7"/><circle cx="647.2" cy="95.9" r="4.2" fill="var(--accent)"/><line x1="647.2" y1="95.9" x2="487.3" y2="82.1" stroke="var(--accent)" stroke-width="1.8" opacity=".7"/><circle cx="487.3" cy="82.1" r="4.2" fill="var(--accent)"/><line x1="487.3" y1="82.1" x2="657.4" y2="69.6" stroke="var(--accent)" stroke-width="1.8" opacity=".7"/><circle cx="657.4" cy="69.6" r="4.2" fill="var(--accent)"/><text class="dia-t" x="570" y="224" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">太大</text><text class="dia-t" x="570" y="243" font-size="11.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">来回震荡，甚至发散</text><text class="dia-t" x="350" y="28" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">同一个损失曲面，只是步子迈多大不同</text><text class="dia-t" x="350" y="274" font-size="12.5" text-anchor="middle" fill="var(--accent)" font-weight="600">⭐ 学习率是最该先调的超参 —— 它错了，别的怎么调都没用</text></svg><figcaption>同一个损失曲面，只是每一步迈多大不同。⭐ 太小走不到底，太大来回震荡甚至发散 —— <b>学习率是最该先调的超参，它错了别的怎么调都没用</b>。</figcaption></figure>
+<figure class="dia" data-fig="learning_rate"><svg viewBox="0 0 700 290" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="不同学习率下的收敛行为"><defs><marker id="a3__f2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker><marker id="a3l__f2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--link)"/></marker></defs><polyline points="52.0,94.0 54.6,100.3 57.2,106.4 59.8,112.2 62.4,117.9 65.0,123.3 67.6,128.6 70.2,133.6 72.8,138.4 75.4,143.0 78.0,147.3 80.6,151.5 83.2,155.4 85.8,159.2 88.4,162.7 91.0,166.0 93.6,169.1 96.2,172.0 98.8,174.6 101.4,177.1 104.0,179.3 106.6,181.4 109.2,183.2 111.8,184.8 114.4,186.2 117.0,187.3 119.6,188.3 122.2,189.0 124.8,189.6 127.4,189.9 130.0,190.0 132.6,189.9 135.2,189.6 137.8,189.0 140.4,188.3 143.0,187.3 145.6,186.2 148.2,184.8 150.8,183.2 153.4,181.4 156.0,179.3 158.6,177.1 161.2,174.6 163.8,172.0 166.4,169.1 169.0,166.0 171.6,162.7 174.2,159.2 176.8,155.4 179.4,151.5 182.0,147.3 184.6,143.0 187.2,138.4 189.8,133.6 192.4,128.6 195.0,123.3 197.6,117.9 200.2,112.2 202.8,106.4 205.4,100.3 208.0,94.0" fill="none" stroke="var(--border)" stroke-width="2"/><circle cx="55.9" cy="103.4" r="4.2" fill="var(--muted)"/><line x1="55.9" y1="103.4" x2="62.9" y2="119.0" stroke="var(--muted)" stroke-width="1.8" opacity=".7"/><circle cx="62.9" cy="119.0" r="4.2" fill="var(--muted)"/><line x1="62.9" y1="119.0" x2="69.2" y2="131.6" stroke="var(--muted)" stroke-width="1.8" opacity=".7"/><circle cx="69.2" cy="131.6" r="4.2" fill="var(--muted)"/><line x1="69.2" y1="131.6" x2="75.4" y2="143.0" stroke="var(--muted)" stroke-width="1.8" opacity=".7"/><circle cx="75.4" cy="143.0" r="4.2" fill="var(--muted)"/><line x1="75.4" y1="143.0" x2="80.9" y2="151.9" stroke="var(--muted)" stroke-width="1.8" opacity=".7"/><circle cx="80.9" cy="151.9" r="4.2" fill="var(--muted)"/><line x1="80.9" y1="151.9" x2="85.5" y2="158.8" stroke="var(--muted)" stroke-width="1.8" opacity=".7"/><circle cx="85.5" cy="158.8" r="4.2" fill="var(--muted)"/><line x1="85.5" y1="158.8" x2="90.2" y2="165.0" stroke="var(--muted)" stroke-width="1.8" opacity=".7"/><circle cx="90.2" cy="165.0" r="4.2" fill="var(--muted)"/><text class="dia-t" x="130" y="224" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">太小</text><text class="dia-t" x="130" y="243" font-size="11.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">走一辈子也到不了底</text><polyline points="272.0,94.0 274.6,100.3 277.2,106.4 279.8,112.2 282.4,117.9 285.0,123.3 287.6,128.6 290.2,133.6 292.8,138.4 295.4,143.0 298.0,147.3 300.6,151.5 303.2,155.4 305.8,159.2 308.4,162.7 311.0,166.0 313.6,169.1 316.2,172.0 318.8,174.6 321.4,177.1 324.0,179.3 326.6,181.4 329.2,183.2 331.8,184.8 334.4,186.2 337.0,187.3 339.6,188.3 342.2,189.0 344.8,189.6 347.4,189.9 350.0,190.0 352.6,189.9 355.2,189.6 357.8,189.0 360.4,188.3 363.0,187.3 365.6,186.2 368.2,184.8 370.8,183.2 373.4,181.4 376.0,179.3 378.6,177.1 381.2,174.6 383.8,172.0 386.4,169.1 389.0,166.0 391.6,162.7 394.2,159.2 396.8,155.4 399.4,151.5 402.0,147.3 404.6,143.0 407.2,138.4 409.8,133.6 412.4,128.6 415.0,123.3 417.6,117.9 420.2,112.2 422.8,106.4 425.4,100.3 428.0,94.0" fill="none" stroke="var(--border)" stroke-width="2"/><circle cx="275.9" cy="103.4" r="4.2" fill="var(--done)"/><line x1="275.9" y1="103.4" x2="309.4" y2="164.0" stroke="var(--done)" stroke-width="1.8" opacity=".7"/><circle cx="309.4" cy="164.0" r="4.2" fill="var(--done)"/><line x1="309.4" y1="164.0" x2="330.5" y2="184.0" stroke="var(--done)" stroke-width="1.8" opacity=".7"/><circle cx="330.5" cy="184.0" r="4.2" fill="var(--done)"/><line x1="330.5" y1="184.0" x2="342.2" y2="189.0" stroke="var(--done)" stroke-width="1.8" opacity=".7"/><circle cx="342.2" cy="189.0" r="4.2" fill="var(--done)"/><line x1="342.2" y1="189.0" x2="347.7" y2="189.9" stroke="var(--done)" stroke-width="1.8" opacity=".7"/><circle cx="347.7" cy="189.9" r="4.2" fill="var(--done)"/><text class="dia-t" x="350" y="224" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">刚好</text><text class="dia-t" x="350" y="243" font-size="11.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">稳稳下到谷底</text><polyline points="492.0,94.0 494.6,100.3 497.2,106.4 499.8,112.2 502.4,117.9 505.0,123.3 507.6,128.6 510.2,133.6 512.8,138.4 515.4,143.0 518.0,147.3 520.6,151.5 523.2,155.4 525.8,159.2 528.4,162.7 531.0,166.0 533.6,169.1 536.2,172.0 538.8,174.6 541.4,177.1 544.0,179.3 546.6,181.4 549.2,183.2 551.8,184.8 554.4,186.2 557.0,187.3 559.6,188.3 562.2,189.0 564.8,189.6 567.4,189.9 570.0,190.0 572.6,189.9 575.2,189.6 577.8,189.0 580.4,188.3 583.0,187.3 585.6,186.2 588.2,184.8 590.8,183.2 593.4,181.4 596.0,179.3 598.6,177.1 601.2,174.6 603.8,172.0 606.4,169.1 609.0,166.0 611.6,162.7 614.2,159.2 616.8,155.4 619.4,151.5 622.0,147.3 624.6,143.0 627.2,138.4 629.8,133.6 632.4,128.6 635.0,123.3 637.6,117.9 640.2,112.2 642.8,106.4 645.4,100.3 648.0,94.0" fill="none" stroke="var(--border)" stroke-width="2"/><circle cx="499.8" cy="112.2" r="4.2" fill="var(--accent)"/><line x1="499.8" y1="112.2" x2="647.2" y2="95.9" stroke="var(--accent)" stroke-width="1.8" opacity=".7"/><circle cx="647.2" cy="95.9" r="4.2" fill="var(--accent)"/><line x1="647.2" y1="95.9" x2="487.3" y2="82.1" stroke="var(--accent)" stroke-width="1.8" opacity=".7"/><circle cx="487.3" cy="82.1" r="4.2" fill="var(--accent)"/><line x1="487.3" y1="82.1" x2="657.4" y2="69.6" stroke="var(--accent)" stroke-width="1.8" opacity=".7"/><circle cx="657.4" cy="69.6" r="4.2" fill="var(--accent)"/><text class="dia-t" x="570" y="224" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">太大</text><text class="dia-t" x="570" y="243" font-size="11.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">来回震荡，甚至发散</text><text class="dia-t" x="350" y="28" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">同一个损失曲面，只是步子迈多大不同</text><text class="dia-t" x="350" y="274" font-size="12.5" text-anchor="middle" fill="var(--accent)" font-weight="600">⭐ 学习率是最该先调的超参 —— 它错了，别的怎么调都没用</text></svg><figcaption>同一个损失曲面，只是每一步迈多大不同。⭐ 太小走不到底，太大来回震荡甚至发散 —— <b>学习率是最该先调的超参，它错了别的怎么调都没用</b>。</figcaption></figure>
 
 <hr />
 <h2 id="_2">🏔️ 一、梯度下降的三种规模</h2>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>全批量 (Batch GD)：用全部数据算一次梯度，走一步</p><p>✅ 方向准 ❌ 慢、内存装不下</p><p>随机 (SGD)：一个样本算一次梯度</p><p>✅ 快 ❌ 抖得厉害</p><p>小批量 (Mini-batch) ⭐ 实际都用这个</p><p>每次用 32~512 个样本</p><p>✅ 兼顾速度和稳定，且能吃满 GPU 并行</p></div></section>
 <p><strong>batch size 的影响</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -331,7 +348,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>多</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💡 <strong>经验法则</strong>：batch size 翻倍时，学习率也大致翻倍（线性缩放规则）。</p>
 </blockquote>
@@ -363,7 +380,7 @@ $$v_t = \beta_2 v_{t-1} + (1-\beta_2)g_t^2 \qquad \text{（二阶动量：步长
 $$\hat m_t = \frac{m_t}{1-\beta_1^t},\quad \hat v_t = \frac{v_t}{1-\beta_2^t} \qquad \text{（偏差修正）}$$
 $$w \leftarrow w - \text{lr}\cdot\frac{\hat m_t}{\sqrt{\hat v_t}+\varepsilon}$$</p>
 <p>三个值得注意的点：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>点</th>
@@ -384,13 +401,13 @@ $$w \leftarrow w - \text{lr}\cdot\frac{\hat m_t}{\sqrt{\hat v_t}+\varepsilon}$$<
 <td>它还限制了"梯度极小时步长能有多大"。默认 1e-8，某些任务调到 1e-6 更稳</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>💡 <strong>Adam 的默认 β₁=0.9, β₂=0.999 几乎不用改</strong>——
 但如果训练很不稳，<strong>把 β₂ 降到 0.95</strong> 常有奇效（让二阶动量对近期更敏感）。
 大模型训练里 β₂=0.95 很常见。</p>
 </details>
 <p>实用选择：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -415,7 +432,7 @@ $$w \leftarrow w - \text{lr}\cdot\frac{\hat m_t}{\sqrt{\hat v_t}+\varepsilon}$$<
 <td>Adagrad 类</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⚠️ <strong>AdamW vs Adam</strong>：Adam 里的 L2 正则实现有缺陷（和自适应学习率纠缠）。
 AdamW 把权重衰减<strong>解耦</strong>出来，是现在的正确做法。<strong>用 AdamW 就对了。</strong></p>
@@ -424,7 +441,7 @@ AdamW 把权重衰减<strong>解耦</strong>出来，是现在的正确做法。
 <h2 id="_4">🎚️ 三、学习率：最重要的旋钮</h2>
 <section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">lr 太大 lr 合适 lr 太小</span></div><div class="vb-tree-row"><span class="vb-tree-node">loss loss loss</span></div><div class="vb-tree-row"><span class="vb-tree-node">___</span></div><div class="vb-tree-row"><span class="vb-tree-node">震荡/NaN ___ ___ 慢</span></div><div class="vb-tree-row"><span class="vb-tree-node">__ __</span></div></div></section>
 <p><strong>诊断表</strong>（背下来，第 11 章要用）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>现象</th>
@@ -464,14 +481,14 @@ AdamW 把权重衰减<strong>解耦</strong>出来，是现在的正确做法。
 <td>查梯度是否断流 / 忘了 <code>.step()</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⚠️ <strong>最后一行很重要</strong>：「下降极慢」和「完全不动」是<strong>两种不同的病</strong>。
 <strong>完全不动（loss 数值一位不差）几乎肯定是 bug，不是超参问题</strong>——
 调学习率是浪费时间，去查梯度。🔗 <a href="11-训练调试手册.html">第 11 章</a>有完整流程。</p>
 </blockquote>
 <h3 id="_5">📏 学习率的量级参考（不知道从哪开始时）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -500,7 +517,7 @@ AdamW 把权重衰减<strong>解耦</strong>出来，是现在的正确做法。
 <td>1e-4 ~ 3e-4</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>🔑 <strong>"微调要用小 100 倍的学习率"是最容易忽略的一条</strong>——
 用从零训练的 lr 去微调，会<strong>直接把预训练权重冲垮</strong>，效果还不如冻结主干。</p>
@@ -557,7 +574,7 @@ AdamW 把权重衰减<strong>解耦</strong>出来，是现在的正确做法。
 3. <code>scheduler.step()</code> 的位置 —— 通常每个 epoch 一次（有些调度器是每 step）
 4. <code>weight_decay</code> —— AdamW 的正则化（第 10 章）</p>
 <p>⚠️ <strong><code>scheduler.step()</code> 的位置是个高频错误</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>调度器</th>
@@ -578,7 +595,7 @@ AdamW 把权重衰减<strong>解耦</strong>出来，是现在的正确做法。
 <td>每个 epoch，<strong>且必须传验证指标</strong>：<code>scheduler.step(val_loss)</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💡 <strong>放错位置的症状</strong>：学习率衰减得快几百倍（该按 epoch 却按 step 调用），
 <strong>loss 降一点就完全不动了</strong>——看起来像模型不行，实际是 lr 已经衰减到 0。
@@ -586,7 +603,7 @@ AdamW 把权重衰减<strong>解耦</strong>出来，是现在的正确做法。
 </blockquote>
 <hr />
 <h2 id="_7">💾 六、显存不够时的三个招</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>招</th>
@@ -611,7 +628,7 @@ AdamW 把权重衰减<strong>解耦</strong>出来，是现在的正确做法。
 <td>慢约 30%，显存大降</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`loader` 来自你自己的代码，这一段只看写法</span>
 <span class="c1"># 梯度累积：注意 loss 要除以 accum_steps ⭐</span>
 <span class="n">accum</span> <span class="o">=</span> <span class="mi">4</span>

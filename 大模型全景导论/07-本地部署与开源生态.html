@@ -1,14 +1,24 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>07 · 本地部署与开源生态 · 大模型全景导论</title>
+<title>07 · 本地部署：把模型跑在自己机器上 · 大模型全景导论</title>
 <script>(function(){var t=localStorage.getItem('recsys-theme');
 if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
 @font-face{font-family:"CodeCJK";
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -268,53 +285,37 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
   <span class="title">07 · 本地部署与生态</span>
-  <span class="prevnext"><a href="06b-解码策略.html">←</a>
-  <a href="08-RAG深水区.html">→</a></span>
+  <span class="prevnext"><a href="06c-解码参数怎么调.html">←</a>
+  <a href="07b-开源生态怎么选.html">→</a></span>
   <button class="js-done-btn">☐ 打卡</button>
   <button id="themeToggle" title="切换深浅色">🌗</button>
 </div></header>
 <main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
 <ul>
 <li><a href="#_1">🎯 一句话</a></li>
-<li><a href="#_2">🚦 决策：什么时候该自建</a></li>
-<li><a href="#_4">🧰 三档工具（按易用度排）</a></li>
-<li><a href="#_5">💾 硬件对照表（量级参考）</a></li>
-<li><a href="#_6">🌍 开源模型生态（会变，记结构别记名字）</a></li>
+<li><a href="#_2">🧰 三档工具（按易用度排）</a></li>
+<li><a href="#_3">💾 硬件对照表（量级参考）</a></li>
 <li><a href="#openai">🔌 关键实践：OpenAI 兼容接口</a></li>
-<li><a href="#_7">🔗 和站内其他章的关系</a></li>
-<li><a href="#_8">📦 深挖的话要学什么</a></li>
-<li><a href="#_9">⚖️ 要不要深挖</a></li>
-<li><a href="#_10">✅ 检查点</a></li>
-<li><a href="#_11">🛑 可以停在这里</a></li>
+<li><a href="#_4">🔗 和站内其他章的关系</a></li>
+<li><a href="#_5">✅ 检查点</a></li>
+<li><a href="#_6">🛑 可以停在这里</a></li>
 </ul>
 </div>
 </details>
-<h1 id="07">07 · 本地部署与开源生态</h1>
-<p>⏱ <strong>32 分钟</strong> ｜ ⭐ <strong>门槛最低、见效最快的一块</strong></p>
+<h1 id="07">07 · 本地部署：把模型跑在自己机器上</h1>
+<p>⏱ <strong>22 分钟</strong> ｜ ⭐ <strong>装个软件、下个文件，半小时就能跑起来</strong></p>
+<p>⭐ 要不要长期自建、开源模型和许可证怎么选，在下一页 <a href="07b-开源生态怎么选.html">07b · 开源生态怎么选</a>。</p>
 <hr />
 <h2 id="_1">🎯 一句话</h2>
-<p>现在在自己电脑上跑一个能用的大模型，<strong>门槛已经低到「装个软件、下个文件」</strong>。真正的问题不是「能不能跑」，而是<strong>「什么时候值得跑」</strong>。</p>
+<p><strong>现在在自己电脑上跑一个能用的大模型，门槛已经低到「装个软件、下个文件」。</strong>
+这一页只解决「怎么跑起来」：用哪一档工具、要多大显存、代码怎么连上去。至于「什么时候值得跑」，那是下一页要算的账。</p>
 <hr />
-<h2 id="_2">🚦 决策：什么时候该自建</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">✅ 该本地/自建的场景</span></div><div class="vb-tree-row"><span class="vb-tree-node">数据不能出内网（医疗、金融、政务、法务）</span></div><div class="vb-tree-row"><span class="vb-tree-node">稳定大流量，自建单价远低于 API</span></div><div class="vb-tree-row"><span class="vb-tree-node">需要微调后的专有模型（第 5 章）</span></div><div class="vb-tree-row"><span class="vb-tree-node">需要极低延迟（本地无网络往返）</span></div><div class="vb-tree-row"><span class="vb-tree-node">离线环境</span></div><div class="vb-tree-row"><span class="vb-tree-node">学习和实验（免费随便玩 ⭐）</span></div><div class="vb-tree-row"><span class="vb-tree-node">⛔ 不该的场景</span></div><div class="vb-tree-row"><span class="vb-tree-node">流量小且不稳定 → API 按量付费更划算</span></div><div class="vb-tree-row"><span class="vb-tree-node">需要最强能力 → 顶尖闭源模型仍有优势</span></div><div class="vb-tree-row"><span class="vb-tree-node">团队没有运维能力 → 自建的隐性成本是人力</span></div><div class="vb-tree-row"><span class="vb-tree-node">快速验证想法阶段 → 先用 API 跑通再说</span></div></div></section>
-<blockquote>
-<p>💰 <strong>粗算一笔账</strong>：一张 24GB 消费级显卡 ≈ 几千到万把块。
-如果你每月 API 花费不到几百块，自建在经济上不成立——<strong>但作为学习投资另说</strong>。</p>
-</blockquote>
-<h3 id="_3">💸 自建的"隐性成本"清单（算账时最容易漏）</h3>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">显性成本：显卡 / 云 GPU 租金</span></div><div class="vb-tree-row"><span class="vb-tree-node">⭐ 隐性成本（往往更贵）：</span></div><div class="vb-tree-row"><span class="vb-tree-node">运维人力：模型更新、故障排查、扩容（这是最大的一笔）</span></div><div class="vb-tree-row"><span class="vb-tree-node">闲置成本：GPU 按小时计费，流量低谷时也在烧钱</span></div><div class="vb-tree-row"><span class="vb-tree-node">能力差距：自建模型效果不如顶尖闭源，可能需要更多工程弥补</span></div><div class="vb-tree-row"><span class="vb-tree-node">迭代速度：闭源模型每几个月免费变强，自建的不会</span></div><div class="vb-tree-row"><span class="vb-tree-node">机会成本：花在运维上的时间没花在产品上</span></div></div></section>
-<blockquote>
-<p>🔑 <strong>一个反直觉的结论</strong>：<strong>自建往往不是"更便宜"，而是"用钱换控制权"。</strong>
-如果你的真实需求是<strong>合规、隐私、可控</strong>，自建就值；
-如果只是"觉得 API 贵"，先去做 Prefix Caching 和提示词优化（<a href="06-推理优化.html">第 6 章</a>），
-<strong>那些的投入产出比高得多。</strong></p>
-</blockquote>
-<hr />
-<h2 id="_4">🧰 三档工具（按易用度排）</h2>
+<h2 id="_2">🧰 三档工具（按易用度排）</h2>
 <section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>Ollama —— 最简单，一行命令</li><li>ollama run qwen3</li><li>✅ 自动下载、自动量化、自带 OpenAI 兼容 API</li><li>✅ Mac/Windows/Linux 通吃</li><li>👉 个人使用、开发调试、第一次尝试，选它</li><li>llama.cpp / LM Studio —— 更可控</li><li>✅ GGUF 格式，CPU+GPU 混合推理（显存不够可以卸载到内存）</li><li>✅ LM Studio 有图形界面，适合不想碰命令行的人</li><li>👉 硬件受限、要精细控制量化档位时</li><li>vLLM / SGLang —— 生产级</li><li>✅ 连续批处理、PagedAttention（第 6 章）、高并发</li><li>❌ 要 Linux + NVIDIA 卡，配置复杂</li><li>👉 真正对外提供服务时</li></ol></section>
+
 <hr />
-<h2 id="_5">💾 硬件对照表（量级参考）</h2>
-<table>
+<h2 id="_3">💾 硬件对照表（量级参考）</h2>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>模型规模</th>
@@ -354,29 +355,17 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>多卡服务器</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⚠️ <strong>最后一行最容易让人算错账，值得单独说一句。</strong>
 MoE 的宣传口径是「<strong>激活参数只有 37B</strong>」，于是很多人以为它能塞进 70B 那一档的机器——<strong>不能</strong>。
 ⭐ <strong>权重要全部驻留显存，路由才有得选</strong>：这一步激活哪几个专家是<strong>运行时</strong>才知道的，
 而且<strong>同一个 batch 里不同 token 会路由到不同专家</strong>，你没法预先只加载一部分。
 <strong>所以显存按总参数算，算力按激活参数算</strong>——这就是这一行「100GB+」的由来。
-🔗 <a href="02d-MoE混合专家.html">专题 D · MoE：怎样扩容</a> 讲清了为什么只替换 FFN、Top-k 路由怎么选、
+🔗 <a href="02d-MoE混合专家.html">专题 D · MoE：怎样扩容</a> 讲清了为什么只替换 FFN、路由器怎么挑专家（负载不均衡才是它真正的难点）、
 以及<strong>「便宜」到底便宜在哪一项</strong>（省的是 FLOPs 和推理延迟，不是显存和采购成本）。</p>
 <p>💡 <strong>Mac 的特殊优势</strong>：统一内存架构，M 系列大内存机型可以跑很大的模型（虽然速度不如独显）。
 <strong>甜点区是 7–14B</strong>：能力够用日常任务，硬件门槛低。</p>
-</blockquote>
-<hr />
-<h2 id="_6">🌍 开源模型生态（会变，记结构别记名字）</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">主要开源系列（2026 年前后的格局）</span></div><div class="vb-tree-row"><span class="vb-tree-node">Qwen（阿里） —— 中文强、尺寸齐全、生态活跃</span></div><div class="vb-tree-row"><span class="vb-tree-node">DeepSeek —— 推理和代码能力突出、MoE 架构</span></div><div class="vb-tree-row"><span class="vb-tree-node">Llama（Meta） —— 生态最广、工具链最全</span></div><div class="vb-tree-row"><span class="vb-tree-node">Mistral —— 欧洲、效率导向</span></div><div class="vb-tree-row"><span class="vb-tree-node">Gemma（Google） —— 小尺寸质量高</span></div><div class="vb-tree-row"><span class="vb-tree-node">各种垂直微调版本 —— 代码/医疗/法律等</span></div></div></section>
-<p><strong>选型看四点</strong>：
-1. 许可证 ⭐ —— 能不能商用？有没有用户数限制？<strong>这是最容易踩的坑</strong>
-2. 中文能力 —— 中文场景优先看国产系列
-3. 尺寸 —— 有没有适合你硬件的档位
-4. 生态 —— 有没有现成的量化版本、微调脚本、社区支持</p>
-<blockquote>
-<p>⚠️ <strong>时效警告</strong>：模型名字和排名<strong>几个月就变</strong>。上面的列表只用来理解「有哪几类玩家」。
-实际选型时去看当前的开源榜单（第 11 章讲怎么正确看榜）。</p>
 </blockquote>
 <hr />
 <h2 id="openai">🔌 关键实践：OpenAI 兼容接口</h2>
@@ -394,7 +383,7 @@ MoE 的宣传口径是「<strong>激活参数只有 37B</strong>」，于是很�
 就能在「本地模型 / 云 API / 不同厂商」之间随意切换，避免被锁死。</p>
 </blockquote>
 <p>⚠️ <strong>但"兼容"不等于"等价"</strong>——四个会咬你的差异：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>差异</th>
@@ -419,7 +408,7 @@ MoE 的宣传口径是「<strong>激活参数只有 37B</strong>」，于是很�
 <td>让它输出 JSON，闭源模型基本不会崩，小模型经常多个逗号</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💡 <strong>所以切换模型后必须重跑评测</strong>（<a href="11-评测体系.html">第 11 章</a>）——
 <strong>"接口兼容"只保证代码能跑，不保证效果一样。</strong></p>
@@ -432,13 +421,13 @@ MoE 的宣传口径是「<strong>激活参数只有 37B</strong>」，于是很�
 比读十篇文章都管用。这就是本章说的"体验价值"。</p>
 </blockquote>
 <hr />
-<h2 id="_7">🔗 和站内其他章的关系</h2>
-<p>左列有的来自日常用 LLM 的经验，有的在站内别的板块讲过——<strong>碰上过哪几条就从哪几条接进来，一条没碰过也不影响读这一章</strong>。</p>
-<table>
+<h2 id="_4">🔗 和站内其他章的关系</h2>
+<p>左列有的来自日常用 LLM 的经验，有的在站内别的板块讲过——<strong>碰上过哪几条就从哪几条接进来，一条没碰过也不影响读这一页</strong>。</p>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>你可能已经知道的</th>
-<th>这一章的对应</th>
+<th>这一页的对应</th>
 </tr>
 </thead>
 <tbody>
@@ -447,18 +436,14 @@ MoE 的宣传口径是「<strong>激活参数只有 37B</strong>」，于是很�
 <td>抽象一层就能切换本地/云</td>
 </tr>
 <tr>
-<td>量化、vLLM（第 6 章）</td>
-<td>这一章是它的落地工具</td>
-</tr>
-<tr>
-<td>数据不出内网的合规需求</td>
-<td>本地部署是唯一解</td>
+<td>量化、连续批处理、PagedAttention（第 6 章）</td>
+<td>这一页是它们的落地工具</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <!--XREF-->
 <p><strong>想接着深挖，去这几处</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>去哪</th>
@@ -467,121 +452,54 @@ MoE 的宣传口径是「<strong>激活参数只有 37B</strong>」，于是很�
 </thead>
 <tbody>
 <tr>
-<td><a href="../AI基础设施/20-推理服务化.html">AI基础设施 20</a></td>
-<td>自建之后真正要做的事：服务化、限流、降级路径</td>
+<td><a href="../AI基础设施/03-显存与带宽墙.html">AI基础设施 03 · 显存与带宽墙</a></td>
+<td>⭐ 硬件对照表背后的那笔账：显存到底被什么占满了，那一章第四节还带你自己估一遍</td>
 </tr>
 <tr>
-<td><a href="../AI基础设施/03-显存与带宽墙.html">AI基础设施 03</a></td>
-<td>⭐ 硬件对照表背后的那笔账 —— 显存到底被什么占满了</td>
+<td><a href="../AI基础设施/20-推理服务化.html">AI基础设施 20 · 推理服务化</a></td>
+<td>从「能跑」到「对外提供服务」真正要做的事：服务化、限流、降级路径。⭐ 顺带一条反直觉的顺序——<strong>引擎之间通常只差 20–50%，配置调没调对差的是几倍</strong>，先调配置再换引擎</td>
 </tr>
 <tr>
-<td><a href="../模型上线之后/18-成本与容量.html">上线之后 18</a></td>
-<td>「隐性成本清单」的容量侧：峰值该按什么算</td>
+<td><a href="../AI全栈/04-调用层.html">AI全栈 04 · 调用层</a></td>
+<td>「把接口抽象一层」在工程上具体长什么样——包一层的回报正是<strong>换上游几乎不用改业务代码</strong></td>
+</tr>
+<tr>
+<td><a href="../智能体工程教程/01-第一天-10分钟造出你的第一个Agent.html">智能体工程教程 01 · 10分钟造个Agent</a></td>
+<td>那里的 <code>MockModel</code> 就是这层抽象的最小实现，能看清接口该切在哪一刀</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
-<h2 id="_8">📦 深挖的话要学什么</h2>
-<blockquote>
-<p>📍 <strong>每条后面标了它在哪</strong>：
-📗 <strong>本库有</strong> = 站内已经讲透，点进去就行；📙 <strong>半有</strong> = 站内讲了一半，另一半得外找；
-📕 <strong>要外找</strong> = 站内没有，得去论文或别处。
-（这份清单以前只列词不说去哪，指到的坑有些站内根本没挖过，按图索骥会扑空。）</p>
-</blockquote>
-<ul>
-<li><strong>部署工程</strong>：Docker 化、多卡张量并行、负载均衡、健康检查、模型热切换
-  → 📙 <strong>半有</strong>：多卡张量并行在 <a href="../AI基础设施/12-张量并行.html">AI基础设施 12 · 张量并行</a>（<strong>一台机器装不下 70B 时，权重具体怎么切、切完要付多少通信代价</strong>——这正是本章硬件对照表背后的那笔账）；健康检查和负载均衡在 <a href="../AI基础设施/20-推理服务化.html">AI基础设施 20 · 推理服务化</a> 的「生产必备的五件事」里，⚠️ 那里点出两个反直觉的点：健康检查不能只 ping，要真跑一次推理；客户端断开必须立刻停止生成并释放 KV Cache（用户关了页面服务器还在生成 2000 token，占着槽位不放，高并发下显著吃容量）。只有 Docker 化和模型热切换的具体做法站内没有，要外找</li>
-<li><strong>性能压测</strong>：吞吐/TTFT/TPOT 测量、容量规划、成本建模
-  → 📗 <strong>本库有</strong>：<a href="../AI基础设施/20-推理服务化.html">AI基础设施 20 · 推理服务化</a> 的「先定 SLO 再谈优化」+「压测：画出你的延迟-吞吐曲线」，该监控什么也在同一章（⭐ <strong>KV Cache 使用率是最该盯的容量预警信号</strong>）；成本模型在 <a href="../AI基础设施/23-可观测性与成本.html">AI基础设施 23 · 可观测性与成本</a>。本章那张"隐性成本清单"是提醒你别漏项，这两章是教你怎么把每一项算成数字</li>
-<li><strong>量化实操</strong>：不同量化档位的质量-速度实测对比（自己跑一遍最有说服力）
-  → 📗 <strong>本库有</strong>：<a href="../AI基础设施/18-量化.html">AI基础设施 18 · 量化</a> 的「质量评估：这一步不能省」。⚠️ 里面有一条直接关系到你自建成败的坑：<strong>"别人测 AWQ 几乎无损，到我这里就掉了"，通常不是方法问题，是校准集不是你的分布</strong>——所以质量评估必须用你自己的业务数据跑，抄别人的档位结论没用</li>
-<li><strong>多 LoRA 服务</strong>：一个基座热挂多个适配器（配合第 5 章）。
-  🔗 <strong>这一条不用等「深挖」，<a href="../AI基础设施/20-推理服务化.html">AI基础设施 20 · 推理服务化</a> 已经写了</strong>：
-  它省的是「<strong>每个租户开一份完整实例</strong>」的显存，而且<strong>主流引擎大多支持，但要在选型时单独确认</strong>——
-  这是那一章明确点出的一个「容易漏掉的能力」，等部署完再发现引擎不支持就要重来。
-  同一节还有<strong>七个推理引擎的横评 + 一棵四问决策树</strong>，回答的正是这一章刻意没展开的「决定自建之后，到底用 vLLM 还是 SGLang 还是 TensorRT-LLM」。
-  ⚠️ 顺带纠一个常见误判：<strong>引擎之间通常只差 20–50%，而配置有没有调对差的是几倍</strong>——先调配置再换引擎。
-  （即 📗 <strong>本库有</strong>。）</li>
-<li><strong>边缘部署</strong>：手机/嵌入式设备、ONNX/CoreML/TensorRT 转换
-  → 📙 <strong>半有</strong>：<strong>「怎么把模型导出成一个文件」站内有了</strong> —— <a href="../PyTorch这个框架本身/10-把模型交出去.html">PyTorch 这个框架本身 10 · 把模型交出去</a> 讲了 <code>torch.save</code> 存模型和存 <code>state_dict</code> 的区别、TorchScript 的 trace 与 script、ONNX 导出（含 onnxruntime 实跑对拍） 以及 <code>torch.compile</code> 到底做了什么。⚠️ 但「转完之后」那半段仍要外找：CoreML / TensorRT 怎么转、量化后精度掉多少、手机端 runtime 怎么选、端侧内存怎么压 —— 站内没有</li>
-<li><strong>私有化整套方案</strong>：模型 + 向量库 + 网关 + 监控的完整内网架构
-  → 📙 <strong>半有</strong>：这套架构的<strong>每一块</strong>站内都有——模型服务在 <a href="../AI基础设施/20-推理服务化.html">AI基础设施 20</a>，向量库选型在 <a href="../推荐算法/10-向量检索与ANN.html">推荐算法 10 · 向量检索与ANN</a>，监控在 <a href="../AI基础设施/23-可观测性与成本.html">AI基础设施 23 · 可观测性与成本</a> 和 <a href="../模型上线之后/05-该监控什么.html">模型上线之后 05 · 该监控什么</a>。缺的恰恰是"把它们接起来"的那张图：网关层怎么设计、内网怎么隔离、各组件之间的失败怎么兜——这部分要外找</li>
-</ul>
-<p>需要的前置：Linux + Docker 基础。<strong>几乎不需要理论</strong>，纯工程。</p>
-<hr />
-<h2 id="_9">⚖️ 要不要深挖</h2>
-<table>
-<thead>
-<tr>
-<th>你的情况</th>
-<th>建议</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>从没跑过本地模型</td>
-<td>✅ <strong>强烈建议花 30 分钟装个 Ollama 跑一次</strong>——认知冲击很大，且免费</td>
-</tr>
-<tr>
-<td>有合规/隐私硬需求</td>
-<td>✅ 必须深挖，配合第 6 章</td>
-</tr>
-<tr>
-<td>想省 API 钱</td>
-<td>🟡 先算账，多数个人场景自建不划算</td>
-</tr>
-<tr>
-<td>做企业私有化交付</td>
-<td>✅ 这是核心交付能力</td>
-</tr>
-<tr>
-<td>纯做应用、用云 API</td>
-<td>⛔ 知道有这回事就行</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>🔑 <strong>我的判断</strong>：这块<strong>知识密度最低但体验价值最高</strong>。
-它不值得单独做一整套教程（内容撑不满，且工具变化快），
-但<strong>「花半小时跑一次本地模型」这件事本身，对建立直觉很有用</strong>——
-你会立刻理解量化、显存、速度这些抽象概念到底意味着什么。</p>
-<p><strong>建议：并入第 6 章推理优化，作为它的实操部分。</strong></p>
-</blockquote>
-<hr />
-<h2 id="_10">✅ 检查点</h2>
+<h2 id="_5">✅ 检查点</h2>
 <ol>
-<li>什么情况下该自建、什么情况下不该？</li>
-<li>自建的"隐性成本"有哪些？为什么说自建往往不是"更便宜"而是"用钱换控制权"？</li>
-<li>只是觉得 API 贵，第一步该做什么？</li>
-<li>个人用户想第一次跑本地模型，用什么工具最简单？</li>
-<li>7B 模型 4bit 量化后大概要多少显存？甜点区在哪？</li>
-<li>开源模型选型要看哪四点？哪一点最容易踩坑？</li>
-<li>为什么建议把模型接口抽象一层？"OpenAI 兼容"有哪四个不等价的地方？</li>
-<li>30 分钟上手路线里，哪两步最有价值？</li>
+<li>三档工具分别在什么时候用？个人第一次跑本地模型该选哪个？</li>
+<li>7B 模型 4bit 量化后大概要多少显存？甜点区是哪个尺寸段、为什么？</li>
+<li>为什么 200B+ 的 MoE 不能按「激活参数只有 37B」去估显存？</li>
+<li>为什么建议把模型接口抽象一层？「OpenAI 兼容」有哪四个不等价的地方？</li>
+<li>30 分钟上手路线里，哪两步最有价值？为什么？</li>
 </ol>
 <details>
 <summary>👀 答案</summary>
 <ol>
-<li>该：数据不出内网、稳定大流量、需要专有微调模型、极低延迟、离线、学习实验。不该：流量小不稳定、需要最强能力、团队没运维能力、快速验证阶段。</li>
-<li>隐性成本：<strong>运维人力（最大一笔）、GPU 闲置成本、能力差距、迭代速度落后、机会成本</strong>。之所以说是换控制权，是因为算上隐性成本后经济优势往往消失——真实价值在合规、隐私、可控。</li>
-<li><strong>先做 Prefix Caching 和提示词优化</strong>（<a href="06-推理优化.html">第 6 章</a>）——投入产出比高得多，而且不需要任何运维。</li>
-<li><strong>Ollama</strong>，一行命令 <code>ollama run &lt;model&gt;</code>，自动下载量化并提供 OpenAI 兼容 API。</li>
-<li>约 <strong>4–6 GB</strong>，主流游戏显卡或 M 系列 Mac 都能跑。甜点区是 7–14B——能力够用日常任务，硬件门槛低。</li>
-<li>许可证、中文能力、尺寸档位、生态支持。<strong>许可证最容易踩坑</strong>（能否商用、有无用户数限制）。</li>
-<li>能在本地模型/不同云厂商之间自由切换，避免被单一供应商锁死。<strong>四个不等价</strong>：①工具调用格式（开源支持参差，有的靠提示词模拟）②系统提示词遵循度（小模型经常"忘了"）③标称窗口 ≠ 实际可用长度（标 128K，超 32K 就退化）④输出格式稳定性（小模型 JSON 经常崩）。所以换模型后必须重跑评测。</li>
-<li><strong>第 ③ 步（8B vs 1.7B 对比）和第 ⑤ 步（看显存占用）</strong>——亲眼看到差距和数字，比读十篇文章管用，这就是本章的"体验价值"。</li>
+<li><strong>Ollama</strong> 最简单（一行命令，自动下载、自动量化、自带 OpenAI 兼容 API，三大系统通吃），个人使用和开发调试选它；<strong>llama.cpp / LM Studio</strong> 用 GGUF、能 CPU+GPU 混合推理，硬件受限或要精细控制量化档位时用；<strong>vLLM / SGLang</strong> 是生产级（连续批处理、PagedAttention、高并发），但要 Linux + NVIDIA 卡、配置复杂，真正对外提供服务时才上。</li>
+<li>约 <strong>4–6 GB</strong>，主流游戏显卡或 M 系列 Mac 都能跑。甜点区是 <strong>7–14B</strong>——能力够用日常任务，硬件门槛低。</li>
+<li>因为<strong>权重要全部驻留显存，路由才有得选</strong>：激活哪几个专家是运行时才知道的，而且同一个 batch 里不同 token 会路由到不同专家，没法预先只加载一部分。⭐ <strong>显存按总参数算，算力按激活参数算</strong>——所以那一行写的是 100GB+。</li>
+<li>能在本地模型 / 不同云厂商之间自由切换，避免被单一供应商锁死。<strong>四个不等价</strong>：①工具调用格式（开源支持参差，有的靠提示词模拟）②系统提示词遵循度（小模型经常「忘了」）③标称窗口 ≠ 实际可用长度（标 128K，超 32K 就明显退化）④输出格式稳定性（小模型 JSON 经常崩）。所以换模型后必须重跑评测。</li>
+<li><strong>第 ③ 步（8B 对比 1.7B）和第 ⑤ 步（打开任务管理器看显存占用）</strong>——亲眼看到质量-速度的差距和 4bit 量化到底占多少显存，比读十篇文章管用，这就是本地跑一次的「体验价值」。</li>
 </ol>
 </details>
 <hr />
-<h2 id="_11">🛑 可以停在这里</h2>
+<h2 id="_6">🛑 可以停在这里</h2>
+<p>跑通一次之后，量化、显存、速度这些抽象概念就都有了具体数字——这一页的目的就达到了。</p>
+<p>⚠️ <strong>什么时候看下一页</strong>：你开始认真考虑「以后长期就这么自建下去」，或者要在一堆开源模型里挑一个进生产。那是算账和选型的问题，这一页不回答。</p>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>本地部署门槛已极低。工具三档：<strong>Ollama(一行命令,个人首选)</strong>→llama.cpp/LM Studio(GGUF,CPU+GPU混合)→vLLM/SGLang(生产级)。硬件：<strong>7-14B是甜点区</strong>(4-10GB显存)，Mac统一内存可跑大模型。⭐<strong>算账要算隐性成本：运维人力(最大一笔)/GPU闲置/能力差距/迭代速度落后/机会成本——自建往往不是"更便宜"而是"用钱换控制权"；只是觉得API贵的话，先去做Prefix Caching和提示词优化，投入产出比高得多</strong>。开源生态Qwen/DeepSeek/Llama/Mistral/Gemma，选型看<strong>许可证(最易踩坑)</strong>/中文/尺寸/生态。都提供OpenAI兼容接口→代码抽象一层可自由切换，⚠️<strong>但"兼容"≠"等价"：工具调用格式、系统提示词遵循度、标称窗口≠实际可用长度(标128K超32K就退化)、JSON输出稳定性——换模型后必须重跑评测</strong>。⭐<strong>强烈建议花30分钟跑一次：重点是对比8B vs 1.7B、看显存占用——把抽象概念变成具体数字</strong>。</p>
+<p>本地跑一个能用的模型，门槛已经低到「装个软件、下个文件」。<strong>工具分三档</strong>：<strong>Ollama</strong> 一行命令 <code>ollama run qwen3</code>，自动下载、自动量化、自带 OpenAI 兼容 API，个人使用和调试首选；<strong>llama.cpp / LM Studio</strong> 用 GGUF 格式、能 CPU+GPU 混合推理（显存不够就卸载到内存），硬件受限或要精细控制量化档位时用；<strong>vLLM / SGLang</strong> 是生产级（连续批处理、PagedAttention、高并发），但要 Linux + NVIDIA 卡。<strong>硬件按 4bit 量化后的显存估</strong>：1–4B 要 1–3 GB，<strong>7–8B 只要 4–6 GB</strong>，14B 要 8–10 GB，32B 要 18–22 GB，70B 要 35–45 GB；⭐ <strong>甜点区是 7–14B</strong>，能力够用日常任务而硬件门槛低，Mac 的统一内存则能跑得更大（速度不如独显）。⚠️ <strong>最容易算错的是 MoE</strong>：宣传口径「激活参数只有 37B」不代表它能塞进 70B 那一档——<strong>权重必须全部驻留显存，路由才有得选</strong>，而且同一个 batch 里不同 token 会路由到不同专家，所以<strong>显存按总参数算、算力按激活参数算</strong>，200B+ 的 MoE 照样要 100GB+。几乎所有本地框架都提供 <strong>OpenAI 兼容接口</strong>，代码只改 <code>base_url</code>（本地 Ollama 是 <code>http://localhost:11434/v1</code>），所以<strong>把模型接口抽象一层</strong>就能在本地 / 云 / 不同厂商之间随意切换。⚠️ 但<strong>「兼容」不等于「等价」</strong>，四个会咬你的差异：工具调用格式参差、小模型经常忘掉系统提示词里的约束、<strong>标称 128K 实际超过 32K 就明显退化</strong>、JSON 输出稳定性差——<strong>换模型后必须重跑评测</strong>。⭐ 真的花 30 分钟跑一次，重点是第 ③ 步（对比 8B 和 1.7B）和第 ⑤ 步（打开任务管理器看显存占用）：把抽象概念变成具体数字。</p>
 </blockquote>
-<p><strong>下一节</strong> 👉 <a href="08-RAG深水区.html">08-RAG深水区.md</a></p>
+<p><strong>下一节</strong> 👉 <a href="07b-开源生态怎么选.html">07b-开源生态怎么选.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
-<nav class="pagenav"><a href="06b-解码策略.html"><div class="dir">← 上一节</div>🎲 06b · 解码策略</a><a class="next" href="08-RAG深水区.html"><div class="dir">下一节 →</div>🔍 08 · RAG 深水区</a></nav>
+<nav class="pagenav"><a href="06c-解码参数怎么调.html"><div class="dir">← 上一节</div>🎛️ 06c · 解码参数怎么调</a><a class="next" href="07b-开源生态怎么选.html"><div class="dir">下一节 →</div>🧰 07b · 开源生态怎么选</a></nav>
 </main>
 <script>(function(){
   var KEY="overview-progress", FILE="07-\u672c\u5730\u90e8\u7f72\u4e0e\u5f00\u6e90\u751f\u6001.md";

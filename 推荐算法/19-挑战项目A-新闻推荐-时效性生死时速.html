@@ -173,6 +173,13 @@ table.xref th{text-align:left;background:var(--accent-soft);color:var(--accent);
  padding:8px 12px;border:1px solid var(--border)}
 table.xref td{padding:8px 12px;border:1px solid var(--border);vertical-align:top}
 table.xref td:first-child{white-space:nowrap;font-weight:600}
+
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -363,7 +370,7 @@ behaviors.tsv:  曝光ID, 用户ID, 时间, 点击历史, 曝光列表
 
 <hr />
 <h2 id="_4">🕳️ 这个项目专属的坑（提前剧透）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>坑</th>
@@ -403,7 +410,7 @@ behaviors.tsv:  曝光ID, 用户ID, 时间, 点击历史, 曝光列表
 <td>先统计真实数据里"点击量随新闻年龄的衰减曲线"，再定半衰期</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="definition-of-done">✅ 通关标准（Definition of Done）</h2>
 <ol>
@@ -426,7 +433,7 @@ behaviors.tsv:  曝光ID, 用户ID, 时间, 点击历史, 曝光列表
 <p><strong>下一个挑战</strong> 👉 <a href="20-挑战项目B-信息流模拟器-亲手养出信息茧房.html">20-挑战项目B-信息流模拟器-亲手养出信息茧房.md</a></p>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../模型上线之后/06-数据漂移与概念漂移.html">上线之后 06</a></td><td>新闻的「时效性」本质就是概念漂移的极端形态——别人几个月漂一次，你几小时漂一次</td></tr><tr><td><a href="../模型上线之后/16-重训练.html">上线之后 16</a></td><td>这个项目绕不开的问题：多久重训一次、增量还是全量、怎么判断该训了</td></tr><tr><td><a href="../强化学习基础/07-探索与利用.html">强化学习 07</a></td><td>新稿件没有任何行为数据就要决定给不给量——这是纯粹的冷启动探索问题</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../模型上线之后/06-数据漂移与概念漂移.html">上线之后 06</a></td><td>新闻的「时效性」本质就是概念漂移的极端形态——别人几个月漂一次，你几小时漂一次</td></tr><tr><td><a href="../模型上线之后/16-重训练.html">上线之后 16</a></td><td>这个项目绕不开的问题：多久重训一次、增量还是全量、怎么判断该训了</td></tr><tr><td><a href="../强化学习基础/07-探索与利用.html">强化学习 07</a></td><td>新稿件没有任何行为数据就要决定给不给量——这是纯粹的冷启动探索问题</td></tr></tbody></table></div>
 <hr />
 <h2 id="ckpt">✅ 检查点</h2>
 <ol>

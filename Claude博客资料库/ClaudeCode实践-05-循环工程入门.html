@@ -177,6 +177,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .ckpt ol{padding-left:1.3em}.ckpt li{margin:.4em 0}
 .recap{background:var(--quote-bg);border-radius:12px;padding:16px 20px;margin:18px 0 0}
 .recap b{color:var(--accent)}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner"><a href="../index.html">🏠 总目录</a>
@@ -205,7 +209,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </details>
 <p>从传统的「写提示词」转向<strong>循环工程（loop engineering）</strong>——把 Agent 工作组织成有明确停止条件的重复周期。不同类型的循环服务于不同目的，理解何时用哪种，能同时优化代码质量和 token 效率。</p>
 <h2 id="_1">四类循环</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>类型</th>
@@ -240,7 +244,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>定义明确的重复工作流（bug 分诊、依赖升级）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>目标制循环示例：</strong> 「把首页的 Lighthouse 分数提到 90 以上，试 5 次后停止」</p>
 <p><strong>时间制循环示例：</strong> 每 5 分钟检查一次 PR 的审查评论</p>
 <p><strong>主动循环架构：</strong> 组合 <code>/schedule</code> + <code>/goal</code> + skills + 动态工作流 + auto mode。例如处理用户反馈的完整主动循环——每小时检查一次、定义完成标准、通过工作流并行探索方案、对抗式审查，全程自动执行无需逐步批准。</p>

@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>04a · 集成学习与 GBDT · 机器学习与深度学习基础</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">04a · 集成学习与 GBDT</span>
+  <span class="prevnext"><a href="04-决策树与集成学习.html">←</a>
+  <a href="04b-XGBoost的推导.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">🌳 三、集成学习：三种组合方式</a></li>
+<li><a href="#bagging">🌲 四、随机森林：Bagging + 双重随机</a></li>
+<li><a href="#gbdtboosting">🚀 五、GBDT：Boosting 的核心思想</a></li>
+<li><a href="#_6">🔨 动手：亲眼看集成的威力</a></li>
+<li><a href="#_7">⚠️ 特征重要性的三个坑</a></li>
+<li><a href="#_8">🔗 和站内其他章的关系</a></li>
+<li><a href="#_9">✅ 检查点</a></li>
+<li><a href="#_10">🛑 可以停在这里</a></li>
+</ul>
+</div>
+</details>
+<h1 id="04a-gbdt">04a · 集成学习与 GBDT</h1>
+<p>⏱ <strong>34 分钟</strong> ｜ ⭐ <strong>集成的收益全部来自成员之间的「差异」</strong></p>
+<hr />
+<h2 id="_1">🎯 一句话</h2>
+<p>一棵树很弱（<a href="04-决策树与集成学习.html">上一章</a>那个 91.8%），
+但把几百棵弱树<strong>按正确方式</strong>组合起来，就是表格数据上至今难以撼动的最强模型 ——
+<strong>XGBoost / LightGBM 的全部秘密就在这。</strong></p>
+<blockquote>
+<p>📍 <strong>组合方式分三条完全不同的路</strong>：Bagging（并行，降方差）、Boosting（串行，降偏差）、
+Stacking（分层）。⭐ 而它们组合的每一棵树，都是<a href="04-决策树与集成学习.html">上一章</a>那个 CART。</p>
+</blockquote>
+<hr />
+<h2 id="_2">🌳 三、集成学习：三种组合方式</h2>
+<figure class="dia" data-fig="bagging_boosting"><svg viewBox="0 0 700 312" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bagging 与 Boosting 的结构差异"><defs><marker id="a5__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker><marker id="a5l__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--link)"/></marker><marker id="a5g__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--done)"/></marker></defs><text class="dia-t" x="60" y="74" font-size="13.5" text-anchor="start" fill="var(--link)" font-weight="700">Bagging</text><text class="dia-t" x="60" y="92" font-size="11" text-anchor="start" fill="var(--muted)" font-weight="normal">并行 · 各train各的</text><rect x="228" y="62" width="52" height="34" rx="6" fill="var(--link)" opacity="0.5" stroke="var(--link)" stroke-width="1.4"/><text class="dia-t" x="254.0" y="83.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树1</text><line x1="212" y1="79" x2="224" y2="79" stroke="var(--muted)" stroke-width="1.2" opacity=".5"/><rect x="296" y="62" width="52" height="34" rx="6" fill="var(--link)" opacity="0.5" stroke="var(--link)" stroke-width="1.4"/><text class="dia-t" x="322.0" y="83.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树2</text><line x1="212" y1="79" x2="292" y2="79" stroke="var(--muted)" stroke-width="1.2" opacity=".5"/><rect x="364" y="62" width="52" height="34" rx="6" fill="var(--link)" opacity="0.5" stroke="var(--link)" stroke-width="1.4"/><text class="dia-t" x="390.0" y="83.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树3</text><line x1="212" y1="79" x2="360" y2="79" stroke="var(--muted)" stroke-width="1.2" opacity=".5"/><rect x="432" y="62" width="52" height="34" rx="6" fill="var(--link)" opacity="0.5" stroke="var(--link)" stroke-width="1.4"/><text class="dia-t" x="458.0" y="83.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树4</text><line x1="212" y1="79" x2="428" y2="79" stroke="var(--muted)" stroke-width="1.2" opacity=".5"/><rect x="192" y="60" width="16" height="38" rx="4" fill="var(--muted)" opacity=".4"/><text class="dia-t" x="200" y="116" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">数据</text><text class="dia-t" x="516" y="82" font-size="12" text-anchor="start" fill="var(--link)" font-weight="600">→ 投票/平均</text><text class="dia-t" x="516" y="100" font-size="12" text-anchor="start" fill="var(--link)" font-weight="700">降【方差】</text><text class="dia-t" x="60" y="190" font-size="13.5" text-anchor="start" fill="var(--accent)" font-weight="700">Boosting</text><text class="dia-t" x="60" y="208" font-size="11" text-anchor="start" fill="var(--muted)" font-weight="normal">串行 · 补前一个的错</text><rect x="228" y="178" width="52" height="34" rx="6" fill="var(--accent)" opacity="0.32" stroke="var(--accent)" stroke-width="1.4"/><text class="dia-t" x="254.0" y="199.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树1</text><text class="dia-t" x="254" y="228" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="normal"></text><rect x="296" y="178" width="52" height="34" rx="6" fill="var(--accent)" opacity="0.48" stroke="var(--accent)" stroke-width="1.4"/><text class="dia-t" x="322.0" y="199.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树2</text><line x1="276" y1="195" x2="292" y2="195" stroke="var(--accent)" stroke-width="2" marker-end="url(#a5__f1)"/><text class="dia-t" x="322" y="228" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="normal">补错</text><rect x="364" y="178" width="52" height="34" rx="6" fill="var(--accent)" opacity="0.64" stroke="var(--accent)" stroke-width="1.4"/><text class="dia-t" x="390.0" y="199.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树3</text><line x1="344" y1="195" x2="360" y2="195" stroke="var(--accent)" stroke-width="2" marker-end="url(#a5__f1)"/><text class="dia-t" x="390" y="228" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="normal">再补</text><rect x="432" y="178" width="52" height="34" rx="6" fill="var(--accent)" opacity="0.8" stroke="var(--accent)" stroke-width="1.4"/><text class="dia-t" x="458.0" y="199.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树4</text><line x1="412" y1="195" x2="428" y2="195" stroke="var(--accent)" stroke-width="2" marker-end="url(#a5__f1)"/><text class="dia-t" x="458" y="228" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="normal">再补</text><text class="dia-t" x="516" y="198" font-size="12" text-anchor="start" fill="var(--accent)" font-weight="600">→ 加权求和</text><text class="dia-t" x="516" y="216" font-size="12" text-anchor="start" fill="var(--accent)" font-weight="700">降【偏差】</text><text class="dia-t" x="340" y="30" font-size="13.5" text-anchor="middle" fill="var(--fg)" font-weight="700">都是「很多棵树」，但组织方式和治的病完全不同</text><text class="dia-t" x="340" y="274" font-size="12" text-anchor="middle" fill="var(--accent)" font-weight="700">⭐ Bagging 的树可以并行训、深一点无所谓；Boosting 必须串行、每棵要浅（否则第一棵就过拟合了）</text><text class="dia-t" x="340" y="296" font-size="11.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">所以随机森林调「树多少棵」，GBDT 调「学习率 + 树深」</text></svg><figcaption>都是「很多棵树」，但组织方式和治的病完全不同：<b>Bagging 并行降方差，Boosting 串行降偏差</b>。⭐ 所以随机森林主要调「多少棵」，GBDT 主要调「学习率 + 树深」。</figcaption></figure>
+
+<p>单棵树不稳定又易过拟合。把很多棵组合起来——但怎么组合，分成三条完全不同的路线：</p>
+<div class="panels">
+<div class="panel">
+<div class="ph">① Bagging（并行，降方差）</div>
+<ul class="pl">
+<li><b>怎么组合</b>：同一份数据 → 有放回抽样 3 次 → 分别训出树1 / 树2 / 树3 → 投票 / 平均</li>
+<li><b>代表</b>：随机森林</li>
+</ul>
+<div class="pt">💡 每棵树都在略微不同的数据上训练，它们的错误互相抵消 → 更稳</div>
+</div>
+<div class="panel">
+<div class="ph">② Boosting（串行，降偏差）⭐ 最强</div>
+<ul class="pl">
+<li><b>怎么组合</b>：树1 → 找出树1错在哪 → 树2 专门补这些错 → 找出还错在哪 → 树3 再补 → …</li>
+<li><b>代表</b>：GBDT / XGBoost / LightGBM / CatBoost</li>
+</ul>
+<div class="pt">💡 每棵新树都在「纠正前面所有树的残余错误」</div>
+</div>
+<div class="panel">
+<div class="ph">③ Stacking（分层，学习怎么融合）</div>
+<ul class="pl">
+<li><b>怎么组合</b>：树 + 线性 + 神经网络 → 各自的预测 → 再训一个模型学「怎么组合它们」</li>
+</ul>
+<div class="pt">💡 Kaggle 冲榜常用，工程复杂</div>
+</div>
+</div>
+
+<blockquote>
+<p>🔗 <a href="../Kaggle竞赛方法论/03_模型融合与后处理.html">Kaggle 第 3 章模型融合</a> 讲的就是 ③ 的各种实战技巧。</p>
+</blockquote>
+<hr />
+<h2 id="bagging">🌲 四、随机森林：Bagging + 双重随机</h2>
+<figure class="dia"><svg viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="随机森林通过随机抽样和随机选特征让每棵树产生差异"><defs><marker id="forest-arrow__f2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 Z" fill="var(--accent)"/></marker></defs><text class="dia-t" x="380" y="28" text-anchor="middle" font-size="18" font-weight="700" fill="var(--fg)">随机森林的两次随机，目的都是：让树彼此不一样</text><rect x="48" y="54" width="292" height="76" rx="14" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><text class="dia-t" x="194" y="84" text-anchor="middle" font-size="17" font-weight="700" fill="var(--fg)">随机 1：Bootstrap 抽样</text><text class="dia-t" x="194" y="110" text-anchor="middle" font-size="14" fill="var(--muted)">每棵树看到的数据样本不同</text><rect x="420" y="54" width="292" height="76" rx="14" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><text class="dia-t" x="566" y="84" text-anchor="middle" font-size="17" font-weight="700" fill="var(--fg)">随机 2：候选特征抽样</text><text class="dia-t" x="566" y="110" text-anchor="middle" font-size="14" fill="var(--muted)">每次分裂只能看随机 k 个特征</text><path d="M194 130 V160 H145 V184" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#forest-arrow__f2)"/><path d="M194 160 V184" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#forest-arrow__f2)"/><path d="M566 130 V160 H615 V184" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#forest-arrow__f2)"/><path d="M566 160 V184" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#forest-arrow__f2)"/><g><rect x="60" y="194" width="170" height="76" rx="12" fill="var(--card)" stroke="var(--border)" stroke-width="2"/><text class="dia-t" x="145" y="223" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">树 A</text><text class="dia-t" x="145" y="250" text-anchor="middle" font-size="14" fill="var(--accent)">先看「面积」</text><rect x="295" y="194" width="170" height="76" rx="12" fill="var(--card)" stroke="var(--border)" stroke-width="2"/><text class="dia-t" x="380" y="223" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">树 B</text><text class="dia-t" x="380" y="250" text-anchor="middle" font-size="14" fill="var(--accent)">先看「楼龄」</text><rect x="530" y="194" width="170" height="76" rx="12" fill="var(--card)" stroke="var(--border)" stroke-width="2"/><text class="dia-t" x="615" y="223" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">树 C</text><text class="dia-t" x="615" y="250" text-anchor="middle" font-size="14" fill="var(--accent)">先看「位置」</text></g><path d="M145 270 V294 H380" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#forest-arrow__f2)"/><path d="M380 270 V294" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#forest-arrow__f2)"/><path d="M615 270 V294 H380 V310" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#forest-arrow__f2)"/><rect x="245" y="320" width="270" height="32" rx="10" fill="var(--accent-soft)"/><text class="dia-t" x="380" y="342" text-anchor="middle" font-size="15" font-weight="700" fill="var(--fg)">不同的树投票／平均，才会真的更稳</text></svg><figcaption>只做 Bootstrap 还不够：每棵树都可能先选到同一个最强特征。随机限制候选特征，才会强迫它们走出不同的判断路径。</figcaption></figure>
+<p>💡 <strong>核心直觉</strong>：<strong>集成的收益来自成员之间的「差异」</strong>。全都一样的树，平均一百次还是那棵树。</p>
+<p>优点：几乎不用调参、不易过拟合、能给特征重要性、可并行
+缺点：精度通常略输 Boosting、模型体积大</p>
+<hr />
+<h2 id="gbdtboosting">🚀 五、GBDT：Boosting 的核心思想</h2>
+<p><strong>这是本章最重要的部分</strong>——Kaggle 的主力算法。</p>
+<h3 id="_3">它在做什么</h3>
+<figure class="dia"><svg viewBox="0 0 760 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="梯度提升树不断学习前一棵树剩下的预测误差"><text class="dia-t" x="380" y="28" text-anchor="middle" font-size="18" font-weight="700" fill="var(--fg)">真实房价 = 100 万：每棵新树只补“还差多少”</text><text class="dia-t" x="112" y="102" text-anchor="end" font-size="16" font-weight="700" fill="var(--fg)">树 1</text><rect x="140" y="72" width="520" height="48" rx="10" fill="var(--quote-bg)" stroke="var(--border)" stroke-width="1.5"/><rect x="140" y="72" width="416" height="48" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/><text class="dia-t" x="348" y="103" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">预测 80 万</text><text class="dia-t" x="608" y="103" text-anchor="middle" font-size="15" font-weight="700" fill="var(--danger)">还差 20 万</text><text class="dia-t" x="112" y="182" text-anchor="end" font-size="16" font-weight="700" fill="var(--fg)">树 1 + 2</text><rect x="140" y="152" width="520" height="48" rx="10" fill="var(--quote-bg)" stroke="var(--border)" stroke-width="1.5"/><rect x="140" y="152" width="416" height="48" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/><rect x="556" y="152" width="78" height="48" fill="var(--card)" stroke="var(--accent)" stroke-width="1.5"/><text class="dia-t" x="348" y="183" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">80 万</text><text class="dia-t" x="595" y="183" text-anchor="middle" font-size="15" font-weight="700" fill="var(--fg)">+15 万</text><text class="dia-t" x="647" y="183" text-anchor="middle" font-size="13" font-weight="700" fill="var(--danger)">差 5</text><text class="dia-t" x="112" y="262" text-anchor="end" font-size="16" font-weight="700" fill="var(--fg)">树 1 + 2 + 3</text><rect x="140" y="232" width="520" height="48" rx="10" fill="var(--quote-bg)" stroke="var(--border)" stroke-width="1.5"/><rect x="140" y="232" width="416" height="48" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/><rect x="556" y="232" width="78" height="48" fill="var(--card)" stroke="var(--accent)" stroke-width="1.5"/><rect x="634" y="232" width="21" height="48" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/><text class="dia-t" x="348" y="263" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">80 万</text><text class="dia-t" x="595" y="263" text-anchor="middle" font-size="15" font-weight="700" fill="var(--fg)">+15 万</text><text class="dia-t" x="644" y="263" text-anchor="middle" font-size="12" font-weight="700" fill="var(--fg)">+4</text><text class="dia-t" x="400" y="316" text-anchor="middle" font-size="15" fill="var(--muted)">每多一棵树，剩余误差就更小；最后的总预测 = 80 + 15 + 4 + … ≈ 100 万</text></svg><figcaption>这就是 Boosting：后面的树不从零猜房价，而是专门学习前面所有树还没解释掉的残差。</figcaption></figure>
+<p>💡 <strong>人话</strong>：</p>
+<blockquote>
+<p><strong>每棵新树不预测答案本身，而是预测「前面所有树加起来还差多少」。</strong>
+像考试订正错题：第一遍做完，专门针对错的部分再学一遍，反复迭代。</p>
+</blockquote>
+<p>数学上：每棵新树拟合的是损失函数的负梯度（所以叫「梯度」提升）。
+用 MSE 损失时，负梯度恰好就是残差——上面那个直觉是严格成立的。</p>
+<h3 id="_4">三个关键超参（调参时主要动这三个）</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>作用</th>
+<th>经验值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>n_estimators</code> 树的数量</td>
+<td>越多拟合越强</td>
+<td>100–2000，配合早停</td>
+</tr>
+<tr>
+<td><code>learning_rate</code> 学习率 ⭐</td>
+<td>每棵树的贡献打几折</td>
+<td>0.01–0.1。<strong>小 lr + 多树 = 更好但更慢</strong></td>
+</tr>
+<tr>
+<td><code>max_depth</code> 树深</td>
+<td>单棵树复杂度</td>
+<td><strong>3–8</strong>（比随机森林浅得多！）</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>🔑 <strong>最重要的一条调参直觉</strong>：
+<strong><code>learning_rate</code> 和 <code>n_estimators</code> 是一对</strong>——学习率减半，树的数量大致要翻倍。
+先固定 lr=0.1 调其他参数，最后再降 lr、加树数换取最后那点精度。</p>
+</blockquote>
+<h3 id="gbdt">为什么 GBDT 的树要浅？</h3>
+<section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">随机森林：每棵树都想【独立解决问题】</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">要深（完全生长）</span></div><div class="vb-flow-row"><span class="vb-flow-step">GBDT： 每棵树只需【纠正一点点错误】</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">要浅（深度 3-8）</span></div><div class="vb-flow-row"><span class="vb-flow-step">GBDT 用浅树是故意的：单棵弱一点，才不会一步跨太大而过拟合</span></div></div></section>
+<h3 id="_5">🚪 这里有一句话故意没讲完</h3>
+<p>「每棵新树拟合负梯度」——⭐ <strong>负梯度只告诉你往哪个方向走，没告诉你该走多远。</strong> GBDT 用 <code>learning_rate</code> 把步子统一压小，是<strong>绕开</strong>这个问题而不是解决它。</p>
+<blockquote>
+<p>👉 <strong><a href="04b-XGBoost的推导.html">04b · XGBoost 的推导：从负梯度到闭式解</a></strong>
+<strong>该去的时候</strong>：要面试（「XGBoost 为什么用二阶泰勒展开」是必考）、要自定义损失函数、或者想知道 LightGBM 凭什么快、CatBoost 在防什么。
+<strong>可以先不去的时候</strong>：只想会调参把分刷上去 —— 直接跳 <a href="../Kaggle竞赛方法论/01_数据策略与特征工程.html">Kaggle 第 1 章</a>，那里有现成模板。
+⚠️ 但<strong>三巨头对比表在 04b</strong>，而且在那里它是<strong>推出来的</strong>不是背的。</p>
+</blockquote>
+<hr />
+<h2 id="_6">🔨 动手：亲眼看集成的威力</h2>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_breast_cancer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">RandomForestClassifier</span><span class="p">,</span>
+                              <span class="n">GradientBoostingClassifier</span><span class="p">,</span> <span class="n">BaggingClassifier</span><span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_breast_cancer</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">X_tr</span><span class="p">,</span> <span class="n">X_te</span><span class="p">,</span> <span class="n">y_tr</span><span class="p">,</span> <span class="n">y_te</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+                                          <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;模型&#39;</span><span class="si">:</span><span class="s2">&lt;22</span><span class="si">}{</span><span class="s1">&#39;训练集&#39;</span><span class="si">:</span><span class="s2">&gt;9</span><span class="si">}{</span><span class="s1">&#39;测试集&#39;</span><span class="si">:</span><span class="s2">&gt;9</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;单棵决策树&quot;</span><span class="p">,</span>        <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">&quot;Bagging(100棵)&quot;</span><span class="p">,</span>   <span class="n">BaggingClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">&quot;随机森林(100棵)&quot;</span><span class="p">,</span>   <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">&quot;GBDT(100棵,深度3)&quot;</span><span class="p">,</span> <span class="n">GradientBoostingClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                                                    <span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
+<span class="p">]:</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_tr</span><span class="p">,</span> <span class="n">y_tr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">&lt;22</span><span class="si">}{</span><span class="n">m</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_tr</span><span class="p">,</span><span class="n">y_tr</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;8.1%</span><span class="si">}{</span><span class="n">m</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_te</span><span class="p">,</span><span class="n">y_te</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;9.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">GBDT：学习率与树数量的配合&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;树数&#39;</span><span class="si">:</span><span class="s2">&lt;8</span><span class="si">}{</span><span class="s1">&#39;学习率&#39;</span><span class="si">:</span><span class="s2">&lt;10</span><span class="si">}{</span><span class="s1">&#39;测试集&#39;</span><span class="si">:</span><span class="s2">&gt;9</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">lr</span> <span class="ow">in</span> <span class="p">[(</span><span class="mi">10</span><span class="p">,</span><span class="mf">0.1</span><span class="p">),(</span><span class="mi">50</span><span class="p">,</span><span class="mf">0.1</span><span class="p">),(</span><span class="mi">200</span><span class="p">,</span><span class="mf">0.1</span><span class="p">),(</span><span class="mi">500</span><span class="p">,</span><span class="mf">0.1</span><span class="p">),(</span><span class="mi">500</span><span class="p">,</span><span class="mf">0.01</span><span class="p">)]:</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">GradientBoostingClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span>
+                                   <span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_tr</span><span class="p">,</span> <span class="n">y_tr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">n</span><span class="si">:</span><span class="s2">&lt;8</span><span class="si">}{</span><span class="n">lr</span><span class="si">:</span><span class="s2">&lt;10</span><span class="si">}{</span><span class="n">m</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_te</span><span class="p">,</span><span class="n">y_te</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;8.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">特征重要性 Top5：&quot;</span><span class="p">)</span>
+<span class="n">rf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_tr</span><span class="p">,</span> <span class="n">y_tr</span><span class="p">)</span>
+<span class="n">names</span> <span class="o">=</span> <span class="n">load_breast_cancer</span><span class="p">()</span><span class="o">.</span><span class="n">feature_names</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">rf</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;25</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">rf</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>实测结果：</p>
+<section class="result-board" aria-label="集成模型实验结果">
+<p class="result-board-title">① 多棵树，测试集更稳</p>
+<div class="tw"><table>
+<caption>同一份乳腺癌数据上的模型对比</caption>
+<thead><tr><th>模型</th><th>训练集</th><th>测试集</th><th>读法</th></tr></thead>
+<tbody>
+<tr><td>单棵决策树</td><td>100.0%</td><td>91.8%</td><td>第 1 章那棵树：把训练集背下来了</td></tr>
+<tr><td>Bagging（100 棵）</td><td>100.0%</td><td>94.2%</td><td>比单棵树高 2.4 个百分点</td></tr>
+<tr><td>随机森林（100 棵）</td><td>100.0%</td><td>94.2%</td><td>随机化让多棵树不再长得一模一样</td></tr>
+<tr><td>GBDT（100 棵、深度 3）</td><td>100.0%</td><td>94.2%</td><td>后面的树专门修正前面的残差</td></tr>
+</tbody>
+</table></div>
+<p class="result-board-title">② GBDT：学习率和树数要配套</p>
+<div class="tw"><table>
+<caption>学习率小，通常要用更多棵树补回来</caption>
+<thead><tr><th>树数</th><th>学习率</th><th>测试集</th><th>读法</th></tr></thead>
+<tbody>
+<tr><td>10</td><td>0.1</td><td>93.0%</td><td>树还不够，来不及修完错误</td></tr>
+<tr><td>200</td><td>0.1</td><td>94.7%</td><td>继续提升</td></tr>
+<tr><td>500</td><td>0.1</td><td>95.3%</td><td>更多树仍然有收益</td></tr>
+<tr><td>500</td><td>0.01</td><td>94.2%</td><td>步子太小，500 棵仍然不够</td></tr>
+</tbody>
+</table></div>
+<p class="result-board-title">③ 这次随机森林最看重的特征</p>
+<div class="tw"><table>
+<caption>特征重要性最高的 3 项</caption>
+<thead><tr><th>特征</th><th>重要性</th></tr></thead>
+<tbody>
+<tr><td>worst perimeter</td><td>0.140</td></tr>
+<tr><td>worst concave points</td><td>0.132</td></tr>
+<tr><td>worst radius</td><td>0.115</td></tr>
+</tbody>
+</table></div>
+</section>
+<blockquote>
+<p>💡 <strong>注意</strong>：所有集成模型训练集都是 100%，但测试集比单棵树高 2–3.5%。
+<strong>训练集 100% 不等于过拟合</strong>——关键看测试集有没有跟着掉。</p>
+</blockquote>
+<hr />
+<h2 id="_7">⚠️ 特征重要性的三个坑</h2>
+<p>树模型能给特征重要性，但<strong>别太当真</strong>：</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>坑</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>偏向高基数特征</strong></td>
+<td>取值越多的特征（如 ID）越容易被选中分裂，重要性虚高</td>
+</tr>
+<tr>
+<td><strong>相关特征分摊</strong></td>
+<td>两个高度相关的特征会平分重要性，看起来都不重要</td>
+</tr>
+<tr>
+<td><strong>只反映训练集</strong></td>
+<td>不代表因果，也不代表在新数据上有用</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>⭐ <strong>第一个坑的根就是第二节那件事</strong>：信息增益、增益率、基尼<strong>全都偏爱取值多的特征</strong>（用户 ID 的信息增益能到满分 1.000）。
+CART 靠「只能二叉」把病压住了，但取值多 = 候选切分点多 = 被选中的机会多，<strong>这个偏向从来没被真正消除</strong>。</p>
+</blockquote>
+<p>✅ <strong>更可靠的做法</strong>：<strong>Permutation Importance</strong>（打乱某列看性能掉多少）或 SHAP。</p>
+<hr />
+<hr />
+<h2 id="_8">🔗 和站内其他章的关系</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>相关的地方</th>
+<th>根因在这</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../Kaggle竞赛方法论/01_数据策略与特征工程.html">Kaggle 第 1、2 章</a>大量用 LightGBM</td>
+<td>就是本章的 GBDT</td>
+</tr>
+<tr>
+<td><a href="../Kaggle竞赛方法论/03_模型融合与后处理.html">Kaggle 第 3 章模型融合</a></td>
+<td>Stacking / Blending 的实战版</td>
+</tr>
+<tr>
+<td>推荐算法第 7 章「用 GBDT 看特征重要性」</td>
+<td>本章的特征重要性（连同它的坑）</td>
+</tr>
+<tr>
+<td>推荐算法第 18 章的蒸馏</td>
+<td>Boosting 的"用弱模型逼近强模型"思想有相通处</td>
+</tr>
+</tbody>
+</table></div>
+<p>看完这一章，接着往哪走：</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>去哪</th>
+<th>为什么要去那里</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>⭐ <a href="04b-XGBoost的推导.html">04b · XGBoost 的推导</a></td>
+<td><strong>这一章故意没讲完的那半句在那里</strong>：负梯度只给方向不给步长，XGBoost 怎么用二阶泰勒展开把「下一棵树该怎么长」变成有闭式解的目标函数；三巨头对比表也在那里，而且是<strong>推出来的</strong></td>
+</tr>
+<tr>
+<td><a href="04-决策树与集成学习.html">04 · 决策树：怎么切一刀</a></td>
+<td>⚠️ 「特征重要性偏向高基数特征」这个坑的<strong>根在那一章第二节</strong> —— 三代判据全都偏爱取值多的特征，CART 只是靠「只能二叉」压住</td>
+</tr>
+<tr>
+<td><a href="../机器学习的数学原理/08-偏差方差分解.html">数学原理 · 08 偏差方差分解</a></td>
+<td>本章说 Bagging 降方差、Boosting 降偏差，<strong>那两个词的严格定义和分解式在那里</strong></td>
+</tr>
+<tr>
+<td><a href="16-特征工程基础.html">第 16 章 · 特征工程基础</a></td>
+<td>那里的 <strong>OOF 目标编码</strong>是「怎么用类别特征而不泄漏」的手工做法——树模型碰上高基数类别特征时的标准解</td>
+</tr>
+<tr>
+<td><a href="05-评估与过拟合.html">第 5 章 · 评估与过拟合</a></td>
+<td>本章实测里「训练集 100% 但测试集只有 91.8%」到底算不算过拟合——判断标准在那一章</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_9">✅ 检查点</h2>
+<ol>
+<li>Bagging 和 Boosting 的根本区别？各降低什么？</li>
+<li>随机森林为什么要「随机选特征」？只做 Bootstrap 不够吗？</li>
+<li>GBDT 里每棵新树学的是什么？为什么树要比随机森林浅？</li>
+<li><code>learning_rate</code> 和 <code>n_estimators</code> 是什么关系？调参该先动哪个？</li>
+<li>实测里所有集成模型训练集都是 100%，这算过拟合吗？该看哪个数？</li>
+<li>特征重要性有哪三个坑？其中「偏向高基数特征」的根在哪一章？</li>
+</ol>
+<details>
+<summary>👀 答案</summary>
+<ol>
+<li>Bagging 并行、每棵树独立在抽样数据上训练后投票，<strong>降方差</strong>；Boosting 串行、每棵新树纠正前面所有树的错误，<strong>降偏差</strong>。</li>
+<li><strong>不够。</strong> 只做 Bootstrap 的话，每棵树都可能先选到同一个最强特征分裂、长得都一样。⭐ <strong>集成的收益全部来自成员之间的差异</strong> —— 全都一样的树，平均一百次还是那棵树。</li>
+<li>学的是前面所有树的<strong>残差</strong>（严格说是损失的负梯度）。浅是故意的：每棵树只需纠正一点点，深了就一步跨太大而过拟合，所以 3–8 层（比随机森林浅得多）。</li>
+<li><strong>是一对</strong>：学习率减半，树的数量大致要翻倍。⭐ 先固定 <code>lr=0.1</code> 调其他参数，最后再降 lr、加树数换取最后那点精度。</li>
+<li><strong>不算</strong>。训练集 100% 不等于过拟合，要看测试集有没有跟着掉——这里单棵树是 100.0% / 91.8%，三种集成都是 100.0% / 94.2%，测试集反而涨了 2.4 个点。</li>
+<li>偏向高基数特征、相关特征分摊重要性、只反映训练集不代表因果。用 Permutation Importance 或 SHAP 更可靠。⭐ <strong>第一个坑的根在 <a href="04-决策树与集成学习.html">04 章</a>第二节</strong>：三代判据全都偏爱取值多的特征，CART 只是靠「只能二叉」把它压住，没消除。</li>
+</ol>
+</details>
+<hr />
+<h2 id="_10">🛑 可以停在这里</h2>
+<p>到这里表格数据的主力你已经会用了：<strong>三条组合路线、随机森林的两次随机、GBDT 的三个旋钮</strong>，
+外加特征重要性那三个坑。⭐ <strong>只想把分刷上去的话，这些已经够了。</strong></p>
+<p>⚠️ <strong>什么时候看下一页</strong>：你想知道「每棵新树拟合负梯度」后面那半句 ——
+负梯度只给方向不给步长，而 XGBoost 怎么把它变成一个有闭式解的问题。</p>
+<p>⚡ <strong>走神救援</strong></p>
+<blockquote>
+<p>一棵树很弱（<strong>91.8%</strong>），几百棵按正确方式组合起来就是表格数据的王者。⭐⭐ <strong>集成的收益全部来自成员之间的「差异」—— 全都一样的树，平均一百次还是那棵树。</strong> 三条路线：<strong>Bagging 并行、降方差</strong>（同一份数据有放回抽样，各训一棵，投票／平均；代表是随机森林）；<strong>Boosting 串行、降偏差</strong>（树1 → 找出错在哪 → 树2 专门补 → 再补；代表是 GBDT / XGBoost / LightGBM / CatBoost）；<strong>Stacking 分层</strong>（各模型的预测再喂给一个模型学怎么融合，Kaggle 冲榜常用、工程复杂）。⭐ <strong>随机森林做两次随机</strong>：Bootstrap 抽样让每棵树看到的数据不同，<strong>候选特征抽样</strong>让每次分裂只能从随机 k 个特征里挑 —— ⚠️ <strong>只做前者不够</strong>，否则每棵树都先用最强特征分裂、长得都一样。它几乎不用调参、不易过拟合、能给特征重要性、可并行，代价是精度通常略输 Boosting、模型体积大。<strong>GBDT</strong> 的人话是：<strong>每棵新树不预测答案本身，而是预测「前面所有树加起来还差多少」</strong>，像考试订正错题；数学上拟合的是损失的负梯度，MSE 损失时负梯度恰好就是残差。三个旋钮：<code>n_estimators</code>（100–2000，配早停）、⭐ <code>learning_rate</code>（0.01–0.1）、<code>max_depth</code>（<strong>3–8，比随机森林浅得多</strong>）。⭐ <strong>lr 和树数是一对：学习率减半，树数大致翻倍</strong> —— 先固定 lr=0.1 调别的，最后再降 lr 加树换那点精度。<strong>树浅是故意的</strong>：每棵只需纠正一点点，深了就一步跨太大而过拟合。💡 实测里所有集成的训练集都是 100%，⚠️ <strong>但训练集 100% 不等于过拟合</strong> —— 单棵树 100.0% / <strong>91.8%</strong>，三种集成 100.0% / <strong>94.2%</strong>，测试集反而涨了 <strong>2.4 个点</strong>，关键看测试集有没有跟着掉。⚠️ <strong>特征重要性三个坑</strong>：偏向高基数特征（根在上一章第二节，三代判据全都偏爱取值多的特征）、相关特征分摊重要性、只反映训练集不代表因果 —— 用 Permutation Importance 或 SHAP 更可靠。</p>
+</blockquote>
+<p><strong>下一节</strong> 👉 <a href="04b-XGBoost的推导.html">04b-XGBoost的推导.md</a></p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="04-决策树与集成学习.html"><div class="dir">← 上一节</div>🌲 04 · 决策树：怎么切一刀</a><a class="next" href="04b-XGBoost的推导.html"><div class="dir">下一节 →</div>🧮 04b · XGBoost 的推导</a></nav>
+</main>
+<script>(function(){
+  var KEY="mlbase-progress", FILE="04a-\u96c6\u6210\u5b66\u4e60\u4e0eGBDT.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+</body></html>

@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -297,7 +314,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_2">⚔️ 一、严格支配：不用猜对手的那种好</h2>
 <p>回到囚徒困境（数字沿用<a href="09-正常形博弈.html">第 9 章</a>）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>甲 ＼ 乙</th>
@@ -317,7 +334,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>1, 1</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>甲的推理是：乙合作时 3 &gt; 2，乙叛变时 1 &gt; 0。<strong>两种情况都更好。</strong></p>
 <blockquote>
 <p>⭐ <strong>严格支配（strict dominance）</strong>：对玩家 $i$，动作 $a_i$ <strong>严格支配</strong> $a_i'$，当且仅当
@@ -335,7 +352,7 @@ $$u_i(a_i,\ a_{-i}) &gt; u_i(a_i',\ a_{-i}) \qquad \textbf{对每一个 } a_{-i}
 <p>⚠️ <strong>这一字之差后果很严重</strong>，第四节专门讲。</p>
 <h3 id="vs">支配策略 vs 支配的策略</h3>
 <p>两个中文很像的词，混了会出事：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>说法</th>
@@ -352,14 +369,14 @@ $$u_i(a_i,\ a_{-i}) &gt; u_i(a_i',\ a_{-i}) \qquad \textbf{对每一个 } a_{-i}
 <td>存在<strong>某个</strong>动作比它好 —— 绝不选它</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>囚徒困境里「叛变」是占优策略，「合作」是被严格支配的策略。
 ⭐ <strong>占优策略非常罕见</strong>，绝大多数博弈里没有；「被支配的策略」则常见得多，所以下面的迭代删除才有用。</p>
 <hr />
 <h2 id="_3">🎲 二、被混合策略支配：纯策略比不完</h2>
 <p>有一类陷阱：<strong>一个动作可能不被任何单个动作支配，却被「掷骰子」支配。</strong></p>
 <p>看行玩家的三个动作（列玩家收益省略，不影响判断）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>甲 ＼ 乙</th>
@@ -384,7 +401,7 @@ $$u_i(a_i,\ a_{-i}) &gt; u_i(a_i',\ a_{-i}) \qquad \textbf{对每一个 } a_{-i}
 <td>1</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>逐个比：U 不支配 D（乙出 R 时 0 &lt; 1）；M 也不支配 D（乙出 L 时 0 &lt; 1）。
 <strong>看起来 D 挺稳的。</strong> 但是：</p>
 <blockquote>
@@ -412,7 +429,7 @@ $$u_i(a_i,\ a_{-i}) &gt; u_i(a_i',\ a_{-i}) \qquad \textbf{对每一个 } a_{-i}
 <p><strong>为什么这样删是合法的</strong>：甲绝不用劣势策略，<strong>乙知道甲理性所以也知道甲不会用</strong>，
 于是乙可以当那一行不存在 —— 这一步叫「共同知识」。⚠️ 它是有前提的，见本节末尾。</p>
 <h3 id="33">🔨 手算：一个 3×3 走到底</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>甲 ＼ 乙</th>
@@ -441,11 +458,11 @@ $$u_i(a_i,\ a_{-i}) &gt; u_i(a_i',\ a_{-i}) \qquad \textbf{对每一个 } a_{-i}
 <td>8, −1</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>套路：行玩家看每格的第一个数、按列比较；列玩家看第二个数、按行比较。</strong></p>
 <p><strong>第 1 步（列玩家）</strong> 比 C 和 R：C 给 $(4,3,8)$，R 给 $(3,2,-1)$。逐项 $4&gt;3,\ 3&gt;2,\ 8&gt;-1$
 —— <strong>C 严格支配 R，划掉 R</strong>。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>甲 ＼ 乙</th>
@@ -470,11 +487,11 @@ $$u_i(a_i,\ a_{-i}) &gt; u_i(a_i',\ a_{-i}) \qquad \textbf{对每一个 } a_{-i}
 <td>2, 8</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>第 2 步（行玩家） 比 M 和 D：M 给 $(4,3)$，D 给 $(-1,2)$。$4&gt;-1,\ 3&gt;2$
 —— M 严格支配 D，划掉 D。
 ⚠️ 注意 <strong>R 还在的时候 M 并不支配 D</strong>（R 列 D 拿 8 &gt; M 的 6）。<strong>是第 1 步的删除让第 2 步成为可能</strong> —— 这就是「迭代」的意思。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>甲 ＼ 乙</th>
@@ -494,7 +511,7 @@ $$u_i(a_i,\ a_{-i}) &gt; u_i(a_i',\ a_{-i}) \qquad \textbf{对每一个 } a_{-i}
 <td>3, 3</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>第 3 步（列玩家）</strong> 比 L 和 C：L 给 $(3,1)$，C 给 $(4,3)$。$4&gt;3,\ 3&gt;1$ —— <strong>C 支配 L，划掉 L</strong>。</p>
 <p><strong>第 4 步（行玩家）</strong> 只剩 C 列：U 拿 1，M 拿 3 —— <strong>划掉 U</strong>。</p>
 <blockquote>
@@ -503,7 +520,7 @@ $$u_i(a_i,\ a_{-i}) &gt; u_i(a_i',\ a_{-i}) \qquad \textbf{对每一个 } a_{-i}
 那一格必定是<strong>唯一的</strong>纳什均衡（<a href="11-纳什均衡.html">第 11 章</a>第四节会用「NE 一定存在 + NE 只落在幸存集合里」两句话把它推出来）。</p>
 </blockquote>
 <h3 id="_5">⭐ 两条必须记住的性质</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>性质</th>
@@ -520,7 +537,7 @@ $$u_i(a_i,\ a_{-i}) &gt; u_i(a_i',\ a_{-i}) \qquad \textbf{对每一个 } a_{-i}
 <td>IESDS <strong>不会</strong>误删任何纳什均衡 —— 剩下的集合一定包含全部 NE</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>共同知识的前提别忽略</strong>：第 3、4 步依赖的是「甲知道乙知道甲是理性的」这种多层假设。
 删的层数越多，对理性的假设越强。<strong>现实中人只推 1–2 层是常态</strong> ——
 这也是「猜数字游戏（选平均数的 2/3）」里几乎没人真的选 0 的原因。</p>
@@ -528,7 +545,7 @@ $$u_i(a_i,\ a_{-i}) &gt; u_i(a_i',\ a_{-i}) \qquad \textbf{对每一个 } a_{-i}
 <h2 id="_6">⚠️ 四、弱支配：一字之差，两个坑</h2>
 <p>把「&gt;」换成「≥ 且至少一处严格」，上面两条性质<strong>全部失效</strong>。</p>
 <h3 id="_7">坑一：会删掉纳什均衡</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>甲 ＼ 乙</th>
@@ -548,7 +565,7 @@ $$u_i(a_i,\ a_{-i}) &gt; u_i(a_i',\ a_{-i}) \qquad \textbf{对每一个 } a_{-i}
 <td>0, 0</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>先确认这个博弈有两个纳什均衡：
 - (U, L) = (1,1)：甲改选 D 得 0（更差），乙改选 R 得 0（更差）✓
 - ⭐ <strong>(D, R) = (0,0)</strong>：甲改选 U 仍是 0（不变），乙改选 L 仍是 0（不变）—— <strong>没人能靠单边偏离变好，是 NE</strong> ✓</p>
@@ -558,7 +575,7 @@ $$u_i(a_i,\ a_{-i}) &gt; u_i(a_i',\ a_{-i}) \qquad \textbf{对每一个 } a_{-i}
 <p>💀 <strong>(D, R) 这个纳什均衡被删没了。</strong> 严格支配保证不会发生这种事，弱支配不保证。</p>
 </blockquote>
 <h3 id="_8">坑二：删除顺序会改变答案</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>甲 ＼ 乙</th>
@@ -583,7 +600,7 @@ $$u_i(a_i,\ a_{-i}) &gt; u_i(a_i',\ a_{-i}) \qquad \textbf{对每一个 } a_{-i}
 <td>1, 1</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>对甲：M 弱支配 U（$1\ge1,\ 1&gt;0$），M 也弱支配 D（$1&gt;0,\ 1\ge1$）。<strong>先删哪个？</strong></p>
 <p><strong>顺序 A：先删 U</strong> → 剩 M、D 两行。此时乙的 L 给 $(1,0)$、R 给 $(0,1)$，谁也不支配谁。
 再看甲：M 弱支配 D，删 D → 只剩 M 行，乙的 L(1) &gt; R(0)，删 R。
@@ -596,7 +613,7 @@ $$u_i(a_i,\ a_{-i}) &gt; u_i(a_i',\ a_{-i}) \qquad \textbf{对每一个 } a_{-i}
 这不是算错了 —— <strong>弱支配删除本身就没有唯一解</strong>。</p>
 </blockquote>
 <h3 id="_9">结论</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -621,10 +638,10 @@ $$u_i(a_i,\ a_{-i}) &gt; u_i(a_i',\ a_{-i}) \qquad \textbf{对每一个 } a_{-i}
 <td>⚠️ <strong>能删得更多，但必须说明删除顺序，且结论要另行验证</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_10">🚧 五、这套工具什么时候完全无效</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>甲 ＼ 乙</th>
@@ -644,7 +661,7 @@ $$u_i(a_i,\ a_{-i}) &gt; u_i(a_i',\ a_{-i}) \qquad \textbf{对每一个 } a_{-i}
 <td>1, 2</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>甲比较两行：乙选拳击时 $2 &gt; 0$（拳击好），乙选芭蕾时 $0 &lt; 1$（芭蕾好）。
 <strong>两个方向相反 —— 没有任何支配关系。</strong> 乙那边完全对称。</p>
 <blockquote>
@@ -657,7 +674,7 @@ $$u_i(a_i,\ a_{-i}) &gt; u_i(a_i',\ a_{-i}) \qquad \textbf{对每一个 } a_{-i}
 两者的关系是：<strong>支配问的是「不管你怎样我都该……」，均衡问的是「假设你这样，我该……，而且你也不想改」</strong>。</p>
 <hr />
 <h2 id="_11">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>去哪</th>
@@ -682,11 +699,11 @@ $$u_i(a_i,\ a_{-i}) &gt; u_i(a_i',\ a_{-i}) \qquad \textbf{对每一个 } a_{-i}
 <td>⭐ <strong>占优策略是机制设计里最想要的东西</strong>：如果「说真话」是占优策略，参与者就不用猜别人、也不用懂博弈论。那一章的<strong>策略防伪（SP）</strong>说的正是这件事</td>
 </tr>
 <tr>
-<td><a href="../推荐算法/15b-广告-从推荐到竞价.html">../推荐算法/15b-广告-从推荐到竞价.html</a></td>
+<td><a href="../推荐算法/15b-广告-从推荐到竞价.html">推荐算法 15b · 广告：从推荐到竞价</a></td>
 <td>一个真实例子：单个位置的二价拍卖里「报真实估值」是占优策略，<strong>所以出价不再震荡</strong>；而多位置的 GSP 就没有这个性质了</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_12">✅ 检查点</h2>
 <ol>

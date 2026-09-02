@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -376,7 +393,7 @@ buffer 没有专属类型 —— <code>nn.Parameter</code> 是个类，「buffer
 <p>⭐ <strong>这条报错是这一章最好的证据</strong>：三个注册表就是 <code>Module.__init__()</code> 建出来的空字典。
 没建表，海关无处安放东西，所以它当场报错 —— <strong>这是本章唯一一个「一定会报错」的坑，其余全是静默的。</strong></p>
 <h3 id="_3">一张表记住谁进哪</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>你写的</th>
@@ -423,7 +440,7 @@ buffer 没有专属类型 —— <code>nn.Parameter</code> 是个类，「buffer
 <td>❌</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>最后那个 <code>persistent=False</code> 实测确认过：</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
@@ -560,7 +577,7 @@ buffer 没有专属类型 —— <code>nn.Parameter</code> 是个类，「buffer
 <p>实测输出：</p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>优化器管着几个张量: 4 个</p><p>模型里其实有几个 : 10 个</p><p>stem 变了吗: True</p><p>blocks 变了吗: False</p><p>blocks[0] 有梯度吗: True</p><p>state_dict: [&#x27;stem.weight&#x27;, &#x27;stem.bias&#x27;, &#x27;head.weight&#x27;, &#x27;head.bias&#x27;]</p></div></section>
 <p>⭐⭐ <strong>把这四行连起来读，就是这个 bug 的完整画像</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>现象</th>
@@ -589,7 +606,7 @@ buffer 没有专属类型 —— <code>nn.Parameter</code> 是个类，「buffer
 <td><code>state_dict</code> 里只有 4 个 key —— <strong>模型的一多半从来没被存过</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>💀 <strong>代价</strong>：模型容量凭空少了一大截（这里 10 个张量只有 4 个在学），指标就是「差一点」；
 你会去调学习率、加正则、换优化器 —— <strong>而没有任何一条日志、报错或警告指向真正的原因</strong>。</p>
 <h3 id="_5">修法：五个容器，各修各的</h3>
@@ -618,7 +635,7 @@ buffer 没有专属类型 —— <code>nn.Parameter</code> 是个类，「buffer
 <p>实测输出：</p>
 <section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">参数名: [&#x27;b.0&#x27;, &#x27;d.head.weight&#x27;, &#x27;d.head.bias&#x27;, &#x27;e.0.weight&#x27;, &#x27;e.0.bias&#x27;]</span></div><div class="vb-flow-row"><span class="vb-flow-step">子模块（named_modules）:</span></div><div class="vb-flow-row"><span class="vb-flow-step">&#x27;&#x27; -&gt; Mixed</span></div><div class="vb-flow-row"><span class="vb-flow-step">&#x27;b&#x27; -&gt; ParameterList</span></div><div class="vb-flow-row"><span class="vb-flow-step">&#x27;d&#x27; -&gt; ModuleDict</span></div><div class="vb-flow-row"><span class="vb-flow-step">&#x27;d.head&#x27; -&gt; Linear</span></div><div class="vb-flow-row"><span class="vb-flow-step">&#x27;e&#x27; -&gt; Sequential</span></div><div class="vb-flow-row"><span class="vb-flow-step">&#x27;e.0&#x27; -&gt; Linear</span></div></div></section>
 <p>⚠️ <strong><code>a</code> 和 <code>c</code> 连名字都没出现</strong> —— 它们不在任何遍历结果里。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>你想装的东西</th>
@@ -647,7 +664,7 @@ buffer 没有专属类型 —— <code>nn.Parameter</code> 是个类，「buffer
 <td>⭐ <code>register_buffer</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong><code>nn.ModuleList</code> 不是 <code>nn.Sequential</code></strong>：前者<strong>没有 <code>forward</code></strong>，直接 <code>m.layers(x)</code> 会报错，你必须自己写 for 循环；后者会按顺序调用。想要 for 循环里做点别的（残差、条件分支）就用 <code>ModuleList</code>。</p>
 <hr />
 <h2 id="_6">🏷️ 三、名字是从根往下递归拼出来的</h2>
@@ -680,7 +697,7 @@ buffer 没有专属类型 —— <code>nn.Parameter</code> 是个类，「buffer
 <p>实测输出：</p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>named_parameters: [&#x27;enc.fc.weight&#x27;, &#x27;enc.fc.bias&#x27;, &#x27;dec.fc.weight&#x27;, &#x27;dec.fc.bias&#x27;]</p><p>named_buffers : [&#x27;enc.cnt&#x27;, &#x27;dec.cnt&#x27;]</p><p>children (只往下一层): [&#x27;enc&#x27;, &#x27;dec&#x27;]</p><p>modules (全展开) : [&#x27;&#x27;, &#x27;enc&#x27;, &#x27;enc.fc&#x27;, &#x27;dec&#x27;, &#x27;dec.fc&#x27;]</p></div></section>
 <p>⭐ <strong>遍历 API 就四对，区别只有两条轴</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -705,7 +722,7 @@ buffer 没有专属类型 —— <code>nn.Parameter</code> 是个类，「buffer
 <td><code>buffers()</code> / <code>named_buffers()</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong><code>named_modules()</code> 的第一条是模型自己</strong>，名字是空字符串 <code>''</code>。
 写「给每个子模块挂 hook」之类的循环时，<strong>别忘了这一条也在里面</strong>（否则你会给根模块也挂一份）。</p>
 <p>⭐ <strong><code>apply(fn)</code> 是同一套递归</strong>，最常见的用法是自定义初始化：</p>
@@ -957,7 +974,7 @@ RuntimeError: expected m1 and m2 to have the same dtype, but got: double != floa
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>m(x) = 0.0 ← hook 生效</p><p>m.forward(x) = 4.0 ⚠️ 数值不同，而且不报错</p></div></section>
 <p>💀 <strong>0.0 和 4.0。</strong> 同一个模型、同一个输入，两种调用方式给出两个答案，<strong>没有任何警告</strong>。</p>
 <p>谁在偷偷用 hook（也就是「你会跳过谁」）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>谁</th>
@@ -982,7 +999,7 @@ RuntimeError: expected m1 and m2 to have the same dtype, but got: double != floa
 <td>入口都是 <code>__call__</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⚠️ <strong>规则一句话：永远写 <code>model(x)</code>，不要写 <code>model.forward(x)</code>。</strong>
 唯一合理的例外，是你在自己的 <code>forward</code> 里显式调用父类实现（<code>super().forward(x)</code>）。</p>
 <hr />
@@ -1050,7 +1067,7 @@ RuntimeError: expected m1 and m2 to have the same dtype, but got: double != floa
 <p>⭐ <strong>和你心算的对不上，就去查注册表。</strong> 参数量少一大截、<code>state_dict</code> 条数少一半，这两个数字比 loss 曲线诚实得多。</p>
 <hr />
 <h2 id="_9">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>相关的地方</th>
@@ -1091,7 +1108,7 @@ RuntimeError: expected m1 and m2 to have the same dtype, but got: double != floa
 <td>手写 BatchNorm 时 <code>running_mean</code> 用 <code>register_buffer</code> 而不是 <code>Parameter</code>（那里的理由是「不参与梯度更新，但必须跟着 <code>state_dict</code> 存盘」）—— ⭐ 本章第一节那张表就是这句话的完整版，还多出一格 <code>persistent=False</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_10">✅ 检查点</h2>
 <ol>

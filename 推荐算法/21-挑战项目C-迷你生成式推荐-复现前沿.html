@@ -178,6 +178,13 @@ figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 aut
 figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -369,7 +376,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 
 <hr />
 <h2 id="_4">🕳️ 这个项目专属的坑</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>坑</th>
@@ -409,7 +416,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 <td>小数据上生成式往往打不过 SASRec（第 14 节说过它需要规模）。<strong>赢的应该是冷启动赛道</strong>——这才是这个项目要验证的命题</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>🔑 <strong>预期管理</strong>：这个项目的成功标准<strong>不是</strong>总体指标超过 SASRec（大概率超不过，论文里也要大数据才行）。
 成功标准是：① 三个组件都真的工作 ② 冷启动赛道显著胜出 ③ 随机 ID 消融证明语义在起作用。
@@ -446,7 +453,7 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 回到 <a href="17-面试与求职.html">17-面试与求职</a> 把它们包装成故事，或者回 <a href="index.html">README</a> 看看还有什么没打勾。</p>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../大模型全景导论/02-Transformer原理.html">全景导论 02</a></td><td>这个项目要手搓的 Decoder，那一章有注意力和位置编码的完整拆解</td></tr><tr><td><a href="../大模型全景导论/03-Tokenizer与上下文.html">全景导论 03</a></td><td>Semantic ID 就是推荐场景的 tokenizer；码本坍塌和词表设计是同一类问题</td></tr><tr><td><a href="../强化学习基础/13-DPO与免RL对齐.html">强化学习 13</a></td><td>想给生成结果加偏好对齐时，DPO 比 RLHF 更适合单机复现</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../大模型全景导论/02-Transformer原理.html">全景导论 02</a></td><td>这个项目要手搓的 Decoder，那一章有注意力和位置编码的完整拆解</td></tr><tr><td><a href="../大模型全景导论/03-Tokenizer与上下文.html">全景导论 03</a></td><td>Semantic ID 就是推荐场景的 tokenizer；码本坍塌和词表设计是同一类问题</td></tr><tr><td><a href="../强化学习基础/13-DPO与免RL对齐.html">强化学习 13</a></td><td>想给生成结果加偏好对齐时，DPO 比 RLHF 更适合单机复现</td></tr></tbody></table></div>
 <hr />
 <h2 id="ckpt">✅ 检查点</h2>
 <ol>

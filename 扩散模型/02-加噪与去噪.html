@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>02 · 加噪：一条不用学的公式 · 扩散模型</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">02 · 加噪与去噪</span>
+  <span class="prevnext"><a href="01-第一天-从噪声里捞出一张图.html">←</a>
+  <a href="02b-调度表与反向过程.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">🌫️ 一、前向过程：一条不用学的公式</a></li>
+<li><a href="#_3">⚡ 二、闭式采样：训练能并行的全部原因</a></li>
+<li><a href="#x_t">🌑 三、终点 x_T：和原图已经没关系了</a></li>
+<li><a href="#_5">🔗 这一章连到哪里</a></li>
+<li><a href="#_6">✅ 检查点</a></li>
+<li><a href="#_7">🛑 可以停在这里</a></li>
+</ul>
+</div>
+</details>
+<h1 id="02">02 · 加噪：一条不用学的公式</h1>
+<p>⏱ <strong>32 分钟</strong> ｜ ⭐ <strong>前向过程零个可训练参数，而它决定了训练能不能并行</strong></p>
+<hr />
+<h2 id="_1">🎯 一句话</h2>
+<p>扩散有两条方向相反的路，<strong>只有反向那条要学</strong>。
+这一页讲前向：<strong>加噪是一条写死的公式，零个可训练参数</strong> ——
+而它最要紧的性质是<strong>能一步跳到任意时刻</strong>，训练能并行全靠这一条。</p>
+<hr />
+<h2 id="_2">🌫️ 一、前向过程：一条不用学的公式</h2>
+<p>从原图 $x_0$ 出发，每一步往里掺一点高斯噪声：</p>
+<p>$$x_t = \sqrt{1-\beta_t}\; x_{t-1} + \sqrt{\beta_t}\; \varepsilon, \qquad \varepsilon \sim \mathcal{N}(0, I)$$</p>
+<p><strong>人话</strong>：把上一步的图<strong>按 $\sqrt{1-\beta_t}$ 缩小一丁点</strong>，再<strong>掺进 $\sqrt{\beta_t}$ 那么多的纯噪声</strong>。$\beta_t$ 是个很小的数（DDPM 原文从 0.0001 线性涨到 0.02），所以单看一步几乎什么都没变 —— 变化是 $T$ 步（典型 $T=1000$）累出来的。</p>
+<figure class="dia"><svg viewBox="0 0 760 206" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="从 x0 逐步加噪到 xT 的链，下方一条虚线弧表示闭式采样可以一步跳到任意 t"><text class="dia-t" x="380" y="22" font-size="14" text-anchor="middle" fill="var(--fg)" font-weight="700">前向：一条写死的链，零个可训练参数</text><rect x="40" y="52" width="80" height="52" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/><text class="dia-t" x="80" y="78" font-size="13" text-anchor="middle" fill="var(--accent)" font-weight="700">x₀</text><text class="dia-t" x="80" y="95" font-size="11.5" text-anchor="middle" fill="var(--muted)">原图</text><rect x="190" y="52" width="80" height="52" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="230" y="83" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">x₁</text><rect x="340" y="52" width="80" height="52" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="380" y="83" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">x₂</text><rect x="490" y="52" width="80" height="52" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="530" y="83" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">…</text><rect x="640" y="52" width="80" height="52" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/><text class="dia-t" x="680" y="78" font-size="13" text-anchor="middle" fill="var(--accent)" font-weight="700">x_T</text><text class="dia-t" x="680" y="95" font-size="11.5" text-anchor="middle" fill="var(--muted)">纯噪声</text><line x1="120" y1="78" x2="181" y2="78" stroke="var(--accent)" stroke-width="2"/><polygon points="190,78 181,73 181,83" fill="var(--accent)"/><line x1="270" y1="78" x2="331" y2="78" stroke="var(--accent)" stroke-width="2"/><polygon points="340,78 331,73 331,83" fill="var(--accent)"/><line x1="420" y1="78" x2="481" y2="78" stroke="var(--accent)" stroke-width="2"/><polygon points="490,78 481,73 481,83" fill="var(--accent)"/><line x1="570" y1="78" x2="631" y2="78" stroke="var(--accent)" stroke-width="2"/><polygon points="640,78 631,73 631,83" fill="var(--accent)"/><text class="dia-t" x="380" y="128" font-size="12" text-anchor="middle" fill="var(--muted)">每一步 +√β_t·ε，β 是一张表（DDPM 里 0.0001 → 0.02，T=1000）</text><path d="M80 118 C 80 176, 680 176, 680 118" fill="none" stroke="var(--done)" stroke-width="2.4" stroke-dasharray="7 5"/><polygon points="680,112 674,124 686,124" fill="var(--done)"/><text class="dia-t" x="380" y="170" font-size="13" text-anchor="middle" fill="var(--done)" font-weight="700">⭐ 闭式采样：一步跳到任意 t，而且是恒等不是近似</text><text class="dia-t" x="380" y="192" font-size="11.5" text-anchor="middle" fill="var(--muted)">实测 t=1000 时 0.29 ms，迭代法要 182.5 ms —— 训练能并行全靠它</text></svg><figcaption>上面那条实线是<b>定义</b>：一步步加噪，每步都要算。下面那条绿色虚线是<b>捷径</b>：直接跳到任意 t。⭐ 两条路终点完全一样 —— 所以训练时永远走下面那条。</figcaption></figure>
+
+<p>⭐ 三件事现在就说清楚：</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>事实</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>这里没有一个参数</strong></td>
+<td>$\beta_1 \dots \beta_T$ 是<strong>事先定好的一张表</strong>，从头到尾不参与训练，也不需要梯度</td>
+</tr>
+<tr>
+<td><strong>它是一条马尔可夫链</strong></td>
+<td>$x_t$ 只依赖 $x_{t-1}$，跟更早的怎么来的无关</td>
+</tr>
+<tr>
+<td><strong>那两个系数不是随手挑的</strong></td>
+<td>它们凑成一对，让<strong>方差在整条链上不变</strong> —— 见下一小节</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="1">🧪 为什么偏偏是 √(1−β) 和 √β</h3>
+<p>假设原图每个像素的方差是 1。代进公式：$\mathrm{Var}(x_t) = (1-\beta_t)\cdot 1 + \beta_t \cdot 1 = 1$。<strong>加完噪声，方差还是 1。</strong> 这就是所谓的 <strong>variance preserving（方差保持）</strong>：整条链上每一步的数值范围都差不多，网络不会在 $t=10$ 时看到 $\pm 1$ 的输入、在 $t=900$ 时看到 $\pm 30$ 的输入。</p>
+<p>跑一下就看得见：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># √(1-β_t) 这个系数不是随手挑的：它让方差在整条链上保持不变</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">abar</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cumprod</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-4</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">T</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">x0</span> <span class="ow">in</span> <span class="p">[(</span><span class="s2">&quot;方差=1 的数据&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">200000</span><span class="p">)),</span>
+                 <span class="p">(</span><span class="s2">&quot;方差≠1 的数据&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">200000</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)]:</span>
+    <span class="n">stds</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">750</span><span class="p">,</span> <span class="mi">1000</span><span class="p">]:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">abar</span><span class="p">[</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">xt</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span> <span class="o">*</span> <span class="n">x0</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+        <span class="n">stds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">xt</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">（std=</span><span class="si">{</span><span class="n">x0</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">）→ 各步的 std：</span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">stds</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>真实输出：</p>
+<div class="codehilite"><pre><span></span><code>方差=1 的数据（std=1.00）→ 各步的 std：1.000 0.998 0.999 1.000 0.999
+方差≠1 的数据（std=3.00）→ 各步的 std：3.003 2.283 1.277 1.016 1.001
+</code></pre></div>
+
+<p>⚠️ <strong>看第二行</strong>：数据方差不是 1 的时候，输入尺度会从 3.00 一路漂到 1.00 —— 同一个网络在不同 $t$ 上看到的量级差三倍。</p>
+<blockquote>
+<p>⭐ <strong>这就是「图像要先归一化到 −1 到 1」的真正理由。</strong>
+不是玄学预处理，是<strong>方差保持这条性质要求输入方差在 1 附近才成立</strong>。</p>
+</blockquote>
+<hr />
+<h2 id="_3">⚡ 二、闭式采样：训练能并行的全部原因</h2>
+<p>记 $\alpha_t = 1-\beta_t$，$\bar\alpha_t = \alpha_1 \alpha_2 \cdots \alpha_t$。那么<strong>任意时刻</strong>都可以一步到位：</p>
+<p>$$x_t = \sqrt{\bar\alpha_t}\; x_0 + \sqrt{1-\bar\alpha_t}\; \varepsilon, \qquad \varepsilon \sim \mathcal{N}(0, I)$$</p>
+<p><strong>人话</strong>：想知道第 $t$ 步长什么样，<strong>不用真的走 $t$ 步</strong> —— 把原图乘一个数、把一份噪声乘另一个数，加起来就完了。$\sqrt{\bar\alpha_t}$ 是「原图还剩多少」，$\sqrt{1-\bar\alpha_t}$ 是「噪声占了多少」，两者平方和恒等于 1。</p>
+<details>
+<summary>📐 <b>为什么能合并（想看再点）</b></summary>
+<p>把两步展开：</p>
+<p>$$x_2 = \sqrt{\alpha_2}\left(\sqrt{\alpha_1} x_0 + \sqrt{1-\alpha_1}\,\varepsilon_1\right) + \sqrt{1-\alpha_2}\,\varepsilon_2$$</p>
+<p>$$= \sqrt{\alpha_1\alpha_2}\, x_0 + \underbrace{\sqrt{\alpha_2(1-\alpha_1)}\,\varepsilon_1 + \sqrt{1-\alpha_2}\,\varepsilon_2}_{\text{两个独立高斯相加}}$$</p>
+<p>⭐ <strong>关键一步</strong>：两个独立的零均值高斯相加，结果<strong>还是高斯</strong>，而且<strong>方差直接相加</strong>：</p>
+<p>$$\alpha_2(1-\alpha_1) + (1-\alpha_2) = 1 - \alpha_1\alpha_2$$</p>
+<p>所以那一整坨等价于一个方差为 $1-\alpha_1\alpha_2$ 的高斯。归纳下去就得到 $\bar\alpha_t = \prod_{s\le t}\alpha_s$。</p>
+<p>⚠️ 合并成立<strong>只因为噪声与数据无关、而且每步都是线性的</strong>。反向那条路两个条件都不满足，所以合并不了（见第五节）。</p>
+</details>
+<h3 id="_4">🔬 亲手验证一下</h3>
+<p>两种算法应该给出同一个分布 —— 迭代法每步重采一次噪声、走 $t$ 次；闭式法只采一次噪声、算一次乘加：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 验证：一步步加 T 次噪 vs 闭式一步跳到 t —— 两种算法得到同一个分布</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">betas</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-4</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>     <span class="c1"># DDPM 原论文的 linear 调度</span>
+<span class="n">alphas</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">betas</span>
+<span class="n">abar</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cumprod</span><span class="p">(</span><span class="n">alphas</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>       <span class="c1"># ᾱ_t = α_1 α_2 … α_t</span>
+
+<span class="n">x0</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="mi">20000</span><span class="p">,),</span> <span class="mf">3.0</span><span class="p">)</span>            <span class="c1"># 2 万份「同一张图」，这里把图简化成一个数</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">iterative</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>                     <span class="c1"># 走法 A：老老实实迭代 t 次</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x0</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="n">eps</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>         <span class="c1"># ⭐ 每一步都要重新采一次噪声</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">alphas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">betas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span> <span class="o">*</span> <span class="n">eps</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">closed_form</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>                   <span class="c1"># 走法 B：闭式，一步到位</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>            <span class="c1"># ⭐ 只采【一次】噪声</span>
+    <span class="k">return</span> <span class="n">abar</span><span class="p">[</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span> <span class="o">*</span> <span class="n">x0</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">abar</span><span class="p">[</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span> <span class="o">*</span> <span class="n">eps</span>
+
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">]:</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">();</span> <span class="n">a</span> <span class="o">=</span> <span class="n">iterative</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">t</span><span class="p">);</span>   <span class="n">ta</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">s</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">();</span> <span class="n">b</span> <span class="o">=</span> <span class="n">closed_form</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">t</span><span class="p">);</span> <span class="n">tb</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">s</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;t=</span><span class="si">{</span><span class="n">t</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> | 迭代 mean=</span><span class="si">{</span><span class="n">a</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">+.4f</span><span class="si">}</span><span class="s2"> std=</span><span class="si">{</span><span class="n">a</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">ta</span><span class="o">*</span><span class="mi">1000</span><span class="si">:</span><span class="s2">6.1f</span><span class="si">}</span><span class="s2"> ms)&quot;</span>
+          <span class="sa">f</span><span class="s2">&quot; | 闭式 mean=</span><span class="si">{</span><span class="n">b</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">+.4f</span><span class="si">}</span><span class="s2"> std=</span><span class="si">{</span><span class="n">b</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">tb</span><span class="o">*</span><span class="mi">1000</span><span class="si">:</span><span class="s2">5.2f</span><span class="si">}</span><span class="s2"> ms)&quot;</span>
+          <span class="sa">f</span><span class="s2">&quot; | 理论 mean=</span><span class="si">{</span><span class="p">(</span><span class="n">abar</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span><span class="o">*</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">+.4f</span><span class="si">}</span><span class="s2"> std=</span><span class="si">{</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">abar</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>真实输出：</p>
+<div class="codehilite"><pre><span></span><code>t=  10 | 迭代 mean=+2.9967 std=0.0435 (   3.1 ms) | 闭式 mean=+2.9971 std=0.0438 ( 0.22 ms) | 理论 mean=+2.9972 std=0.0435
+t= 100 | 迭代 mean=+2.8393 std=0.3217 (  15.4 ms) | 闭式 mean=+2.8381 std=0.3187 ( 0.29 ms) | 理论 mean=+2.8413 std=0.3209
+t= 500 | 迭代 mean=+0.8287 std=0.9592 (  90.2 ms) | 闭式 mean=+0.8384 std=0.9678 ( 0.18 ms) | 理论 mean=+0.8410 std=0.9599
+t=1000 | 迭代 mean=+0.0265 std=1.0017 ( 182.5 ms) | 闭式 mean=+0.0140 std=0.9954 ( 0.29 ms) | 理论 mean=+0.0191 std=1.0000
+</code></pre></div>
+
+<p>三列的均值和标准差逐行对得上，<strong>闭式解不是近似，是恒等</strong>。⚠️ 毫秒数每次跑都不一样，要看的是数量级：闭式那一列<strong>不随 $t$ 增长</strong>，迭代那一列线性涨。</p>
+<blockquote>
+<p>⭐⭐ <strong>这一条是训练能并行的全部原因。</strong>
+训练时 $t$ 是<strong>随机抽</strong>的：一个 batch 里 512 张图，每张各抽各的 $t$，全部一次乘加算完。
+要是没有闭式解，你得为 batch 里每一张图各跑一遍长达几百步的循环 —— <strong>训练成本会直接乘上几百倍</strong>。</p>
+</blockquote>
+<hr />
+<h2 id="x_t">🌑 三、终点 x_T：和原图已经没关系了</h2>
+<p>一直加下去，最后剩什么？直接量 $x_0$ 和 $x_t$ 的相关系数：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># x_T 还剩多少「原图的影子」：直接量 x_0 和 x_t 的相关系数</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">abar</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cumprod</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-4</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">T</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">x0</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">200000</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>            <span class="c1"># 20 万个像素值，归一化到 [-1, 1]</span>
+
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">900</span><span class="p">,</span> <span class="mi">1000</span><span class="p">]:</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">abar</span><span class="p">[</span><span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">xt</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span> <span class="o">*</span> <span class="n">x0</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span>
+    <span class="n">corr</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x0</span><span class="p">,</span> <span class="n">xt</span><span class="p">]))[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;t=</span><span class="si">{</span><span class="n">t</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2">  sqrt(abar_t)=</span><span class="si">{</span><span class="n">a</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">   corr(x0, x_t) = </span><span class="si">{</span><span class="n">corr</span><span class="si">:</span><span class="s2">+.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>真实输出：</p>
+<div class="codehilite"><pre><span></span><code>t=   1  sqrt(abar_t)=0.9999   corr(x0, x_t) = +0.9998
+t= 100  sqrt(abar_t)=0.9471   corr(x0, x_t) = +0.8611
+t= 300  sqrt(abar_t)=0.6296   corr(x0, x_t) = +0.4215
+t= 500  sqrt(abar_t)=0.2803   corr(x0, x_t) = +0.1696
+t= 700  sqrt(abar_t)=0.0835   corr(x0, x_t) = +0.0462
+t= 900  sqrt(abar_t)=0.0166   corr(x0, x_t) = +0.0126
+t=1000  sqrt(abar_t)=0.0064   corr(x0, x_t) = +0.0031
+</code></pre></div>
+
+<p>到 $t=1000$，相关系数只剩 <strong>0.0031</strong> —— $x_T$ 已经<strong>和原图基本无关</strong>，就是一团标准高斯噪声。</p>
+<blockquote>
+<p>⭐ <strong>这才是生成能启动的原因。</strong>
+如果 $x_T$ 还带着原图的影子，你就没法「凭空开始」—— 得先有一张图才能生成。
+正因为终点和输入无关，采样时才可以直接 <code>torch.randn(...)</code> 起手。</p>
+</blockquote>
+<p>⚠️ <strong>但「几乎无关」不是「完全无关」。</strong> 看最后一行：$\sqrt{\bar\alpha_T} = 0.0064$，<strong>不是 0</strong>。也就是说训练时模型在最后一步见到的输入里，还残留着原图约 0.6% 的信息 —— 其中最显眼的是<strong>整幅画面的平均亮度</strong>。而采样时你喂进去的是纯噪声，那 0.6% 是空的。这个「训练时有、推理时没有」的口径不一致叫 <strong>signal leak</strong>，症状是模型很难生成<strong>整体极亮或极暗</strong>的画面（结果的平均亮度总往中灰靠）。修法是把调度改成终点严格 $\bar\alpha_T = 0$，即 <strong>zero terminal SNR</strong>。</p>
+<hr />
+<h2 id="_5">🔗 这一章连到哪里</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>去哪</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="03-训练目标为什么是预测噪声.html">03 · 训练目标为什么是预测噪声</a></td>
+<td>闭式采样是训练循环的第 4 步 —— 那一页讲拿它拼出 $x_t$ 之后要让网络做什么</td>
+</tr>
+<tr>
+<td><a href="02b-调度表与反向过程.html">02b · 调度表与反向过程</a></td>
+<td>β 这张表具体该长什么样，以及反向那一半为什么不能照抄前向</td>
+</tr>
+<tr>
+<td><a href="../机器学习的数学原理/01b-KL散度.html">机器学习的数学原理 01b · KL 散度</a></td>
+<td>「两个独立高斯相加、方差直接相加」这类性质，是后面变分下界推导的地基</td>
+</tr>
+<tr>
+<td><a href="../NumPy与向量化思维/03-广播的三条规则.html">NumPy 与向量化思维 03 · 广播的三条规则</a></td>
+<td>闭式采样要对一整个 batch 同时算不同的 $t$，靠的就是广播</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_6">✅ 检查点</h2>
+<ol>
+<li>前向过程里有多少个可训练参数？$\beta_t$ 是学出来的吗？</li>
+<li>为什么系数写成 $\sqrt{1-\beta_t}$ 和 $\sqrt{\beta_t}$ 而不是别的？这条性质反过来对输入数据提了什么要求？</li>
+<li>闭式采样式 $x_t = \sqrt{\bar\alpha_t}x_0 + \sqrt{1-\bar\alpha_t}\varepsilon$ 是精确的还是近似的？它成立靠的是哪个数学事实？</li>
+<li>如果没有闭式采样，训练要多付出什么代价？</li>
+<li>$t=1000$ 时 $x_0$ 和 $x_t$ 的相关系数是多少？这个数字为什么决定了「生成能不能凭空启动」？</li>
+</ol>
+<details>
+<summary>👀 答案</summary>
+<ol>
+<li><strong>零个。</strong> $\beta_t$ 是一张<strong>事先定好的表</strong>（DDPM 里从 0.0001 线性涨到 0.02），不参与训练、不需要梯度。整个前向过程是写死的公式。</li>
+<li>因为 $(1-\beta_t) + \beta_t = 1$，所以<strong>方差保持不变</strong>（variance preserving）：输入方差是 1，加噪后还是 1。代码里量到方差为 1 的数据各步 std 是 <code>1.000 0.998 0.999 1.000 0.999</code>。<strong>要求</strong>：输入数据方差必须在 1 附近 —— 这就是图像要归一化到 −1 至 1 的理由；方差为 3 的数据 std 会从 3.00 一路漂到 1.00。</li>
+<li><strong>精确的，是恒等不是近似。</strong> 靠的是「两个独立零均值高斯相加仍是高斯、且方差直接相加」：$\alpha_2(1-\alpha_1) + (1-\alpha_2) = 1-\alpha_1\alpha_2$。</li>
+<li>一个 batch 里每张图抽的 $t$ 都不同，没有闭式解就得<strong>为每张图各跑一遍几百步的循环</strong>，训练成本乘上几百倍。代码里 $t=1000$ 时迭代法 182.5 ms、闭式法 0.29 ms，而且闭式那一列<strong>不随 $t$ 增长</strong>。</li>
+<li><strong>+0.0031</strong>（此时 $\sqrt{\bar\alpha_T} = 0.0064$）。因为终点几乎和输入无关，采样时才能直接从 <code>torch.randn(...)</code> 起手 —— 否则你得先有一张图才能生成。</li>
+</ol>
+</details>
+<hr />
+<h2 id="_7">🛑 可以停在这里</h2>
+<p>读到这里，扩散的<strong>前向那一半你已经完整了</strong>：它是一条写死的公式，而闭式采样让训练能并行。</p>
+<p>⚠️ <strong>什么时候看下一页</strong>：你想知道 β 那张表具体该怎么定，或者好奇「既然前向能一步跳，反向为什么不能」。</p>
+<p>⚡ <strong>走神救援</strong></p>
+<blockquote>
+<p>扩散有两条方向相反的路，<strong>只有反向那条要学</strong>。<strong>前向</strong>：$x_t = \sqrt{1-\beta_t}\,x_{t-1} + \sqrt{\beta_t}\,\varepsilon$，$\beta_t$ 是一张写死的表（DDPM 里 0.0001 → 0.02，$T=1000$），<strong>零个可训练参数</strong>。两个系数凑成一对是为了<strong>方差保持</strong>：$(1-\beta)+\beta=1$，所以输入方差是 1 时每一步都还是 1（实测各步 std 为 1.000 0.998 0.999 1.000 0.999）—— ⭐ <strong>这就是图像必须归一化的真正理由</strong>，方差 3 的数据会从 3.00 漂到 1.00。⭐⭐ 最重要的一条是<strong>闭式采样</strong>：记 $\bar\alpha_t = \prod \alpha_s$，则 $x_t = \sqrt{\bar\alpha_t}x_0 + \sqrt{1-\bar\alpha_t}\varepsilon$，<strong>一步跳到任意 $t$，而且是恒等不是近似</strong>（靠「独立高斯相加、方差相加」）。实测 $t=1000$ 时迭代法 182.5 ms、闭式 0.29 ms，且闭式不随 $t$ 增长 —— <strong>训练能并行全靠它</strong>，否则 batch 里每张图都要各跑几百步。终点 $x_T$ 和原图的相关系数只剩 <strong>0.0031</strong>，所以采样能从纯噪声凭空起手。</p>
+</blockquote>
+<p><strong>下一节</strong> 👉 <a href="02b-调度表与反向过程.html">02b-调度表与反向过程.md</a></p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="01-第一天-从噪声里捞出一张图.html"><div class="dir">← 上一节</div>🎨 01 · 第一天：从噪声里捞出一张图</a><a class="next" href="02b-调度表与反向过程.html"><div class="dir">下一节 →</div>📉 02b · 调度表与反向过程</a></nav>
+</main>
+<script>(function(){
+  var KEY="diff-progress", FILE="02-\u52a0\u566a\u4e0e\u53bb\u566a.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+</body></html>

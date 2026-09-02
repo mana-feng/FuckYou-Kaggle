@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -267,9 +284,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
-  <span class="title">11 · 评测体系</span>
-  <span class="prevnext"><a href="10-多模态.html">←</a>
-  <a href="12-对齐与AI安全.html">→</a></span>
+  <span class="title">11 · 评测体系：榜单</span>
+  <span class="prevnext"><a href="10c-语音与视频.html">←</a>
+  <a href="11b-私有评测集怎么建.html">→</a></span>
   <button class="js-done-btn">☐ 打卡</button>
   <button id="themeToggle" title="切换深浅色">🌗</button>
 </div></header>
@@ -280,23 +297,22 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><a href="#_2">🕳️ 五个必须知道的陷阱</a></li>
 <li><a href="#3_1">🧮 一个能自己算的例子：为什么 3 分不算差距</a></li>
 <li><a href="#_3">🔗 这一章连到哪里</a></li>
-<li><a href="#_4">✅ 那该怎么正确判断一个模型</a></li>
-<li><a href="#_6">🧪 这一章有一半站内已经讲透</a></li>
-<li><a href="#_7">📦 深挖的话要学什么</a></li>
-<li><a href="#_8">⚖️ 要不要深挖</a></li>
-<li><a href="#_9">✅ 检查点</a></li>
-<li><a href="#_10">🛑 可以停在这里</a></li>
+<li><a href="#_4">📦 深挖的话要学什么（榜单这一侧）</a></li>
+<li><a href="#_5">✅ 检查点</a></li>
+<li><a href="#_6">🛑 可以停在这里</a></li>
 </ul>
 </div>
 </details>
 <h1 id="11-benchmark">11 · 评测体系：Benchmark 的真相</h1>
-<p>⏱ <strong>32 分钟</strong> ｜ ⭐ <strong>一半的内容站内已经讲透，这一章补另一半</strong></p>
+<p>⏱ <strong>26 分钟</strong> ｜ ⭐ <strong>看懂别人的分数：四类榜、五个陷阱、一个你能自己算的置信区间</strong></p>
 <hr />
 <h2 id="_1">🎯 一句话</h2>
-<p>榜单分数<strong>远不如你想象的可信</strong>。这一章讲的是：<strong>通用 benchmark 怎么回事、为什么会骗人、以及你该怎么判断一个模型好不好。</strong></p>
+<p><strong>榜单分数远不如你想象的可信。</strong>
+这一页讲通用 benchmark 分成哪四类、它们会在哪五个地方骗人，以及为什么「A 比 B 高 3 分」这句话在统计上常常什么都没说。</p>
+<p>⭐ 反过来的那一半——<strong>那该拿什么做决定、怎么给自己建一把尺子</strong>——在下一页 <a href="11b-私有评测集怎么建.html">11b · 私有评测集怎么建</a>。</p>
 <hr />
 <h2 id="benchmark">🗺️ Benchmark 的四种类型</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>类型</th>
@@ -331,7 +347,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>只反映局部</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⚠️ <strong>这张表缺了整整一类：Agent 基准。</strong> 上面四类测的都是「模型答得对不对」，
 而现在真正影响选型的问题往往是「<strong>它能不能在一个有工具、有状态、会多轮的环境里把事办完</strong>」——这两件事分数不相关。
@@ -343,12 +359,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 τ-bench 的 <strong><code>pass^k</code></strong>（k 次全对才算过，面向客户的 Agent 必须看它）、
 WebArena / OSWorld 的<strong>状态校验</strong>（不看 Agent 说了什么，只看<strong>世界被改成了什么样</strong>——「评产出不评路径」最干净的实现）、
 GAIA 的<strong>唯一短答案</strong>（把开放问题改造成能精确匹配的形式，代码评分器就能接管）。
-这三招你都能直接搬进本章后面要建的那个私有评测集。</p>
+这三招你都能直接搬进下一页要建的那个私有评测集。</p>
 </blockquote>
 <hr />
 <h2 id="_2">🕳️ 五个必须知道的陷阱</h2>
 <h3 id="1">① 数据污染（最严重）</h3>
-<section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">评测题目</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">出现在互联网上</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">被爬进训练数据</span></div><div class="vb-flow-row"><span class="vb-flow-step">模型&quot;背过&quot;答案</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">分数虚高</span></div><div class="vb-flow-row"><span class="vb-flow-step">这就是为什么 新发布的、私有的评测集 才有说服力</span></div><div class="vb-flow-row"><span class="vb-flow-step">也是为什么各家要专门做&quot;去污染&quot;工序（第 4 章）</span></div></div></section>
+<section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">评测题目</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">出现在互联网上</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">被爬进训练数据</span></div><div class="vb-flow-row"><span class="vb-flow-step">模型&quot;背过&quot;答案</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">分数虚高</span></div><div class="vb-flow-row"><span class="vb-flow-step">这就是为什么 新发布的、私有的评测集 才有说服力</span></div><div class="vb-flow-row"><span class="vb-flow-step">也是为什么各家要专门做&quot;去污染&quot;工序（主线第 4 章）</span></div></div></section>
 <h3 id="2">② 饱和</h3>
 <section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">MMLU 从 30% 涨到 90%+ 之后，就失去区分度了</span></div><div class="vb-flow-row"><span class="vb-flow-step">剩下的题要么太难要么标注有误</span></div><div class="vb-flow-row"><span class="vb-flow-step">差 1 分毫无意义</span></div></div></section>
 <blockquote>
@@ -374,12 +390,12 @@ GAIA 的<strong>唯一短答案</strong>（把开放问题改造成能精确匹�
 <p>💡 <strong>推论</strong>：<strong>100 题的评测集，只能分辨 8 个百分点以上的差距。</strong>
 想分辨 3 个点，你需要约 700 题——</p>
 <blockquote>
-<p>🔗 这和<a href="../推荐算法/index.html">推荐算法第 12 章</a>算 A/B 实验样本量是同一套数学。</p>
+<p>🔗 这和<a href="../推荐算法/12-评估与AB实验.html">推荐算法 12 · 评估与 AB 实验</a>算 A/B 实验样本量是同一套数学。</p>
 </blockquote>
 <hr />
 <!--EVALHUB-->
 <h2 id="_3">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>去哪</th>
@@ -388,190 +404,77 @@ GAIA 的<strong>唯一短答案</strong>（把开放问题改造成能精确匹�
 </thead>
 <tbody>
 <tr>
-<td><a href="../数据这一关/13-评测集也是数据.html">数据这一关 13 · 评测集也是数据</a></td>
-<td>这四处讲的是各自场景怎么评测；<strong>评测集本身怎么造、多大够、有没有被污染、评分器准不准、结果该怎么报</strong> 在那一章 ⭐</td>
+<td><a href="11b-私有评测集怎么建.html">11b · 私有评测集怎么建</a> ⭐</td>
+<td>本页说「别人的分数不能全信」，下一页说<strong>那该拿什么做决定</strong>：一个下午就能建好的私有评测集，以及建的时候最容易犯的三个错</td>
 </tr>
 <tr>
 <td><a href="../智能体工程教程/14-评测Evals.html">智能体工程 14 · 评测 Evals</a> ⭐</td>
-<td>本章测的是「模型答得对不对」，那一章测的是「<strong>Agent 能不能把事办完</strong>」——完全不同的一类基准（τ-bench / GAIA / WebArena / OSWorld），以及三类评分器、<code>pass@k</code> vs <code>pass^k</code>、评委校准的完整方法论。<strong>本章第 ②④ 个陷阱（饱和、6 个点的基础设施噪声）的原始出处就在那里</strong>（⚠️ 第 ③ 个陷阱「刷榜过拟合」那一章没讲，它讲的是反过来的一面：基准被模型追上了就该换题）</td>
+<td>本页测的是「模型答得对不对」，那一章测的是「<strong>Agent 能不能把事办完</strong>」——完全不同的一类基准（τ-bench / GAIA / WebArena / OSWorld）。<strong>本页陷阱 ②（饱和）和 ④（6 个点的基础设施噪声）的原始出处就在那里</strong>（⚠️ 陷阱 ③「刷榜过拟合」那一章没讲，它讲的是反过来的一面：基准被模型追上了就该换题）</td>
+</tr>
+<tr>
+<td><a href="../数据这一关/13-评测集也是数据.html">数据这一关 13 · 评测集也是数据</a></td>
+<td>把陷阱 ① 变成可执行的体检：四种查污染的办法，以及 ⭐ <strong>查污染不能看总分要看分组差</strong>——2% 污染率下总分只虚高 0.6pp（肉眼看不见），但「见过组 vs 没见过组」的差已经稳定在 27 个百分点</td>
+</tr>
+<tr>
+<td><a href="../模型上线之后/12-AB实验你以为你懂了.html">模型上线之后 12 · AB实验你以为你懂了</a></td>
+<td>「100 题只能分辨 8 个点」本质是样本量问题；那一章给了样本量、<strong>偷看（peeking）</strong>、多重比较这三个最常见的翻车点</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
-<h2 id="_4">✅ 那该怎么正确判断一个模型</h2>
-<section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>❌ 错误做法：看榜单排名，选第一名</li><li>✅ 正确做法：</li><li>用 benchmark 做**粗筛**（排除明显不行的）</li><li>拿你自己的 20–50 个真实任务做**私有评测** ⭐ 这才是决定性的</li><li>关注和你场景匹配的专项（做代码就看代码，做中文就看中文）</li><li>实测成本和延迟（分数不代表能用）</li><li>小流量 A/B（如果已有系统）</li></ol></section>
-<blockquote>
-<p>🔑 <strong>一句话</strong>：<strong>别人的榜单回答"谁通用能力强"，你的私有评测回答"谁适合我"。后者才是你要的。</strong></p>
-</blockquote>
-<h3 id="_5">🔨 私有评测集：一个下午就能建好</h3>
-<section class="visual-block visual-block-flow" aria-label="流程图"><p class="visual-block-title">流程图</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 翻线上日志 / 用户反馈，捞出【真实失败的 20-50 个案例】⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">不要自己编题——编的题总是太规整，测不出真实问题</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 每条记下：输入、期望的输出特征、为什么当时错了</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 分维度打标签（按你的业务分：意图理解 / 格式 / 事实准确 / 语气…）</span></div><div class="vb-flow-row"><span class="vb-flow-step">④ 定评分方式：</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 能写代码判的</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">代码评分器（最可靠，优先）</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 判不了但有标准</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">LLM-as-Judge（要校准）</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 主观的</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">人工抽样</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 20-50 条就够开始了。别等&quot;建完整套&quot;才开始用</span></div></div></section>
-<p>⚠️ <strong>三个建评测集时的常见错误</strong>：</p>
-<table>
-<thead>
-<tr>
-<th>错误</th>
-<th>后果</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>只放难题</strong></td>
-<td>分数全是 20% 上下，<strong>没有区分度</strong></td>
-</tr>
-<tr>
-<td><strong>只放当前模型答错的</strong></td>
-<td>换个模型后这套题失去代表性</td>
-</tr>
-<tr>
-<td><strong>不分维度只看总分</strong></td>
-<td>总分持平，但其实"格式变好了、事实变差了"——<strong>你看不见</strong> ⭐</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="_6">🧪 这一章有一半站内已经讲透</h2>
-<p>⭐ <strong>最实用的那一半不在这里，在 <a href="../智能体工程教程/14-评测Evals.html">《智能体工程教程》第 14 章</a></strong>——
-它讲的是「怎么给自己的系统造一套评测」，本章讲的是「怎么看懂别人的榜单」。两边这样对应：</p>
-<table>
-<thead>
-<tr>
-<th>那一章讲的</th>
-<th>在这里的对应</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>从真实失败取 20–50 个任务</td>
-<td>私有评测集的建法</td>
-</tr>
-<tr>
-<td>三类评分器（代码/模型/人工）</td>
-<td>完全通用</td>
-</tr>
-<tr>
-<td>评产出不评路径</td>
-<td>同样适用</td>
-</tr>
-<tr>
-<td>pass@k vs pass^k</td>
-<td>一致性度量</td>
-</tr>
-<tr>
-<td>读转录、校准评委</td>
-<td>同样必做</td>
-</tr>
-<tr>
-<td>基础设施噪声、饱和</td>
-<td>就是本章的陷阱 ④（测量噪声）和 ②（饱和）</td>
-</tr>
-<tr>
-<td>分维度看，别只看总分</td>
-<td>同样适用</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>💡 <strong>所以读完那一章再读这一章，本章几乎不是新知识</strong>——而是「把同一套方法论换到模型选型这个场景上」。
-反过来，<strong>先读到这里的人，动手做评测时请一定去那一章</strong>：本章给的是常识和陷阱，那一章给的是可执行的八步。</p>
-</blockquote>
-<hr />
-<h2 id="_7">📦 深挖的话要学什么</h2>
+<h2 id="_4">📦 深挖的话要学什么（榜单这一侧）</h2>
 <blockquote>
 <p>📍 <strong>每条后面标了它在哪</strong>：
 📗 <strong>本库有</strong> = 站内已经讲透，点进去就行；📙 <strong>半有</strong> = 站内讲了一半，另一半得外找；
 📕 <strong>要外找</strong> = 站内没有，得去论文或别处。
 （这份清单以前只列词不说去哪，指到的坑有些站内根本没挖过，按图索骥会扑空。）
-⭐ <strong>这一章的深挖清单是全站"本库有"命中率最高的几张之一</strong>——评测这件事同时被四个板块从不同角度讲过。</p>
+⭐ <strong>评测这两页的深挖清单是全站"本库有"命中率最高的几张之一</strong>——评测这件事同时被四个板块从不同角度讲过。</p>
 </blockquote>
 <ul>
 <li><strong>主流 benchmark 的设计与局限</strong>：MMLU/GPQA/SWE-bench/AIME/LiveBench 各自测什么、怎么被攻破
   → 📙 <strong>半有</strong>：<a href="../智能体工程教程/14-评测Evals.html">智能体工程 14 · 评测Evals</a> 的「公开基准都在测什么（以及测不到什么）」把 SWE-bench、SWE-bench Verified（人工核验的 500 题子集）、τ-bench 的<strong>构造方式和各自的盲区</strong>摊开讲了，⚠️ 还给了一条能直接用的纪律：看到「SWE-bench」三个字先问是哪一版——不同版本的分数不可直接比。MMLU / GPQA / AIME 这几个纯知识类基准的构造细节站内没有，要外找</li>
 <li><strong>污染检测</strong>：n-gram 重叠、canary string、私有 holdout 集
-  → 📗 <strong>本库有，而且比本章细得多</strong>：<a href="../数据这一关/13-评测集也是数据.html">数据这一关 13 · 评测集也是数据</a> 给了四种查法（去重 / n-gram 重叠 / 改写测试 / 新鲜题对照）和 <strong>n 该取多少的实跑精确率-召回率表</strong>；⭐ 最有用的一条是查污染不能看总分要看分组差——2% 污染率下总分只虚高 0.6pp（看不见），但"见过组 vs 没见过组"的差已经稳定在 27 个百分点。本章说「数据污染是最严重的陷阱」，那一章是把它变成可执行体检的地方。 ⚠️ 只有 canary string 站内没有</li>
+  → 📗 <strong>本库有，而且比本页细得多</strong>：<a href="../数据这一关/13-评测集也是数据.html">数据这一关 13 · 评测集也是数据</a> 给了四种查法（去重 / n-gram 重叠 / 改写测试 / 新鲜题对照）和 <strong>n 该取多少的实跑精确率-召回率表</strong>；⭐ 最有用的一条是查污染不能看总分要看分组差——2% 污染率下总分只虚高 0.6pp（看不见），但"见过组 vs 没见过组"的差已经稳定在 27 个百分点。本页说「数据污染是最严重的陷阱」，那一章是把它变成可执行体检的地方。 ⚠️ 只有 canary string 站内没有</li>
 <li><strong>动态评测</strong>：LiveBench 类（题目持续更新，防污染）
   → 📙 <strong>半有</strong>：「<strong>什么时候该换评测集</strong>」在 <a href="../数据这一关/13-评测集也是数据.html">数据这一关 13</a> 有专门一节，<a href="../智能体工程教程/14-评测Evals.html">智能体工程 14</a> 的第 7 步「监控饱和」和第 8 步「长期维护」讲的是同一件事的工程侧。但 LiveBench 这类"公开榜单持续换题"的具体机制站内没有，要外找</li>
 <li><strong>人类偏好评测</strong>：Elo/Bradley-Terry 模型、标注一致性、讨好偏差校正
   → 📗 <strong>本库有</strong>：Bradley–Terry 在 <a href="../强化学习基础/12-RLHF全流程.html">强化学习基础 12 · RLHF全流程</a>（<code>L = −log σ(r(win) − r(lose))</code>，<strong>只关心分数的差，所以打出来的分没有绝对含义</strong>——这正是它能被用来排名的原因）；标注一致性在 <a href="../数据这一关/10-标注一致性怎么量.html">数据这一关 10 · 标注一致性怎么量</a>；讨好/长度偏差这一侧，RL 12 里点了 ⚠️ 标注者倾向选长的 → 模型变啰嗦，人类一致率仅 70~80% 就是精度天花板</li>
-<li><strong>LLM-as-Judge</strong>：偏差（位置偏差、长度偏差、自我偏好）与校准方法
-  → 📙 <strong>半有</strong>：<a href="../智能体工程教程/14-评测Evals.html">智能体工程 14</a> 的「三类评分器」把<strong>模型评分器必须对照人类专家校准</strong>立成了规矩，<a href="../数据这一关/13-评测集也是数据.html">数据这一关 13</a> 有「评分器也要校准」一节。但位置偏差 / 长度偏差 / 自我偏好这三种偏差各自的表现和纠正手段，站内没有专门讲，要外找</li>
-<li><strong>统计</strong>：置信区间、多次运行的方差、显著性判断
-  → 📗 <strong>本库有</strong>：<a href="../数据这一关/13-评测集也是数据.html">数据这一关 13</a> 的「多大才够：把置信区间算出来」直接回答本章「为什么 3 分不算差距」；<a href="../模型上线之后/12-AB实验你以为你懂了.html">模型上线之后 12 · AB实验你以为你懂了</a> 给了样本量、<strong>偷看（peeking）</strong>、多重比较这三个最常见的翻车点；测量噪声那一侧还有 <a href="../Claude博客资料库/智能体评测-03-基础设施噪声.html">Claude博客 · 智能体评测-03 基础设施噪声</a></li>
-<li><strong>领域评测集构建</strong>：怎么为你的业务造一套有区分度的题
-  → 📗 <strong>本库有，这是本章最该点开的一条</strong>：<a href="../智能体工程教程/14-评测Evals.html">智能体工程 14</a> 的<strong>八步</strong>（⭐ 最贵也最容易跳过的是第 2 步写无歧义任务+参考解、第 3 步正反平衡——只测正例会让系统学成"什么都做"、第 6 步读转录）；抽样和"多大才够"配 <a href="../数据这一关/13-评测集也是数据.html">数据这一关 13</a>。本章的「私有评测集：一个下午就能建好」是入门版，那八步是能撑住长期维护的版本</li>
 </ul>
-<p><strong>需要的前置</strong>：不多——<a href="../智能体工程教程/14-评测Evals.html">智能体工程 14</a> 的评测方法论，加一点 A/B 实验的统计常识（<a href="../推荐算法/12-评估与AB实验.html">推荐算法 12</a> 那一章就够）。这两块站内都是现成的。</p>
 <hr />
-<h2 id="_8">⚖️ 要不要深挖</h2>
-<table>
-<thead>
-<tr>
-<th>你的情况</th>
-<th>建议</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>做应用、要选模型</td>
-<td>🟡 <strong>本章 + 智能体工程第 14 章已经够用</strong></td>
-</tr>
-<tr>
-<td>要为团队建评测体系</td>
-<td>✅ 值得，但重点是「造私有评测集」不是研究公开榜单</td>
-</tr>
-<tr>
-<td>做模型研发</td>
-<td>✅ 必须</td>
-</tr>
-<tr>
-<td>写技术选型报告 / 做技术决策</td>
-<td>✅ 至少要懂五个陷阱，否则容易被榜单误导</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>🔑 <strong>我的判断</strong>：这块<strong>不值得单独成套</strong>——
-最核心的方法论已经完整地在<a href="../智能体工程教程/14-评测Evals.html">智能体工程第 14 章</a>里了，本章补的只是「通用 benchmark 的常识和陷阱」。</p>
-<p>✅ <strong>深挖直接去<a href="../智能体工程教程/14-评测Evals.html">《智能体工程教程》第 14 章</a></strong>，
-那里有三类评分器、pass@k vs pass^k、评委校准的完整方法论；
-<a href="../智能体工程教程/19-挑战项目B-评测驱动开发.html">挑战项目 B</a> 会让你亲手建一套。</p>
-</blockquote>
-<hr />
-<h2 id="_9">✅ 检查点</h2>
+<h2 id="_5">✅ 检查点</h2>
 <ol>
 <li>四类 benchmark 各有什么局限？</li>
-<li>什么是数据污染？为什么私有评测集才有说服力？</li>
+<li>这四类之外还缺了整整一类，是哪一类？为什么它和前四类的分数不相关？</li>
+<li>什么是数据污染？为什么私有的、新发布的评测集才有说服力？</li>
 <li>「报告条件不对等」是什么意思？看模型对比图时先找哪三行小字？</li>
 <li>100 题的评测集能分辨多大的差距？想分辨 3 个点需要多少题？</li>
 <li>看到「A 模型比 B 高 2 分」该怎么想？</li>
-<li>建私有评测集该从哪里取题？为什么不能自己编？</li>
-<li>建评测集的三个常见错误是什么？</li>
-<li>正确的模型选型流程是什么？</li>
 <li>LMArena 这类人类偏好评测有什么偏差？</li>
 </ol>
 <details>
 <summary>👀 答案</summary>
 <ol>
 <li>知识问答易污染且脱离实际；真实任务最接近现实但贵慢；人类偏好受话痨和排版影响；专项能力只反映局部。</li>
+<li><strong>Agent 基准</strong>（τ-bench / GAIA / WebArena / OSWorld）。前四类测「模型答得对不对」，它测「<strong>能不能在有工具、有状态、会多轮的环境里把事办完</strong>」——这两件事分数不相关。</li>
 <li>评测题目出现在互联网上被爬进训练数据，模型等于背过答案。私有/新发布的题没进过训练数据，才能反映真实能力。</li>
 <li>各家发布分数时往往<strong>给自己用最优配置、给对手用默认配置</strong>（提示词、温度、跑几次取最好、有没有用工具、解析宽松程度）。先找三行小字：①用的什么提示词 ②跑了几次怎么取 ③温度是多少。找不到就只能当广告看。</li>
 <li>100 题时二项标准误约 4%，95% 置信区间约 ±7.8% → <strong>只能分辨 8 个百分点以上的差距</strong>。想分辨 3 个点需要约 700 题。</li>
 <li><strong>保持怀疑</strong>——基础设施噪声就能造成 6 个百分点差距，100 题的评测集本身也分辨不了 2 分。要看测试条件是否说明、是否多次运行、置信区间多大。</li>
-<li>从<strong>线上日志和用户反馈里捞真实失败案例</strong>。不能自己编，因为编的题总是太规整，测不出真实问题。20-50 条就够开始。</li>
-<li>①<strong>只放难题</strong>（分数全在 20% 上下，没区分度）②只放当前模型答错的（换模型后失去代表性）③不分维度只看总分（总分持平但其实格式变好、事实变差，你看不见）。</li>
-<li>benchmark 粗筛 → <strong>自己的 20-50 个真实任务做私有评测</strong>（决定性）→ 看匹配场景的专项 → 实测成本延迟 → 小流量 A/B。</li>
 <li><strong>讨好偏差</strong>：回答话多、排版好看、语气讨喜的更容易赢，不一定更正确。还有位置偏差等。</li>
 </ol>
 </details>
 <hr />
-<h2 id="_10">🛑 可以停在这里</h2>
+<h2 id="_6">🛑 可以停在这里</h2>
+<p>读到这里，你已经能拿公开榜单做<strong>粗筛</strong>（排除明显不行的），并且能一眼看出一张模型对比图是不是广告。
+<strong>什么时候回来看下一页</strong>：当你真的要在两三个模型之间做决定时——粗筛之后那一步（你自己的私有评测集）才是决定性的，本页给不了答案。</p>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>榜单不可信。四类：知识问答(MMLU,易污染)/真实任务(SWE-bench,最接近现实)/人类偏好(LMArena,有讨好偏差)/专项。<strong>五陷阱</strong>：<strong>数据污染</strong>、饱和、刷榜过拟合、<strong>测量噪声(配置差异就能造成6个点)</strong>、⭐<strong>报告条件不对等(各家给自己用最优配置给对手用默认)——看对比图先找三行小字：什么提示词/跑几次怎么取/温度多少，找不到就当广告看</strong>。⭐ <strong>算一下：100题的评测集置信区间约±7.8%，只能分辨8个点以上的差距；想分辨3个点要约700题</strong>。正确做法：benchmark粗筛→<strong>自己20-50个真实任务的私有评测(决定性)</strong>→场景专项→成本延迟→AB。<strong>建私有评测集：从线上真实失败案例里捞，别自己编(编的题太规整)</strong>；三个常见错误：只放难题(没区分度)/只放当前模型答错的/<strong>不分维度只看总分(格式变好事实变差你看不见)</strong>。深挖直接去<strong>《智能体工程教程》第14章+挑战B</strong>。</p>
+<p>榜单分数不能照单全收。通用 benchmark 分四类：<strong>知识问答</strong>（MMLU、GPQA，多选题，最容易被污染）、<strong>真实任务</strong>（SWE-bench，端到端修真实 GitHub issue，⭐ 最接近现实但贵且慢）、<strong>人类偏好</strong>（LMArena 两两盲测算 Elo，⚠️ 有<strong>讨好偏差</strong>：话多、排版好看的容易赢）、<strong>专项能力</strong>（数学/代码/长上下文/多语言，只反映局部）。⚠️ 这四类之外还缺整整一类——<strong>Agent 基准</strong>（τ-bench / GAIA / WebArena / OSWorld），测的是「能不能在有工具、有状态、会多轮的环境里把事办完」，<strong>和前四类的分数不相关</strong>。<strong>五个陷阱</strong>：① <strong>数据污染</strong>（题目在网上 → 被爬进训练数据 → 模型等于背过答案，所以只有新发布的、私有的题才有说服力）② <strong>饱和</strong>（MMLU 涨到 90%+ 就没区分度了，差 1 分毫无意义）③ <strong>刷榜过拟合</strong>（为考试而学）④ <strong>测量噪声</strong>（光是基础设施配置差异就能造成 <strong>6 个百分点</strong>分差，常常大于模型之间的真实差距）⑤ ⭐ <strong>报告条件不对等</strong>（提示词、温度、跑几次取最好、有没有用工具、解析宽松程度——各家往往给自己用最优配置、给对手用默认配置）。⭐ <strong>看到任何模型对比图，先找三行小字：用的什么提示词 / 跑了几次怎么取 / 温度是多少；找不到就只能当广告看。</strong> 最后自己算一遍：100 题、正确率 80% 时二项标准误约 <strong>4.0%</strong>，95% 置信区间约 <strong>±7.8%</strong>——<strong>100 题的评测集只能分辨 8 个百分点以上的差距，想分辨 3 个点要约 700 题</strong>。所以「A 比 B 高 3 分」这句话，统计上通常什么都没说。</p>
 </blockquote>
-<p><strong>下一节</strong> 👉 <a href="12-对齐与AI安全.html">12-对齐与AI安全.md</a></p>
+<p><strong>下一节</strong> 👉 <a href="11b-私有评测集怎么建.html">11b-私有评测集怎么建.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
-<nav class="pagenav"><a href="10-多模态.html"><div class="dir">← 上一节</div>🎨 10 · 多模态</a><a class="next" href="12-对齐与AI安全.html"><div class="dir">下一节 →</div>🛡️ 12 · 对齐与 AI 安全</a></nav>
+<nav class="pagenav"><a href="10c-语音与视频.html"><div class="dir">← 上一节</div>🔊 10c · 语音与视频</a><a class="next" href="11b-私有评测集怎么建.html"><div class="dir">下一节 →</div>🔨 11b · 私有评测集</a></nav>
 </main>
 <script>(function(){
   var KEY="overview-progress", FILE="11-\u8bc4\u6d4b\u4f53\u7cfb.md";

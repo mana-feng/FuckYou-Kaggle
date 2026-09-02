@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -290,7 +307,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </details>
 <h1 id="26">26 · 不可能定理</h1>
-<p>⏱ <strong>58 分钟</strong> ｜ ⭐ <strong>不是「投票没用」，是「你必须选择放弃哪条性质」</strong></p>
+<p>⏱ <strong>50 分钟</strong> ｜ ⭐ <strong>不是「投票没用」，是「你必须选择放弃哪条性质」</strong></p>
 <hr />
 <h2 id="_1">🎯 一句话</h2>
 <p><strong>候选项有三个以上时，那些看起来天经地义的要求 —— 全体一致就该采纳、社会对 a 和 b 的排序不该被 c 影响、说真话不吃亏 —— 数学上无法同时满足，除非有一个人说了算。</strong></p>
@@ -298,7 +315,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_2">📏 一、公理：把「好规则」拆成可检验的条款</h2>
 <p>第 24 章的结论是「六条规则、五个不同赢家」，第 25 章又添了第六个。<strong>结果比不出高下，就只能比性质。</strong> 这就是<strong>公理化方法</strong>：把「好」拆成一条条可以逐条检验的条款，然后问哪些条款能共存。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>公理</th>
@@ -348,7 +365,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>选民要猜别人怎么投，票面不再是真实偏好</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>拿第 24 章那份 14 人选票感受一下前两条：<strong>匿名性</strong>说的是，把第 1 组和第 3 组的选民互换编号，赢家必须不变；<strong>中立性</strong>说的是，把选票里所有的 $a$ 和 $b$ 对调，原本赢家是 $a$ 的话新赢家必须是 $b$。</p>
 <blockquote>
 <p>💡 <strong>这几条的强度差别极大。</strong> 匿名性、中立性、帕累托几乎是「免费」的（绝大多数常见规则都满足）；
@@ -359,7 +376,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>IIA 的字面意思很温和：「若社会认为 $a$ 优于 $b$，那么某个选民改变了对第三个候选项 $c$ 的排位，不该改变这个结论。」听起来完全合理。<strong>但几乎没有规则满足它。</strong></p>
 <p><strong>5 个选民、3 个候选项，Borda 打分 $(2,1,0)$。</strong></p>
 <p>轮廓一：3 人 $a\succ b\succ c$，2 人 $b\succ c\succ a$。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -388,10 +405,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>2</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>社会排序 $b \succ a \succ c$ —— ⭐ <strong>社会认为 $b$ 优于 $a$</strong>。（自查：总分 $6+7+2=15=5\times3$ ✓）</p>
 <p>轮廓二：只让 3 人组把 $c$ 提到 $b$ 之上，变成 $a\succ c\succ b$。<strong>2 人组一个字没改。</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -420,7 +437,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>5</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>社会排序 $a \succ c \succ b$ —— ⭐ <strong>社会现在认为 $a$ 优于 $b$，翻转了。</strong></p>
 <blockquote>
 <p>⚠️⚠️ <strong>关键在这里：没有任何一个选民改变过对 $a$ 和 $b$ 的看法。</strong>
@@ -440,7 +457,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>$$\textbf{帕累托} \;+\; \textbf{IIA} \;+\; \textbf{输出是传递的} \quad\Longrightarrow\quad \textbf{独裁}$$</p>
 <h3 id="_3">为什么这个结论这么重</h3>
 <p>关键在于<strong>三条公理都弱得要命</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>公理</th>
@@ -461,12 +478,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>⚠️ <strong>重的是这一条</strong> —— 但它要求的也只是「判断 a 和 b 时，只看大家怎么比 a 和 b」</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>三条加起来看着像是「最低标准」，结果却是：满足前两条的规则只剩独裁一种。</strong></p>
 <h3 id="_4">⚠️ 这不是工程问题，是数学结论</h3>
 <p><strong>最容易的误读是「说明现有算法不够好，再设计一个更聪明的」。</strong> 不行。Arrow 定理的陈述对象是<strong>所有</strong>从偏好轮廓到集体排序的函数 —— 包括所有还没被发明出来的。它不是说「目前找不到」，是说「不存在」。</p>
 <blockquote>
-<p>⭐ <strong>和 <a href="../机器学习的数学原理/11-没有免费的午餐.html">../机器学习的数学原理/11-没有免费的午餐.html</a> 是同一种类型的结果</strong>：
+<p>⭐ <strong>和 <a href="../机器学习的数学原理/11-没有免费的午餐.html">机器学习的数学原理 11 · 没有免费的午餐</a> 是同一种类型的结果</strong>：
 NFL 说「在所有问题上平均，任何两个算法一样好」，Arrow 说「满足这三条的聚合方式只有独裁」。
 <strong>两个定理都不是在唱衰，而是在告诉你：因为没有普适最优，「选哪个」本身才成了关键决策。</strong></p>
 </blockquote>
@@ -489,7 +506,7 @@ NFL 说「在所有问题上平均，任何两个算法一样好」，Arrow 说�
 <p>回到第 24 章那份选票。第一名票数是 $a{:}5,\ e{:}4,\ d{:}3,\ b{:}2$，<strong>赢家是 $a$</strong>。</p>
 <p>现在看<strong>第 4 组那 2 个人</strong>，他们的真实偏好是 $b\succ d\succ e\succ c\succ a$。他们把票投给了 $b$，而 $b$ 只有 2 票，<strong>注定选不上</strong>，结果是他们最讨厌的 $a$ 当选。</p>
 <p>他们改口，把 $e$ 报成第一名：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -515,14 +532,14 @@ NFL 说「在所有问题上平均，任何两个算法一样好」，Arrow 说�
 <td><strong>6</strong> ⭐</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>$e$ 以 6 票当选。</strong> 而在他们的<strong>真实</strong>偏好里，$e$ 排第 3、$a$ 排第 5（最后一名）—— 谎报让结果从最差变成了中上。操纵成功。</p>
 <p>💡 Borda 的操纵手法不同但更狠，叫 <strong>burying（活埋）</strong>：把<strong>最有威胁的对手压到自己票的最后一名</strong>，直接扣掉它 $m-1$ 分。第 24 章说 Borda「极易被策略性投票操纵」，指的就是这个。</p>
 <h3 id="_6">⚠️ 怎么读这个定理</h3>
 <p><strong>错误的读法</strong>：「某些规则有漏洞，换个设计好的规则就行了。」
 正确的读法：⭐ <strong>任何非独裁的、每个候选项都有机会的规则，都存在可以被谎报操纵的情形。这不是漏洞，是结构。</strong></p>
 <p>那实践中怎么办？<strong>计算社会选择给出的一条主线是：把「操纵」变成一个算不动的问题。</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>屏障</th>
@@ -543,7 +560,7 @@ NFL 说「在所有问题上平均，任何两个算法一样好」，Arrow 说�
 <td>上面那 2 个人如果误判形势，可能把 $b$ 从潜在胜者位置上白白让出去</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⚠️ <strong>注意这三条都是「更难」而不是「不可能」。</strong> 这是本章反复出现的模式：<strong>定理封死了「完全杜绝」，工程能做的只有「提高成本」。</strong></p>
 </blockquote>
@@ -557,7 +574,7 @@ NFL 说「在所有问题上平均，任何两个算法一样好」，Arrow 说�
 <hr />
 <h2 id="_7">🗺️ 五、⭐ 结论该怎么读：一张取舍地图</h2>
 <p><strong>这一节是整章、也是整个板块最该带走的东西。</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>❌ 常见误读</th>
@@ -578,9 +595,9 @@ NFL 说「在所有问题上平均，任何两个算法一样好」，Arrow 说�
 <td>⭐ <strong>恰恰相反：正因为必须放弃点什么，「放弃哪一条」才成了必须明确回答的问题</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>不可能定理的正确用法：它是一张地图，标出了每条路要付的过路费。</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>规则</th>
@@ -609,7 +626,7 @@ NFL 说「在所有问题上平均，任何两个算法一样好」，Arrow 说�
 <td>非独裁性（废话）。⭐ <strong>但它确实同时满足帕累托、IIA、策略防伪、传递输出</strong> —— 这正是 Arrow 和 G–S 说的那个唯一出口</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>所以「用哪条投票规则」从来不是一个纯技术问题。</strong>
 技术能告诉你每个选项的代价是什么，<strong>但「我们这个场景最不能忍受哪种失败」是一个价值判断</strong>，得由人来做。
@@ -623,7 +640,7 @@ NFL 说「在所有问题上平均，任何两个算法一样好」，Arrow 说�
 <p><strong>单峰偏好（single-peaked）</strong>：存在一个把候选项从左到右排开的次序 $&amp;gt;$，使得<strong>每个选民都有一个最爱（峰），并且离峰越远越差</strong>。形式化：若 $a$ 落在 $b$ 和该选民的峰之间，则她偏好 $a$ 胜过 $b$。</p>
 <p>💡 <strong>现实中什么时候会这样</strong>：空调设定温度、政治光谱上的左右、预算规模、罚款额度 —— ⭐ <strong>凡是候选项本身能排成一条一维的轴，偏好就很可能是单峰的。</strong></p>
 <p><strong>🔨 手算验证</strong>（候选项轴为 $A&amp;lt;B&amp;lt;C&amp;lt;D&amp;lt;E$）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>选民</th>
@@ -652,7 +669,7 @@ NFL 说「在所有问题上平均，任何两个算法一样好」，Arrow 说�
 <td>✅ 右侧 $C\succ D\succ E$，左侧 $C\succ B\succ A$，两侧各自递减</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>中位选民规则</strong>：只问每个人的<strong>峰</strong>在哪，选出中位数那个峰。这里三个峰是 $A,B,C$，中位是 ⭐ $B$。</p>
 <p>验证 $B$ 确实是 Condorcet 赢家：$B$ 对 $A$ 是 2:1（选民 2、3），$B$ 对 $C$ 是 2:1（选民 1、2），$B$ 对 $D$ 和 $E$ 都是 3:0。✅</p>
 <blockquote>
@@ -670,7 +687,7 @@ NFL 说「在所有问题上平均，任何两个算法一样好」，Arrow 说�
 三条全都满足了 —— <strong>代价只有一条：结果不确定。</strong></p>
 </blockquote>
 <p><strong>对照组：Borda 比例</strong>（概率正比于 Borda 分）。同一份选票，Borda 分是 $a{:}3,\ b{:}5,\ c{:}1$（自查：总分 $9=3\times3$ ✓），于是 $p=(\tfrac39,\tfrac59,\tfrac19)$。它<strong>也是策略防伪的</strong>，但 ⚠️ 可能给帕累托被支配的候选项非零概率 —— 上例中若某个选项被所有人一致认为更差，它照样能分到概率。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>路</th>
@@ -693,7 +710,7 @@ NFL 说「在所有问题上平均，任何两个算法一样好」，Arrow 说�
 <td>⚠️ 结果不确定，同一份选票可能选出不同的人</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>这张表才是不可能定理的正确使用方式。</strong>
 定理不告诉你该选哪条路，它告诉你<strong>每条路的过路费是多少</strong>。
@@ -702,7 +719,7 @@ NFL 说「在所有问题上平均，任何两个算法一样好」，Arrow 说�
 <hr />
 <h2 id="_9">🎬 七、回望：从「一个人怎么算理性」到「一群人算不出理性」</h2>
 <p>这是全板块最后一章正文，值得回头看一眼这条线是怎么走过来的。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>走到哪</th>
@@ -731,7 +748,7 @@ NFL 说「在所有问题上平均，任何两个算法一样好」，Arrow 说�
 <td>⭐ <strong>一群人想把各自的理性偏好聚合成一个集体偏好 —— 数学上做不到，除非独裁</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>整条线最深的一句话</strong>：
 <strong>理性在个体层面是良定义的，在集体层面不是。</strong>
@@ -747,7 +764,7 @@ GSP 放弃了多位置的激励相容（<a href="../推荐算法/15b-广告-从�
 <strong>全是同一件事的不同版本。</strong></p>
 <hr />
 <h2 id="_10">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>去哪</th>
@@ -764,11 +781,11 @@ GSP 放弃了多位置的激励相容（<a href="../推荐算法/15b-广告-从�
 <td>策略防伪（SP）这个性质是在那一章提出来的。G–S 定理告诉你：<strong>在投票这个场景里，SP 和非独裁不可兼得</strong> —— 那一章列的「想要的性质」，这一章给出了它们的边界</td>
 </tr>
 <tr>
-<td><a href="../机器学习的数学原理/11-没有免费的午餐.html">../机器学习的数学原理/11-没有免费的午餐.html</a></td>
+<td><a href="../机器学习的数学原理/11-没有免费的午餐.html">机器学习的数学原理 11 · 没有免费的午餐</a></td>
 <td>⭐ <strong>同一类结果的另一个实例</strong>。NFL 说「在所有问题上平均，任何两个算法一样好」，Arrow 说「满足这三条的聚合只有独裁」。<strong>两者都不是唱衰，而是说：因为没有普适最优，「选哪个」本身才是关键决策</strong></td>
 </tr>
 <tr>
-<td><a href="../推荐算法/15b-广告-从推荐到竞价.html">../推荐算法/15b-广告-从推荐到竞价.html</a></td>
+<td><a href="../推荐算法/15b-广告-从推荐到竞价.html">推荐算法 15b · 广告：从推荐到竞价</a></td>
 <td>想看一个「明知有缺陷仍然被全行业采用」的真实机制：GSP <strong>不是</strong>多位置激励相容的，工业界照用不误，因为它<strong>可解释</strong>。那一章讲了这笔账怎么算</td>
 </tr>
 <tr>
@@ -776,7 +793,7 @@ GSP 放弃了多位置的激励相容（<a href="../推荐算法/15b-广告-从�
 <td>把本章的规则和公理写成代码，亲手在同一份选票上跑出不同赢家</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_11">✅ 检查点</h2>
 <ol>

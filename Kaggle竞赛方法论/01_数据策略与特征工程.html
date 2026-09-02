@@ -173,6 +173,13 @@ table.xref th{text-align:left;background:var(--accent-soft);color:var(--accent);
  padding:8px 12px;border:1px solid var(--border)}
 table.xref td{padding:8px 12px;border:1px solid var(--border);vertical-align:top}
 table.xref td:first-child{white-space:nowrap;font-weight:600}
+
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -223,7 +230,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <p><strong>竞赛里排名的差距，大部分不是模型造成的，是数据和特征造成的。</strong>这一章是全套教程里最长的一章，不要一次读完——<strong>按你当前赛题的需要挑着看</strong>：先看二（验证集构造）和十七（评价指标），这两节决定你的分数是不是真的。</p>
 <hr />
 <h2 id="eda">一、数据EDA（探索性数据分析）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -260,9 +267,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>医疗文本常呈右偏分布，需针对性设计截断策略</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="11-adversarial-validation">1.1 对抗验证（Adversarial Validation）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -291,10 +298,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td><code>model.fit(train_features, is_test_label)</code> → 取预测概率高的训练样本作为验证集</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_2">二、验证集构造策略</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -329,8 +336,8 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>时间序列任务</td>
 </tr>
 </tbody>
-</table>
-<table>
+</table></div>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>关键原则</th>
@@ -351,11 +358,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>线下验证分数与线上A榜分数一致→结果可靠；线下远高于线上→过拟合风险大</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_3">三、样本不均衡解决方案</h2>
 <h3 id="31">3.1 采样策略</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>策略</th>
@@ -380,9 +387,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>将100:1的差距平滑至10:1</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="32">3.2 精准权重公式</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -403,9 +410,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>最大类1900条、小类16条，差距达百倍；取倒数开根号后差距缩小至约10:1</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="33-class-weight">3.3 类别权重（Class Weight）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -430,9 +437,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>计算每类频率倒数→softmax归一化→传入loss的weight参数</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="34-focal-loss">3.4 Focal Loss</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -461,9 +468,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>小类样本极少时，alpha+gamma自适应关注难分样本</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="35-dice-loss-ohem">3.5 Dice Loss 与 OHEM</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -492,11 +499,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>Dice Loss + OHEM组合使用，提升模型在挑战性样本上的训练质量</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_4">四、数据增强策略</h2>
 <h3 id="41">4.1 文本增强</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -536,9 +543,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>见训练策略章节</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="42">4.2 数据生成与自动标注</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -571,11 +578,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>生成数据需符合真实语境，避免产生不合逻辑的句子</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="pseudo-labeling">五、伪标签（Pseudo-Labeling）</h2>
 <h3 id="51-k">5.1 K折伪标签（自动化降噪）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -604,9 +611,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>相当于利用AI群体完成自动纠错和降噪</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="52">5.2 半监督伪标签（比赛后期冲刺）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -635,10 +642,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>往往能压榨出最后的一点分数</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="label-smoothing">六、Label Smoothing（标签平滑）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -675,10 +682,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>分类后期提分，通常提升0.1~0.5个百分点</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="ttatest-time-augmentation">七、TTA（Test Time Augmentation，测试时增强）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -707,10 +714,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>过度使用可能导致过拟合测试集；增强变换应保持语义不变</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_5">八、缺失值填充：按缺失原因分类处理</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -743,10 +750,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>保留业务语义信息，比全局均值/中位数填充更精准</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_6">九、异常值检测与选择性删除</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -775,10 +782,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>提升模型对正常样本的拟合精度，避免被异常点拉偏</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_7">十、目标变量变换</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -811,11 +818,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>房价预测、销售额预测等右偏连续变量回归任务</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_8">十一、特征编码与组合</h2>
 <h3 id="111">11.1 数值转类别/有序编码</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -836,9 +843,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>无序类别用One-Hot Encoding</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="112">11.2 组合特征工程</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -859,9 +866,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>按分组统计（如按类别分组计算均值/中位数）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="113">11.3 特征选择方法</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -891,10 +898,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>比内置importance更可靠</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_9">十二、社交媒体文本特征工程</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -935,10 +942,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>弥补预训练模型对社交媒体特有符号的感知不足，提升分类边界</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="full-retrain">十三、全量数据重训练（Full Retrain）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -967,10 +974,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>全量重训练后无法用验证集评估，需依赖之前交叉验证的分数作为参考</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_10">十四、领域自适应预训练</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1007,10 +1014,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>帮助AI提前适应领域语境，提升下游任务表现</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_11">十五、无标注语料利用</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1035,10 +1042,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>语料需与目标任务领域相关，否则可能引入噪声</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_12">十六、半监督迁移学习</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1063,10 +1070,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>需要大量时间寻找合适数据集并调整训练流程，投入产出比需权衡</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_13">十七、评价指标深度解析</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1095,10 +1102,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>提交分数为0通常是因为位置计算错误或结果文件格式问题</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_14">十八、比赛提交注意事项</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1123,11 +1130,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>模型越大占用资源越多，加双向LSTM会更慢，平衡性能和资源</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_15">十九、特征交叉高级方法</h2>
 <h3 id="_16">自动特征交叉</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -1162,9 +1169,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>更精细的交叉</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="feature-hashing">特征哈希（Feature Hashing）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1193,11 +1200,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>超高维类别特征（如用户ID、物品ID）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_17">二十、数据清洗进阶</h2>
 <h3 id="_18">重复样本处理</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1226,9 +1233,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>数据泄露检测的关键步骤</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_19">标签噪声清洗</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -1258,9 +1265,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>深度噪声标签</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_20">数据泄露检测</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>泄露类型</th>
@@ -1290,11 +1297,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>检查预处理流程</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_21">二十一、特征工程自动化</h2>
 <h3 id="_22">自动特征生成</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>工具</th>
@@ -1319,9 +1326,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>时间序列</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_23">特征重要性评估进阶</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -1362,10 +1369,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>需额外训练</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/16-特征工程基础.html">ML基础 16 特征工程基础</a></td><td>编码、缺失值、分箱、交叉的原理版；这里只给菜谱，那里讲为什么这么切</td></tr><tr><td><a href="../机器学习与深度学习基础/05-评估与过拟合.html">ML基础 05 评估与过拟合</a></td><td>「验证集构造比模型更重要」的底层原因：CV 估的是泛化误差，划错了估计就是偏的</td></tr><tr><td><a href="../模型上线之后/04-训练推理一致性.html">模型上线之后 04 训练推理一致性</a></td><td>特征工程最容易出事的地方：训练时算得出、推理时算不出</td></tr><tr><td><a href="../模型上线之后/02-离线好不等于线上好.html">模型上线之后 02 离线好不等于线上好</a></td><td>CV 涨了 LB 不涨，和线下线上不一致是同一类问题</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/16-特征工程基础.html">ML基础 16 特征工程基础</a></td><td>编码、缺失值、分箱、交叉的原理版；这里只给菜谱，那里讲为什么这么切</td></tr><tr><td><a href="../机器学习与深度学习基础/05-评估与过拟合.html">ML基础 05 评估与过拟合</a></td><td>「验证集构造比模型更重要」的底层原因：CV 估的是泛化误差，划错了估计就是偏的</td></tr><tr><td><a href="../模型上线之后/04-训练推理一致性.html">模型上线之后 04 训练推理一致性</a></td><td>特征工程最容易出事的地方：训练时算得出、推理时算不出</td></tr><tr><td><a href="../模型上线之后/02-离线好不等于线上好.html">模型上线之后 02 离线好不等于线上好</a></td><td>CV 涨了 LB 不涨，和线下线上不一致是同一类问题</td></tr></tbody></table></div>
 <hr />
 <h2 id="ckpt">✅ 检查点</h2>
 <ol>

@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -278,7 +295,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><a href="#_1">🎯 一句话</a></li>
 <li><a href="#_3">🌀 一、直觉：用错码本要多付多少比特</a></li>
 <li><a href="#kl-vs-kl">⚖️ 二、非对称到底意味着什么：前向 KL vs 反向 KL</a></li>
-<li><a href="#_8">🔗 三、三个说法，同一件事</a></li>
+<li><a href="#_8">🔁 三、三个说法，同一件事</a></li>
 <li><a href="#_10">🔗 这一章连到哪里</a></li>
 <li><a href="#_11">✅ 检查点</a></li>
 <li><a href="#_12">🛑 可以停在这里</a></li>
@@ -299,7 +316,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <h3 id="_2">⚠️ 为什么值得在这里停一下</h3>
 <p><strong>KL 散度是这套教程里被引用最多、却从来没定义过的量。</strong> 站里至少有四个板块直接拿它当已知概念在用：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>站里哪儿用到它</th>
@@ -324,7 +341,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>同一条输入过两次 dropout，用<strong>对称 KL</strong> 把两个输出拉近</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>四处都直接用，没有一处停下来定义过它。</strong> 这一章是它的正式户口 ——
 读完这一章再去那四处，就不会卡在这个词上（链接在章末的「这一章连到哪里」）。</p>
 <hr />
@@ -345,7 +362,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 用自然对数 $\ln$ 单位是 <strong>nat</strong>。机器学习里默认自然对数 —— 反正只关心相对大小。</p>
 </blockquote>
 <h3 id="_5">⭐ 四条性质（第四条是后面一切的钥匙）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>性质</th>
@@ -370,7 +387,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>真实会发生的事，你的模型给了 0 概率 → 无穷大的惩罚。</strong> 反过来 P(x)=0 的地方那一项恒为 0，<strong>Q 在那儿怎么胡来都不罚</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="kl-vs-kl">⚖️ 二、非对称到底意味着什么：前向 KL vs 反向 KL</h2>
 <p>先看两个具体数字。两个二元分布：</p>
@@ -378,7 +395,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="_6">🔑 记忆法：期望在谁身上取，谁就是考官</h3>
 <p>回头看定义：<strong>求和只在 P 有质量的地方展开</strong>。P(x)=0 的地方那一项是 0，
 <strong>不管 Q 在那儿长什么样</strong>。所以「谁在前面」决定了「谁在出题」。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -413,11 +430,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>变分推断 / VAE、<strong>RLHF 的 KL 惩罚项</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <figure class="dia"><svg viewBox="0 0 700 288" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="前向 KL 与反向 KL 的行为差异"><text class="dia-t" x="350" y="22" font-size="11.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">灰色虚线 = P（真实分布，两个峰）　橙色实线 = Q（只有一个峰的模型）</text><text class="dia-t" x="180" y="50" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">前向 KL：min KL(P ‖ Q)</text><text class="dia-t" x="180" y="68" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">最大似然 / 交叉熵在最小化的那个</text><text class="dia-t" x="520" y="50" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">反向 KL：min KL(Q ‖ P)</text><text class="dia-t" x="520" y="68" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">变分推断 / RLHF 惩罚项用的那个</text><line x1="30" y1="230" x2="330" y2="230" stroke="var(--border)" stroke-width="1.2"/><line x1="370" y1="230" x2="670" y2="230" stroke="var(--border)" stroke-width="1.2"/><path d="M 30,230 C 80,230 85,132 110,132 C 135,132 140,196 180,196 C 220,196 225,132 250,132 C 275,132 280,230 330,230" fill="none" stroke="var(--muted)" stroke-width="2" stroke-dasharray="6 4"/><path d="M 30,230 C 90,230 100,158 180,158 C 260,158 270,230 330,230" fill="none" stroke="var(--accent)" stroke-width="2.4"/><path d="M 370,230 C 420,230 425,132 450,132 C 475,132 480,196 520,196 C 560,196 565,132 590,132 C 615,132 620,230 670,230" fill="none" stroke="var(--muted)" stroke-width="2" stroke-dasharray="6 4"/><path d="M 400,230 C 435,230 432,118 450,118 C 468,118 465,230 500,230" fill="none" stroke="var(--accent)" stroke-width="2.4"/><text class="dia-t" x="180" y="252" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="normal">Q 被迫盖住每个峰 → 概率糊在低谷上</text><text class="dia-t" x="520" y="252" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="normal">Q 只蹲在一个峰上 → 另一个峰被丢掉</text><text class="dia-t" x="180" y="274" font-size="12" text-anchor="middle" fill="var(--accent)" font-weight="700">mode-covering（宁滥勿缺）</text><text class="dia-t" x="520" y="274" font-size="12" text-anchor="middle" fill="var(--accent)" font-weight="700">mode-seeking（宁缺勿滥）</text></svg><figcaption>⭐ 同一个 P（两个峰）、同一个 Q（只能有一个峰），换个 KL 方向答案完全不同：<b>前向 KL 逼 Q 盖住所有峰</b>，代价是把概率糊到中间那个其实没数据的低谷上；<b>反向 KL 允许 Q 只挑一个峰蹲着</b>，丢掉另一个峰一分钱不罚。</figcaption></figure>
 
 <h3 id="_7">💥 三个你可能撞见过的现象，机理都在这</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>现象</th>
@@ -438,7 +455,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>RLHF 的惩罚项是 $D_{KL}(\pi\,\|\,\pi_{SFT})$ —— <strong>反向 KL</strong>。它罚「跑到 SFT 模型不敢去的地方」，<strong>但对「把概率全押在 SFT 的某一个峰上」零惩罚</strong>。所以 KL 惩罚拴得住模型不跑飞，拦不住它塌缩</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⚠️ <strong>别读成「反向 KL 不好」</strong>。
 RLHF 要的正是反向 KL 那种约束：<strong>不许跑出参考模型的支撑集</strong> ——
@@ -447,11 +464,11 @@ RLHF 要的正是反向 KL 那种约束：<strong>不许跑出参考模型的支
 <a href="../强化学习基础/07-探索与利用.html">强化学习第 7 章</a>观察到了这个现象，机理就在这一节。</p>
 </blockquote>
 <hr />
-<h2 id="_8">🔗 三、三个说法，同一件事</h2>
+<h2 id="_8">🔁 三、三个说法，同一件事</h2>
 <p><strong>最小化 KL ＝ 最小化交叉熵 ＝ 最大化似然。</strong> 这一节把它们串成一条。</p>
 <h3 id="kl">第一步：交叉熵 = 熵 + KL</h3>
 <p>还是沙漠天气那个例子：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>量</th>
@@ -476,7 +493,7 @@ RLHF 要的正是反向 KL 那种约束：<strong>不许跑出参考模型的支
 <td>你<strong>多付的</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>$$\underbrace{H(P,Q)}_{\text{交叉熵}} \;=\; \underbrace{H(P)}_{\text{熵}} \;+\; \underbrace{D_{KL}(P\,\|\,Q)}_{\text{KL 散度}}$$</p>
 <details>
 <summary>📐 <b>推导（三行，想看再点）</b></summary>
@@ -498,7 +515,7 @@ RLHF 要的正是反向 KL 那种约束：<strong>不许跑出参考模型的支
 <p>后面那一项，正是<strong>平均负对数似然</strong> —— <a href="01-最大似然.html">上一章第二节</a>那个东西。</p>
 <p>$$\boxed{\;\min_\theta D_{KL}(\hat P\|q_\theta)\;\iff\;\min_\theta\Big(-\tfrac1n\textstyle\sum_i\log q_\theta(x_i)\Big)\;\iff\;\max_\theta\ \text{似然}\;}$$</p>
 <p>⭐ <strong>同一件事的三种说法</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>说法</th>
@@ -523,7 +540,7 @@ RLHF 要的正是反向 KL 那种约束：<strong>不许跑出参考模型的支
 <td>最小二乘、逻辑回归</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>顺带解决了上一节的一个问题</strong>：这里出现的是 $D_{KL}(\hat P\|q_\theta)$，<strong>前向</strong> KL。
 所以 <strong>mode-covering 是最大似然的固有性质</strong>，不是某个模型的缺陷 ——
@@ -560,7 +577,7 @@ RLHF 要的正是反向 KL 那种约束：<strong>不许跑出参考模型的支
 <blockquote>
 <p><strong>站里每一处用到 KL 的地方，读完这一章都能直接看懂了。</strong></p>
 </blockquote>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>去哪</th>
@@ -604,8 +621,12 @@ RLHF 要的正是反向 KL 那种约束：<strong>不许跑出参考模型的支
 <td><a href="13-EM与高斯混合.html">第 13 章 · EM 与高斯混合</a></td>
 <td>ELBO 里那个"贴紧下界"的缝隙，<strong>缝隙宽度就是一个 KL</strong></td>
 </tr>
+<tr>
+<td><a href="../扩散模型/03-训练目标为什么是预测噪声.html">扩散模型 03 · 训练目标为什么是预测噪声</a></td>
+<td>⭐ <strong>本章那套 ELBO 的一个完整落地</strong>：扩散模型的训练损失就是从变分下界推下来的 —— $x_1 \dots x_T$ 全是隐变量，ELBO 展开成 $T$ 项 KL，因为两边都是高斯、方差写死只学均值，KL 塌成「均值差的平方」，最后只剩 $\|\varepsilon-\varepsilon_\theta\|^2$</td>
+</tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_11">✅ 检查点</h2>
 <ol>

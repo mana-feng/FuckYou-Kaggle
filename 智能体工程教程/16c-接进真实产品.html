@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -293,7 +310,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 这三件事分别叫结构化输出、流式输出、护栏。它们不属于任何框架——框架帮你少写几行胶水，但出事时坐在告警前面的是你。</p>
 <p>上一章讨论的是「要不要用框架」。这一章讨论的是<strong>选了框架也躲不掉的那部分</strong>。</p>
 <h3 id="_2">先说清和别的章的分工</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>这一章<strong>不</strong>讲</th>
@@ -318,7 +335,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><a href="16-企业落地与生产化.html">第 16 章</a></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_3">📦 一、结构化输出：让模型的话能被代码接住</h2>
 <h3 id="json">为什么「让它输出 JSON」这句提示词不够</h3>
@@ -332,7 +349,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 <p>这些错误的共同点：<strong>每一种单独看概率都很低，加起来就不低了</strong>。一天十万次调用，0.5% 就是 500 次线上异常。</p>
 <h3 id="_4">三档做法的对照</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>档位</th>
@@ -361,7 +378,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>值是不是真的</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>这三档不是「越高越好」的替换关系，是「越高越窄」的取舍</strong>：
 Schema 越严，模型能表达的东西越少。它没法说「这单我判断不了」——除非你在枚举里给它留了那一项。</p>
@@ -378,7 +395,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 
 <p>模型完全可以：把订单号当成金额填进去、把「预计退款」当成「已退款」、给一个数据库里根本不存在的 <code>user_id</code>、给一个引用了不存在文档的 <code>source_id</code>。<strong>每一个都能通过 schema 校验。</strong></p>
 <p>所以校验永远是两层：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>层</th>
@@ -398,10 +415,10 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <td><strong>只有你写的代码能管</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>「和上游事实对得上」是最容易漏的一条：退款金额要 <strong>≤ 订单实付金额</strong>，不是 ≤ 某个常量；引用的文档 id 要真的能在检索结果里找到，不是长得像 id 就行。</p>
 <h3 id="_5">校验失败之后：重试的工程细节</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>做法</th>
@@ -426,7 +443,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <td>第 3 次突然对的概率极低——这不是限流问题，是能力问题，退避没有意义</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>这其实就是<a href="07-工具设计-能力的上限.html">第 7 章</a>那条「错误信息是写给模型看的教学材料」，只不过那一章用在<strong>工具返回</strong>上，这里用在<strong>输出校验</strong>上。判断标准一样：模型看完这条错误，能不能一次就改对？</p>
 <p>重试还有两件事容易忘：</p>
 <ul>
@@ -434,7 +451,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <li><strong>重试率本身要进监控</strong>。它突然从 2% 涨到 15%，通常不是用户变奇怪了，是你上周改了 prompt 或者供应商换了模型版本。</li>
 </ul>
 <h3 id="_6">枚举、可选字段、嵌套深度的取舍</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>设计</th>
@@ -464,7 +481,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <td>不写长度上限就会失控。schema 里写 <code>maxItems</code>，校验里也查一遍</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_7">🔨 一段框架无关的可跑代码</h3>
 <p>定义 schema → 调用 → 校验 → 失败时<strong>带着错误</strong>重试。只用标准库：</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># 结构化输出全流程：定义 → 调用 → 校验 → 带错误重试（框架无关，纯标准库）</span>
@@ -565,7 +582,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 
 <h3 id="_8">💀 事故复盘：只校验了格式，没校验值域</h3>
 <p>某电商客服 Agent，schema 保证 <code>refund_amount</code> 是 <code>number</code>，<strong>但没写 <code>maximum</code></strong>，下游退款接口只判断「是数字且 &gt; 0」。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -590,7 +607,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <td>① schema 里补 <code>maximum</code>；② 加语义校验层：金额必须 ≤ <strong>订单实付金额</strong>（和事实比，不是和常量比）；③ 超过 ¥500 的退款转人工（动作侧硬闸）；④ 监控从「校验失败率」改成「<strong>关键字段的值分布</strong>」——分布突变比失败率更早报警</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>🔑 <strong>这起事故的一句话教训</strong>：
 <strong>「校验通过率 99.7%」是一句没有信息量的话</strong>——它只告诉你格式对，不告诉你有没有在赔钱。</p>
@@ -606,7 +623,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <h2 id="_9">🌊 二、流式输出：用户不该盯着空白屏幕等</h2>
 <h3 id="ttft">为什么要流式：TTFT 比总时长更影响体感</h3>
 <p><strong>TTFT（Time To First Token，首字延迟）</strong> 是用户从点下发送到看见第一个字的时间。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方案</th>
@@ -629,14 +646,14 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <td>「它在思考，还挺快」——愿意读完</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>总时长一模一样</strong>。差别只在于用户有没有在等待期间获得反馈。这也是为什么优化 TTFT 的性价比通常远高于优化总吞吐——后者用户根本感知不到。</p>
 <h3 id="sse">怎么流：SSE 的基本形态</h3>
 <p>服务端返回 <code>Content-Type: text/event-stream</code>，然后<strong>一帧一帧地往同一个连接里写</strong>，帧之间用空行分隔：</p>
 <section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>event: delta</p><p>data: {&quot;text&quot;: &quot;退&quot;}</p><p>event: delta</p><p>data: {&quot;text&quot;: &quot;款&quot;}</p><p>event: done</p><p>data: {&quot;chars&quot;: 128}</p></div></section>
 <p>前端用 <code>EventSource</code> 或 <code>fetch</code> + <code>ReadableStream</code> 逐帧接收，把 <code>text</code> 累加进同一个气泡里。<strong>关键点：HTTP 状态码在第一帧发出去的那一刻就已经定死了 200</strong>——这条会在下面反复咬你。</p>
 <p><strong>前端拼接的三个坑</strong>（每一个都会让你怀疑人生半天）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>坑</th>
@@ -661,11 +678,11 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <td>中间设备会掐掉几十秒无数据的连接。定期发一个心跳注释帧保活</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="_10">⚠️ 流式和结构化输出是天生冲突的</h3>
 <p><strong>JSON 没输出完就不是合法 JSON。</strong> 你没法把 <code>{"intent": "ref</code> 交给 <code>json.loads</code>。这意味着：<strong>你不能同时要「一开口就有字」和「拿到完整结构」</strong>。</p>
 <p>两种务实解法：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>解法</th>
@@ -685,11 +702,11 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <td>用户要看正文、后端也要结构时</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>还有一种「容错解析」的思路——边收边给残缺 JSON 补右括号强行解析。<strong>能用，但别拿它做决策</strong>：半截的枚举值 <code>"ref"</code> 和半截的数字 <code>99</code>（真值 998800）都是合法但错误的。用它驱动 UI 预览可以，用它触发退款不行。</p>
 <h3 id="_11">⚠️ 流式下的错误处理：已经发出去的收不回来</h3>
 <p>非流式时出错很简单——返回 500，前端显示「失败，请重试」。流式时你已经回了 200 并且吐了 300 个字，这时上游断了。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>问题</th>
@@ -710,7 +727,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <td>「上游模型断了」要重试或降级，「客户端断了」应该立刻停止一切工作。两者的日志和指标必须分开，混在一起你会以为服务在抖</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="token">中断与取消：用户关了页面，后端还在烧 token</h3>
 <p>浏览器标签一关，TCP 连接断开，但<strong>你的后端协程可能毫不知情，继续把模型的 2000 个 output token 生成完</strong>。</p>
 <p>粗糙的量级感：一次长回答 2000 output token，如果 10% 的会话被用户中途放弃且没有取消传播，你就白付了 <strong>10% 的输出成本</strong>——而且这部分完全不产生任何用户价值。</p>
@@ -764,7 +781,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <p>首 token 之后真出错了，只有三个体面选项：追加一句说明并保留已发内容、把气泡置灰并给一个「重新生成」按钮（<strong>由用户发起</strong>，不是你偷偷替换）、或者对高风险内容整块清空并给兜底文案。</p>
 <h3 id="_13">工具调用在流式里长什么样</h3>
 <p>一次「回答」往往不是一条流，而是<strong>几段流拼起来的</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>阶段</th>
@@ -793,7 +810,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <td>收尾</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>所以前端状态机至少要有 <strong>thinking / streaming / tool_running / done / error</strong> 五态，只有 <code>loading</code> 和 <code>done</code> 两态的前端接不住这个模型。</p>
 <hr />
 <!--MIDSTOP-->
@@ -805,7 +822,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <hr />
 <h2 id="_14">🛡️ 三、护栏：模型会说不该说的话</h2>
 <h3 id="_15">三层护栏，权重完全不同</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>层</th>
@@ -834,14 +851,14 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <td><strong>高，差几个量级</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>能说错话和能做错事，代价差几个量级。</strong>
 说错一句话，你道个歉、改个提示词；转错一笔钱、删掉一张表、发出去一封邮件——<strong>没有撤销键</strong>。
 这就是<a href="15-安全-沙箱与提示注入.html">第 15 章</a>那条铁律在产品层的样子：<strong>确定性的环境层边界才是底线</strong>。输入侧和输出侧都是概率性的，必有漏网；动作侧的 <code>if</code> 不会。</p>
 </blockquote>
 <h3 id="_16">护栏在链路里站哪个位置</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>时点</th>
@@ -876,10 +893,10 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <td>可以异步</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>输入侧怎么做才不吃掉 TTFT：别串行等。请求一进来就<strong>同时</strong>发起「输入分类」和「主模型调用」，主调用的响应先攒在服务端不往外发；分类结论一到，是放行就把攒的内容一次性冲出去、后续转直吐，是拦截就把主调用取消掉、直接回兜底文案。这样护栏的耗时被主调用的首 token 时间吃掉了，用户感知不到。代价是被拦的那部分请求白跑了一小段生成——对绝大多数产品来说，这笔账划算得离谱。</p>
 <h3 id="_17">输出审核放哪：两种位置的对照</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -909,7 +926,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <td>一般对话</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>中间有一个很好用的折中：延迟发送。</strong>
 先在服务端缓冲 100 字符左右再往外吐，用 <strong>0.5 秒左右的 TTFT</strong> 换来一个<strong>永远领先于用户视线的审核窗口</strong>。
@@ -922,7 +939,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <li><strong>假阴性（FNR）</strong>：有害内容放行。这才是你上护栏的原因。</li>
 </ul>
 <p><strong>怎么量这两类错误率</strong>（一套能真跑起来的做法）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>步骤</th>
@@ -951,14 +968,14 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <td><strong>线上持续量</strong>：每天从拦截样本抽 50 条、从放行样本抽 50 条人工复核，算出线上 FPR/FNR，和离线值对齐。离线线上差太多说明你的集合不代表真实分布</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>一句话</strong>：审核器也是一个需要评测的模型。
 <a href="14-评测Evals.html">第 14 章</a>那一整套——正反平衡、读转录、别信 3 个点以内的差距——原样适用，<strong>只是被评的对象从主模型换成了守门员</strong>。</p>
 </blockquote>
 <p>拦截率还必须进监控（见下面的 🔗 表）。<strong>它突然翻倍，八成不是用户集体变坏了，是你上游改了什么。</strong></p>
 <h3 id="_19">兜底文案：被拦下时给用户看什么</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>❌ 常见写法</th>
@@ -979,12 +996,12 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <td><strong>泄露规则细节 = 教人绕过</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>好兜底文案的三要素：<strong>① 用人话说明发生了什么（但不透露规则）② 给一条真的能走的下一步 ③ 给申诉/转人工入口 + 一个可引用的编号。</strong></p>
 <p>示例：「这个问题涉及具体用药剂量，我不能给建议。我可以帮你整理一份要问医生的问题清单，或者转接人工。（编号 R-8f21，反馈时请报这个号）」</p>
 <h3 id="_20">审计留痕：拦了什么、为什么拦，要能查</h3>
 <p>半年后有人问「三月那笔为什么被拦」，你要答得出来。所以每条拦截记录至少要有：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>字段</th>
@@ -1021,7 +1038,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <td>⭐ 这就是上面 FPR/FNR 的数据来源，闭环靠它</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>下面这段把动作侧硬闸和审计留痕合在一起，是最该抄走的一段：</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># 动作侧护栏：工具调用前的同步硬闸 + 审计留痕（是代码里的 if，不是提示词里的一句话）</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
@@ -1064,7 +1081,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 
 <h3 id="32">💀 事故复盘：审核只在末尾做，有害内容已经吐了 3.2 秒</h3>
 <p>某 C 端问答产品，输出审核放在「<strong>流结束后</strong>」做全文复审，而前端是边收边渲染的。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -1089,14 +1106,14 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <td>① 高风险类别改成<strong>缓冲后发</strong>（攒 120 字符再吐，花 ~0.6 s TTFT 买断这个窗口）；② 加流式中滑动窗口审核，命中立刻断流；③ 评测<strong>必须在流式模式下跑</strong>，断言改成「任意时刻已发送的前缀都不含有害内容」⭐；④ 前端收到 <code>blocked</code> 事件要清空已渲染内容，而不是在后面追加一段道歉</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>🔑 <strong>这起事故的一句话教训</strong>：
 <strong>你的评测跑在非流式模式，而你的用户活在流式模式里。</strong> 评测和线上的形态不一致，F1 再高也保护不了任何人。</p>
 </blockquote>
 <hr />
 <h2 id="_21">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>去哪</th>
@@ -1137,7 +1154,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <td></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h2 id="_22">✅ 检查点</h2>
 <ol>
 <li>「让它输出 JSON」这句提示词最典型的三种翻车方式是什么？</li>

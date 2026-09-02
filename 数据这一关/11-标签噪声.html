@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -300,7 +317,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_2">🧭 一、先接受一个事实：标签本来就有错</h2>
 <p>很多人默认「标签 = 真值」，然后把所有精力花在模型上。
 但 2021 年有人系统性地核查了十个最常用的公开测试集，结论大致是这样：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>数据集</th>
@@ -329,7 +346,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>~10%</strong> ⭐</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💀 <strong>这份核查最该被记住的不是错误率，是它的第二个结论</strong>：
 把 ImageNet 验证集的错标签修正之后，<strong>模型的排名会变</strong>——
@@ -351,7 +368,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_3">🧪 二、噪声对训练到底有多大影响（实跑）</h2>
 <p>下面全是真跑出来的（16000 条、20 维、3 分类，训练 12000 / <strong>干净测试集 4000</strong>）。
 往训练标签里注入 x% 的对称噪声，<strong>在干净测试集上看准确率</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>模型</th>
@@ -410,14 +427,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>0.8125</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>第二行和第三行放在一起看，就是这一节的全部内容</strong>：
 <strong>同一份数据、同样 40% 的错标签，随机森林只掉 3.8 个百分点，单棵深树掉 32 个百分点。</strong>
 差别不在"模型多强"，在于<strong>它有没有机会把每一条错标签单独记住</strong>。</p>
 </blockquote>
 <p><strong>同一批实验，看它们在自己训练数据上的拟合准确率（对着噪声标签）</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>模型</th>
@@ -450,7 +467,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>0.5042</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💀 <strong>这张表值得单独记一条规矩</strong>：
 <strong>在有噪声的数据上，「训练准确率 100%」不是好消息，是"它把 40% 的错标签也背下来了"。</strong>
@@ -462,7 +479,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><strong>为什么随机森林能扛住而单棵树不能</strong>：森林里每棵树只看到 bootstrap 的一部分数据，
 一条错标签平均只影响 63% 的树，<strong>最后多数投票时它被淹掉了</strong>。
 这条推论可以直接用：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>抗噪的</th>
@@ -487,7 +504,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>纯交叉熵 + 高学习率长训练</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>"早停"是抗标签噪声性价比最高的一招，而且是免费的</strong>：
 神经网络的学习是有顺序的 —— <strong>先学干净样本里的规律，后背错标签</strong>。
@@ -496,7 +513,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 （<a href="../机器学习与深度学习基础/10-正则化全家桶.html">ML 基础 10 · 正则化全家桶</a>）。</p>
 </blockquote>
 <p><strong>⚠️ 但上面这些结论只对随机（对称）噪声成立。</strong> 换成系统性噪声，画风完全变了：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>噪声率</th>
@@ -526,7 +543,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>0.8405 / 0.5457</strong> 💀</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💀 <strong>注意这张表的形状</strong>：40% 的非对称噪声下，<strong>总体准确率只掉了 5.6 个百分点</strong>
 （0.8960 → 0.8405，很多人会觉得"还行"），
@@ -569,7 +586,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p><strong>实测（12000 条，注入不同比例的噪声）</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>噪声率</th>
@@ -630,7 +647,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>0.801</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>两种方法的分工很清楚，别混用</strong>：
 <strong>直接 disagreement</strong>（模型预测 ≠ 标签）召回极高（0.97）但精确率低 ——
@@ -652,7 +669,7 @@ confident joint 的精确率只有 <strong>0.346</strong>；换成 GBDT（准确
 <hr />
 <h2 id="_5">🛠️ 四、捞出来之后：删、改，还是重标（实跑）</h2>
 <p>这是最容易做错的一步。三种处置的实测对比（同一份数据、同一个随机森林）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>噪声率</th>
@@ -689,7 +706,7 @@ confident joint 的精确率只有 <strong>0.346</strong>；换成 GBDT（准确
 <td>0.9463</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>两个反直觉但很硬的结论</strong>：
 ① <strong>10% 噪声那一行，什么都不做（0.9467）比三种"清洗"都好。</strong>
@@ -700,7 +717,7 @@ confident joint 的精确率只有 <strong>0.346</strong>；换成 GBDT（准确
 💀 自动改标是这一章里最危险的一个动作，它制造的是<strong>看不见的</strong>系统性噪声。</p>
 </blockquote>
 <p><strong>那什么时候该重标？一张判据表</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>你的情况</th>
@@ -733,7 +750,7 @@ confident joint 的精确率只有 <strong>0.346</strong>；换成 GBDT（准确
 <td>先抽 300 条做<strong>双人独立重标</strong>，看错误是不是集中在少数几种混淆上</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>最省钱的组合</strong>：<strong>训练集用置信学习捞 Top-N，只送人工重标，不删不改；
 评测集不用置信学习，直接重标或换一套独立标注的。</strong>
@@ -745,7 +762,7 @@ confident joint 的精确率只有 <strong>0.346</strong>；换成 GBDT（准确
 <p>前面四节讲的都是训练集。现在把噪声搬到评测集上，后果完全不是一个量级。</p>
 <p><strong>后果一：你的分数有天花板，而且你不知道它在哪。</strong></p>
 <p>一个真实水平 <strong>0.9463</strong> 的干净模型，放在带噪声的评测集上：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>评测集噪声</th>
@@ -780,7 +797,7 @@ confident joint 的精确率只有 <strong>0.346</strong>；换成 GBDT（准确
 <td>0.80</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💀 <strong>模型一点没变，分数掉了 9 个百分点。</strong>
 而你看到的现象是"模型只有 0.857，还差得远" —— 于是你去加特征、调参、换架构，
@@ -790,7 +807,7 @@ confident joint 的精确率只有 <strong>0.346</strong>；换成 GBDT（准确
 <p><strong>后果二（更贵）：排名翻转 —— 你会选错模型。</strong></p>
 <p>模拟两个真实水平很接近的模型：<strong>A = 0.900，B = 0.885</strong>（真实差 1.5 个百分点），
 两者对 90% 的样本判定一致。看在不同评测集下"B 反超 A"的概率：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>评测集噪声</th>
@@ -825,7 +842,7 @@ confident joint 的精确率只有 <strong>0.346</strong>；换成 GBDT（准确
 <td><strong>8.3%</strong> 💀</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💀 <strong>看最右边那一列</strong>：3000 条的评测集，干净时选错模型的概率是 <strong>0.4%</strong>；
 只要评测集有 10% 的标签噪声，这个概率变成 <strong>8.3% —— 二十倍。</strong>
@@ -836,7 +853,7 @@ confident joint 的精确率只有 <strong>0.346</strong>；换成 GBDT（准确
 </blockquote>
 <p><strong>后果三：真实的改进被系统性打折。</strong></p>
 <p>同一组实验，两个模型的真实差距是 <strong>+0.0395</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>评测集噪声</th>
@@ -866,7 +883,7 @@ confident joint 的精确率只有 <strong>0.346</strong>；换成 GBDT（准确
 <td><strong>71%</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>这个缩水可以算</strong>：K 分类对称噪声下，<strong>测出的差 ≈ 真实差 × (1 − e·K/(K−1))</strong>。
 后果很具体：<strong>一个真值 +2pp 的改进，在 10% 噪声的评测集上只显示 +1.7pp，
@@ -890,7 +907,7 @@ confident joint 的精确率只有 <strong>0.346</strong>；换成 GBDT（准确
 「简介里留了联系方式，但视频内容本身与推广无关」——
 旧指南写的是<strong>不算</strong>引流广告，新团队一律标成算。
 这类样本占全部正样本的 <strong>23%</strong>。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>时间</th>
@@ -919,13 +936,13 @@ confident joint 的精确率只有 <strong>0.346</strong>；换成 GBDT（准确
 <td>一个头部创作者公开发帖，运营找过来，才开始查标签</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>为什么没被发现（四条，第一条是根）</strong></p>
 <section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 评测集和训练集【同一批人、同一个批次】标的 ⭐ 根因</span></div><div class="vb-flow-row"><span class="vb-flow-step">模型学到的偏差和评测集里的偏差【完全一致】</span></div><div class="vb-flow-row"><span class="vb-flow-step">模型越&quot;错得像标注员&quot;，评测分数越高</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 这套评测集在结构上已经没有能力发现这个问题</span></div><div class="vb-flow-row"><span class="vb-flow-step">② F1 涨 2.6 个点，正好落在&quot;这季度做了三个优化&quot;的预期里</span></div><div class="vb-flow-row"><span class="vb-flow-step">—— 指标符合预期时，没人会去质疑指标本身</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 抽检只抽【模型判为正、且置信度低】的样本</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 而这批误判的置信度【很高】——模型学得很好，它很自信</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 系统性标签噪声恰恰藏在模型最自信的地方</span></div><div class="vb-flow-row"><span class="vb-flow-step">④ 只看总体 F1，没按&quot;指南的每一条边界规则&quot;分桶</span></div><div class="vb-flow-row"><span class="vb-flow-step">—— 见第二节：系统性噪声不打总体指标</span></div></div></section>
 <p><strong>代价</strong></p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>从上线到定位 27 天</p><p>误下架内容 约 11.6 万条</p><p>申诉成功率 87% ← 反过来证明这批下架确实是错的</p><p>公关 3 个头部创作者公开发声，平台发公告 + 补偿</p><p>返工 重标评测集 3 万条 ¥8.4 万 / 11 天</p><p>重标训练集 9.7 万条 ¥27 万 / 5 周</p><p>⭐ 但最贵的一项是：</p><p>第 3 季度基于这套评测集做的 14 次实验，结论【全部作废】</p></div></section>
 <p><strong>该补什么</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>缺失</th>
@@ -958,7 +975,7 @@ confident joint 的精确率只有 <strong>0.346</strong>；换成 GBDT（准确
 <td>指南进版本库，每次修订跑一次黄金集（<a href="17-数据版本与血缘.html">第 17 章</a>）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💀 <strong>这个事故一句话总结</strong>：
 <strong>当评测集和训练集共享同一个标注偏差时，评测集测的不是"模型对不对"，
@@ -1007,7 +1024,7 @@ confident joint 的精确率只有 <strong>0.346</strong>；换成 GBDT（准确
 </blockquote>
 <hr />
 <h2 id="_8">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>去哪</th>
@@ -1044,7 +1061,7 @@ confident joint 的精确率只有 <strong>0.346</strong>；换成 GBDT（准确
 <td>线上根本拿不到干净标签时，怎么估计模型真实水平</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_9">✅ 检查点</h2>
 <ol>

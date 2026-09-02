@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -309,7 +326,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="api">🧭 零、这份表和「一行 API 都不写」那条立场怎么共处</h2>
 <p>站里 <a href="../智能体工程教程/16b-框架这层皮.html">智能体工程教程 16b</a> 写过一句很硬的话：「因为框架会过期而原理不会，这章只写<strong>映射和坑</strong>，一行 API 都不写。」</p>
 <p>⚠️ <strong>那说的是 Agent 框架</strong>（LangChain 那一类），立场是对的 —— 那层封装薄、换得快、封的还是你本来就该懂的机制。<strong>但全栈不给代码没法学。</strong> <a href="00-怎么用这份教程.html">00 章第五节</a>已经拍板过折中，原话三条：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>做法</th>
@@ -330,13 +347,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>版本号、平台控制台路径 —— 尽量给「怎么自己查最新的」</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>这份附录就是第二条的产物</strong>，只是把 16 处分散的对照收成一处、并补了两个栈。它和 16b 不矛盾：<strong>16b 拒绝写的是「怎么调这个 API」，这里写的是「这个概念在你那个栈里叫什么」。</strong> 后者恰恰是 16b 自己在做的事 —— 它管那叫「一张对回机制的地图」。</p>
 <p>💡 <strong>怎么用</strong>：不写 Python 的人，<strong>先在这里确认概念对得上，再回正文读原理</strong>，把代码当伪码看。</p>
 <hr />
 <h2 id="http">🧱 一、起一个 HTTP 服务</h2>
 <p>📍 出自 <a href="03-后端骨架.html">03 章</a>（另见 <a href="02-一个AI产品的解剖.html">02 章</a>）</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>概念</th>
@@ -383,7 +400,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><code>@RestControllerAdvice</code> + <code>@ExceptionHandler</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>不变的是什么</strong>：<strong>「每个请求都要做、却不属于任何一个业务函数的事，得有一个统一的地方挂」</strong> —— 鉴权、限流、拿连接、生成 <code>trace_id</code>、识别租户。这个概念不会过期，<code>Depends</code> 这个名字会。<strong>四个栈里只有 FastAPI 把它叫「依赖注入」，另外三个都用中间件干同一件事。</strong></p>
 </blockquote>
@@ -392,7 +409,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_3">🌊 二、分批往外写响应</h2>
 <p>📍 出自 <a href="05-流式输出.html">05 章</a>（另见 <a href="01-第一天-两小时上线.html">01 章</a>）</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>概念</th>
@@ -432,7 +449,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><code>onCompletion</code> 回调里关上游</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>不变的是什么</strong>：<strong>「分批往外写」在每个栈里都要显式表达，没有一个栈是「你只管 yield，剩下的它替你办」。</strong> 区别只在<strong>它把哪一半藏起来了</strong>：FastAPI 藏进 <code>StreamingResponse</code> 这个名字里、Go 明写成 <code>Flusher.Flush()</code>、Spring 藏进一个你从没设过的超时配置里。</p>
 </blockquote>
@@ -441,7 +458,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_4">🗄️ 三、数据库与连接池</h2>
 <p>📍 出自 <a href="06-关系数据库.html">06 章</a>（向量那一层见 <a href="07-向量检索落地.html">07 章</a>）</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>概念</th>
@@ -488,7 +505,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>💀 <code>@Transactional</code> 是个<strong>注解</strong>，起止<strong>看不见</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>不变的是什么</strong>：四个生态的迁移工具<strong>都长成「一串有序脚本 + 一张记录跑到哪了的表」</strong>，连接池都有一个「最大连接数」旋钮，执行计划都是同一句 <code>EXPLAIN ANALYZE</code>（<strong>那是数据库的能力，跟语言无关</strong>）。<strong>换栈要重学的只有语法。</strong></p>
 </blockquote>
@@ -499,7 +516,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_5">⏳ 四、后台任务与队列</h2>
 <p>📍 出自 <a href="11-长任务与队列.html">11 章</a></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>概念</th>
@@ -546,7 +563,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><code>@Scheduled</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>不变的是什么</strong>：名字全不一样，<strong>四件事完全一样</strong> —— 一张带状态的表、一条原子认领语句、一个由输入算出的幂等键、一套带抖动和上限的重试。<strong>这四件事不过期，上面那些包名会。</strong></p>
 </blockquote>
@@ -555,7 +572,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_6">🔑 五、配置与密钥</h2>
 <p>📍 出自 <a href="13-配置与密钥.html">13 章</a></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>概念</th>
@@ -602,7 +619,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>日志框架的自定义 converter 🗓️</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>不变的是什么</strong>：四个栈形状完全一样 —— <strong>一处声明全部配置 → 启动时校验 → 校验不过就别启动 → 打印时永远不吐密钥。</strong> 会过期的是包名，不会过期的是这四步。</p>
 </blockquote>
@@ -611,7 +628,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_7">📈 六、日志与指标</h2>
 <p>📍 出自 <a href="15-可观测性.html">15 章</a></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>概念</th>
@@ -658,12 +675,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>同；⭐ 另有<strong>零改代码的字节码探针</strong> 🗓️</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>不变的是什么</strong>：<strong>三个栈用隐式上下文（写起来舒服），一个栈用显式传递（写起来啰嗦）。隐式的那三个都有同一个 bug：换执行载体时上下文断掉，而且不报错。</strong></p>
 </blockquote>
 <p>⭐ <a href="15-可观测性.html">15 章那个 <code>run_in_executor</code> 的坑</a>不是 Python 的毛病，是<strong>隐式上下文这个设计的固有代价</strong>：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>栈</th>
@@ -693,13 +710,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>代价是每个函数签名都得多一个参数</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>⭐ <strong>三边的症状一模一样：日志里的 id 悄悄变成默认值，不抛异常、不打警告、本地单人开发时也看不出来。修法的形状也一模一样：在跳转的那一刻，把上下文整个拷过去。</strong> Go 那种「什么都要手传」的啰嗦，买的就是这一条 —— <a href="15-可观测性.html">15 章</a>的原话是「<strong>永远不会出现『第三层忘了传』</strong>」。</p>
 <p>⚠️ <strong>还有一个断点四个栈全都躲不掉</strong>：⭐ <strong>进了队列就必须写进 payload。</strong> 队列里的任务是另一个进程、可能另一台机器、可能几分钟之后才跑，任何进程内的上下文机制都帮不上忙（<a href="15-可观测性.html">15 章第三节</a>）。这一格没有语言差异，只有做没做。</p>
 <hr />
 <h2 id="_8">🧪 七、把上游换成假的</h2>
 <p>📍 出自 <a href="03-后端骨架.html">03 章</a>（<code>dependency_overrides</code>）和 <a href="04-调用层.html">04 章</a>（<code>FakeLLM</code>）</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>概念</th>
@@ -739,7 +756,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>同</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>不变的是什么</strong>：这四行<strong>都不是测试技巧，是设计的结果</strong>。它们能成立的唯一前提是 <a href="03-后端骨架.html">03 章</a>那条规矩：<strong><code>api/</code> 里不许直接出现模型 SDK 的名字。</strong> 业务代码对着<strong>你自己的接口</strong>写，「换成假的」才是一行的事；对着某个 SDK 写，换什么栈都换不掉。</p>
 </blockquote>
@@ -748,7 +765,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_9">📦 八、容器与部署</h2>
 <p>📍 出自 <a href="14-容器化与部署.html">14 章</a></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>概念</th>
@@ -802,7 +819,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>⭐ 框架自带 liveness / readiness 🗓️</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>不变的是什么</strong>：<strong>层缓存的排序法则、多阶段构建、<code>.dockerignore</code>、两个健康检查端点问的是两个问题、关机四步</strong> —— 一条都不属于 Python。会过期的只是基础镜像的版本号和包管理器的名字。</p>
 </blockquote>
@@ -816,7 +833,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="js-react-vue">🎨 九、前端：原生 JS / React / Vue</h2>
 <p>📍 出自 <a href="09-最小可用前端.html">09 章</a> 和 <a href="10-把流式接到界面上.html">10 章</a></p>
 <p>⚠️ 这一族的三列不是「三个后端栈」，是<strong>同一个浏览器上的三种写法</strong> —— 所以判据也不同：不是「哪个更好」，是 ⭐ <strong>「哪几行框架真能帮上忙」</strong>。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>概念</th>
@@ -875,7 +892,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>⚠️ <strong>一样要接</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>不变的是什么</strong>：<strong>八行里只有三行是框架真能帮上忙的（状态、渲染、只更新最后一条），另外五行换成任何框架都还在。</strong> 收流、拼帧、<code>AbortController</code>、滚动跟随、净化 —— 这些是<strong>浏览器和 HTTP 层的问题，以及「模型输出是不可信输入」这件事</strong>，不是框架能替你解决的。</p>
 </blockquote>
@@ -898,7 +915,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="_11">🔗 这一页连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>去哪</th>
@@ -935,7 +952,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>同一个方法在 <strong>Agent 框架</strong>上的版本：把框架的名字一个个对回机制。⭐ 那一章更狠 —— 它一行 API 都不写</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_12">✅ 检查点</h2>
 <ol>

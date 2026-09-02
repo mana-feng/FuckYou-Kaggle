@@ -173,6 +173,13 @@ table.xref th{text-align:left;background:var(--accent-soft);color:var(--accent);
  padding:8px 12px;border:1px solid var(--border)}
 table.xref td{padding:8px 12px;border:1px solid var(--border);vertical-align:top}
 table.xref td:first-child{white-space:nowrap;font-weight:600}
+
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -227,7 +234,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <p><strong>传统 CF/MF 完全丢失了这些信息</strong>——它们眼里用户只是一个「集合」，不是「序列」。</p>
 <hr />
 <h2 id="_3">🔄 换一个问题定义</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -252,7 +259,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td><strong>语言模型</strong> ⭐</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>🔑 <strong>关键类比</strong>：把「物品 ID」当成「单词」，把「用户行为序列」当成「句子」，
 那么<strong>推荐 = 预测下一个词</strong> = <strong>一个语言模型问题</strong>。</p>
@@ -405,7 +412,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 
 <hr />
 <h2 id="bert4rec">🎭 BERT4Rec：另一条路（了解即可）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th></th>
@@ -435,7 +442,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>论文里更高</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⚠️ <strong>一个重要的行业教训</strong>：2022 年后多篇复现研究指出，许多序列推荐论文的「超越 SASRec」在公平调参下无法复现。
 <strong>SASRec 依然是最强的 baseline 之一。</strong>
@@ -445,7 +452,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <h2 id="_7">🕐 序列推荐的四个实战难题</h2>
 <h3 id="1">① 长序列怎么办？</h3>
 <p>用户可能有 10 万条历史，Transformer 是 O(L²)，扛不住。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>方案</th>
@@ -470,7 +477,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>改注意力的复杂度，见第 14 节</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="2">② 多行为怎么融合？</h3>
 <p>点击、加购、购买、收藏……不能都当成一样的。
 → 给每个行为加 <strong>behavior type embedding</strong>，或分别建序列后融合。</p>
@@ -500,8 +507,8 @@ Krichene &amp; Rendle (KDD 2020) 的论文专门论证了这一点——<strong>
 </blockquote>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/13-RNN与序列建模.html">ML基础 13</a></td><td>GRU4Rec 的底子，也解释了 RNN 为什么最终被自注意力取代</td></tr><tr><td><a href="../大模型全景导论/02-Transformer原理.html">全景导论 02</a></td><td>SASRec 就是单向 Transformer：位置编码 + 因果掩码 + 自注意力，一个不少</td></tr><tr><td><a href="../模型上线之后/02-离线好不等于线上好.html">上线之后 02</a></td><td>本章说「采样评测会骗你」，那一章把<strong>整个离线评测为什么骗人</strong>拆成五道坎。⭐ <strong>坎 ① 和本章是同一个病根的另一半</strong>：评估集里全是<strong>旧模型曝光过的</strong>样本，新模型想推的东西压根不在候选里 —— 务实解法是<strong>留 1% 随机流量攒一份无偏评估集</strong></td></tr>
-<tr><td><a href="12-评估与AB实验.html">12 · 评估与 AB 实验</a></td><td>本章这条结论在板块内的落点：那一章「离线评估的五个致命陷阱」的<strong>陷阱 2「负采样评测」</strong>就写着「第 9 节讲过」，⭐ 顺带把旁边四个陷阱（随机切分 / 曝光偏差 / 位置偏差 / 只看总体）一起收了</td></tr><tr><td><a href="../Kaggle竞赛方法论/18_召回算法.html#mindmulti-interest-network">Kaggle 18 · 多兴趣召回</a></td><td>⭐ 本章把用户历史压成<strong>一个</strong>向量。但一个人可以同时喜欢科幻片和纪录片，压成一个向量等于取平均、两头不讨好。<a href="../Kaggle竞赛方法论/18_召回算法.html#comirec">MIND / ComiRec 给一个用户产出多个兴趣向量</a>，那边讲了怎么做</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/13-RNN与序列建模.html">ML基础 13</a></td><td>GRU4Rec 的底子，也解释了 RNN 为什么最终被自注意力取代</td></tr><tr><td><a href="../大模型全景导论/02-Transformer原理.html">全景导论 02</a></td><td>SASRec 就是单向 Transformer：位置编码 + 因果掩码 + 自注意力，一个不少</td></tr><tr><td><a href="../模型上线之后/02-离线好不等于线上好.html">上线之后 02</a></td><td>本章说「采样评测会骗你」，那一章把<strong>整个离线评测为什么骗人</strong>拆成五道坎。⭐ <strong>坎 ① 和本章是同一个病根的另一半</strong>：评估集里全是<strong>旧模型曝光过的</strong>样本，新模型想推的东西压根不在候选里 —— 务实解法是<strong>留 1% 随机流量攒一份无偏评估集</strong></td></tr>
+<tr><td><a href="12-评估与AB实验.html">12 · 评估与 AB 实验</a></td><td>本章这条结论在板块内的落点：那一章「离线评估的五个致命陷阱」的<strong>陷阱 2「负采样评测」</strong>就写着「第 9 节讲过」，⭐ 顺带把旁边四个陷阱（随机切分 / 曝光偏差 / 位置偏差 / 只看总体）一起收了</td></tr><tr><td><a href="../Kaggle竞赛方法论/18_召回算法.html#mindmulti-interest-network">Kaggle 18 · 多兴趣召回</a></td><td>⭐ 本章把用户历史压成<strong>一个</strong>向量。但一个人可以同时喜欢科幻片和纪录片，压成一个向量等于取平均、两头不讨好。<a href="../Kaggle竞赛方法论/18_召回算法.html#comirec">MIND / ComiRec 给一个用户产出多个兴趣向量</a>，那边讲了怎么做</td></tr></tbody></table></div>
 <hr />
 <h2 id="_10">✅ 检查点</h2>
 <ol>

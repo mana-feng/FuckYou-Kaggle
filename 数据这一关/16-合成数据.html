@@ -8,7 +8,17 @@ if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
  src:url("../assets/code-cjk-mono.woff2") format("woff2");
  font-weight:400;font-style:normal;font-display:swap;}
 
-:root{--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
  --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
  --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
 [data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
@@ -36,24 +46,29 @@ header.site button{background:none;border:1px solid var(--border);border-radius:
 header.site button:hover{border-color:var(--accent)}
 header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
 main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
-h1{font-size:1.9em;line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
-h2{font-size:1.42em;margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
-h3{font-size:1.14em;margin:1.6em 0 .5em}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
 a{color:var(--link)}p{margin:.85em 0}
 hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
 blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
  border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
 blockquote p{margin:.4em 0}
 ul,ol{padding-left:1.5em}li{margin:.35em 0}
-table{border-collapse:collapse;width:100%;margin:1.2em 0;font-size:.93em}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
 th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
 th{background:var(--quote-bg)}
 tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
 code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
- font-size:.88em;background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
 pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
  line-height:1.6;box-shadow:var(--shadow)}
-pre code{background:none;padding:0;color:#f8f8f2;font-size:.85em}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
 .codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
 .codehilite pre{margin:0;background:none;box-shadow:none}
 details{background:var(--card);border:1px solid var(--border);border-radius:12px;
@@ -61,27 +76,27 @@ details{background:var(--card);border:1px solid var(--border);border-radius:12px
 details summary{cursor:pointer;font-weight:600;color:var(--accent)}
 details[open] summary{margin-bottom:.6em}
 .toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
- padding:10px 18px;margin:1.4em 0;font-size:.92em}
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
 .toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
 .toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
 .pagenav{display:flex;gap:14px;margin-top:50px}
 .pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
  border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
 .pagenav a:hover{border-color:var(--accent)}
-.pagenav .dir{font-size:.8em;color:var(--muted)}.pagenav .next{text-align:right}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
 .donebar{margin-top:36px;text-align:center}
 .donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
  border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
 .donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
-.donebar .hint{font-size:.85em;color:var(--muted);margin-top:8px}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
 .srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
- border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:.92em}
-.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:.78em;
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
  padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
 .srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .srcbox dt{color:var(--muted);white-space:nowrap}
 .srcbox dd{margin:0;word-break:break-all}
-.srcbox .warn{margin-top:10px;color:var(--muted);font-size:.92em;border-top:1px dashed var(--border);padding-top:8px}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
 /* ── ASCII 边框图的替代组件 ──────────────────────────────────
    站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
    19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
@@ -97,32 +112,32 @@ details[open] summary{margin-bottom:.6em}
 .panels .panel:first-child{border-top:0}
 .panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
 .panels .pl{margin:0;padding:0;list-style:none}
-.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
 .panels .pl b{color:var(--fg);font-weight:600}
 .panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
- border-radius:7px;padding:8px 11px;font-size:.93em;line-height:1.6}
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
 
 /* ② 单框卡片：原「一个方框，里面几行」 */
 .framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
  padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
 .framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
 .framecard ul{margin:0;padding:0;list-style:none}
-.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:.95em}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
 .framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
  border-radius:50%;background:var(--accent);opacity:.45}
-.framecard .fnote{margin-top:10px;color:var(--muted);font-size:.9em;line-height:1.6;
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
  border-top:1px dashed var(--border);padding-top:8px}
 
 /* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
 .flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
 .flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
- background:var(--card);padding:11px 13px;font-size:.93em;line-height:1.55}
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
 .flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
-.flowchain .fstep span{color:var(--muted);font-size:.92em}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
 .flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
- padding:0 9px;color:var(--accent);font-size:1.15em;opacity:.75}
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
 @media(max-width:600px){
  .flowchain{flex-direction:column}
  .flowchain .fstep{flex:1 1 auto}
@@ -134,29 +149,31 @@ details[open] summary{margin-bottom:.6em}
    insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
 figure.dia{margin:22px 0;padding:0}
 figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
-figure.dia figcaption{text-align:center;color:var(--muted);font-size:.88em;
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
  margin-top:8px;line-height:1.6}
 figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
 /* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
    正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
 @media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
 figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
- margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:.82em;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
  background:var(--quote-bg);letter-spacing:.01em}
 figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 }
 
-.dia-lead{color:var(--muted);font-size:.94em;margin:14px 0 -6px;line-height:1.65}
-.dia-note{color:var(--muted);font-size:.9em;margin:-8px 0 16px;line-height:1.65}
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
 
 .gapmap{margin:18px 0}
-.gapmap .lead{color:var(--muted);font-size:.95em;margin-bottom:14px}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
 .gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
  gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
  margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
-.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:.93em;line-height:1.5}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
 .gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
 .gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
 .gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
@@ -164,9 +181,9 @@ figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
 .gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
 .gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
  box-shadow:var(--shadow)}
-.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.02em}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
 .gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
-.gapfill li{margin:.28em 0;font-size:.93em;break-inside:avoid}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
 @media(max-width:640px){
  .gaprow{grid-template-columns:1fr}
  .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
@@ -277,7 +294,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <ul>
 <li><a href="#_1">🎯 一句话</a></li>
 <li><a href="#_2">🧬 一、先分清：四种完全不同的东西都叫「合成数据」</a></li>
-<li><a href="#_3">✅ 二、什么时候有用：五个场景，各自的成立条件</a></li>
+<li><a href="#_3">🚦 二、什么时候有用：五个场景，各自的成立条件</a></li>
 <li><a href="#_4">☠️ 三、什么时候有毒：四条红线</a></li>
 <li><a href="#_5">🧪 四、实跑：多代自训练里，多样性是怎么一代代收窄的</a></li>
 <li><a href="#_9">💀 五、一次真实的事故复盘</a></li>
@@ -298,7 +315,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_2">🧬 一、先分清：四种完全不同的东西都叫「合成数据」</h2>
 <p><strong>这四种的风险等级差一个数量级，混着讨论必然吵不出结果。</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>叫法</th>
@@ -333,7 +350,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>冷启动、指令数据、标注草稿</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>它们的差别不在技术，在「信息从哪来」：</strong></p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>数据增强 信息来自 —— 你知道哪些变换不改变标签（不变性先验）</p><p>仿真生成 信息来自 —— 你亲手写下的规则</p><p>统计生成 信息来自 —— 那份真实数据本身</p><p>⭐ 它【不产生新信息】，只是把已有信息重新排列成更多行</p><p>大模型生成 信息来自 —— LLM 的预训练语料</p><p>⭐ 唯一真的引入了外部信息的一种</p><p>⚠️ 也是唯一【你说不清引入了什么】的一种</p></div></section>
 <blockquote>
@@ -348,9 +365,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 但它的置信度会涨（因为"见得多了"）—— <strong>这是过拟合的一种伪装形式。</strong></p>
 </blockquote>
 <hr />
-<h2 id="_3">✅ 二、什么时候有用：五个场景，各自的成立条件</h2>
+<h2 id="_3">🚦 二、什么时候有用：五个场景，各自的成立条件</h2>
 <p><strong>不要问「合成数据行不行」，要问「这个场景的成立条件我满足了没有」。</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>场景</th>
@@ -391,7 +408,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>—（这是 ROI 最高的一种）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>四条具体的操作建议：</strong></p>
 <section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>稀有类补充要【封顶】</li><li>合成样本量 ≤ 该类真实样本量 × 3~5</li><li>⭐ 超过这个比例，模型学到的是&quot;生成器的口癖&quot;，不是这一类的特征</li><li>冷启动的合成数据必须带【退役日期】字段</li><li>每条样本记 source=&#x27;synthetic&#x27; + created_at</li><li>⭐ 第一批真实数据到齐之后，按计划下线，不是&quot;忘了就一直留着&quot;</li><li>压测造数要造【形态】不是造【数值】</li><li>字段长度分布、空值率、极端时间戳、重复主键、编码异常</li><li>⭐ 一份&quot;全是合法值&quot;的压测数据，测不出你的管道会不会崩</li><li>边界样例要写进【评测集的独立分区】，不是混进主评测集</li><li>它们是&quot;必须不出错&quot;的清单，不参与整体指标的平均</li></ol></section>
 <blockquote>
@@ -405,7 +422,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="1">💀 红线 1：评测集里混进合成数据</h3>
 <p><strong>这是本章最贵的一条，因为它不会让你出错，它会让你「看起来很对」。</strong></p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>机制拆开看：</p><p>合成数据 D_syn 由生成器 G 产生</p><p>你的模型 M 在 D_syn 上训练过（或者 M 和 G 同源）</p><p>于是 M 在 D_syn 上的表现，衡量的是</p><p>⭐【M 有多懂 G 的口癖】</p><p>而不是</p><p>【M 有多懂真实世界】</p><p>💀 这两件事在指标上长得一模一样，而且前者【永远更容易】</p></div></section>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>混入方式</th>
@@ -430,20 +447,40 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>⚠️ 稀有类指标虚高，而稀有类往往正是你关心的</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💀 <strong>铁律，没有例外</strong>：
 <strong>评测集只能来自真实世界，并且每一条都能追溯到具体来源。</strong>
 合成数据可以进训练集、可以进边界样例清单，<strong>不能进用来做上线决策的那份评测集</strong>。
 这条和<strong>第 13 章「评测集也是数据」</strong>是同一句话的两种说法。</p>
 </blockquote>
-<h3 id="2">💀 红线 2：模型坍塌（下一节整节实跑）</h3>
+<h3 id="2">💀 红线 2：模型坍塌（第四节整节实跑）</h3>
+<p><strong>模型坍塌指的是：把模型自己的输出（或另一个模型的输出）当训练数据喂回去，一代代传下去，分布会系统性地越来越窄。</strong>
+它不是"生成质量变差了"这种模糊说法，而是有很干净的数学形式 —— 每代用上一代的样本估计分布再采样，
+<strong>方差每代确定地乘一个 <code>(n−1)/n</code></strong>，同时中心在做无方向的随机游走。
+💀 <strong>于是你得到一个越来越自信、但越来越偏的分布 —— 而它自己看不出来。</strong></p>
+<p><strong>它是红线而不是理论隐忧，因为触发它的动作在真实工程里都很常见，而且都不长得像"我在用合成数据"：</strong></p>
+<p>① <strong>把线上高置信度的预测回灌重训</strong> —— 第五节那个客服事故第 3 周做的正是这件事，
+三轮之内 9 个弱意图的样本占比从 <strong>4.1% 掉到 0.6%</strong>。
+② ⚠️ <strong>常规监控看不见它</strong> —— 纯自消费十代，样本标准差只掉 <strong>2.5%</strong>，
+而有效模态数掉 <strong>9.9%</strong>、尾部三个稀有模态的占比掉 <strong>11.5%</strong>：
+<strong>坍塌先发生在长尾</strong>，等方差报警时稀有类已经死了很久。
+③ 💀 <strong>"只保留模型最有把握的那一半样本"这个人人都觉得是好习惯的动作，是加速器不是保护措施</strong> ——
+实验里只过滤一次，尾部三个模态的占比就从 <strong>9.96% 掉到 0.02%</strong>，一代之内长尾清零。</p>
+<p>⚠️ 而且"每代样本量"不是你的数据集行数，<strong>是模型在那个子区域上实际见过的独立样本数</strong> ——
+长尾类别的有效样本量常常只有几十，而每代 30 个样本时<strong>方差减半只要约 20 代</strong>。</p>
+<blockquote>
+<p>⭐ <strong>但这条红线的位置要划准，否则会矫枉过正</strong>：
+真正的触发条件<strong>不是"用了合成数据"，是"用合成数据把真实数据换掉了"</strong>。
+第四节的对照实验里，只要真实数据永远留在训练池里（<strong>累积</strong>，而不是<strong>替换</strong>），
+十代之后熵只从 1.770 掉到 1.753，<strong>掉 1.0%</strong> —— 几乎没有坍塌。</p>
+</blockquote>
 <h3 id="3">⚠️ 红线 3：合成数据继承并<strong>放大</strong>原始偏差</h3>
 <p>生成器学的是训练它的那份数据。原始数据里 A 类占 80%，<strong>采出来的通常大于 80%</strong> ——
 因为「拟合 + 采样」在数学上是一个<strong>锐化</strong>操作：低密度区被当成噪声，高密度区被强化。</p>
 <section class="result-board" aria-label="真实与合成数据的类别分布">
 <p class="result-board-title">合成数据把头部放大，把长尾抹掉</p>
-<table>
+<div class="tw"><table>
 <caption>生成器输出与真实类别分布的对比</caption>
 <thead><tr><th>类别</th><th>真实数据</th><th>合成数据</th><th>变化</th></tr></thead>
 <tbody>
@@ -452,12 +489,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <tr><td>C</td><td>4%</td><td>1%</td><td>长尾被压缩</td></tr>
 <tr><td>D</td><td>1%</td><td>0%</td><td>直接消失</td></tr>
 </tbody>
-</table>
+</table></div>
 <p class="result-board-takeaway">对每个关键分组算 |合成占比 − 真实占比| / 真实占比；任何一组超过 10%，这批合成数据不能直接用。</p>
 </section>
 <h3 id="4">⚠️ 红线 4：用大模型造标注，但没人核验</h3>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>LLM 标注的一致性【非常高】—— 同样的输入，它给同样的答案</p><p>⚠️ 但「一致性高」不等于「正确」</p><p>💀 更糟的是：它把一个最有价值的信号【抹掉】了 ——</p><p>人和人标不一致的地方，恰恰是【任务定义本身模糊】的地方</p><p>（这是第 10 章「标注一致性」的核心）</p><p>LLM 会在那些地方给你一个看起来非常确定的答案，</p><p>于是你永远不会发现你的标注规范有洞</p></div></section>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>该怎么做</th>
@@ -482,7 +519,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>每条标注记录是人标的还是机器标的，<strong>永远不要混成一列</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <!--MIDSTOP-->
 <blockquote>
@@ -517,7 +554,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p><strong>每代样本量 <code>n</code> 决定了收窄速度：</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>每代样本量</th>
@@ -546,9 +583,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>⭐ <strong>≈ 20 代</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>同时，均值在做无方向的随机游走</strong>（n = 100）：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>代</th>
@@ -567,7 +604,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>0.325</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>这两行数字合起来就是模型坍塌的全部</strong>：
 <strong>分布的宽度单调收缩，中心无方向漂移。</strong>
@@ -581,7 +618,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="_7">实验二：长尾先死</h3>
 <p>真实分布：8 个模态的二维混合高斯，权重 <code>[0.30, 0.25, 0.15, 0.12, 0.08, 0.05, 0.03, 0.02]</code>。
 每代 500 个样本，用 8 成分 GMM 拟合再采样，跑 10 代，25 次重复取平均。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>代</th>
@@ -634,7 +671,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>−11.5%</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>注意四个指标掉的速度不一样</strong>：
 样本标准差只掉了 <strong>2.5%</strong> —— <strong>如果你只监控"方差"，你几乎看不到任何异常。</strong>
@@ -646,7 +683,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><strong>这是真实工程里几乎人人都会做的一步</strong>：合成完之后，
 「我们只保留模型最有把握的那一半样本，这样质量更高」。
 在实验里就是 —— 采 1000 条，按生成器给的对数似然排序，<strong>保留最高的 500 条</strong>。</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>代</th>
@@ -699,7 +736,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>0.00%</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>💀💀 <strong>这是全章最重要的一张表，请看第 1 行</strong>：
 <strong>只过滤了一次，尾部三个稀有模态的占比就从 9.96% 掉到 0.02% —— 一代之内，长尾清零。</strong>
@@ -713,7 +750,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <h3 id="_8">🛡️ 四种做法对照：什么能刹住车</h3>
 <p>同一个实验，第 10 代的结果：</p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>做法</th>
@@ -766,7 +803,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td><strong>9.71%</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>看最后一行：累积模式下，十代几乎没有坍塌</strong>（熵 1.770 → 1.753，掉 1.0%）。
 <strong>「替换」和「追加」是两件性质完全不同的事</strong>：
@@ -799,7 +836,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_9">💀 五、一次真实的事故复盘</h2>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>系统：某 SaaS 的客服工单意图分类，42 个意图，线上自动分流到不同处理队列</p><p>冷启动时的家底：3800 条人工标注工单</p><p>决定：用大模型按每个意图的定义各造 2000 条，得到 8.4 万条合成训练数据</p><p>同一套 prompt 换个随机种子，另造 4200 条当&quot;评测集&quot;</p></div></section>
 <p><strong>发生了什么</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>阶段</th>
@@ -832,13 +869,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>兜底率 <strong>27%</strong>；抽查发现 <strong>9 个意图的真实召回率 ＜ 0.35</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>为什么没被发现</strong></p>
 <section class="visual-block visual-block-flow" aria-label="流程图"><p class="visual-block-title">流程图</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 评测集和训练集用【同一套 prompt】生成 💀</span></div><div class="vb-flow-row"><span class="vb-flow-step">模型只需要学会&quot;LLM 写工单的口癖&quot;，就能拿到 0.94</span></div><div class="vb-flow-row"><span class="vb-flow-step">—— 它测的是&quot;M 有多懂 G&quot;，不是&quot;M 有多懂真实工单&quot;</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 真实工单和合成工单根本不是一个东西：</span></div><div class="vb-flow-row"><span class="vb-flow-step">真实 合成</span></div><div class="vb-flow-row"><span class="vb-flow-step">平均长度 23 字 58 字</span></div><div class="vb-flow-row"><span class="vb-flow-step">含错别字比例 37% ~0%</span></div><div class="vb-flow-row"><span class="vb-flow-step">一句话多意图 19% 0% ⭐ LLM 永远只写单意图</span></div><div class="vb-flow-row"><span class="vb-flow-step">长度分布 KS 距离 0.61 💀 这一个数就能提前六周报警</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 42 个意图里，LLM 对 9 个【边界模糊】的意图理解错了</span></div><div class="vb-flow-row"><span class="vb-flow-step">—— 而这 9 个恰恰是当初人工标注一致性最低的那几个（Kappa 0.41~0.58）</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 没有任何人核验过合成标注，LLM 的&quot;确定&quot;把这个信号盖住了</span></div><div class="vb-flow-row"><span class="vb-flow-step">④ 第 3 周的&quot;置信度 ＞ 0.9 回灌&quot;把它变成了自消费闭环：</span></div><div class="vb-flow-row"><span class="vb-flow-step">模型只对它已经擅长的意图有高置信度</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">只有这些进训练集</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 这就是【质量过滤 + 替换】，实验三里一代掉 44% 的那个组合</span></div><div class="vb-flow-row"><span class="vb-flow-step">那 9 个弱意图的样本占比：4.1%</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">0.6%（三轮之内）</span></div></div></section>
 <p><strong>代价</strong></p>
 <section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">人工兜底率 8%（预期）</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">27%（第 6 周）</span></div><div class="vb-flow-row"><span class="vb-flow-step">人工客服工时 +19%</span></div><div class="vb-flow-row"><span class="vb-flow-step">6 周额外人力成本 ≈ 41 万元</span></div><div class="vb-flow-row"><span class="vb-flow-step">SLA 投诉 4 个企业客户，其中 1 个进入合同重议</span></div><div class="vb-flow-row"><span class="vb-flow-step">补救 重新采集 + 人工标注 1.2 万条真实工单</span></div><div class="vb-flow-row"><span class="vb-flow-step">2 名标注员 × 3 周</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 发现延迟 = 6 周</span></div><div class="vb-flow-row"><span class="vb-flow-step">而【长度分布 KS = 0.61】这个数，在第 0 天就能算出来</span></div></div></section>
 <p><strong>该补什么</strong></p>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>缺失</th>
@@ -871,7 +908,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>每条样本带 <code>source</code> 和 <code>created_at</code>；<strong>真实数据到 1 万条时合成数据降权到 0.3，到 3 万条时清零</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p>⭐ <strong>这个案例最值钱的一句话</strong>：
 <strong>离线 0.94 和真实 0.61 之间的 0.33，全部是「模型有多懂 LLM 的口癖」。</strong>
@@ -880,7 +917,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="_10">🧭 六、一张判断表：这批合成数据能不能用</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>先问这个</th>
@@ -930,10 +967,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>⭐ 上有效簇数 + 尾部占比。<strong>只看方差是看不见坍塌的</strong>（十代才掉 2.5%）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_11">🔗 这一章连到哪里</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>去哪</th>
@@ -962,7 +999,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>客服那个案例（0.94 → 0.61）的典型形态，那边给了完整的排查清单</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_12">✅ 检查点</h2>
 <ol>

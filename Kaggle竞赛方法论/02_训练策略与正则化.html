@@ -173,6 +173,13 @@ table.xref th{text-align:left;background:var(--accent-soft);color:var(--accent);
  padding:8px 12px;border:1px solid var(--border)}
 table.xref td{padding:8px 12px;border:1px solid var(--border);vertical-align:top}
 table.xref td:first-child{white-space:nowrap;font-weight:600}
+
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
+th,td{min-width:5.2em}
 </style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
@@ -231,7 +238,7 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <hr />
 <h2 id="warmup">一、Warmup机制</h2>
 <h3 id="11">1.1 基本原理</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -252,9 +259,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>实现前后层同步优化，防止训飞</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="12">1.2 深度原理</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -291,10 +298,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>每训练完一步后学习率进行相应变化，Warmup体现在Scheduler中</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="gradient-clipping">二、梯度截断（Gradient Clipping）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -323,10 +330,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>使用梯度累加时必须配合梯度截断，防止累加梯度爆炸</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="gradient-accumulation">三、梯度累加（Gradient Accumulation）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -355,11 +362,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>保障模型精度</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="scheduler">四、学习率调度器（Scheduler）</h2>
 <h3 id="41">4.1 调度策略对比</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>策略</th>
@@ -400,9 +407,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>warmup_epochs</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="42">4.2 分层学习率与逐层衰减</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -423,11 +430,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>微调大型预训练模型时，不同层需要不同的学习率以平衡新旧知识</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="multi-dropout-multi-sample-dropout">五、Multi-Dropout / Multi-Sample Dropout</h2>
 <h3 id="51">5.1 核心原理</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -464,9 +471,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>相同训练时间内，Validation Set错误率曲线最终会降至传统Dropout下方，收敛更快</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="52">5.2 超参细节</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -487,11 +494,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>得到多个Logits后，可以直接求和（Sum）进入Softmax，不一定非要取平均（Average）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="fgm-pgd-awp">六、对抗训练（FGM / PGD / AWP）</h2>
 <h3 id="61-fgm">6.1 FGM</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -512,9 +519,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>作为一种正则化手段来抵抗过拟合和提高抗干扰能力</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="62-pgd">6.2 PGD（投影梯度下降）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -535,9 +542,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>生成质量更高的对抗样本</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="63">6.3 对抗训练进阶设定</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -554,10 +561,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>对抗训练会导致训练耗时翻倍，可设置执行比例（如0.5），即只有50%的迭代步数进行对抗扰动更新，剩下50%使用干净样本常规更新，兼顾速度与鲁棒性</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="swa">七、SWA（随机权重平均）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -586,11 +593,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>训练末期最后5~10个epoch，维持较高固定学习率，对权重取算术平均；有交叉验证时SWA收益更明显</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="contrastive-learning">八、对比学习（Contrastive Learning）</h2>
 <h3 id="81">8.1 有监督对比学习</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -607,9 +614,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>在分类任务中直接增加对比学习损失，与交叉熵损失加权求和</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="82-simcse">8.2 SimCSE框架</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -626,9 +633,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>实现更优雅，代码持续维护，优先使用SimCSE方案</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="83-consert">8.3 ConSERT框架</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -641,9 +648,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>在Embedding层直接施加Dropout作为数据扩充，构造正负样本对进行对比学习</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="84">8.4 深度细节优化</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -664,9 +671,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>故意抽取<strong>不同类别但极易混淆的句子</strong>作为困难负样本辅助训练</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="85-representation-collapse">8.5 避免表征坍缩（Representation Collapse）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -691,9 +698,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>能显著改善表征分布，使不同语义句子在向量空间中均匀分布</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="86">8.6 对比学习的级联迁移训练</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -714,10 +721,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>经过"外部知识注入→领域内适应→最终任务微调"的级联过程，句向量表征质量大幅超越单一数据集训练</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_2">九、早停法与模型检查点</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -742,10 +749,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>保存多个检查点用于后续模型融合</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="ema">十、EMA（指数移动平均）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -774,10 +781,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>大模型微调、CV分类/检测任务</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_3">十一、知识蒸馏基础</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -810,10 +817,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>Self-Distillation是同模型内部的知识迁移，传统蒸馏是跨模型的知识迁移</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_4">十二、训练稳定性综合保障</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -842,10 +849,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>增加随机性表现，提高网络泛化性能，避免batch数据过于有规律</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_5">十三、模型收敛问题排查</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -870,10 +877,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>观察训练Loss曲线是否平稳下降，验证集分数是否稳定</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_6">十四、显存优化综合策略</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -906,10 +913,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>多种策略组合使用可在有限显存下训练更大模型</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="r-drop">十五、R-Drop（一致性正则）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -946,10 +953,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>简单有效，几行代码即可实现，NLP竞赛中常作为独立上分点</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="freelb">十六、FreeLB（对抗训练升级）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -982,10 +989,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>可视为FGM的平滑升级版，推荐在NLP对抗训练中优先尝试</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="samsharpness-aware-minimization">十七、SAM（Sharpness-Aware Minimization）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1022,10 +1029,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>CV竞赛近年热门，尤其在小数据集上效果显著</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="lookahead-optimizer">十八、Lookahead Optimizer</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1062,10 +1069,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>通用，可与任何优化器组合，适合作为默认优化器增强</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="gradual-unfreezing">十九、渐进式解冻（Gradual Unfreezing）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1094,10 +1101,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>数据量少于1000条时效果明显，可防止微调初期大梯度破坏预训练表征</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="curriculum-learning">二十、课程学习（Curriculum Learning）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1130,10 +1137,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>数据质量参差不齐时可作为上分手段，但需额外实验验证</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="flooding">二十一、Flooding</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1166,10 +1173,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>简单有效，适合后期冲刺时防止过拟合</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="stochastic-depth-droppath">二十二、Stochastic Depth / DropPath</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1202,10 +1209,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>最大丢弃率p_L通常0.1~0.3（分类），0.2~0.5（检测/分割）</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="gradient-centralization">二十三、梯度中心化（Gradient Centralization）</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1238,10 +1245,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>几乎无成本的正则化手段，适合快速实验</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="weight-standardization">二十四、Weight Standardization</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1270,10 +1277,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>显存受限只能用小BS时，WS比BN更稳定</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="layerscale">二十五、LayerScale</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1302,11 +1309,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>使用深层ViT/Swin时必加，否则深层模型训练不稳定</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_7">二十六、半监督训练方法</h2>
 <h3 id="mean-teacher">Mean Teacher</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1335,9 +1342,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>时序/CV半监督竞赛，有大量无标签数据时</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="vatvirtual-adversarial-training">VAT（Virtual Adversarial Training）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1362,9 +1369,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>半监督+NLP，有大量无标签文本时</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="fixmatch">FixMatch</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1389,9 +1396,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>CV半监督SOTA，图像分类+大量无标签数据</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="tsatraining-signal-annealing">TSA（Training Signal Annealing）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1416,11 +1423,11 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>小数据+大无标注语料的半监督场景</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="_8">二十七、竞赛常用损失函数补充</h2>
 <h3 id="aslasymmetric-loss">ASL（Asymmetric Loss）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1449,9 +1456,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>Focal Loss对称处理正负样本；ASL专门针对多标签场景优化</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="bi-tempered-loss">Bi-Tempered Loss</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1480,9 +1487,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>比Label Smoothing更精细的噪声标签处理方案</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="auc-loss">AUC Loss</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1507,9 +1514,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>训练开销比CE大（需采样正负对），通常先用CE预训练再切换AUC Loss微调</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="ldam-losslabel-distribution-aware-margin-loss">LDAM Loss（Label-Distribution-Aware Margin Loss）</h3>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1538,10 +1545,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>长尾分类竞赛中与Focal Loss互补，可组合使用</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="mixupcutmix">二十八、Mixup/CutMix的正则化视角</h2>
-<table>
+<div class="tw"><table>
 <thead>
 <tr>
 <th>维度</th>
@@ -1570,10 +1577,10 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 <td>分类任务后期过拟合时，Mixup/CutMix + Label Smoothing + Dropout 三重正则化组合效果最佳</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/10-正则化全家桶.html">ML基础 10 正则化全家桶</a></td><td>Dropout / 权重衰减 / 早停 / Mixup 为什么能防过拟合</td></tr><tr><td><a href="../机器学习与深度学习基础/09-优化器与学习率.html">ML基础 09 优化器与学习率</a></td><td>Warmup、余弦退火、Lookahead、SWA 都在改优化轨迹，先懂优化器再调它们</td></tr><tr><td><a href="../机器学习与深度学习基础/11-训练调试手册.html">ML基础 11 训练调试手册</a></td><td>梯度爆炸 / 不收敛 / loss 变 NaN 的系统排查法</td></tr><tr><td><a href="../AI基础设施/09-显存优化全家桶.html">AI基础设施 09 显存优化全家桶</a></td><td>梯度累加、梯度检查点省的到底是哪块显存</td></tr></tbody></table>
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/10-正则化全家桶.html">ML基础 10 正则化全家桶</a></td><td>Dropout / 权重衰减 / 早停 / Mixup 为什么能防过拟合</td></tr><tr><td><a href="../机器学习与深度学习基础/09-优化器与学习率.html">ML基础 09 优化器与学习率</a></td><td>Warmup、余弦退火、Lookahead、SWA 都在改优化轨迹，先懂优化器再调它们</td></tr><tr><td><a href="../机器学习与深度学习基础/11-训练调试手册.html">ML基础 11 训练调试手册</a></td><td>梯度爆炸 / 不收敛 / loss 变 NaN 的系统排查法</td></tr><tr><td><a href="../AI基础设施/09-显存优化全家桶.html">AI基础设施 09 显存优化全家桶</a></td><td>梯度累加、梯度检查点省的到底是哪块显存</td></tr></tbody></table></div>
 <hr />
 <h2 id="ckpt">✅ 检查点</h2>
 <ol>

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>08 · ControlNet 与风格 LoRA · 扩散模型</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">08 · ControlNet 与风格 LoRA</span>
+  <span class="prevnext"><a href="07-去噪主干-UNet与DiT.html">←</a>
+  <a href="09-怎么评估.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">🖐️ 一、提示词到底控制不了什么</a></li>
+<li><a href="#controlnet">🧬 二、ControlNet：复制一份主干，再用零卷积接回去</a></li>
+<li><a href="#lora">🎨 三、风格 LoRA：和语言模型那个是同一个东西</a></li>
+<li><a href="#_3">⚖️ 四、三者的分工（这一章最该记住的一张表）</a></li>
+<li><a href="#_4">💸 五、代价</a></li>
+<li><a href="#_5">🔗 这一章连到哪里</a></li>
+<li><a href="#_6">✅ 检查点</a></li>
+<li><a href="#_7">🛑 可以停在这里</a></li>
+</ul>
+</div>
+</details>
+<h1 id="08-controlnet-lora">08 · ControlNet 与风格 LoRA</h1>
+<p>⏱ <strong>22 分钟</strong> ｜ ⭐ <strong>提示词管「画什么」，这一章补上「画成什么形状」和「用什么风格画」</strong></p>
+<hr />
+<h2 id="_1">🎯 一句话</h2>
+<p><strong>文字说得清「一只猫在雪地里」，说不清「猫站在画面左三分之一、头偏右、镜头俯视」。</strong>
+ControlNet 补形状，风格 LoRA 补风格。⭐ <strong>它们和提示词三者互不替代</strong> —— 这是这一章最容易搞混的地方。</p>
+<hr />
+<h2 id="_2">🖐️ 一、提示词到底控制不了什么</h2>
+<p>上一章把接口钉死了：去噪网络吃 <code>(x_t, t, c)</code>。<strong>提示词只是 <code>c</code> 的一种</strong>，所以「加控制」只有两条路：往 <code>c</code> 里塞更强的东西，或者改那个函数本身。下面两个主角各走一条。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>你想控制的</th>
+<th>文字够不够</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>画什么</strong>（一只猫、雪地、黄昏）</td>
+<td>✅ 够，这正是文本编码器擅长的语义</td>
+</tr>
+<tr>
+<td><strong>画成什么形状</strong>（构图、姿势、线稿）</td>
+<td>❌ <strong>说不清</strong> —— 每加一条空间约束，全部命中的概率就掉一截，你还<strong>无法验证它听了哪几条</strong></td>
+</tr>
+<tr>
+<td><strong>用什么风格画</strong>（某种笔触、你的角色）</td>
+<td>❌ <strong>说了也没用</strong> —— 不是描述得更细就行，是底座<strong>根本没见过</strong>它</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="controlnet">🧬 二、ControlNet：复制一份主干，再用零卷积接回去</h2>
+<figure class="dia"><svg viewBox="0 0 700 326" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="左侧是冻结的原主干，右侧是可训练的编码器副本，中间一个标着 0 的零初始化卷积把副本接回主干"><text class="dia-t" x="350" y="24" font-size="14" text-anchor="middle" fill="var(--fg)" font-weight="700">复制一份可训练的副本，用零初始化卷积接回冻结的主干</text><rect x="30" y="54" width="180" height="216" rx="10" fill="var(--quote-bg)" stroke="var(--border)" stroke-width="1.6" stroke-dasharray="6 4"/><text class="dia-t" x="120" y="76" font-size="12.5" text-anchor="middle" fill="var(--muted)" font-weight="700">🔒 冻结的原主干</text><rect x="50" y="90" width="140" height="40" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="120" y="115" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">编码器</text><rect x="50" y="152" width="140" height="40" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="120" y="177" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">瓶颈</text><rect x="50" y="200" width="140" height="40" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="120" y="225" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">解码器</text><rect x="290" y="54" width="180" height="164" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/><text class="dia-t" x="380" y="76" font-size="12.5" text-anchor="middle" fill="var(--accent)" font-weight="700">🔥 可训练副本</text><rect x="310" y="90" width="140" height="40" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/><text class="dia-t" x="380" y="115" font-size="13" text-anchor="middle" fill="var(--accent)" font-weight="700">编码器（复制）</text><rect x="310" y="152" width="140" height="40" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/><text class="dia-t" x="380" y="177" font-size="13" text-anchor="middle" fill="var(--accent)" font-weight="700">条件图编码</text><rect x="520" y="152" width="150" height="40" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="595" y="177" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">线稿 / 深度 / 姿态</text><line x1="520" y1="172" x2="463" y2="172" stroke="var(--accent)" stroke-width="2"/><polygon points="454,172 463,167 463,177" fill="var(--accent)"/><circle cx="250" cy="220" r="16" fill="var(--card)" stroke="var(--done)" stroke-width="2.2"/><text class="dia-t" x="250" y="225" font-size="14" text-anchor="middle" fill="var(--done)" font-weight="700">0</text><line x1="310" y1="110" x2="266" y2="210" stroke="var(--done)" stroke-width="2" stroke-dasharray="5 4"/><line x1="234" y1="220" x2="203" y2="220" stroke="var(--done)" stroke-width="2"/><polygon points="194,220 203,215 203,225" fill="var(--done)"/><text class="dia-t" x="250" y="254" font-size="11.5" text-anchor="middle" fill="var(--done)" font-weight="700">零初始化卷积</text><text class="dia-t" x="350" y="292" font-size="12.5" text-anchor="middle" fill="var(--done)" font-weight="700">⭐ 第 0 步这条支路输出恒为 0 —— 加了它的模型和原模型逐位相同（实测差 0.0）</text><text class="dia-t" x="350" y="314" font-size="12" text-anchor="middle" fill="var(--muted)">但权重梯度是 2501.0 不是 0，所以它照样从第一步就开始学</text></svg><figcaption>看中间那个标着 **0** 的圆：训练开始时它让整条支路输出为零，⭐ 于是**加了 ControlNet 的模型和原模型逐位相同** —— 不破坏已训好的东西，却照样有梯度可学。</figcaption></figure>
+
+<ol>
+<li><strong>冻结</strong>原来的去噪主干（上一章那个 U-Net），一个权重都不动。</li>
+<li>把它<strong>编码器那一半复制一份</strong>，这份可训练 —— 起点是会画画的权重，不是随机数。</li>
+<li><strong>条件图</strong>（Canny 边缘图 / 深度图 / 姿态骨架）经一个小编码器，加到副本输入上。</li>
+<li>副本每一级的输出，各经一个<strong>零初始化的 1×1 卷积</strong>，加进冻结主干<strong>解码器</strong>同级。</li>
+</ol>
+<p>第 4 步那个「零初始化」是整个设计的支点：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 零初始化卷积：训练前输出恒为 0，梯度却不为 0 —— 所以它接得进去，也学得起来</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">frozen</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">320</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>      <span class="c1"># 冻结主干这一级的输出</span>
+<span class="n">branch</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">320</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>      <span class="c1"># 可训练副本这一级的输出</span>
+<span class="n">zc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">320</span><span class="p">,</span> <span class="mi">320</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>             <span class="c1"># ⭐ ControlNet 接回主干用的 1×1 卷积</span>
+<span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">zeros_</span><span class="p">(</span><span class="n">zc</span><span class="o">.</span><span class="n">weight</span><span class="p">);</span> <span class="n">nn</span><span class="o">.</span><span class="n">init</span><span class="o">.</span><span class="n">zeros_</span><span class="p">(</span><span class="n">zc</span><span class="o">.</span><span class="n">bias</span><span class="p">)</span>
+
+<span class="n">out</span> <span class="o">=</span> <span class="n">frozen</span> <span class="o">+</span> <span class="n">zc</span><span class="p">(</span><span class="n">branch</span><span class="p">)</span>               <span class="c1"># ControlNet 就是这么接回去的</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;接回后的最大差&quot;</span><span class="p">,</span> <span class="n">out</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">frozen</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+<span class="n">out</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;权重梯度范数  &quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">zc</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="mi">1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;默认初始化的话&quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">320</span><span class="p">,</span> <span class="mi">320</span><span class="p">,</span> <span class="mi">1</span><span class="p">)(</span><span class="n">branch</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="mi">3</span><span class="p">))</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>接回后的最大差 0.0
+权重梯度范数   2501.0
+默认初始化的话 2.217
+</code></pre></div>
+
+<p><code>0.0</code> 说明第 0 步加了 ControlNet 的模型和原模型<strong>逐位相同</strong>；但梯度 <strong>2501 不是 0</strong>（里面带着副本这一级输出了什么），所以它从第一步就开始长。⚠️ 换成默认初始化，训练还没开始就往训好的模型里灌进 <strong>2.217</strong> 的随机改动。</p>
+<blockquote>
+<p>⭐ <strong>零初始化把「加一条新支路」从破坏性改动变成了从零长出来的增量。</strong>
+这也是它只用<strong>几万张</strong>图就训得起来的原因 —— 不必重新学画画，只需学「怎么把条件图掺进去」。</p>
+</blockquote>
+<p>💡 上一章 DiT 的 adaLN-Zero 门控也是零初始化，同一个想法。</p>
+<hr />
+<h2 id="lora">🎨 三、风格 LoRA：和语言模型那个是同一个东西</h2>
+<p>不是「像」，是<strong>同一个低秩适配</strong>：底座 <code>W</code> 冻结，旁边挂一对窄矩阵，前向变成 <code>W·x + B(A·x)</code>，中间那个窄维度叫 <strong>rank</strong>（记作 <code>r</code>）。⭐ <code>B</code> 零初始化，所以挂上那一刻 <code>W + BA = W</code> —— <strong>和上一节的零卷积同一个动机</strong>。</p>
+<p>拿交叉注意力里 768 → 320 那层算笔账：原层 <code>768×320 = 245760</code> 个参数，LoRA 只有 <code>r×(768+320) = 1088r</code> 个。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th><code>r</code></th>
+<th>可训练参数</th>
+<th>占原层</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4</td>
+<td>4352</td>
+<td><strong>1.77%</strong></td>
+</tr>
+<tr>
+<td>64</td>
+<td>69632</td>
+<td><strong>28.33%</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>⚠️ 所以 <code>r</code> 不是越大越好：到 64 已经离全量微调不远，小数据下更容易把训练集背下来。常见取值就在 <strong>4~64</strong>，主要挂在<strong>交叉注意力</strong>的 Q/K/V 和输出投影上 —— 那正是文本条件落到图像特征的地方。</p>
+<p><strong>为什么风格只能走这条路</strong>：风格是<strong>分布层面</strong>的偏移（笔触走向、色调、留白），几个形容词定位不了，得拿 20~100 张风格一致的图去改权重。</p>
+<hr />
+<h2 id="_3">⚖️ 四、三者的分工（这一章最该记住的一张表）</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>管什么</th>
+<th>怎么进模型</th>
+<th>代价</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>提示词</strong></td>
+<td><strong>画什么</strong> —— 内容、语义</td>
+<td>文本编码器 → 条件 <code>c</code></td>
+<td>免费，改字就行</td>
+</tr>
+<tr>
+<td><strong>ControlNet</strong></td>
+<td><strong>画成什么形状</strong> —— 构图、姿势</td>
+<td>一条并行支路，逐级加进主干</td>
+<td>多跑一份编码器副本</td>
+</tr>
+<tr>
+<td><strong>风格 LoRA</strong></td>
+<td><strong>用什么风格画</strong> —— 笔触、角色</td>
+<td>直接改主干若干层的权重</td>
+<td>算力几乎不加，但要训</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>只给 ControlNet 不给提示词 → <strong>形状对了，它不知道该画猫还是狗</strong>。</li>
+<li>只给 LoRA 不给 ControlNet → <strong>风格稳了，构图还是每次都变</strong>。</li>
+<li>提示词写「站在左边」只让概率<strong>偏一点</strong>；ControlNet 给的是<strong>逐像素</strong>的约束。</li>
+</ul>
+<hr />
+<h2 id="_4">💸 五、代价</h2>
+<p><strong>① ControlNet 要多跑一份主干。</strong> 副本是编码器那一半，推理时那部分跑两遍，参数和激活都多一份。⚠️ <strong>更贵的是它和 CFG 相乘</strong> —— CFG 本来就要跑两次去噪网络，加了 ControlNet 之后<strong>这两次都得带上副本</strong>。</p>
+<p><strong>② 多个 ControlNet 会打架。</strong> 条件互相矛盾时（线稿说手在这儿、深度图说手在那儿），出图就崩在那个位置。</p>
+<p><strong>③ 多个 LoRA 更麻烦</strong>：<code>BA</code> 直接加进同一个 <code>W</code>，⚠️ <strong>它们没有任何机制知道对方存在</strong>，只能每个配一个系数靠试（diffusers 里就是 <code>set_adapters([...], adapter_weights=[0.8, 0.6])</code> 那两个数）。风格 LoRA 和角色 LoRA 打架是最常见的一种。</p>
+<p><strong>④ 风格 LoRA 会越界。</strong> 训练集只有几十张时，它常连<strong>背景和构图</strong>一起学走，那就侵占了 ControlNet 的地盘。症状很好认：<strong>不管提示词怎么改，构图都像训练集那几张</strong>。解法是减 <code>r</code>、减步数，或让训练集构图更杂。</p>
+<hr />
+<h2 id="_5">🔗 这一章连到哪里</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>去哪</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../大模型全景导论/05-微调与LoRA.html">大模型全景导论 主线 5 · 怎样把模型变成你的助手</a></td>
+<td>⭐ <strong>同一个低秩适配</strong>：那页讲原权重 <code>W</code>、全量微调要学的 <code>ΔW</code>、以及用两个更窄的矩阵 <code>BA</code> 去近似它，还多讲一件本章没讲的 —— <strong>什么时候根本不该微调</strong></td>
+</tr>
+<tr>
+<td><a href="../机器学习与深度学习基础/12-CNN.html">机器学习与深度学习基础 12 · CNN 处理图像</a></td>
+<td>「零卷积」就是它「三个变体」那节的 <strong>1×1 卷积</strong>：不看空间、只在通道间做线性组合。⭐ 接回主干那个 <code>+</code>，也是它残差连接那节的同一个 <code>+</code></td>
+</tr>
+<tr>
+<td><a href="../AI基础设施/09-显存优化全家桶.html">AI基础设施 09 · 显存优化全家桶</a></td>
+<td>训 ControlNet 多出来的副本让<strong>参数、梯度、优化器状态三块一起翻</strong>。那章第一节的判断很实用：<strong>把 batch 调到 1 还 OOM 吗</strong> —— 还 OOM 是这三块的问题，不 OOM 才是激活的</td>
+</tr>
+<tr>
+<td><a href="../大模型全景导论/10b-图像生成.html">大模型全景导论 10b · 图像生成</a></td>
+<td>14 分钟的索引版，这两样在那里只占组件表<strong>一行</strong>。⭐ 而它的「📦 深挖的话要学什么」把 ControlNet 和风格 LoRA 训练标成 <strong>📕 整块要外找</strong> —— 本章就是那一行</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="_6">✅ 检查点</h2>
+<ol>
+<li>提示词说不清「形状」和说不清「风格」，失败方式有什么不同？</li>
+<li>ControlNet 冻结哪一份、训练哪一份？副本复制主干的哪一半，又加回哪一半？</li>
+<li>零初始化的卷积第 0 步输出是多少？那它靠什么学起来？换成默认初始化会怎样？</li>
+<li><code>r=64</code> 时 LoRA 的可训练参数占原层多少？为什么它不是越大越好？</li>
+<li>为什么 ControlNet 的算力代价会和 CFG「相乘」？多个 LoRA 叠加时又要调什么、为什么？</li>
+</ol>
+<details>
+<summary>👀 答案</summary>
+<ol>
+<li>形状是<strong>说不清</strong>（文字表达不了逐像素的空间约束）；风格是<strong>说了也没用</strong>（底座根本没见过那个角色或笔触）。</li>
+<li>原主干<strong>全部冻结</strong>，复制出来的<strong>编码器那一半</strong>可训练；副本每级输出经零卷积加进冻结主干的<strong>解码器</strong>同级。</li>
+<li>恒为 <strong>0</strong>，所以模型和原模型<strong>逐位相同</strong>（<code>0.0</code>）。但权重梯度是 <strong>2501.0 不是 0</strong>，里面带着副本这一级的输出，所以它从第一步就开始长。默认初始化则在第 0 步就把主干改动 <strong>2.217</strong>，等于往训好的模型里灌噪声。</li>
+<li><strong>28.33%</strong>（<code>r=4</code> 只有 1.77%）。<code>r</code> 一大就接近全量微调，小数据下更容易背下训练集，常见 <strong>4~64</strong>。</li>
+<li>CFG 本身要跑两次去噪网络，加了 ControlNet 后<strong>这两次都得带上编码器副本</strong>，所以相乘不是相加。多个 LoRA 要调<strong>各自的权重系数</strong>（如 0.8 / 0.6），因为它们的 <code>BA</code> 直接加进同一个 <code>W</code>，<strong>没有任何机制知道对方存在</strong>。</li>
+</ol>
+</details>
+<hr />
+<h2 id="_7">🛑 可以停在这里</h2>
+<p>读到这里你已经能看懂一份出图工作流：哪部分是提示词、哪部分是 ControlNet 的条件图、挂了几个 LoRA、那几个 0.x 在调什么。⭐ 更重要的是<strong>出了问题知道该动哪一个</strong>。</p>
+<p><strong>什么时候回来</strong>：加了 LoRA 之后<strong>构图被锁死</strong>时回看第五节 ④；显存或耗时突然翻倍时回看第五节 ①。</p>
+<p>⚡ <strong>走神救援</strong></p>
+<blockquote>
+<p>提示词说得清「画什么」，说不清「画成什么形状」（每加一条空间约束，全部命中的概率就掉一截），也解决不了「用什么风格画」（底座根本没见过你那个角色）。<strong>ControlNet 补形状、风格 LoRA 补风格，三者互不替代。</strong> ControlNet 四步：冻结原主干 → <strong>编码器那一半复制一份</strong>当可训练支路 → 条件图（线稿 / 深度图 / 姿态骨架）经小编码器进副本 → 副本每级输出经<strong>零初始化的 1×1 卷积</strong>加进冻结主干的解码器同级。⭐ 零初始化是支点：实测第 0 步接回后和原主干<strong>逐位相同</strong>（<code>0.0</code>），而权重梯度 <strong>2501.0 不是 0</strong>，所以它照样从第一步开始学；默认初始化则在第 0 步就把主干改动 <strong>2.217</strong>。这就是它只用几万张图训得起来的原因。<strong>风格 LoRA 就是语言模型那个低秩适配</strong>：<code>W</code> 冻结、旁边挂 <code>B(A·x)</code>，中间宽度叫 rank；768→320 那层原有 245760 个参数，<code>r=4</code> 只占 <strong>1.77%</strong>、<code>r=64</code> 到 <strong>28.33%</strong>，常见 4~64。⚠️ 代价：ControlNet 多跑一份副本、还<strong>和 CFG 相乘</strong>；多个 LoRA 加进同一个 <code>W</code>、<strong>互相不知道对方存在</strong>，得逐个调系数。</p>
+</blockquote>
+<p><strong>下一节</strong> 👉 <a href="09-怎么评估.html">09-怎么评估.md</a></p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="07-去噪主干-UNet与DiT.html"><div class="dir">← 上一节</div>🏗️ 07 · 去噪主干：U-Net 与 DiT</a><a class="next" href="09-怎么评估.html"><div class="dir">下一节 →</div>📊 09 · 怎么评估</a></nav>
+</main>
+<script>(function(){
+  var KEY="diff-progress", FILE="08-ControlNet\u4e0e\u98ce\u683cLoRA.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+</body></html>
