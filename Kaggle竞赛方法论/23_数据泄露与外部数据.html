@@ -180,9 +180,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -936,8 +936,7 @@ th,td{min-width:5.2em}
 <hr />
 <h2 id="recap">🛑 可以停在这里</h2>
 <blockquote>
-<p>⚡ <strong>走神救援</strong><br />
-⭐<strong>数据泄露是最贵的错误，因为它看起来像成功</strong>——其他错误一眼能看见，泄露给你的是漂亮的分数，你基于它做所有后续决策直到提交才发现全错。<strong>目标泄露的信号</strong>：CV 飙到不合理的高度 + <strong>某一个特征占了绝大部分重要性</strong>；排查：<strong>把最高的那个特征拿掉重跑，断崖下跌就是它</strong>，再确认「预测时点真能拿到吗」。<strong>时间泄露的隐蔽形式</strong>：用了预测时点之后的统计量、随机 KFold 切时序、<strong>标签用未来一段时间算而训练验证紧挨着（需要 embargo）</strong>、全局归一化用了测试集统计量、<strong>ID 本身编码了时间顺序</strong>。<strong>测试集特征（不含标签）做半监督/伪标签通常允许</strong>（要先确认规则），而<strong>利用文件元数据、ID 规律属于灰色地带甚至禁止</strong>。⭐<strong>对抗验证</strong>：训分类器区分训练集/测试集，AUC&gt;0.5 说明分布不同，<strong>看它的特征重要性能揪出元凶特征</strong>，还能挑「最像测试集」的样本做验证集。外部数据看三条：规则怎么写、数据许可证、是否造成不公平优势。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>泄漏常表现为异常漂亮的分数，逐项检查预测时点能否获得特征。</li><li>时间、分组、统计量与预处理都可能跨过训练验证边界。</li><li>外部数据和测试集利用先核对规则、许可与公平性，不能只看是否提分。</li></ul></section>
 </blockquote>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -965,4 +964,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
+</body></html>

@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -444,7 +444,7 @@ MAC 是<strong>对称</strong>的 —— 验证者也持有 K，<strong>所以�
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">✅ 需要明文可见、但不能被篡改的字段：</span></div><div class="vb-flow-row"><span class="vb-flow-step">消息序号、路由信息、协议版本、时间戳、发送方 ID</span></div><div class="vb-flow-row"><span class="vb-flow-step">💡 一个实用技巧：把【上下文】放进 AAD，能防重放和串用</span></div><div class="vb-flow-row"><span class="vb-flow-step">比如把 &quot;session=abc;seq=42&quot; 放 AAD</span></div><div class="vb-flow-row"><span class="vb-flow-step">攻击者把消息重放到另一个会话就会验证失败 ⭐</span></div></div></section>
 <hr />
 <h2 id="aead_1">⚠️ 五、AEAD 也解决不了的：重放攻击</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">攻击者【原样重发】一条合法消息 —— 密文没被改，MAC 也对</span></div><div class="vb-tree-row"><span class="vb-tree-node">⭐ AEAD 无法阻止这个，因为它只保证&quot;这条消息是真的&quot;，</span></div><div class="vb-tree-row"><span class="vb-tree-node">不保证&quot;这条消息是新的&quot;</span></div><div class="vb-tree-row"><span class="vb-tree-node">✅ 解法（必须在协议层做）：</span></div><div class="vb-tree-row"><span class="vb-tree-node">消息序号（放 AAD 里，接收方检查单调递增）⭐</span></div><div class="vb-tree-row"><span class="vb-tree-node">时间戳 + 有效期窗口</span></div><div class="vb-tree-row"><span class="vb-tree-node">挑战-响应（服务器发随机数，客户端必须带回来）</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>攻击者【原样重发】一条合法消息 —— 密文没被改，MAC 也对</span></li><li><span>⭐ AEAD 无法阻止这个，因为它只保证"这条消息是真的"，</span></li><li><span>不保证"这条消息是新的"</span></li><li><span>✅ 解法（必须在协议层做）：</span></li><li><span>消息序号（放 AAD 里，接收方检查单调递增）⭐</span></li><li><span>时间戳 + 有效期窗口</span></li><li><span>挑战-响应（服务器发随机数，客户端必须带回来）</span></li></ul></section>
 <blockquote>
 <p>💡 <strong>这是一个常被忽略的边界</strong>：
 <strong>密码学原语保证"真实性"，协议设计保证"新鲜性"。</strong> 两件事。</p>
@@ -562,4 +562,4 @@ MAC 是<strong>对称</strong>的 —— 验证者也持有 K，<strong>所以�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

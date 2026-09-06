@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -564,8 +564,8 @@ RuntimeError: Legacy autograd function with non-static forward method is depreca
 <p>实跑输出：</p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>前向: [1.0, 2.0, 3.0] grad_fn: NpSqrtBackward</p><p>自定义梯度: [0.5, 0.25, 0.1666666716337204]</p><p>内置梯度 : [0.5, 0.25, 0.1666666716337204]</p></div></section>
 <p>⭐ <strong>注意 <code>grad_fn</code> 从 <code>None</code> 变成了 <code>NpSqrtBackward</code></strong> —— 中间那段 numpy 计算对 autograd 来说变成了一个不透明的黑盒，但图是连着的。
-这就是「怎么把一个外部实现接进 PyTorch」的 Python 侧答案。
-⚠️ <strong>C++ / CUDA 侧的答案不在这里</strong> —— 一个真正的算子是怎么用 <code>TORCH_LIBRARY</code> 注册进去、怎么跟 dispatcher 打交道，在 <a href="../框架底下是C++/05-算子怎么注册进PyTorch.html">《框架底下是 C++》05 · 算子怎么注册进 PyTorch</a>。这一章只到 Python 这一层为止。</p>
+这就是「怎么把一个外部实现接进 PyTorch」的 Python 侧答案。</p>
+<p>⚠️ <strong>C++ / CUDA 侧的答案不在这里</strong> —— 一个真正的算子是怎么用 <code>TORCH_LIBRARY</code> 注册进去、怎么跟 dispatcher 打交道，在 <a href="../框架底下是C++/05-算子怎么注册进PyTorch.html">《框架底下是 C++》05 · 算子怎么注册进 PyTorch</a>。这一章只到 Python 这一层为止。</p>
 <hr />
 <h2 id="ctxsave_for_backwardx-ctxx-x">🧷 三、<code>ctx.save_for_backward(x)</code> 和 <code>ctx.x = x</code> 的差别</h2>
 <p>这两行看起来只是写法不同，实际上差着一整套<strong>版本检查</strong>。</p>
@@ -608,7 +608,7 @@ RuntimeError: Legacy autograd function with non-static forward method is depreca
 </code></pre></div>
 
 <p>实跑输出：</p>
-<section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>ctx.x : 没报错，算出的梯度 = [20.0, 40.0, 60.0]</p><p>save_for_backward: RuntimeError: one of the variables needed for gradient computation has been modified by an inplace operation: [torch.FloatTensor [3]], which is output 0 of Mul, is at version 1; expected version 0 instead. Hint: enable anomaly detection to find the operation that failed to compute its gradient, with torch.autograd.set_detect_anomaly(True, check_nan=False).</p></div></section>
+<section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>ctx.x : 没报错，算出的梯度 = [20.0, 40.0, 60.0]</p><details><summary>查看完整报错：反向传播所需的变量被原地修改</summary><p>save_for_backward: RuntimeError: one of the variables needed for gradient computation has been modified by an inplace operation: [torch.FloatTensor [3]], which is output 0 of Mul, is at version 1; expected version 0 instead. Hint: enable anomaly detection to find the operation that failed to compute its gradient, with torch.autograd.set_detect_anomaly(True, check_nan=False).</p></details></div></section>
 <p>💀💀 <strong>正确答案是 <code>[2.0, 4.0, 6.0]</code></strong>（去掉 <code>b.mul_(10)</code> 那一行，两种写法都给出这个数，和 <code>(b*b).sum().backward()</code> 一致）。
 <code>ctx.x</code> 那一版<strong>没有报任何错，安安静静地把梯度算大了 10 倍。</strong></p>
 <p>⭐ <strong>为什么会差 10 倍</strong>：<code>ctx.x</code> 存的是一个<strong>引用</strong>。<code>b.mul_(10)</code> 之后 <code>b</code> 的内容变成了 <code>[10, 20, 30]</code>，反向读到的 <code>2 * ctx.x</code> 就成了 <code>2 × 10a</code>，正好 10 倍。而前向输出 <code>y</code> 是在改之前算的 —— 前向用的是旧值，反向用的是新值，一次计算里混了两个版本。</p>
@@ -960,8 +960,8 @@ PyTorch 自带一个数值验证工具：<strong>它拿有限差分算一遍数�
 <section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>一阶导 = 6.0 二阶导 = 2.0</p><p>RuntimeError: element 0 of tensors does not require grad and does not have a grad_fn</p></div></section>
 <p>⭐ <strong><code>x²</code> 在 <code>x=3</code> 处：一阶导 <code>2x = 6</code>，二阶导 <code>2</code>。两个都对。</strong>
 这是因为 <code>backward</code> 里的 <code>g * 2 * x</code> <strong>本身就是普通的可微算子</strong>，配上 <code>create_graph=True</code>（见第 02 章）它自然就能再求一次导。</p>
-<p>⚠️ <strong><code>@once_differentiable</code> 是你主动放弃这个能力</strong>：它在 <code>backward</code> 外面包了一层 <code>no_grad</code>，于是二阶导求不出来，报的还是那句 <code>element 0 of tensors does not require grad</code>。
-✅ <strong>什么时候该用它</strong>：你的 <code>backward</code> 里干了不可微的事（调 numpy、调外部库、写了 <code>.item()</code> 分支）。这时候主动挂上 <code>@once_differentiable</code>，让别人在第二次求导时收到一句明确的报错，好过让 autograd 在半路上给出一个悄悄错掉的结果。</p>
+<p>⚠️ <strong><code>@once_differentiable</code> 是你主动放弃这个能力</strong>：它在 <code>backward</code> 外面包了一层 <code>no_grad</code>，于是二阶导求不出来，报的还是那句 <code>element 0 of tensors does not require grad</code>。</p>
+<p>✅ <strong>什么时候该用它</strong>：你的 <code>backward</code> 里干了不可微的事（调 numpy、调外部库、写了 <code>.item()</code> 分支）。这时候主动挂上 <code>@once_differentiable</code>，让别人在第二次求导时收到一句明确的报错，好过让 autograd 在半路上给出一个悄悄错掉的结果。</p>
 <p>💡 需要二阶导的场景比你想的多：MAML 这类元学习、WGAN-GP 的梯度惩罚、以及任何要算 Hessian-vector product 的地方。</p>
 <hr />
 <h2 id="_7">🚦 七、这一章不讲什么</h2>
@@ -1105,4 +1105,4 @@ PyTorch 自带一个数值验证工具：<strong>它拿有限差分算一遍数�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

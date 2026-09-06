@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -307,7 +307,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_1">🎯 一句话</h2>
 <p>RAG 不是「把文档塞给模型」，它是一个<strong>搜索系统</strong>：召回 → 粗排 → 精排 → 重排，和推荐系统同构。
-这一页只做<strong>最小可用闭环</strong> —— 把文档切对，再把两路检索合起来。
+这一页解释<strong>最小系统的选择</strong>。需要真正执行时，直接进入<a href="../智能体工程教程/11b-文档入库与数据治理.html">11b 入库实验</a>与<a href="../智能体工程教程/11c-检索评测与调优实验.html">11c 检索实验</a>。
 ⭐ 这两步决定上限：<strong>它们没做好，后面加多少花活都救不回来。</strong></p>
 <figure class="dia" data-fig="rag_flow"><svg viewBox="0 0 680 316" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="RAG 检索增强生成流程"><defs><marker id="a4__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker><marker id="a4l__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--link)"/></marker><marker id="a4d__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--danger,#e5534b)"/></marker></defs><rect x="30" y="96" width="118" height="52" rx="9" fill="var(--card)" stroke="var(--muted)" stroke-width="1.9"/><text class="dia-t" x="89.0" y="127.0" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="700">用户问题</text><rect x="186" y="96" width="118" height="52" rx="9" fill="var(--card)" stroke="var(--link)" stroke-width="1.9"/><text class="dia-t" x="245.0" y="118" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="700">向量化</text><text class="dia-t" x="245.0" y="135" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">同一个嵌入模型</text><rect x="342" y="96" width="128" height="52" rx="9" fill="var(--accent-soft)" stroke="var(--link)" stroke-width="1.9"/><text class="dia-t" x="406.0" y="118" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="700">向量库检索</text><text class="dia-t" x="406.0" y="135" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">取 top-K 相似块</text><rect x="508" y="96" width="128" height="52" rx="9" fill="var(--card)" stroke="var(--link)" stroke-width="1.9"/><text class="dia-t" x="572.0" y="118" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="700">重排 Rerank</text><text class="dia-t" x="572.0" y="135" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">精排一次</text><rect x="342" y="214" width="128" height="52" rx="9" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.9"/><text class="dia-t" x="406.0" y="236" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="700">拼进提示词</text><text class="dia-t" x="406.0" y="253" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">问题 + 检索到的块</text><rect x="508" y="214" width="128" height="52" rx="9" fill="var(--card)" stroke="var(--accent)" stroke-width="1.9"/><text class="dia-t" x="572.0" y="236" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="700">模型生成</text><text class="dia-t" x="572.0" y="253" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">带引用</text><rect x="186" y="214" width="118" height="52" rx="9" fill="var(--card)" stroke="var(--muted)" stroke-width="1.9"/><text class="dia-t" x="245.0" y="236" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="700">文档库</text><text class="dia-t" x="245.0" y="253" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">离线切块+嵌入</text><line x1="148" y1="122" x2="186" y2="122" stroke="var(--link)" stroke-width="2.2" marker-end="url(#a4l__f1)"/><line x1="304" y1="122" x2="342" y2="122" stroke="var(--link)" stroke-width="2.2" marker-end="url(#a4l__f1)"/><line x1="470" y1="122" x2="508" y2="122" stroke="var(--link)" stroke-width="2.2" marker-end="url(#a4l__f1)"/><path d="M572 148 L572 182 L406 182 L406 214" fill="none" stroke="var(--accent)" stroke-width="2.2" marker-end="url(#a4__f1)"/><line x1="470" y1="240" x2="508" y2="240" stroke="var(--accent)" stroke-width="2.2" marker-end="url(#a4__f1)"/><path d="M245 214 L245 182 L342 182" fill="none" stroke="var(--muted)" stroke-width="1.6" stroke-dasharray="5 4"/><text class="dia-t" x="340" y="32" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">RAG 不是「让模型记住文档」，是「每次把相关的那几段塞给它」</text><text class="dia-t" x="340" y="56" font-size="11.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">所以效果的上限，几乎完全由【检索准不准】决定，而不是模型多强</text><text class="dia-t" x="340" y="300" font-size="12.5" text-anchor="middle" fill="var(--accent)" font-weight="700">⭐ 排查 RAG 效果差，永远先看「检索回来的块对不对」——而不是先去换更大的模型</text></svg><figcaption>蓝色是检索链路，橙色是生成链路。⭐ RAG 的效果上限几乎完全由<b>「检索准不准」</b>决定 —— 所以排查效果差时，永远先看检索回来的块对不对，而不是先换更大的模型。</figcaption></figure>
 
@@ -321,14 +321,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="_3">🧱 环节一：切分（最被低估的一环）</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">❌ 固定长度切分（每 500 字一刀）</span></div><div class="vb-tree-row"><span class="vb-tree-node">→ 一句话被拦腰砍断、表格被切碎、上下文丢失</span></div><div class="vb-tree-row"><span class="vb-tree-node">✅ 常用策略</span></div><div class="vb-tree-row"><span class="vb-tree-node">按结构切：Markdown 标题、章节、段落</span><span class="vb-tree-note">优先</span></div><div class="vb-tree-row"><span class="vb-tree-node">语义切分：相邻句子语义相似度突变处下刀</span></div><div class="vb-tree-row"><span class="vb-tree-node">重叠窗口：块之间重叠 10–20%，防止边界信息丢失</span></div><div class="vb-tree-row"><span class="vb-tree-node">父子块：检索用小块（精准），喂给模型用大块（完整）⭐ 很好用</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>❌ 固定长度切分（每 500 字一刀）</span></li><li><span>→ 一句话被拦腰砍断、表格被切碎、上下文丢失</span></li><li><span>✅ 常用策略</span></li><li><span>按结构切：Markdown 标题、章节、段落</span> <span>优先</span></li><li><span>语义切分：相邻句子语义相似度突变处下刀</span></li><li><span>重叠窗口：块之间重叠 10–20%，防止边界信息丢失</span></li><li><span>父子块：检索用小块（精准），喂给模型用大块（完整）⭐ 很好用</span></li></ul></section>
 <h3 id="contextual-retrieval">⭐ 上下文检索（Contextual Retrieval）</h3>
 <p>一个简单但效果显著的技巧：<strong>给每个分块补一句「它在讲什么」的上下文说明</strong>再做向量化。</p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>原始块：「该季度收入增长 3%。」</p><p>↑ 单独看：哪个公司？哪个季度？检索不到</p><p>补充后：「本段出自 ACME 公司 2024 Q2 财报，讨论季度业绩。</p><p>该季度收入增长 3%。」</p><p>↑ 现在能被「ACME 2024 收入」这样的问题检索到 ✅</p></div></section>
-<blockquote>
-<p>📌 官方博客的数据：这个方法能让<strong>检索失败率下降约 49%</strong>（配合重排更多）。
-成本是用小模型给每个块生成一句上下文——一次性投入，长期收益。</p>
-</blockquote>
+<p>在 Anthropic 的原实验中，Contextual Embeddings 使 top-20 检索失败率相对下降 <strong>35%</strong>；加 Contextual BM25 后为 <strong>49%</strong>，再加重排为 <strong>67%</strong>。这是特定数据与配置下的相对变化，不是业务保证。<a href="https://www.anthropic.com/engineering/contextual-retrieval">原始实验与条件</a>。</p>
+<p>额外成本是入库时生成块上下文；文档更新也要重算，并核查生成的说明有没有引入错误。</p>
 <h3 id="_4">📏 块大小怎么定（一个实用的起点）</h3>
 <section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">太小（&lt;200 字）</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">每块信息不完整，检索到了也答不了</span></div><div class="vb-flow-row"><span class="vb-flow-step">太大（&gt;2000 字）</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">一块里混了多个主题，向量被&quot;平均&quot;掉，检索不准 ⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 起点建议：</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 通用文档 300~800 字</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 技术文档 按代码块/函数/小节切，别按字数</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 法律/合同 按条款切，一条一块</span></div><div class="vb-flow-row"><span class="vb-flow-step">· FAQ 一问一答就是一块（天然最好切的）</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 但真正该做的是：【拿你自己的 20 个真实问题测三档，看哪档 Recall 高】</span></div></div></section>
 <p>💡 <strong>为什么"太大反而不准"值得单独说</strong>：</p>
@@ -338,19 +336,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>对哪个主题的问题都不够近。</strong> 这是很多人调不好 RAG 的隐形原因。</p>
 </blockquote>
 <h3 id="_5">🔗 高维向量的一个反直觉陷阱</h3>
-<blockquote>
-<p>🔗 <a href="../机器学习的数学原理/05-维度灾难.html">《数学原理》第 5 章 维度灾难</a>有个实测数字：
-<strong>在 500 维空间里，最远的点和最近的点距离只差 19%。</strong></p>
-<p><strong>含义</strong>：向量维度很高时，「最近邻」这个概念本身在变弱——
-所有东西看起来都差不多远。这就是为什么：
-- ✅ <strong>必须配 BM25</strong>（字面匹配不受维度灾难影响）
-- ✅ <strong>必须配重排</strong>（Cross-Encoder 不依赖向量距离）
-- ❌ 只靠调 embedding 模型救不回来</p>
-</blockquote>
+<p><a href="../机器学习的数学原理/05-维度灾难.html">数学页的 500 维实验</a>使用随机点，展示的是特定分布下的距离集中。<strong>学习到的文本向量不是均匀随机点</strong>，不能由这个实验推出“必须加 BM25”“必须重排”或“换 embedding 无效”。</p>
+<p>遇到错误时先看候选集：型号混淆，比较词项检索；同义表达漏召回，检查 embedding 的语种、前缀和截断；正确资料已有但靠后，再测重排。选择依据是本地消融结果，见<a href="../智能体工程教程/11c-检索评测与调优实验.html">检索实验</a>。</p>
 <hr />
 <h2 id="_6">🔍 环节二：混合检索（别只用向量）</h2>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>向量检索（语义） 关键词检索 BM25（字面）</p><p>✅ 懂同义、懂意图 ✅ 精确匹配术语、型号、人名、代码</p><p>❌ 精确的专有名词反而不准 ❌ 不懂同义词</p><p>例：查「XR-2000 的功率」</p><p>向量检索可能找到「XR-3000 的功率」（语义相近但答案错误！）</p><p>BM25 能精确锁定 XR-2000 ✅</p></div></section>
-<p><strong>结论</strong>：<strong>两路都要，然后融合</strong>。常用 RRF（倒数排名融合）——不需要分数可比，只用排名。</p>
+<section class="comparison-repair" id="comparison-repair-27"><div class="tw"><table><caption>先分清各自擅长什么</caption><thead><tr><th scope="col">对照项</th><th scope="col">向量检索（语义）</th><th scope="col">关键词检索 BM25（字面）</th></tr></thead><tbody><tr><th scope="row">优势</th><td>✅ 懂同义、懂意图</td><td>✅ 精确匹配术语、型号、人名、代码</td></tr><tr><th scope="row">限制</th><td>❌ 精确的专有名词反而不准</td><td>❌ 不懂同义词</td></tr></tbody></table></div><section class="reading-information"><p class="reading-information-title">同一个查询的结果</p><ul><li>例：查「XR-2000 的功率」</li><li>向量检索可能找到「XR-3000 的功率」（语义相近但答案错误！）</li><li>BM25 能精确锁定 XR-2000 ✅</li></ul></section></section>
+<p><strong>起点</strong>：分别建立两路基线，验证它们是否互补，再决定是否融合。常用 RRF（倒数排名融合）——不需要分数可比，只用排名。</p>
 <p>$$\text{RRF}(d) = \sum_{r \in \text{检索器}} \frac{1}{k + \text{rank}_r(d)}$$</p>
 <p>💡 <strong>人话</strong>：每个文档在各路检索里的排名越靠前，得分越高，加起来排序。简单粗暴但极其有效。</p>
 <hr />
@@ -395,8 +386,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <ol>
 <li>RAG 的漏斗结构和推荐系统的什么结构对应？</li>
 <li>块太大为什么反而检索不准？（说出机制）</li>
-<li>高维向量的什么性质决定了「只调 embedding 模型救不回来」？该配什么？</li>
-<li>为什么必须用混合检索而不能只用向量？</li>
+<li>为什么不能用随机点的距离集中，推断所有文本向量检索都会失败？</li>
+<li>混合检索可能改善哪些问题？怎样证明值得增加一路检索？</li>
 <li>上下文检索（Contextual Retrieval）做了什么？效果如何？</li>
 </ol>
 <details>
@@ -404,19 +395,18 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <ol>
 <li><strong>召回→粗排→精排→重排</strong>。RAG 本质是一个搜索系统。</li>
 <li>一个块的 embedding 是<strong>它整体语义的平均</strong>。塞进三个主题，向量就落在三者中间的“没人区”，对哪个主题的问题都不够近。</li>
-<li><strong>维度灾难</strong>——500 维时最远和最近的点距离只差 19%，「最近邻」这个概念本身在变弱。所以必须配 BM25（字面匹配不受影响）和重排（Cross-Encoder 不依赖向量距离）。</li>
+<li>随机点实验的分布条件不同于学习到的文本向量。先检查真实失败样本和输入配置，再比较词项、向量、融合与重排，不能套固定处方。</li>
 <li>向量懂语义但对精确的专有名词/型号/代码不准（可能召回 XR-3000 而不是 XR-2000）；BM25 精确匹配但不懂同义。两路融合（<strong>RRF</strong>，只用排名不用分数）互补。</li>
-<li>给每个分块补一句“它在讲什么”的上下文说明再向量化，让孤立的块也能被检索到。官方数据<strong>检索失败率降约 49%</strong>。</li>
+<li>给每个分块补一句“它在讲什么”的上下文说明再向量化，让孤立的块也能被检索到。原实验的相对下降为35%（上下文向量）、49%（再加上下文 BM25）、67%（再加重排），不能脱离基线推广。</li>
 </ol>
 </details>
 <hr />
 <h2 id="_9">🛑 可以停在这里</h2>
-<p>切分 + 混合检索做完，你已经有一个能用的 RAG 了。<strong>先让它跑起来、先看真实的召回结果</strong>，比继续往下堆技术更重要。</p>
+<p>读到这里，你已经知道如何选择切分与检索策略；完成可运行项目还需要实现、评测和权限检查。<strong>先让它跑起来、先看真实的召回结果</strong>，比继续往下堆技术更重要。</p>
 <p>⚠️ <strong>什么时候看下一页</strong>：正确文档<strong>已经被召回了</strong>，但排得太靠后被截断 —— 那是重排该解决的事。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>RAG 不是「把文档塞给模型」，它是一个<strong>搜索系统</strong>，结构和推荐系统同构：<strong>召回 → 粗排 → 精排 → 重排</strong>。这一页的两件事决定整个系统的上限。<strong>切分是最被低估的一环</strong>：一个块的 embedding 是它<strong>整体语义的平均</strong>，所以块太大反而检索不准 —— 塞进三个主题，向量就落在三者中间的「没人区」，对哪个主题的问题都不够近。⭐ <strong>上下文检索</strong>（Contextual Retrieval）是性价比很高的一招：给每个分块补一句「它在讲什么」的说明再向量化，让孤立的块也能被检索到，官方数据<strong>检索失败率降约 49%</strong>。<strong>混合检索</strong>则是因为纯向量有硬伤：⚠️ <strong>维度灾难</strong> —— 500 维时最远和最近的点距离只差 <strong>19%</strong>，「最近邻」这个概念本身在变弱，所以<strong>只换 embedding 模型是救不回来的</strong>。向量懂语义但对精确的专有名词、型号、代码不准（可能召回 XR-3000 而不是 XR-2000）；BM25 精确匹配但不懂同义词。两路用 <strong>RRF</strong> 融合（只用排名不用分数）正好互补。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>RAG 的第一步是把正确资料检索出来，而不是一次塞入更多文档。</li><li>分块保留语义与来源，让孤立片段也能说明自己在讲什么。</li><li>向量检索与关键词检索各有盲区，可以用混合检索互补。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="08b-重排与Embedding选型.html">08b-重排与Embedding选型.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -444,4 +434,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

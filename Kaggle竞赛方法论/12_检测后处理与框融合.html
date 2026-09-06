@@ -180,9 +180,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -795,8 +795,7 @@ th,td{min-width:5.2em}
 <hr />
 <h2 id="recap">🛑 可以停在这里</h2>
 <blockquote>
-<p>⚡ <strong>走神救援</strong><br />
-⭐<strong>检测赛里同一模型的好后处理和差后处理能差好几个点 mAP</strong>。管线三步：<strong>①置信度过滤（OOF 搜阈值）→ ②框去重（NMS/Soft-NMS）→ ③多模型融合（WBF）</strong>，顺序不能乱。<strong>标准 NMS 直接删框，密集目标场景会误删相邻真目标</strong>；<strong>Soft-NMS 不删而是按 IoU 降低置信度</strong>，给相邻真目标留机会。⭐<strong>WBF 和 NMS 的根本区别：NMS 丢弃、WBF 加权平均融合</strong>——多模型融合该用 WBF，因为<strong>各模型的框略有差异，平均后往往比任何单个都准</strong>。⚠️<strong>置信度阈值必须在 OOF 上网格搜（0.1~0.9 步长 0.01），不能凭感觉</strong>——最优阈值高度依赖模型和数据密度，<strong>而且融合之后分布会变必须重搜</strong>。<strong>伪标签</strong>：用融合模型预测 → 筛 &gt;0.9 的框 → 加入重训，<strong>只迭代 1-2 轮</strong>，先确认规则允许。<strong>SAHI 解决大图小目标</strong>：切成有重叠的小片分别推理再拼回（推理时间成倍增加）。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>置信度过滤、去重和跨模型框融合承担不同任务。</li><li>NMS 与加权框融合处理重叠候选的方式不同，密集目标需要特别检查误删。</li><li>融合会改变分数分布，阈值应在验证预测上重新评估。</li></ul></section>
 </blockquote>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -824,4 +823,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
+</body></html>

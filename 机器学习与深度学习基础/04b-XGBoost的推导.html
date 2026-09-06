@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,16 +271,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
- onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script><link rel="stylesheet" href="../assets/guided-lessons.css"><script defer src="../assets/guided-lessons.js"></script></head><body class="guided-reading">
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
@@ -290,19 +290,58 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   <button class="js-done-btn">☐ 打卡</button>
   <button id="themeToggle" title="切换深浅色">🌗</button>
 </div></header>
-<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
-<ul>
-<li><a href="#_1">🎯 一句话</a></li>
-<li><a href="#xgboost-gbdt">🧮 一、XGBoost 到底改了 GBDT 的什么</a></li>
-<li><a href="#xgboost-lightgbm-catboost">⚔️ 二、XGBoost / LightGBM / CatBoost：各自在优化哪一段</a></li>
-<li><a href="#_10">🔗 这一章连到哪里</a></li>
-<li><a href="#_11">✅ 检查点</a></li>
-<li><a href="#_12">🛑 可以停在这里</a></li>
-</ul>
+<main>
+<div class="lesson-layout" data-lesson="xgboost">
+<div class="lesson-content"><section class="lesson-hero" id="lesson-start" data-route="目标与直觉">
+  <div><p class="lesson-eyebrow">04B / XGBOOST · 先理解，再推导</p>
+  <h1>先知道树为什么要长，<br>再决定要不要看推导。</h1>
+  <p class="lesson-lead">先看一个叶子怎么修正预测，再看一次分裂值不值得。</p></div>
+  <aside class="lesson-advice"><strong>按自己的节奏来</strong><p>先读到绿色卡片就能停。要追问“为什么”，再继续看下方完整推导。</p><a href="#first-pause">直接去停靠点 →</a></aside>
+</section>
+<section class="lesson-mission">
+  <div><p class="lesson-kicker">你先带走这句就够了</p><h2>叶子算改多少，<br>Gain 算值不值得分。</h2><p>把同一叶子的样本汇总起来，就能把“怎么长树”变成可以比较的数。</p></div>
+  <ol class="lesson-steps"><li><span>1</span><strong>先汇总</strong><p>把样本的斜率 g 和曲率 h，加成叶子的 G、H。</p></li><li><span>2</span><strong>再算收益</strong><p>比较分裂前后，目标函数能减少多少。</p></li><li><span>3</span><strong>最后选一刀</strong><p>在约束允许时，选净收益最大的候选切分。</p></li></ol>
+</section>
+<div class="lesson-overview-grid">
+<section class="lesson-card" id="leaf-samples" data-route="样本的 g 与 h">
+  <p class="lesson-kicker">01 / 一个看得见的例子</p><h2>一个叶子，4 个样本</h2>
+  <p>使用半平方误差损失，g 是预测值减真实值，h = 1。</p>
+  <div class="lesson-samples"><div><span>A</span><strong>g = −3</strong><small>h = 1</small></div><div><span>B</span><strong>g = −1</strong><small>h = 1</small></div><div><span>C</span><strong>g = +2</strong><small>h = 1</small></div><div><span>D</span><strong>g = +2</strong><small>h = 1</small></div></div>
+  <div class="lesson-totals"><p><strong>总梯度 G = 0</strong><small>−3 − 1 + 2 + 2 = 0</small></p><p><strong>总曲率 H = 4</strong><small>1 + 1 + 1 + 1 = 4</small></p></div>
+  <p class="lesson-note">方向互相抵消：四个样本共用一个输出时，最佳修正为 0。分开之后呢？</p>
+</section>
+<section class="lesson-card" id="leaf-weight" data-route="公式 1：叶子输出">
+  <p class="lesson-kicker">02 / 叶子该改多少</p><h2>最优叶子输出 w*</h2>
+  <p>固定叶子里的样本，找让二阶近似目标最小的输出。</p>
+  <div class="formula-box" data-formula-name="最优叶子输出">$$w_j^*=-\frac{G_j}{H_j+\lambda}$$</div>
+  <p class="lesson-note">点公式里的 G、H、λ 或 w*，看它在这一步的作用。</p>
+  <ul class="lesson-plain-list"><li><strong>G：</strong>叶内斜率的总和，决定修正方向。</li><li><strong>H：</strong>叶内曲率的总和，影响修正幅度。</li><li><strong>λ：</strong>压小过大的叶子输出。</li></ul>
+  <p>本例取 λ = 1，得到 w* = 0。<strong>同一个叶子无法同时满足相反的修正方向。</strong></p>
+</section>
+<section class="lesson-card lesson-wide" id="split-gain" data-route="公式 2：分裂收益">
+  <p class="lesson-kicker">03 / 这一刀值不值得</p><h2>分裂增益 Gain</h2>
+  <p>比较“左右分开修正”和“仍然共用一个输出”，再扣掉新叶子的成本。</p>
+  <div class="formula-box" data-formula-name="分裂增益">$$\text{Gain}=\frac12\left[\frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{G^2}{H+\lambda}\right]-\gamma$$</div>
+  <p class="lesson-equation-reading">读法：½ ×（左叶改善 + 右叶改善 − 原叶改善）− 新叶成本。</p>
+  <div class="lesson-split-example"><div><strong>左边：A、B</strong><p>G = −4，H = 2<br>输出约 +1.33</p></div><div><strong>右边：C、D</strong><p>G = +4，H = 2<br>输出约 −1.33</p></div><div class="lesson-positive"><strong>Gain ≈ 4.83</strong><p>取 λ = 1、γ = 0.5<br>这次切分有正的净收益</p></div></div>
+  <p class="lesson-note">原先抵消的方向被分开了。满足深度、叶子样本数等约束时，这是一刀值得考虑的切分。</p>
+</section>
+<section class="lesson-card lesson-pause" id="first-pause" data-route="可以停在这里">
+  <p class="lesson-kicker">一个小停靠点</p><h2>可以停在这里</h2><p>现在你已经知道：</p>
+  <ul class="lesson-checks"><li>w* 决定一个叶子输出多少。</li><li>Gain 比较一次切分值不值得。</li><li>λ 管输出幅度，γ 管长叶子的成本。</li></ul>
+  <p>读完这几张卡片，就是一次完整的小进展。</p>
+  <a href="#xgboost-gbdt">我想看完整推导 →</a><a href="#xgboost-lightgbm-catboost">先比较三种框架 →</a>
+</section>
 </div>
-</details>
-<h1 id="04b-xgboost">04b · XGBoost 的推导：从负梯度到闭式解</h1>
-<p>⏱ <strong>42 分钟</strong> ｜ ⭐ <strong>上一章的「为什么」——Kaggle 主力算法的引擎室</strong></p>
+
+<section class="lesson-full" id="full-lesson" aria-label="完整正文">
+<div class="lesson-divider"><span>继续探索</span><p>完整推导与细节都在下方。一次读一张卡片，随时可以停。</p></div>
+<h2 id="04b-xgboost" class="lesson-original-title">04b · XGBoost 的推导：从负梯度到闭式解</h2>
+<!-- guided-lesson: xgboost -->
+
+<p>⏱ <strong>52 分钟</strong> ｜ ⭐⭐ <strong>上一章的「为什么」——Kaggle 主力算法的引擎室</strong></p>
+<!-- 以下正文从完整的旧页面恢复；后续排版改动必须保留所有章节、推导图、对照、练习与停靠点。 -->
+
 <hr />
 <h2 id="_1">🎯 一句话</h2>
 <p><strong>XGBoost 只做了一件事：把「下一棵树该怎么长」从一堆手工规则，改写成一个能求出闭式解的目标函数。</strong>
@@ -342,11 +381,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>$$g_i=\frac{\partial\, l(y_i,\hat y^{(t-1)})}{\partial\, \hat y^{(t-1)}}\ (\text{一阶}),\qquad h_i=\frac{\partial^2 l(y_i,\hat y^{(t-1)})}{\partial\, (\hat y^{(t-1)})^2}\ (\text{二阶})$$</p>
 <p>展开到二阶，再扔掉与 $f_t$ 无关的常数项 $l(y_i,\hat y^{(t-1)})$：</p>
 <p>$$\text{Obj}^{(t)}\approx\sum_{i=1}^{n}\Big[\,g_i\, f_t(x_i)+\tfrac{1}{2}h_i\, f_t(x_i)^2\,\Big]+\gamma T+\frac{1}{2}\lambda\sum_j w_j^2$$</p>
-<p>⭐ <strong>停下来看看这一步换到了什么</strong>：式子里<strong>再也没有 $l$ 了</strong>，只剩 $g_i$、$h_i$ 两串数。也就是说——你换任何损失函数，只要它二阶可导，后面的推导一个字都不用改。这就是 XGBoost 能让你自定义 <code>objective</code>（只要求你提供 g 和 h 两个函数）的原因，也是「为什么用二阶展开」最实在的一条回答。</p>
+<p>⭐ <strong>停下来看看这一步换到了什么</strong>：式子里<strong>再也没有 $l$ 了</strong>，只剩 $g_i$、$h_i$ 两串数。也就是说——<strong>你换任何损失函数，只要它二阶可导，后面的推导一个字都不用改</strong>。这就是 XGBoost 能让你自定义 <code>objective</code>（只要求你提供 g 和 h 两个函数）的原因，也是「为什么用二阶展开」最实在的一条回答。</p>
 <h3 id="_5">第三步：从「每个样本」归并到「每个叶子」</h3>
 <p>树是<strong>分段常数函数</strong>：落进同一个叶子的样本，输出值完全一样。所以按叶子把样本归并，记 $I_j$ 为落进叶子 $j$ 的样本集合，$G_j=\sum_{i\in I_j}g_i$，$H_j=\sum_{i\in I_j}h_i$：</p>
 <p>$$\text{Obj}^{(t)}=\sum_{j=1}^{T}\Big[\,G_j w_j+\tfrac{1}{2}(H_j+\lambda)w_j^2\,\Big]+\gamma T$$</p>
-<p>⭐ <strong>这是整套推导的关键一步</strong>：$T$ 个叶子的项<strong>互相独立</strong>了。每个叶子单独看就是一条开口向上的抛物线（开口向上是因为 $H_j+\lambda&gt;0$），可以各求各的最小值。</p>
+<p>⭐ <strong>这是整套推导的关键一步</strong>：$T$ 个叶子的项<strong>互相独立</strong>了。每个叶子单独看就是<strong>一条开口向上的抛物线</strong>（开口向上是因为 $H_j+\lambda&gt;0$），可以各求各的最小值。</p>
 <h3 id="_6">第四步：顶点公式一代，两个闭式解就出来了</h3>
 <p>一元二次 $aw^2+bw$ 的顶点在 $w=-\frac{b}{2a}$，直接套：</p>
 <p>$$w_j^{*}=-\frac{G_j}{H_j+\lambda}\qquad\text{（最优叶子权重）}$$</p>
@@ -355,7 +394,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>「结构分数」（structure score）就是：给定一棵树长成什么样，它到底有多好——一个数字说了算，越小越好。</strong> XGBoost 里所有关于「要不要这么分」的决定，裁判都是它。</p>
 <p>💡 <strong>拿 MSE 验一下这两个公式</strong>：$l=\frac12(y-\hat y)^2$ 时 $g_i=\hat y_i-y_i$（就是<strong>负残差</strong>），$h_i=1$，于是</p>
 <p>$$w_j^{*}=\frac{\sum_{i\in I_j}(y_i-\hat y_i)}{n_j+\lambda}=\frac{\text{这个叶子里残差的和}}{\text{样本数}+\lambda}$$</p>
-<p>$\lambda=0$ 时就是<strong>残差的平均值</strong>——<strong>正是 GBDT 在做的事</strong>。⭐ 所以在 MSE 下 XGBoost 和 GBDT 是同一个东西；差别全在别的损失上（logloss、pairwise 排序、Poisson、你自己写的……）。</p>
+<p>$\lambda=0$ 时就是<strong>残差的平均值</strong>——<strong>正是 GBDT 在做的事</strong>。⭐ <strong>所以在 MSE 下 XGBoost 和 GBDT 是同一个东西</strong>；差别全在别的损失上（logloss、pairwise 排序、Poisson、你自己写的……）。</p>
 <h3 id="_7">第五步：分裂增益——预剪枝直接长在判据里</h3>
 <p>把一个叶子拆成左右两个，收益就是拿新的结构分数减旧的：</p>
 <p>$$\text{Gain}=\frac{1}{2}\left[\frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{(G_L+G_R)^2}{H_L+H_R+\lambda}\right]-\gamma$$</p>
@@ -524,12 +563,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table></div>
 <p><strong>LightGBM 的三板斧（「为什么最快」的答案）</strong>：</p>
 <ul>
-<li>⭐ <strong>直方图算法</strong>：把连续特征预先分成 255 个 bin（一个 <code>uint8</code> 装得下）。找分裂点的复杂度从「O(样本数 × 特征数)」降到「<strong>O(bin 数 × 特征数)</strong>」，内存也降一个数量级。再加一个直方图做差——一个节点的两个孩子，算完左边直接用「父 − 左 = 右」拿到右边，省掉一半计算。</li>
-<li><strong>GOSS（单边梯度采样）</strong>：梯度大的样本 = 还没学好的样本，<strong>全留</strong>；梯度小的随机采一部分，并把它们的权重放大补偿（不放大分布就偏了）。</li>
+<li>⭐ <strong>直方图算法</strong>：把连续特征预先分成 255 个 bin（一个 <code>uint8</code> 装得下）。找分裂点的复杂度从「O(样本数 × 特征数)」降到「<strong>O(bin 数 × 特征数)</strong>」，内存也降一个数量级。再加一个<strong>直方图做差</strong>——一个节点的两个孩子，算完左边直接用「父 − 左 = 右」拿到右边，<strong>省掉一半计算</strong>。</li>
+<li><strong>GOSS（单边梯度采样）</strong>：梯度大的样本 = 还没学好的样本，<strong>全留</strong>；梯度小的随机采一部分，并<strong>把它们的权重放大</strong>补偿（不放大分布就偏了）。</li>
 <li><strong>EFB（互斥特征捆绑）</strong>：one-hot 之后大量特征<strong>不会同时非零</strong>，把这些互斥的特征捆成一个存，特征数直接掉一大截。</li>
 </ul>
 <p>⚠️ <strong>leaf-wise 的代价</strong>：同样的叶子数下它降损失更多，但树会长得又深又不平衡，<strong>小数据集上极易过拟合</strong>。刹车是 <code>num_leaves</code>（别超过 $2^{\texttt{max\_depth}}$）和 <code>min_data_in_leaf</code>。这就是那张表里「需注意」三个字背后的机理。</p>
-<p><strong>CatBoost 在防的是另一件事</strong>：普通的目标编码（拿这个类别的历史平均标签当特征）<strong>用到了当前样本自己的标签</strong>——这就是第 16 章讲的目标泄漏。CatBoost 的 ordered target statistics（有序目标编码） 先给样本安排一个随机顺序，算某个样本的编码时只用排在它前面的样本，从结构上把泄漏堵死。同样的思路用在 boosting 上就是 ordered boosting，防的是「同一批数据既用来算残差又用来拟合残差」带来的预测偏移。</p>
+<p><strong>CatBoost 在防的是另一件事</strong>：普通的目标编码（拿这个类别的历史平均标签当特征）<strong>用到了当前样本自己的标签</strong>——这就是第 16 章讲的目标泄漏。CatBoost 的 <strong>ordered target statistics（有序目标编码）</strong> 先给样本安排一个随机顺序，算某个样本的编码时<strong>只用排在它前面的样本</strong>，从结构上把泄漏堵死。同样的思路用在 boosting 上就是 <strong>ordered boosting</strong>，防的是「同一批数据既用来算残差又用来拟合残差」带来的预测偏移。</p>
 <p>⭐ <strong>对称树（oblivious tree）</strong>：同一层所有节点共用一个 (特征, 阈值)。整棵树因此退化成一张 $2^{\text{depth}}$ 的查找表，<strong>推理快得离谱</strong>（几条位运算就定位到叶子）；而且这个限制本身就是很强的正则——这是 CatBoost「默认参数最好用」的一部分原因。</p>
 <blockquote>
 <p>🔑 <strong>一句话版本（可以直接当面试答案）</strong>：
@@ -588,28 +627,33 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <details>
 <summary>👀 答案</summary>
 <ol>
-<li><strong>一阶导只给方向，二阶导给步长</strong>（梯度下降 vs 牛顿法）。GBDT 是拿负梯度当伪残差、再用平方误差代理准则长一棵树去拟合，叶子值靠事后一维线搜索补上——判据和叶子值不是同一个东西；XGBoost 直接对真实目标（含正则）二阶展开，分裂判据和叶子值出自同一个闭式解。</li>
-<li><strong>只剩 $g_i$ 和 $h_i$，损失函数 $l$ 消失了</strong>。好处：换任何二阶可导的损失，后面的推导一个字都不用改——这就是自定义 <code>objective</code> 只要求你提供 g 和 h 两个函数的原因。（另一个好处是按叶子归并后每个叶子是抛物线，有闭式最优解。）</li>
-<li>$w_j^*=-\dfrac{G_j}{H_j+\lambda}$；$\text{Gain}=\frac12\Big[\frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{(G_L+G_R)^2}{H_L+H_R+\lambda}\Big]-\gamma$。<strong>$\gamma$ 是每多一个叶子的入场费</strong>，所以 Gain 为负就不分裂 = 预剪枝写进了判据（不是长完再剪）；$\lambda$ 在分母，叶子样本少（$H$ 小）时把权重往 0 拽，是天然的收缩。</li>
-<li>$g_i=\hat y_i-y_i$、$h_i=1$，$w_j^*$ 退化成<strong>这个叶子里残差的平均值</strong>（$\lambda=0$ 时）——正是 GBDT 在做的事。说明 MSE 下两者等价，二阶展开的价值全在别的损失函数上（logloss、pairwise 排序、Poisson、自定义）。</li>
-<li><strong>不填</strong>。每个候选分裂点上把缺失样本全扔左边算一次 Gain、全扔右边再算一次，哪边 Gain 大就把默认方向定成哪边——缺失是被当成信息学出来的，顺带让稀疏 one-hot 也跑得快。</li>
-<li><strong>直方图</strong>（每特征 255 个 bin，复杂度从 O(样本数 × 特征数) 降到 O(bin 数 × 特征数)）+ 直方图做差（父 − 左 = 右，省一半）+ GOSS（梯度大的全留、梯度小的采样并放大权重）+ EFB（互斥特征捆绑）。代价：leaf-wise 的树又深又不平衡，小数据集极易过拟合；刹车是 <code>num_leaves</code>（别超过 $2^{\texttt{max\_depth}}$）和 <code>min_data_in_leaf</code>。</li>
-<li>防<strong>目标泄漏</strong>：普通目标编码用到了当前样本自己的标签，有序目标编码给样本排一个随机顺序、只用排在它前面的样本算编码（同思路用在 boosting 上就是 ordered boosting，防预测偏移）。对称树的两个好处：① 整棵树退化成一张 $2^{\text{depth}}$ 的查找表，推理极快；② 这个限制本身就是很强的正则，是它「默认参数最好用」的一部分原因。</li>
+<li><strong>一阶导只给方向，二阶导给步长</strong>（梯度下降 vs 牛顿法）。GBDT 是拿负梯度当伪残差、再用<strong>平方误差代理准则</strong>长一棵树去拟合，叶子值靠事后一维线搜索补上——<strong>判据和叶子值不是同一个东西</strong>；XGBoost 直接对真实目标（含正则）二阶展开，<strong>分裂判据和叶子值出自同一个闭式解</strong>。</li>
+<li><strong>只剩 $g_i$ 和 $h_i$，损失函数 $l$ 消失了</strong>。好处：<strong>换任何二阶可导的损失，后面的推导一个字都不用改</strong>——这就是自定义 <code>objective</code> 只要求你提供 g 和 h 两个函数的原因。（另一个好处是按叶子归并后每个叶子是抛物线，<strong>有闭式最优解</strong>。）</li>
+<li>$w_j^*=-\dfrac{G_j}{H_j+\lambda}$；$\text{Gain}=\frac12\Big[\frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{(G_L+G_R)^2}{H_L+H_R+\lambda}\Big]-\gamma$。<strong>$\gamma$ 是每多一个叶子的入场费</strong>，所以 <strong>Gain 为负就不分裂 = 预剪枝写进了判据</strong>（不是长完再剪）；<strong>$\lambda$ 在分母</strong>，叶子样本少（$H$ 小）时把权重往 0 拽，是天然的收缩。</li>
+<li>$g_i=\hat y_i-y_i$、$h_i=1$，$w_j^*$ 退化成<strong>这个叶子里残差的平均值</strong>（$\lambda=0$ 时）——<strong>正是 GBDT 在做的事</strong>。说明 <strong>MSE 下两者等价，二阶展开的价值全在别的损失函数上</strong>（logloss、pairwise 排序、Poisson、自定义）。</li>
+<li><strong>不填</strong>。每个候选分裂点上把缺失样本全扔左边算一次 Gain、全扔右边再算一次，<strong>哪边 Gain 大就把默认方向定成哪边</strong>——缺失是被当成信息<strong>学</strong>出来的，顺带让稀疏 one-hot 也跑得快。</li>
+<li><strong>直方图</strong>（每特征 255 个 bin，复杂度从 O(样本数 × 特征数) 降到 O(bin 数 × 特征数)）+ <strong>直方图做差</strong>（父 − 左 = 右，省一半）+ <strong>GOSS</strong>（梯度大的全留、梯度小的采样并放大权重）+ <strong>EFB</strong>（互斥特征捆绑）。代价：leaf-wise 的树又深又不平衡，<strong>小数据集极易过拟合</strong>；刹车是 <code>num_leaves</code>（别超过 $2^{\texttt{max\_depth}}$）和 <code>min_data_in_leaf</code>。</li>
+<li>防<strong>目标泄漏</strong>：普通目标编码用到了当前样本自己的标签，有序目标编码给样本排一个随机顺序、<strong>只用排在它前面的样本</strong>算编码（同思路用在 boosting 上就是 ordered boosting，防预测偏移）。对称树的两个好处：① 整棵树退化成一张 $2^{\text{depth}}$ 的查找表，<strong>推理极快</strong>；② 这个限制本身就是<strong>很强的正则</strong>，是它「默认参数最好用」的一部分原因。</li>
 </ol>
 </details>
 <hr />
 <h2 id="_12">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>补的是上一章缺的那半句：⭐⭐ <strong>负梯度只给方向、不给步长</strong>，学习率统一压小步子是<strong>绕开</strong>不是解决。⭐ <strong>一阶导给方向、二阶导给步长</strong>（坡陡要拐弯就小步，坡缓笔直就大胆迈）——也就是梯度下降和牛顿法的差别。</p>
-<p>六步推导里每一步都有一个可带走的结论：① ⭐ <strong>正则被写进目标函数</strong>（每多一个叶子要付入场费，叶子权重上加 L2）——<strong>上一代的正则是长树时另加的外挂规则、不在目标函数里，这一步就分岔了</strong>；② 二阶展开扔掉常数后 ⭐ <strong>式子里再也没有损失函数了，只剩一阶和二阶导</strong>——<strong>换任何二阶可导的损失，推导一字不改</strong>，⭐ <strong>这就是自定义目标只要你给这两样东西的原因</strong>；③ 按叶子归并之后 ⭐ <strong>各叶子的项互相独立</strong>；④ 每个叶子是开口向上的抛物线，顶点公式直接给出最优权重；⑤ 代回去得<strong>结构分数</strong>——⭐ <strong>给定树结构，一个数字说了算</strong>；⑥ 分裂增益是「拆了减不拆」再减掉入场费，⭐ <strong>增益为负就不分裂，等于把预剪枝写进了判据</strong>；而正则项在分母上，<strong>叶子样本少就把权重往 0 拽</strong>。</p>
-<p>💡 ⭐ <strong>用平方误差验算会退化成残差平均值——正是上一代在做的事，所以这个损失下两者等价，二阶的价值全在别的损失上。</strong></p>
-<p>⚠️ <strong>别说过头：学习率照样要调。</strong></p>
-<p><strong>缺失值不填</strong>：每个分裂点把缺失全扔左、全扔右各算一次，哪边增益大就定哪边当默认方向。</p>
-<p>⭐ <strong>三巨头目标函数同源，各优化一段</strong>：一个定义框架；一个优化「算得快」（直方图分桶、父减左得右、单边采样、特征捆绑、按叶生长——⚠️ <strong>按叶生长在小数据上极易过拟合，刹车是叶子数和每叶最少样本</strong>）；一个优化「不泄漏」（有序目标编码只用排在前面的样本、对称树顺带让推理极快）。</p>
-<p>⭐ <strong>三者精度只差零点几个百分点，选型远不如调参和特征工程重要。</strong></p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>这一轮的新树是在旧预测上加修正；目标同时考虑损失与树的复杂度。</li><li>先逐样本求 g、h，再按叶子汇总成 G、H；它们决定叶子的候选输出。</li><li>在 H＋λ 为正的条件下，叶子最优输出是 −G／(H＋λ)。</li><li>Gain 比较分裂前后的目标改善，并扣除新增叶子的成本；不是只看训练样本更纯。</li><li>推导给出候选更新，学习率、缺失值处理和验证仍然需要单独检查。</li></ul></section>
 </blockquote>
-<p><strong>下一节</strong> 👉 <a href="05-评估与过拟合.html">05-评估与过拟合.md</a> ⭐⭐ <strong>全教程最重要的一章</strong></p>
+<p><strong>下一节</strong> 👉 <a href="05-评估与过拟合.html">05-评估与过拟合.md</a> ⭐⭐⭐ <strong>全教程最重要的一章</strong></p>
+</section></div>
+<aside class="lesson-rail" aria-label="本节学习路线">
+<button type="button" class="lesson-route-toggle" aria-expanded="true" aria-controls="lesson-route">本节学习路线 <span aria-hidden="true">⌄</span></button>
+<div id="lesson-route">
+<p class="lesson-position" aria-live="polite">从第一站开始</p>
+<div class="lesson-track" aria-hidden="true"><span></span></div>
+<nav class="lesson-route-links" aria-label="章节跳转"></nav>
+<div class="lesson-rail-note"><strong>一次只读一张卡片</strong><p>蓝色下划线可以点开解释。关掉窗口，接着原来的位置读。</p></div>
+<button type="button" class="lesson-save">记住当前位置</button>
+<p class="lesson-save-status" role="status"></p>
+</div></aside></div>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="04a-集成学习与GBDT.html"><div class="dir">← 上一节</div>🌳 04a · 集成学习与 GBDT</a><a class="next" href="05-评估与过拟合.html"><div class="dir">下一节 →</div>⚖️ 05 · 评估与过拟合</a></nav>
@@ -636,4 +680,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

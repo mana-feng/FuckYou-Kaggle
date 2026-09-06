@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -545,9 +545,9 @@ events 在外层      0.0140 s
 ⭐ <strong>但四次跑出来的计划一字不差，下面这三条关系也每次都一样 —— 它们是结构性的，不是噪声。</strong></p>
 <p><strong>① 没索引时，大表在外层反而快（0.0440 s vs 0.2380 s，约 5 倍）。</strong>
 <code>users</code> 在外层时，内层的 <code>events</code> 没有可用索引，数据库只好现造一个——
-计划里那句 <code>SEARCH e USING AUTOMATIC COVERING INDEX</code> 就是它在说：「这儿缺一个索引，我先临时建一个用用。」
-⭐ <strong>看到 <code>AUTOMATIC</code> 就该去 <a href="../AI全栈/06-关系数据库.html">AI 全栈 06</a> 补一个真索引</strong> —— 临时索引每次查询都要重建一遍。
-（旁边那句 <code>BLOOM FILTER</code> 是 SQLite 3.38+ 的优化：先用一个便宜的过滤器挡掉大部分注定连不上的行。）</p>
+计划里那句 <code>SEARCH e USING AUTOMATIC COVERING INDEX</code> 就是它在说：「这儿缺一个索引，我先临时建一个用用。」</p>
+<p>⭐ <strong>看到 <code>AUTOMATIC</code> 就该去 <a href="../AI全栈/06-关系数据库.html">AI 全栈 06</a> 补一个真索引</strong> —— 临时索引每次查询都要重建一遍。</p>
+<p>（旁边那句 <code>BLOOM FILTER</code> 是 SQLite 3.38+ 的优化：先用一个便宜的过滤器挡掉大部分注定连不上的行。）</p>
 <p><strong>② 建完索引之后，最优顺序反了过来（0.0019 s vs 0.0140 s，约 7 倍，方向和上一条相反）。</strong>
 现在 <code>users</code> 在外层才是对的：先用 <code>city='A'</code> 把外层缩到约 400 行，每行拿索引去 <code>events</code> 精准定位。
 ⭐ <strong>同一对表、同一个问题，最优连接顺序会因为「有没有索引」而反转</strong> ——
@@ -742,11 +742,13 @@ OR 两侧都有索引                   0.6862 ms   MULTI-INDEX OR
 <strong>只要索引列被任何东西包住，索引就用不上了</strong>，因为索引里存的是列本身的值，
 而数据库没法从「<code>substr(ts,1,10)</code> 等于某值」反推出「<code>ts</code> 落在哪个区间」。</p>
 <blockquote>
-<p>⭐ <strong>改法几乎永远是同一句：把变形从列这边挪到常量那边。</strong>
-<code>date(ts) = '2026-03-05'</code> → <code>ts &gt;= '2026-03-05' AND ts &lt; '2026-03-06'</code>
-<code>amount * 2 &gt; 199</code> → <code>amount &gt; 99.5</code>
-<code>YEAR(created) = 2026</code> → <code>created &gt;= '2026-01-01' AND created &lt; '2027-01-01'</code>
-⚠️ 注意右端一律用 <code>&lt;</code> 不用 <code>&lt;=</code>（<strong>半开区间</strong>）—— 用 <code>&lt;= '2026-03-05 23:59:59'</code> 会漏掉那一秒里的毫秒。</p>
+<p>⭐ <strong>改法几乎永远是同一句：把变形从列这边挪到常量那边。</strong></p>
+<ul>
+<li><code>date(ts) = '2026-03-05'</code> → <code>ts &gt;= '2026-03-05' AND ts &lt; '2026-03-06'</code></li>
+<li><code>amount * 2 &gt; 199</code> → <code>amount &gt; 99.5</code></li>
+<li><code>YEAR(created) = 2026</code> → <code>created &gt;= '2026-01-01' AND created &lt; '2027-01-01'</code></li>
+</ul>
+<p>⚠️ 注意右端一律用 <code>&lt;</code> 不用 <code>&lt;=</code>（<strong>半开区间</strong>）—— 用 <code>&lt;= '2026-03-05 23:59:59'</code> 会漏掉那一秒里的毫秒。</p>
 </blockquote>
 <p>⚠️ <strong>另一条路是给表达式本身建索引</strong>（Postgres/SQLite 的表达式索引、MySQL 的生成列索引）。
 它有效，但<strong>属于「索引怎么建」，是 <a href="../AI全栈/06-关系数据库.html">AI 全栈 06</a> 的题目</strong>。
@@ -1049,4 +1051,4 @@ LIKE &#39;u00123%&#39;（默认）      10.3474 ms
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

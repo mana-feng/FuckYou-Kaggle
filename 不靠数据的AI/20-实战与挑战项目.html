@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -539,18 +539,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_5">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>⭐⭐ <strong>这个板块的算法全部能用纯 Python 几十行写出来——不需要 GPU、数据集、任何库，而且每个都有标准答案可对账。</strong> 这是它相对全站其他板块最大的优势：<strong>训练模型你没法确认「跑对了没」，但最短路是不是真最短、剪枝后根值有没有变、CSP 的解满不满足约束，全都能当场验证</strong>——所以每个项目都给了验收标准，<strong>对不上就是写错了</strong>。</p>
-<p>七个项目里，验收标准比题目本身更值得记：</p>
-<p><strong>走迷宫</strong>——⭐ 该看到的一幕是 <strong>A* 展开的格子明显更少、而路径长度和 BFS 一样</strong>（启发式省的是搜索量，不是解的质量）；把启发式换成恒零应该退化成 UCS。
-<strong>8-数码</strong>——⭐ 验收是<strong>解的长度完全相同，但展开数按启发式的强弱拉开档次</strong>；⚠️ 别忘了<strong>一半的随机局面本来就无解</strong>。
-<strong>四子棋</strong>——⭐ 验收核心是<strong>加剪枝前后选出的落子完全一样</strong>，结果变了就是写错了；叶子数才是该看的差距。
-<strong>数独（性价比最高）</strong>——同一道题四个版本逐层加码，<strong>每次只加一层、打印回溯次数</strong>，⭐ 简单题上最终版常常零回溯。
-<strong>Wumpus Agent</strong>——⚠️ 一定会遇到「没有确定安全的格子可走」，<strong>那正是第 1 章留下的那堵墙</strong>；加分项是给每格算概率、只赌最低的那个。
-🏆 <strong>排课 CSP</strong>——⭐ <strong>建模比写算法难，也更值钱</strong>；⚠️ 验收要<strong>独立写一个检查函数，别用求解器自己验自己</strong>，而且加一条矛盾约束时要能报无解、不能死循环。
-🏆 <strong>贝叶斯推理器</strong>——拿书里那个警报网络当验收，⭐ 还要能复现<strong>解释消除</strong>。</p>
-<p>⚠️ 最后一条建议：<strong>别按顺序全做</strong>——挑一个做到能给别人演示的程度，比七个半成品有价值得多。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>按目标挑一个项目做透，不必把七个项目顺序做完。</li><li>先核对解的正确性，再比较展开节点、回溯次数和运行时间。</li><li>启发式、剪枝与约束传播逐项加入，保持对照条件一致。</li><li>排课使用独立检查函数验收；概率推理先对照书中的小例子，再扩展。</li></ul></section>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="19-经典NLP.html"><div class="dir">← 上一节</div>💬 19 · 经典 NLP</a><a class="next" href="附录A-速查.html"><div class="dir">下一节 →</div>📖 附录A · 速查</a></nav>
@@ -577,4 +566,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

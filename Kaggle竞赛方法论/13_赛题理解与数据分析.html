@@ -180,9 +180,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -647,8 +647,7 @@ th,td{min-width:5.2em}
 <hr />
 <h2 id="recap">🛑 可以停在这里</h2>
 <blockquote>
-<p>⚡ <strong>走神救援</strong><br />
-⭐<strong>结构化赛最快拉开差距的是「你比别人更早看懂这份数据是什么」</strong>。前三步（都在建模之前）：<strong>看清评价指标 → 确认时间/分组结构（决定验证怎么切，切错全白费） → 看目标变量分布</strong>。<strong>反推匿名特征</strong>的手段：看分布形态（有无分箱痕迹）、看与目标的相关性和单调性、<strong>看特征间相关矩阵（高相关的一组往往同源衍生）</strong>、看随时间变化（静态属性 vs 滚动统计）、看缺失模式。<strong>时间字段</strong>除拆年月日，还要挖：<strong>周期性（sin/cos 编码保持环形）、相对时间（距上次事件多久，常比绝对时间有用得多）、多窗口聚合、训练测试的时间边界</strong>。⚠️<strong>weight=0 的样本不计分但不一定该丢</strong>——仍携带分布信息，可训练不评估，用 CV 决定。⭐<strong>树模型无法外推</strong>（只能输出训练范围内的分段常数），目标持续上升时预测会被卡住 →<strong>先去趋势、学残差、再把趋势加回去</strong>。⚠️<strong>SMAPE 的坑：分母含预测值所以「预测偏小」能刷分，且真实值接近 0 时误差被放大到失控</strong>。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>建模前先看指标、目标分布与时间或分组结构。</li><li>用分布、相关性、缺失和时间变化理解匿名特征，而不是盲目衍生。</li><li>预测任务的外推需求与指标特性会影响建模和后处理选择。</li></ul></section>
 </blockquote>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -676,4 +675,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
+</body></html>

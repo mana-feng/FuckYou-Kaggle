@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -420,10 +420,10 @@ random split: 100% of test seqs have a same-family sibling in train
 <p>⭐ <strong>这不是一条新规矩，是站内那条规矩换了一个域。</strong>
 <a href="../数据这一关/14-数据泄漏的七种来源.html">数据这一关 · 14 数据泄漏的七种来源</a> 的
 <strong>④ 分组泄漏</strong>讲的就是这件事：同一个用户的多条记录被随机切散，
-随机切 AUC <strong>0.706</strong>、按用户 <code>GroupKFold</code> 切只剩 <strong>0.564</strong> —— 那 0.14 是「认人」不是「预测」。
-⭐⭐ <strong>唯一的区别是「组」给没给你</strong>：那边 <code>user_id</code> 是现成的一列，
-一行 <code>len(set(uid_train) &amp; set(uid_test))</code> 就能验，期望是 0；
-而这里<strong>没有这一列</strong> —— 「哪些序列算同一组」得你自己按相似度聚出来，
+随机切 AUC <strong>0.706</strong>、按用户 <code>GroupKFold</code> 切只剩 <strong>0.564</strong> —— 那 0.14 是「认人」不是「预测」。</p>
+<p>⭐⭐ <strong>唯一的区别是「组」给没给你</strong>：那边 <code>user_id</code> 是现成的一列，
+一行 <code>len(set(uid_train) &amp; set(uid_test))</code> 就能验，期望是 0；</p>
+<p>而这里<strong>没有这一列</strong> —— 「哪些序列算同一组」得你自己按相似度聚出来，
 <strong>连阈值定在哪都是你的决定</strong>。这才是科学数据上真正难的那一半。</p>
 </blockquote>
 <hr />
@@ -499,9 +499,8 @@ random split: 100% of test seqs have a same-family sibling in train
 <p>⚠️ <strong>什么时候看下一页</strong>：你已经能正确评估了，接下来要决定<strong>下一批实验做什么</strong> ——
 那是把评测接回数据生产的事。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>随机划分训练/测试集，在科学数据上几乎总是作弊。</strong> 因为这里的样本<strong>不独立</strong>：同源序列来自同一个祖先，相似度常在 60%–90% 以上；数据库收录的又正是「已经被成簇研究过的那些」。⚠️ 于是你手上那一万条，<strong>有效独立样本数可能只有几百</strong>。⭐ 实测证据：同一份合成数据、同一个岭回归、同一套超参，<strong>只改划分方式</strong> —— 随机划分测试集 <strong>R² = 0.707</strong>（看起来是个像样的模型），按家族划分 <strong>R² = −1.199</strong>（<strong>还不如直接猜训练集均值</strong>），虚高 <strong>1.906</strong>。随机划分时 <strong>100%</strong> 的测试序列在训练集里有同族兄弟；按家族划分时这个比例构造上就是 0。⚠️ 换六组设置复核过：随机划分的 R² 恒在 <strong>0.66–0.85</strong>，按家族划分<strong>恒为负数</strong>（−0.25 到 −1.36）—— 不是某组超参下的巧合。⭐ <strong>加大正则化救不了</strong>：<code>lam</code> 从 1 加到 100 只把它从 −1.20 抬到 −0.25，仍是负的 —— 因为问题不在模型复杂度，而在<strong>训练集里根本没有测试家族的信息</strong>。正确做法四条：<strong>先按相似度聚类再整簇划分</strong>、<strong>报指标必须同时报相似度阈值</strong>、<strong>验证集也要按组切</strong>（否则调参照样泄漏）、<strong>用别人的划分前先问它是怎么划的</strong>。另外三个坑：<strong>只有成功的实验进了数据库</strong>（负样本不是真负样本，是整类没被记录 —— 就是幸存者偏差）、<strong>测试集太小</strong>（站内算过 100 题只能分辨 8 个百分点，而你可能只有 40 个独立家族）、<strong>指标选错</strong>（阳性占 3% 时全猜阴性也有 97% 准确率，该看 AUPRC 或「前 N 里有几个真阳性」，因为下游真正要做的就是挑 N 个去做实验）。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>随机划分可能把近亲样本分到两边，分数高不等于能推广到新家族。</li><li>划分规则要对应实际外推目标，验证集也必须使用相同原则。</li><li>检查成功实验偏差、测试规模和任务指标，并把这些限制与结果一起报告。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="08-数据实验模型飞轮.html">08-数据实验模型飞轮.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -529,4 +528,4 @@ random split: 100% of test seqs have a same-family sibling in train
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

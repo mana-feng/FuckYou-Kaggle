@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -493,10 +493,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <blockquote>
 <p>⚠️ <strong>上面这句「top-p 就是探索利用」是个结论，但这一章从头到尾没说 top-p 到底是什么。</strong>
 🔗 补上那一半：<a href="../大模型全景导论/06b-解码策略.html">全景导论 06b · 解码策略</a>。
-那一章讲的正是这里的对偶面——<strong>top-k 是「候选池固定大小」，top-p 是「候选池按累积概率动态伸缩」</strong>，
-所以模型很确定时 top-p 自动收成近乎 greedy（利用），模型犹豫时自动放宽（探索）：
+</p>
+</blockquote>
+<p>那一章讲的正是这里的对偶面——<strong>top-k 是「候选池固定大小」，top-p 是「候选池按累积概率动态伸缩」</strong>，</p>
+<blockquote>
+<p>所以模型很确定时 top-p 自动收成近乎 greedy（利用），模型犹豫时自动放宽（探索）：
 ⭐ <strong>它比 temperature 更像一个「自适应的 ε」</strong>，这是把这一章的老虎机直觉搬到 LLM 上时最该知道的一件事。
-那边还写了 temperature / top-k / top-p 三个旋钮<strong>同时开</strong>时的作用顺序，以及复读机该用 repetition penalty 还是调 top-p。</p>
+</p>
+</blockquote>
+<p>那边还写了 temperature / top-k / top-p 三个旋钮<strong>同时开</strong>时的作用顺序，以及复读机该用 repetition penalty 还是调 top-p。</p>
+<blockquote>
 <p>🔗 <strong>这解释了<a href="../大模型全景导论/04-训练三阶段.html">全景导论主线 4 · 它怎样从续写机变助手</a>里那个现象</strong>：
 <strong>RLHF 训久了模型会变得"无聊"、回答趋同</strong> ——
 那正是探索不足导致的策略塌缩。<strong>KL 惩罚（第 11、12 章）是用来把模型拴在 SFT 附近的。</strong></p>
@@ -578,9 +584,8 @@ RLHF 罚的是<strong>反向 KL</strong>：$\text{KL}(\pi_\theta\,\|\,\pi_{SFT})
 <hr />
 <h2 id="_6">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>多臂老虎机 = MDP 去掉状态</strong>。指标是<strong>遗憾 Regret</strong>，好算法 <strong>O(log T)</strong>，<strong>理论下界也是 Ω(log T) 所以这就是到顶</strong>。<strong>ε-贪心</strong>：一行代码但<strong>Regret线性</strong>且<strong>探索均匀</strong>（很差的臂也照试）。⭐<strong>UCB</strong> = 估计值 + <code>c√(ln t / N_a)</code> 不确定性奖金 —— <strong>不是选最好的，是选最有可能是最好的</strong>（餐厅例子：试1次的B店 UCB=9.10 &gt; 试10次的A店 7.98）。⭐<strong>Thompson Sampling</strong> = 每个臂维护后验分布（伯努利用 Beta，就是数赢几次输几次），<strong>每次从各分布抽一个数选最大的</strong>；优雅在于<strong>不确定性大的臂分布"胖"，抽出大值概率高就被探索</strong> —— <strong>探索和利用不是两个模式切换，是同一个动作的自然结果</strong>。⭐<strong>工业界选它的真正原因是并行/延迟反馈友好</strong>：同时给一万人推荐时，UCB是确定性的会给所有人推同一个，Thompson天然分散。<strong>有状态时探索难一个数量级</strong>（Montezuma需要一长串正确动作，ε-贪心训几亿帧得0分）→ 内在奖励/计数探索/<strong>参数空间噪声（给权重加噪声="这局我是个略不同的智能体"，探索连贯能走很长新路径）</strong>。⭐<strong>LLM的temperature就是探索利用</strong>，<strong>RLHF训久了变无聊=探索不足导致策略塌缩，KL惩罚就是对抗它的</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>探索要获取信息，利用要兑现已有知识，两者共同影响长期回报。</li><li>UCB 使用不确定性奖金，Thompson Sampling 从后验中采样进行选择。</li><li>反馈延迟、环境变化和多步探索会改变方法的表现，先核对问题设定。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="08-DQN.html">08-DQN.md</a> ⭐</p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -608,4 +613,4 @@ RLHF 罚的是<strong>反向 KL</strong>：$\text{KL}(\pi_\theta\,\|\,\pi_{SFT})
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

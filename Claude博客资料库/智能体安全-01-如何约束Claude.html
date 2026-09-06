@@ -233,9 +233,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>前提：开发者是有能力评估动作的技术受众</li>
 <li><strong>关键发现——审批疲劳：</strong> 用户批准约 93% 的权限弹窗且注意力随弹窗累积下降，监督机制反而可能起反作用。对策：OS 级沙箱把弹窗减少 84%，让有经验的用户改为「以打断方式监督」</li>
 </ul>
-<p>吃过的亏：
-- <strong>信任前执行：</strong> 三个漏洞允许在用户同意之前执行代码（如 .claude/settings.json 的 hooks 在信任弹窗出现前就在项目启动时执行）。<br class="prose-beat">修复：所有配置解析与执行推迟到信任确认之后，把项目本地配置当不可信的互联网请求对待
-- 用户成为注入媒介： 一次钓鱼攻击把外传 AWS 凭据的要求藏在看似日常的任务指令里——25 次尝试中 Claude 完成了 24 次外传。<br class="prose-beat">模型层无法察觉异常（用户意图看起来一致）。<br class="prose-beat"><strong>结论：当用户本身成为攻击载体时，环境级出口控制是唯一可靠的防线</strong></p>
+<p>吃过的亏：</p>
+<ul>
+<li><p><strong>信任前执行：</strong>三个漏洞允许在用户同意之前执行代码（如 .claude/settings.json 的 hooks 在信任弹窗出现前就在项目启动时执行）。</p><p>修复：所有配置解析与执行推迟到信任确认之后，把项目本地配置当不可信的互联网请求对待。</p></li>
+<li><p><strong>用户成为注入媒介：</strong>一次钓鱼攻击把外传 AWS 凭据的要求藏在看似日常的任务指令里——25 次尝试中 Claude 完成了 24 次外传。</p><p>模型层无法察觉异常（用户意图看起来一致）。</p><p><strong>结论：当用户本身成为攻击载体时，环境级出口控制是唯一可靠的防线。</strong></p></li>
+</ul>
 <h3 id="claude-cowork">模式三：本地虚拟机（Claude Cowork）</h3>
 <ul>
 <li>完整 VM 隔离（macOS Apple Virtualization / Windows HCS）+ 选择性挂载点；凭据留在宿主机钥匙串，Agent 只拿会话级 scoped token</li>
@@ -243,9 +245,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>架构演进：从「Agent 循环在 VM 内」（VM 启动失败即产品不可用）改为「Agent 循环和本地 MCP server 在 VM 外、代码执行仍隔离在 VM 内」</li>
 <li>文件系统：细粒度挂载模式（只读/读写/读写不可删）+ 企业 MDM 管控白名单；路径校验前先解析符号链接防逃逸</li>
 </ul>
-<p>吃过的亏：
-- <strong>借道白名单域名外传：</strong> 恶意工作区文件携带攻击者的 API 凭据，引导 Claude 读取其他文件并通过 api.anthropic.com（合法白名单域名）上传到攻击者的账户——出口代理只查了目标域名，没考虑「白名单域名可达的每个功能都是攻击面」。<br class="prose-beat">修复：VM 内部署防御性中间人代理，只接受 VM 自己配发的 token、拒绝攻击者内嵌的凭据
-- <strong>EDR 盲区：</strong> VM 隔离让企业终端检测系统（EDR）看不到客户机活动。<br class="prose-beat">缓解：拉取式 OTLP 日志导出，但仍非宿主级实时监控</p>
+<p>吃过的亏：</p>
+<ul>
+<li><p><strong>借道白名单域名外传：</strong>恶意工作区文件携带攻击者的 API 凭据，引导 Claude 读取其他文件并通过 api.anthropic.com（合法白名单域名）上传到攻击者的账户。</p><p>出口代理只查了目标域名，没考虑「白名单域名可达的每个功能都是攻击面」。</p><p>修复：VM 内部署防御性中间人代理，只接受 VM 自己配发的 token、拒绝攻击者内嵌的凭据。</p></li>
+<li><p><strong>EDR 盲区：</strong>VM 隔离让企业终端检测系统（EDR）看不到客户机活动。</p><p>缓解：拉取式 OTLP 日志导出，但仍非宿主级实时监控。</p></li>
+</ul>
 <h2 id="_4">外部资源准则</h2>
 <ul>
 <li><strong>远程 vs 本地：</strong> 本地工具可审计、可锁版本；远程工具部署后行为可变，初始信任会失效</li>
@@ -286,8 +290,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </details>
 </div>
 <div class="recap"><h2 id="recap">🛑 可以停在这里</h2>
-<p>⚡ <strong>走神救援</strong><br />
-⭐<strong>两层约束：提示层（告诉它别做）和系统层（让它做不到）</strong>，只有系统层可靠，因为它不依赖模型的配合。<br class="prose-beat">⭐⭐<strong>提示层不可靠的原因：模型行为由整个上下文决定，而上下文里可能混入攻击者控制的文字</strong>——文档/邮件/网页里的指令都可能压过你的系统提示词（提示注入）；你在和「模型读到的所有内容」竞争，而不只是在写规则。<br class="prose-beat">组合方式：系统层兜底，提示层提效——能力边界一律用系统层实现（权限/沙箱/白名单/只读挂载）、提示层用来减少无谓尝试（告诉它哪些做不到省得反复试）、高风险操作加人工确认、假设提示层随时会失效来设计系统层。</p></div>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>提示层说明规则，系统层限制真正能做的事。</li><li>假设外部内容可能影响模型，设计不依赖模型自律的权限边界。</li><li>高风险操作保留明确授权，提示用于减少误用而不是替代隔离。</li></ul></section></div>
 <nav class="pagenav"><a href="index.html"><div class="dir">← 返回</div>📚 资料库目录</a>
 <a class="next" href="../智能体工程教程/index.html"><div class="dir">系统学习 →</div>🎓 智能体工程教程</a></nav>
 </main><script>(function(){
@@ -301,4 +304,5 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
+</body></html>

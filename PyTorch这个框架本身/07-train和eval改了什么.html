@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -402,7 +402,7 @@ Dropout eval : [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
 </code></pre></div>
 
 <p>实跑输出：</p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>初始 running_mean = [0.0, 0.0] num = 0</p><p>train 前向一次后 = [0.20000000298023224, 0.30000001192092896] num = 1</p><p>no_grad 里再前向一次 = [0.3799999952316284, 0.5700000524520874] num = 2</p><p>requires_grad=False = [0.5419999957084656, 0.8130000233650208] num = 3</p><p>eval() 之后前向 = [0.5419999957084656, 0.8130000233650208] num = 3 （不动了）</p><p>本批均值 = [2.0, 3.0] momentum = 0.1</p></div></section>
+<section class="comparison-repair" id="comparison-repair-41"><div class="tw"><table><caption>训练开关与梯度开关影响不同状态</caption><thead><tr><th scope="col">状态</th><th scope="col">running_mean</th><th scope="col">num / 备注</th></tr></thead><tbody><tr><th scope="row">初始</th><td>[0.0, 0.0]</td><td>0</td></tr><tr><th scope="row">train 前向一次后</th><td>[0.20000000298023224, 0.30000001192092896]</td><td>1</td></tr><tr><th scope="row">no_grad 里再前向一次</th><td>[0.3799999952316284, 0.5700000524520874]</td><td>2</td></tr><tr><th scope="row">requires_grad=False</th><td>[0.5419999957084656, 0.8130000233650208]</td><td>3</td></tr><tr><th scope="row">eval() 之后前向</th><td>[0.5419999957084656, 0.8130000233650208]</td><td>3 （不动了）</td></tr></tbody></table></div><p>本批均值 = [2.0, 3.0] momentum = 0.1</p></section>
 <p>⭐ <strong>四条，每一条都是反直觉的</strong>：</p>
 <div class="tw"><table>
 <thead>
@@ -453,7 +453,7 @@ Dropout eval : [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
 </code></pre></div>
 
 <p>实跑输出：</p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>喂 0.0 后 running_mean = 0.0000 num = 1</p><p>喂 10.0 后 running_mean = 5.0000 num = 2</p><p>喂 20.0 后 running_mean = 10.0000 num = 3</p><p>默认 momentum=0.1 喂同样三批: 2.9</p></div></section>
+<section class="comparison-repair" id="comparison-repair-42"><div class="tw"><table><caption>累计平均的三次更新</caption><thead><tr><th scope="col">输入</th><th scope="col">running_mean</th><th scope="col">num</th></tr></thead><tbody><tr><th scope="row">0.0</th><td>0.0000</td><td>1</td></tr><tr><th scope="row">10.0</th><td>5.0000</td><td>2</td></tr><tr><th scope="row">20.0</th><td>10.0000</td><td>3</td></tr></tbody></table></div><p>默认 momentum=0.1 喂同样三批: 2.9</p></section>
 <p>⭐ 累积平均给的是 <code>(0+10+20)/3 = 10.0</code>，指数滑动只给到 <code>2.9</code> —— <strong>同样的数据，两种平均差了三倍多</strong>。
 <code>momentum=None</code> 在「统计量必须准、而 batch 又少」的场景（比如量化前的校准）才用。</p>
 <hr />
@@ -746,4 +746,4 @@ Dropout eval : [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

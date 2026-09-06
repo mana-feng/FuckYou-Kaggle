@@ -180,9 +180,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -210,10 +210,10 @@ th,td{min-width:5.2em}
 </details>
 <h1 id="16">16 · 实战项目</h1>
 <p>⏱ <strong>三个项目，每个 1–3 天</strong> ｜ ⭐ <strong>不做项目 = 没学过</strong></p>
-<hr />
+<hr>
 <h2 id="_1">🎯 一句话</h2>
 <p>看懂 ≠ 会做。这三个项目<strong>难度递进</strong>，做完第一个你就有作品集，做完第三个你能面推荐算法岗。</p>
-<hr />
+<hr>
 <h2 id="adhd">🧠 ADHD 专属：怎么保证你能做完项目</h2>
 <p><strong>项目是最容易半途而废的东西。</strong> 三条规则：</p>
 <ol>
@@ -224,17 +224,17 @@ th,td{min-width:5.2em}
 <blockquote>
 <p>🚫 <strong>必须避免</strong>：花三天调 Docker 环境。用 Colab / 本地裸 Python，能跑就行。</p>
 </blockquote>
-<hr />
+<hr>
 <h1 id="1">🥉 项目一：电影推荐（1 天）</h1>
 <p><strong>目标</strong>：在 MovieLens 上跑通「数据 → 三个模型 → 评估对比」的完整流程。</p>
 <p><strong>产出</strong>：一个 Jupyter Notebook + 一张模型对比表。</p>
 <h3 id="_2">任务清单</h3>
-<ul>
-<li>[ ] <strong>T1 (30min)</strong> 下数据、看数据、算稀疏度和长尾分布</li>
-<li>[ ] <strong>T2 (45min)</strong> 按<strong>时间</strong>切分训练/测试集（别随机切！）</li>
-<li>[ ] <strong>T3 (60min)</strong> 实现 Baseline：热门推荐 + ItemCF</li>
-<li>[ ] <strong>T4 (60min)</strong> 用 <code>implicit</code> 跑 ALS，和 baseline 对比</li>
-<li>[ ] <strong>T5 (45min)</strong> 实现 Recall@10 / NDCG@10，画对比图</li>
+<ul class="reading-task-list reading-task-list reading-task-list reading-task-list reading-task-list">
+<li class="reading-task" data-reading-task="1"><label class="reading-task-title"><input type="checkbox" data-task-key="1"><span>任务 T1</span></label><p class="reading-task-time">参考用时 · 30 分钟</p><div class="reading-task-body"> 下数据、看数据、算稀疏度和长尾分布</div></li>
+<li class="reading-task" data-reading-task="2"><label class="reading-task-title"><input type="checkbox" data-task-key="2"><span>任务 T2</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> 按<strong>时间</strong>切分训练/测试集（别随机切！）</div></li>
+<li class="reading-task" data-reading-task="3"><label class="reading-task-title"><input type="checkbox" data-task-key="3"><span>任务 T3</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 实现 Baseline：热门推荐 + ItemCF</div></li>
+<li class="reading-task" data-reading-task="4"><label class="reading-task-title"><input type="checkbox" data-task-key="4"><span>任务 T4</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 用 <code>implicit</code> 跑 ALS，和 baseline 对比</div></li>
+<li class="reading-task" data-reading-task="5"><label class="reading-task-title"><input type="checkbox" data-task-key="5"><span>任务 T5</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> 实现 Recall@10 / NDCG@10，画对比图</div></li>
 </ul>
 <h3 id="_3">🔨 起步代码</h3>
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">zipfile</span><span class="o">,</span><span class="w"> </span><span class="nn">urllib.request</span><span class="o">,</span><span class="w"> </span><span class="nn">io</span>
@@ -304,18 +304,18 @@ th,td{min-width:5.2em}
 <li>加上第 4 节的热门惩罚 α，观察 Recall 和 Coverage 怎么此消彼长</li>
 <li>计算 Coverage（推荐结果覆盖了多少比例的物品）</li>
 </ul>
-<hr />
+<hr>
 <h1 id="23">🥈 项目二：深度召回 + 排序两阶段（2–3 天）</h1>
 <p><strong>目标</strong>：搭一个<strong>有召回有排序</strong>的完整两阶段系统。这是工业系统的最小可用形态。</p>
 <p><strong>产出</strong>：一个能输入 user_id、输出 top-10 的系统 + 分阶段的评估报告。</p>
 <h3 id="_6">任务清单</h3>
-<ul>
-<li>[ ] <strong>T1 (60min)</strong> 用 PyTorch 实现双塔模型（抄第 8 节的代码）</li>
-<li>[ ] <strong>T2 (90min)</strong> 实现 in-batch 负采样训练，跑通</li>
-<li>[ ] <strong>T3 (45min)</strong> 用 Faiss 建索引，实现召回，评估 <strong>Recall@200</strong></li>
-<li>[ ] <strong>T4 (90min)</strong> 训练一个排序模型（DeepFM 或简单 MLP），特征包括：用户历史统计、物品统计、类目</li>
-<li>[ ] <strong>T5 (60min)</strong> 串联：召回 200 → 排序 → top-10，评估端到端 NDCG@10</li>
-<li>[ ] <strong>T6 (45min)</strong> 消融实验：只用召回 vs 召回+排序，差多少？</li>
+<ul class="reading-task-list reading-task-list reading-task-list reading-task-list reading-task-list reading-task-list">
+<li class="reading-task" data-reading-task="6"><label class="reading-task-title"><input type="checkbox" data-task-key="6"><span>任务 T1</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 用 PyTorch 实现双塔模型（抄第 8 节的代码）</div></li>
+<li class="reading-task" data-reading-task="7"><label class="reading-task-title"><input type="checkbox" data-task-key="7"><span>任务 T2</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> 实现 in-batch 负采样训练，跑通</div></li>
+<li class="reading-task" data-reading-task="8"><label class="reading-task-title"><input type="checkbox" data-task-key="8"><span>任务 T3</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> 用 Faiss 建索引，实现召回，评估 <strong>Recall@200</strong></div></li>
+<li class="reading-task" data-reading-task="9"><label class="reading-task-title"><input type="checkbox" data-task-key="9"><span>任务 T4</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> 训练一个排序模型（DeepFM 或简单 MLP），特征包括：用户历史统计、物品统计、类目</div></li>
+<li class="reading-task" data-reading-task="10"><label class="reading-task-title"><input type="checkbox" data-task-key="10"><span>任务 T5</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 串联：召回 200 → 排序 → top-10，评估端到端 NDCG@10</div></li>
+<li class="reading-task" data-reading-task="11"><label class="reading-task-title"><input type="checkbox" data-task-key="11"><span>任务 T6</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> 消融实验：只用召回 vs 召回+排序，差多少？</div></li>
 </ul>
 <h3 id="_7">🔑 关键实现要点</h3>
 <div class="codehilite"><pre><span></span><code><span class="c1"># ---------- 召回负采样：必须全库随机采，不是&quot;曝光未点击&quot; ----------</span>
@@ -354,19 +354,19 @@ th,td{min-width:5.2em}
 <li>加一路 ItemCF 召回，做多路合并，看 Recall 涨多少</li>
 <li>在物品塔里加入类目/标签特征，测试新物品（训练集没出现过）的召回效果</li>
 </ul>
-<hr />
+<hr>
 <h1 id="35">🥇 项目三：端到端可运行的推荐服务（3–5 天）</h1>
 <p><strong>目标</strong>：不只是 Notebook，是一个<strong>能被 HTTP 调用的服务</strong>，带监控和 A/B 分流。</p>
 <p><strong>产出</strong>：一个 GitHub 仓库，README 里有架构图和实验结果。<strong>这是能写进简历的东西。</strong></p>
 <h3 id="_10">任务清单</h3>
-<ul>
-<li>[ ] <strong>T1 (2h)</strong> FastAPI 服务：<code>GET /recommend?user_id=x&amp;n=10</code></li>
-<li>[ ] <strong>T2 (2h)</strong> 特征存储：Redis（或简化成 pickle 字典）存用户/物品特征</li>
-<li>[ ] <strong>T3 (2h)</strong> 完整链路：召回（Faiss）→ 排序（模型）→ 重排（打散+去重）</li>
-<li>[ ] <strong>T4 (2h)</strong> A/B 分流：哈希 user_id 分两组，跑两套策略</li>
-<li>[ ] <strong>T5 (2h)</strong> 埋点日志 + 简单看板（曝光数、各路召回占比、pCTR 分布、P99 延迟）</li>
-<li>[ ] <strong>T6 (2h)</strong> 降级：加超时保护和热门兜底</li>
-<li>[ ] <strong>T7 (2h)</strong> 写 README：架构图、实验对比表、踩坑记录</li>
+<ul class="reading-task-list reading-task-list reading-task-list reading-task-list reading-task-list reading-task-list reading-task-list">
+<li class="reading-task" data-reading-task="12"><label class="reading-task-title"><input type="checkbox" data-task-key="12"><span>任务 T1</span></label><p class="reading-task-time">参考用时 · 2 小时</p><div class="reading-task-body"> FastAPI 服务：<code>GET /recommend?user_id=x&amp;n=10</code></div></li>
+<li class="reading-task" data-reading-task="13"><label class="reading-task-title"><input type="checkbox" data-task-key="13"><span>任务 T2</span></label><p class="reading-task-time">参考用时 · 2 小时</p><div class="reading-task-body"> 特征存储：Redis（或简化成 pickle 字典）存用户/物品特征</div></li>
+<li class="reading-task" data-reading-task="14"><label class="reading-task-title"><input type="checkbox" data-task-key="14"><span>任务 T3</span></label><p class="reading-task-time">参考用时 · 2 小时</p><div class="reading-task-body"> 完整链路：召回（Faiss）→ 排序（模型）→ 重排（打散+去重）</div></li>
+<li class="reading-task" data-reading-task="15"><label class="reading-task-title"><input type="checkbox" data-task-key="15"><span>任务 T4</span></label><p class="reading-task-time">参考用时 · 2 小时</p><div class="reading-task-body"> A/B 分流：哈希 user_id 分两组，跑两套策略</div></li>
+<li class="reading-task" data-reading-task="16"><label class="reading-task-title"><input type="checkbox" data-task-key="16"><span>任务 T5</span></label><p class="reading-task-time">参考用时 · 2 小时</p><div class="reading-task-body"> 埋点日志 + 简单看板（曝光数、各路召回占比、pCTR 分布、P99 延迟）</div></li>
+<li class="reading-task" data-reading-task="17"><label class="reading-task-title"><input type="checkbox" data-task-key="17"><span>任务 T6</span></label><p class="reading-task-time">参考用时 · 2 小时</p><div class="reading-task-body"> 降级：加超时保护和热门兜底</div></li>
+<li class="reading-task" data-reading-task="18"><label class="reading-task-title"><input type="checkbox" data-task-key="18"><span>任务 T7</span></label><p class="reading-task-time">参考用时 · 2 小时</p><div class="reading-task-body"> 写 README：架构图、实验对比表、踩坑记录</div></li>
 </ul>
 <h3 id="_11">🔨 服务骨架</h3>
 <div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
@@ -435,7 +435,7 @@ th,td{min-width:5.2em}
 <li>加一个前端页面，能点击并把反馈写回</li>
 <li>定时任务：每小时用新数据重新训练并热更新模型</li>
 </ul>
-<hr />
+<hr>
 <h2 id="_14">📦 数据集选择</h2>
 <div class="tw"><table>
 <thead>
@@ -488,7 +488,7 @@ th,td{min-width:5.2em}
 <blockquote>
 <p>💡 <strong>建议</strong>：项目一二用 MovieLens（快），项目三用 Amazon Reviews（有文本，能练冷启动和内容特征）。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_15">🧰 可以直接用的库</h2>
 <div class="tw"><table>
 <thead>
@@ -531,7 +531,7 @@ th,td{min-width:5.2em}
 <p>⚠️ <strong>别一上来就用 RecBole</strong>。先自己手写一遍 ItemCF 和 MF，
 你需要知道框架里发生了什么，而不是调 API。<strong>框架是第二遍用的。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="readme">📝 项目 README 该写什么（简历用得上）</h2>
 <div class="codehilite"><pre><span></span><code><span class="gh"># 推荐系统实践</span>
 
@@ -565,10 +565,10 @@ th,td{min-width:5.2em}
 <blockquote>
 <p>🔑 <strong>「踩过的坑」这一节最加分</strong>。它证明你真的做过，而不是抄的教程。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../机器学习与深度学习基础/05-评估与过拟合.html">ML 基础 05</a></td><td>项目一要先造尺子：数据切分、验证集怎么留、指标为什么会骗你，源头在这里</td></tr><tr><td><a href="../模型上线之后/02-离线好不等于线上好.html">上线之后 02</a></td><td>项目三做完 A/B 之后必读：离线 NDCG 涨了线上却不涨，是这份教程的主线问题</td></tr><tr><td><a href="../Kaggle竞赛方法论/25_实战Pipeline模板.html">Kaggle 25</a></td><td>「先跑通最烂的版本再逐环替换」不是本教程的偏方，是竞赛圈打磨出来的标准 pipeline 打法</td></tr></tbody></table></div>
-<hr />
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/05-%E8%AF%84%E4%BC%B0%E4%B8%8E%E8%BF%87%E6%8B%9F%E5%90%88.html">ML 基础 05</a></td><td>项目一要先造尺子：数据切分、验证集怎么留、指标为什么会骗你，源头在这里</td></tr><tr><td><a href="../%E6%A8%A1%E5%9E%8B%E4%B8%8A%E7%BA%BF%E4%B9%8B%E5%90%8E/02-%E7%A6%BB%E7%BA%BF%E5%A5%BD%E4%B8%8D%E7%AD%89%E4%BA%8E%E7%BA%BF%E4%B8%8A%E5%A5%BD.html">上线之后 02</a></td><td>项目三做完 A/B 之后必读：离线 NDCG 涨了线上却不涨，是这份教程的主线问题</td></tr><tr><td><a href="../Kaggle%E7%AB%9E%E8%B5%9B%E6%96%B9%E6%B3%95%E8%AE%BA/25_%E5%AE%9E%E6%88%98Pipeline%E6%A8%A1%E6%9D%BF.html">Kaggle 25</a></td><td>「先跑通最烂的版本再逐环替换」不是本教程的偏方，是竞赛圈打磨出来的标准 pipeline 打法</td></tr></tbody></table></div>
+<hr>
 <h2 id="_16">✅ 最终检查点</h2>
 <p>做完三个项目，你应该能回答：</p>
 <ol>
@@ -578,7 +578,7 @@ th,td{min-width:5.2em}
 <li>如果 Recall@200 只有 0.1，你会怎么排查？</li>
 <li>你怎么知道模型 A 真的比模型 B 好？</li>
 </ol>
-<hr />
+<hr>
 <details>
 <summary>👀 答案</summary>
 <ol>
@@ -593,12 +593,12 @@ th,td{min-width:5.2em}
 <p><strong>你现在的水平已经超过了大部分只看不做的人。</strong></p>
 <p>想继续拉开差距？教程还有三个<strong>高难度挑战项目</strong>，每个都对准一个用普通数据集练不到的核心矛盾：</p>
 <ul>
-<li>❄️ <a href="19-挑战项目A-新闻推荐-时效性生死时速.html">挑战A · 新闻推荐：时效性生死时速</a> —— 物品生命周期只有几小时的极端冷启动</li>
-<li>🌀 <a href="20-挑战项目B-信息流模拟器-亲手养出信息茧房.html">挑战B · 信息流模拟器</a> —— 亲手养出信息茧房，再治好它</li>
-<li>🚀 <a href="21-挑战项目C-迷你生成式推荐-复现前沿.html">挑战C · 迷你生成式推荐</a> —— 在笔记本上复现 2026 前沿</li>
+<li>❄️ <a href="19-%E6%8C%91%E6%88%98%E9%A1%B9%E7%9B%AEA-%E6%96%B0%E9%97%BB%E6%8E%A8%E8%8D%90-%E6%97%B6%E6%95%88%E6%80%A7%E7%94%9F%E6%AD%BB%E6%97%B6%E9%80%9F.html">挑战A · 新闻推荐：时效性生死时速</a> —— 物品生命周期只有几小时的极端冷启动</li>
+<li>🌀 <a href="20-%E6%8C%91%E6%88%98%E9%A1%B9%E7%9B%AEB-%E4%BF%A1%E6%81%AF%E6%B5%81%E6%A8%A1%E6%8B%9F%E5%99%A8-%E4%BA%B2%E6%89%8B%E5%85%BB%E5%87%BA%E4%BF%A1%E6%81%AF%E8%8C%A7%E6%88%BF.html">挑战B · 信息流模拟器</a> —— 亲手养出信息茧房，再治好它</li>
+<li>🚀 <a href="21-%E6%8C%91%E6%88%98%E9%A1%B9%E7%9B%AEC-%E8%BF%B7%E4%BD%A0%E7%94%9F%E6%88%90%E5%BC%8F%E6%8E%A8%E8%8D%90-%E5%A4%8D%E7%8E%B0%E5%89%8D%E6%B2%BF.html">挑战C · 迷你生成式推荐</a> —— 在笔记本上复现 2026 前沿</li>
 </ul>
-<p>或者直接去 👉 <a href="17-面试与求职.html">17-面试与求职.md</a></p>
-<hr />
+<p>或者直接去 👉 <a href="17-%E9%9D%A2%E8%AF%95%E4%B8%8E%E6%B1%82%E8%81%8C.html">17-面试与求职.md</a></p>
+<hr>
 <h2 id="ckpt">✅ 检查点</h2>
 <ol>
 <li>三个项目分别练的是哪几节的内容？为什么要按这个顺序做？</li>
@@ -617,15 +617,12 @@ th,td{min-width:5.2em}
 <li><strong>「踩过的坑」</strong>。分数说明你会调，坑说明你懂原理——面试时后者有说服力得多。</li>
 </ol>
 </details>
-<hr />
+<hr>
 <h2 id="recap">⚡ 走神救援</h2>
-<blockquote>
-<p>⚡ <strong>走神救援</strong><br />
-三个递进项目：①<strong>协同过滤 + 评估框架</strong>（先把尺子造出来，后面每个改动才有意义）②<strong>工业漏斗 + 特征工程</strong>（召回→排序，体会分层的必要性）③<strong>冷启动 + 多样性</strong>（第 11、13 节的落地）。⭐ 铁律：<strong>先跑通最烂的版本</strong>（哪怕是热门推荐），拿到完整链路再逐环替换；<strong>每个改动都要和 baseline 比</strong>（0.35 的 Recall 是好是坏，只有对比才知道）；<strong>别只看准确率</strong>——高准确率可能只是「全推热门」，必须同时看覆盖率/多样性/新颖度。README 里<strong>「踩过的坑」最值钱</strong>：分数说明你会调，坑说明你懂原理。<!--RECAP-EXT-->⭐ <b>三个项目的通关判据，照着自查就行</b>：① ItemCF 的 Recall@10 要明显高于热门推荐，ALS 又要高于 ItemCF——没做到先别怀疑算法，去查 <code>alpha</code>（置信度）和 <code>factors</code>（维度）；② 召回 Recall@200 要 &gt; 0.3（做得好能到 0.5+），端到端 NDCG@10 必须明显高于「只取召回结果的前 10 个」，否则你的排序层等于白写；③ 服务 P99 &lt; 100ms，而且<b>把模型服务杀掉，接口还得能返回热门兜底</b>——这条才是项目三真正在考的东西，还要能从日志里统计出 A/B 两组的指标差异。⚠️ 最容易翻车的两个地方：<b>随机切分数据会让 Recall 虚高三倍</b>，一律按时间切；以及<b>召回的负样本和排序的负样本采样方式不一样</b>（召回要从全库随机采，模拟的是「和全库比」；排序只能在召回结果里采，那才是它线上真正见到的分布）——这是面试高频题，也是自己做项目时最常搞混的一步。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>先跑通基线与评估链路，再逐环替换召回、排序和特征。</li><li>每次改动都和基线比较，同时查看准确性、覆盖率与多样性。</li><li>训练与评估保持时间边界；负样本要对应各层实际面对的候选分布。</li><li>验收服务延迟与故障兜底，把实验记录、限制和踩坑过程写进 README。</li></ul></section>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
-<nav class="pagenav"><a href="18-进阶专题-GNN-蒸馏-去偏-强化学习.html"><div class="dir">← 上一节</div>🎓 18 · 进阶专题</a><a class="next" href="17-面试与求职.html"><div class="dir">下一节 →</div>🎤 17 · 面试与求职</a></nav>
+<nav class="pagenav"><a href="18-%E8%BF%9B%E9%98%B6%E4%B8%93%E9%A2%98-GNN-%E8%92%B8%E9%A6%8F-%E5%8E%BB%E5%81%8F-%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0.html"><div class="dir">← 上一节</div>🎓 18 · 进阶专题</a><a class="next" href="17-%E9%9D%A2%E8%AF%95%E4%B8%8E%E6%B1%82%E8%81%8C.html"><div class="dir">下一节 →</div>🎤 17 · 面试与求职</a></nav>
 </main>
 <script>(function(){
   var KEY="recsys-progress", FILE="16-\u5b9e\u6218\u9879\u76ee.md";
@@ -649,4 +646,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
+</body></html>

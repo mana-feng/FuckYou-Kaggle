@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,16 +271,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
- onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script><link rel="stylesheet" href="../assets/guided-lessons.css"><link rel="stylesheet" href="../assets/guided-batch1.css"><script defer src="../assets/guided-batch1.js"></script><script defer src="../assets/guided-lessons.js"></script></head><body class="guided-reading">
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
@@ -296,7 +296,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><a href="#_2">🧠 一、先建立直觉：谁该为错误负责</a></li>
 <li><a href="#_3">⛓️ 二、链式法则：唯一需要的数学</a></li>
 <li><a href="#numpy">🔨 三、动手：纯 numpy 手写一个能学会异或的网络</a></li>
-<li><a href="#_5">🔍 四、四个值得盯着看的细节</a></li>
+<li><a href="#_5">🔍 四、五个值得盯着看的细节</a></li>
 <li><a href="#_6">🔬 五、梯度检验：怎么确认自己写对了</a></li>
 <li><a href="#_7">🚀 六、现代框架帮你做了什么</a></li>
 <li><a href="#_8">🔗 和站内其他章的关系</a></li>
@@ -305,13 +305,29 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 </div>
 </details>
-<h1 id="08">08 · 反向传播</h1>
+<div class="lesson-layout" data-lesson="backprop">
+<div class="lesson-content"><section class="lesson-hero" id="lesson-start" data-route="梯度是怎样传回去的">
+<div><p class="lesson-eyebrow">08 / 反向传播 · 一段一段看影响</p><h1>先看误差怎么传回去，<br>再看矩阵怎么写。</h1><p class="lesson-lead">反向传播做的事：算出每个参数稍微变化时，最终损失会怎样变化。</p></div><aside class="lesson-advice"><strong>不用一次跟踪整个网络</strong><p>先看下面这一条短链。每个比例的含义，都能在公式中点开。</p><a href="#first-pause">只学这条链也可以 →</a></aside>
+</section>
+<section class="lesson-mission"><div><p class="lesson-kicker">你先带走这句就够了</p><h2>先算结果，<br>再把局部影响乘回去。</h2><p>反向传播负责算梯度；优化器才负责用梯度更新参数。</p></div><ol class="lesson-steps"><li><span>1</span><strong>前向</strong><p>得到中间值和最终损失。</p></li><li><span>2</span><strong>反向</strong><p>沿依赖关系计算、复用梯度。</p></li><li><span>3</span><strong>更新</strong><p>按学习率与梯度修改参数。</p></li></ol></section>
+<div class="lesson-overview-grid">
+<section class="lesson-card lesson-wide" id="chain-example" data-route="用一条短链观察"><p class="lesson-kicker">01 / 一个能手算的例子</p><h2>只看一个参数 w = 1</h2><p>这里用平方运算演示链式法则，不是在推荐网络的激活函数。</p><figure class="dia"><svg viewBox="0 0 760 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="参数w等于1，经过z等于2w得2，再经过a等于z平方得4，最后损失等于二分之一乘a减1的平方得4.5"><defs><marker id="bp-intro-arrow__f1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="var(--accent)"/></marker></defs><g fill="var(--quote-bg)" stroke="var(--border)"><rect x="8" y="36" width="150" height="88" rx="12"/><rect x="207" y="36" width="150" height="88" rx="12"/><rect x="406" y="36" width="150" height="88" rx="12"/><rect x="605" y="36" width="147" height="88" rx="12"/></g><g stroke="var(--accent)" stroke-width="2" marker-end="url(#bp-intro-arrow__f1)"><path d="M164 80 H199"/><path d="M363 80 H398"/><path d="M562 80 H597"/></g><g text-anchor="middle" fill="var(--fg)" font-size="18" font-family="sans-serif"><text x="83" y="70">参数 w</text><text x="83" y="101">1</text><text x="282" y="70">z = 2w</text><text x="282" y="101">2</text><text x="481" y="70">a = z²</text><text x="481" y="101">4</text><text x="679" y="70">L = ½(a−1)²</text><text x="679" y="101">4.5</text></g></svg><figcaption>先沿箭头算数值，再从损失往回问：前一个量变一点，后一个量变多少？</figcaption></figure></section>
+<section class="lesson-card" id="chain-formula" data-route="点开三个局部影响"><p class="lesson-kicker">02 / 链式法则</p><h2>三个局部比例，乘成一个总影响</h2><div class="formula-box" data-formula-name="当前短链中的链式法则">$$\frac{\partial L}{\partial w}=\frac{\partial L}{\partial a}\frac{\partial a}{\partial z}\frac{\partial z}{\partial w}$$</div><p>在当前数值处：<strong>3 × 4 × 2 = 24</strong>。参数 w 微增时，损失的一阶变化率是 24。</p><p class="lesson-note">点完整的分式看解释。它描述当前位置的局部变化，不是任意大步长下的精确差值。</p></section>
+<section class="lesson-card" id="chain-update" data-route="梯度怎样用来更新"><p class="lesson-kicker">03 / 梯度下降的下一步</p><h2>有了梯度，才轮到更新</h2><div class="formula-box" data-formula-name="单参数梯度下降更新">$$w_{\mathrm{new}}=w-\eta\frac{\partial L}{\partial w}$$</div><p>学习率取 0.01：<strong>1 − 0.01 × 24 = 0.76</strong>。这里梯度为正，沿负梯度就减小 w。</p><p class="lesson-note">步子过大仍可能使损失上升；算对梯度不等于任何学习率都合适。</p></section>
+<section class="lesson-card lesson-pause lesson-wide" id="first-pause" data-route="可以停在这里"><h2>可以停在这里</h2><p>你已经能区分“向前算结果”“向后算梯度”和“用梯度更新”。矩阵写法只是把许多这样的局部影响一起计算。</p><a href="#full-lesson">继续看异或实验、形状对照与梯度检验 →</a></section>
+</div>
+
+<section class="lesson-full" id="full-lesson" aria-label="完整正文">
+<div class="lesson-divider"><span>继续探索</span><p>原有正文、图解和例子都在下方。按需跳转，不必一次读完。</p></div>
+<h2 id="08" class="lesson-original-title">08 · 反向传播</h2>
+<!-- guided-lesson: backprop -->
+
 <p>⏱ <strong>36 分钟</strong> ｜ ⭐ <strong>手写一遍就永远忘不掉</strong> ｜ 🔨 必须动手</p>
 <hr />
 <h2 id="_1">🎯 一句话</h2>
 <p>反向传播 = <strong>链式法则 + 从后往前算，把中间结果复用起来</strong>。
 它不是什么高深理论，就是<strong>求导时别做重复劳动</strong>。</p>
-<figure class="dia" data-fig="nn_forward_backward"><svg viewBox="0 0 800 296" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="神经网络前向传播与反向传播"><defs><marker id="fw__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--link)"/></marker><marker id="bw__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker></defs><text class="dia-t" x="120" y="232" font-size="12.5" text-anchor="middle" fill="var(--muted)" font-weight="600">输入 x</text><text class="dia-t" x="280" y="232" font-size="12.5" text-anchor="middle" fill="var(--muted)" font-weight="600">隐层 a¹</text><text class="dia-t" x="440" y="232" font-size="12.5" text-anchor="middle" fill="var(--muted)" font-weight="600">隐层 a²</text><text class="dia-t" x="600" y="232" font-size="12.5" text-anchor="middle" fill="var(--muted)" font-weight="600">输出 ŷ</text><line x1="133" y1="82.0" x2="267" y2="59.0" stroke="var(--border)" stroke-width="1"/><line x1="133" y1="82.0" x2="267" y2="105.0" stroke="var(--border)" stroke-width="1"/><line x1="133" y1="82.0" x2="267" y2="151.0" stroke="var(--border)" stroke-width="1"/><line x1="133" y1="82.0" x2="267" y2="197.0" stroke="var(--border)" stroke-width="1"/><line x1="133" y1="128.0" x2="267" y2="59.0" stroke="var(--border)" stroke-width="1"/><line x1="133" y1="128.0" x2="267" y2="105.0" stroke="var(--border)" stroke-width="1"/><line x1="133" y1="128.0" x2="267" y2="151.0" stroke="var(--border)" stroke-width="1"/><line x1="133" y1="128.0" x2="267" y2="197.0" stroke="var(--border)" stroke-width="1"/><line x1="133" y1="174.0" x2="267" y2="59.0" stroke="var(--border)" stroke-width="1"/><line x1="133" y1="174.0" x2="267" y2="105.0" stroke="var(--border)" stroke-width="1"/><line x1="133" y1="174.0" x2="267" y2="151.0" stroke="var(--border)" stroke-width="1"/><line x1="133" y1="174.0" x2="267" y2="197.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="59.0" x2="427" y2="59.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="59.0" x2="427" y2="105.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="59.0" x2="427" y2="151.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="59.0" x2="427" y2="197.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="105.0" x2="427" y2="59.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="105.0" x2="427" y2="105.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="105.0" x2="427" y2="151.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="105.0" x2="427" y2="197.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="151.0" x2="427" y2="59.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="151.0" x2="427" y2="105.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="151.0" x2="427" y2="151.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="151.0" x2="427" y2="197.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="197.0" x2="427" y2="59.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="197.0" x2="427" y2="105.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="197.0" x2="427" y2="151.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="197.0" x2="427" y2="197.0" stroke="var(--border)" stroke-width="1"/><line x1="453" y1="59.0" x2="587" y2="105.0" stroke="var(--border)" stroke-width="1"/><line x1="453" y1="59.0" x2="587" y2="151.0" stroke="var(--border)" stroke-width="1"/><line x1="453" y1="105.0" x2="587" y2="105.0" stroke="var(--border)" stroke-width="1"/><line x1="453" y1="105.0" x2="587" y2="151.0" stroke="var(--border)" stroke-width="1"/><line x1="453" y1="151.0" x2="587" y2="105.0" stroke="var(--border)" stroke-width="1"/><line x1="453" y1="151.0" x2="587" y2="151.0" stroke="var(--border)" stroke-width="1"/><line x1="453" y1="197.0" x2="587" y2="105.0" stroke="var(--border)" stroke-width="1"/><line x1="453" y1="197.0" x2="587" y2="151.0" stroke="var(--border)" stroke-width="1"/><circle cx="120" cy="82.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="120" cy="128.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="120" cy="174.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="280" cy="59.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="280" cy="105.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="280" cy="151.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="280" cy="197.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="440" cy="59.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="440" cy="105.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="440" cy="151.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="440" cy="197.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="600" cy="105.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="600" cy="151.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><line x1="110" y1="34" x2="610" y2="34" stroke="var(--link)" stroke-width="2.4" marker-end="url(#fw__f1)"/><text class="dia-t" x="360" y="24" font-size="12.5" text-anchor="middle" fill="var(--link)" font-weight="700">前向：算出预测</text><line x1="610" y1="258" x2="110" y2="258" stroke="var(--accent)" stroke-width="2.4" marker-end="url(#bw__f1)"/><text class="dia-t" x="360" y="278" font-size="12.5" text-anchor="middle" fill="var(--accent)" font-weight="700">反向：把「责任」δ 一层层传回去</text><text class="dia-t" x="690" y="120" font-size="12" text-anchor="start" fill="var(--accent)" font-weight="700">δ = ∂J/∂z</text><text class="dia-t" x="690" y="140" font-size="11.5" text-anchor="start" fill="var(--muted)" font-weight="normal">这一层要</text><text class="dia-t" x="690" y="157" font-size="11.5" text-anchor="start" fill="var(--muted)" font-weight="normal">担多少责任</text></svg><figcaption>前向把数据推到输出算出损失，反向把<b>「这一层要担多少责任」</b>一层层传回去。⭐ 反向传播的全部内容，就是那个 δ 怎么从右边走到左边。</figcaption></figure>
+<figure class="dia" data-fig="nn_forward_backward"><svg viewBox="0 0 800 296" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="神经网络前向传播与反向传播"><defs><marker id="fw__f2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--link)"/></marker><marker id="bw__f2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker></defs><text class="dia-t" x="120" y="232" font-size="12.5" text-anchor="middle" fill="var(--muted)" font-weight="600">输入 x</text><text class="dia-t" x="280" y="232" font-size="12.5" text-anchor="middle" fill="var(--muted)" font-weight="600">隐层 a¹</text><text class="dia-t" x="440" y="232" font-size="12.5" text-anchor="middle" fill="var(--muted)" font-weight="600">隐层 a²</text><text class="dia-t" x="600" y="232" font-size="12.5" text-anchor="middle" fill="var(--muted)" font-weight="600">输出 ŷ</text><line x1="133" y1="82.0" x2="267" y2="59.0" stroke="var(--border)" stroke-width="1"/><line x1="133" y1="82.0" x2="267" y2="105.0" stroke="var(--border)" stroke-width="1"/><line x1="133" y1="82.0" x2="267" y2="151.0" stroke="var(--border)" stroke-width="1"/><line x1="133" y1="82.0" x2="267" y2="197.0" stroke="var(--border)" stroke-width="1"/><line x1="133" y1="128.0" x2="267" y2="59.0" stroke="var(--border)" stroke-width="1"/><line x1="133" y1="128.0" x2="267" y2="105.0" stroke="var(--border)" stroke-width="1"/><line x1="133" y1="128.0" x2="267" y2="151.0" stroke="var(--border)" stroke-width="1"/><line x1="133" y1="128.0" x2="267" y2="197.0" stroke="var(--border)" stroke-width="1"/><line x1="133" y1="174.0" x2="267" y2="59.0" stroke="var(--border)" stroke-width="1"/><line x1="133" y1="174.0" x2="267" y2="105.0" stroke="var(--border)" stroke-width="1"/><line x1="133" y1="174.0" x2="267" y2="151.0" stroke="var(--border)" stroke-width="1"/><line x1="133" y1="174.0" x2="267" y2="197.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="59.0" x2="427" y2="59.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="59.0" x2="427" y2="105.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="59.0" x2="427" y2="151.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="59.0" x2="427" y2="197.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="105.0" x2="427" y2="59.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="105.0" x2="427" y2="105.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="105.0" x2="427" y2="151.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="105.0" x2="427" y2="197.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="151.0" x2="427" y2="59.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="151.0" x2="427" y2="105.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="151.0" x2="427" y2="151.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="151.0" x2="427" y2="197.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="197.0" x2="427" y2="59.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="197.0" x2="427" y2="105.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="197.0" x2="427" y2="151.0" stroke="var(--border)" stroke-width="1"/><line x1="293" y1="197.0" x2="427" y2="197.0" stroke="var(--border)" stroke-width="1"/><line x1="453" y1="59.0" x2="587" y2="105.0" stroke="var(--border)" stroke-width="1"/><line x1="453" y1="59.0" x2="587" y2="151.0" stroke="var(--border)" stroke-width="1"/><line x1="453" y1="105.0" x2="587" y2="105.0" stroke="var(--border)" stroke-width="1"/><line x1="453" y1="105.0" x2="587" y2="151.0" stroke="var(--border)" stroke-width="1"/><line x1="453" y1="151.0" x2="587" y2="105.0" stroke="var(--border)" stroke-width="1"/><line x1="453" y1="151.0" x2="587" y2="151.0" stroke="var(--border)" stroke-width="1"/><line x1="453" y1="197.0" x2="587" y2="105.0" stroke="var(--border)" stroke-width="1"/><line x1="453" y1="197.0" x2="587" y2="151.0" stroke="var(--border)" stroke-width="1"/><circle cx="120" cy="82.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="120" cy="128.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="120" cy="174.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="280" cy="59.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="280" cy="105.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="280" cy="151.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="280" cy="197.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="440" cy="59.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="440" cy="105.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="440" cy="151.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="440" cy="197.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="600" cy="105.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><circle cx="600" cy="151.0" r="13" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><line x1="110" y1="34" x2="610" y2="34" stroke="var(--link)" stroke-width="2.4" marker-end="url(#fw__f2)"/><text class="dia-t" x="360" y="24" font-size="12.5" text-anchor="middle" fill="var(--link)" font-weight="700">前向：算出预测</text><line x1="610" y1="258" x2="110" y2="258" stroke="var(--accent)" stroke-width="2.4" marker-end="url(#bw__f2)"/><text class="dia-t" x="360" y="278" font-size="12.5" text-anchor="middle" fill="var(--accent)" font-weight="700">反向：把「责任」δ 一层层传回去</text><text class="dia-t" x="690" y="120" font-size="12" text-anchor="start" fill="var(--accent)" font-weight="700">δ = ∂J/∂z</text><text class="dia-t" x="690" y="140" font-size="11.5" text-anchor="start" fill="var(--muted)" font-weight="normal">这一层要</text><text class="dia-t" x="690" y="157" font-size="11.5" text-anchor="start" fill="var(--muted)" font-weight="normal">担多少责任</text></svg><figcaption>前向把数据推到输出算出损失，反向把<b>「这一层要担多少责任」</b>一层层传回去。⭐ 反向传播的全部内容，就是那个 δ 怎么从右边走到左边。</figcaption></figure>
 
 <hr />
 <h2 id="_2">🧠 一、先建立直觉：谁该为错误负责</h2>
@@ -353,19 +369,19 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>如果 loss ← a ← z ← w （w 影响 z，z 影响 a，a 影响 loss）</p><p>那么 ∂loss/∂w = ∂loss/∂a × ∂a/∂z × ∂z/∂w</p><p>↑ 一路乘回去</p></div></section>
 <p>💡 <strong>人话</strong>：<em>「w 变一点点，z 变多少；z 变一点点，a 变多少；a 变一点点，loss 变多少」——三个比例连乘。</em></p>
 <p>为什么要从后往前算：因为 <code>∂loss/∂a</code> 这一段，前面所有参数都要用。
-<strong>从后往前算一遍存下来，所有参数复用</strong> → O(n)。
-从前往后每个参数各算一遍 → O(n²)。<strong>这就是反向传播的全部优化。</strong></p>
+<strong>从后往前计算并复用中间梯度</strong>，适合“许多参数影响一个标量损失”的训练问题。反向计算量通常与前向计算量同阶。
+不要把它简化成无条件的 O(n) 对 O(n²)：复杂度还取决于计算图、输入输出维度；前向自动微分也不等于逐参数做数值差分。</p>
 <h3 id="_4">📊 这个"复用"能省多少</h3>
-<section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">朴素做法（数值梯度）：</span></div><div class="vb-flow-row"><span class="vb-flow-step">对每个参数 ±ε 各跑一次前向</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">2P 次完整前向传播</span></div><div class="vb-flow-row"><span class="vb-flow-step">P = 100 万参数</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">200 万次前向 💀 完全不可行</span></div><div class="vb-flow-row"><span class="vb-flow-step">反向传播：</span></div><div class="vb-flow-row"><span class="vb-flow-step">1 次前向 + 1 次反向 ≈ 2 次前向的代价</span></div><div class="vb-flow-row"><span class="vb-flow-step">【一次拿到全部参数的梯度】 ⭐</span></div></div></section>
+<section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">朴素做法（数值梯度）：</span></div><div class="vb-flow-row"><span class="vb-flow-step">对每个参数 ±ε 各跑一次前向</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">2P 次完整前向传播</span></div><div class="vb-flow-row"><span class="vb-flow-step">P = 100 万参数</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">200 万次前向 💀 完全不可行</span></div><div class="vb-flow-row"><span class="vb-flow-step">反向传播：</span></div><div class="vb-flow-row"><span class="vb-flow-step">1 次前向 + 1 次反向：常粗估为约 3 次前向算量</span></div><div class="vb-flow-row"><span class="vb-flow-step">【一次拿到全部参数的梯度】 ⭐</span></div></div></section>
 <blockquote>
 <p>🔑 <strong>所以 1986 年反向传播的普及是个里程碑</strong>——
 想法不新（链式法则有几百年了），
-<strong>但它让训练大网络在计算上第一次变得可行。</strong></p>
+<strong>它推动了多层网络训练的普及。</strong></p>
 </blockquote>
 <p>💡 <strong>一个值得记住的推论</strong>：
 反向传播的代价大约是前向的 <strong>2 倍</strong>。
 所以「训练一个 epoch 的成本 ≈ 推理 3 次全部数据」——
-这是估算训练时间时最好用的心算公式。</p>
+这是算量的粗估，不是精确耗时；数据加载、通信、优化器等开销还要另算。</p>
 <hr />
 <h2 id="numpy">🔨 三、动手：纯 numpy 手写一个能学会异或的网络</h2>
 <p><strong>这段代码是本章的核心。跑一遍，然后逐行对照下面的注解。</strong></p>
@@ -411,10 +427,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>实测输出：</p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>step 0 loss=0.8049</p><p>step 1000 loss=0.0038</p><p>step 2000 loss=0.0016</p><p>step 3000 loss=0.0009</p><p>预测: [0 1 1 0] 真实: [0 1 1 0] ✅ 学会异或了</p></div></section>
+<div class="table-scroll"><div class="tw"><table><caption>异或训练的结果：先看 loss 是否持续下降</caption><thead><tr><th>训练步</th><th>损失 loss</th></tr></thead><tbody><tr><td>0</td><td>0.8049</td></tr><tr><td>1000</td><td>0.0038</td></tr><tr><td>2000</td><td>0.0016</td></tr><tr><td>3000</td><td>0.0009</td></tr></tbody></table></div></div>
+<p>预测: [0 1 1 0] 真实: [0 1 1 0] ✅ 学会异或了</p>
 <p><strong>你刚刚从零实现了一个神经网络的完整训练。</strong> 大约 25 行。</p>
 <hr />
-<h2 id="_5">🔍 四、四个值得盯着看的细节</h2>
+<h2 id="_5">🔍 四、五个值得盯着看的细节</h2>
 <h3 id="1-dz2-a2-y">① <code>dz2 = (a2 - y)</code> —— 干净得可疑</h3>
 <p>Sigmoid + 交叉熵组合时，梯度<strong>正好就是「预测 − 真实」</strong>，所有复杂项全约掉了。</p>
 <blockquote>
@@ -427,13 +444,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>tanh: dz = da * (1 - a²)</p><p>ReLU: dz = da * (z &gt; 0) ← 负区间直接置 0</p><p>sigmoid: dz = da * a * (1-a)</p></div></section>
 <blockquote>
 <p>💡 <strong>梯度消失的根源就在这里</strong>：如果激活函数的导数小于 1（如 sigmoid 最大 0.25），
-层数一多，连乘就指数级衰减。<strong>ReLU 导数是 1，所以不衰减。</strong></p>
+连乘较小的导数可能导致梯度衰减。<strong>ReLU 在正区间导数为 1、负区间为 0</strong>，能缓解一类饱和问题；梯度还要经过权重等运算，不能保证完全不消失。</p>
 </blockquote>
 <h3 id="4-sum0-batch">④ <code>.sum(0)</code> 是因为 batch</h3>
 <p>一个 batch 里每个样本都对偏置有贡献，要加起来。</p>
 <h3 id="5">⑤ 每一行梯度的形状怎么推出来（不用背）</h3>
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">⭐ 一条规则走天下：【梯度的形状 = 它对应那个量的形状】</span></div><div class="vb-flow-row"><span class="vb-flow-step">W1 是 (2, 8)</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">dW1 必须是 (2, 8)</span></div><div class="vb-flow-row"><span class="vb-flow-step">X 是 (4, 2)</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">X.T 是 (2, 4)</span></div><div class="vb-flow-row"><span class="vb-flow-step">dz1 是 (4, 8)</span></div><div class="vb-flow-row"><span class="vb-flow-step">dW1 = X.T @ dz1 形状是 (2,4)@(4,8) = (2,8) ✅ 对上了</span></div></div></section>
-<p>💡 <strong>卡住时不用推数学，用形状凑</strong>：</p>
+<p>💡 <strong>卡住时先检查形状，再核对链式法则</strong>：形状能排除一些错误，但对得上形状不代表导数一定正确。</p>
 <blockquote>
 <p>要得到 (2,8)，手上有 X(4,2) 和 dz1(4,8)——
 <strong>只有 <code>X.T @ dz1</code> 这一种乘法能对上形状。</strong>
@@ -504,10 +521,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>实跑输出就是上面那三行：<code>-0.00007294</code> / <code>-0.00007294</code> / <code>1.49e-08</code>。</p>
 </details>
 <blockquote>
-<p>🔑 <strong>判断标准</strong>：相对误差 <strong>&lt; 1e-6</strong> 就算对。
+<p>🔑 <strong>本例参考</strong>：双精度小例子可参考相对误差 <strong>&lt; 1e-6</strong>；阈值需随数值尺度、精度和算子调整，不能替代完整测试。
 自己实现任何自定义层/损失函数时，<strong>梯度检验是必做的一步</strong>——第 18 章挑战 A 会大量用到。</p>
 </blockquote>
-<p>⚠️ <strong>梯度检验的四个坑</strong>：</p>
+<p>⚠️ <strong>梯度检验的五个坑</strong>：</p>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -517,12 +534,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </thead>
 <tbody>
 <tr>
-<td><strong>必须用中心差分</strong></td>
-<td><code>(L(+ε)−L(−ε))/(2ε)</code> 误差是 O(ε²)；单边差分是 O(ε)，<strong>差两个数量级</strong> ⭐</td>
+<td><strong>优先用中心差分</strong></td>
+<td>光滑函数下，中心差分截断误差是 O(ε²)，单边差分为 O(ε)；不是固定差两个数量级，还要考虑浮点误差</td>
 </tr>
 <tr>
 <td><strong>ε 不能太小</strong></td>
-<td>1e-5 左右最好。<strong>更小会被浮点舍入误差淹没</strong>，反而更不准</td>
+<td>双精度示例可从 1e-5 左右试起，并按尺度调整；太小可能被浮点舍入误差淹没</td>
 </tr>
 <tr>
 <td><strong>ReLU 的折点</strong></td>
@@ -530,7 +547,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 <tr>
 <td><strong>必须关掉随机性</strong></td>
-<td>Dropout 和 BN 会让两次前向的网络不一样，比较毫无意义 ⭐</td>
+<td>固定随机性与状态：关闭 Dropout；固定 BN 的模式/统计。BN 在固定批次上不等于随机运算</td>
 </tr>
 <tr>
 <td>💀 <strong>两边必须在同一组权重上算</strong></td>
@@ -596,19 +613,19 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>手写时梯度的形状怎么快速推出来？</li>
 <li>梯度穿过 ReLU 时怎么变？穿过 sigmoid 呢？</li>
 <li>梯度消失的根源是什么？</li>
-<li>梯度检验怎么做？判断标准是什么？有哪四个坑？</li>
+<li>梯度检验怎么做？判断标准是什么？有哪五个坑？</li>
 <li>为什么用相对误差而不是绝对误差？</li>
 </ol>
 <details>
 <summary>👀 答案</summary>
 <ol>
-<li>因为靠后的那段梯度（∂loss/∂a）是前面所有参数共用的，从后往前算一遍存下来复用是 O(n)；从前往后每个参数各算一遍是 O(n²)。数值梯度要 <strong>2P 次前向</strong>（P 是参数量），反向传播只要 1 次前向 + 1 次反向。</li>
-<li><strong>约 2 倍</strong>。所以「训练一个 epoch ≈ 推理 3 次全部数据」——估算训练时间最好用的心算公式。</li>
+<li>在标量损失的计算图中，靠后的中间梯度可被前面的参数复用。逐参数做中心差分要 2P 次前向；反向传播只需一次前向和一次反向，计算量通常与前向同阶。</li>
+<li>反向计算常粗估为前向约 2 倍，因此前向加反向约 3 倍；这是算量的粗估，不是包含加载、优化器与通信等开销的精确耗时。</li>
 <li>正好是 <strong>(预测 − 真实)</strong>。因为这个组合在数学上互相约掉了复杂项——它们是被设计成配对使用的。</li>
-<li><strong>梯度的形状 = 它对应那个量的形状</strong>。要得到 dW1(2,8)，手上有 X(4,2) 和 dz1(4,8)，只有 <code>X.T @ dz1</code> 能对上形状。卡住时用形状凑，不用推数学。</li>
+<li><strong>梯度的形状 = 它对应那个量的形状</strong>。<code>X.T @ dz1</code> 的结果是 (2,8)，与 W1 一致；这是形状自检，还需要由链式法则确认，并用数值梯度检验。</li>
 <li>ReLU：<code>dz = da * (z&gt;0)</code>，负区间直接置 0；sigmoid：<code>dz = da * a * (1-a)</code>，<strong>最大值只有 0.25</strong>。</li>
-<li>反向传播时每穿过一层要乘激活函数的导数，如果导数小于 1（sigmoid 最大 0.25），层数一多连乘就<strong>指数级衰减</strong>。ReLU 导数为 1 所以不衰减。</li>
-<li>把某参数 ±ε 各算一次 loss，用 <code>(L(+ε)−L(−ε))/(2ε)</code> 得数值梯度，和解析梯度对比，<strong>相对误差 &lt; 1e-6 算对</strong>。四个坑：①必须中心差分（误差 O(ε²) vs O(ε)）②ε 不能太小（1e-5 最好，太小被浮点误差淹没）③ReLU 折点处天然不准（函数本身不可导，不是 bug）④必须关掉 Dropout 和 BN。</li>
+<li>小导数连乘可能衰减；sigmoid 的导数最大为 0.25。ReLU 正区间为 1、负区间为 0，梯度仍受权重等因素影响，并不保证不消失。</li>
+<li>用中心差分 <code>(L(+ε)−L(−ε))/(2ε)</code> 对比解析梯度。本页双精度小例子可参考相对误差 1e-6，并检查：①中心差分；②ε 与数值尺度适配；③避开不可导折点；④固定随机性和状态，如 Dropout 与 BN 的运行统计；⑤两边在同一组权重上重算。</li>
 <li>因为<strong>梯度本身的量级可能很小或很大</strong>，绝对误差没有统一的判断标准；相对误差 <code>|数值−解析|/(|数值|+|解析|)</code> 才是尺度无关的。</li>
 </ol>
 </details>
@@ -616,9 +633,26 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_10">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>反向传播=<strong>链式法则+从后往前算以复用中间结果</strong>（数值梯度要2P次前向，反向传播只要1次前向+1次反向）——<strong>1986年它的普及是里程碑，因为它让训练大网络第一次在计算上可行</strong>；<strong>代价约是前向的2倍 → "训练一个epoch≈推理3次全部数据"是估时间的心算公式</strong>。手写25行让网络学会异或。五细节：①sigmoid+交叉熵梯度=<strong>预测−真实</strong>（干净是因为被数学选中）②反向每步对应前向每步③<strong>穿过激活要乘它的导数</strong>（ReLU乘(z&gt;0)，sigmoid乘a(1-a)最大0.25）→ <strong>这就是梯度消失的根源</strong>④sum(0)是因为batch ⑤⭐<strong>梯度形状=对应量的形状，卡住时用形状凑不用推数学</strong>。<strong>梯度检验</strong>：中心差分，ε≈1e-5，相对误差&lt;1e-6 才算对；<strong>四坑：必须中心差分、ε别太小、ReLU折点天然不准、先关Dropout和BN</strong>。框架的<code>.backward()</code>=自动微分（记录计算图再反向套链式法则）。</p>
+<p>反向传播用链式法则，从后向前计算并复用梯度；优化器再用梯度更新参数。</p>
+<ul>
+<li>先看一条短链，再看异或网络；梯度形状是自检线索，不是推导正确的证明。</li>
+<li>激活导数和权重共同影响梯度，ReLU 不能保证梯度永不消失。</li>
+<li>检验时用中心差分、合适的 ε，避开折点、固定状态，并在同一组权重上重算解析梯度。</li>
+<li>正文保留了五个细节、五个检验陷阱与可展开的完整检验示例，忘了就回到对应卡片。</li>
+</ul>
 </blockquote>
 <p><strong>下一节</strong> 👉 <a href="09-优化器与学习率.html">09-优化器与学习率.md</a></p>
+</section></div>
+<aside class="lesson-rail" aria-label="本节学习路线">
+<button type="button" class="lesson-route-toggle" aria-expanded="true" aria-controls="lesson-route">本节学习路线 <span aria-hidden="true">⌄</span></button>
+<div id="lesson-route">
+<p class="lesson-position" aria-live="polite">从第一站开始</p>
+<div class="lesson-track" aria-hidden="true"><span></span></div>
+<nav class="lesson-route-links" aria-label="章节跳转"></nav>
+<div class="lesson-rail-note"><strong>一次只读一张卡片</strong><p>蓝色下划线可以点开解释。关掉窗口，接着原来的位置读。</p></div>
+<button type="button" class="lesson-save">记住当前位置</button>
+<p class="lesson-save-status" role="status"></p>
+</div></aside></div>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="07-从线性到神经网络.html"><div class="dir">← 上一节</div>🧠 07 · 从线性到神经网络</a><a class="next" href="09-优化器与学习率.html"><div class="dir">下一节 →</div>🎚️ 09 · 优化器与学习率</a></nav>
@@ -645,4 +679,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

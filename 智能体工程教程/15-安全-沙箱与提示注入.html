@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -622,9 +622,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_16">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>提示注入=Agent时代的SQL注入</strong>，难防是因为<strong>「用户的指令」和「数据里的指令」对模型都只是上下文里的文字，「谁说的」在架构上就模糊</strong>——不是再训练能解决的。四入口：内容/工具返回/文件/⭐<strong>不可见文本最隐蔽</strong>（白底白字、HTML注释、零宽字符、图里的字）。<strong>三层防御</strong>：①<strong>环境约束（确定性）——沙箱、文件系统限制、出口控制、权限分离，不管模型行为都成立</strong>；②模型层（⚠️<strong>必有漏网</strong>）；③外部内容管理（⚠️<strong>「审计过的连接器」≠「审计过的数据」</strong>）。⭐<strong>铁律：软防御必有漏网，硬边界才是兜底</strong>。⚠️<strong>硬边界的判断标准：这条约束模型有没有可能绕过</strong>——提示词里写「不许转账」只是建议，<strong>代码里的那个if才算</strong>。💀两起事故都绕过了模型层：<strong>用户自己成了注入媒介</strong>（钓鱼把「外传AWS凭据」藏进日常指令让用户转述，<strong>25次尝试成功24次</strong>；模型层察觉不到，因为用户意图看起来一致）、<strong>借道白名单域名</strong>（引导Claude经合法域名把凭据传到攻击者账户，出口代理只查了域名）。⭐<strong>共同点：都从被允许的路径出去</strong>——要问的不是「域名可信吗」，而是「<strong>通过它能做什么</strong>」。四原则：<strong>环境优先</strong>、隔离匹配用户能力、<strong>别自制沙箱</strong>、成熟工具链依然有效。⭐<strong>审批疲劳：用户批准约93%的弹窗且注意力随累积下降，弹窗太多等于没有</strong>；沙箱让弹窗减少<strong>84%</strong>，auto mode误报0.4%但<strong>漏报17%</strong>。所以只在<strong>高危动作＝不可逆＋有外部影响（删除/付款/发送/部署）</strong>弹窗。⚠️<strong>沙箱双边界缺一不可：缺网络文件会被窃走，缺文件系统能逃逸</strong>。威胁建模四步：列资源→问最坏→⭐<strong>找出只靠"模型不会那么做"防守的地方（软肋）</strong>→至少改一个成硬边界（~/.ssh不挂载、数据库只读账号）。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>外部内容可能夹带指令；可信连接器不等于它返回的数据都可信。</li><li>用最小权限、文件与网络边界限制后果，不只依赖提示词拒绝攻击。</li><li>检查允许的路径能做什么，而不只检查域名是否在白名单。</li><li>对不可逆或有外部影响的高风险动作保留明确的授权与确认。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="16-企业落地与生产化.html">16-企业落地与生产化.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -652,4 +651,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

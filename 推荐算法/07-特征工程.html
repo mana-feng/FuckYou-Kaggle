@@ -185,9 +185,9 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -494,7 +494,7 @@ $$\text{smoothed\_ctr} = \frac{\text{clicks} + \alpha}{\text{impressions} + \alp
 <h2 id="_10">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>特征四来源：用户/物品/上下文/交叉，其中「用户行为序列」最重要。类别特征→Embedding，数值特征→log变换或分桶。特征交叉是核心命题，演进：人工→FM(隐向量点积)→DeepFM→DIN(注意力)。六大坑：特征穿越（最致命）、离线在线不一致、时间窗口、新物品全0（用贝叶斯平滑）、低频ID、高基数（哈希分桶）。<!--RECAP-EXT-->⭐ <b>FM 用隐向量点积代替「每对特征一个权重」，才是特征交叉的关键突破</b>：直接给权重的话，(女, 化妆品) 只要训练数据里没共现过就永远学不到；换成 &lt;v_i, v_j&gt; 之后，「女」可以从 (女, 连衣裙) 学、「化妆品」可以从 (25岁, 化妆品) 学，两者一点积就有了预测能力。所以 <b>FM 是矩阵分解的推广</b>——MF 只有 user_id 和 item_id 两个特征，FM 允许任意多个。⚠️ 自查特征穿越只需要一句话：<b>「线上服务的那一毫秒，我真的能拿到这个值吗？」</b>用「视频总播放量」当特征离线 AUC 0.95、上线暴死，就是因为那个量在预测时刻还没产生。⭐ 两个容易漏掉的手法：统计特征要同时喂 <code>ctr_1h / 1d / 7d / 30d</code> 多个时间窗口，长短窗口的含义完全不同；小时、星期这种周期特征要用 sin/cos 编码，否则模型会认为 23 点和 0 点相差 23。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>特征来自用户、物品、上下文及交互，行为序列和统计窗口要保留时间含义。</li><li>交叉特征解释组合关系，学习到的向量帮助处理稀疏组合。</li><li>逐项追问预测当时能否拿到这个值，避免特征穿越和线上线下不一致。</li></ul></section>
 </blockquote>
 <p><strong>下一节</strong> 👉 <a href="08-深度学习推荐模型.html">08-深度学习推荐模型.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
@@ -523,4 +523,5 @@ $$\text{smoothed\_ctr} = \frac{\text{clicks} + \alpha}{\text{impressions} + \alp
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
+</body></html>

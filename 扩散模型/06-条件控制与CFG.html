@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -480,9 +480,8 @@ s=15.0  范数  91.65（训练尺度的 5.73 倍）  越过 3 的分量 152 个
 <h2 id="_7">🛑 可以停在这里</h2>
 <p>你已经能解释一张图怎么「听懂」提示词：文本编码器 → 每层每步的交叉注意力 → 采样时的两次前向外推。⚠️ <strong>什么时候回来</strong>：图颜色发死、结构反复、换种子也总是那几张 —— 先把 <code>s</code> 调回默认再查别的。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>提示词先由一个<strong>已训好并冻住</strong>的文本编码器变成<strong>一串</strong>向量（CLIP ViT-L/14 是 <strong>77 × 768</strong>），必须是一串才能做<strong>对齐</strong>。条件靠<strong>交叉注意力</strong>进来：<strong>Q 来自图像特征</strong>、<strong>K/V 来自文本</strong>（77 个），打分矩阵 <strong>(h·w) × 77</strong> —— 每个图像位置自己决定听哪个词；每一层都有、每一步都重算，所以条件是<strong>全程偏置</strong>不是起点。⭐⭐ <strong>CFG</strong> 在同一步跑<strong>两次</strong>去噪，得 <code>ε_cond</code> 和空提示词的 <code>ε_uncond</code>，合成 <code>ε = ε_uncond + s·(ε_cond − ε_uncond)</code>；写成 <code>(1−s)·ε_uncond + s·ε_cond</code> 就看得出 <strong><code>s=1</code> 等于不引导</strong>、<strong><code>s&gt;1</code> 是外推不是插值</strong>（UI 默认 7.5）。free 指训练时以约 <strong>10%</strong> 概率丢掉条件，让同一个网络兼职做无条件预测。⚠️ 代价两头都实在：训练时 ε 范数约 <strong>16</strong>、几乎没有分量超过 3，而 <code>s=7.5</code> 合成出的已是 <strong>2.95 倍</strong>、<strong>70 个分量越过 3</strong>，于是<strong>过饱和、构图崩坏、多样性塌缩</strong>（最后一条单看一张图发现不了）；算力上<strong>每步两次前向＝翻倍</strong>，batch=2 只省访存不省乘加。⭐ 最该带走的：<code>s</code> 和 <code>temperature</code> 是<strong>同一类旋钮</strong>，都没有安全默认值 —— ⚠️ 但<strong>方向相反</strong>：T 调小才听话，<code>s</code> 调大才听话。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>条件通过网络影响每一步去噪，而不是只在初始噪声里出现一次。</li><li>CFG 组合有条件与无条件预测，加强条件方向，同时增加计算与偏离训练分布的风险。</li><li>引导强度不是越大越好，要同时观察匹配程度、细节和多样性。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="07-去噪主干-UNet与DiT.html">07-去噪主干-UNet与DiT.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -510,4 +509,4 @@ s=15.0  范数  91.65（训练尺度的 5.73 倍）  越过 3 的分量 152 个
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

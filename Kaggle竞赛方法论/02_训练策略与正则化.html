@@ -180,9 +180,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -1605,8 +1605,7 @@ th,td{min-width:5.2em}
 <hr />
 <h2 id="recap">🛑 可以停在这里</h2>
 <blockquote>
-<p>⚡ <strong>走神救援</strong><br />
-这章是<strong>工具箱清单不是必用清单</strong>。⭐<strong>正确顺序：先让模型能稳定收敛（Warmup / 梯度截断 / 学习率调度），再加正则（对抗训练 / R-Drop / SWA / EMA）</strong>——模型还训不稳时堆技巧，效果变差你会有四个嫌疑人。几个要点：<strong>Warmup</strong> 是因为初期梯度方向不可靠（Adam 的二阶动量也还不准）；⚠️<strong>别把梯度截断和梯度累加搞混</strong>——前者管梯度爆炸，后者管显存不够（累加最常见的 bug 是<strong>忘了 loss 除以累加步数</strong>）；<strong>对抗训练=在最坏方向加微小扰动仍要预测对</strong>，本质是要求决策边界远离样本，所以算正则；<strong>SWA/EMA 都是对训练轨迹上的权重做平均</strong>，抹掉 SGD 抖动落到平坦极小值，几乎零成本的小幅提分。训不动时的排查顺序：<strong>先在极小数据上看能不能过拟合</strong>→查梯度→查学习率→查标签对齐→最后才加技巧。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>先让小数据上的模型稳定收敛，再逐项加入正则与训练技巧。</li><li>梯度截断控制异常梯度，梯度累积改变一次更新汇集的数据量。</li><li>每次只改一个主要因素，同时记录训练曲线和验证结果。</li></ul></section>
 </blockquote>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -1634,4 +1633,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
+</body></html>

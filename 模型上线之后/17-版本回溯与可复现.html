@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -308,12 +308,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </details>
 <h1 id="17">17 · 版本、回溯与可复现</h1>
 <p>⏱ <strong>48 分钟</strong> ｜ 🎁 <strong>无聊但会在关键时刻救你</strong></p>
-<hr />
+<hr>
 <h2 id="_1">🎯 一句话</h2>
 <p><strong>三个月后有人问「上个季度那个模型为什么给这个用户拒了」——
 你能答上来吗？</strong>
 这一章讲的就是：<strong>让每一个历史决策都可以被还原。</strong></p>
-<hr />
+<hr>
 <h2 id="_2">🎬 一、什么时候你会需要它</h2>
 <div class="tw"><table>
 <thead>
@@ -350,17 +350,17 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 没有版本记录时，「上个月还好好的」这句话<strong>根本无法验证</strong> ——
 你连上个月跑的是什么都不知道。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_3">📦 二、一次预测要能还原，需要记什么</h2>
 <section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>⭐ 一个「发布单元」应该包含五样东西，版本号统一：</li><li>模型文件 （权重 + 结构）</li><li>特征逻辑 （代码版本 / 特征定义）</li><li>预处理产物 （编码器、归一化参数、分桶边界）⭐</li><li>配置 （阈值、截断、降级开关）</li><li>依赖环境 （库版本，尤其是 sklearn/xgboost 大版本）</li><li>💀 只记①是最常见的错误 —— 回滚时会出第 3 章那个问题</li></ol></section>
 <p><strong>线上每条预测要落的日志</strong>：</p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>[ ] 请求 ID、时间戳、用户/实体 ID</p><p>[ ] 模型版本号 ⭐</p><p>[ ] 输入特征值（至少抽样落全量）⭐</p><p>[ ] 预测输出（分数 + 最终决策）</p><p>[ ] 走了哪条链路（正常 / 降级 / 兜底）⭐</p><p>[ ] SHAP 值（抽样，第 10 章）</p></div></section>
+<section class="reading-checklist" aria-label="对照"><p class="visual-block-title">逐项核对</p><div class="vb-compare"><ul class="reading-task-list"><li class="reading-task" data-reading-task="1"><label class="reading-task-title"><input type="checkbox" data-task-key="1"><span>核对项 1</span></label><div class="reading-task-body"><p>请求 ID、时间戳、用户/实体 ID</p></div></li><li class="reading-task" data-reading-task="2"><label class="reading-task-title"><input type="checkbox" data-task-key="2"><span>核对项 2</span></label><div class="reading-task-body"><p>模型版本号 ⭐</p></div></li><li class="reading-task" data-reading-task="3"><label class="reading-task-title"><input type="checkbox" data-task-key="3"><span>核对项 3</span></label><div class="reading-task-body"><p>输入特征值（至少抽样落全量）⭐</p></div></li><li class="reading-task" data-reading-task="4"><label class="reading-task-title"><input type="checkbox" data-task-key="4"><span>核对项 4</span></label><div class="reading-task-body"><p>预测输出（分数 + 最终决策）</p></div></li><li class="reading-task" data-reading-task="5"><label class="reading-task-title"><input type="checkbox" data-task-key="5"><span>核对项 5</span></label><div class="reading-task-body"><p>走了哪条链路（正常 / 降级 / 兜底）⭐</p></div></li><li class="reading-task" data-reading-task="6"><label class="reading-task-title"><input type="checkbox" data-task-key="6"><span>核对项 6</span></label><div class="reading-task-body"><p>SHAP 值（抽样，第 10 章）</p></div></li></ul></div></section>
 <blockquote>
 <p>⭐ <strong>「走了哪条链路」这一条极其有用</strong>：
 用户投诉「推荐很差」时，第一件事就是看<strong>他当时是不是走了降级链路</strong> ——
 这能在 10 秒内排除掉一大类问题。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_4">🔁 三、可复现的三个层次</h2>
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">层次 1：能【重新加载】那个模型，对同样输入给出同样输出</span></div><div class="vb-flow-row"><span class="vb-flow-step">存模型文件 + 环境即可 ✅ 最低要求</span></div><div class="vb-flow-row"><span class="vb-flow-step">层次 2：能【重新训练】出一个等价的模型</span></div><div class="vb-flow-row"><span class="vb-flow-step">还要存：训练数据快照、代码版本、随机种子、超参 ⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">层次 3：能【解释】当时为什么这么决策</span></div><div class="vb-flow-row"><span class="vb-flow-step">还要存：特征值、SHAP、当时的阈值配置</span></div></div></section>
 <blockquote>
@@ -371,7 +371,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>完全复现比想象的难，因为随机性来源很多：</p><p>· 随机种子（数据打乱、初始化、dropout）</p><p>· 多线程/分布式的【浮点累加顺序】⭐ —— 这条最难消除</p><p>· GPU 的非确定性算子</p><p>· 数据源本身在变（同一个 SQL 明天跑结果就不一样）⭐</p><p>⭐ 务实的目标不是「逐位相同」，而是：</p><p>【效果等价】——重训出的模型在同一验证集上指标差异 &lt; 容忍阈值</p></div></section>
 <p>💡 <strong>数据快照是最有效的一招</strong>：把训练数据固化成一份不可变的文件（带哈希），
 <strong>比试图让 SQL 可复现容易得多。</strong></p>
-<hr />
+<hr>
 <h2 id="14">💀 四、一次基础镜像升级，悄悄多拒了 1.4 万人</h2>
 <p><strong>这个案例说明了一件反直觉的事：模型文件能加载 ≠ 模型行为不变。</strong></p>
 <section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">模型：信贷审批，2024 年训练，joblib 存的 sklearn Pipeline</span></div><div class="vb-flow-row"><span class="vb-flow-step">2025 年 3 月：平台统一升级基础镜像（安全补丁）</span></div><div class="vb-flow-row"><span class="vb-flow-step">sklearn 1.2</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">1.4，numpy 也跟着升了大版本</span></div></div></section>
@@ -426,7 +426,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 <tr>
 <td>通过率没有分渠道监控</td>
-<td>新渠道上线时，<strong>渠道维度自动进监控</strong>（<a href="08-告警为什么没人看.html">第 8 章</a>）</td>
+<td>新渠道上线时，<strong>渠道维度自动进监控</strong>（<a href="08-%E5%91%8A%E8%AD%A6%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B2%A1%E4%BA%BA%E7%9C%8B.html">第 8 章</a>）</td>
 </tr>
 </tbody>
 </table></div>
@@ -460,7 +460,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 各个分数段各取一些、每个类别特征的每个取值至少一条、
 <strong>再加上历史上出过问题的那些样本</strong>。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_6">🗂️ 五、一个最小可用的版本方案</h2>
 <p><strong>不需要上 MLflow 之类的平台也能做</strong>：</p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>models/</p><p>2026-08-02_v17/</p><p>model.pkl 模型</p><p>preprocessor.pkl 编码器/归一化参数 ⭐</p><p>config.json 阈值等配置</p><p>feature_schema.json 特征名 + 顺序 + 类型 ⭐</p><p>requirements.txt 环境</p><p>train_meta.json 数据范围、代码 commit、超参、随机种子</p><p>eval_report.json 验证集指标、分人群指标</p><p>MODEL_CARD.md 一页说明（第 19 章）</p></div></section>
@@ -488,7 +488,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <blockquote>
 <p>⭐ <strong><code>feature_schema.json</code> 是这里最容易被跳过、也最该有的一个文件</strong>：
 它把<strong>特征名、顺序、类型</strong>固化下来，
-<strong>推理时按它组装特征，就从根本上杜绝了<a href="04-训练推理一致性.html">第 4 章</a>那个「顺序错位」的 bug。</strong></p>
+<strong>推理时按它组装特征，就从根本上杜绝了<a href="04-%E8%AE%AD%E7%BB%83%E6%8E%A8%E7%90%86%E4%B8%80%E8%87%B4%E6%80%A7.html">第 4 章</a>那个「顺序错位」的 bug。</strong></p>
 </blockquote>
 <p><strong>它该怎么用</strong>（关键在最后那个 <code>extra</code> 检查）：</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -511,11 +511,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <blockquote>
 <p>⚠️ <strong>「多了不认识的特征」为什么必须报错</strong>：
-静默忽略多余字段，看起来很宽容，<strong>实际上是<a href="04-训练推理一致性.html">第 4 章</a>那类 bug 的温床</strong> ——
+静默忽略多余字段，看起来很宽容，<strong>实际上是<a href="04-%E8%AE%AD%E7%BB%83%E6%8E%A8%E7%90%86%E4%B8%80%E8%87%B4%E6%80%A7.html">第 4 章</a>那类 bug 的温床</strong> ——
 上游把 <code>user_age</code> 改名成 <code>age</code>，你的代码会<strong>同时</strong>「缺 user_age」和「多 age」；
 只查缺失的话，<code>user_age</code> 会走缺失值填充，<strong>一切照常运行，只是全错了</strong>。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_7">🕰️ 六、日志留多久、怎么落才不贵</h2>
 <div class="tw"><table>
 <thead>
@@ -552,7 +552,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>第一行是个容易踩的坑</strong>：
 标签延迟 3 个月，但日志只留 1 个月 ——
 <strong>等标签到了，你已经没有当时的特征数据来做分析和重训了。</strong>
-🔗 <a href="07-没有标签怎么发现退化.html">第 7 章</a>量标签延迟，这里用它定日志保留期。</p>
+🔗 <a href="07-%E6%B2%A1%E6%9C%89%E6%A0%87%E7%AD%BE%E6%80%8E%E4%B9%88%E5%8F%91%E7%8E%B0%E9%80%80%E5%8C%96.html">第 7 章</a>量标签延迟，这里用它定日志保留期。</p>
 </blockquote>
 <h3 id="_8">💰 「全量落特征」贵到什么程度</h3>
 <p><strong>很多团队不落全量特征日志，理由是"太贵了"。先把账算出来再说</strong>：</p>
@@ -584,7 +584,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 <tr>
 <td>抽样样本</td>
-<td>SHAP 值（<a href="10-SHAP能做什么不能做什么.html">第 10 章</a>）</td>
+<td>SHAP 值（<a href="10-SHAP%E8%83%BD%E5%81%9A%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E5%81%9A%E4%BB%80%E4%B9%88.html">第 10 章</a>）</td>
 <td>0.1%–1%</td>
 </tr>
 </tbody>
@@ -592,10 +592,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <blockquote>
 <p>💀 <strong>一个真实会犯的错</strong>：只对「异常样本」落全量特征。
 结果<strong>做不了任何对比分析</strong> —— 你有一堆"坏样本"，
-<strong>却没有同期的"好样本"当参照</strong>（<a href="11-从告警到根因.html">第 11 章第 ⑤ 步</a>要的就是这个对比）。
+<strong>却没有同期的"好样本"当参照</strong>（<a href="11-%E4%BB%8E%E5%91%8A%E8%AD%A6%E5%88%B0%E6%A0%B9%E5%9B%A0.html">第 11 章第 ⑤ 步</a>要的就是这个对比）。
 ⭐ <strong>普通样本那 1%–5% 的随机采样，比异常样本的全量更重要。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_9">⚠️ 七、一张坑表</h2>
 <div class="tw"><table>
 <thead>
@@ -658,7 +658,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<hr />
+<hr>
 <h2 id="_10">🔗 八、和站内其他章的关系</h2>
 <div class="tw"><table>
 <thead>
@@ -669,32 +669,32 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </thead>
 <tbody>
 <tr>
-<td><a href="03-灰度影子与回滚.html">第 3 章</a>整体回滚</td>
+<td><a href="03-%E7%81%B0%E5%BA%A6%E5%BD%B1%E5%AD%90%E4%B8%8E%E5%9B%9E%E6%BB%9A.html">第 3 章</a>整体回滚</td>
 <td>「发布单元」是它的前提</td>
 </tr>
 <tr>
-<td><a href="04-训练推理一致性.html">第 4 章</a>特征顺序</td>
+<td><a href="04-%E8%AE%AD%E7%BB%83%E6%8E%A8%E7%90%86%E4%B8%80%E8%87%B4%E6%80%A7.html">第 4 章</a>特征顺序</td>
 <td><code>feature_schema.json</code> 是解法</td>
 </tr>
 <tr>
-<td><a href="07-没有标签怎么发现退化.html">第 7 章</a>标签延迟</td>
+<td><a href="07-%E6%B2%A1%E6%9C%89%E6%A0%87%E7%AD%BE%E6%80%8E%E4%B9%88%E5%8F%91%E7%8E%B0%E9%80%80%E5%8C%96.html">第 7 章</a>标签延迟</td>
 <td>决定日志保留期</td>
 </tr>
 <tr>
-<td><a href="11-从告警到根因.html">第 11 章</a>排查</td>
+<td><a href="11-%E4%BB%8E%E5%91%8A%E8%AD%A6%E5%88%B0%E6%A0%B9%E5%9B%A0.html">第 11 章</a>排查</td>
 <td>靠这些日志才查得动</td>
 </tr>
 <tr>
-<td><a href="../Kaggle竞赛方法论/25_实战Pipeline模板.html">Kaggle 25</a>实验记录</td>
+<td><a href="../Kaggle%E7%AB%9E%E8%B5%9B%E6%96%B9%E6%B3%95%E8%AE%BA/25_%E5%AE%9E%E6%88%98Pipeline%E6%A8%A1%E6%9D%BF.html">Kaggle 25</a>实验记录</td>
 <td>竞赛版的同一件事</td>
 </tr>
 <tr>
-<td><a href="../数据这一关/17-数据版本与血缘.html">数据这一关 17 · 数据版本与血缘</a></td>
+<td><a href="../%E6%95%B0%E6%8D%AE%E8%BF%99%E4%B8%80%E5%85%B3/17-%E6%95%B0%E6%8D%AE%E7%89%88%E6%9C%AC%E4%B8%8E%E8%A1%80%E7%BC%98.html">数据这一关 17 · 数据版本与血缘</a></td>
 <td>⭐ <strong>成对的另一半</strong>：本章管代码/参数/环境/<strong>模型权重</strong>，回答「这个预测是哪个模型版本给的」；那边只管数据，回答「这个模型是哪份数据训出来的」。四项缺一不可，是短板效应 —— ⚠️ 这条缝最容易两边都以为对方管了</td>
 </tr>
 </tbody>
 </table></div>
-<hr />
+<hr>
 <h2 id="_11">✅ 检查点</h2>
 <ol>
 <li>日常最高频需要回溯的场景是哪个？没有版本记录会怎样？</li>
@@ -721,7 +721,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>4000 QPS 下：<strong>轻量版每条约 200 字节 → 每天约 69 GB，可以 100% 落</strong>；全量特征每条约 4 KB → 100% 落是每天约 1.4 TB，采样 3% 后约 41 GB 就很可接受。分层：所有样本落轻量版 100%；异常样本（拒绝/高分/走降级/命中规则）落全量 100%；普通样本按 1%–5% 随机落全量；SHAP 再抽 0.1%–1%。普通样本的随机采样更重要，因为只有异常样本的话你有一堆"坏样本"却没有同期的"好样本"当参照，第 11 章第 ⑤ 步的对比分析根本做不了。</li>
 </ol>
 </details>
-<hr />
+<hr>
 <h2 id="_12">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
@@ -733,7 +733,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>🥇 <strong>最有效的一招是黄金样本</strong>：发布时把两百条覆盖边界的样本连同当时的预测值冻进发布单元，每次启动或升级依赖都逐条比对，对不上就拒绝启动（<strong>不是 warning</strong>）。二十行代码，挡住依赖升级、编码器丢失、特征顺序错位、模型损坏、加载错版本——全在启动那一刻暴露。</p>
 <p>⚠️ schema 校验里「<strong>多了不认识的特征</strong>」也必须报错：上游把字段改个名会同时缺一个多一个，只查缺失就会走缺失值填充，<strong>一切照常运行，只是全错了</strong>。</p>
 </blockquote>
-<p><strong>下一节</strong> 👉 <a href="18-成本与容量.html">18-成本与容量.md</a></p>
+<p><strong>下一节</strong> 👉 <a href="18-%E6%88%90%E6%9C%AC%E4%B8%8E%E5%AE%B9%E9%87%8F.html">18-成本与容量.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="16-重训练.html"><div class="dir">← 上一节</div>♻️ 16 · 重训练</a><a class="next" href="18-成本与容量.html"><div class="dir">下一节 →</div>💰 18 · 成本与容量</a></nav>
@@ -760,4 +760,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

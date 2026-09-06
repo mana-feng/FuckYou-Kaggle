@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -309,15 +309,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </details>
 <h1 id="17">17 · 数据版本与血缘</h1>
 <p>⏱ <strong>52 分钟</strong> ｜ ⭐ <strong>三个月后，你能重现当时那份训练数据吗</strong></p>
-<hr />
+<hr>
 <h2 id="_1">🎯 一句话</h2>
 <p><strong>只存代码不存数据，等于没有可复现。</strong>
 模型是 <code>代码 × 数据 × 参数 × 环境</code> 的函数 ——
 你把其中三项都版本化了，剩下那一项是<strong>一张每天被覆盖的上游表</strong>。</p>
-<hr />
+<hr>
 <h2 id="_2">🔍 一、先花五分钟做个自测</h2>
 <p><strong>随便挑一个三个月前上线的模型，回答这六个问题。</strong></p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>[ ] ① 训练用的是哪张表、哪个分区/快照？</p><p>[ ] ② 那份数据现在还在吗？内容和当时【逐行相同】吗？ ⭐ 大多数人卡在这一条</p><p>[ ] ③ 是哪段 SQL 产出的？那段 SQL 从那天起改过吗？</p><p>[ ] ④ 过滤掉了哪些行？（去重规则、时间窗、黑名单）</p><p>[ ] ⑤ 当时的行数是多少？现在重跑是多少？</p><p>[ ] ⑥ 现在重跑一遍，能得到【指标相同】的模型吗？</p></div></section>
+<section class="reading-checklist" aria-label="对照"><p class="visual-block-title">逐项核对</p><div class="vb-compare"><ul class="reading-task-list"><li class="reading-task" data-reading-task="1"><label class="reading-task-title"><input type="checkbox" data-task-key="1"><span>核对项 1</span></label><div class="reading-task-body"><p>① 训练用的是哪张表、哪个分区/快照？</p></div></li><li class="reading-task" data-reading-task="2"><label class="reading-task-title"><input type="checkbox" data-task-key="2"><span>核对项 2</span></label><div class="reading-task-body"><p>② 那份数据现在还在吗？内容和当时【逐行相同】吗？ ⭐ 大多数人卡在这一条</p></div></li><li class="reading-task" data-reading-task="3"><label class="reading-task-title"><input type="checkbox" data-task-key="3"><span>核对项 3</span></label><div class="reading-task-body"><p>③ 是哪段 SQL 产出的？那段 SQL 从那天起改过吗？</p></div></li><li class="reading-task" data-reading-task="4"><label class="reading-task-title"><input type="checkbox" data-task-key="4"><span>核对项 4</span></label><div class="reading-task-body"><p>④ 过滤掉了哪些行？（去重规则、时间窗、黑名单）</p></div></li><li class="reading-task" data-reading-task="5"><label class="reading-task-title"><input type="checkbox" data-task-key="5"><span>核对项 5</span></label><div class="reading-task-body"><p>⑤ 当时的行数是多少？现在重跑是多少？</p></div></li><li class="reading-task" data-reading-task="6"><label class="reading-task-title"><input type="checkbox" data-task-key="6"><span>核对项 6</span></label><div class="reading-task-body"><p>⑥ 现在重跑一遍，能得到【指标相同】的模型吗？</p></div></li></ul></div></section>
 <p><strong>为什么"我们代码都在 git 里"救不了你：</strong></p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>模型 = f( 代码 , 参数 , 环境 , 数据 )</p><p>✅ ✅ ✅ ❓</p><p>commit yaml 镜像 ← 一张每天 INSERT OVERWRITE 的表</p><p>💀 这四项是【短板效应】，不是加权平均。</p><p>有一项不可回溯，整体就是不可复现 ——</p><p>前三项做到 100% 分，总分还是 0。</p></div></section>
 <blockquote>
@@ -325,7 +325,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>那边负责左边三格（代码、参数、环境、模型权重），这边只负责最右边那一格。</strong>
 两边都做齐了才叫可复现；<strong>而现实中挂掉的，九成是最右边这一格。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_3">📦 二、四种版本化方案：成本、粒度、适用规模</h2>
 <p>假设一张 <strong>200 GB</strong> 的宽表，<strong>每天产出一版</strong>，日变化率约 5%（这是很典型的数值）。</p>
 <div class="tw"><table>
@@ -375,7 +375,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p><strong>怎么选：先算你的日变化率。</strong></p>
-<section class="visual-block visual-block-calc" aria-label="算一算"><p class="visual-block-title">算一算</p><div class="vb-calc"><p>日变化率 = 每天真正变了的字节 / 全表字节</p><p>＜ 2% → 内容寻址几乎免费（去重率极高） ⭐</p><p>2% ~ 20% → 时间戳分区 + 定期全量快照（比如每月 1 号）</p><p>＞ 20% → 数据本身就在剧烈变化，</p><p>⚠️ 先去问&quot;为什么&quot;，这通常是口径不稳定，不是存储问题</p></div></section>
+<section class="visual-block visual-block-calc" aria-label="算一算"><p class="visual-block-title">算一算</p><div class="vb-calc"><p>日变化率 = 每天真正变了的字节 / 全表字节</p><p>＜ 2% → 内容寻址几乎免费（去重率极高） ⭐</p><p>2% ~ 20% → 时间戳分区 + 定期全量快照（比如每月 1 号）</p><p>＞ 20% → 数据本身就在剧烈变化，</p><p>⚠️ 先去问"为什么"，这通常是口径不稳定，不是存储问题</p></div></section>
 <blockquote>
 <p>⭐ <strong>一条被反复验证的经验</strong>：
 <strong>绝大多数团队不需要上 DVC / lakeFS / Delta Lake。</strong>
@@ -383,7 +383,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>① 分区永不覆盖；② 每次训练把用到的分区名和指纹写进 manifest。</strong>
 这两条不需要任何新工具，<strong>但它们能解决 80% 的复现问题</strong>。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_4">🔑 三、指纹：用一行字符串锁住一份数据</h2>
 <p>版本化只解决"数据还在"，<strong>指纹解决"它还是不是原来那份"</strong>。</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
@@ -448,7 +448,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<hr />
+<hr>
 <h2 id="_5">🧾 四、血缘要记什么</h2>
 <p><strong>血缘不是一张关系图，是一份「能让人照着重跑一遍」的记录。</strong></p>
 <div class="tw"><table>
@@ -519,16 +519,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>它可能换了域名、换了负责人、或者根本已经下线了。</strong>
 💀 <strong>血缘系统的存活率，比数据文件低得多。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <!--MIDSTOP-->
 <blockquote>
 <p>🛑 <strong>读到这里可以停</strong> —— 前半章讲完了（约 19 分钟）。
 <strong>后半章还有</strong>：只存代码不存数据的两种死法 · 一次真实的事故复盘 · 和《模型上线之后 17》的分工 · 按团队规模分级实施
 回来的时候不用重读，直接从下一节接着看就行。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_6">☠️ 五、只存代码不存数据的两种死法</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">死法 A：上游被覆盖 —— 最直白的一种</span></div><div class="vb-tree-row"><span class="vb-tree-node">表是 INSERT OVERWRITE 的，或者分区保留期只有 90 天</span></div><div class="vb-tree-row"><span class="vb-tree-node">结果：你连&quot;当时是什么&quot;都拿不到，讨论到此结束</span></div><div class="vb-tree-row"><span class="vb-tree-node">死法 B：上游&quot;还在&quot;，但语义变了 —— 💀 更阴险</span></div><div class="vb-tree-row"><span class="vb-tree-node">有人改了口径，并且【回填了全部历史分区】</span></div><div class="vb-tree-row"><span class="vb-tree-node">分区名没变、行数没变、schema 没变</span></div><div class="vb-tree-row"><span class="vb-tree-node">你重跑得到的结果不一样，但你不知道为什么</span></div><div class="vb-tree-row"><span class="vb-tree-node">⭐ 没有指纹的话，这个问题【无法被发现，也无法被证明】</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>死法 A：上游被覆盖 —— 最直白的一种</span></li><li><span>表是 INSERT OVERWRITE 的，或者分区保留期只有 90 天</span></li><li><span>结果：你连"当时是什么"都拿不到，讨论到此结束</span></li><li><span>死法 B：上游"还在"，但语义变了 —— 💀 更阴险</span></li><li><span>有人改了口径，并且【回填了全部历史分区】</span></li><li><span>分区名没变、行数没变、schema 没变</span></li><li><span>你重跑得到的结果不一样，但你不知道为什么</span></li><li><span>⭐ 没有指纹的话，这个问题【无法被发现，也无法被证明】</span></li></ul></section>
 <blockquote>
 <p>💀 <strong>回填（backfill）是数据侧最危险的一个动作</strong>，因为它<strong>长得像修 bug</strong>：
 "我们发现 <code>income_verified</code> 算错了，已经修好并回填了历史数据。"
@@ -536,7 +536,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 ⭐ <strong>纪律：任何 backfill 都必须写新分区（或新版本号），永不原地改写。</strong>
 存储贵一点，比不可复现便宜一万倍。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_7">💀 六、一次真实的事故复盘</h2>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>系统：某消费信贷的授信模型 v37，2 月上线</p><p>10 月，监管问询：</p><p>· 解释 3 月 12 日对某个申请人的【拒绝】决策</p><p>· 证明模型未使用某类禁用字段</p><p>团队手里有：git commit、Docker 镜像 digest、超参 yaml、模型权重文件</p><p>团队手里没有：训练数据快照 ⭐</p></div></section>
 <p><strong>发生了什么</strong></p>
@@ -571,7 +571,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p><strong>为什么没被发现</strong></p>
-<section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>数据保留期 90 天 ＜ 监管追溯期 24 个月 ⭐ 这两个数字从来没有人放在一起看过</li><li>backfill 没有产生新分区，也没有发出任何变更通知</li><li>团队【有】血缘系统 —— 但它只记了&quot;表名&quot;，</li><li>没记【分区指纹】，也没记【口径版本】</li><li>💀 有血缘 ≠ 可复现，这是最容易被忽悠过去的一点</li><li>每次重训 AUC 本来就在 0.73~0.75 之间波动，</li><li>0.7412 vs 0.7389 的差异【小到不会触发任何告警】</li><li>⭐ 但它足以让一个个体样本的决策翻转 ——</li><li>聚合指标的稳定，完全掩盖了个体决策的不稳定</li></ol></section>
+<section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>数据保留期 90 天 ＜ 监管追溯期 24 个月 ⭐ 这两个数字从来没有人放在一起看过</li><li>backfill 没有产生新分区，也没有发出任何变更通知</li><li>团队【有】血缘系统 —— 但它只记了"表名"，</li><li>没记【分区指纹】，也没记【口径版本】</li><li>💀 有血缘 ≠ 可复现，这是最容易被忽悠过去的一点</li><li>每次重训 AUC 本来就在 0.73~0.75 之间波动，</li><li>0.7412 vs 0.7389 的差异【小到不会触发任何告警】</li><li>⭐ 但它足以让一个个体样本的决策翻转 ——</li><li>聚合指标的稳定，完全掩盖了个体决策的不稳定</li></ol></section>
 <p><strong>代价</strong></p>
 <section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">无法自证</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">监管现场检查升级</span></div><div class="vb-flow-row"><span class="vb-flow-step">专项投入 2 名工程师 + 1 名合规，6 周</span></div><div class="vb-flow-row"><span class="vb-flow-step">外部咨询/法务 ≈ 86 万元</span></div><div class="vb-flow-row"><span class="vb-flow-step">模型被要求下线整改 5 周</span></div><div class="vb-flow-row"><span class="vb-flow-step">期间回退到旧规则引擎，通过率 −11%</span></div><div class="vb-flow-row"><span class="vb-flow-step">少放款约 2.3 亿元，估算利息收入损失 ≈ 340 万元</span></div><div class="vb-flow-row"><span class="vb-flow-step">全行 23 个模型补做数据快照</span></div><div class="vb-flow-row"><span class="vb-flow-step">一次性新增存储 41 TB（年成本约 12 万元）</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 对比一下：如果当初就存快照，</span></div><div class="vb-flow-row"><span class="vb-flow-step">单模型每年存储成本约 5000 元。</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 省下的 5000 元，最后花掉了 400 多万。</span></div></div></section>
 <p><strong>该补什么</strong></p>
@@ -615,7 +615,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 可复现性<strong>不能用聚合指标验证</strong>，必须用个体样本逐条比对 ——
 <strong>因为你要向监管解释的，从来不是平均值，是某一个人。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="17_1">🤝 七、和《模型上线之后 17》的分工</h2>
 <p>两章讲的是<strong>同一件事的两半</strong>，边界很清晰：</p>
 <div class="tw"><table>
@@ -659,10 +659,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 模型侧觉得"数据是数仓的事"，数据侧觉得"训练集是算法自己拉的"。
 ⭐ <strong>解法很简单：把「上游分区指纹」列进模型卡的必填项</strong>
 （落地处是<strong>本章第四节那份 run manifest 的 <code>inputs[].fingerprint</code> 字段</strong>，
-以及《模型上线之后》<a href="../模型上线之后/19-合规审计与模型卡.html">第 19 章</a>的模型卡模板）——
+以及《模型上线之后》<a href="../%E6%A8%A1%E5%9E%8B%E4%B8%8A%E7%BA%BF%E4%B9%8B%E5%90%8E/19-%E5%90%88%E8%A7%84%E5%AE%A1%E8%AE%A1%E4%B8%8E%E6%A8%A1%E5%9E%8B%E5%8D%A1.html">第 19 章</a>的模型卡模板）——
 <strong>谁发版谁填，填不出来就不许发版。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_8">🪜 八、按团队规模分级实施</h2>
 <p><strong>别一上来就上工具，按这个顺序做。</strong></p>
 <div class="tw"><table>
@@ -707,7 +707,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>能解决你 80% 的"三个月后重现不出来"问题。</strong>
 <strong>剩下 20% 才需要工具，而那 20% 的团队自己知道自己是谁。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_9">🔗 这一章连到哪里</h2>
 <div class="tw"><table>
 <thead>
@@ -718,32 +718,32 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </thead>
 <tbody>
 <tr>
-<td><a href="../模型上线之后/17-版本回溯与可复现.html">模型上线之后 17 版本回溯与可复现</a></td>
+<td><a href="../%E6%A8%A1%E5%9E%8B%E4%B8%8A%E7%BA%BF%E4%B9%8B%E5%90%8E/17-%E7%89%88%E6%9C%AC%E5%9B%9E%E6%BA%AF%E4%B8%8E%E5%8F%AF%E5%A4%8D%E7%8E%B0.html">模型上线之后 17 版本回溯与可复现</a></td>
 <td>⭐ <strong>成对的另一半</strong>：那边管代码/参数/环境/模型权重，<strong>这边只管数据</strong>。四项缺一不可，是短板效应</td>
 </tr>
 <tr>
-<td><a href="../模型上线之后/16-重训练.html">模型上线之后 16 重训练</a></td>
+<td><a href="../%E6%A8%A1%E5%9E%8B%E4%B8%8A%E7%BA%BF%E4%B9%8B%E5%90%8E/16-%E9%87%8D%E8%AE%AD%E7%BB%83.html">模型上线之后 16 重训练</a></td>
 <td>每次重训都在产生一份新的训练数据版本 —— <strong>重训频率越高，manifest 越重要</strong></td>
 </tr>
 <tr>
-<td><a href="../模型上线之后/19-合规审计与模型卡.html">模型上线之后 19 合规审计与模型卡</a></td>
+<td><a href="../%E6%A8%A1%E5%9E%8B%E4%B8%8A%E7%BA%BF%E4%B9%8B%E5%90%8E/19-%E5%90%88%E8%A7%84%E5%AE%A1%E8%AE%A1%E4%B8%8E%E6%A8%A1%E5%9E%8B%E5%8D%A1.html">模型上线之后 19 合规审计与模型卡</a></td>
 <td>⭐ 案例里监管要的东西。<strong>把「上游分区指纹」列进模型卡必填项</strong>，就是这两章的接口</td>
 </tr>
 <tr>
-<td><a href="../AI基础设施/22-数据管线与存储.html">AI基础设施 22 数据管线与存储</a></td>
+<td><a href="../AI%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD/22-%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%BA%BF%E4%B8%8E%E5%AD%98%E5%82%A8.html">AI基础设施 22 数据管线与存储</a></td>
 <td>分区、对象存储、内容寻址的工程实现细节</td>
 </tr>
 <tr>
-<td><a href="14-数据泄漏的七种来源.html">数据泄漏的七种来源</a></td>
+<td><a href="14-%E6%95%B0%E6%8D%AE%E6%B3%84%E6%BC%8F%E7%9A%84%E4%B8%83%E7%A7%8D%E6%9D%A5%E6%BA%90.html">数据泄漏的七种来源</a></td>
 <td>「数据截止时间 vs 任务运行时间」混淆，在那一章里是一种泄漏，在这一章里是一种不可复现</td>
 </tr>
 <tr>
-<td><a href="../SQL查询这一关/06-CTE与递归查询.html">SQL 查询这一关 06 CTE 与递归查询</a></td>
+<td><a href="../SQL%E6%9F%A5%E8%AF%A2%E8%BF%99%E4%B8%80%E5%85%B3/06-CTE%E4%B8%8E%E9%80%92%E5%BD%92%E6%9F%A5%E8%AF%A2.html">SQL 查询这一关 06 CTE 与递归查询</a></td>
 <td>⭐ <strong>成对的另一半</strong>：本章 owns「血缘该记什么」，那一章 owns「记下来之后怎么查」——本章第四节那个 <code>inputs</code> 数组就是它第四节那张 <code>edges</code> 表。⚠️ 没有递归 CTE，「这份训练数据的全部上游是谁」在纯 SQL 里根本表达不出来</td>
 </tr>
 </tbody>
 </table></div>
-<hr />
+<hr>
 <h2 id="_10">✅ 检查点</h2>
 <ol>
 <li>五分钟自测的六个问题是什么？大多数团队卡在哪一条？</li>
@@ -772,7 +772,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><strong>L1</strong> 性价比最高：加一个 <code>_MANIFEST.json</code>（分区名 + 指纹 + 行数 + commit + 参数），半天工程量，能解决 80% 的"三个月后重现不出来"问题。L1 是绝大多数团队应该停下来的地方 —— 剩下 20% 才需要 DVC/lakeFS 这类工具，而那 20% 的团队自己知道自己是谁。</li>
 </ol>
 </details>
-<hr />
+<hr>
 <h2 id="_11">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
@@ -784,7 +784,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>💀 那个信贷事故里最贵的一句：⭐⭐ <strong>「整体指标只差一点点」是「没差别」，而「同一个人的分数差很多」是「完全不同的决策」。</strong> ⭐ <strong>可复现性不能用聚合指标验证</strong>——必须抽上千条个体样本逐条比对，<strong>因为你要向监管解释的从来不是平均值，是某一个人。</strong></p>
 <p>⚠️ 两条容易漏的：<strong>数据保留期短于合规追溯期</strong>；⭐ <strong>「有血缘系统」不等于「可复现」</strong>——只记表名、不记分区指纹和口径版本，等于没记。</p>
 </blockquote>
-<p><strong>下一节</strong> 👉 <a href="18-特征存储.html">18-特征存储.md</a></p>
+<p><strong>下一节</strong> 👉 <a href="18-%E7%89%B9%E5%BE%81%E5%AD%98%E5%82%A8.html">18-特征存储.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="16-合成数据.html"><div class="dir">← 上一节</div>🧬 16 · 合成数据</a><a class="next" href="18-特征存储.html"><div class="dir">下一节 →</div>🏪 18 · 特征存储</a></nav>
@@ -811,4 +811,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

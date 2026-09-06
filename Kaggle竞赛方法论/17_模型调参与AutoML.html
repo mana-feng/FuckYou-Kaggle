@@ -180,9 +180,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -714,8 +714,7 @@ th,td{min-width:5.2em}
 <hr />
 <h2 id="recap">🛑 可以停在这里</h2>
 <blockquote>
-<p>⚡ <strong>走神救援</strong><br />
-⭐<strong>调参是竞赛里收益最小的一环</strong>：优先级是<strong>赛题理解 &gt; 数据分析 &gt; 特征工程 &gt; 模型选择 &gt; 模型集成 &gt; 调参</strong>。三种搜索：<strong>网格</strong>（超参少、范围已知）、<strong>随机</strong>（超参多、范围大）、<strong>贝叶斯</strong>（单次训练贵、要用最少次数）。⭐<strong>随机搜索在高维常优于网格</strong>，因为<strong>实际只有少数超参真正重要</strong>——同样 81 次，网格让重要超参只试了 3 个值，随机让它试了 81 个。<strong>LightGBM 调参顺序</strong>：先定小 learning_rate + 早停确定 n_estimators → 复杂度类（num_leaves/max_depth/min_child_samples）→ 采样类 → 正则类。⚠️<strong>随机种子不该当超参调</strong>（在验证集上挑「运气好」的种子是典型的过拟合），正确用法是<strong>固定它保证可复现</strong>和<strong>多种子当融合的多样性来源（平均而非挑最好）</strong>。⭐<strong>三个该停止调参的信号</strong>：提升落在噪声范围内、验证涨但 LB 不涨（在过拟合验证集）、<strong>你还没做特征工程或融合</strong>——第三条最常见。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>搜索方式取决于参数空间与单次实验成本，先确定可信的验证方案。</li><li>优先探索真正影响复杂度与优化过程的参数，不按幸运种子选冠军。</li><li>提升持续落在噪声范围内时，重新评估是否该转向数据、特征或模型思路。</li></ul></section>
 </blockquote>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -743,4 +742,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
+</body></html>

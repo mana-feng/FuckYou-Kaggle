@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -359,7 +359,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>先查检索</strong>——如果正确文档根本没被召回，提示词再怎么调都没用。</p>
 </blockquote>
 <h3 id="ragas">📐 RAGAS 的四个指标（把上面三条补齐）</h3>
-<p>上面列的三条<strong>全是生成侧</strong>的。面试最常问的 <strong>RAGAS 四指标</strong>里，还有一个是检索侧的，也是最容易被漏掉的那个：</p>
+<p>先把常见的四类评估问题分开；具体库的类名、输入和实现会随版本变化：</p>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -396,13 +396,39 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<blockquote>
-<p>⭐ <strong>四个里最该先看 <code>context_recall</code>。</strong> 它是唯一需要<strong>标准答案</strong>才能算的指标（另外三个只要 问题 + 上下文 + 答案 就能算），也是唯一能告诉你"信息压根没进来"的指标。
-上面那条铁律「答案不对先查检索」，量化出来就是它。</p>
-<p>⚠️ <strong><code>context_precision</code> 和 <code>context_recall</code> 千万别搞反</strong>：
-<strong>recall 低 = 没捞到</strong>（要改切分和检索）；<strong>precision 低 = 捞到了但埋在噪声里</strong>（要加重排）。
-这两条的处方完全不同，认错了就会一直修错的那一环。</p>
-</blockquote>
+<p>不要把“四指标”当固定 API。<strong>是否需要 reference 取决于所选 metric 的实现</strong>：上下文 precision 有有参考与无参考版本；上下文 recall 常需参考事实或相关文档标注。运行前锁定 Ragas 版本，检查类名和 required inputs。见<a href="https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/context_precision/">官方 context precision 文档</a>。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>计算方式</th>
+<th>最少需要明确什么</th>
+<th>它不能保证什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>文档 ID 的 Recall@K</td>
+<td>每题所有相关文档 ID、实际候选 ID</td>
+<td>答案是否正确、引用是否支持结论</td>
+</tr>
+<tr>
+<td>有参考的 context precision</td>
+<td>问题、候选、参考答案或标注，依 metric 而定</td>
+<td>权限、答案完整性</td>
+</tr>
+<tr>
+<td>无参考的 context precision/utilization</td>
+<td>问题、候选、回答等实际输入要求</td>
+<td>参考答案未覆盖的信息是否缺失</td>
+</tr>
+<tr>
+<td>Faithfulness</td>
+<td>回答主张与送入模型的上下文</td>
+<td>上下文本身是否过时、越权或错误</td>
+</tr>
+</tbody>
+</table></div>
+<p>Recall 低先分清资料不存在、解析丢失、切分或检索漏掉；precision 低也可能是无关候选过多，不只是缺重排。小样本先校准评分器，再比较趋势。<a href="../智能体工程教程/11c-检索评测与调优实验.html">11c</a>提供不依赖 LLM 裁判的多证据计算与消融。</p>
 <p>⚠️ <strong>RAGAS 这四个分数多数是靠 LLM 打出来的</strong>，所以它自带 LLM-as-a-Judge 的全部毛病：分数随裁判模型版本漂移、成本按 token 计、同一批数据两次跑结果不完全一样。
 <strong>把它当"趋势指标"用（这次改动比上次高了吗），别当"绝对分数"用</strong>——「我们的 faithfulness 是 0.87」这句话离开了裁判模型和版本就没有意义。</p>
 <h3 id="5">🩺 一张诊断表（照着查，5 分钟定位问题）</h3>
@@ -467,11 +493,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 ⭐ 这条推广出去是一条通用教训：<strong>你的指标体系只会告诉你它被设计来测的东西。</strong></p>
 <p>🔑 <strong>最有价值的一个习惯</strong>：
 <strong>每次 RAG 回答错了，都把"召回的原始块"打印出来看一眼。</strong>
-十次里有七次，你会发现问题根本不在生成侧。</p>
+记录中间结果后，才能判断错误来自检索、上下文组装还是生成；这里不假设固定比例。</p>
 </blockquote>
 <h3 id="_4">🔨 一个最小可用的评估脚本</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 只需要 20 条 (问题, 正确文档ID) 就能开始</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 单相关文档的入门特例：不代替多证据 Recall 或上线验收。</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">eval_retrieval</span><span class="p">(</span><span class="n">qa_pairs</span><span class="p">,</span> <span class="n">retrieve</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">qa_pairs</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;评测集不能为空&quot;</span><span class="p">)</span>
     <span class="n">hits</span><span class="p">,</span> <span class="n">ranks</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">q</span><span class="p">,</span> <span class="n">gold_id</span> <span class="ow">in</span> <span class="n">qa_pairs</span><span class="p">:</span>
         <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">retrieve</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)]</span>
@@ -480,7 +508,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
             <span class="n">ranks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">ids</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">gold_id</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>   <span class="c1"># MRR</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ranks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Recall@</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">hits</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">qa_pairs</span><span class="p">)</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">   MRR = </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">ranks</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">ranks</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Hit@</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">hits</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">qa_pairs</span><span class="p">)</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">   MRR = </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">ranks</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">ranks</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
 <blockquote>
@@ -508,7 +536,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 <tr>
 <td><a href="../智能体工程教程/14-评测Evals.html">智能体工程教程 14 · 评测 Evals</a></td>
-<td>三类评分器、评产出不评路径、LLM 评委上线前必须先和人工对齐</td>
+<td>三类评分器、评产出并检查执行约束、LLM 评委上线前必须先和人工对齐</td>
 </tr>
 <tr>
 <td><a href="../AI全栈/08-认证会话与多租户.html">AI全栈 08 · 认证会话与多租户</a></td>
@@ -529,22 +557,21 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <details>
 <summary>👀 答案</summary>
 <ol>
-<li><strong>先查检索</strong>——正确文档有没有被召回。最有价值的习惯：每次答错都把召回的原始块打印出来看一眼，十次里七次问题不在生成侧。</li>
-<li><strong>查它排第几</strong>——大概率是重排缺失，正确文档排在第 15 位被截断了。</li>
+<li><strong>先查检索</strong>——正确文档有没有被召回。最有价值的习惯：每次答错都把召回的原始块打印出来看一眼，不预设生成错误的固定比例。</li>
+<li>查候选是否真正进入模型上下文，再核对裁剪、顺序、版本、单位与答案断言；不能先断定缺重排。</li>
 <li>先让模型<strong>假装回答</strong>生成一个“假答案”，用假答案去检索。因为假答案和真文档的表述风格更接近，比原始问题更容易匹配上。</li>
-<li><code>faithfulness</code> 答案有没有依据（模型在编）、<code>answer_relevancy</code> 答没答这个问题、<code>context_precision</code> 有用的排没排在前面、<code>context_recall</code> 需要的信息捞没捞到。<strong>recall 低 = 没捞到 → 改切分和检索；precision 低 = 捞到了但埋在噪声里 → 加重排。</strong> 处方完全不同，认错就一直修错的那一环。</li>
+<li><code>faithfulness</code> 答案有没有依据（模型在编）、<code>answer_relevancy</code> 答没答这个问题、<code>context_precision</code> 有用的排没排在前面、<code>context_recall</code> 需要的信息捞没捞到。<strong>Recall 低先查入库、过滤与召回；precision 低检查噪声、排序与上下文拼装。</strong> 重排是候选已有正确证据时的对照选项，不是固定处方。</li>
 <li>因为这四个分数<strong>多数是 LLM 打出来的</strong>，自带 LLM-as-a-Judge 的毛病：随裁判模型版本漂移、按 token 计费、同一批数据两次跑结果不完全一样。所以「我们的 faithfulness 是 0.87」离开裁判模型和版本就没有意义，只能比“这次改动比上次高了吗”。</li>
 <li><strong>权限越权</strong>（别人的数据被查出来）。被越权召回的文档内容相关、答案忠实、引用属实，四项全绿。只能靠专门的权限测试用例——拿 A 用户的身份去问只有 B 能看的问题，断言召回为空。通用教训：指标体系只会告诉你它被设计来测的东西。</li>
 </ol>
 </details>
 <hr />
 <h2 id="_7">🛑 可以停在这里</h2>
-<p>到这里你有了一个<strong>能被度量的</strong> RAG：改动之后能说清是好了还是坏了。对绝大多数产品，这已经够用很久了。</p>
+<p>到这里你有了一个<strong>能被度量的</strong> RAG：改动之后能说清是好了还是坏了。这只是起点；还需权限、拒答、故障恢复和运行环境验收。</p>
 <p>⚠️ <strong>什么时候看下一页</strong>：评估分数卡住了，而且你确认瓶颈<strong>不在切分、不在重排、不在查询改写</strong> —— 那才轮到进阶方案。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>RAG 答错时第一步永远是查检索</strong>，不是查生成：正确文档到底有没有被召回。⭐ 最有价值的排查习惯是<strong>每次答错都把召回的原始块打印出来看一眼</strong> —— 十次里七次问题不在生成侧。如果召回里<strong>有</strong>正确文档但答案还是错，那就<strong>查它排第几</strong>：大概率是重排缺失，它排在第 15 位被截断了。查询侧还有一招 <strong>HyDE</strong>：先让模型<strong>假装回答</strong>生成一个「假答案」，再拿假答案去检索 —— 因为假答案和真文档的<strong>表述风格更接近</strong>，比原始问题更容易匹配上。评估用 <strong>RAGAS 四个指标</strong>：<code>faithfulness</code>（答案有没有依据，模型是不是在编）、<code>answer_relevancy</code>（答没答这个问题）、<code>context_precision</code>（有用的排没排在前面）、<code>context_recall</code>（需要的信息捞没捞到）。⭐ <strong>最要紧的一条：recall 低 = 没捞到 → 改切分和检索；precision 低 = 捞到了但埋在噪声里 → 加重排。</strong> 处方完全不同，认错就会一直修错的那一环。⚠️ 但这四个分数<strong>多数是 LLM 打出来的</strong>，自带 LLM-as-a-Judge 的毛病：随裁判模型版本漂移、按 token 计费、同一批数据两次跑结果不完全一样 —— 所以「我们的 faithfulness 是 0.87」离开裁判模型和版本就没有意义，<strong>只能当趋势指标</strong>用。💀 最后一条盲区：<strong>权限越权四个指标一个都不会亮</strong> —— 被越权召回的文档内容相关、答案忠实、引用属实，四项全绿。只能靠专门的权限测试用例（拿 A 的身份去问只有 B 能看的问题，断言召回为空）。通用教训：<strong>指标体系只会告诉你它被设计来测的东西。</strong></p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>回答错误时先查看召回的原始片段，再判断问题出在检索、排序还是生成。</li><li>召回率与精确率低对应不同修法，不要只看一个总分。</li><li>自动裁判需要校准；权限隔离必须有专门的越权测试。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="08d-RAG进阶方向.html">08d-RAG进阶方向.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -572,4 +599,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

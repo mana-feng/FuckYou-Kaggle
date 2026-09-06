@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -316,7 +316,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <hr />
 <h2 id="_2">📏 一、最大间隔：为什么"最远"是好的</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">同样能分开数据的三条线：</span></div><div class="vb-tree-row"><span class="vb-tree-node">○ ○ ○ ● ● ● ○ ○ ○ ● ● ● ○ ○ ○ ● ● ●</span></div><div class="vb-tree-row"><span class="vb-tree-node">↑ ↑ ↑</span></div><div class="vb-tree-row"><span class="vb-tree-node">贴着●很近 两边都很远 ⭐ 贴着○很近</span></div><div class="vb-tree-row"><span class="vb-tree-node">哪条最好？中间那条。为什么？</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-theorymd-07-1" style="--diagram-width:720px"><svg viewBox="0 0 720 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="三条边界都把这组样本分开；中间的边界让最近样本离它更远。SVM 的间隔目标关心这个最小距离。示意中不表示一般数据总有唯一边界。"><title>三条边界都把这组样本分开；中间的边界让最近样本离它更远。SVM 的间隔目标关心这个最小距离。示意中不表示一般数据总有唯一边界。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">都能分开时，比较最近样本到边界的距离</text><rect x="20" y="70" width="215" height="255" fill="var(--quote-bg)" stroke="var(--border)"/><circle cx="65" cy="125" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="185" cy="110" r="8" fill="var(--accent)"/><circle cx="65" cy="205" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="185" cy="190" r="8" fill="var(--accent)"/><circle cx="65" cy="275" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="185" cy="260" r="8" fill="var(--accent)"/><line x1="145" y1="85" x2="145" y2="310" stroke="var(--muted)" stroke-width="2"/><text x="127" y="363" font-size="18" text-anchor="middle" fill="var(--fg)">靠近实心</text><rect x="255" y="70" width="215" height="255" fill="var(--quote-bg)" stroke="var(--border)"/><circle cx="300" cy="125" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="420" cy="110" r="8" fill="var(--accent)"/><circle cx="300" cy="205" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="420" cy="190" r="8" fill="var(--accent)"/><circle cx="300" cy="275" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="420" cy="260" r="8" fill="var(--accent)"/><line x1="355" y1="85" x2="355" y2="310" stroke="var(--muted)" stroke-width="2"/><text x="362" y="363" font-size="18" text-anchor="middle" fill="var(--fg)">两侧都留距离</text><rect x="490" y="70" width="215" height="255" fill="var(--quote-bg)" stroke="var(--border)"/><circle cx="535" cy="125" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="655" cy="110" r="8" fill="var(--accent)"/><circle cx="535" cy="205" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="655" cy="190" r="8" fill="var(--accent)"/><circle cx="535" cy="275" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="655" cy="260" r="8" fill="var(--accent)"/><line x1="565" y1="85" x2="565" y2="310" stroke="var(--muted)" stroke-width="2"/><text x="597" y="363" font-size="18" text-anchor="middle" fill="var(--fg)">靠近空心</text></svg><figcaption>三条边界都把这组样本分开；中间的边界让最近样本离它更远。SVM 的间隔目标关心这个最小距离。示意中不表示一般数据总有唯一边界。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>同样能分开数据的三条线：</span></li><li><span>贴着●很近 两边都很远 ⭐ 贴着○很近</span></li><li><span>哪条最好？中间那条。为什么？</span></li></ul></section>
 <p><strong>三个角度理解</strong>：</p>
 <div class="tw"><table>
 <thead>
@@ -466,7 +467,8 @@ SVM 的 C 和岭回归的 λ 是同一个旋钮的两种写法。</strong></p>
 </code></pre></div>
 
 <p><strong>C 和 γ 的交互（经典的对角线现象）</strong>：</p>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">γ</span></div><div class="vb-tree-row"><span class="vb-tree-node">过拟合 过拟合</span><span class="vb-tree-note">(太局部) (太局部+太严)</span></div><div class="vb-tree-row"><span class="vb-tree-node">⭐ 好的区域在对角线附近</span></div><div class="vb-tree-row"><span class="vb-tree-node">欠拟合</span></div><div class="vb-tree-row"><span class="vb-tree-node">C</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-theorymd-07-2" style="--diagram-width:720px"><svg viewBox="0 0 720 490" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="横轴 C，纵轴 γ。两者共同影响拟合；斜带只表示需要联合搜索的区域，不是固定的最佳参数规律。实际应看交叉验证热图。"><title>横轴 C，纵轴 γ。两者共同影响拟合；斜带只表示需要联合搜索的区域，不是固定的最佳参数规律。实际应看交叉验证热图。</title><line x1="100" y1="425" x2="650" y2="425" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="650.0,425.0 641.0,430.0 641.0,420.0"/><line x1="100" y1="425" x2="100" y2="60" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="100.0,60.0 105.0,69.0 95.0,69.0"/><text x="650" y="455" font-size="18" text-anchor="start" fill="var(--fg)">C</text><text x="65" y="60" font-size="18" text-anchor="start" fill="var(--fg)">γ</text><rect x="102" y="62" width="545" height="360" fill="var(--quote-bg)" stroke="var(--border)"/><path d="M110 85 L170 65 L640 385 L580 422 Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-dasharray="5 5"/><text x="380" y="105" font-size="20" text-anchor="start" fill="var(--fg)">过局部 / 约束过严</text><text x="150" y="365" font-size="20" text-anchor="start" fill="var(--fg)">欠拟合风险</text><text x="245" y="244" font-size="20" text-anchor="start" fill="var(--fg)">候选区域需实测</text></svg><figcaption>横轴 C，纵轴 γ。两者共同影响拟合；斜带只表示需要联合搜索的区域，不是固定的最佳参数规律。实际应看交叉验证热图。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>过拟合 过拟合</span> <span>(太局部) (太局部+太严)</span></li><li><span>⭐ 好的区域在对角线附近</span></li><li><span>欠拟合</span></li></ul></section>
 <p>💡 <strong>为什么是对角线</strong>：C 和 γ 都在增加模型复杂度。
 一个大另一个就该小，<strong>总复杂度保持在合适水平</strong>。</p>
 <p><strong>四个必须知道的实践点</strong>：</p>
@@ -617,9 +619,8 @@ SVM 的 C 和岭回归的 λ 是同一个旋钮的两种写法。</strong></p>
 <hr />
 <h2 id="_13">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>感知机「分对就满意」，SVM 问⭐<strong>「哪条分界线最好」——离两边都最远的那条</strong>，这个"最远"叫<strong>间隔</strong>。三个理由：<strong>鲁棒性</strong>（新数据有抖动，余量越大越不容易抖过界）、⭐<strong>唯一性</strong>（感知机的解取决于初始化和数据顺序，最大间隔那条是唯一确定的）、<strong>理论保证</strong>（泛化界可用间隔而非 VC 维表述，间隔越大界越紧）。这个 γ 就是第 3 章感知机定理里的 γ：<strong>那里决定收敛速度，这里成了优化目标</strong>。间隔 <code>γ = 1/‖w‖</code>，所以<strong>最大化间隔 ⟺ <code>min ½‖w‖²</code>，约束 <code>yᵢ(w·xᵢ+b) ≥ 1</code></strong>。⭐<strong>支持向量</strong>＝恰好落在边界上的那少数点，<strong>模型只由它们决定，其余点全删掉重训分界线一模一样</strong>：对远处离群点鲁棒、天然稀疏，但⚠️<strong>对边界附近的噪声敏感</strong>（一个标错的点落在边界上就会改变结果）。⭐<strong>对偶不是数学炫技</strong>：原问题 <code>wᵀx</code> 需要显式的高维向量，对偶展开后<strong>只剩内积 <code>xᵢ·xⱼ</code>，才能整体换成核函数</strong>——这就是对偶存在的理由；KKT 保证只有支持向量 <code>αᵢ &amp;gt; 0</code>，<strong>稀疏性是自动出现的</strong>。<strong>软间隔</strong>允许违规但要罚：<code>min ½‖w‖² + C·Σξᵢ</code>（ξᵢ 是越界了多少，ξ &gt; 1 才算真的分错）。⭐<strong>C 大＝罚款贵→间隔窄、过拟合；C 小＝容忍犯错→间隔宽、欠拟合</strong>，且 <strong>C = 1/λ，和岭回归是同一个旋钮</strong>。⭐<strong>Hinge 损失在分对且间隔 ≥ 1 时恰好为 0</strong>（梯度也为 0，那些点不影响模型）——这是稀疏性的另一种解释；交叉熵<strong>永远大于 0</strong>，所以逻辑回归所有点都参与。实践：⚠️<strong>必须标准化</strong>、<strong>C 与 γ 的好区在对角线上</strong>（一个大另一个就得小）、原生不给概率。<strong>它输给深度学习不是想法不好，是 O(n²) 不 scale</strong>（n 过十万就吃力），但<strong>线性 SVM 在高维稀疏数据（文本 TF-IDF）上至今是强基线</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>SVM 不只要求分对，还通过间隔控制分界线离样本有多远。</li><li>软间隔允许违规并付出代价，C 调节拟合与容错的权衡。</li><li>对偶形式让内积可以替换为核；先标准化并验证 C、核参数，再解释支持向量。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="08-偏差方差分解.html">08-偏差方差分解.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -647,4 +648,4 @@ SVM 的 C 和岭回归的 λ 是同一个旋钮的两种写法。</strong></p>
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

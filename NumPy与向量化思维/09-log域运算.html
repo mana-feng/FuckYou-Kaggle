@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -424,7 +424,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;np.exp(np.float32(90)) =&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="mi">90</span><span class="p">)))</span>
 </code></pre></div>
 
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>float64 max=1.7976931348623157e+308 log(max)=709.78 eps=2.220e-16 tiny=2.225e-308</p><p>float32 max=3.4028234663852886e+38 log(max)=88.72 eps=1.192e-07 tiny=1.175e-38</p><p>float16 max=65504.0 log(max)=11.09 eps=9.766e-04 tiny=6.104e-05</p><p>exp(float32(88)) = 1.6516363e+38</p><p>exp(float32(89)) = inf</p><p>exp(float64(709)) = 8.218407461554972e+307</p><p>exp(float64(710)) = inf</p><p>exp(float16(11)) = 5.987e+04</p><p>exp(float16(12)) = inf</p><p>下溢那一头 exp(-745.0) = 5e-324</p><p>exp(-746.0) = 0.0</p></div></section>
+<section class="comparison-repair" id="comparison-repair-19"><div class="tw"><table><caption>浮点范围与精度</caption><thead><tr><th scope="col">浮点类型</th><th scope="col">max</th><th scope="col">log(max)</th><th scope="col">eps</th><th scope="col">tiny</th></tr></thead><tbody><tr><th scope="row">float64</th><td>1.7976931348623157e+308</td><td>709.78</td><td>2.220e-16</td><td>2.225e-308</td></tr><tr><th scope="row">float32</th><td>3.4028234663852886e+38</td><td>88.72</td><td>1.192e-07</td><td>1.175e-38</td></tr><tr><th scope="row">float16</th><td>65504.0</td><td>11.09</td><td>9.766e-04</td><td>6.104e-05</td></tr></tbody></table></div><section class="reading-information"><p class="reading-information-title">越过边界时的实测输出</p><ul><li>exp(float32(88)) = 1.6516363e+38</li><li>exp(float32(89)) = inf</li><li>exp(float64(709)) = 8.218407461554972e+307</li><li>exp(float64(710)) = inf</li><li>exp(float16(11)) = 5.987e+04</li><li>exp(float16(12)) = inf</li><li>下溢那一头 exp(-745.0) = 5e-324</li><li>exp(-746.0) = 0.0</li></ul></section></section>
 <p>⭐ <strong><code>exp</code> 的临界指数就是 <code>log(该 dtype 的最大值)</code></strong>，一个 <code>np.finfo</code> 就查出来：</p>
 <div class="tw"><table>
 <thead>
@@ -492,7 +492,7 @@ np.exp(np.float32(90)) = inf
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1 + 1e-16 == 1 吗:&quot;</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="mf">1e-16</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
 
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>x=1e-16 log(1+x)=0 log1p(x)=9.9999999999999998e-17 相对误差=1.00e+00</p><p>x=1e-10 log(1+x)=1.000000082690371e-10 log1p(x)=9.9999999995000007e-11 相对误差=8.27e-08</p><p>x=1e-08 log(1+x)=9.9999998892252911e-09 log1p(x)=9.999999950000001e-09 相对误差=6.08e-09</p><p>x=1e-05 log(1+x)=9.9999500003988414e-06 log1p(x)=9.9999500003333302e-06 相对误差=6.55e-12</p><p>x=1e-16 exp(x)-1=0 expm1(x)=9.9999999999999998e-17 相对误差=1.00e+00</p><p>x=1e-10 exp(x)-1=1.000000082740371e-10 expm1(x)=1.00000000005e-10 相对误差=8.27e-08</p><p>x=1e-08 exp(x)-1=9.9999999392252903e-09 expm1(x)=1.0000000049999999e-08 相对误差=1.11e-08</p><p>x=1e-05 exp(x)-1=1.0000050000069649e-05 expm1(x)=1.0000050000166668e-05 相对误差=9.70e-12</p><p>float64 的 eps = 2.220446049250313e-16</p><p>1 + 1e-16 == 1 吗: True</p></div></section>
+<section class="comparison-repair" id="comparison-repair-20"><div class="tw"><table><caption>小量的对数：逐行比较</caption><thead><tr><th scope="col">x</th><th scope="col">log(1+x)</th><th scope="col">log1p(x)</th><th scope="col">相对误差</th></tr></thead><tbody><tr><th scope="row">1e-16</th><td>0</td><td>9.9999999999999998e-17</td><td>1.00e+00</td></tr><tr><th scope="row">1e-10</th><td>1.000000082690371e-10</td><td>9.9999999995000007e-11</td><td>8.27e-08</td></tr><tr><th scope="row">1e-08</th><td>9.9999998892252911e-09</td><td>9.999999950000001e-09</td><td>6.08e-09</td></tr><tr><th scope="row">1e-05</th><td>9.9999500003988414e-06</td><td>9.9999500003333302e-06</td><td>6.55e-12</td></tr></tbody></table></div><div class="tw"><table><caption>小量的指数：逐行比较</caption><thead><tr><th scope="col">x</th><th scope="col">exp(x)-1</th><th scope="col">expm1(x)</th><th scope="col">相对误差</th></tr></thead><tbody><tr><th scope="row">1e-16</th><td>0</td><td>9.9999999999999998e-17</td><td>1.00e+00</td></tr><tr><th scope="row">1e-10</th><td>1.000000082740371e-10</td><td>1.00000000005e-10</td><td>8.27e-08</td></tr><tr><th scope="row">1e-08</th><td>9.9999999392252903e-09</td><td>1.0000000049999999e-08</td><td>1.11e-08</td></tr><tr><th scope="row">1e-05</th><td>1.0000050000069649e-05</td><td>1.0000050000166668e-05</td><td>9.70e-12</td></tr></tbody></table></div><p>float64 的 eps = 2.220446049250313e-16</p><p>1 + 1e-16 == 1 吗: True</p></section>
 <p><strong>成因只有一句</strong>：float64 的 <code>eps</code> 是 <strong>2.22e-16</strong>，意思是「1 附近能分辨的最小间隔」。
 <code>1 + 1e-16</code> 就等于 1（实测 <code>True</code>），所以 <code>log(1 + 1e-16)</code> 只能是 <code>log(1) = 0</code> ——那个 x 在做加法的那一瞬间就被扔掉了，<code>log</code> 是无辜的。</p>
 <p>⭐ <strong>真正难查的不是 <code>x=1e-16</code> 那一行，是 <code>x=1e-10</code> 那一行</strong>：</p>
@@ -780,4 +780,4 @@ np.exp(np.float32(90)) = inf
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

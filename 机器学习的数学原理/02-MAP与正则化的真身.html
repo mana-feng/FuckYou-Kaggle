@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -330,7 +330,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="l2">⭐ 二、高光时刻：L2 正则 = 高斯先验</h2>
 <h3 id="_3">假设权重服从零均值高斯分布</h3>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">先验信念：「权重不应该太大，应该集中在 0 附近」</span></div><div class="vb-tree-row"><span class="vb-tree-node">数学表达：w ~ N(0, τ²I)</span></div><div class="vb-tree-row"><span class="vb-tree-node">▔▔ τ² 大 → 钟形宽 → 我对权重没什么成见</span></div><div class="vb-tree-row"><span class="vb-tree-node">τ² 小 → 钟形窄 → 我强烈认为权重该接近 0</span></div><div class="vb-tree-row"><span class="vb-tree-node">0</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-theorymd-02-1" style="--diagram-width:720px"><svg viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="横轴是权重 w，纵轴是先验密度。两条高斯曲线都以 0 为中心；较小的 τ² 更集中，较大的 τ² 更分散。曲线面积均归一化。"><title>横轴是权重 w，纵轴是先验密度。两条高斯曲线都以 0 为中心；较小的 τ² 更集中，较大的 τ² 更分散。曲线面积均归一化。</title><line x1="65" y1="325" x2="660" y2="325" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="660.0,325.0 651.0,330.0 651.0,320.0"/><line x1="65" y1="325" x2="65" y2="50" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="65.0,50.0 70.0,59.0 60.0,59.0"/><text x="25" y="35" font-size="18" text-anchor="start" fill="var(--fg)">先验密度</text><text x="570" y="369" font-size="17" text-anchor="start" fill="var(--fg)">权重 w</text><polyline points="80.00,320.00 84.00,320.00 88.00,320.00 92.00,320.00 96.00,320.00 100.00,320.00 104.00,320.00 108.00,320.00 112.00,320.00 116.00,320.00 120.00,320.00 124.00,320.00 128.00,320.00 132.00,319.99 136.00,319.99 140.00,319.99 144.00,319.98 148.00,319.97 152.00,319.96 156.00,319.95 160.00,319.93 164.00,319.90 168.00,319.86 172.00,319.81 176.00,319.75 180.00,319.66 184.00,319.55 188.00,319.41 192.00,319.22 196.00,318.99 200.00,318.69 204.00,318.31 208.00,317.83 212.00,317.25 216.00,316.52 220.00,315.63 224.00,314.56 228.00,313.25 232.00,311.70 236.00,309.84 240.00,307.65 244.00,305.08 248.00,302.10 252.00,298.65 256.00,294.71 260.00,290.23 264.00,285.17 268.00,279.52 272.00,273.25 276.00,266.35 280.00,258.83 284.00,250.70 288.00,241.99 292.00,232.75 296.00,223.03 300.00,212.91 304.00,202.50 308.00,191.90 312.00,181.23 316.00,170.63 320.00,160.25 324.00,150.23 328.00,140.74 332.00,131.93 336.00,123.94 340.00,116.91 344.00,110.98 348.00,106.25 352.00,102.80 356.00,100.70 360.00,100.00 364.00,100.70 368.00,102.80 372.00,106.25 376.00,110.98 380.00,116.91 384.00,123.94 388.00,131.93 392.00,140.74 396.00,150.23 400.00,160.25 404.00,170.63 408.00,181.23 412.00,191.90 416.00,202.50 420.00,212.91 424.00,223.03 428.00,232.75 432.00,241.99 436.00,250.70 440.00,258.83 444.00,266.35 448.00,273.25 452.00,279.52 456.00,285.17 460.00,290.23 464.00,294.71 468.00,298.65 472.00,302.10 476.00,305.08 480.00,307.65 484.00,309.84 488.00,311.70 492.00,313.25 496.00,314.56 500.00,315.63 504.00,316.52 508.00,317.25 512.00,317.83 516.00,318.31 520.00,318.69 524.00,318.99 528.00,319.22 532.00,319.41 536.00,319.55 540.00,319.66 544.00,319.75 548.00,319.81 552.00,319.86 556.00,319.90 560.00,319.93 564.00,319.95 568.00,319.96 572.00,319.97 576.00,319.98 580.00,319.99 584.00,319.99 588.00,319.99 592.00,320.00 596.00,320.00 600.00,320.00 604.00,320.00 608.00,320.00 612.00,320.00 616.00,320.00 620.00,320.00 624.00,320.00 628.00,320.00 632.00,320.00 636.00,320.00 640.00,320.00 644.00,320.00 648.00,320.00" fill="none" stroke="var(--accent)" stroke-width="3"/><polyline points="80.00,316.08 84.00,315.71 88.00,315.30 92.00,314.86 96.00,314.39 100.00,313.88 104.00,313.33 108.00,312.75 112.00,312.13 116.00,311.46 120.00,310.75 124.00,309.99 128.00,309.18 132.00,308.33 136.00,307.42 140.00,306.47 144.00,305.46 148.00,304.39 152.00,303.27 156.00,302.09 160.00,300.85 164.00,299.56 168.00,298.20 172.00,296.79 176.00,295.32 180.00,293.79 184.00,292.20 188.00,290.55 192.00,288.85 196.00,287.09 200.00,285.28 204.00,283.42 208.00,281.51 212.00,279.55 216.00,277.55 220.00,275.51 224.00,273.43 228.00,271.32 232.00,269.19 236.00,267.03 240.00,264.85 244.00,262.65 248.00,260.45 252.00,258.24 256.00,256.04 260.00,253.85 264.00,251.67 268.00,249.51 272.00,247.39 276.00,245.29 280.00,243.24 284.00,241.23 288.00,239.28 292.00,237.39 296.00,235.57 300.00,233.82 304.00,232.15 308.00,230.57 312.00,229.08 316.00,227.69 320.00,226.40 324.00,225.21 328.00,224.14 332.00,223.19 336.00,222.35 340.00,221.64 344.00,221.05 348.00,220.59 352.00,220.26 356.00,220.07 360.00,220.00 364.00,220.07 368.00,220.26 372.00,220.59 376.00,221.05 380.00,221.64 384.00,222.35 388.00,223.19 392.00,224.14 396.00,225.21 400.00,226.40 404.00,227.69 408.00,229.08 412.00,230.57 416.00,232.15 420.00,233.82 424.00,235.57 428.00,237.39 432.00,239.28 436.00,241.23 440.00,243.24 444.00,245.29 448.00,247.39 452.00,249.51 456.00,251.67 460.00,253.85 464.00,256.04 468.00,258.24 472.00,260.45 476.00,262.65 480.00,264.85 484.00,267.03 488.00,269.19 492.00,271.32 496.00,273.43 500.00,275.51 504.00,277.55 508.00,279.55 512.00,281.51 516.00,283.42 520.00,285.28 524.00,287.09 528.00,288.85 532.00,290.55 536.00,292.20 540.00,293.79 544.00,295.32 548.00,296.79 552.00,298.20 556.00,299.56 560.00,300.85 564.00,302.09 568.00,303.27 572.00,304.39 576.00,305.46 580.00,306.47 584.00,307.42 588.00,308.33 592.00,309.18 596.00,309.99 600.00,310.75 604.00,311.46 608.00,312.13 612.00,312.75 616.00,313.33 620.00,313.88 624.00,314.39 628.00,314.86 632.00,315.30 636.00,315.71 640.00,316.08 644.00,316.43 648.00,316.75" fill="none" stroke="var(--link)" stroke-width="3"/><line x1="360" y1="75" x2="360" y2="325" stroke="var(--muted)" stroke-width="2" stroke-dasharray="5 5"/><text x="360" y="350" font-size="18" text-anchor="middle" fill="var(--fg)">0</text><text x="125" y="70" font-size="18" text-anchor="start" fill="var(--fg)">窄：权重更集中在 0 附近</text><text x="455" y="185" font-size="18" text-anchor="start" fill="var(--fg)">宽：约束更弱</text></svg><figcaption>横轴是权重 w，纵轴是先验密度。两条高斯曲线都以 0 为中心；较小的 τ² 更集中，较大的 τ² 更分散。曲线面积均归一化。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>先验信念：「权重不应该太大，应该集中在 0 附近」</span></li><li><span>数学表达：w ~ N(0, τ²I)</span></li><li><span> τ² 大 → 钟形宽 → 我对权重没什么成见</span></li><li><span>τ² 小 → 钟形窄 → 我强烈认为权重该接近 0</span></li></ul></section>
 <details>
 <summary>📐 <b>推导（想看再点，不看不影响）</b></summary>
 <p>高斯先验的对数：</p>
@@ -588,9 +589,8 @@ $$\lambda = \frac{\sigma^2}{\tau^2} = \frac{\text{噪声方差}}{\text{先验方
 <hr />
 <h2 id="_10">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>MAP = MLE + 先验：<code>argmax [log p(D|θ) + log p(θ)]</code>，<strong>那个加号就是正则项的来源</strong>（来自贝叶斯定理：后验 ∝ 似然 × 先验）。⭐核心结论：假设 w ~ N(0, τ²I)，推出来的正是岭回归——<strong>L2 正则 = 高斯先验下的 MAP</strong>，正则强度也有了确切含义：<strong>λ = σ²/τ² = 噪声方差 / 先验方差</strong>。这式子解释了一切：噪声大（σ² 大）→ λ 大 → <strong>数据不可信，多听先验的</strong>；<strong>τ² 趋于无穷即无先验时 λ → 0，退化回 MLE</strong>。⭐调 λ 不再是玄学，调的是「相信数据 vs 相信先验」的比例；<strong>噪声大的数据集就该用更强的正则</strong>——不是经验法则，是从公式直接读出来的。换个先验就换个正则：<strong>拉普拉斯先验 exp(−|w|/b) 推出 L1</strong>，它在 0 处有<strong>尖峰</strong>，表达「很多权重应该恰好是 0」，所以 L1 做特征选择；几何上它的约束区域是<strong>菱形、尖角落在坐标轴上</strong>，等高线容易碰上去。⭐<strong>稀疏不是算法的副作用，是先验的直接后果</strong>——选 L1 就是在说「我相信只有少数特征有用」。对应关系：weight_decay 与岭回归是高斯 MAP，Lasso 是拉普拉斯 MAP，早停与 Dropout 只是近似。所以<strong>正则化更准确的说法是「把先验知识写进目标函数」，而不是「故意制造困难」</strong>。⚠️<strong>对数似然项随样本数 n 线性增长，先验项固定不变</strong>，n 越大似然越主导，MAP → MLE：抛硬币全正时 MLE 恒为 1.00，而带弱先验的 MAP 从 3 次的 0.80 涨到 300 次的 0.997。<strong>这就是数据越多正则化越不重要、大模型时代正则地位下降的原因</strong>。再往前是<strong>完全贝叶斯</strong>：给整个后验而非点估计，<strong>带不确定性、能「知道自己不知道」</strong>；但积分<strong>通常算不出来</strong>（MCMC、变分推断很贵），实践中用 <strong>MC Dropout 或集成</strong>近似。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>MAP 在似然之外加入先验，把关于参数的假设写入目标函数。</li><li>高斯与拉普拉斯先验分别连接到 L2、L1 惩罚，具体系数取决于损失的归一化约定。</li><li>正则化强度控制数据与先验的相对影响；点估计不能替代完整的不确定性描述。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="03-感知机.html">03-感知机.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -618,4 +618,4 @@ $$\lambda = \frac{\sigma^2}{\tau^2} = \frac{\text{噪声方差}}{\text{先验方
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

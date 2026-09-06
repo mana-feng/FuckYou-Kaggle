@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -319,10 +319,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <blockquote>
 <p>🎲 <strong>三大武器管的都是「这一步跑得多快」——但还有一半不在这一章。</strong>
 Decode 每一步吐出来的其实是一个<strong>概率分布</strong>，「从分布里挑哪个词」是完全另一套东西：
-<code>temperature</code>、<code>top_p</code>、那几个 penalty 全住在那里，和速度优化<strong>正交</strong>。
-<strong>两章的分工看现象就能分清</strong>：慢、贵、显存不够 → 留在这一章；
-<strong>输出飘、复读、每次结果不一样、JSON 间歇性打不开 → 去 <a href="06b-解码策略.html">06b · 解码策略</a>。</strong>
-⚠️ 顺带说，两章有一个真实的交集：<strong>T=0 也不保证逐位复现</strong>——归约顺序会随 batch 组成变化，
+<code>temperature</code>、<code>top_p</code>、那几个 penalty 全住在那里，和速度优化<strong>正交</strong>。</p>
+<p><strong>两章的分工看现象就能分清</strong>：慢、贵、显存不够 → 留在这一章；
+<strong>输出飘、复读、每次结果不一样、JSON 间歇性打不开 → 去 <a href="06b-解码策略.html">06b · 解码策略</a>。</strong></p>
+<p>⚠️ 顺带说，两章有一个真实的交集：<strong>T=0 也不保证逐位复现</strong>——归约顺序会随 batch 组成变化，
 而动态 batch 正是上面<strong>武器二连续批处理</strong>造成的。<strong>吞吐优化和逐位复现是一对天然矛盾</strong>，那条在 06b 讲透。</p>
 </blockquote>
 <hr />
@@ -509,9 +509,8 @@ Decode 每一步吐出来的其实是一个<strong>概率分布</strong>，「�
 <h2 id="_9">🛑 可以停在这里</h2>
 <p>⚠️ <strong>什么时候回来</strong>：你已经知道该优化哪个指标了，但<strong>输出本身有问题</strong> —— 一会儿飘一会儿复读、同样的输入两次结果不一样。那不是推理优化的事，是解码策略的事，从 06b 进去。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>武器三是投机解码</strong>：让一个小模型先连猜几个 token，大模型一次前向把这几个一起验证，对的部分直接采用。它之所以是白赚，是因为 <strong>decode 阶段 GPU 算力本来就在空转</strong> —— 验 5 个和生成 1 个耗时几乎一样，而且输出分布和原模型<strong>完全一致</strong>。其他常用手段里最值钱的是 <strong>Prefix Caching</strong>：相同前缀的 prefill 结果直接复用。⭐ 它对 Agent 场景价值特别大，因为 Agent 每轮都重发完整历史、前缀完全相同；⚠️ 但有三个写法会让命中率直接归零，共同点是<strong>把会变的东西放到了前面</strong>（时间戳、随机 ID、每次都变的系统提示）。最后是三个指标：<strong>TTFT</strong> 是首字延迟（用户感知「它反应快不快」）、<strong>TPOT</strong> 是每字延迟（「它打字快不快」）、<strong>吞吐</strong>是这张卡能服务多少人。⚠️ <strong>它们互相冲突</strong>：加大 batch 吞吐涨但两个延迟都变差，减小 batch 反过来。所以必须按场景挑：<strong>对话产品优先 TTFT，Agent 和批处理任务优先吞吐，代码补全优先 TPOT</strong>。💡 还有一个几乎不花钱的办法：<strong>开流式输出</strong> —— 总时长没变，但用户看到字在动，感知延迟大幅下降，往往比任何推理优化都划算。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>TTFT 看多久出现首个结果，TPOT 看后续生成速度，吞吐看单位时间完成多少工作。</li><li>投机解码与前缀缓存利用可复用的计算，是否有效要结合命中率和负载测量。</li><li>先明确产品最在乎哪个指标，再比较优化后的代价与收益。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="06b-解码策略.html">06b-解码策略.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -539,4 +538,4 @@ Decode 每一步吐出来的其实是一个<strong>概率分布</strong>，「�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

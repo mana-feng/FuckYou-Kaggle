@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -309,29 +309,31 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </details>
 <h1 id="18">18 · 特征存储</h1>
 <p>⏱ <strong>50 分钟</strong> ｜ ⭐ <strong>大多数团队不需要它，但所有人都需要它解决的那一个问题</strong></p>
-<hr />
+<hr>
 <h2 id="_1">🎯 一句话</h2>
 <p><strong>Feature Store 解决的是「同一个特征在四个地方被算了四遍」，不是「你的特征不够好」。</strong>
 它是一个纪律工具，不是一个能力工具 ——
 ⭐ 而且它最值钱的那条能力（point-in-time 正确性），<strong>你可以用 30 行代码单独拿到，不用上整套系统。</strong></p>
-<hr />
+<hr>
 <h2 id="_2">🏗️ 一、它到底是什么</h2>
 <p><strong>先看没有它的时候，一个特征是怎么被算两遍的：</strong></p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>离线路径：数仓 → Spark SQL → 训练样本 （算第一遍）</p><p>↑ 数据工程师写，Python/SQL，每天凌晨跑</p><p>在线路径：请求 → 特征服务 → 推理输入 （算第二遍）</p><p>↑ 后端工程师写，Java/Go，毫秒级</p><p>💀 两条路径由【不同的人】、用【不同的语言】、在【不同的时间】写成，</p><p>而且要一直保持语义完全一致。</p><p>⭐ 这在工程上不是&quot;很难&quot;，是&quot;不可能长期成立&quot; ——</p><p>今天一致，下个季度有人改了其中一条，就不一致了。</p></div></section>
+<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>离线路径：数仓 → Spark SQL → 训练样本 （算第一遍）</p><p>↑ 数据工程师写，Python/SQL，每天凌晨跑</p><p>在线路径：请求 → 特征服务 → 推理输入 （算第二遍）</p><p>↑ 后端工程师写，Java/Go，毫秒级</p><p>💀 两条路径由【不同的人】、用【不同的语言】、在【不同的时间】写成，</p><p>而且要一直保持语义完全一致。</p><p>⭐ 这在工程上不是"很难"，是"不可能长期成立" ——</p><p>今天一致，下个季度有人改了其中一条，就不一致了。</p></div></section>
 <p><strong>Feature Store 做的四件事：</strong></p>
-<section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>特征定义只写一次（一份 YAML / 一段 Python）</li><li>离线管道和在线服务【都从这一份定义生成】，不再各写各的</li><li>离线存历史全量（offline store），在线存最新值（online store）</li><li>⭐ 训练取数时按【事件时间】回溯，而不是取&quot;现在的值&quot;</li><li>—— 这一条叫 point-in-time 正确性，是全章最值钱的东西</li></ol></section>
-<hr />
+<section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>特征定义只写一次（一份 YAML / 一段 Python）</li><li>离线管道和在线服务【都从这一份定义生成】，不再各写各的</li><li>离线存历史全量（offline store），在线存最新值（online store）</li><li>⭐ 训练取数时按【事件时间】回溯，而不是取"现在的值"</li><li>—— 这一条叫 point-in-time 正确性，是全章最值钱的东西</li></ol></section>
+<hr>
 <h2 id="1point-in-time">⭐ 二、它解决什么（1）：point-in-time 正确性</h2>
 <p><strong>这条直接连着第 14 章的数据泄漏，而且它是那一章里最难自查的一种。</strong></p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>要预测：用户在 03-10 14:23 的这次下单会不会退货</p><p>用到的特征：user_return_rate_90d（近 90 天退货率）</p><p>❌ 99% 的手写 SQL 是这么写的：</p><p>SELECT uid, · FROM orders WHERE order_time &gt;= date_sub(now(), 90)</p><p>—— 这段 SQL 的执行时刻是【今天】，</p><p>算出来的是&quot;截至今天&quot;的退货率，</p><p>💀 对于 6 个月前的训练样本，它包含了那之后 6 个月的退货记录</p><p>—— 标签本身漏进了特征</p><p>✅ point-in-time join：</p><p>对每一行训练样本，取【该样本事件时间之前】最后一次可见的特征值</p></div></section>
+<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>要预测：用户在 03-10 14:23 的这次下单会不会退货</p><p>用到的特征：user_return_rate_90d（近 90 天退货率）</p><p>❌ 99% 的手写 SQL 是这么写的：</p><p>SELECT uid, · FROM orders WHERE order_time &gt;= date_sub(now(), 90)</p><p>—— 这段 SQL 的执行时刻是【今天】，</p><p>算出来的是"截至今天"的退货率，</p><p>💀 对于 6 个月前的训练样本，它包含了那之后 6 个月的退货记录</p><p>—— 标签本身漏进了特征</p><p>✅ point-in-time join：</p><p>对每一行训练样本，取【该样本事件时间之前】最后一次可见的特征值</p></div></section>
 <p><strong>画成时间轴就非常清楚：</strong></p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>user A 的 return_rate_90d 取值变化：</p><p>t1 = 03-01 04:00 值 = 0.03</p><p>t2 = 03-08 04:00 值 = 0.05</p><p>t3 = 03-12 04:00 值 = 0.19 ← 这次退货发生在样本之后</p><p>↑</p><p>样本事件时间 03-10 14:23</p><p>✅ 正确取值 = 0.05 （t2 那一版，t3 那时还不存在）</p><p>❌ 常见错误 = 0.19 （直接取&quot;最新值&quot;）—— 这就是穿越</p></div></section>
+<figure class="dia reading-diagram repair-diagram" id="point-in-time-restored" style="--diagram-width:720px"><svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="向左找样本事件之前最后一次可用的特征：0.05。直接取最新的 0.19 会读到样本之后才出现的信息，造成穿越。"><title>向左找样本事件之前最后一次可用的特征：0.05。直接取最新的 0.19 会读到样本之后才出现的信息，造成穿越。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">在样本时点，取最近已可用的版本</text><line x1="65" y1="195" x2="655" y2="195" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="655.0,195.0 646.0,200.0 646.0,190.0"/><line x1="105" y1="178" x2="105" y2="211" stroke="var(--muted)" stroke-width="2"/><text x="105" y="110" font-size="17" text-anchor="middle" fill="var(--fg)">03-01 04:00</text><text x="105" y="137" font-size="17" text-anchor="middle" fill="var(--fg)">0.03</text><line x1="280" y1="178" x2="280" y2="211" stroke="var(--muted)" stroke-width="2"/><text x="280" y="110" font-size="17" text-anchor="middle" fill="var(--fg)">03-08 04:00</text><text x="280" y="137" font-size="17" text-anchor="middle" fill="var(--fg)">0.05：应取</text><line x1="605" y1="178" x2="605" y2="211" stroke="var(--muted)" stroke-width="2"/><text x="605" y="110" font-size="17" text-anchor="middle" fill="var(--fg)">03-12 04:00</text><text x="605" y="137" font-size="17" text-anchor="middle" fill="var(--fg)">0.19：尚不存在</text><line x1="450" y1="160" x2="450" y2="260" stroke="var(--muted)" stroke-width="2" stroke-dasharray="5 5"/><text x="450" y="292" font-size="18" text-anchor="middle" fill="var(--fg)">样本：03-10 14:23</text><line x1="447" y1="245" x2="283" y2="245" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="283.0,245.0 292.0,240.0 292.0,250.0"/></svg><figcaption>向左找样本事件之前最后一次可用的特征：0.05。直接取最新的 0.19 会读到样本之后才出现的信息，造成穿越。</figcaption></figure>
 <blockquote>
-<p>⭐ <strong>还有一个更隐蔽的坑：时间戳有两个，不是一个。</strong>
-<strong><code>event_time</code></strong> = 这个值<strong>描述的</strong>时刻（"03-08 的退货率"）
-<strong><code>available_time</code></strong> = 这个值在线上<strong>真正能被读到</strong>的时刻（凌晨批任务跑完，比如 03-09 04:00）
-<strong>point-in-time join 必须按 <code>available_time</code> 对齐。</strong>
-💀 按 <code>event_time</code> 对齐，你复现的是<strong>一个线上根本不存在的世界</strong> ——
+<p>⭐ <strong>还有一个更隐蔽的坑：时间戳有两个，不是一个。</strong></p>
+<ul>
+<li><strong><code>event_time</code></strong> = 这个值<strong>描述的</strong>时刻（"03-08 的退货率"）。</li>
+<li><strong><code>available_time</code></strong> = 这个值在线上<strong>真正能被读到</strong>的时刻（凌晨批任务跑完，比如 03-09 04:00）。</li>
+</ul>
+<p><strong>point-in-time join 必须按 <code>available_time</code> 对齐。</strong></p>
+<p>💀 按 <code>event_time</code> 对齐，你复现的是<strong>一个线上根本不存在的世界</strong> ——
 离线模型能看到"03-08 当天的值"，线上模型要等到第二天凌晨才看得到。
 <strong>这个偏差通常有 4–24 小时，足以让离线指标虚高好几个点。</strong></p>
 </blockquote>
@@ -369,7 +371,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 它把「有没有穿越」从一个需要推理的问题，变成一个<strong>看直方图就能回答的问题</strong>。
 <strong>有负数 = 穿越；分布比预期窄太多 = 你用了线上拿不到的新鲜度。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="24">🧩 三、它解决什么（2–4）</h2>
 <div class="tw"><table>
 <thead>
@@ -405,7 +407,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 因为不同模型的实体粒度、时间窗、口径本来就不一样。
 ⭐ <strong>别为一个你还没有的问题建系统。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_3">🚫 四、它<strong>不</strong>解决什么</h2>
 <p><strong>这一节比上面两节更重要，因为期望错了，上了也会失败。</strong></p>
 <div class="tw"><table>
@@ -435,15 +437,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p><strong>而且它会带来四个新问题：</strong></p>
-<section class="visual-block visual-block-calc" aria-label="算一算"><p class="visual-block-title">算一算</p><div class="vb-calc"><p>① 多一层 = 多一个故障点</p><p>⭐ 在线特征服务挂了，你的模型服务跟着挂，</p><p>而它的 SLA 要求比模型服务【更高】</p><p>② 在线存储成本是真金白银</p><p>1000 万实体 × 200 个特征 × 8 字节 ≈ 16 GB 原始</p><p>加 key 开销、索引、副本 → ⭐ 实际需要约 50 GB Redis 内存</p><p>③ 特征&quot;死不掉&quot; 💀</p><p>一个特征定义被 3 个模型引用之后，就没有人敢删了</p><p>⭐ 上线第一天就要有&quot;引用计数 + 下线流程&quot;，否则两年后你有 4000 个特征，</p><p>其中 3000 个没人知道是干什么的</p><p>④ 调试链路变长</p><p>原来&quot;查一下这个特征怎么算的&quot;是打开一个 SQL 文件，</p><p>现在是：定义仓库 → 物化任务 → 离线表 → 同步任务 → 在线库 → SDK</p></div></section>
-<hr />
+<section class="visual-block visual-block-calc" aria-label="算一算"><p class="visual-block-title">算一算</p><div class="vb-calc"><p>① 多一层 = 多一个故障点</p><p>⭐ 在线特征服务挂了，你的模型服务跟着挂，</p><p>而它的 SLA 要求比模型服务【更高】</p><p>② 在线存储成本是真金白银</p><p>1000 万实体 × 200 个特征 × 8 字节 ≈ 16 GB 原始</p><p>加 key 开销、索引、副本 → ⭐ 实际需要约 50 GB Redis 内存</p><p>③ 特征"死不掉" 💀</p><p>一个特征定义被 3 个模型引用之后，就没有人敢删了</p><p>⭐ 上线第一天就要有"引用计数 + 下线流程"，否则两年后你有 4000 个特征，</p><p>其中 3000 个没人知道是干什么的</p><p>④ 调试链路变长</p><p>原来"查一下这个特征怎么算的"是打开一个 SQL 文件，</p><p>现在是：定义仓库 → 物化任务 → 离线表 → 同步任务 → 在线库 → SDK</p></div></section>
+<hr>
 <!--MIDSTOP-->
 <blockquote>
 <p>🛑 <strong>读到这里可以停</strong> —— 前半章讲完了（约 17 分钟）。
 <strong>后半章还有</strong>：成本账 · ⭐ 该不该上：一张判断清单 · 一次真实的事故复盘 · 如果你决定不上：三条轻量替代
 回来的时候不用重读，直接从下一节接着看就行。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_4">💰 五、成本账</h2>
 <div class="tw"><table>
 <thead>
@@ -482,11 +484,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p><strong>在线取数的延迟预算，是最容易被低估的一项：</strong></p>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">模型服务的 P99 预算 100 ms</span></div><div class="vb-tree-row"><span class="vb-tree-node">网络 + 反序列化 15 ms</span></div><div class="vb-tree-row"><span class="vb-tree-node">⭐ 特征取数 ？？</span></div><div class="vb-tree-row"><span class="vb-tree-node">模型推理 25 ms</span></div><div class="vb-tree-row"><span class="vb-tree-node">后处理 + 序列化 10 ms</span></div><div class="vb-tree-row"><span class="vb-tree-node">⭐ 特征取数的 P99 必须压在 10~20 ms 以内，</span></div><div class="vb-tree-row"><span class="vb-tree-node">而这是【一次取 200 个特征】的 P99，不是单 key 的 P99。</span></div><div class="vb-tree-row"><span class="vb-tree-node">⚠️ 单 key 1 ms 不代表 200 key 200 ms —— 但也绝不是 1 ms，</span></div><div class="vb-tree-row"><span class="vb-tree-node">必须按真实批量大小压测。这一项没压测过就上线，是最常见的翻车点。</span></div></div></section>
-<hr />
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>模型服务的 P99 预算 100 ms</span></li><li><span>网络 + 反序列化 15 ms</span></li><li><span>⭐ 特征取数 ？？</span></li><li><span>模型推理 25 ms</span></li><li><span>后处理 + 序列化 10 ms</span></li><li><span>⭐ 特征取数的 P99 必须压在 10~20 ms 以内，</span></li><li><span>而这是【一次取 200 个特征】的 P99，不是单 key 的 P99。</span></li><li><span>⚠️ 单 key 1 ms 不代表 200 key 200 ms —— 但也绝不是 1 ms，</span></li><li><span>必须按真实批量大小压测。这一项没压测过就上线，是最常见的翻车点。</span></li></ul></section>
+<hr>
 <h2 id="_5">🧭 六、⭐ 该不该上：一张判断清单</h2>
 <p><strong>每条符合记 1 分。</strong></p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>[ ] 线上同时跑着 ≥ 10 个模型</p><p>[ ] 有【在线实时】推理服务（不是只有离线批量打分）</p><p>[ ] 特征复用率 ＞ 50%</p><p>[ ] 过去半年出过 ≥ 2 次训练/推理不一致的线上事故 ⭐ 权重最高的一条</p><p>[ ] 有 ≥ 2 个团队在共享特征</p><p>[ ] 需要严格的 point-in-time 回溯（金融、风控、受监管场景）</p><p>[ ] 有至少 1 个人可以长期负责它的运维</p><p>[ ] 特征总数 ＞ 300 且还在快速增长</p></div></section>
+<section class="reading-checklist" aria-label="对照"><p class="visual-block-title">逐项核对</p><div class="vb-compare"><ul class="reading-task-list"><li class="reading-task" data-reading-task="1"><label class="reading-task-title"><input type="checkbox" data-task-key="1"><span>核对项 1</span></label><div class="reading-task-body"><p>线上同时跑着 ≥ 10 个模型</p></div></li><li class="reading-task" data-reading-task="2"><label class="reading-task-title"><input type="checkbox" data-task-key="2"><span>核对项 2</span></label><div class="reading-task-body"><p>有【在线实时】推理服务（不是只有离线批量打分）</p></div></li><li class="reading-task" data-reading-task="3"><label class="reading-task-title"><input type="checkbox" data-task-key="3"><span>核对项 3</span></label><div class="reading-task-body"><p>特征复用率 ＞ 50%</p></div></li><li class="reading-task" data-reading-task="4"><label class="reading-task-title"><input type="checkbox" data-task-key="4"><span>核对项 4</span></label><div class="reading-task-body"><p>过去半年出过 ≥ 2 次训练/推理不一致的线上事故 ⭐ 权重最高的一条</p></div></li><li class="reading-task" data-reading-task="5"><label class="reading-task-title"><input type="checkbox" data-task-key="5"><span>核对项 5</span></label><div class="reading-task-body"><p>有 ≥ 2 个团队在共享特征</p></div></li><li class="reading-task" data-reading-task="6"><label class="reading-task-title"><input type="checkbox" data-task-key="6"><span>核对项 6</span></label><div class="reading-task-body"><p>需要严格的 point-in-time 回溯（金融、风控、受监管场景）</p></div></li><li class="reading-task" data-reading-task="7"><label class="reading-task-title"><input type="checkbox" data-task-key="7"><span>核对项 7</span></label><div class="reading-task-body"><p>有至少 1 个人可以长期负责它的运维</p></div></li><li class="reading-task" data-reading-task="8"><label class="reading-task-title"><input type="checkbox" data-task-key="8"><span>核对项 8</span></label><div class="reading-task-body"><p>特征总数 ＞ 300 且还在快速增长</p></div></li></ul></div></section>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -516,7 +518,7 @@ Feature Store 是一个<strong>为已经发生过的疼痛买的保险</strong>�
 💀 而只有 3 个模型、还没有在线服务的团队上 Feature Store，
 <strong>通常会在半年后把它悄悄下掉</strong> —— 因为维护它的人力，超过了它省下的人力。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_6">💀 七、一次真实的事故复盘</h2>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>系统：某电商的「退货风险」模型，决定是否给用户【极速退款】资格</p><p>特征：37 个用户侧聚合特征，用 Spark SQL 从数仓算</p><p>训练样本：跨 6 个月，约 480 万条</p></div></section>
 <p><strong>发生了什么</strong></p>
@@ -551,9 +553,9 @@ Feature Store 是一个<strong>为已经发生过的疼痛买的保险</strong>�
 </tbody>
 </table></div>
 <p><strong>为什么没被发现</strong></p>
-<section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 离线【测试集】也是同一份表算出来的</span></div><div class="vb-flow-row"><span class="vb-flow-step">测试集带着完全一样的穿越</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 于是离线评估不但看不出问题，还会【奖励】这个穿越特征</span></div><div class="vb-flow-row"><span class="vb-flow-step">（它的特征重要性排第 2）</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 特征名叫 &quot;user_return_rate_90d&quot;，所有人都以为</span></div><div class="vb-flow-row"><span class="vb-flow-step">&quot;90d&quot; 是【相对样本时间】的 90 天</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 实际上是【相对跑数时间】的 90 天 —— 名字没说清 as_of 语义</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ ⭐ 最反直觉的一点：在线服务是对的</span></div><div class="vb-flow-row"><span class="vb-flow-step">在线是另一个团队用 Java 从 Redis 读【当前值】，</span></div><div class="vb-flow-row"><span class="vb-flow-step">逻辑上恰好等价于正确的 point-in-time 取值。</span></div><div class="vb-flow-row"><span class="vb-flow-step">所以这不是&quot;线上错了&quot;，是【离线错了、线上对了】</span></div><div class="vb-flow-row"><span class="vb-flow-step">表现为&quot;线上比离线差&quot;，团队一开始一直往</span></div><div class="vb-flow-row"><span class="vb-flow-step">&quot;线上环境有问题&quot;的方向查，浪费了大半时间</span></div></div></section>
+<section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 离线【测试集】也是同一份表算出来的</span></div><div class="vb-flow-row"><span class="vb-flow-step">测试集带着完全一样的穿越</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 于是离线评估不但看不出问题，还会【奖励】这个穿越特征</span></div><div class="vb-flow-row"><span class="vb-flow-step">（它的特征重要性排第 2）</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 特征名叫 "user_return_rate_90d"，所有人都以为</span></div><div class="vb-flow-row"><span class="vb-flow-step">"90d" 是【相对样本时间】的 90 天</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 实际上是【相对跑数时间】的 90 天 —— 名字没说清 as_of 语义</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ ⭐ 最反直觉的一点：在线服务是对的</span></div><div class="vb-flow-row"><span class="vb-flow-step">在线是另一个团队用 Java 从 Redis 读【当前值】，</span></div><div class="vb-flow-row"><span class="vb-flow-step">逻辑上恰好等价于正确的 point-in-time 取值。</span></div><div class="vb-flow-row"><span class="vb-flow-step">所以这不是"线上错了"，是【离线错了、线上对了】</span></div><div class="vb-flow-row"><span class="vb-flow-step">表现为"线上比离线差"，团队一开始一直往</span></div><div class="vb-flow-row"><span class="vb-flow-step">"线上环境有问题"的方向查，浪费了大半时间</span></div></div></section>
 <p><strong>代价</strong></p>
-<section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">离线 AUC 0.83 线上 AUC 0.68</span></div><div class="vb-flow-row"><span class="vb-flow-step">修复后重训 离线 0.71（掉了 0.12，这 0.12 全是穿越）</span></div><div class="vb-flow-row"><span class="vb-flow-step">线上 0.70 ⭐ 离线线上终于对上了</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 也就是说：那个&quot;很好的模型&quot;从来不存在，</span></div><div class="vb-flow-row"><span class="vb-flow-step">真实能力一直是 0.70 左右</span></div><div class="vb-flow-row"><span class="vb-flow-step">业务损失：</span></div><div class="vb-flow-row"><span class="vb-flow-step">错误发放极速退款资格</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">6 周内欺诈性退货</span></div><div class="vb-flow-row"><span class="vb-flow-step">直接损失 ≈ 210 万元</span></div><div class="vb-flow-row"><span class="vb-flow-step">排查成本 3 人 × 2 周</span></div><div class="vb-flow-row"><span class="vb-flow-step">全量重训 + 灰度重来 3 周</span></div></div></section>
+<section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">离线 AUC 0.83 线上 AUC 0.68</span></div><div class="vb-flow-row"><span class="vb-flow-step">修复后重训 离线 0.71（掉了 0.12，这 0.12 全是穿越）</span></div><div class="vb-flow-row"><span class="vb-flow-step">线上 0.70 ⭐ 离线线上终于对上了</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 也就是说：那个"很好的模型"从来不存在，</span></div><div class="vb-flow-row"><span class="vb-flow-step">真实能力一直是 0.70 左右</span></div><div class="vb-flow-row"><span class="vb-flow-step">业务损失：</span></div><div class="vb-flow-row"><span class="vb-flow-step">错误发放极速退款资格</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">6 周内欺诈性退货</span></div><div class="vb-flow-row"><span class="vb-flow-step">直接损失 ≈ 210 万元</span></div><div class="vb-flow-row"><span class="vb-flow-step">排查成本 3 人 × 2 周</span></div><div class="vb-flow-row"><span class="vb-flow-step">全量重训 + 灰度重来 3 周</span></div></div></section>
 <p><strong>该补什么</strong></p>
 <div class="tw"><table>
 <thead>
@@ -594,7 +596,7 @@ Feature Store 是一个<strong>为已经发生过的疼痛买的保险</strong>�
 <strong>任何离线手段都发现不了它，只有"离线 vs 线上"的对比才会暴露。</strong>
 ⭐ 这也解释了为什么它值 0.15 的 AUC：<strong>穿越特征的重要性排第 2。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_7">🪶 八、如果你决定不上：三条轻量替代</h2>
 <p><strong>这三条加起来大约一周，能拿到 Feature Store 八成的价值。</strong></p>
 <div class="tw"><table>
@@ -630,7 +632,7 @@ Feature Store 是一个<strong>为已经发生过的疼痛买的保险</strong>�
 💀 <strong>Feature Store 是个大工程；point-in-time 正确性是个小函数。</strong>
 <strong>别因为买不起前者，就连后者也不做。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_8">🔗 这一章连到哪里</h2>
 <div class="tw"><table>
 <thead>
@@ -641,36 +643,36 @@ Feature Store 是一个<strong>为已经发生过的疼痛买的保险</strong>�
 </thead>
 <tbody>
 <tr>
-<td><a href="../模型上线之后/04-训练推理一致性.html">模型上线之后 04 训练推理一致性</a></td>
+<td><a href="../%E6%A8%A1%E5%9E%8B%E4%B8%8A%E7%BA%BF%E4%B9%8B%E5%90%8E/04-%E8%AE%AD%E7%BB%83%E6%8E%A8%E7%90%86%E4%B8%80%E8%87%B4%E6%80%A7.html">模型上线之后 04 训练推理一致性</a></td>
 <td>⭐ 本章的另一半：<strong>这边讲怎么从源头上避免不一致，那边讲不一致发生后怎么逐字段查出来</strong>。事故复盘里的"逐字段比对"就是那一章的做法</td>
 </tr>
 <tr>
-<td><a href="../推荐算法/07-特征工程.html">推荐算法 07 特征工程</a></td>
+<td><a href="../%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/07-%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B.html">推荐算法 07 特征工程</a></td>
 <td>⭐ 特征本身怎么设计。<strong>Feature Store 不会替你做那一章的任何一件事</strong></td>
 </tr>
 <tr>
-<td><a href="../机器学习与深度学习基础/16-特征工程基础.html">机器学习与深度学习基础 16 特征工程基础</a></td>
+<td><a href="../%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/16-%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B%E5%9F%BA%E7%A1%80.html">机器学习与深度学习基础 16 特征工程基础</a></td>
 <td>更基础的一层：编码、分箱、交叉</td>
 </tr>
 <tr>
-<td><a href="../模型上线之后/06-数据漂移与概念漂移.html">模型上线之后 06 数据漂移与概念漂移</a></td>
+<td><a href="../%E6%A8%A1%E5%9E%8B%E4%B8%8A%E7%BA%BF%E4%B9%8B%E5%90%8E/06-%E6%95%B0%E6%8D%AE%E6%BC%82%E7%A7%BB%E4%B8%8E%E6%A6%82%E5%BF%B5%E6%BC%82%E7%A7%BB.html">模型上线之后 06 数据漂移与概念漂移</a></td>
 <td>「它不会自动发现漂移」—— 漂移监控是完全独立的一套，在那一章</td>
 </tr>
 <tr>
-<td><a href="14-数据泄漏的七种来源.html">数据泄漏的七种来源</a></td>
+<td><a href="14-%E6%95%B0%E6%8D%AE%E6%B3%84%E6%BC%8F%E7%9A%84%E4%B8%83%E7%A7%8D%E6%9D%A5%E6%BA%90.html">数据泄漏的七种来源</a></td>
 <td>point-in-time 违规就是那一章的<strong>穿越型泄漏</strong>，本章给了它的工程解法</td>
 </tr>
 <tr>
-<td><a href="17-数据版本与血缘.html">数据版本与血缘</a></td>
+<td><a href="17-%E6%95%B0%E6%8D%AE%E7%89%88%E6%9C%AC%E4%B8%8E%E8%A1%80%E7%BC%98.html">数据版本与血缘</a></td>
 <td>特征定义本身也要版本化 —— <strong>改了一个特征的口径，等于换了一份训练数据</strong></td>
 </tr>
 <tr>
-<td><a href="../SQL查询这一关/08-窗口帧.html">SQL 查询这一关 08 窗口帧</a></td>
+<td><a href="../SQL%E6%9F%A5%E8%AF%A2%E8%BF%99%E4%B8%80%E5%85%B3/08-%E7%AA%97%E5%8F%A3%E5%B8%A7.html">SQL 查询这一关 08 窗口帧</a></td>
 <td>⭐ <strong>point-in-time 在 SQL 里长什么样</strong>：本章给的是 pandas 实现和「该不该上 Feature Store」的判据，那一章补同一件事的 SQL 写法 —— 右边界钉死在 <code>1 PRECEDING</code></td>
 </tr>
 </tbody>
 </table></div>
-<hr />
+<hr>
 <h2 id="_9">✅ 检查点</h2>
 <ol>
 <li>Feature Store 做的四件事是什么？为什么说"两条路径长期保持一致"在工程上不可能成立？</li>
@@ -699,7 +701,7 @@ Feature Store 是一个<strong>为已经发生过的疼痛买的保险</strong>�
 <li><strong>① point-in-time join 库函数</strong>。因为它不需要新系统、不需要新人力、不改变任何架构，但它挡住的正是那个价值 210 万的事故。💀 Feature Store 是个大工程，point-in-time 正确性是个小函数 —— 别因为买不起前者就连后者也不做。</li>
 </ol>
 </details>
-<hr />
+<hr>
 <h2 id="_10">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
@@ -711,7 +713,7 @@ Feature Store 是一个<strong>为已经发生过的疼痛买的保险</strong>�
 <p>💀 那个退货模型事故的三个 AUC：离线 0.83、线上 0.68、修好之后离线 <strong>0.71</strong>、线上 0.70——⭐ <strong>那个「很好的模型」从来不存在，真实能力一直是 0.70。</strong> 最反直觉的是在线服务其实是对的，所以表现成「线上比离线差」，团队一直往线上环境查。</p>
 <p>⭐ 💀 <strong>Feature Store 是个大工程，point-in-time 正确性是个小函数——别因为买不起前者，就连后者也不做。</strong></p>
 </blockquote>
-<p><strong>下一节</strong> 👉 <a href="19-隐私脱敏与留存.html">19-隐私脱敏与留存.md</a></p>
+<p><strong>下一节</strong> 👉 <a href="19-%E9%9A%90%E7%A7%81%E8%84%B1%E6%95%8F%E4%B8%8E%E7%95%99%E5%AD%98.html">19-隐私脱敏与留存.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="17-数据版本与血缘.html"><div class="dir">← 上一节</div>🗂️ 17 · 版本与血缘</a><a class="next" href="19-隐私脱敏与留存.html"><div class="dir">下一节 →</div>🔒 19 · 隐私、脱敏与留存</a></nav>
@@ -738,4 +740,4 @@ Feature Store 是一个<strong>为已经发生过的疼痛买的保险</strong>�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

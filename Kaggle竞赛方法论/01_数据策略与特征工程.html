@@ -180,9 +180,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -1397,8 +1397,7 @@ th,td{min-width:5.2em}
 <hr />
 <h2 id="recap">🛑 可以停在这里</h2>
 <blockquote>
-<p>⚡ <strong>走神救援</strong><br />
-⭐<strong>竞赛里排名的差距大部分来自数据和特征，不是模型</strong>。这章很长，<strong>别一次读完，按赛题需要挑着看</strong>——先看「验证集构造」和「评价指标」两节，因为<strong>验证集是你唯一的尺子，尺子错了后面所有改动方向都是错的</strong>。几个关键点：①样本不均衡——<strong>少数类「难分」时该动损失函数（Focal），只是「少」时才用重采样</strong>②<strong>伪标签的两个前提：模型已经够准 + 规则允许</strong>；模型有系统性偏差时它会把偏差固化放大③<strong>TTA 几乎白赚</strong>（不用额外训练，只是推理时间 ×N）④<strong>缺失值要按缺失原因分类处理</strong>——「没填」和「采集失败」是两回事，统一填中位数会抹掉信号，记得加一列「是否缺失」⑤<strong>目标严重右偏时必须 log1p</strong>，但评估要变换回原尺度且注意 expm1 回来的是中位数。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>先读评价指标与数据的时间、分组结构，建立可信验证。</li><li>特征处理要保留缺失原因和预测时点的信息边界。</li><li>增强、重采样与伪标签都是候选方法，按任务验证效果并先确认规则。</li></ul></section>
 </blockquote>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -1426,4 +1425,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
+</body></html>

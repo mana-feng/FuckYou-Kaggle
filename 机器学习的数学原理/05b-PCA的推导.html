@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -554,9 +554,8 @@ PCA 不区分自变量因变量，<strong>它眼里所有维度地位平等</str
 <hr />
 <h2 id="_14">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>PCA = 把协方差矩阵做特征分解，拿最大的几个特征向量当新坐标轴。</strong> 前置是<strong>协方差矩阵</strong>：先<strong>中心化</strong>（省了这一步会得到一个指向数据云中心的假方向），再 <strong>Σ = (1/n)·Xcᵀ Xc</strong>。它<strong>对称</strong>（→ ⭐<strong>不同特征值的特征向量自动正交，主成分的正交性是谱定理白送的</strong>）、<strong>半正定</strong>（因为 <strong>wᵀΣw 就是投影后的方差</strong>，不可能为负），对角线是各维方差，<strong>迹 = 总方差 = 特征值之和</strong>（这是"解释方差比"的分母）。⚠️它<strong>对单位极其敏感</strong>，因为方差的量纲是"单位的平方"。⭐<strong>推导一（最大化投影方差）</strong>：Var(Xc·w) = <strong>wᵀΣw</strong>，⚠️必须约束 ‖w‖=1（否则把 w 放大十倍方差变 100 倍、问题无界）；拉格朗日求导得 <strong>Σw = λw</strong> —— <strong>主成分只能是协方差矩阵的特征向量</strong>；代回得 <strong>Var = λ</strong>，⭐<strong>特征值就是那个方向上的方差</strong>。第二主成分只要加上「与 w₁ 正交」再来一遍。⭐<strong>推导二（最小化重构误差）</strong>：投影与残差<strong>互相垂直</strong>，勾股 <strong>‖x‖² = 投影² + 残差²</strong>，左边求平均后是<strong>总方差 tr(Σ)，一个定值</strong> → 右边两项此消彼长 ⟹ <strong>投影拉到最大 ⟺ 残差压到最小，两条推导必然同解</strong>。⚠️<strong>PC1 不是回归线</strong>：回归只量<strong>竖直</strong>误差（假设 x 已知、只有 y 带噪声），PCA 量<strong>垂直于直线</strong>的距离——手算例子里 <strong>OLS 斜率 0.9 而 PC1 斜率 1.0</strong>，同一批数据。<strong>手算例子</strong>：X = (1,2)(2,3)(3,5)(4,4)(5,6) → 中心化后 <strong>Σ = [[2, 1.8], [1.8, 2]]</strong>；形如 [[a,b],[b,a]] 的矩阵特征值就是 <strong>a ± b</strong>，于是 <strong>λ = 3.8 / 0.2</strong>，特征向量 <strong>[1,1]/√2 和 [1,−1]/√2</strong>，<strong>解释方差比 95% / 5%</strong>。三处验算：tr = 4 = 3.8+0.2 ✅、把 5 个点投到 [1,1]/√2 上算出的方差正好是 λ₁ = 3.8 ✅、OLS 斜率 0.9 ≠ PC1 斜率 1.0 ⚠️。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>PCA 先中心化，再寻找投影方差最大的单位方向；单位和缩放会影响结果。</li><li>协方差矩阵的特征向量给方向，特征值给对应的投影方差。</li><li>最大化保留方差与最小化正交重构误差相对应；这不是普通回归的竖直误差。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="05c-SVD与实践.html">05c-SVD与实践.md</a></p>
 <blockquote>
 <p>去那里的理由：本章推出的 <strong>Σw = λw</strong> 是对的，但<strong>没有一个正经实现会照着算</strong> ——
@@ -589,4 +588,4 @@ PCA 不区分自变量因变量，<strong>它眼里所有维度地位平等</str
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

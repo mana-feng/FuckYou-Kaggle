@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -314,7 +314,8 @@ PKI 的答案是：<strong>找一个大家都信的第三方，让它给"公钥�
 
 <hr />
 <h2 id="_2">⛓️ 一、信任链</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">根证书（Root CA）</span><span class="vb-tree-note">【预装在操作系统/浏览器里】⭐</span></div><div class="vb-tree-row"><span class="vb-tree-node">签名</span></div><div class="vb-tree-row"><span class="vb-tree-node">中间 CA 证书</span></div><div class="vb-tree-row"><span class="vb-tree-node">签名</span></div><div class="vb-tree-row"><span class="vb-tree-node">google.com 的证书</span><span class="vb-tree-note">包含 google.com 的公钥</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-cryptomd-18-1" style="--diagram-width:720px"><svg viewBox="0 0 720 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="箭头表示签发关系。验证时从网站证书向可信根检查，不因链条存在就自动信任所有内容。"><title>箭头表示签发关系。验证时从网站证书向可信根检查，不因链条存在就自动信任所有内容。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">证书链：信任沿签名逐级验证</text><rect x="95" y="65" width="530" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="360.0" y="93" font-size="18" text-anchor="middle" fill="var(--fg)">根 CA：预装的信任锚</text><line x1="360" y1="113" x2="360" y2="158" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="360.0,158.0 355.0,149.0 365.0,149.0"/><rect x="95" y="158" width="530" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="360.0" y="186" font-size="18" text-anchor="middle" fill="var(--fg)">中间 CA：由上级签名</text><line x1="360" y1="206" x2="360" y2="251" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="360.0,251.0 355.0,242.0 365.0,242.0"/><rect x="95" y="251" width="530" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="360.0" y="279" font-size="18" text-anchor="middle" fill="var(--fg)">网站证书：包含网站公钥</text></svg><figcaption>箭头表示签发关系。验证时从网站证书向可信根检查，不因链条存在就自动信任所有内容。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>根证书（Root CA）</span> <span>【预装在操作系统/浏览器里】⭐</span></li><li><span>签名</span></li><li><span>中间 CA 证书</span></li><li><span>签名</span></li><li><span>google.com 的证书</span> <span>包含 google.com 的公钥</span></li></ul></section>
 <p><strong>浏览器验证的时候做什么</strong>：</p>
 <section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>用中间 CA 的公钥，验证叶子证书的签名 ✅</li><li>用根 CA 的公钥，验证中间 CA 证书的签名 ✅</li><li>检查根 CA 在【本地信任库】里 ✅</li><li>检查有效期没过 ✅</li><li>检查【域名匹配】（SAN 字段包含 google.com）⭐</li><li>检查没被吊销</li><li>检查 CT 日志（第 12 章）</li></ol></section>
 <blockquote>
@@ -327,7 +328,7 @@ PKI 的答案是：<strong>找一个大家都信的第三方，让它给"公钥�
 <section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">⭐ 根 CA 的私钥【离线保存】（真的在保险柜里的 HSM 中）</span></div><div class="vb-flow-row"><span class="vb-flow-step">只用来签中间 CA，一年可能就用几次</span></div><div class="vb-flow-row"><span class="vb-flow-step">中间 CA 泄露了可以吊销并换一个</span></div><div class="vb-flow-row"><span class="vb-flow-step">根 CA 泄露 = 灾难（它预装在几十亿台设备里，换不掉）⭐</span></div></div></section>
 <hr />
 <h2 id="_3">📜 二、证书里有什么</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">X.509 证书的关键字段：</span></div><div class="vb-tree-row"><span class="vb-tree-node">Subject 谁的证书（CN / SAN 域名列表）⭐</span></div><div class="vb-tree-row"><span class="vb-tree-node">Issuer 谁签的</span></div><div class="vb-tree-row"><span class="vb-tree-node">Public Key ⭐ 核心内容</span></div><div class="vb-tree-row"><span class="vb-tree-node">Validity 有效期</span></div><div class="vb-tree-row"><span class="vb-tree-node">Serial Number 序列号（吊销时用）</span></div><div class="vb-tree-row"><span class="vb-tree-node">Extensions</span></div><div class="vb-tree-row"><span class="vb-tree-node">SAN ⭐ 实际用的域名列表（CN 已废弃）</span></div><div class="vb-tree-row"><span class="vb-tree-node">Basic Constraints ⭐ 是不是 CA 证书</span></div><div class="vb-tree-row"><span class="vb-tree-node">Key Usage 这个密钥能干什么</span></div><div class="vb-tree-row"><span class="vb-tree-node">SCT 证书透明性凭证</span></div><div class="vb-tree-row"><span class="vb-tree-node">Signature CA 的签名</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>X.509 证书的关键字段：</span></li><li><span>Subject 谁的证书（CN / SAN 域名列表）⭐</span></li><li><span>Issuer 谁签的</span></li><li><span>Public Key ⭐ 核心内容</span></li><li><span>Validity 有效期</span></li><li><span>Serial Number 序列号（吊销时用）</span></li><li><span>Extensions</span></li><li><span>SAN ⭐ 实际用的域名列表（CN 已废弃）</span></li><li><span>Basic Constraints ⭐ 是不是 CA 证书</span></li><li><span>Key Usage 这个密钥能干什么</span></li><li><span>SCT 证书透明性凭证</span></li><li><span>Signature CA 的签名</span></li></ul></section>
 <blockquote>
 <p>💥 <strong>Basic Constraints 的著名漏洞</strong>：
 早期一些实现<strong>不检查 <code>CA:TRUE</code> 这个标志</strong> →
@@ -627,4 +628,4 @@ Let's Encrypt 推动了 90 天证书 + 自动续期，
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

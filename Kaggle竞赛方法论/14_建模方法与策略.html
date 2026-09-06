@@ -180,9 +180,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -925,8 +925,7 @@ th,td{min-width:5.2em}
 <hr />
 <h2 id="recap">🛑 可以停在这里</h2>
 <blockquote>
-<p>⚡ <strong>走神救援</strong><br />
-⭐<strong>时序「竞赛」和教科书的时序「预测」不是一回事</strong>：教科书讲 ARIMA/平稳性，<strong>竞赛赢的通常是「转成有监督学习 + 树模型 + 大量滚动特征」</strong>（因为竞赛是成百上千条序列，<strong>跨序列共享模式比单序列建模更重要</strong>）。⚠️⭐<strong>转监督学习时最关键的设计：特征必须模拟「站在预测时点之前」的信息状态</strong>——要预测未来 7 天，构造特征时不能用到那 7 天内的任何数据，<strong>这是时序竞赛最高频的泄漏来源，比随机 KFold 还隐蔽</strong>。<strong>验证必须 TimeSeriesSplit 或 Purged K-Fold + Embargo</strong>（留空档是因为标签用未来一段时间算，紧邻样本信息重叠），且<strong>验证集时间跨度要和测试集一致</strong>。<strong>深度学习只在这几种情况才真的更强</strong>：序列数极多且共享强模式、有非结构化协变量、需要长程依赖、多步预测建模步间依赖——<strong>中小规模纯数值时序树模型仍更强更省事</strong>。<strong>复合预测</strong>：简单模型抓主体（<strong>它天然能外推，补上树模型的短板</strong>）+ 复杂模型学残差。⭐<strong>整数目标别无脑四舍五入</strong>——在验证集上搜 round(x+δ) 的偏移量，零成本且常有效。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>把时序转成监督学习时，特征只能使用预测时点之前可获得的信息。</li><li>验证窗口与预测跨度要对应，存在重叠信息时处理边界隔离。</li><li>趋势、残差与跨序列模式可以分别建模，再用同一验证方案比较。</li></ul></section>
 </blockquote>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -954,4 +953,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
+</body></html>

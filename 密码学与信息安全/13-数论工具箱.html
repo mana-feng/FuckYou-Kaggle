@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -564,9 +564,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_13">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>公钥密码需要的全部数学就四个概念。<strong>①模运算</strong>：只关心余数（17≡5 mod 12，时钟）；⭐<strong>加减乘可以随时取余</strong>，所以算 a^b mod n 数永远不超过 n²。<strong>快速幂（平方-乘）</strong>：a^13 = a^8·a^4·a^1，<strong>O(log b) 次</strong>，2048bit 指数约 <strong>3000 次乘法</strong> → 这就是 RSA "能算"的原因（Python 用 <code>pow(a,b,n)</code>，内置且恒定时间）。<strong>②模逆元</strong>：ax≡1 (mod n)，⭐<strong>存在充要条件是 gcd(a,n)=1</strong>，用扩展欧几里得求（<code>pow(a,-1,n)</code>）→ <strong>RSA 私钥 d 就是这么算的</strong>。<strong>③群/阶/生成元</strong>：只用 Z<em>_p 和椭圆曲线点群；</em><em>生成元</em><em>的幂遍历整个群（p=7 时 3 是生成元）。</em><em>欧拉定理</em><em> a^φ(n)≡1，⭐</em><em>φ(pq)=(p−1)(q−1)</em><em> —— ⭐</em><em>知道 p,q 能算 φ，只知道 n=pq 算不出 φ，这个不对称就是 RSA 的全部秘密</em><em>。（CRT 让 RSA 解密快 4 倍，但有 </em><em>Bellcore 攻击</em><em>风险：一次故障签名就能分解 p，实现必须验签。）</em><em>④三个困难问题</em><em>：</em><em>整数分解</em><em>（RSA）、</em><em>DLP</em><em> 给 g,g^x 求 x、</em><em>CDH/DDH</em><em> 给 g^a,g^b 求/分辨 g^ab；⭐强弱关系 </em><em>DDH ⟹ CDH ⟹ DLP</em><em>。</em><em>ElGamal 需要 DDH 不只是 CDH</em><em>，因为 CDH 只保证"算不出"，</em><em>IND-CPA 要求连"分辨"都做不到</em><em>（算不出完整值但能判断最低位就够违反了）；⚠️ Z</em>_p 上 DDH 其实是假的，必须在<strong>素数阶子群</strong>上做。<strong>参数</strong>：128-bit 安全 = RSA <strong>3072</strong> / ECC <strong>256</strong> / AES-128；⭐<strong>差距源于分解和 DLP 有亚指数算法（数域筛法），椭圆曲线目前只有指数级算法</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>模运算、快速幂、逆元与群是后续公钥方案的数学工具。</li><li>先检查逆元存在条件与运算所在的群，再代入公式。</li><li>容易正向计算与困难的逆问题形成不对称，但安全还依赖具体参数与假设。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="14-RSA.html">14-RSA.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -594,4 +593,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

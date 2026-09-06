@@ -277,8 +277,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </details>
 </div>
 <div class="recap"><h2 id="recap">🛑 可以停在这里</h2>
-<p>⚡ <strong>走神救援</strong><br />
-研究任务用主从编排：主 Agent 拆解派发、子 Agent 各自检索、主 Agent 汇总。<br class="prose-beat">适合的原因：研究天然可按子问题并行，且检索会产生大量中间资料，都进主上下文会迅速撑爆。<br class="prose-beat">⭐⭐<strong>关键设计：子 Agent 只回传结论和关键引用，不回传原始资料</strong>——省上下文正是多 Agent 在这里的核心价值，如果把搜到的网页全文都传回来，那还不如单 Agent 直接搜；回传内容应是：结论 + 支撑证据的简短摘录 + 来源链接。<br class="prose-beat">⚠️<strong>成本是 token 成倍增长</strong>（每个子 Agent 都有自己的系统提示和工具定义）；风险是子 Agent 看不到彼此的发现，可能重复劳动或得出矛盾结论，缓解是让主 Agent 汇总时显式检查冲突、关键结论要求交叉验证。</p></div>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>独立研究子问题可以分开检索，再集中核对结论。</li><li>回传结论、证据与来源，不把所有中间材料重新塞回主上下文。</li><li>汇总时显式检查重复、遗漏和冲突，同时计算额外成本。</li></ul></section></div>
 <nav class="pagenav"><a href="index.html"><div class="dir">← 返回</div>📚 资料库目录</a>
 <a class="next" href="../智能体工程教程/index.html"><div class="dir">系统学习 →</div>🎓 智能体工程教程</a></nav>
 </main><script>(function(){
@@ -292,4 +291,5 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
+</body></html>

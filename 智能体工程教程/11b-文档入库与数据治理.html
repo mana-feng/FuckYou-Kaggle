@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>11b · 文档入库：更新、删除和撤权都算数据 · 智能体工程教程</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">11b · 文档入库与治理</span>
+  <span class="prevnext"><a href="11-检索与RAG.html">←</a>
+  <a href="11c-检索评测与调优实验.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">🔬 先观察解析后的内容</a></li>
+<li><a href="#_4">一、解析完成不等于解析正确</a></li>
+<li><a href="#_5">二、切块先保护语义，再测长度</a></li>
+<li><a href="#_6">三、发布是一笔事务，失败不能露出半个版本</a></li>
+<li><a href="#_7">四、权限要穿过每一条取数路径</a></li>
+<li><a href="#_8">✅ 检查点</a></li>
+<li><a href="#_9">🔗 接下来去哪</a></li>
+</ul>
+</div>
+</details>
+<h1 id="11b">11b · 文档入库：更新、删除和撤权都算数据</h1>
+<p>⏱ <strong>按阶段实践</strong> ｜ 先跑文本，再按岗位补扫描件与复杂表格</p>
+<h2 id="_1">🎯 一句话</h2>
+<p><strong>先证明进入索引的内容正确、当前且有权访问，再讨论模型是否聪明。</strong> 这一页把“上传文档”展开成可回放的入库任务。</p>
+<p>🔗 前置是<a href="11-检索与RAG.html">检索与 RAG</a>；环境见<a href="17b-企业知识助手交付项目.html">共同项目</a>。命令在仓库根目录运行。实现见 <a href="../examples/knowledge-assistant/core.py">core.py</a>，负例见 <a href="../examples/knowledge-assistant/test_core.py">test_core.py</a>。</p>
+<h2 id="_2">🔬 先观察解析后的内容</h2>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>examples/knowledge-assistant/lab.py<span class="w"> </span>inspect<span class="w"> </span>examples/knowledge-assistant/corpus/limits.md<span class="w"> </span>--chunk-chars<span class="w"> </span><span class="m">450</span>
+python<span class="w"> </span>examples/knowledge-assistant/lab.py<span class="w"> </span>init
+python<span class="w"> </span>examples/knowledge-assistant/lab.py<span class="w"> </span><span class="nb">jobs</span>
+</code></pre></div>
+
+<p>第一条要看 <strong>body 中表头、数值和单位是否在一起</strong>；后两条分别发布初始版本、查看任务记录。重复 <code>init</code> 应报告已有相同版本，而不是制造重复块。先核对文件名与 <a href="../examples/knowledge-assistant/corpus/manifest.json">manifest</a>，不要把失败当成“模型没理解”。</p>
+<h3 id="_3">一个文档至少携带哪些信息</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>来源</th>
+<th>为什么需要</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tenant、readers</td>
+<td>已认证连接器与权限目录</td>
+<td>用户不能在提问里自报租户获得权限</td>
+</tr>
+<tr>
+<td>doc_id</td>
+<td>源系统稳定 ID</td>
+<td>改标题后仍知道是同一个文档</td>
+</tr>
+<tr>
+<td>revision</td>
+<td>源系统递增版本，或服务端分配</td>
+<td>阻止迟到的旧事件覆盖新版本</td>
+</tr>
+<tr>
+<td>原始内容哈希</td>
+<td>文件字节</td>
+<td>发现同版本内容冲突、定位输入</td>
+</tr>
+<tr>
+<td>parser / chunk 配置</td>
+<td>构建版本</td>
+<td>解释为什么同一文件产生不同块</td>
+</tr>
+<tr>
+<td>页码、章节、块序号</td>
+<td>解析器</td>
+<td>引用能返回到原文位置</td>
+</tr>
+<tr>
+<td>状态、尝试次数、错误码</td>
+<td>入库任务</td>
+<td>失败后能回放，区别“未读到”和“已发布”</td>
+</tr>
+</tbody>
+</table></div>
+<p>本项目 manifest 是<strong>受信任管理员的导入接口</strong>，不能直接暴露为匿名上传 JSON。路径被限制在语料目录内；将来接对象存储还要限制桶、前缀、文件大小与下载超时。</p>
+<h2 id="_4">一、解析完成不等于解析正确</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>输入</th>
+<th>先检查的可观察结果</th>
+<th>失败去向</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Markdown / UTF-8 文本</td>
+<td>标题归属、中文解码、段落顺序</td>
+<td>空内容或坏编码拒绝发布</td>
+</tr>
+<tr>
+<td>普通 PDF 文本层</td>
+<td>每页字符、阅读顺序、页码对应</td>
+<td>本项目可选 pypdf；稀疏页进入人工/OCR 复核</td>
+</tr>
+<tr>
+<td>扫描 PDF / 照片</td>
+<td>OCR 文本、置信度、旋转、漏页</td>
+<td>OCR 是扩展任务，当前代码没有实现</td>
+</tr>
+<tr>
+<td>双栏、跨页表格</td>
+<td>左右栏顺序、重复表头、单位、脚注</td>
+<td>逐页视觉核对，不能仅看提取字符数</td>
+</tr>
+<tr>
+<td>图表、公式、合同印章</td>
+<td>原图定位、识别内容与适用范围</td>
+<td>保留图像来源；无法识别时显式说明</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>有文本的 PDF 也可能读错顺序。</strong> pypdf 能读到字符不代表复杂版面已验收；本项目的“短页拒绝”只是保守筛查，不能检测全部 OCR 错误。岗位要求文档智能时，单独准备文字页、扫描页、旋转页、双栏页、跨页表各类夹具，并保存页图与抽取结果对照。</p>
+<h2 id="_5">二、切块先保护语义，再测长度</h2>
+<p>本项目按标题、段落和句子切分；Markdown 表格连同前一段说明作为整体保留。<code>chunk_chars</code> <strong>按字符计算，不是模型 token</strong>，表格可能超过目标长度。上线模型前，用它自己的 tokenizer 统计实际输入长度和截断率。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>调整</th>
+<th>想解决什么</th>
+<th>可能付出的代价</th>
+<th>验收</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>减小块</td>
+<td>大块混入多个主题</td>
+<td>条件、单位与答案分离</td>
+<td>检查原问题仍能在同块或关联块得到依据</td>
+</tr>
+<tr>
+<td>增大块</td>
+<td>答案缺上下文</td>
+<td>相似度被稀释、上下文挤占</td>
+<td>Recall 与有效证据占比一起看</td>
+</tr>
+<tr>
+<td>overlap</td>
+<td>边界断句</td>
+<td>重复召回、更多向量与费用</td>
+<td>去重后有效文档数，不只看块命中</td>
+</tr>
+<tr>
+<td>父子块</td>
+<td>小块定位、大段回答</td>
+<td>引用与权限映射复杂</td>
+<td>父段同样验 ACL，不能借扩展段泄漏</td>
+</tr>
+<tr>
+<td>上下文补全</td>
+<td>孤立片段缺产品/章节名</td>
+<td>生成上下文可能编造条件</td>
+<td>保存原块与补全文分栏，抽查事实一致性</td>
+</tr>
+</tbody>
+</table></div>
+<p>当前参考实现没有 overlap、父子索引和 LLM 上下文补全；它保留简单基线，便于逐项加上后做消融。调参记录方法见<a href="11c-检索评测与调优实验.html">11c</a>。</p>
+<blockquote>
+<p>🛑 <strong>现在可以停</strong>：已经能解释一个块来自哪一页、为什么这样切。下一段处理数据上线后才出现的问题。</p>
+</blockquote>
+<h2 id="_6">三、发布是一笔事务，失败不能露出半个版本</h2>
+<p>本项目的顺序是：登记任务 → 解析和校验 → 在事务内检查版本 → 替换该文档全部块 → 发布元数据。事务失败时旧版本仍可检索；任务单独留下失败记录。读者不会看到“新文档标题搭配旧段落”。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>到达的事件</th>
+<th>正确结果</th>
+<th>参考实现中的证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>相同版本、相同内容重投</td>
+<td>成功且不重复</td>
+<td><code>test_duplicate_ingestion_is_idempotent</code></td>
+</tr>
+<tr>
+<td>相同版本、不同内容</td>
+<td>明确冲突</td>
+<td><code>test_same_revision_different_content_is_rejected</code></td>
+</tr>
+<tr>
+<td>v3 后收到 v2</td>
+<td>保留 v3</td>
+<td><code>test_out_of_order_revision_cannot_win</code></td>
+</tr>
+<tr>
+<td>解析后崩溃 / 提交前失败</td>
+<td>旧版继续服务，可回放任务</td>
+<td><code>test_publish_failure_preserves_previous_version</code></td>
+</tr>
+<tr>
+<td>删除后迟到的旧任务</td>
+<td>保留删除墓碑，不复活</td>
+<td><code>test_delete_tombstone_blocks_delayed_job</code></td>
+</tr>
+<tr>
+<td>文档撤权但旧引用还在</td>
+<td>再次验证时拒绝</td>
+<td><code>test_acl_change_invalidates_old_citation</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>运行这些负例：</p>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w"> </span>discover<span class="w"> </span>-s<span class="w"> </span>examples/knowledge-assistant<span class="w"> </span>-p<span class="w"> </span>test_core.py<span class="w"> </span>-v
+</code></pre></div>
+
+<p>本地 SQLite 事务演示发布边界；它没有分布式队列、自动租约抢占与死信平台。接生产队列时，在同一逻辑上补任务租约、心跳、最大尝试次数、退避、人工重放入口和唯一事件键。队列“至少一次”投递要求消费者幂等，不能靠“通常不会重复”。</p>
+<h3 id="embedding">改解析器和 embedding 时怎么迁移</h3>
+<p>解析器版本和切块参数进入指纹；同一文档版本不能悄悄改结果。本地实验换配置用新的数据库。正式系统建立新索引版本，回填历史数据并接住增量，比较抽样与总数、权限和时间水位，再切读取别名。</p>
+<p>回滚依赖旧索引仍能表达当前撤权和删除状态。只保留一份旧向量快照，却不继续应用权限变更，会把“回滚”变成信息泄漏。新旧 embedding 空间不能混搜；记录模型、维度、归一化、距离函数、查询前缀与权重哈希。</p>
+<h2 id="_7">四、权限要穿过每一条取数路径</h2>
+<p>SQL 先按可信租户筛选，本项目再检查 readers；BM25、向量、融合都只看可见块。引用复核再查当前权限与版本。向量仅在进程内缓存可见快照，模型权重可以落盘。</p>
+<p>扩展时逐个检查：搜索、资源 URI、父段扩展、下载原文、历史消息、向量缓存、答案缓存和备份恢复。答案缓存键至少绑定租户、权限版本、语料版本与模型配置；撤权要能使缓存失效。<strong>答案缓存命中不能跳过当前授权。</strong></p>
+<h2 id="_8">✅ 检查点</h2>
+<ol>
+<li>为什么文件名和内容哈希不能代替版本号？</li>
+<li>换切块参数后，用相同版本直接覆盖有什么问题？</li>
+<li>为什么过滤检索结果后再做父段扩展仍可能泄漏？</li>
+</ol>
+<details>
+<summary>展开答案</summary>
+<ol>
+<li>文件名会改，哈希只能判断是否相同，不能判断事件先后。需要稳定 ID 与可比较的版本。</li>
+<li>无法区分同版本冲突与新索引规则，也难以回放。用新索引版本或明确的服务端版本迁移。</li>
+<li>父段可能跨权限边界；每条扩展取数都需要按当前身份重新授权。</li>
+</ol>
+</details>
+<div class="reading-recap"><strong>⚡ 走神救援</strong><p>先验解析，再切块；同一版本原子发布；旧事件不能覆盖更新与删除；权限跟着每一次取数走。</p></div>
+
+<h2 id="_9">🔗 接下来去哪</h2>
+<p>➡️ 下一站：<a href="11c-检索评测与调优实验.html">11c · 检索评测与调优实验</a>。</p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="11-检索与RAG.html"><div class="dir">← 上一节</div>🔍 11 · 检索与 RAG</a><a class="next" href="11c-检索评测与调优实验.html"><div class="dir">下一节 →</div>🔬 11c · 检索调优实验</a></nav>
+</main>
+<script>(function(){
+  var KEY="agent-progress", FILE="11b-\u6587\u6863\u5165\u5e93\u4e0e\u6570\u636e\u6cbb\u7406.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

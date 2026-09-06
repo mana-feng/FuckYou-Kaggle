@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -317,7 +317,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <hr />
 <h2 id="_2">🎭 一、两个角色</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">Actor（演员）：策略网络 π(a|s; θ)</span></div><div class="vb-tree-row"><span class="vb-tree-node">决定做什么动作</span></div><div class="vb-tree-row"><span class="vb-tree-node">Critic（评论家）：价值网络 V(s; w) 或 Q(s,a; w)</span></div><div class="vb-tree-row"><span class="vb-tree-node">评价这个状态/动作有多好</span></div><div class="vb-tree-row"><span class="vb-tree-node">⭐ Actor 按 Critic 的评价来调整自己</span></div><div class="vb-tree-row"><span class="vb-tree-node">Critic 按实际的奖励来调整自己</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>Actor（演员）：策略网络 π(a|s; θ)</span></li><li><span>决定做什么动作</span></li><li><span>Critic（评论家）：价值网络 V(s; w) 或 Q(s,a; w)</span></li><li><span>评价这个状态/动作有多好</span></li><li><span>⭐ Actor 按 Critic 的评价来调整自己</span></li><li><span>Critic 按实际的奖励来调整自己</span></li></ul></section>
 <hr />
 <h2 id="_3">📉 二、它到底改了什么</h2>
 <p><strong>回顾策略梯度</strong>（<a href="09-策略梯度.html">第 9 章</a>）：</p>
@@ -535,9 +535,8 @@ GAE 是 PPO 的标配组件（<a href="11-PPO.html">第 11 章</a>）。</p>
 <hr />
 <h2 id="_10">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>Actor 演（策略网络 π）、Critic 打分（价值网络 V）</strong>。⭐<strong>核心改动：把策略梯度里那个高方差的整条轨迹回报 G_t，换成优势函数 A</strong>，最常用的估计是 <strong>TD 误差 δ = r + γV(s') − V(s)</strong>；💡人话：<strong>实际拿到的减去原本预期的</strong>，δ&gt;0 就提高这个动作的概率。<strong>三个好处</strong>：每步就能更新（不用等回合结束）、<strong>方差大幅降低</strong>、保留策略梯度的通用性；⚠️<strong>代价是引入偏差</strong>（V 只是估计）——<strong>又是偏差-方差权衡</strong>。⭐<strong>为什么用优势不用 Q</strong>：Q 的绝对大小没意义（所有动作 Q 都是 1000 时信号被淹没），<strong>A = Q − V 只保留"比平均好多少"</strong>；📐<strong>减基线不引入偏差</strong>因为 E[∇logπ·b(s)] = b(s)·∇1 = 0。<strong>GAE</strong> 用 λ 在偏差方差间调旋钮（λ=0 单步TD、λ=1 蒙特卡洛，<strong>实践常用 0.95</strong>），是 PPO 的标配。实现三坑：⚠️<strong>优势忘了 detach()</strong>、两个 loss 量级差太多（Critic 乘 0.5）、⭐<strong>没有熵奖励导致策略过早收敛、探索死掉</strong>。变体：A2C/A3C、⭐<strong>PPO（加了更新幅度限制）</strong>、DDPG/TD3（连续控制）、⭐<strong>SAC（把熵奖励从 trick 提升成优化目标的一部分，连续控制上最稳）</strong>。⭐<strong>一句话总结三条路线：Actor-Critic 用"有偏但低方差"的 Critic 估计，换掉了策略梯度里"无偏但高方差"的回报。</strong></p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>Actor 选择动作，Critic 提供价值估计，二者承担不同工作。</li><li>优势衡量动作相对当前预期好多少，GAE 调节估计的偏差与方差。</li><li>分别检查策略损失、价值损失与梯度边界，避免让估计目标反向干扰更新。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="11-PPO.html">11-PPO.md</a> ⭐</p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -565,4 +564,4 @@ GAE 是 PPO 的标配组件（<a href="11-PPO.html">第 11 章</a>）。</p>
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

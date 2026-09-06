@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -484,9 +484,8 @@ SNR 掉到 1 之前，linear 撑了 259 步（26%），cosine 撑了 496 步（5
 <p>到这里前向和反向两条路你都看清了：<strong>一条写死、一条要学</strong>，而且清楚了为什么反向不能像前向那样抄近道。</p>
 <p>⚠️ <strong>什么时候回来</strong>：读完 <a href="04-DDIM与采样加速.html">04 章</a>之后 —— 那一章会告诉你反向其实<strong>可以</strong>跳步，只是换掉了一个前提。回头再看这一页最后那一节，会更清楚它换掉的是什么。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>β 调度表在决定「信息以多快的速度被毁掉」</strong>。linear 是最早的做法：$\beta$ 从 0.0001 线性涨到 0.02。⚠️ 它的毛病是<strong>毁得太快</strong> —— 实测 SNR 掉到 1 之前 linear 只撑了 <strong>259 步（26%）</strong>，剩下 74% 的步数都在给一团已经接近纯噪声的东西继续加噪，<strong>既学不到东西、采样时也白走</strong>。<strong>cosine</strong> 改成直接定义 $\bar\alpha_t$ 的形状（β 是反推出来的），把衰减摊平，同样 1000 步能撑到 <strong>496 步（50%）</strong> —— ⭐ <strong>同样的步数，能用的多了一倍</strong>，这就是它后来更常用的全部原因。<strong>反向过程</strong>才是要学的那一半，而模型学的东西可以用一句不含「生成」「创作」的话说清楚：<strong>给定一张加了噪的图和一个时刻 $t$，指出这上面加了哪些噪声</strong> —— 这是一个<strong>回归任务</strong>。⭐ 最后那个自然的疑问：<strong>前向能一步跳，反向为什么不能？</strong> 因为前向每步是「加一份和数据无关的噪声」，线性、两个高斯能合并成一个；而反向每步要问「这坨像素最可能是从什么演变来的」，<strong>依赖数据分布而且是非线性的</strong>，两个非线性映射合起来没有闭式解。⚠️ 注意这说的是「没有精确的闭式跳步」——<strong>近似地跳是另一回事</strong>，那是 04 章 DDIM 的正题。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>调度表控制不同时间段保留多少信号，不只是给步骤编号。</li><li>用信噪比比较线性和余弦调度，观察信息何时接近消失。</li><li>前向闭式加噪不等于反向也有精确的一步解；采样加速另需合适的方法。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="03-训练目标为什么是预测噪声.html">03-训练目标为什么是预测噪声.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -514,4 +513,4 @@ SNR 掉到 1 之前，linear 撑了 259 步（26%），cosine 撑了 496 步（5
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

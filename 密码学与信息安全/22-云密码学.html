@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -313,7 +313,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 云密码学问的是：<strong>能不能让服务器在【看不到明文】的前提下，替我搜索、计算、甚至跑模型？</strong></p>
 <hr />
 <h2 id="_2">🕳️ 一、问题长什么样</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">你把数据存到云上：</span></div><div class="vb-tree-row"><span class="vb-tree-node">不加密 → 云服务商、被入侵的攻击者、内部员工都能看 💀</span></div><div class="vb-tree-row"><span class="vb-tree-node">加密 → 安全了，但云【什么也做不了】</span></div><div class="vb-tree-row"><span class="vb-tree-node">搜索？统计？跑模型？统统得下载回本地解密 😖</span></div><div class="vb-tree-row"><span class="vb-tree-node">⭐ 云密码学 = 在这两者之间找中间地带</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>你把数据存到云上：</span></li><li><span>不加密 → 云服务商、被入侵的攻击者、内部员工都能看 💀</span></li><li><span>加密 → 安全了，但云【什么也做不了】</span></li><li><span>搜索？统计？跑模型？统统得下载回本地解密 😖</span></li><li><span>⭐ 云密码学 = 在这两者之间找中间地带</span></li></ul></section>
 <hr />
 <h2 id="sse">🔍 二、可搜索加密（SSE）</h2>
 <p>目标：服务器能判断"哪些密文包含关键词 W"，但不知道 W 是什么。</p>
@@ -563,9 +563,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_8">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>核心矛盾：<strong>要用数据就得先解密</strong>；云密码学让服务器<strong>看不到明文也能干活</strong>。<strong>可搜索加密 SSE</strong>：发<strong>陷门</strong>让服务器在加密索引上匹配；⚠️但泄露<strong>访问模式/搜索模式/数据量</strong>，💥⭐<strong>泄露滥用攻击</strong>只靠背景知识（词频分布）<strong>仅凭访问模式就能还原 90% 以上的查询词</strong> —— 🔑<strong>"看不到明文"≠"学不到信息"，这是审视本章所有方案的标准</strong>。<strong>同态加密</strong>：Enc(a)⊕Enc(b)=Enc(a+b)。⭐<strong>RSA 天然有乘法同态</strong>（(m₁m₂)^e），<strong>在<a href="14-RSA.html">第 14 章</a>它是漏洞，在这里是特性——同一个数学性质在不同场景可以是缺陷也可以是功能</strong>。<strong>FHE 的困难是噪声随运算增长</strong>，⭐<strong>Gentry 2009 的自举 bootstrapping = 让密文同态地解密自己</strong>，噪声重置 → 可无限运算。⚠️现实代价：<strong>密文膨胀 1000×、速度慢 10³–10⁶ 倍</strong>，目前只在低次多项式/小规模统计可用（CKKS 让加密推理开始落地），<strong>通用计算仍不现实</strong>。<strong>MPC</strong>：各方不泄露输入共同算结果，两条路线是<strong>秘密分享</strong>（<a href="19-密钥管理.html">第 19 章</a> Shamir）和<strong>混淆电路+不经意传输</strong>；⭐<strong>真正落地的例子是广告转化归因用 PSI</strong>（双方都不交出名单）。其他原语：ABE（按属性解密）、PRE（代理重加密）、⭐<strong>ORAM 隐藏访问模式本身</strong>（正是 SSE 泄露的正面解法，代价 log n 倍伪访问，<strong>用带宽换隐私</strong>）、可验证计算（<a href="21-零知识证明.html">第 21 章</a>）、⚠️保序加密泄露多慎用。🔑⭐<strong>最实用的判断：先问云在你的威胁模型里算什么</strong> —— 绝大多数需求用<strong>密钥管理+访问控制</strong>（第 19 章）就够了，云密码学是给"<strong>连云服务商都不能信</strong>"的场景准备的，先确认你真在那儿再付 10³ 倍代价。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>先确定云服务商在威胁模型中的位置，再决定是否需要在密文上计算。</li><li>看不到明文仍可能从查询、访问模式和数据量中获得信息。</li><li>同态加密、MPC 与其他方案保护不同环节，也付出计算、通信或存储代价。</li></ul><p class="reading-recap-links">相关章节：<a href="14-RSA.html">第 14 章</a> · <a href="19-密钥管理.html">第 19 章</a> · <a href="21-零知识证明.html">第 21 章</a></p></section>
+
 <p><strong>下一节</strong> 👉 <a href="23-后量子密码.html">23-后量子密码.md</a> ⭐</p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -593,4 +592,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

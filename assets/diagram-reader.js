@@ -50,7 +50,7 @@
     if (!svg) return;
     var figureBox = figure.getBoundingClientRect();
     var svgBox = svg.getBoundingClientRect();
-    tools.style.left = Math.max(0, Math.round(svgBox.right - figureBox.left - 38)) + "px";
+    tools.style.left = Math.max(0, Math.round(Math.min(svgBox.right, figureBox.right) - figureBox.left - 44)) + "px";
     tools.style.top = Math.max(0, Math.round(svgBox.top - figureBox.top + 5)) + "px";
   }
 

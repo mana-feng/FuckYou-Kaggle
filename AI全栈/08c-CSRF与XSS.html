@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -400,7 +400,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 ⭐ <strong>所以别依赖默认值，永远显式写 <code>samesite=</code></strong>；要查默认行为，<strong>以你的目标浏览器当前文档为准</strong>。
 ⭐ 上面那三步攻击剧本和三条防线的<strong>原理不会变</strong>——变的只是「不写它的时候浏览器替你选了什么」。</p>
 </blockquote>
-<p>⭐ <strong>还有一层本板块白拿的防护</strong>：你的接口只收 <code>application/json</code>。HTML 表单<strong>发不出</strong>这个 <code>Content-Type</code>（它只有那三种），而用 <code>fetch</code> 设它就会触发预检。实测这个栈的行为——同样一份 <code>{"msg":"hi"}</code> 的 body，<code>Content-Type: application/json</code> 返回 200，换成 <code>text/plain</code>、<code>application/x-www-form-urlencoded</code> 或不带，全是 422，业务函数没执行。⚠️ 但别把它当唯一防线：哪天你为了「兼容」让后端也接受表单编码的 body，这层就无声无息地没了。</p>
+<p>⭐ <strong>还有一层本板块白拿的防护</strong>：你的接口只收 <code>application/json</code>。HTML 表单<strong>发不出</strong>这个 <code>Content-Type</code>（它只有那三种），而用 <code>fetch</code> 设它就会触发预检。</p>
+<p>实测这个栈的行为——同样一份 <code>{"msg":"hi"}</code> 的 body，<code>Content-Type: application/json</code> 返回 200，换成 <code>text/plain</code>、<code>application/x-www-form-urlencoded</code> 或不带，全是 422，业务函数没执行。</p>
+<p>⚠️ 但别把它当唯一防线：哪天你为了「兼容」让后端也接受表单编码的 body，这层就无声无息地没了。</p>
 <hr />
 <h2 id="xss">💉 二、XSS（跨站脚本）：边界内部被塞进了代码</h2>
 <p>⭐ <strong>全称 Cross-Site Scripting</strong>。它和 CORS、CSRF 那两件事的差别是<strong>质变的</strong>：</p>
@@ -668,4 +670,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -417,7 +417,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>幂等在本章只有一句话的分量</strong>：<code>PUT</code> / <code>DELETE</code> <strong>承诺</strong>重发安全，<code>POST</code> 没有。
 <strong>怎么让不幂等的 <code>POST</code> 也能安全重发</strong>（<code>Idempotency-Key</code>、<code>ETag</code>、条件请求）是<a href="03c-幂等与条件请求.html">下一章 03c</a> 整章的事。</p>
 </blockquote>
-<p>💀 <strong>最贵的一条：把会改状态的操作写成 <code>GET</code></strong>（<code>GET /messages/{mid}/delete</code>）。它能跑、测试也过，然后 —— <strong>阅读器和浏览器会预取</strong>（带这个链接的页面被打开一遍，东西就没了）、CDN 会缓存住那个「成功」（下次点击根本没到你的服务器）、重试器会自动重发、⚠️ 参数还会被各层记进日志（和<a href="08-认证会话与多租户.html">第 8 章</a>那行 <code>GET /api/docs?tenant=globex</code> 是同一个家族的问题）。⭐ 反方向（把纯读写成 <code>POST /search</code>）代价温和些：丢掉缓存、丢掉「链接发给同事就能复现」；⚠️ 合法例外只有一个 —— 查询体太大放不进 URL。</p>
+<p>💀 <strong>最贵的一条：把会改状态的操作写成 <code>GET</code></strong>（<code>GET /messages/{mid}/delete</code>）。它能跑、测试也过，然后 —— <strong>阅读器和浏览器会预取</strong>（带这个链接的页面被打开一遍，东西就没了）、CDN 会缓存住那个「成功」（下次点击根本没到你的服务器）、重试器会自动重发、⚠️ 参数还会被各层记进日志（和<a href="08-认证会话与多租户.html">第 8 章</a>那行 <code>GET /api/docs?tenant=globex</code> 是同一个家族的问题）。</p>
+<p>⭐ 反方向（把纯读写成 <code>POST /search</code>）代价温和些：丢掉缓存、丢掉「链接发给同事就能复现」；⚠️ 合法例外只有一个 —— 查询体太大放不进 URL。</p>
 <p>🚦 <strong>AI 应用的一个现实：生成天然不幂等。</strong> <a href="02-一个AI产品的解剖.html">第 2 章</a>四件难事的最后一条就是「同样输入不同输出」—— 同一段 prompt 发两次会得到两条回复、两笔账。⭐ 所以发消息就该是 <code>POST</code>，<strong>用承诺幂等的 <code>PUT</code> 去包装它是在对客户端撒谎</strong>；正确做法是承认它不幂等，再单独加一层保护（03c，也正是 11 章第四节结尾「更稳的是让客户端传 <code>Idempotency-Key</code> 头」指向的地方）。</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># DELETE 的幂等承诺落成代码：删两次都该是 204</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
@@ -922,4 +923,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

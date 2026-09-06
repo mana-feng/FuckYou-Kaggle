@@ -185,9 +185,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -250,14 +250,7 @@ th,td{min-width:5.2em}
 <hr />
 <h2 id="2">② 物品冷启动：最难的那个 ⭐</h2>
 <h3 id="_3">为什么难 —— 死亡螺旋</h3>
-<div class="codehilite"><pre><span></span><code>     新物品没有交互数据
-              ↓
-        模型给它低分
-              ↓
-         得不到曝光
-              ↓
-     永远没有交互数据  ←──┘  💀 无限循环
-</code></pre></div>
+<figure class="dia reading-diagram repair-diagram" id="cold-start-cycle-restored" style="--diagram-width:720px"><svg viewBox="0 0 720 390" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="顺着闭环看：缺数据导致低分，低分导致没有曝光，因而继续缺数据。只重复原流程不会自动解决冷启动。"><title>顺着闭环看：缺数据导致低分，低分导致没有曝光，因而继续缺数据。只重复原流程不会自动解决冷启动。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">冷启动的反馈循环</text><rect x="25" y="90" width="260" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="155.0" y="118" font-size="18" text-anchor="middle" fill="var(--fg)">新物品没有交互</text><rect x="420" y="90" width="260" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="550.0" y="118" font-size="18" text-anchor="middle" fill="var(--fg)">模型给出低分</text><rect x="420" y="280" width="260" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="550.0" y="308" font-size="18" text-anchor="middle" fill="var(--fg)">拿不到曝光</text><rect x="25" y="280" width="260" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="155.0" y="308" font-size="18" text-anchor="middle" fill="var(--fg)">仍然没有新数据</text><line x1="285" y1="114" x2="420" y2="114" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="420.0,114.0 411.0,119.0 411.0,109.0"/><line x1="550" y1="138" x2="550" y2="280" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="550.0,280.0 545.0,271.0 555.0,271.0"/><line x1="420" y1="304" x2="285" y2="304" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="285.0,304.0 294.0,299.0 294.0,309.0"/><line x1="155" y1="280" x2="155" y2="138" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="155.0,138.0 160.0,147.0 150.0,147.0"/></svg><figcaption>顺着闭环看：缺数据导致低分，低分导致没有曝光，因而继续缺数据。只重复原流程不会自动解决冷启动。</figcaption></figure>
 
 <p><strong>这个循环必须靠「外力」打破</strong>——这就是冷启动策略存在的原因。</p>
 <h3 id="_4">解法一：内容特征（最根本）⭐</h3>
@@ -498,7 +491,7 @@ th,td{min-width:5.2em}
 <h2 id="_12">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>冷启动三种：用户（五步阶梯：兜底→画像→选兴趣→bandit→正常）、物品（最难，死亡螺旋，靠内容特征 + ID-free 双塔 + 分级流量池）、系统。E&amp;E 三算法：ε-greedy（盲目）、UCB（给不确定性加奖励）、Thompson Sampling（采样，探索自适应，工业最爱）。留 1-5% 随机流量收集无偏数据 + 打破反馈循环。<!--RECAP-EXT-->⭐ <b>死亡螺旋的闭环长这样</b>：新物品没数据 → 模型不敢推 → 拿不到曝光 → 永远没数据。<b>ID-free 双塔是最优雅的破法</b>：物品塔只吃内容特征、不含 item_id，新物品一发布就有向量；折中写法是 <code>item_emb = ID_emb + content_emb</code>，新品 ID 部分为 0，先靠内容工作。⭐ <b>分级流量池</b>（500 → 5000 → 5 万曝光，逐级看 CTR/完播率晋级或淘汰）是工业界的标配。⚠️ 但这里有个统计陷阱：<b>500 次曝光算出的 CTR 波动极大，绝不能直接拿来判生死</b>，要用置信区间下界或贝叶斯平滑后的估计，否则会误杀好内容。⭐ Thompson 的杀手锏是 <b>先验可以从内容模型灌进去</b>（<code>a=预估CTR×strength, b=(1-预估CTR)×strength</code>），冷启动和 E&amp;E 在这里合成了一件事。⭐ 再往前一步是 <b>Contextual Bandit（LinUCB / Neural Bandit）</b>：问的不再是「这个视频 CTR 多少」，而是「这个视频<b>对科技爱好者</b>的 CTR 多少」。⚠️ 探索强度要分场景：新用户前 20 刷可以 20–30%，成熟用户 5–10%，而<b>贷款、医疗这类高风险决策几乎不该探索</b>——那里探索的代价是真实伤害。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>新用户与新物品缺少行为数据，需要内容、画像或兜底入口。</li><li>探索为未知候选收集反馈，利用把流量给当前更有把握的选择。</li><li>小样本反馈有很大波动，别用一次偶然高低分决定候选命运。</li></ul></section>
 </blockquote>
 <p><strong>下一节</strong> 👉 <a href="14-生成式推荐-2026前沿.html">14-生成式推荐-2026前沿.md</a></p>
 <blockquote>
@@ -530,4 +523,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
+</body></html>

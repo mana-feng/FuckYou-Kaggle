@@ -288,8 +288,7 @@ th,td{min-width:5.2em}
 </details>
 </div>
 <div class="recap"><h2 id="recap">🛑 可以停在这里</h2>
-<p>⚡ <strong>走神救援</strong><br />
-⭐<strong>传统 RAG 分块后每个块都失去了原本的语境</strong>——「该公司当季营收增长 3%」里「该公司」是谁、「当季」是哪季，块里根本没有，于是匹配不上「A 公司 2024 年三季度营收」这样的查询。<br class="prose-beat">⭐<strong>做法：索引前给每个块前面加一段简短定位说明</strong>（「本段出自 A 公司 2024 三季度财报的营收章节」），对「说明+原文」整体做嵌入；关键是这段说明由模型根据整篇文档生成，所以它知道块在全文里的位置。<br class="prose-beat">成本是索引阶段每块多调一次模型，划算因为这是一次性离线成本而检索质量提升是长期的，且配合提示缓存整篇文档只载入一次，实际开销远低于朴素估算。</p></div>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>文档切块会丢失公司、时间和章节等语境，孤立片段因此难以检索。</li><li>索引时补充准确的定位说明，再与原片段一起编码。</li><li>用检索评测检查说明是否有效，同时核算索引与缓存成本。</li></ul></section></div>
 <nav class="pagenav"><a href="index.html"><div class="dir">← 返回</div>📚 资料库目录</a>
 <a class="next" href="../智能体工程教程/index.html"><div class="dir">系统学习 →</div>🎓 智能体工程教程</a></nav>
 </main><script>(function(){
@@ -303,4 +302,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
+</body></html>

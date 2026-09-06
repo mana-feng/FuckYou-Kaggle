@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -579,9 +579,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_7">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>数据并行 = 每卡一份完整模型、吃不同数据、AllReduce 求平均</strong>（<strong>求平均不求和，否则等于学习率放大 N 倍</strong>）；它是<strong>唯一不改变模型结构的并行，所以永远先试它</strong>。⚠️<strong><code>sampler.set_epoch(epoch)</code> 最常被漏——不加等于没 shuffle</strong>。<strong>DDP 的两个关键优化</strong>：①⭐<strong>梯度桶 + 通信计算重叠</strong>（<strong>反向是从后往前的，最后一层梯度最先出来</strong>，攒够 25MB 桶就立刻 AllReduce，藏在后面层的计算后面）②⚠️<strong>梯度累积时必须 <code>model.no_sync()</code></strong>——忘了则<strong>通信量翻 N 倍</strong>而代码看起来完全正常。<strong>Ring AllReduce</strong> = ReduceScatter(N-1步) + AllGather(N-1步)，⭐<strong>每卡通信量 ≈ 2×数据量、和卡数无关</strong>，软肋是<strong>步数 2(N−1) 导致延迟随卡数线性增长</strong>。⭐<strong>分层 AllReduce</strong>：机内 NVLink 先归约 → <strong>只让各机代表跨机通信（数据量降到 1/8）</strong> → 机内广播。<strong>扩展效率下降的原因</strong>：卡多了<strong>计算时间下降但通信量不变 → 通信占比上升</strong>；具体数字：7B 模型通信 28GB/步，<strong>机内 NVLink 0.03 秒 vs 跨机 IB 1.1 秒（差 35 倍）</strong>，计算 0.5 秒时机内可完全重叠而跨机通信成瓶颈 → 该上 ZeRO 或模型并行。⚠️<strong>五个坑</strong>：忘 set_epoch、忘 no_sync、<strong>各卡 batch 不等长导致 AllReduce 挂死</strong>、BatchNorm 各算各的、随机性不一致。💥⭐<strong>"训练突然卡死、无报错、GPU 100%"= 某卡数据少一个 batch 提前退出，其他卡在等永不到来的 AllReduce</strong> → <code>TORCH_NCCL_BLOCKING_WAIT=1</code> 让它超时报错。⭐<strong>数据并行一块显存都没省</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>数据并行让每卡保留模型副本、处理不同数据，再同步梯度；它本身不分摊模型状态。</li><li>检查采样器、梯度累积和各卡迭代次数，避免重复通信或集合操作相互等待。</li><li>通过梯度分桶与计算通信重叠提高效率，再实测增加卡数后的扩展收益。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="11-ZeRO与FSDP.html">11-ZeRO与FSDP.md</a> ⭐</p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -609,4 +608,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

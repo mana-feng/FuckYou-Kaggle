@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -512,7 +512,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>上面解决的是「写」。<strong>读</strong>这一侧也有重复：用户每隔几秒刷一次会话列表，内容一个字没变，你却把整段 JSON 又发了一遍。</p>
 <p>机制三步：① 响应带 <code>ETag: W/"c_42-v7"</code>（这个资源当前这一版的指纹）② 客户端下次带 <code>If-None-Match: W/"c_42-v7"</code> ③ 服务端一比对，一样就返 <strong><code>304 Not Modified</code></strong>，⭐ <strong>不带 body</strong>。</p>
 <p>⚠️ <strong>304 省的是 body，不是往返</strong> —— TLS、鉴权、以及你为了算 ETag 做的那次查库都还在。⭐ 判据：<strong>body 大、变化少</strong>的才值得做（会话列表、文档正文、前端配置），一个二十字节的小 JSON 别折腾。</p>
-<p>⭐ <strong>ETag 怎么算，两条路</strong>：<strong>内容哈希</strong>最准，但 ⚠️ 省不了计算，只省传输；⭐ 版本派生（<code>"{id}-v{version}"</code> 或 <code>"{id}-{updated_at}"</code>）便宜得多 —— <a href="06-关系数据库.html">06 章</a>那张表上本来就有 <code>updated_at</code>。⚠️ 强 ETag（<code>"abc"</code>）承诺字节级完全相同，弱 ETag（<code>W/"abc"</code>）只承诺语义等价，有压缩和中间层改写时强的容易被弄坏，拿不准就用弱的。<code>Last-Modified</code> 精度只到秒，回滚还会让时间和内容对不上 —— 两个都能给就给 ETag。</p>
+<p>⭐ <strong>ETag 怎么算，两条路</strong>：<strong>内容哈希</strong>最准，但 ⚠️ 省不了计算，只省传输；⭐ 版本派生（<code>"{id}-v{version}"</code> 或 <code>"{id}-{updated_at}"</code>）便宜得多 —— <a href="06-关系数据库.html">06 章</a>那张表上本来就有 <code>updated_at</code>。</p>
+<p>⚠️ 强 ETag（<code>"abc"</code>）承诺字节级完全相同，弱 ETag（<code>W/"abc"</code>）只承诺语义等价，有压缩和中间层改写时强的容易被弄坏，拿不准就用弱的。</p>
+<p><code>Last-Modified</code> 精度只到秒，回滚还会让时间和内容对不上 —— 两个都能给就给 ETag。</p>
 <p>⚠️ <strong>两个必须点破的边界</strong>：</p>
 <ul>
 <li>⭐ <strong>它和 <a href="04-调用层.html">04 章</a>的 LLM 结果缓存是两件事</strong>：那一章问「同样的输入要不要<strong>再问一次模型</strong>」（省的是钱，判据是 <code>temperature=0</code>、不带工具、不流式），这一节问「同样的资源要不要再传一次字节」（省的是流量）。一个在调用层、一个在 HTTP 层，两层都做不冲突。</li>
@@ -716,7 +718,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><strong>根问题</strong>：出错时客户端<strong>分不出「没做成」和「做成了但回复没送到」</strong>，只能在丢单和重复之间二选一。服务端的活，是让「重试」不再有代价。</p>
 <p>⭐ 这在本板块是基础题，因为<strong>板块自己就在制造重复</strong>：调用层会自动重发超时和 5xx（上游可能已在生成，重试 = 付两次钱）、前端重发是一次真金白银的新调用、队列里任务被执行两次不是可能是一定。</p>
 <p>三个概念别混：安全 = 不改状态；⭐ <strong>幂等 = 执行 N 次和 1 次服务端状态相同</strong>；⚠️ 响应相同不是幂等的要求。⚠️ 幂等是你实现出来的承诺，不是写了 <code>PUT</code> 就自动有的。</p>
-<p>⭐ <strong><code>Idempotency-Key</code> 由客户端传，强过服务端自己算</strong>——差别在<strong>谁判断「是不是同一次意图」</strong>：服务端按内容算哈希，会把「用户故意再下一单」当成重试吞掉。服务端要答四问：同键不同 body 返 409（不是 422，body 完全合法）；并发同键靠唯一约束抢占，⚠️ <strong>绝不挂着等</strong>；⭐ <strong>必须重放第一次的响应</strong>而不是回一句「做过了」——客户端重试恰恰是因为没收到第一次的响应；存多久由客户端最长重试窗口定，并写进 API 文档。⭐ 主键必须是 <code>(tenant_id, key)</code>，全局唯一就是越权读。</p>
+<p>⭐ <strong><code>Idempotency-Key</code> 由客户端传，强过服务端自己算</strong>——差别在<strong>谁判断「是不是同一次意图」</strong>：服务端按内容算哈希，会把「用户故意再下一单」当成重试吞掉。</p>
+<p>服务端要答四问：同键不同 body 返 409（不是 422，body 完全合法）；并发同键靠唯一约束抢占，⚠️ <strong>绝不挂着等</strong>；⭐ <strong>必须重放第一次的响应</strong>而不是回一句「做过了」——客户端重试恰恰是因为没收到第一次的响应；存多久由客户端最长重试窗口定，并写进 API 文档。</p>
+<p>⭐ 主键必须是 <code>(tenant_id, key)</code>，全局唯一就是越权读。</p>
 <p>⭐ <strong><code>If-Match</code> 就是 HTTP 层的乐观锁</strong>，治丢更新：两个人都拿着同一版本，后存的无声覆盖先存的，<strong>全程零报错</strong>。服务端只要一条带版本条件的 <code>UPDATE</code>，受影响行数为 0 就是冲突，不用任何锁。⭐ <strong>412 是「你提的条件不成立」，409 是「你和服务器当前状态打架」。</strong></p>
 <p>⭐ 这个板块尤其该用乐观锁：写路径是「读 → 调模型几十秒 → 写回」，而攥着行锁调外部服务是明令禁止的。</p>
 <p>⭐ <strong>写进评审清单的一条：会花钱或改状态的 <code>POST</code>，要么带 <code>Idempotency-Key</code>，要么重新设计成 <code>PUT</code>。</strong></p>
@@ -748,4 +752,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

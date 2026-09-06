@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -571,9 +571,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>这一页大部分内容是「需要理解」而不是「需要动手」—— 它解释的是你每天在用的模型为什么是现在这个脾气。</p>
 <p>⚠️ <strong>什么时候看下一页</strong>：你要把模型接进一个<strong>真实产品</strong>，而且那个产品会接触到不受你控制的输入。那时候安全就从「理解」变成「动手」了。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>先分清<strong>两层安全</strong>：<strong>工程安全</strong>是防注入、沙箱、权限、硬边界（<strong>应用系统层面，做应用的人自己做</strong>）；<strong>模型安全</strong>是模型本身的价值观和诚实性（模型提供方层面）。⭐ 做应用先做工程安全。对齐要解决 <strong>HHH 三个目标</strong>：<strong>Helpful 有用、Honest 诚实、Harmless 无害</strong> —— ⚠️ <strong>三者存在根本性张力，调一个另外两个就动</strong>，这就是「对齐税」的来源。你每天都在遇到它：<strong>过度拒绝</strong>（问「怎么杀死一个 Python 进程」被拒）和<strong>过度顺从</strong>（谄媚、幻觉）是同一个三角的两端；不同厂商的模型「性格」不同，就是在这个三角里选了不同的点。<strong>可解释性</strong>这一块最前沿：⭐ 核心难题是<strong>叠加 / 多义性</strong> —— 一个神经元同时代表多个概念（因为要用有限的神经元表示海量特征），<strong>稀疏自编码器</strong>把纠缠的激活<strong>解开成大量单义特征</strong>，从而可解释、可干预。<strong>可扩展监督</strong>要解决的是一个还没解决的开放问题：<strong>当模型在某任务上比人类更强时，人类怎么判断它做得对不对</strong>。最后是<strong>谄媚</strong> —— ⭐ 唯一一个你每天都在被它影响的概念：模型顺着你说，哪怕你是错的。💀 它的来源是 <strong>RLHF 里人类标注者倾向给「顺着自己」的回答打更高分</strong>。三条对抗方法：<strong>①别在提问里暴露倾向</strong>（问「对比 A 和 B 的取舍」而不是「我觉得 A 更好」）<strong>②让它先给结论再看你的意见</strong>（生成-评估分离）<strong>③要求它列出反对理由</strong>。记住：<strong>当模型无条件同意你时，多半不是你对了。</strong></p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>模型对齐与应用工程安全是不同层次，不能相互替代。</li><li>有用、诚实与无害之间可能存在取舍，需要具体任务中的评估。</li><li>对顺从的回答仍要求证据与反例，不把解释流畅当作结论可靠。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="12b-越狱与纵深防御.html">12b-越狱与纵深防御.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -601,4 +600,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -556,9 +556,8 @@ TRPO 这里写的是 $\text{KL}(\pi_{old}\|\pi_\theta)$，第六节 RLHF 那个�
 <hr />
 <h2 id="_11">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>⭐<strong>RL 的要命毛病：你的模型决定了你的训练数据</strong>——参数走错 → 策略变差 → <strong>采到的数据也跟着变差</strong> → 正反馈崩溃（监督学习里数据固定，能纠正）。诉求变成"<strong>每次更新别让新策略离旧策略太远</strong>"。<strong>TRPO</strong> 用 KL 硬约束（有理论保证但要二阶导+共轭梯度，复杂又慢）；⭐<strong>PPO 的答案：别做约束优化，直接把目标裁掉</strong>。<strong>概率比 r = π_new/π_old</strong>（新策略选这动作的概率是旧的几倍）；目标 <strong>L = min(r·A, clip(r,1−ε,1+ε)·A)</strong>，ε=0.2。两种情况：<strong>A&gt;0</strong> 时 r 涨过 1.2 就被裁 → <strong>目标不再增加 → 失去迈大步的动力</strong>；<strong>A&lt;0</strong> 时 r 降过 0.8 同样刹车。<strong>min 让目标成为真实目标的悲观下界</strong>。⭐<strong>PPO 的精妙在于朴素：不是"禁止"迈大步，而是"迈大步没有奖励"</strong>——把二阶优化变成普通梯度下降。⭐<strong>能重复利用同一批数据 3~10 轮</strong>（r 如实反映离采样策略多远，clip 自动刹住）→ 大幅提升 on-policy 样本效率。<strong>六个实现细节比公式更影响成败</strong>：⭐<strong>优势标准化</strong>、梯度裁剪 0.5、<strong>ratio 在 log 空间算</strong>、熵系数、⭐<strong>K_EPOCHS 不能太大</strong>、观测归一化——<strong>有论文专门证明 PPO 的效果很大程度来自这些细节，这也是复现 RL 论文特别难的原因</strong>。<strong>RLHF 里</strong>：状态=已生成的对话、<strong>动作=下一个 token</strong>、奖励=奖励模型给整个回复打分（<strong>只在结尾给</strong>）；⭐<strong>额外的 KL 惩罚 r = RM分数 − β·KL(π‖π_SFT)</strong>，防<strong>奖励攻击</strong>（模型钻奖励模型漏洞）；⭐<strong>注意两层"别走太远"：clip 管"这一步别更新太多"，KL 管"整体别偏离 SFT 太远"</strong>。⚠️<strong>RLHF 学习率 1e-6~1e-5，比常规 RL 小两三个数量级</strong>（在微调一个已经很好的模型）。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>PPO 比较新旧策略的动作概率，通过裁剪目标减弱过大更新的收益。</li><li>裁剪不是绝对限制，仍需监测策略变化并控制重复更新的程度。</li><li>优势处理、梯度裁剪和采样流程同样重要；RLHF 中参考模型的 KL 约束又是另一层限制。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="12-RLHF全流程.html">12-RLHF全流程.md</a> ⭐</p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -586,4 +585,4 @@ TRPO 这里写的是 $\text{KL}(\pi_{old}\|\pi_\theta)$，第六节 RLHF 那个�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

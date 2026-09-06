@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,16 +271,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
- onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script><link rel="stylesheet" href="../assets/guided-lessons.css"><link rel="stylesheet" href="../assets/guided-batch1.css"><script defer src="../assets/guided-batch1.js"></script><link rel="stylesheet" href="../assets/guided-batch2.css"><script defer src="../assets/guided-batch2.js"></script><script defer src="../assets/guided-lessons.js"></script></head><body class="guided-reading">
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
@@ -307,75 +307,87 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 </div>
 </details>
-<h1 id="c">挑战项目 C · 过拟合实验室</h1>
+<div class="lesson-layout" data-lesson="ml-20" data-batch="ml-rest" data-reading-mode="project">
+<div class="lesson-content"><section class="lesson-hero" id="lesson-start" data-route="先知道这页解决什么">
+<div><p class="lesson-eyebrow">20 / 一次完成一个小任务</p><h1>先观察一种故障，<br>再练习把它修回来。</h1><p class="lesson-lead">一次只引入一个问题，保留正常对照，才能知道症状究竟由什么引起。</p></div>
+<aside class="lesson-advice"><strong>一次只处理一个问题</strong><p>可以从入口直接跳到需要的部分。正文、图解、代码和检查点都在下方。</p><a href="#first-pause">先看懂这一点就可以停 →</a></aside></section>
+<div class="lesson-overview-grid">
+<section class="lesson-card" id="first-example" data-route="先看一个具体结果"><p class="lesson-kicker">先抓住一个具体结果</p><h2>一轮实验就够开始</h2><p>先记录正常训练，再只改变一个条件，比较训练与验证曲线；修复后重跑。十个实验是分站任务，不是一次必须完成的清单。</p></section>
+<section class="lesson-card lesson-task-entry" id="reading-choices" data-route="按需要选择下一步"><p class="lesson-kicker">接下来，按需要选一项</p><h2>你现在想看什么？</h2><nav aria-label="本页阅读入口"><a href="#_2">挑选第一种故障 <span aria-hidden="true">→</span></a><a href="#_4">记录六个观察量 <span aria-hidden="true">→</span></a><a href="#_11">检查是否完成闭环 <span aria-hidden="true">→</span></a></nav><p class="lesson-note">这些入口是选择，不是必须按顺序完成的任务。</p></section>
+<section class="lesson-card lesson-pause lesson-wide" id="first-pause" data-route="可以停在这里"><h2>可以停在这里</h2><p>一次只引入一个问题，保留正常对照，才能知道症状究竟由什么引起。</p><a href="#full-lesson">需要更多细节时，继续看完整正文 →</a></section></div>
+<section class="lesson-full" id="full-lesson" aria-label="完整正文">
+<div class="lesson-divider"><span>继续探索</span><p>原有正文、图解和例子都在下方。按需跳转，不必一次读完。</p></div>
+<h2 id="c" class="lesson-original-title">挑战项目 C · 过拟合实验室</h2>
+<!-- guided-lesson: ml-20 -->
+
 <p>⏱ <strong>5–7 天</strong> ｜ 难度 ★★★★★ ｜ 前置：第 5、10、11 章</p>
-<hr />
+<hr>
 <h2 id="_1">🎯 为什么选这个项目</h2>
 <p>前两个挑战是「造东西」，这个是<strong>「造故障」</strong>。</p>
-<section class="visual-block visual-block-flow" aria-label="流程图"><p class="visual-block-title">流程图</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">常规学习：跟着教程做对</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">遇到真实故障时两眼一抹黑</span></div><div class="vb-flow-row"><span class="vb-flow-step">这个项目：故意做错 10 次</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">每种故障的&quot;手感&quot;刻进肌肉记忆</span></div><div class="vb-flow-row"><span class="vb-flow-step">你要亲手制造并诊断：</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 训练 loss 变 NaN</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 loss 完全不动</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 CV 分数 0.95，测试集 0.60</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 换个种子结果差 10%</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 验证 loss 比训练还低</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 GPU 利用率只有 20%</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 共 10 种</span></div><div class="vb-flow-row"><span class="vb-flow-step">然后为每一种写出【症状</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">诊断步骤</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">修复】</span></div></div></section>
+<section class="visual-block visual-block-flow" aria-label="流程图"><p class="visual-block-title">流程图</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">常规学习：跟着教程做对</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">遇到真实故障时两眼一抹黑</span></div><div class="vb-flow-row"><span class="vb-flow-step">这个项目：故意做错 10 次</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">每种故障的"手感"刻进肌肉记忆</span></div><div class="vb-flow-row"><span class="vb-flow-step">你要亲手制造并诊断：</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 训练 loss 变 NaN</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 loss 完全不动</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 CV 分数 0.95，测试集 0.60</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 换个种子结果差 10%</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 验证 loss 比训练还低</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 GPU 利用率只有 20%</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 共 10 种</span></div><div class="vb-flow-row"><span class="vb-flow-step">然后为每一种写出【症状</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">诊断步骤</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">修复】</span></div></div></section>
 <p><strong>为什么这个能力最值钱</strong>：教程教你成功路径，但真实工作 80% 的时间在处理故障。
 <strong>而故障诊断几乎无法从书上学——只能靠见过。这个项目让你在一周内"见过"十次。</strong></p>
-<hr />
+<hr>
 <h2 id="_2">🧪 十个必做实验</h2>
 <p>每个实验的流程都一样：<strong>制造故障 → 观察症状 → 用第 11 章流程诊断 → 修复 → 记录</strong></p>
 <h3 id="a-911">A 组：训练不动（第 9、11 章）</h3>
-<ul>
-<li>
-<p>[ ] <strong>实验 1 · NaN 制造机</strong>
-  把 lr 调到 10，观察 loss 怎么爆。<strong>记录</strong>：第几步开始 NaN？梯度范数怎么变？
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="1"><label class="reading-task-title"><input type="checkbox" data-task-key="1"><span>实验 1 · NaN 制造机</span></label><div class="reading-task-body">
+<p>
+  把 lr 调到 10，观察 loss 怎么爆。<strong class="reading-task-cue">记录：</strong>第几步开始 NaN？梯度范数怎么变？
   再试另外三种造 NaN 的方法：<code>log(0)</code>、除以 0、数据里混 <code>inf</code></p>
-</li>
-<li>
-<p>[ ] <strong>实验 2 · 梯度断流</strong>
+</div></li>
+<li class="reading-task" data-reading-task="2"><label class="reading-task-title"><input type="checkbox" data-task-key="2"><span>实验 2 · 梯度断流</span></label><div class="reading-task-body">
+<p>
   故意在前向里写 <code>x = x.detach()</code>，或用 <code>.item()</code> 参与计算。
-  <strong>观察</strong>：loss 完全不动。<strong>练习</strong>：用打印梯度的方法定位到是哪一层断的</p>
-</li>
-<li>
-<p>[ ] <strong>实验 3 · 忘记 zero_grad</strong>
+  <strong class="reading-task-cue">观察：</strong>loss 完全不动。<strong class="reading-task-cue">练习：</strong>用打印梯度的方法定位到是哪一层断的</p>
+</div></li>
+<li class="reading-task" data-reading-task="3"><label class="reading-task-title"><input type="checkbox" data-task-key="3"><span>实验 3 · 忘记 zero_grad</span></label><div class="reading-task-body">
+<p>
   注释掉 <code>optimizer.zero_grad()</code>，看 loss 曲线变成什么样。<strong>这个症状要能一眼认出来</strong></p>
-</li>
-<li>
-<p>[ ] <strong>实验 4 · 梯度消失</strong>
+</div></li>
+<li class="reading-task" data-reading-task="4"><label class="reading-task-title"><input type="checkbox" data-task-key="4"><span>实验 4 · 梯度消失</span></label><div class="reading-task-body">
+<p>
   搭一个 20 层的全连接网络，全用 Sigmoid 激活。
   <strong>打印每层的梯度范数</strong> → 亲眼看到指数衰减。然后换 ReLU + 残差连接，对比</p>
-</li>
+</div></li>
 </ul>
 <h3 id="b-5">B 组：虚假的高分（第 5 章）⭐ 最重要的一组</h3>
-<ul>
-<li>
-<p>[ ] <strong>实验 5 · 预处理泄漏</strong>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="5"><label class="reading-task-title"><input type="checkbox" data-task-key="5"><span>实验 5 · 预处理泄漏</span></label><div class="reading-task-body">
+<p>
   用全量数据 <code>fit</code> scaler / 做特征选择，对比放进 Pipeline 的版本。
   <strong>在纯噪声数据上做</strong>，差距会触目惊心（第 5 章那个 76.5% vs 47.5%）</p>
-</li>
-<li>
-<p>[ ] <strong>实验 6 · 时间泄漏</strong>
+</div></li>
+<li class="reading-task" data-reading-task="6"><label class="reading-task-title"><input type="checkbox" data-task-key="6"><span>实验 6 · 时间泄漏</span></label><div class="reading-task-body">
+<p>
   造一个带时间戳的数据集，用随机切分 vs 按时间切分，对比 CV 分数和"上线"表现
   （用最后 20% 的时间段模拟线上）</p>
-</li>
-<li>
-<p>[ ] <strong>实验 7 · 分组泄漏</strong>
+</div></li>
+<li class="reading-task" data-reading-task="7"><label class="reading-task-title"><input type="checkbox" data-task-key="7"><span>实验 7 · 分组泄漏</span></label><div class="reading-task-body">
+<p>
   造一个"同一用户多条记录"的数据集，用 KFold vs GroupKFold，看分数差多少</p>
-</li>
-<li>
-<p>[ ] <strong>实验 8 · 目标泄漏</strong>
+</div></li>
+<li class="reading-task" data-reading-task="8"><label class="reading-task-title"><input type="checkbox" data-task-key="8"><span>实验 8 · 目标泄漏</span></label><div class="reading-task-body">
+<p>
   往特征里偷偷加一个标签的衍生物（如 <code>y + 微小噪声</code>），观察：
   CV 分数飙到 0.99，但特征重要性会<strong>暴露</strong>它 —— 练习怎么用重要性排查泄漏</p>
-</li>
+</div></li>
 </ul>
 <h3 id="c-511">C 组：不可信的结论（第 5、11 章）</h3>
-<ul>
-<li>
-<p>[ ] <strong>实验 9 · 种子彩票</strong>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="9"><label class="reading-task-title"><input type="checkbox" data-task-key="9"><span>实验 9 · 种子彩票</span></label><div class="reading-task-body">
+<p>
   同一配置跑 20 个随机种子，画分数直方图。
   <strong>记录极差</strong>。然后思考：你以前相信过的哪些"提升"其实在这个范围内？</p>
-</li>
-<li>
-<p>[ ] <strong>实验 10 · 测试集慢性污染</strong>
+</div></li>
+<li class="reading-task" data-reading-task="10"><label class="reading-task-title"><input type="checkbox" data-task-key="10"><span>实验 10 · 测试集慢性污染</span></label><div class="reading-task-body">
+<p>
   模拟"反复在测试集上调参"：调 30 轮超参，每轮都看测试集分数，选最好的。
   然后拿一个<strong>全新的</strong>测试集验证 —— 看之前那个"最好"掉多少</p>
-</li>
+</div></li>
 </ul>
-<hr />
+<hr>
 <h2 id="_3">🔍 十种故障的「症状指纹」（做之前先别看，做完对照）</h2>
 <details>
 <summary>👀 <b>点开对照（建议自己先做出来再看）</b></summary>
@@ -444,7 +456,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>忘 zero_grad 是"梯度范数随 step 线性增长"</strong>（累加），
 lr 过大是"指数增长"（正反馈）。打印梯度范数就能分开。</p>
 </details>
-<hr />
+<hr>
 <h2 id="_4">🧪 每个实验的统一记录格式（六个数字）</h2>
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">log_step</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
@@ -466,7 +478,7 @@ lr 过大是"指数增长"（正反馈）。打印梯度范数就能分开。</p
 十个故障里有五个能靠它一眼分辨（爆炸、消失、断流、累加、正常）。
 <strong>养成每次训练都记它的习惯。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_5">📓 产出：一份故障诊断手册</h2>
 <p>每个实验记录成这个格式：</p>
 <div class="codehilite"><pre><span></span><code><span class="gu">## 故障 N：&lt;名字&gt;</span>
@@ -492,12 +504,12 @@ lr 过大是"指数增长"（正反馈）。打印梯度范数就能分开。</p
 <h3 id="_9">一眼识别的特征  ⭐ 最有价值的部分</h3>
 <p>「如果下次看到 ___，八成就是这个问题」</p>
 <h2 id="adhd">🧠 ADHD 任务切分</h2>
-<ul>
-<li>[ ] <strong>Day 1</strong>：搭实验脚手架——一个能快速切换“故障开关”的训练脚本，加上统一日志（第 11 章的六个数字）。</li>
-<li>[ ] <strong>Day 2</strong>：A 组实验 1–4（训练不动）。</li>
-<li>[ ] <strong>Day 3–4</strong>：B 组实验 5–8（虚假高分）；把最多时间留给这一组。</li>
-<li>[ ] <strong>Day 5</strong>：C 组实验 9–10（不可信结论）。</li>
-<li>[ ] <strong>Day 6–7</strong>：整理成诊断手册，写下“我以前踩过但没意识到的坑”。</li>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="11"><label class="reading-task-title"><input type="checkbox" data-task-key="11"><span>Day 1</span></label><div class="reading-task-body">：搭实验脚手架——一个能快速切换“故障开关”的训练脚本，加上统一日志（第 11 章的六个数字）。</div></li>
+<li class="reading-task" data-reading-task="12"><label class="reading-task-title"><input type="checkbox" data-task-key="12"><span>Day 2</span></label><div class="reading-task-body">：A 组实验 1–4（训练不动）。</div></li>
+<li class="reading-task" data-reading-task="13"><label class="reading-task-title"><input type="checkbox" data-task-key="13"><span>Day 3–4</span></label><div class="reading-task-body">：B 组实验 5–8（虚假高分）；把最多时间留给这一组。</div></li>
+<li class="reading-task" data-reading-task="14"><label class="reading-task-title"><input type="checkbox" data-task-key="14"><span>Day 5</span></label><div class="reading-task-body">：C 组实验 9–10（不可信结论）。</div></li>
+<li class="reading-task" data-reading-task="15"><label class="reading-task-title"><input type="checkbox" data-task-key="15"><span>Day 6–7</span></label><div class="reading-task-body">：整理成诊断手册，写下“我以前踩过但没意识到的坑”。</div></li>
 </ul>
 <h3 id="_10">脚手架建议</h3>
 <div class="codehilite"><pre><span></span><code><span class="n">BUGS</span> <span class="o">=</span> <span class="p">{</span>  <span class="c1"># 故障开关：一行切换</span>
@@ -515,7 +527,7 @@ lr 过大是"指数增长"（正反馈）。打印梯度范数就能分开。</p
     <span class="k">return</span> <span class="n">log</span>
 </code></pre></div>
 
-<hr />
+<hr>
 <h2 id="_11">🏁 通关标准</h2>
 <ol>
 <li><strong>10 个故障全部复现成功</strong>，每个都有最小复现代码</li>
@@ -530,15 +542,15 @@ lr 过大是"指数增长"（正反馈）。打印梯度范数就能分开。</p
 <li>把手册做成一棵决策树：「loss 是 NaN 吗？→ 是 → 查这三项…」</li>
 <li>加实验 11：<strong>分布漂移</strong> —— 训练集和测试集来自不同分布时会怎样</li>
 </ul>
-<hr />
+<hr>
 <h2 id="_13">💭 做完之后</h2>
 <p>你会发现自己看别人的训练日志时，<strong>能一眼看出不对劲</strong>。
 这个能力没法从教程学，只能靠"见过"。<strong>你用一周换来了通常要一年才能积累的故障直觉。</strong></p>
 <blockquote>
-<p>🔗 这和<a href="../智能体工程教程/19-挑战项目B-评测驱动开发.html">智能体工程挑战项目 B</a>的精神一致：
+<p>🔗 这和<a href="../%E6%99%BA%E8%83%BD%E4%BD%93%E5%B7%A5%E7%A8%8B%E6%95%99%E7%A8%8B/19-%E6%8C%91%E6%88%98%E9%A1%B9%E7%9B%AEB-%E8%AF%84%E6%B5%8B%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91.html">智能体工程挑战项目 B</a>的精神一致：
 <strong>优化的前提是能正确测量；而能正确测量的前提，是知道测量会怎么骗你。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_14">✅ 检查点</h2>
 <ol>
 <li>这个项目和前两个挑战的根本区别是什么？为什么这个能力最值钱？</li>
@@ -563,13 +575,12 @@ lr 过大是"指数增长"（正反馈）。打印梯度范数就能分开。</p
 <li>因为 A 组和 C 组的故障<strong>你能看见</strong>（loss 不动、NaN），而 B 组的故障看起来像成功——分数很高，你会高高兴兴上线，然后崩。看不见的错误才是最贵的。</li>
 </ol>
 </details>
-<hr />
+<hr>
 <h2 id="_15">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>故意造 10 种故障再诊断，把手感刻进肌肉记忆（<strong>前两个挑战是造东西，这个是造故障</strong>——故障诊断无法从书上学，只能靠见过）。A组训练不动(NaN/梯度断流/忘zero_grad/梯度消失)；<strong>B组虚假高分(最重要——因为A、C组的故障你看得见，B组的故障看起来像成功)</strong>：预处理泄漏/时间泄漏/分组泄漏/目标泄漏；C组不可信结论：<strong>种子彩票(跑20个种子得噪声基准，之后落在这个宽度里的"提升"都不算)</strong>、测试集慢性污染。⭐ <strong>grad_norm 是最重要的数字，十个故障有五个靠它一眼分辨</strong>：爆炸=指数增长、<strong>忘zero_grad=线性增长(在累加)</strong>、断流=0或None、消失=前层小几个数量级。<strong>纯噪声数据上跑出&gt;60% 是泄漏的决定性证据</strong>（真实可分性只有50%）；<strong>目标泄漏的痕迹=一个特征占重要性90%以上</strong>。产出=一份诊断手册，核心是每个故障的<strong>「一眼识别特征」</strong>。加分：让别人随机注入故障做盲测。</p>
-</blockquote>
-<hr />
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>这是诊断实验：主动注入故障，再保留现象、原因、修复与复测证据。</li><li>A 组看训练为什么不动：检查损失、梯度与参数更新。</li><li>B 组查虚假高分：分别检查预处理、时间、分组和目标泄漏。</li><li>C 组查结论是否可信：观察种子波动，并保护未参与调参的测试集。</li><li>交付一份能帮助定位故障的诊断手册，再用未知故障做盲测。</li></ul></section>
+
+<hr>
 <h2 id="_16">🎓 三个挑战都做完之后</h2>
 <ul>
 <li><strong>A（手搓框架）</strong>：向下 —— 看清框架黑箱</li>
@@ -577,7 +588,18 @@ lr 过大是"指数增长"（正反馈）。打印梯度范数就能分开。</p
 <li><strong>C（过拟合实验室）</strong>：向内 —— 故障诊断直觉</li>
 </ul>
 <p><strong>这三个 + 第 17 章的三个基础项目，是一份能证明"基本功扎实"的作品集。</strong></p>
-<p>回 <a href="index.html">首页</a> 看进度，或去<a href="../大模型全景导论/16-你该挖哪一块.html">全景导论第 16 章</a>选下一个方向。</p>
+<p>回 <a href="index.html">首页</a> 看进度，或去<a href="../%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%85%A8%E6%99%AF%E5%AF%BC%E8%AE%BA/16-%E4%BD%A0%E8%AF%A5%E6%8C%96%E5%93%AA%E4%B8%80%E5%9D%97.html">全景导论第 16 章</a>选下一个方向。</p>
+</section></div>
+<aside class="lesson-rail" aria-label="本节学习路线">
+<button type="button" class="lesson-route-toggle" aria-expanded="true" aria-controls="lesson-route">本节学习路线 <span aria-hidden="true">⌄</span></button>
+<div id="lesson-route">
+<p class="lesson-position" aria-live="polite">从第一站开始</p>
+<div class="lesson-track" aria-hidden="true"><span></span></div>
+<nav class="lesson-route-links" aria-label="章节跳转"></nav>
+<div class="lesson-rail-note"><strong>一次只读一张卡片</strong><p>先找到眼前的问题。长代码可以展开阅读，正文和图解不会被省略。</p></div>
+<button type="button" class="lesson-save">记住当前位置</button>
+<p class="lesson-save-status" role="status"></p>
+</div></aside></div>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="19-挑战项目B-四种解法对决.html"><div class="dir">← 上一节</div>🥊 挑战B · 四种解法对决</a><a class="next" href="附录A-术语速查卡.html"><div class="dir">下一节 →</div>📖 附录A · 术语速查</a></nav>
@@ -604,4 +626,4 @@ lr 过大是"指数增长"（正反馈）。打印梯度范数就能分开。</p
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

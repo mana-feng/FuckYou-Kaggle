@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -607,7 +607,7 @@ IQR 依然会把 <strong>7.71%</strong> 的正常交易判成"异常"。
 <p><strong>为什么没被发现</strong>（三条，每条都很典型）</p>
 <section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 被删的行只占总样本的 0.31%</span></div><div class="vb-flow-row"><span class="vb-flow-step">—— 任何&quot;删除率&quot;类的粗粒度检查都不会响</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 因为分母是 240 万笔正常交易，而欺诈本来就只有 0.12%</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 离线 AUC 从 0.947</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">0.941（-0.006）</span></div><div class="vb-flow-row"><span class="vb-flow-step">—— 落在周与周之间的正常波动区间内，没人多看一眼</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 AUC 是全局排序指标，对&quot;最右边那一小撮&quot;极不敏感 ⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 灰度期两周，大额欺诈一天只有几十笔</span></div><div class="vb-flow-row"><span class="vb-flow-step">—— 样本量根本不足以在两周内看出差别</span></div></div></section>
 <p><strong>代价</strong></p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>上线 5 周后风控月报才发现异常：</p><p>单笔 ≥5 万元的欺诈漏放金额</p><p>上线前：月均 41 万元</p><p>上线后：月均 306 万元</p><p>累计多损失 ≈ 380 万元</p><p>⭐ 而同期【整体拦截率】只从 2.31% 掉到 2.24%（-0.07 pp）</p><p>—— 在所有告警阈值之内。</p><p>因为大额欺诈只占【笔数】的 1.7%，却占了【金额】的 43%。</p></div></section>
+<section class="comparison-repair" id="comparison-repair-7"><p>上线 5 周后风控月报才发现异常：</p><p>单笔 ≥5 万元的欺诈漏放金额</p><div class="tw"><table><caption>上线前后对照</caption><thead><tr><th scope="col">时点</th><th scope="col">单笔 ≥5 万元的欺诈漏放金额</th></tr></thead><tbody><tr><th scope="row">上线前</th><td>月均 41 万元</td></tr><tr><th scope="row">上线后</th><td>月均 306 万元</td></tr></tbody></table></div><section class="reading-information"><p class="reading-information-title">为什么整体指标没有报警</p><ul><li>累计多损失 ≈ 380 万元</li><li>⭐ 而同期【整体拦截率】只从 2.31% 掉到 2.24%（-0.07 pp）—— 在所有告警阈值之内。</li><li>因为大额欺诈只占【笔数】的 1.7%，却占了【金额】的 43%。</li></ul></section></section>
 <blockquote>
 <p>💀 <strong>这个事故的本质</strong>：
 <strong>口径错配。</strong> 模型按「笔数」优化和监控，损失按「金额」结算。
@@ -818,4 +818,4 @@ IQR 依然会把 <strong>7.71%</strong> 的正常交易判成"异常"。
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

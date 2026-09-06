@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -510,7 +510,7 @@ buffer 没有专属类型 —— <code>nn.Parameter</code> 是个类，「buffer
 </code></pre></div>
 
 <p>实测输出：</p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>--- BadNet ---</p><p>_modules : []</p><p>参数个数 : 0</p><p>state_dict key : []</p><p>forward 能跑吗 : torch.Size([1, 2])</p><p>--- GoodNet ---</p><p>_modules : [&#x27;layers&#x27;]</p><p>参数个数 : 6</p><p>state_dict key : [&#x27;layers.0.weight&#x27;, &#x27;layers.0.bias&#x27;, &#x27;layers.1.weight&#x27;, &#x27;layers.1.bias&#x27;, &#x27;layers.2.weight&#x27;, &#x27;layers.2.bias&#x27;]</p><p>forward 能跑吗 : torch.Size([1, 2])</p></div></section>
+<section class="comparison-repair" id="comparison-repair-40"><div class="tw"><table><caption>能前向运行，不等于参数已被注册</caption><thead><tr><th scope="col">检查项</th><th scope="col">BadNet</th><th scope="col">GoodNet</th></tr></thead><tbody><tr><th scope="row">_modules</th><td>[]</td><td>[&#x27;layers&#x27;]</td></tr><tr><th scope="row">参数个数</th><td>0</td><td>6</td></tr><tr><th scope="row">state_dict key</th><td>[]</td><td>[&#x27;layers.0.weight&#x27;,<br>&#x27;layers.0.bias&#x27;,<br>&#x27;layers.1.weight&#x27;,<br>&#x27;layers.1.bias&#x27;,<br>&#x27;layers.2.weight&#x27;,<br>&#x27;layers.2.bias&#x27;]</td></tr><tr><th scope="row">forward 能跑吗</th><td>torch.Size([1, 2])</td><td>torch.Size([1, 2])</td></tr></tbody></table></div></section>
 <p>⭐ <strong>最要命的是最后一行：<code>forward</code> 照跑，形状一模一样。</strong>
 一个 <code>list</code> 不是 <code>nn.Module</code> 也不是 <code>nn.Parameter</code>，海关把它整个丢进 <code>__dict__</code>，
 于是 <code>_modules</code> 是空的、参数 0 个、<code>state_dict</code> 是空字典 —— 而 Python 的 for 循环当然还是能遍历它。</p>
@@ -802,8 +802,8 @@ buffer 没有专属类型 —— <code>nn.Parameter</code> 是个类，「buffer
 <p>实测输出：</p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>改之前: torch.float32 torch.float32 torch.float32</p><p>double() 之后:</p><p>w (Parameter): torch.float64</p><p>running (buffer) : torch.float64</p><p>plain (普通属性) : torch.float32 ⚠️ 没跟着变</p></div></section>
 <p>⭐ <strong>同一个机制，换成 <code>device</code> 就是那条最著名的报错。</strong>
-<code>.to("cuda")</code> 只搬 <code>_parameters</code> 和 <code>_buffers</code>；<code>self.plain</code> 留在 CPU 上，前向撞上 <code>Expected all tensors to be on the same device</code> —— <strong>而模型本身明明已经 <code>.to("cuda")</code> 过了</strong>，所以你会先怀疑数据、怀疑 DataLoader，很难想到怀疑一个属性。
-（🗓️ 未实跑 —— 需要 GPU。本机 CUDA 不可用，无法给出这条报错的原文。下面用 <code>dtype</code> 复现同一个机制。）</p>
+<code>.to("cuda")</code> 只搬 <code>_parameters</code> 和 <code>_buffers</code>；<code>self.plain</code> 留在 CPU 上，前向撞上 <code>Expected all tensors to be on the same device</code> —— <strong>而模型本身明明已经 <code>.to("cuda")</code> 过了</strong>，所以你会先怀疑数据、怀疑 DataLoader，很难想到怀疑一个属性。</p>
+<p>（🗓️ 未实跑 —— 需要 GPU。本机 CUDA 不可用，无法给出这条报错的原文。下面用 <code>dtype</code> 复现同一个机制。）</p>
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
@@ -1144,7 +1144,11 @@ RuntimeError: expected m1 and m2 to have the same dtype, but got: double != floa
 <blockquote>
 <p>⭐ <strong><code>nn.Module</code> 认参数只靠 <code>__setattr__</code> 的一次类型检查</strong>：<code>nn.Parameter</code> 进 <code>_parameters</code>、<code>nn.Module</code> 进 <code>_modules</code>、<strong>其余一律掉进普通的 <code>__dict__</code></strong>。⭐ <strong>buffer 是唯一没有专属类型的</strong>，所以只能靠 <code>register_buffer</code> 显式登记。</p>
 <p>这三个表决定了三件事：优化器<strong>看不看得见</strong>、<code>state_dict()</code> <strong>存不存</strong>、<code>.to()</code> <strong>搬不搬得动</strong>。这就是「为什么我的参数没被优化器更新」的全部答案。</p>
-<p>💀 <strong>最贵的形态是把子模块装进 Python list</strong>：参数 0 个、<code>state_dict</code> 是空的，⭐ <strong>而 <code>forward</code> 照跑、输出形状和正确版本一模一样</strong>。全错会报「optimizer got an empty parameter list」——⭐ <strong>报错反而是好事</strong>；<strong>半错才致命</strong>：优化器只管住一部分，训练几十步后一部分变了另一部分一位没动，⚠️ 而且那些没被注册的参数<strong>梯度并不是 <code>None</code></strong>（autograd 只看图不看注册表）——<strong>模型的一多半既没在学也没被存过，没有一条日志会告诉你。</strong></p>
+<p>💀 <strong>最贵的形态是把子模块装进 Python list</strong>：参数 0 个、<code>state_dict</code> 是空的，⭐ <strong>而 <code>forward</code> 照跑、输出形状和正确版本一模一样</strong>。</p>
+</blockquote>
+<p>全错会报「optimizer got an empty parameter list」——⭐ <strong>报错反而是好事</strong>；</p>
+<p><strong>半错才致命</strong>：优化器只管住一部分，训练几十步后一部分变了另一部分一位没动，⚠️ 而且那些没被注册的参数<strong>梯度并不是 <code>None</code></strong>（autograd 只看图不看注册表）——<strong>模型的一多半既没在学也没被存过，没有一条日志会告诉你。</strong></p>
+<blockquote>
 <p>修法是 <code>nn.ModuleList</code> / <code>ModuleDict</code> / <code>ParameterList</code> / <code>register_buffer</code>。⚠️ <code>ModuleList</code> 没有 <code>forward</code>，要自己写循环。</p>
 <p>⭐ <strong>权重共享时两个遍历给的答案不同</strong>：<code>named_parameters()</code> 去重（让优化器不重复更新），<code>state_dict()</code> 不去重（于是 checkpoint 存了两份，而手工改 key 只改一半会<strong>静默断掉共享</strong>）。</p>
 <p>⚠️ <code>.to()</code> 只搬那两个表里的东西，普通属性它根本不看——换 dtype 时矩阵乘法会报错，但<strong>加法有类型提升，会一声不吭跑完</strong>。</p>
@@ -1176,4 +1180,4 @@ RuntimeError: expected m1 and m2 to have the same dtype, but got: double != floa
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,22 +271,22 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
   <span class="title">附录B · 代码与检查单</span>
   <span class="prevnext"><a href="附录A-术语速查卡.html">←</a>
-  </span>
+  <a href="附录C-全链路故障排查手册.html">→</a></span>
   <button class="js-done-btn">☐ 打卡</button>
   <button id="themeToggle" title="切换深浅色">🌗</button>
 </div></header>
@@ -505,7 +505,7 @@ pip<span class="w"> </span>install<span class="w"> </span>pytest<span class="w">
 
 <hr />
 <h2 id="_2">📋 上生产检查单</h2>
-<section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>【架构】</p><p>☐ 做过降级测试，有数据证明当前复杂度必要（第6节）</p><p>☐ 能说清为什么用工作流/Agent、为什么用这种多Agent模式</p><p>☐ 多Agent的15倍token溢价对得起它的价值</p><p>【上下文】</p><p>☐ 系统提示词砍到最小，删掉了为旧模型写的补丁</p><p>☐ 长任务有压缩机制，且摘要保留关键事实</p><p>☐ 工具超过20个上了Tool Search</p><p>☐ 大量阅读类任务派给了子Agent</p><p>【工具】</p><p>☐ 工具按意图分组，不是API的一比一镜像</p><p>☐ 返回里没有模型用不上的字段</p><p>☐ 错误信息是可行动的（告诉模型怎么改）</p><p>☐ 危险操作做了防呆</p><p>【验证】</p><p>☐ Agent有能自己跑的验证（测试/编译/lint）</p><p>☐ 验证者不是干活的那个Agent</p><p>☐ 主观标准转成了可回答的rubric条目</p><p>【评测】</p><p>☐ 至少20个来自真实失败的任务，每个有参考解</p><p>☐ 评分器评产出不评路径</p><p>☐ 读过转录，人工核对过评分器</p><p>☐ 明确该看pass@k还是pass^k</p><p>☐ 对小于3个百分点的差距保持怀疑</p><p>【安全】</p><p>☐ 做过威胁建模：Agent被完全控制最坏会怎样</p><p>☐ 至少一道环境层硬边界（代码里的if，不是提示词）</p><p>☐ 高危动作权限分离（能写≠能部署）</p><p>☐ 只在高危动作要确认，避免审批疲劳</p><p>☐ 外部内容当不可信数据处理</p><p>【运维】</p><p>☐ 有max_steps/超时/预算三道护栏，且优雅退出</p><p>☐ 状态可从出错点恢复，不用从头重跑</p><p>☐ 有结构化trace能回放决策路径</p><p>☐ 部署不打断运行中的Agent（彩虹部署）</p><p>【长期】</p><p>☐ 日历上有&quot;模型升级后重审harness&quot;的提醒</p><p>☐ 定期问：我可以停止做什么？</p></div></section>
+<section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>【架构】</p><p>☐ 做过降级测试，有数据证明当前复杂度必要（第6节）</p><p>☐ 能说清为什么用工作流/Agent、为什么用这种多Agent模式</p><p>☐ 多Agent的15倍token溢价对得起它的价值</p><p>【上下文】</p><p>☐ 系统提示词砍到最小，删掉了为旧模型写的补丁</p><p>☐ 长任务有压缩机制，且摘要保留关键事实</p><p>☐ 工具超过20个上了Tool Search</p><p>☐ 大量阅读类任务派给了子Agent</p><p>【工具】</p><p>☐ 工具按意图分组，不是API的一比一镜像</p><p>☐ 返回里没有模型用不上的字段</p><p>☐ 错误信息是可行动的（告诉模型怎么改）</p><p>☐ 危险操作做了防呆</p><p>【验证】</p><p>☐ Agent有能自己跑的验证（测试/编译/lint）</p><p>☐ 验证者不是干活的那个Agent</p><p>☐ 主观标准转成了可回答的rubric条目</p><p>【评测】</p><p>☐ 至少20个来自真实失败的任务，每个有参考解</p><p>☐ 评分器评产出不评路径，同时验证权限、审批、预算与副作用约束</p><p>☐ 读过转录，人工核对过评分器</p><p>☐ 明确该看pass@k还是pass^k</p><p>☐ 对小于3个百分点的差距保持怀疑</p><p>【安全】</p><p>☐ 做过威胁建模：Agent被完全控制最坏会怎样</p><p>☐ 至少一道环境层硬边界（代码里的if，不是提示词）</p><p>☐ 高危动作权限分离（能写≠能部署）</p><p>☐ 只在高危动作要确认，避免审批疲劳</p><p>☐ 外部内容当不可信数据处理</p><p>【运维】</p><p>☐ 有max_steps/超时/预算三道护栏，且优雅退出</p><p>☐ 状态可从出错点恢复，不用从头重跑</p><p>☐ 有结构化trace能回放决策路径</p><p>☐ 部署不打断运行中的Agent（彩虹部署）</p><p>【长期】</p><p>☐ 日历上有&quot;模型升级后重审harness&quot;的提醒</p><p>☐ 定期问：我可以停止做什么？</p></div></section>
 <hr />
 <h2 id="_3">🐛 常见问题速查</h2>
 <div class="tw"><table>
@@ -583,7 +583,7 @@ pip<span class="w"> </span>install<span class="w"> </span>pytest<span class="w">
 <p>👉 <a href="index.html">回到首页</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
-<nav class="pagenav"><a href="附录A-术语速查卡.html"><div class="dir">← 上一节</div>📖 附录A · 术语速查</a><a class="next" href="index.html"><div class="dir">完成 →</div>🏠 回首页看进度</a></nav>
+<nav class="pagenav"><a href="附录A-术语速查卡.html"><div class="dir">← 上一节</div>📖 附录A · 术语速查</a><a class="next" href="附录C-全链路故障排查手册.html"><div class="dir">下一节 →</div>🧰 附录C · 全链路排查</a></nav>
 </main>
 <script>(function(){
   var KEY="agent-progress", FILE="\u9644\u5f55B-\u4ee3\u7801\u4e0e\u68c0\u67e5\u5355.md";
@@ -607,4 +607,4 @@ pip<span class="w"> </span>install<span class="w"> </span>pytest<span class="w">
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

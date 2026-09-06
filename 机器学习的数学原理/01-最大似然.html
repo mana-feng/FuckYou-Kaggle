@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -388,7 +388,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="mle">⭐ 三、高光时刻：最小二乘 = 高斯噪声下的 MLE</h2>
 <p><strong>这是本章最重要的推导。</strong> 你一直在用平方误差，但为什么是平方？</p>
 <h3 id="_5">建模假设</h3>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">真实世界：y = w·x + ε</span></div><div class="vb-tree-row"><span class="vb-tree-node">↑ 噪声，假设 ε ~ N(0, σ²)</span></div><div class="vb-tree-row"><span class="vb-tree-node">换句话说：给定 x，y 的分布是以 w·x 为中心的钟形曲线</span></div><div class="vb-tree-row"><span class="vb-tree-node">y | x ~ N(w·x, σ²)</span></div><div class="vb-tree-row"><span class="vb-tree-node">y 真实直线 w·x</span></div><div class="vb-tree-row"><span class="vb-tree-node">▔</span><span class="vb-tree-note">每个 x 处，y 在这条线上下呈钟形分布</span></div><div class="vb-tree-row"><span class="vb-tree-node">_</span></div><div class="vb-tree-row"><span class="vb-tree-node">x</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-theorymd-01-1" style="--diagram-width:720px"><svg viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="横轴是输入 x，纵轴是输出 y。每个固定 x 上，噪声让 y 围绕 w·x 呈钟形分布；小曲线向右鼓出的宽度表示密度，不是另一条回归线。"><title>横轴是输入 x，纵轴是输出 y。每个固定 x 上，噪声让 y 围绕 w·x 呈钟形分布；小曲线向右鼓出的宽度表示密度，不是另一条回归线。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">固定 x，观察 y 在预测值两侧的波动</text><line x1="70" y1="300" x2="660" y2="300" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="660.0,300.0 651.0,305.0 651.0,295.0"/><line x1="70" y1="300" x2="70" y2="60" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="70.0,60.0 75.0,69.0 65.0,69.0"/><line x1="95" y1="270" x2="590" y2="85" stroke="var(--muted)" stroke-width="2"/><text x="455" y="45" font-size="18" text-anchor="start" fill="var(--fg)">中心 y = w·x</text><polyline points="212.64,167.02 213.37,169.42 214.26,171.82 215.34,174.22 216.62,176.62 218.12,179.02 219.87,181.42 221.87,183.82 224.14,186.22 226.68,188.62 229.48,191.02 232.52,193.42 235.77,195.82 239.21,198.22 242.76,200.62 246.39,203.02 250.02,205.42 253.57,207.82 256.96,210.22 260.12,212.62 262.95,215.02 265.39,217.42 267.36,219.82 268.81,222.22 269.70,224.62 270.00,227.02 269.70,229.42 268.81,231.82 267.36,234.22 265.39,236.62 262.95,239.02 260.12,241.42 256.96,243.82 253.57,246.22 250.02,248.62 246.39,251.02 242.76,253.42 239.21,255.82 235.77,258.22 232.52,260.62 229.48,263.02 226.68,265.42 224.14,267.82 221.87,270.22 219.87,272.62 218.12,275.02 216.62,277.42 215.34,279.82 214.26,282.22 213.37,284.62 212.64,287.02" fill="none" stroke="var(--accent)" stroke-width="3"/><line x1="210" y1="162.02020202020202" x2="210" y2="292.020202020202" stroke="var(--muted)" stroke-width="2" stroke-dasharray="5 5"/><polyline points="362.64,110.96 363.37,113.36 364.26,115.76 365.34,118.16 366.62,120.56 368.12,122.96 369.87,125.36 371.87,127.76 374.14,130.16 376.68,132.56 379.48,134.96 382.52,137.36 385.77,139.76 389.21,142.16 392.76,144.56 396.39,146.96 400.02,149.36 403.57,151.76 406.96,154.16 410.12,156.56 412.95,158.96 415.39,161.36 417.36,163.76 418.81,166.16 419.70,168.56 420.00,170.96 419.70,173.36 418.81,175.76 417.36,178.16 415.39,180.56 412.95,182.96 410.12,185.36 406.96,187.76 403.57,190.16 400.02,192.56 396.39,194.96 392.76,197.36 389.21,199.76 385.77,202.16 382.52,204.56 379.48,206.96 376.68,209.36 374.14,211.76 371.87,214.16 369.87,216.56 368.12,218.96 366.62,221.36 365.34,223.76 364.26,226.16 363.37,228.56 362.64,230.96" fill="none" stroke="var(--accent)" stroke-width="3"/><line x1="360" y1="105.95959595959596" x2="360" y2="235.95959595959596" stroke="var(--muted)" stroke-width="2" stroke-dasharray="5 5"/><polyline points="512.64,54.90 513.37,57.30 514.26,59.70 515.34,62.10 516.62,64.50 518.12,66.90 519.87,69.30 521.87,71.70 524.14,74.10 526.68,76.50 529.48,78.90 532.52,81.30 535.77,83.70 539.21,86.10 542.76,88.50 546.39,90.90 550.02,93.30 553.57,95.70 556.96,98.10 560.12,100.50 562.95,102.90 565.39,105.30 567.36,107.70 568.81,110.10 569.70,112.50 570.00,114.90 569.70,117.30 568.81,119.70 567.36,122.10 565.39,124.50 562.95,126.90 560.12,129.30 556.96,131.70 553.57,134.10 550.02,136.50 546.39,138.90 542.76,141.30 539.21,143.70 535.77,146.10 532.52,148.50 529.48,150.90 526.68,153.30 524.14,155.70 521.87,158.10 519.87,160.50 518.12,162.90 516.62,165.30 515.34,167.70 514.26,170.10 513.37,172.50 512.64,174.90" fill="none" stroke="var(--accent)" stroke-width="3"/><line x1="510" y1="49.898989898989896" x2="510" y2="179.8989898989899" stroke="var(--muted)" stroke-width="2" stroke-dasharray="5 5"/><text x="633" y="330" font-size="18" text-anchor="start" fill="var(--fg)">x</text><text x="40" y="64" font-size="18" text-anchor="start" fill="var(--fg)">y</text></svg><figcaption>横轴是输入 x，纵轴是输出 y。每个固定 x 上，噪声让 y 围绕 w·x 呈钟形分布；小曲线向右鼓出的宽度表示密度，不是另一条回归线。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>真实世界：y = w·x + ε</span></li><li><span>↑ 噪声，假设 ε ~ N(0, σ²)</span></li><li><span>换句话说：给定 x，y 的分布是以 w·x 为中心的钟形曲线</span></li><li><span>y | x ~ N(w·x, σ²)</span></li><li><span>y 真实直线 w·x</span></li><li><span>每个 x 处，y 在这条线上下呈钟形分布</span></li></ul></section>
 <details>
 <summary>📐 <b>推导（想看再点，不看不影响）</b></summary>
 <p>单个样本的概率密度：</p>
@@ -586,9 +587,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_11">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>MLE = 挑一组参数，让「你看到的这批数据」发生的概率最大——不问真相，只问哪个假设最能解释观测。抛 10 次得 8 次正面：p=0.5 时这批数据只有 <strong>4.4%</strong> 的概率出现，<strong>p=0.8 时最大，30.2%</strong>。⚠️<strong>似然 p(数据|参数) 和后验 p(参数|数据) 方向相反</strong>，而且<strong>似然不是概率分布</strong>（对 θ 积分不等于 1）——「似然 30.2%」<strong>不能</strong>读成「p 是 0.8 的概率有 30.2%」。取对数三个理由：<strong>防下溢</strong>（1000 个 0.5 相乘 = 10⁻³⁰¹，浮点数直接变 0）、连乘变连加、log 单调不改最优解。⭐<strong>最大化对数似然 = 最小化负对数似然 = 你天天在用的损失函数</strong>。两条核心结论：<strong>最小二乘 = 假设噪声服从高斯</strong>（y|x ~ N(w·x, σ²)，高斯密度的指数上就是平方项），<strong>交叉熵 = 假设服从伯努利</strong>（似然 p^y·(1−p)^(1−y) 取对数求和取负）。所以<strong>选损失函数 = 选你对噪声的信念</strong>。⚠️有离群值时平方误差会崩：高斯尾巴薄，认为极端值「几乎不可能出现」，模型只好扭曲整条线迁就它——<strong>一个离群点就能把最小二乘的斜率拽歪，Huber 却基本不动</strong>；换尾巴更厚的 <strong>L1（拉普拉斯）或 Huber</strong>。⚠️另一个高频错误是<strong>用 MSE 预测点击数</strong>——计数是非负整数且方差随均值增长，高斯假设不对，<strong>该用泊松损失</strong>。拿到新任务先问：<strong>输出是什么类型的随机变量</strong>，答案直接给出损失。MLE 三个毛病：①数据少时过拟合（抛 3 次全正就说 p=1.0）②<strong>只给点估计、不带不确定性</strong>（抛 10 次得 0.8 和抛 10000 次得 0.8，输出一样）③对模型设定错误敏感，只保证「在你假设的分布族里最好」，<strong>并不检查假设本身对不对</strong>。⭐前两个毛病的解药是同一个——<strong>加入先验，就是下一章的 MAP</strong>；第三个靠模型检验。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>似然比较哪些参数更能解释已观测的数据，不是参数自身的后验概率。</li><li>取对数把乘积变成求和；负对数似然把概率模型连接到损失函数。</li><li>损失对应分布假设，先检查输出类型、噪声和离群点，再解释拟合结果。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="01b-KL散度.html">01b-KL散度.md</a></p>
 <blockquote>
 <p>去那里的理由：本章说"交叉熵是伯努利分布下的 MLE"，但没说<strong>为什么"交叉熵"这个信息论的量会出现在统计问题里</strong>。
@@ -621,4 +621,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

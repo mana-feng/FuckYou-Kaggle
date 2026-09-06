@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,16 +271,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
- onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script><link rel="stylesheet" href="../assets/guided-lessons.css"><link rel="stylesheet" href="../assets/guided-batch1.css"><script defer src="../assets/guided-batch1.js"></script><link rel="stylesheet" href="../assets/guided-batch2.css"><script defer src="../assets/guided-batch2.js"></script><script defer src="../assets/guided-lessons.js"></script></head><body class="guided-reading">
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
@@ -304,7 +304,19 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 </div>
 </details>
-<h1 id="09">09 · 优化器与学习率</h1>
+<div class="lesson-layout" data-lesson="ml-09" data-batch="ml-rest" data-reading-mode="concept">
+<div class="lesson-content"><section class="lesson-hero" id="lesson-start" data-route="先知道这页解决什么">
+<div><p class="lesson-eyebrow">09 / 先看直觉，再看细节</p><h1>梯度给方向，<br>优化器决定怎么走。</h1><p class="lesson-lead">先理解学习率控制步长，再看 Adam 如何利用历史梯度调整更新。</p></div>
+<aside class="lesson-advice"><strong>一次只处理一个问题</strong><p>可以从入口直接跳到需要的部分。正文、图解、代码和检查点都在下方。</p><a href="#first-pause">先看懂这一点就可以停 →</a></aside></section>
+<div class="lesson-overview-grid">
+<section class="lesson-card" id="first-example" data-route="先看一个具体结果"><p class="lesson-kicker">先抓住一个具体结果</p><h2>一次更新，手算就够</h2><p>参数是 1，梯度是 2，学习率是 0.1。普通梯度下降这次减去 0.2，新参数是 0.8。步子过大仍可能把损失推高。</p><h3>普通梯度下降的一步</h3><div class="formula-box" data-formula-name="普通梯度下降的一步">$$w_{\mathrm{new}}=w-\eta g_t$$</div></section>
+<section class="lesson-card lesson-task-entry" id="reading-choices" data-route="按需要选择下一步"><p class="lesson-kicker">接下来，按需要选一项</p><h2>你现在想看什么？</h2><nav aria-label="本页阅读入口"><a href="#_3">区分动量与自适应步长 <span aria-hidden="true">→</span></a><a href="#_4">先理解学习率 <span aria-hidden="true">→</span></a><a href="#lr-range-test">用实验找范围 <span aria-hidden="true">→</span></a></nav><p class="lesson-note">这些入口是选择，不是必须按顺序完成的任务。</p></section>
+<section class="lesson-card lesson-pause lesson-wide" id="first-pause" data-route="可以停在这里"><h2>可以停在这里</h2><p>先理解学习率控制步长，再看 Adam 如何利用历史梯度调整更新。</p><a href="#full-lesson">需要更多细节时，继续看完整正文 →</a></section></div>
+<section class="lesson-full" id="full-lesson" aria-label="完整正文">
+<div class="lesson-divider"><span>继续探索</span><p>原有正文、图解和例子都在下方。按需跳转，不必一次读完。</p></div>
+<h2 id="09" class="lesson-original-title">09 · 优化器与学习率</h2>
+<!-- guided-lesson: ml-09 -->
+
 <p>⏱ <strong>34 分钟</strong> ｜ ⭐ <strong>核心</strong></p>
 <hr />
 <h2 id="_1">🎯 一句话</h2>
@@ -350,23 +362,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <blockquote>
-<p>💡 <strong>经验法则</strong>：batch size 翻倍时，学习率也大致翻倍（线性缩放规则）。</p>
+<p>💡 <strong>一种实验起点</strong>：部分大批量 SGD 配置会让 batch size 与学习率同比例增加（线性缩放规则）。它不是所有模型、优化器都适用的定律，改完仍要检查验证表现和训练稳定性。</p>
 </blockquote>
 <details>
 <summary>📐 <b>为什么是"线性"缩放（想看再点）</b></summary>
 <p>batch 里的梯度是 B 个样本梯度的平均。假设各样本梯度独立、方差为 σ²：</p>
 <p>$$\text{Var}(\bar g) = \frac{\sigma^2}{B}$$</p>
-<section aria-label="信息关系" class="visual-block visual-block-flow">
-<p class="visual-block-title">信息关系</p>
-<div class="vb-flow">
-<div class="vb-flow-row"><span class="vb-flow-step">batch 翻倍</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">梯度噪声的标准差降到 1/√2</span></div>
-<div class="vb-flow-row"><span class="vb-flow-step">但更新的&quot;有效随机游走步长&quot;是 lr·√Var</span></div>
-<div class="vb-flow-row"><span class="vb-flow-step">想保持同样的探索强度，lr 要相应放大</span></div>
-</div>
-</section>
-<p>⚠️ <strong>线性缩放在 batch 很大时会失效</strong>（通常 &gt;8k）——
-这时必须配 warmup，否则前期大步走会直接把模型带崩。
-<strong>"大 batch 训练必须 warmup"的根源就在这。</strong></p>
+<p><strong>先分清两个结论</strong>：batch 翻倍，梯度噪声的标准差变为原来的 1/√2；如果只想保持 lr × 标准差不变，推出来的是学习率乘 √2，<strong>不是乘 2</strong>。</p>
+<p>线性缩放的另一种近似来自 <strong>“多次小批量更新”和“一次大批量更新”</strong>：假设这几步之间梯度变化很小，把 k 个小批量合成一个大批量时，学习率乘 k，才近似相当于原来的 k 次更新。这一假设在训练初期尤其容易失效。</p>
+<p>Warmup 可以缓解初期突然使用大学习率的问题，但不能保证任意大 batch 都有效，也没有通用的“8k 失效线”。原始 <a href="https://arxiv.org/abs/1706.02677">大批量 SGD 实验</a> 的 8192 是特定任务、模型与训练方案下的结果。</p>
 </details>
 <p>💡 <strong>小 batch 的"噪声"为什么反而有益</strong>：</p>
 <section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">小 batch 的梯度是【带噪声的】真实梯度</span></div><div class="vb-flow-row"><span class="vb-flow-step">更新方向随机抖动</span></div><div class="vb-flow-row"><span class="vb-flow-step">抖得出尖锐的局部极小值，抖不出平坦的</span></div><div class="vb-flow-row"><span class="vb-flow-step">最终停在【平坦极小值】里</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 而平坦极小值泛化更好（参数微小扰动不改变结果）</span></div><div class="vb-flow-row"><span class="vb-flow-step">这就是&quot;SGD 的隐式正则化&quot;</span></div></div></section>
@@ -439,7 +443,19 @@ AdamW 把权重衰减<strong>解耦</strong>出来，是现在的正确做法。
 </blockquote>
 <hr />
 <h2 id="_4">🎚️ 三、学习率：最重要的旋钮</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">lr 太大 lr 合适 lr 太小</span></div><div class="vb-tree-row"><span class="vb-tree-node">loss loss loss</span></div><div class="vb-tree-row"><span class="vb-tree-node">___</span></div><div class="vb-tree-row"><span class="vb-tree-node">震荡/NaN ___ ___ 慢</span></div><div class="vb-tree-row"><span class="vb-tree-node">__ __</span></div></div></section>
+<figure class="dia" id="lr-size-curves" data-curve="lr-size">
+<svg viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="学习率大小对照示意：横轴是训练步数，纵轴是训练损失。过大的学习率可能震荡，过小则下降缓慢，合适时较快下降并趋于稳定。">
+  <path d="M55 40 V250 H452" fill="none" stroke="var(--fg)" stroke-width="2"/>
+  <polygon points="55,34 50,44 60,44" fill="var(--fg)"/>
+  <polygon points="458,250 448,245 448,255" fill="var(--fg)"/>
+  <g fill="var(--muted)" font-size="18"><text x="16" y="24">loss</text><text x="335" y="285">训练步数</text></g>
+  <path d="M58 82 L91 117 L123 61 L155 130 L189 56 L223 133 L256 49 L289 119 L323 42 L351 80" fill="none" stroke="var(--accent)" stroke-width="3"/>
+  <path d="M58 82 C139 92 235 121 424 145" fill="none" stroke="var(--muted)" stroke-width="3" stroke-dasharray="9 6"/>
+  <path d="M58 82 C103 124 143 204 230 215 S350 223 428 224" fill="none" stroke="var(--link)" stroke-width="3"/>
+  <g fill="var(--fg)" font-size="18"><text x="361" y="77">太大：抖</text><text x="310" y="121">太小：慢</text><text x="287" y="205">合适：较快下降</text></g>
+</svg>
+<figcaption>示意图，不是实测结果。先比较同样训练步数下的下降速度与波动：实线标出“抖”和“较快下降”，虚线标出“慢”。这些是排查线索，不是唯一诊断；NaN 也可能由数据或数值运算引起。</figcaption>
+</figure>
 <p><strong>诊断表</strong>（背下来，第 11 章要用）：</p>
 <div class="tw"><table>
 <thead>
@@ -523,9 +539,23 @@ AdamW 把权重衰减<strong>解耦</strong>出来，是现在的正确做法。
 用从零训练的 lr 去微调，会<strong>直接把预训练权重冲垮</strong>，效果还不如冻结主干。</p>
 </blockquote>
 <h3 id="scheduler">学习率调度（Scheduler）</h3>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">固定 lr → 后期在最优点附近震荡，下不去</span></div><div class="vb-tree-row"><span class="vb-tree-node">逐渐衰减 lr → 前期跑得快，后期精细收敛 ✅</span></div><div class="vb-tree-row"><span class="vb-tree-node">常用三种：</span></div><div class="vb-tree-row"><span class="vb-tree-node">Step：每 N 轮 × 0.1</span></div><div class="vb-tree-row"><span class="vb-tree-node">Cosine ⭐：余弦曲线平滑衰减到 0，现在最主流</span></div><div class="vb-tree-row"><span class="vb-tree-node">ReduceLROnPlateau：验证集不降了就自动砍学习率</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>固定 lr → 后期在最优点附近震荡，下不去</span></li><li><span>逐渐衰减 lr → 前期跑得快，后期精细收敛 ✅</span></li><li><span>常用三种：</span></li><li><span>Step：每 N 轮 × 0.1</span></li><li><span>Cosine ⭐：余弦曲线平滑衰减到 0，现在最主流</span></li><li><span>ReduceLROnPlateau：验证集不降了就自动砍学习率</span></li></ul></section>
 <h3 id="warmup">⭐ Warmup（大模型必备）</h3>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">lr</span></div><div class="vb-tree-row"><span class="vb-tree-node">___</span></div><div class="vb-tree-row"><span class="vb-tree-node">___</span></div><div class="vb-tree-row"><span class="vb-tree-node">___</span></div><div class="vb-tree-row"><span class="vb-tree-node">↑warmup ↑cosine衰减</span></div><div class="vb-tree-row"><span class="vb-tree-node">前几百步 lr 从 0 线性升到目标值</span></div></div></section>
+<figure class="dia" id="warmup-cosine-curve" data-curve="warmup">
+<svg viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Warmup 加余弦衰减示意：学习率从零线性升到目标值，预热结束后按余弦形状平滑下降。横轴是训练步数，纵轴是学习率。">
+  <rect x="56" y="52" width="89" height="188" fill="var(--accent-soft)"/>
+  <path d="M55 42 V240 H451" fill="none" stroke="var(--fg)" stroke-width="2"/>
+  <polygon points="55,36 50,46 60,46" fill="var(--fg)"/>
+  <polygon points="457,240 447,235 447,245" fill="var(--fg)"/>
+  <path d="M55 65 H442 M145 65 V240" fill="none" stroke="var(--border)" stroke-width="2" stroke-dasharray="5 5"/>
+  <path d="M56 239 L145 65" fill="none" stroke="var(--accent)" stroke-width="3"/>
+  <path d="M145 65 C200 65 221 109 290 152 S382 237 440 237" fill="none" stroke="var(--link)" stroke-width="3"/>
+  <circle cx="145" cy="65" r="5" fill="var(--accent)"/>
+  <g font-size="18" fill="var(--fg)"><text x="57" y="27">① Warmup</text><text x="265" y="27">② 余弦衰减</text><text x="178" y="55">目标学习率</text><text x="101" y="268">预热结束</text></g>
+  <g font-size="18" fill="var(--muted)"><text x="16" y="47">lr</text><text x="31" y="246">0</text><text x="335" y="289">训练步数</text></g>
+</svg>
+<figcaption>示意图，不是实测结果。先看左边的上坡：在设定的预热步数内，把学习率从较小值升到目标值（图中从 0 起步）；再看右边的余弦下降。预热多久、最后降到多低都由配置决定，不固定为“前几百步”。</figcaption>
+</figure>
 <p><strong>为什么需要</strong>：训练最开始参数是随机的，梯度方向很不可靠，
 大步走容易把模型带偏（尤其配 Adam 时二阶动量估计还不准）。<strong>先小步试探。</strong></p>
 <blockquote>
@@ -549,7 +579,24 @@ AdamW 把权重衰减<strong>解耦</strong>出来，是现在的正确做法。
 <span class="c1"># 保守起见取那个点的 1/3 ~ 1/10</span>
 </code></pre></div>
 
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">loss</span></div><div class="vb-tree-row"><span class="vb-tree-note">这段最陡，选这里的 lr</span></div><div class="vb-tree-row"><span class="vb-tree-node">___</span></div><div class="vb-tree-row"><span class="vb-tree-note">开始发散</span></div><div class="vb-tree-row"><span class="vb-tree-node">log(lr)</span></div></div></section>
+<figure class="dia" id="lr-range-curve" data-curve="lr-range">
+<svg viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="学习率范围测试示意：横轴是学习率的对数，越往右学习率越大；纵轴是损失。曲线先较平，在候选区间快速下降，之后回升并发散。">
+  <rect x="166" y="55" width="73" height="185" fill="var(--accent-soft)"/>
+  <path d="M55 41 V240 H451" fill="none" stroke="var(--fg)" stroke-width="2"/>
+  <polygon points="55,35 50,45 60,45" fill="var(--fg)"/>
+  <polygon points="457,240 447,235 447,245" fill="var(--fg)"/>
+  <path d="M58 99 C102 100 131 103 153 123 S192 190 233 207 S302 223 322 211 S365 160 382 116 S412 52 435 40" fill="none" stroke="var(--link)" stroke-width="3"/>
+  <path d="M170 71 L187 153 M337 70 L380 112" fill="none" stroke="var(--muted)" stroke-width="2"/>
+  <polygon points="190,161 182,152 191,150" fill="var(--muted)"/>
+  <polygon points="386,118 376,114 383,107" fill="var(--muted)"/>
+  <g font-size="18" fill="var(--fg)"><text x="86" y="44">下降明显的候选区间</text><text x="321" y="60">开始发散</text></g>
+  <g font-size="18" fill="var(--muted)"><text x="12" y="25">loss</text><text x="55" y="269">小学习率</text><text x="325" y="269">大学习率</text><text x="179" y="294">log(lr)</text></g>
+</svg>
+<figcaption>示意图，不是实测结果。横轴是 log(lr)，不是训练轮数；关注 loss 明显下降、尚未发散的区间，作为后续试验的起点，不把示意曲线的最低点当成通用最佳学习率。测试后恢复测试前的模型与优化器状态，再正式训练。</figcaption>
+</figure>
+
+<p><span id="leslie-smith"></span></p>
+<p>这种先增大学习率、观察损失变化来寻找合理范围的思路，可参见 <a href="https://arxiv.org/abs/1506.01186">Leslie Smith 的学习率范围测试说明</a>。</p>
 <hr />
 <h2 id="_6">📋 五、可以照抄的默认配置</h2>
 <div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`model` 来自你自己的代码，这一段只看写法</span>
@@ -660,12 +707,12 @@ AdamW 把权重衰减<strong>解耦</strong>出来，是现在的正确做法。
 <details>
 <summary>👀 答案</summary>
 <ol>
-<li>兼顾速度和稳定，且能吃满 GPU 并行。batch size 翻倍，学习率大致也翻倍（线性缩放规则）。<strong>batch 很大（&gt;8k）时该法则失效，必须配 warmup</strong>。</li>
+<li>小批量在梯度估计、内存和并行效率之间折中。线性缩放是部分 SGD 场景的实验起点，不是通用法则；没有统一的 8k 失效线，Warmup 也不能保证无限扩大批量。</li>
 <li>小 batch 的梯度带噪声 → 更新方向随机抖动 → <strong>抖得出尖锐极小值，抖不出平坦极小值</strong> → 最终停在平坦极小值里，而平坦极小值泛化更好。这就是"SGD 的隐式正则化"。</li>
 <li>Momentum（一阶动量，方向惯性）+ RMSProp（二阶动量，每参数自适应步长）。<strong>偏差修正</strong>是因为 m、v 初始为 0，前几步被严重低估，除以 (1−βᵗ) 修正。AdamW 把权重衰减解耦出来，修了 Adam 里 L2 与自适应学习率纠缠的缺陷。</li>
 <li>NaN = lr 太大梯度爆炸 → ÷10；下降极慢 = lr 太小 → ×3。<strong>完全不动（逐位相同）不是 lr 问题，几乎肯定是 bug</strong>——查梯度断流或忘了 <code>.step()</code>。</li>
 <li><strong>1e-5 ~ 5e-5，比从零训练小 100 倍</strong>。用从零训练的 lr 去微调会直接把预训练权重冲垮，效果还不如冻结主干。</li>
-<li>初期参数随机、梯度方向不可靠（Adam 的二阶动量估计也不准），大步走容易带偏。<strong>大 batch（&gt;8k）和大模型训练必须加</strong>。</li>
+<li>训练初期参数和优化器统计变化较快，Warmup 用较小步长起步，可缓解大学习率带来的不稳定。是否需要、持续多久，要结合模型和训练配置验证，不能仅凭 batch 超过某个值判断。</li>
 <li>梯度会累加到上一步的梯度上，等于用了错误的（放大且混合的）梯度更新，训练直接废掉。</li>
 <li>症状：<strong>学习率衰减快几百倍，loss 降一点就完全不动</strong>，看起来像模型不行。发现方法：训练时打印 <code>optimizer.param_groups[0]["lr"]</code>。</li>
 <li><strong>梯度累积</strong>（慢 N 倍）、混合精度 AMP（显存减半还更快，几乎白赚）、梯度检查点（慢 30% 换显存）。梯度累积最常见的 bug 是忘了把 loss 除以 accum——等效于学习率放大 N 倍。</li>
@@ -674,10 +721,25 @@ AdamW 把权重衰减<strong>解耦</strong>出来，是现在的正确做法。
 <hr />
 <h2 id="_9">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>用mini-batch(32~512)，<strong>batch翻倍lr也翻倍</strong>（&gt;8k时失效，必须配warmup）；<strong>小batch的噪声抖得出尖锐极小值抖不出平坦的 → 停在平坦极小值 → 泛化更好，这就是"SGD隐式正则"</strong>。优化器四代：SGD→Momentum(惯性)→RMSProp(自适应)→<strong>Adam=两者结合，默认AdamW lr=1e-3</strong>（<strong>偏差修正是因为m、v初始为0会被低估</strong>；AdamW把权重衰减解耦；<strong>训练不稳可把β₂降到0.95</strong>）。<strong>学习率是最重要超参</strong>：NaN→÷10，震荡→÷3，太慢→×3，降一半平了→加调度器(<strong>Cosine</strong>最主流)；⭐<strong>"完全不动(逐位相同)"不是lr问题，是bug——查梯度断流</strong>。<strong>量级参考：从零训练1e-3，微调1e-5~5e-5(小100倍！否则冲垮预训练权重)</strong>。<strong>Warmup</strong>：初期梯度不可靠先小步试探。⚠️ <strong>scheduler.step()放错位置 → lr衰减快几百倍 → 打印 param_groups[0]["lr"] 立刻发现</strong>。<strong>zero_grad()忘了训练直接废</strong>。显存不够：梯度累积(<strong>别忘了 loss/=accum</strong>)、<strong>AMP(减半还更快，白赚)</strong>、梯度检查点。</p>
-</blockquote>
+<ul>
+<li><strong>先观察学习率与损失</strong>，每次只改一个量；报 NaN 时也要排查数据与运算，不能只认定是学习率。</li>
+<li><strong>Adam 记录梯度及其平方的历史</strong>，不是计算 Hessian；AdamW 把权重衰减与自适应更新分开。</li>
+<li><strong>批量与学习率没有通用换算</strong>。Warmup、调度器和微调步长都需要验证，不机械套固定数字。</li>
+<li><strong>训练不动先检查更新链路</strong>：梯度、清零、参数更新、调度器调用频率。</li>
+<li><strong>显存不足再选工具</strong>：梯度累积、混合精度或检查点；按实际配置衡量显存、速度与精度。</li>
+</ul>
 <p><strong>下一节</strong> 👉 <a href="10-正则化全家桶.html">10-正则化全家桶.md</a></p>
+</section></div>
+<aside class="lesson-rail" aria-label="本节学习路线">
+<button type="button" class="lesson-route-toggle" aria-expanded="true" aria-controls="lesson-route">本节学习路线 <span aria-hidden="true">⌄</span></button>
+<div id="lesson-route">
+<p class="lesson-position" aria-live="polite">从第一站开始</p>
+<div class="lesson-track" aria-hidden="true"><span></span></div>
+<nav class="lesson-route-links" aria-label="章节跳转"></nav>
+<div class="lesson-rail-note"><strong>一次只读一张卡片</strong><p>蓝色下划线可以点开解释。关掉窗口，接着原来的位置读。</p></div>
+<button type="button" class="lesson-save">记住当前位置</button>
+<p class="lesson-save-status" role="status"></p>
+</div></aside></div>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="08-反向传播.html"><div class="dir">← 上一节</div>⛓️ 08 · 反向传播</a><a class="next" href="10-正则化全家桶.html"><div class="dir">下一节 →</div>🛡️ 10 · 正则化全家桶</a></nav>
@@ -704,4 +766,4 @@ AdamW 把权重衰减<strong>解耦</strong>出来，是现在的正确做法。
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

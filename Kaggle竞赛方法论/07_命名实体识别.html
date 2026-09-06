@@ -180,9 +180,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -966,8 +966,7 @@ th,td{min-width:5.2em}
 <hr />
 <h2 id="recap">🛑 可以停在这里</h2>
 <blockquote>
-<p>⚡ <strong>走神救援</strong><br />
-NER 难在<strong>它是「带结构的预测」</strong>：①标签间有约束（I 不能跟在 O 后）②<strong>边界必须精确，差一个字就全错</strong> ③嵌套实体 BIO 表示不了。<strong>CRF</strong> 显式建模标签转移+维特比解码，保证<strong>输出序列合法</strong>（独立 softmax 是逐位置贪心，会输出非法序列）；<strong>GlobalPointer/Span 类</strong>的优势是<strong>天然支持嵌套、解码更快、且直接优化 span 级目标（和评估口径一致）</strong>，代价是候选 span 有 O(n²)。⚠️⭐<strong>Offset Mapping 是最容易出错也最难查的一环</strong>——子词切分/空格/特殊字符都会造成偏移，<strong>错一位就整体平移、分数断崖下跌而模型本身没问题</strong>，必须写用原文反查的断言验证。<strong>NER 融合不能直接平均概率</strong>（输出是实体集合不是概率向量），要用投票法/字符级概率平均/span 级融合。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>NER 不只判断类别，还要保证实体边界与标签结构正确。</li><li>BIO、CRF 与 span 方法表达的结构不同，嵌套实体要选择合适表示。</li><li>用原文反查 offset 和抽取结果，先排除对齐错误再调模型。</li></ul></section>
 </blockquote>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -995,4 +994,5 @@ NER 难在<strong>它是「带结构的预测」</strong>：①标签间有约�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
+</body></html>

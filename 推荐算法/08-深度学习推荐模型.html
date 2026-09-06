@@ -186,9 +186,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -661,7 +661,7 @@ th,td{min-width:5.2em}
 <h2 id="_12">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>通用骨架：特征→Embedding→交互层→MLP→概率。精排线：Wide&amp;Deep(记忆+泛化) → DeepFM(FM替Wide,共享Emb) → DIN(注意力,用户表示随候选变) → MMoE(多目标)。召回线：双塔DSSM，两塔分离所以物品向量可离线+ANN检索，代价是不能特征交叉。召回负样本必须全库随机采（分布一致原则），要做 LogQ 校正。<!--RECAP-EXT-->⭐ <b>Wide &amp; Deep 的分工要记牢</b>：Wide 侧负责<b>记忆</b>（背下高频共现的组合），Deep 侧负责<b>泛化</b>（没见过的组合靠 Embedding 推出来）——后面所有精排模型都在这条轴上演化。⭐ <b>DIN 的真正洞见是「用户不该只有一个固定向量」</b>：候选是泳裤时，历史里的沙滩鞋权重高、笔记本权重低；换个候选权重就变。代价是 DIN 只能做精排——用户表示依赖候选，没法离线算好存起来。⚠️ 双塔的短板正是它的长处：两塔到最后一刻才交互，所以物品向量能离线算完丢进 ANN，但<b>用户特征和物品特征永远无法交叉</b>。⭐ 训练细节别踩坑：推荐数据量大，<b>通常只训 1 个 epoch</b>，验证 AUC 第 2 轮就掉是正常现象；Embedding 维度 16–64 就够用，不是越大越好；双塔用 in-batch 负采样时 batch 越大负样本越多，效果越好。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>先看特征在哪里交互，再区分召回模型与精排模型。</li><li>双塔便于离线存储物品表示，候选相关的用户表示则需要在线交互计算。</li><li>模型之外，负采样、特征时间和训练验证分布同样决定效果。</li></ul></section>
 </blockquote>
 <p><strong>下一节</strong> 👉 <a href="09-序列推荐.html">09-序列推荐.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
@@ -690,4 +690,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
+</body></html>

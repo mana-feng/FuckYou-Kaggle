@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -940,7 +940,7 @@ confident joint 的精确率只有 <strong>0.346</strong>；换成 GBDT（准确
 <p><strong>为什么没被发现（四条，第一条是根）</strong></p>
 <section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 评测集和训练集【同一批人、同一个批次】标的 ⭐ 根因</span></div><div class="vb-flow-row"><span class="vb-flow-step">模型学到的偏差和评测集里的偏差【完全一致】</span></div><div class="vb-flow-row"><span class="vb-flow-step">模型越&quot;错得像标注员&quot;，评测分数越高</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 这套评测集在结构上已经没有能力发现这个问题</span></div><div class="vb-flow-row"><span class="vb-flow-step">② F1 涨 2.6 个点，正好落在&quot;这季度做了三个优化&quot;的预期里</span></div><div class="vb-flow-row"><span class="vb-flow-step">—— 指标符合预期时，没人会去质疑指标本身</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 抽检只抽【模型判为正、且置信度低】的样本</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 而这批误判的置信度【很高】——模型学得很好，它很自信</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 系统性标签噪声恰恰藏在模型最自信的地方</span></div><div class="vb-flow-row"><span class="vb-flow-step">④ 只看总体 F1，没按&quot;指南的每一条边界规则&quot;分桶</span></div><div class="vb-flow-row"><span class="vb-flow-step">—— 见第二节：系统性噪声不打总体指标</span></div></div></section>
 <p><strong>代价</strong></p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>从上线到定位 27 天</p><p>误下架内容 约 11.6 万条</p><p>申诉成功率 87% ← 反过来证明这批下架确实是错的</p><p>公关 3 个头部创作者公开发声，平台发公告 + 补偿</p><p>返工 重标评测集 3 万条 ¥8.4 万 / 11 天</p><p>重标训练集 9.7 万条 ¥27 万 / 5 周</p><p>⭐ 但最贵的一项是：</p><p>第 3 季度基于这套评测集做的 14 次实验，结论【全部作废】</p></div></section>
+<section class="comparison-repair" id="comparison-repair-10"><div class="tw"><table><caption>事件代价逐项看</caption><thead><tr><th scope="col">影响项</th><th scope="col">记录</th></tr></thead><tbody><tr><th scope="row">从上线到定位</th><td>27 天</td></tr><tr><th scope="row">误下架内容</th><td>约 11.6 万条</td></tr><tr><th scope="row">申诉成功率</th><td>87% ← 反过来证明这批下架确实是错的</td></tr><tr><th scope="row">公关</th><td>3 个头部创作者公开发声，平台发公告 + 补偿</td></tr><tr><th scope="row">返工</th><td>重标评测集 3 万条 ¥8.4 万 / 11 天</td></tr><tr><th scope="row">重标训练集</th><td>9.7 万条 ¥27 万 / 5 周</td></tr></tbody></table></div><section class="reading-information"><p class="reading-information-title">最昂贵的损失</p><ul><li>⭐ 但最贵的一项是：第 3 季度基于这套评测集做的 14 次实验，结论【全部作废】</li></ul></section></section>
 <p><strong>该补什么</strong></p>
 <div class="tw"><table>
 <thead>
@@ -1130,4 +1130,4 @@ confident joint 的精确率只有 <strong>0.346</strong>；换成 GBDT（准确
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

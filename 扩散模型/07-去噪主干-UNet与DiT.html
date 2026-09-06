@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -547,9 +547,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>读到这里，你已经能看懂一份扩散模型配置在说什么：<code>unet</code> 那串通道数是左臂的每一级，<code>attention_resolutions</code> 是注意力插在哪几级，DiT 那边的 <code>patch_size</code> 和 <code>hidden_size</code> 各自在换什么代价。</p>
 <p><strong>什么时候回来</strong>：生成图<strong>大结构对、细节糊</strong>时回看第三节（那通常是跳跃连接这条路上的问题）；要<strong>换分辨率</strong>或<strong>估显存</strong>时回看第四节的 token 数和第五节那条平方复杂度。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>去噪网络是一个接口固定的函数：进 <code>(x_t, t, c)</code>，出一张和 <code>x_t</code> 同形状的预测噪声。扩散那套数学（加噪公式、DDIM 跳步、CFG）全在这个函数外面，所以主干能随便换。<code>t</code> 不能只从输入端塞一次 —— 它要影响每一层，所以变成向量后在每个块内部注入；条件在 U-Net 里走交叉注意力（Query 来自图像、Key/Value 来自文本），在 DiT 里和 <code>t</code> 一起去生成每层 LayerNorm 的缩放平移（adaLN-Zero，那个门控零初始化，和下一章 ControlNet 是同一个想法）。<strong>U-Net</strong> 是 U 形：左臂几轮「卷积 + 下采样」压小分辨率、翻倍通道，只有在被压小的瓶颈附近才插得起自注意力，右臂再抬回来；跳跃连接是<strong>拼接</strong>不是相加，所以解码器入口通道是 <code>128 + 64 = 192</code>。它救的是高频：实测把一张含 2 像素周期条纹的图做 8 倍下采样再还原，低频保留 <strong>0.830</strong>，<strong>高频保留 <code>0.0000</code> —— 一点不剩</strong>，而扩散在 <code>t</code> 小的那几步干的正好是补细节。<strong>DiT</strong> 把潜空间切成 patch 当 token：4×32×32 按边长 2 切得到 <strong>256 个 token</strong>，过完 Transformer 形状不变所以能一直堆，最后每个 token 线性映回自己那一小块拼成整图；patch 边长减半 → token ×4 → 注意力代价 <strong>×16</strong>，<code>DiT-XL/2</code> 的 <code>/2</code> 就是它。它赢在 scaling 可预测、语言模型的工程栈白捡、归纳偏置更少；代价是平方复杂度，所以它几乎总要长在潜空间里。⚠️ 最容易搞混的一条：<strong>DiT 不是「用 Transformer 生成图像」</strong> —— 训练目标还是预测噪声，出图还是那个去噪循环，换的只是实现，就像把快排换成归并。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>U-Net 和 DiT 都实现去噪网络；改变主干不等于改变整个扩散训练目标。</li><li>U-Net 用多尺度与跳跃连接保留信息，DiT 把空间块作为 token 处理。</li><li>核对时间和条件怎样进入各层，再比较形状、计算量与细节保留。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="08-ControlNet与风格LoRA.html">08-ControlNet与风格LoRA.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -577,4 +576,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

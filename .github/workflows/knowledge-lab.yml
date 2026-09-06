@@ -1,0 +1,27 @@
+name: Knowledge assistant reference
+on:
+  push:
+    paths: ['examples/knowledge-assistant/**', '.github/workflows/knowledge-lab.yml']
+  pull_request:
+    paths: ['examples/knowledge-assistant/**', '.github/workflows/knowledge-lab.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  local-contracts:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: examples/knowledge-assistant
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - run: python -m unittest discover -s . -p 'test_*.py' -v
+      - run: python lab.py evaluate --report .runtime/bm25.json

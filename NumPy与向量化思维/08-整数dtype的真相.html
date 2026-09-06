@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -391,7 +391,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;np.array([2**40]).dtype        =&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="o">**</span><span class="mi">40</span><span class="p">])</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
 </code></pre></div>
 
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>int8 8 bit -128 ~ 127</p><p>uint8 8 bit 0 ~ 255</p><p>int16 16 bit -32768 ~ 32767</p><p>uint16 16 bit 0 ~ 65535</p><p>int32 32 bit -2147483648 ~ 2147483647</p><p>uint32 32 bit 0 ~ 4294967295</p><p>int64 64 bit -9223372036854775808 ~ 9223372036854775807</p><p>uint64 64 bit 0 ~ 18446744073709551615</p><p>np.array([1,2,3]).dtype = int64</p><p>np.arange(3).dtype = int64</p><p>np.zeros(3, dtype=int).dtype = int64</p><p>np.array([2**40]).dtype = int64</p></div></section>
+<section class="comparison-repair" id="comparison-repair-18"><div class="tw"><table><caption>整数类型的表示范围</caption><thead><tr><th scope="col">整数类型</th><th scope="col">位宽</th><th scope="col">范围</th></tr></thead><tbody><tr><th scope="row">int8</th><td>8 bit</td><td>-128 ~ 127</td></tr><tr><th scope="row">uint8</th><td>8 bit</td><td>0 ~ 255</td></tr><tr><th scope="row">int16</th><td>16 bit</td><td>-32768 ~ 32767</td></tr><tr><th scope="row">uint16</th><td>16 bit</td><td>0 ~ 65535</td></tr><tr><th scope="row">int32</th><td>32 bit</td><td>-2147483648 ~ 2147483647</td></tr><tr><th scope="row">uint32</th><td>32 bit</td><td>0 ~ 4294967295</td></tr><tr><th scope="row">int64</th><td>64 bit</td><td>-9223372036854775808 ~ 9223372036854775807</td></tr><tr><th scope="row">uint64</th><td>64 bit</td><td>0 ~ 18446744073709551615</td></tr></tbody></table></div><section class="reading-information"><p class="reading-information-title">这台环境上的默认 dtype</p><ul><li>np.array([1,2,3]).dtype = int64</li><li>np.arange(3).dtype = int64</li><li>np.zeros(3, dtype=int).dtype = int64</li><li>np.array([2**40]).dtype = int64</li></ul></section></section>
 <p>⭐ <strong>中间那四个数字，请记住它们的样子</strong>：<strong>127 · 255 · 32767 · 65535 · 2147483647 · 4294967295</strong>。它们是整数溢出留在数据里的指纹——见第八节。</p>
 <p>⚠️ <strong>默认整数 dtype 是平台相关的</strong>。上面这台机器（Windows + NumPy 2.4.6）给的是 <code>int64</code>；⚠️ <strong>NumPy 1.x 时代的 Windows 默认是 <code>int32</code></strong>。所以「同一份代码在同事的 Linux 上没问题，在我的 Windows 上算错了」这种事，历史上真实发生过很多次。⭐ 依赖范围的地方永远显式写 dtype，别指望默认值。</p>
 <hr />
@@ -703,4 +703,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

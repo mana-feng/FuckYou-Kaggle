@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -486,9 +486,8 @@ AAA[KTAYIAK]MM -&gt; AA|AA|AA|AA|AA|AA|K|TA|YI|AK|MM
 <h2 id="_9">🛑 可以停在这里</h2>
 <p>为什么大多一残基一 token、为什么随机划分危险、注意力为什么合适 —— <strong>这三条足够读懂下一章。</strong> 序列比对怎么做、同源泄漏虚高多少，都在后面。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>蛋白质是一条链，单元叫残基，标准的 20 种、每种一个大写字母；DNA 是 4 字母版本。它长得像文本，NLP 工具全接得上，但默认设置几乎每条都要改。<strong>一是分词</strong>：BPE 的存在理由是在"词表不能无限大"和"句子不能太长"之间折中，而这里字母表只有 20 个、永远没有生词，蛋白质也只有几百到几千个残基 —— 两端的压力同时消失。切了还倒付：训一个 400 轮的极简 BPE 就看得到，同一段 <code>KTAYIAK</code> 放进三个上下文，第一个 token 分别切成 <code>HK</code>、<code>QK</code>、<code>K</code>，开头那个残基被前面的邻居吃掉了，"从第几个 token 开始"没有稳定答案；而逐残基任务是主流，字符级下第 47 个 token 就是第 47 号残基。压缩率也只有 200 压到 113.9。<strong>二是数据划分</strong>：造 10 个大小从 80 到 2 的家族、每条从祖先点突变 20%，随机抽一对的相同率中位数只有 0.05，正好是 1/20 的背景值，看着一点不冗余；可每条的最近邻中位数 0.71，100% 的序列都有一个 50% 以上的近亲 —— 冗余不是"平均相似"，是"每一条都有近亲"，而随机划分正好按条抽。<strong>三是结构</strong>：链会折叠，隔一百多个位置的残基三维里可能贴在一起，"相邻的更相关"这个卷积先验是错的；注意力对所有位置打分、不预设距离，正好合适。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>生物序列虽然能写成字符，但残基位置和同源关系有不同于自然语言的意义。</li><li>分词方案必须保留任务需要的对应关系，不能直接照搬压缩词表的动机。</li><li>先按同源关系检查划分，再考虑远距离位置之间的结构关联。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="03-蛋白质语言模型.html">03-蛋白质语言模型.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -516,4 +515,4 @@ AAA[KTAYIAK]MM -&gt; AA|AA|AA|AA|AA|AA|K|TA|YI|AK|MM
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -313,12 +313,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </details>
 <h1 id="11">11 · 从告警到根因</h1>
 <p>⏱ <strong>42 分钟</strong> ｜ ⭐ <strong>一份可以照抄的排查手册</strong></p>
-<hr />
+<hr>
 <h2 id="_1">🎯 一句话</h2>
 <p><strong>线上排查最贵的不是修，是「不知道从哪查」。</strong>
 这一章给一条固定的排查顺序 ——
 <strong>从最便宜、最可能的原因开始，逐级往下。</strong></p>
-<hr />
+<hr>
 <h2 id="_2">🪜 一、排查顺序：便宜的先查</h2>
 <section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>是真的吗？ —— 先确认指标本身没坏 5 分钟</li><li>是什么时候开始的？ —— 定位时间点，圈定嫌疑范围 10 分钟 ⭐</li><li>是谁变了？ —— 我方发布 / 上游 / 外部 15 分钟</li><li>是哪部分流量？ —— 分人群、分渠道拆开 15 分钟 ⭐</li><li>是哪个特征？ —— 特征分布 + SHAP 对比 30 分钟</li><li>是模型本身吗？ —— 最后才怀疑模型 —</li></ol></section>
 <blockquote>
@@ -327,15 +327,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 绝大多数线上问题是<strong>数据、管道、配置、外部变化</strong>造成的。
 <strong>一上来就重训模型，是最常见的浪费。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="1">① 是真的吗（别急着查）</h2>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>[ ] 指标口径最近改过吗？（埋点、SQL、看板定义）</p><p>[ ] 数据是不是还没跑完？（离线任务延迟会让当天指标偏低）⭐</p><p>[ ] 对比的基线选对了吗？（昨天是节假日吗）</p><p>[ ] 分母变了吗？（比率类指标：分母涨了也会让比率跌）⭐</p></div></section>
+<section class="reading-checklist" aria-label="对照"><p class="visual-block-title">逐项核对</p><div class="vb-compare"><ul class="reading-task-list"><li class="reading-task" data-reading-task="1"><label class="reading-task-title"><input type="checkbox" data-task-key="1"><span>核对项 1</span></label><div class="reading-task-body"><p>指标口径最近改过吗？（埋点、SQL、看板定义）</p></div></li><li class="reading-task" data-reading-task="2"><label class="reading-task-title"><input type="checkbox" data-task-key="2"><span>核对项 2</span></label><div class="reading-task-body"><p>数据是不是还没跑完？（离线任务延迟会让当天指标偏低）⭐</p></div></li><li class="reading-task" data-reading-task="3"><label class="reading-task-title"><input type="checkbox" data-task-key="3"><span>核对项 3</span></label><div class="reading-task-body"><p>对比的基线选对了吗？（昨天是节假日吗）</p></div></li><li class="reading-task" data-reading-task="4"><label class="reading-task-title"><input type="checkbox" data-task-key="4"><span>核对项 4</span></label><div class="reading-task-body"><p>分母变了吗？（比率类指标：分母涨了也会让比率跌）⭐</p></div></li></ul></div></section>
 <blockquote>
 <p>⭐ <strong>「分母变了」这条每年都会坑到人</strong>：
 CTR 跌了不一定是点击少了，<strong>可能是曝光暴涨</strong>（比如上了个新坑位）。
 <strong>看比率类指标时，永远同时看分子和分母的绝对值。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="2">② 什么时候开始的 ⭐ —— 最有价值的一步</h2>
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">把指标按【小时】画出来，找到拐点</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 拐点的形状直接告诉你原因类型：</span></div><div class="vb-flow-row"><span class="vb-flow-step">突变（一小时内断崖）</span></div><div class="vb-flow-row"><span class="vb-flow-step">发布、配置变更、上游故障</span></div><div class="vb-flow-row"><span class="vb-flow-step">去查那个时间点前后一小时的所有变更 ⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">阶梯（某天开始换了个平台）</span></div><div class="vb-flow-row"><span class="vb-flow-step">上游数据源变了、口径变了</span></div><div class="vb-flow-row"><span class="vb-flow-step">缓慢下滑（几周）</span></div><div class="vb-flow-row"><span class="vb-flow-step">漂移（第 6 章），不是故障</span></div><div class="vb-flow-row"><span class="vb-flow-step">周期性（每天同一时间）</span></div><div class="vb-flow-row"><span class="vb-flow-step">定时任务、批处理窗口、跨时区流量</span></div></div></section>
 <blockquote>
@@ -373,7 +373,7 @@ CTR 跌了不一定是点击少了，<strong>可能是曝光暴涨</strong>（�
 经验阈值：<strong>|z| ＜ 3 时基本可以认为「没有拐点，只是在正常波动」</strong> ——
 这时候你要查的不是「谁变了」，而是回到 ① 确认「跌」是不是真的存在。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="3">③ 谁变了</h2>
 <div class="tw"><table>
 <thead>
@@ -385,7 +385,7 @@ CTR 跌了不一定是点击少了，<strong>可能是曝光暴涨</strong>（�
 <tbody>
 <tr>
 <td><strong>我方发布</strong></td>
-<td>发布记录对时间点；<strong>先回滚验证</strong>（<a href="03-灰度影子与回滚.html">第 3 章</a>）⭐</td>
+<td>发布记录对时间点；<strong>先回滚验证</strong>（<a href="03-%E7%81%B0%E5%BA%A6%E5%BD%B1%E5%AD%90%E4%B8%8E%E5%9B%9E%E6%BB%9A.html">第 3 章</a>）⭐</td>
 </tr>
 <tr>
 <td><strong>上游数据</strong></td>
@@ -405,14 +405,14 @@ CTR 跌了不一定是点击少了，<strong>可能是曝光暴涨</strong>（�
 <p>⭐ <strong>一个关键原则：能回滚就先回滚，再慢慢查。</strong>
 <strong>止损优先于定位。</strong> 回滚后指标恢复了，也顺便验证了「就是这次发布的问题」。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="4">④ 哪部分流量</h2>
 <section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">把指标按这几个维度拆开，看跌的是全体还是某一撮：</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 新用户 / 老用户</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 渠道（自然量 / 投放 / 各分发位）</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 设备与版本（某个 App 版本？某个机型？）</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 地域</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 实验分组 ⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 如果只有某一撮跌</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">范围立刻缩小 90%</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 如果全体均匀跌</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">多半是模型或全局配置</span></div></div></section>
 <blockquote>
-<p>💡 <strong>拆开看还能发现<a href="14-辛普森悖论与七个陷阱.html">第 14 章</a>那种情况</strong>：
+<p>💡 <strong>拆开看还能发现<a href="14-%E8%BE%9B%E6%99%AE%E6%A3%AE%E6%82%96%E8%AE%BA%E4%B8%8E%E4%B8%83%E4%B8%AA%E9%99%B7%E9%98%B1.html">第 14 章</a>那种情况</strong>：
 总体没变，但两个人群一涨一跌互相抵消 —— <strong>那其实是两个问题。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="5-5910">⑤ 哪个特征（这一步用第 5、9、10 章的工具）</h2>
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 看特征监控看板：哪些特征的分布在拐点处变了（第 5、6 章）</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 按重要性排序，只看 Top-10（第 9 章）</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 取一批「异常时段」样本和一批「正常时段」样本</span></div><div class="vb-flow-row"><span class="vb-flow-step">分别算 SHAP，对比每个特征的平均贡献 ⭐（第 10 章）</span></div><div class="vb-flow-row"><span class="vb-flow-step">贡献变化最大的那个，通常就是元凶</span></div></div></section>
 
@@ -455,14 +455,14 @@ CTR 跌了不一定是点击少了，<strong>可能是曝光暴涨</strong>（�
 </tbody>
 </table></div>
 </blockquote>
-<hr />
+<hr>
 <h2 id="6">⑥ 最后才是模型本身</h2>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>走到这一步还没找到，才考虑：</p><p>· 概念漂移（第 6 章）—— 需要有标签才能确认</p><p>· 模型文件损坏 / 加载了错误版本（先看版本号！）</p><p>· 训练/推理不一致（第 4 章）—— 跑一次逐字段比对</p></div></section>
 <blockquote>
 <p>⚠️ <strong>「加载了错误版本」比想象中常见</strong>，而且查起来只要 10 秒 ——
 <strong>建议把它提到第 ① 步一起查。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_3">💀 二、一次真实的排查复盘（完整时间线）</h2>
 <p><strong>这个案例值得逐行读</strong>，因为它踩中了本教程前十章里的三个坑，
 而且<strong>它的特征是「所有技术指标都正常」</strong>。</p>
@@ -530,17 +530,17 @@ CTR 跌了不一定是点击少了，<strong>可能是曝光暴涨</strong>（�
 <tbody>
 <tr>
 <td><strong>特征缺失率 / 默认值占比没进监控</strong></td>
-<td><a href="05-该监控什么.html">第 5 章</a>输入层</td>
+<td><a href="05-%E8%AF%A5%E7%9B%91%E6%8E%A7%E4%BB%80%E4%B9%88.html">第 5 章</a>输入层</td>
 <td>默认值占比 ＞ 2% 就告警</td>
 </tr>
 <tr>
 <td><strong>降级链路没打点</strong></td>
-<td><a href="17-版本回溯与可复现.html">第 17 章</a>「走了哪条链路」</td>
+<td><a href="17-%E7%89%88%E6%9C%AC%E5%9B%9E%E6%BA%AF%E4%B8%8E%E5%8F%AF%E5%A4%8D%E7%8E%B0.html">第 17 章</a>「走了哪条链路」</td>
 <td>降级比例 ＞ 5% 直接 P1</td>
 </tr>
 <tr>
 <td><strong>告警只挂在业务指标上</strong></td>
-<td><a href="05-该监控什么.html">第 5 章</a>三层监控</td>
+<td><a href="05-%E8%AF%A5%E7%9B%91%E6%8E%A7%E4%BB%80%E4%B9%88.html">第 5 章</a>三层监控</td>
 <td>业务层是<strong>最慢的一层</strong>，输入层能提前十几小时</td>
 </tr>
 </tbody>
@@ -548,9 +548,9 @@ CTR 跌了不一定是点击少了，<strong>可能是曝光暴涨</strong>（�
 <blockquote>
 <p>⭐ <strong>改进之后，三个月后同类问题（另一个特征源限流）再次发生</strong>：
 <strong>发现延迟从 31 小时降到 4 分钟。</strong>
-这就是<a href="08-告警为什么没人看.html">第 8 章</a>说的「每次事故都该让发现延迟下降一点」的实际样子。</p>
+这就是<a href="08-%E5%91%8A%E8%AD%A6%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B2%A1%E4%BA%BA%E7%9C%8B.html">第 8 章</a>说的「每次事故都该让发现延迟下降一点」的实际样子。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_4">🩺 三、症状 → 最先怀疑什么（速查）</h2>
 <p><strong>这张表是上面那套流程的「快捷方式」</strong>：先看症状对号入座，猜错了再回到六步流程。</p>
 <div class="tw"><table>
@@ -570,7 +570,7 @@ CTR 跌了不一定是点击少了，<strong>可能是曝光暴涨</strong>（�
 <tr>
 <td>指标缓慢下滑数周</td>
 <td>漂移，<strong>不是故障</strong></td>
-<td>看 PSI 曲线（<a href="06-数据漂移与概念漂移.html">第 6 章</a>）</td>
+<td>看 PSI 曲线（<a href="06-%E6%95%B0%E6%8D%AE%E6%BC%82%E7%A7%BB%E4%B8%8E%E6%A6%82%E5%BF%B5%E6%BC%82%E7%A7%BB.html">第 6 章</a>）</td>
 </tr>
 <tr>
 <td>只有某个 App 版本 / 机型跌</td>
@@ -585,7 +585,7 @@ CTR 跌了不一定是点击少了，<strong>可能是曝光暴涨</strong>（�
 <tr>
 <td>新模型刚上线就差、离线却很好</td>
 <td><strong>训练/推理不一致</strong></td>
-<td>逐字段比对（<a href="04-训练推理一致性.html">第 4 章</a>）</td>
+<td>逐字段比对（<a href="04-%E8%AE%AD%E7%BB%83%E6%8E%A8%E7%90%86%E4%B8%80%E8%87%B4%E6%80%A7.html">第 4 章</a>）</td>
 </tr>
 <tr>
 <td>每天固定时间跌一段</td>
@@ -595,7 +595,7 @@ CTR 跌了不一定是点击少了，<strong>可能是曝光暴涨</strong>（�
 <tr>
 <td><strong>总体跌，但每个人群都涨</strong> 💀</td>
 <td><strong>流量结构变了</strong>（辛普森）</td>
-<td>看各组的样本量占比（<a href="14-辛普森悖论与七个陷阱.html">第 14 章</a>）</td>
+<td>看各组的样本量占比（<a href="14-%E8%BE%9B%E6%99%AE%E6%A3%AE%E6%82%96%E8%AE%BA%E4%B8%8E%E4%B8%83%E4%B8%AA%E9%99%B7%E9%98%B1.html">第 14 章</a>）</td>
 </tr>
 <tr>
 <td>恰好一半流量出问题</td>
@@ -614,7 +614,7 @@ CTR 跌了不一定是点击少了，<strong>可能是曝光暴涨</strong>（�
 <strong>「所有技术指标都正常，业务指标却掉了」几乎总是降级、兜底或默认值。</strong>
 因为真正的故障会留下错误率，<strong>而降级不会</strong>。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_5">📋 四、一份可以直接用的排查模板</h2>
 <div class="codehilite"><pre><span></span><code><span class="gu">## 事件：&lt;指标&gt; 于 &lt;时间&gt; 下降 &lt;幅度&gt;</span>
 
@@ -646,10 +646,10 @@ CTR 跌了不一定是点击少了，<strong>可能是曝光暴涨</strong>（�
 </code></pre></div>
 
 <blockquote>
-<p>⭐ <strong>最后两行是复盘的价值所在</strong>（<a href="08-告警为什么没人看.html">第 8 章</a>）：
+<p>⭐ <strong>最后两行是复盘的价值所在</strong>（<a href="08-%E5%91%8A%E8%AD%A6%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B2%A1%E4%BA%BA%E7%9C%8B.html">第 8 章</a>）：
 <strong>每次事故都应该让「发现延迟」下降一点。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_6">🧠 五、六个经验法则</h2>
 <section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>止损优先于定位 —— 能回滚就先回滚 ⭐</li><li>一次只改一个变量 —— 否则恢复了也不知道是哪个起作用</li><li>相信数据，不相信记忆 —— 「我记得没改过」经常是错的</li><li>排查过程要边做边记 —— 否则第二天复盘时全忘了</li><li>先缩小范围，再深入细节 —— 二分优于遍历 ⭐</li><li>「没报错」不等于「没出错」 —— 降级、兜底、默认值都是静默的 ⭐</li></ol></section>
 <blockquote>
@@ -661,7 +661,7 @@ CTR 跌了不一定是点击少了，<strong>可能是曝光暴涨</strong>（�
 六步流程本身就是一条二分链：<strong>时间维度二分 → 流量维度二分 → 特征维度二分</strong>。
 <strong>一个维度平均能砍掉一半可能性，三个维度就是 1/8。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_7">⚠️ 六、排查时最常踩的七个坑</h2>
 <div class="tw"><table>
 <thead>
@@ -709,7 +709,7 @@ CTR 跌了不一定是点击少了，<strong>可能是曝光暴涨</strong>（�
 </tr>
 </tbody>
 </table></div>
-<hr />
+<hr>
 <h2 id="_8">🔗 七、和站内其他章的关系</h2>
 <div class="tw"><table>
 <thead>
@@ -720,36 +720,36 @@ CTR 跌了不一定是点击少了，<strong>可能是曝光暴涨</strong>（�
 </thead>
 <tbody>
 <tr>
-<td><a href="05-该监控什么.html">第 5 章</a>三层监控</td>
+<td><a href="05-%E8%AF%A5%E7%9B%91%E6%8E%A7%E4%BB%80%E4%B9%88.html">第 5 章</a>三层监控</td>
 <td>⑤ 的数据来源</td>
 </tr>
 <tr>
-<td><a href="06-数据漂移与概念漂移.html">第 6 章</a>漂移</td>
+<td><a href="06-%E6%95%B0%E6%8D%AE%E6%BC%82%E7%A7%BB%E4%B8%8E%E6%A6%82%E5%BF%B5%E6%BC%82%E7%A7%BB.html">第 6 章</a>漂移</td>
 <td>⑥ 的判断</td>
 </tr>
 <tr>
-<td><a href="09-特征重要性的三种谎言.html">第 9 章</a>重要性</td>
+<td><a href="09-%E7%89%B9%E5%BE%81%E9%87%8D%E8%A6%81%E6%80%A7%E7%9A%84%E4%B8%89%E7%A7%8D%E8%B0%8E%E8%A8%80.html">第 9 章</a>重要性</td>
 <td>⑤ 的排序依据</td>
 </tr>
 <tr>
-<td><a href="10-SHAP能做什么不能做什么.html">第 10 章</a> SHAP</td>
+<td><a href="10-SHAP%E8%83%BD%E5%81%9A%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E5%81%9A%E4%BB%80%E4%B9%88.html">第 10 章</a> SHAP</td>
 <td>⑤ 的对比工具</td>
 </tr>
 <tr>
-<td><a href="17-版本回溯与可复现.html">第 17 章</a>链路打点</td>
+<td><a href="17-%E7%89%88%E6%9C%AC%E5%9B%9E%E6%BA%AF%E4%B8%8E%E5%8F%AF%E5%A4%8D%E7%8E%B0.html">第 17 章</a>链路打点</td>
 <td>案例里最关键的那条日志</td>
 </tr>
 <tr>
-<td><a href="../机器学习与深度学习基础/11-训练调试手册.html">ML基础 11</a>训练调试</td>
+<td><a href="../%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/11-%E8%AE%AD%E7%BB%83%E8%B0%83%E8%AF%95%E6%89%8B%E5%86%8C.html">ML基础 11</a>训练调试</td>
 <td>那是训练时，这是线上</td>
 </tr>
 <tr>
-<td><a href="../AI基础设施/23-可观测性与成本.html">AI基础设施 23</a>可观测性</td>
+<td><a href="../AI%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD/23-%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7%E4%B8%8E%E6%88%90%E6%9C%AC.html">AI基础设施 23</a>可观测性</td>
 <td>基础设施层的同一套思路</td>
 </tr>
 </tbody>
 </table></div>
-<hr />
+<hr>
 <h2 id="_9">✅ 检查点</h2>
 <ol>
 <li>排查的六个步骤是什么？为什么「模型本身」放最后？</li>
@@ -776,7 +776,7 @@ CTR 跌了不一定是点击少了，<strong>可能是曝光暴涨</strong>（�
 <li><strong>一次只改一个变量</strong>。慌了会同时回滚模型、改配置、重启服务 —— 恢复了但永远不知道原因，下次还会再来。</li>
 </ol>
 </details>
-<hr />
+<hr>
 <h2 id="_10">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
@@ -787,7 +787,7 @@ CTR 跌了不一定是点击少了，<strong>可能是曝光暴涨</strong>（�
 <p>💀 那个 Redis 扩容配错前缀的案例：特征读超时触发了<strong>设计好的降级</strong>，于是成功率 100%、错误率 0、延迟反而更好，只有拦截率悄悄掉了——一个只看服务健康的监控体系对它完全失明。</p>
 <p>⭐ <strong>最该记住的速查：技术指标全正常、业务指标却掉了 → 几乎总是降级、兜底或默认值。</strong> 真故障会留下错误率，降级不会。所以「没报错」不等于「没出错」。</p>
 </blockquote>
-<p><strong>下一节</strong> 👉 <a href="12-AB实验你以为你懂了.html">12-AB实验你以为你懂了.md</a></p>
+<p><strong>下一节</strong> 👉 <a href="12-AB%E5%AE%9E%E9%AA%8C%E4%BD%A0%E4%BB%A5%E4%B8%BA%E4%BD%A0%E6%87%82%E4%BA%86.html">12-AB实验你以为你懂了.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="10-SHAP能做什么不能做什么.html"><div class="dir">← 上一节</div>🔍 10 · SHAP 能与不能</a><a class="next" href="12-AB实验你以为你懂了.html"><div class="dir">下一节 →</div>🧪 12 · A/B 你以为你懂了</a></nav>
@@ -814,4 +814,4 @@ CTR 跌了不一定是点击少了，<strong>可能是曝光暴涨</strong>（�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

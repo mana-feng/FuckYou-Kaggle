@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -467,7 +467,7 @@ $q = 23$ 时是 <strong>253 对</strong> —— 这就接近 365 了。</p>
 </tbody>
 </table></div>
 <h3 id="1">❌ 危险用法 ① 直接哈希存密码</h3>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">❌ 存 SHA256(password)</span></div><div class="vb-tree-row"><span class="vb-tree-node">为什么不行：</span></div><div class="vb-tree-row"><span class="vb-tree-node">哈希【太快】了 —— GPU 每秒能算几十亿次</span></div><div class="vb-tree-row"><span class="vb-tree-node">彩虹表：常见密码的哈希早就被算好了</span></div><div class="vb-tree-row"><span class="vb-tree-node">相同密码 → 相同哈希，一眼看出哪些用户密码相同 ⭐</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>❌ 存 SHA256(password)</span></li><li><span>为什么不行：</span></li><li><span>哈希【太快】了 —— GPU 每秒能算几十亿次</span></li><li><span>彩虹表：常见密码的哈希早就被算好了</span></li><li><span>相同密码 → 相同哈希，一眼看出哪些用户密码相同 ⭐</span></li></ul></section>
 
 <div class="codehilite"><pre><span></span><code><span class="c1"># ✅ 正确：用专门的密码哈希函数（慢 + 加盐 + 抗 GPU）</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">argon2</span>
@@ -588,9 +588,8 @@ $q = 23$ 时是 <strong>253 对</strong> —— 这就接近 365 了。</p>
 <hr />
 <h2 id="_12">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>哈希把任意长输入压成固定长输出。<strong>三性质</strong>：①<strong>单向性</strong>（给y找m）②<strong>二次原像抗性</strong>（给m找替身）③<strong>碰撞抗性</strong>（随便找一对双胞胎）；⭐<strong>碰撞抗性⟹二次原像抗性</strong>，反之不成立（"指定一个人找长得一样的"比"随便找两个长得一样的"难得多）。⭐<strong>生日悖论：23 人就有 50% 概率生日相同</strong>——因为关键是<strong>比较的对数</strong>（23人有253对），一般化 q≈√N 时碰撞概率就到常数级。💥<strong>直接后果：n bit 哈希找原像要 2ⁿ 次，找碰撞只要 2^(n/2) 次</strong>（开平方）→ ⭐<strong>SHA-256 的抗碰撞只有 128 bit 不是 256 bit</strong>；MD5 和 SHA-1 已死（💥<strong>Flame 恶意软件用 MD5 碰撞伪造微软代码签名证书冒充 Windows 更新</strong>；2017 Google 造出 SHA-1 碰撞 PDF）。<strong>三个危险用法</strong>：①⭐<strong>直接哈希存密码</strong>（哈希太快、彩虹表、<strong>相同密码相同哈希</strong>）→ 用 <strong>Argon2</strong>（<strong>盐</strong>让彩虹表失效、<strong>慢</strong>、⭐<strong>需要大量内存抵消 GPU 并行优势</strong>）②<strong>用 H(secret‖msg) 做认证</strong>（长度扩展攻击，第10章）③比对时不用恒定时间函数。<strong>随机预言机模型</strong>：假设哈希像真随机函数，很多证明（FDH-RSA、Fiat-Shamir）依赖它；⚠️ 真实哈希不是随机预言机，<strong>ROM 下的证明比没有好得多但不是铁证</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>原像、第二原像与碰撞是不同问题，不能混用安全强度。</li><li>生日效应让寻找任意碰撞比寻找指定原像更容易。</li><li>普通哈希、消息认证与密码存储用途不同，需要各自的构造。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="10-哈希构造与长度扩展攻击.html">10-哈希构造与长度扩展攻击.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -618,4 +617,4 @@ $q = 23$ 时是 <strong>253 对</strong> —— 这就接近 365 了。</p>
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -180,9 +180,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -967,8 +967,7 @@ th,td{min-width:5.2em}
 <hr />
 <h2 id="recap">🛑 可以停在这里</h2>
 <blockquote>
-<p>⚡ <strong>走神救援</strong><br />
-CV 赛第一步是<strong>看清任务类型</strong>（分类/检测/分割/关键点），<strong>它们的输出结构复杂度递增，后处理链路越长能出错的环节越多</strong>，认错就全白费。选 backbone 除了「哪个最强」还要看：<strong>预训练权重可得性、显存与速度、和其他模型的多样性（融合时别全同一家族）、社区实现成熟度</strong>（竞赛没时间 debug 冷门实现）。⚠️<strong>检测/分割的分数对后处理极其敏感</strong>——同一模型调 NMS 和置信度阈值能差好几个点。⭐<strong>先用最小 backbone 把链路跑通再换强的</strong>：坑在数据读取、增强有没有同步变换框/掩码、评估口径、提交格式，而换 backbone 只是改一行。⭐<strong>目标很小时（小目标检测/医学微小病灶/遥感），提高分辨率的收益常常排第一</strong>，因为目标只有十几个像素，再强的模型也看不清。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>先确定分类、检测、分割等任务的输出与计分方式。</li><li>用小模型跑通读取、标注、增强、评估和提交，再更换主干。</li><li>小目标、后处理和分辨率可能是瓶颈，不能只比较 backbone。</li></ul></section>
 </blockquote>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -996,4 +995,5 @@ CV 赛第一步是<strong>看清任务类型</strong>（分类/检测/分割/关
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
+</body></html>

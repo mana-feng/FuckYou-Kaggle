@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -310,12 +310,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </details>
 <h1 id="02">02 · 一份数据集是怎么来的</h1>
 <p>⏱ <strong>46 分钟</strong> ｜ ⭐ <strong>五种来源，五套坑</strong></p>
-<hr />
+<hr>
 <h2 id="_1">🎯 一句话</h2>
 <p><strong>你手里那张表不是「数据」，是某个人为了另一个目的、在某个时刻、按某一版口径写下来的东西。</strong>
 把它当成「客观记录」，是数据工作里最贵的一个误解 ——
 <strong>尤其是埋点：它是产品团队写的，口径随时会变，而没人会通知你。</strong></p>
-<hr />
+<hr>
 <h2 id="_2">🧭 一、五种来源，一眼看清</h2>
 <div class="tw"><table>
 <thead>
@@ -365,13 +365,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 答案几乎从来不是「为你的模型」。
 <strong>它服务谁，就会在谁需要的时候被改。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_3">📜 二、业务日志：为对账写的，不是为你写的</h2>
 <p>业务日志通常是最"可信"的一类 —— 因为<strong>钱要对得上</strong>。但它的设计目标决定了三个坑。</p>
-<section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">坑 1：状态表存的是【最终态】，不是【当时态】 ⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">订单表里 status = &#x27;已退款&#x27;</span></div><div class="vb-flow-row"><span class="vb-flow-step">但你要预测的是「下单那一刻会不会退款」</span></div><div class="vb-flow-row"><span class="vb-flow-step">如果你直接 join 订单表当特征，你用了未来</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">泄漏（第14章）</span></div><div class="vb-flow-row"><span class="vb-flow-step">✅ 正解：用【变更流水表】而不是【状态快照表】</span></div><div class="vb-flow-row"><span class="vb-flow-step">没有流水表？那就必须记录每个字段的 valid_from / valid_to</span></div><div class="vb-flow-row"><span class="vb-flow-step">坑 2：补写与重放</span></div><div class="vb-flow-row"><span class="vb-flow-step">支付回调失败会重试，日志里同一笔出现 3 次</span></div><div class="vb-flow-row"><span class="vb-flow-step">对账任务夜里会补写昨天缺的记录</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">昨天的数据今天才全</span></div><div class="vb-flow-row"><span class="vb-flow-step">如果你 T+0 就取数，永远少一截 ⚠️</span></div><div class="vb-flow-row"><span class="vb-flow-step">坑 3：软删除</span></div><div class="vb-flow-row"><span class="vb-flow-step">is_deleted = 1 的行还躺在表里</span></div><div class="vb-flow-row"><span class="vb-flow-step">很多人写 SQL 时忘了加过滤</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">训练集里混着已撤销的业务</span></div></div></section>
+<section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">坑 1：状态表存的是【最终态】，不是【当时态】 ⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">订单表里 status = '已退款'</span></div><div class="vb-flow-row"><span class="vb-flow-step">但你要预测的是「下单那一刻会不会退款」</span></div><div class="vb-flow-row"><span class="vb-flow-step">如果你直接 join 订单表当特征，你用了未来</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">泄漏（第14章）</span></div><div class="vb-flow-row"><span class="vb-flow-step">✅ 正解：用【变更流水表】而不是【状态快照表】</span></div><div class="vb-flow-row"><span class="vb-flow-step">没有流水表？那就必须记录每个字段的 valid_from / valid_to</span></div><div class="vb-flow-row"><span class="vb-flow-step">坑 2：补写与重放</span></div><div class="vb-flow-row"><span class="vb-flow-step">支付回调失败会重试，日志里同一笔出现 3 次</span></div><div class="vb-flow-row"><span class="vb-flow-step">对账任务夜里会补写昨天缺的记录</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">昨天的数据今天才全</span></div><div class="vb-flow-row"><span class="vb-flow-step">如果你 T+0 就取数，永远少一截 ⚠️</span></div><div class="vb-flow-row"><span class="vb-flow-step">坑 3：软删除</span></div><div class="vb-flow-row"><span class="vb-flow-step">is_deleted = 1 的行还躺在表里</span></div><div class="vb-flow-row"><span class="vb-flow-step">很多人写 SQL 时忘了加过滤</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">训练集里混着已撤销的业务</span></div></div></section>
 <p><strong>怎么发现</strong>：</p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>[ ] 表里有没有 update_time？它和 create_time 差多少？</p><p>—— 差得越多，说明这行被改过越多次，越不能当&quot;当时态&quot;用 ⭐</p><p>[ ] 按天统计行数，看最近 3 天是不是明显偏低（= 还在补写）</p><p>[ ] grep 一遍所有 is_deleted / is_valid / status 类的列，</p><p>确认你的 SQL 都过滤了</p><p>[ ] 主键真的唯一吗？（第 6 章）</p></div></section>
-<hr />
+<section class="reading-checklist" aria-label="对照"><p class="visual-block-title">逐项核对</p><div class="vb-compare"><ul class="reading-task-list"><li class="reading-task" data-reading-task="1"><label class="reading-task-title"><input type="checkbox" data-task-key="1"><span>核对项 1</span></label><div class="reading-task-body"><p>表里有没有 update_time？它和 create_time 差多少？</p><p>—— 差得越多，说明这行被改过越多次，越不能当"当时态"用 ⭐</p></div></li><li class="reading-task" data-reading-task="2"><label class="reading-task-title"><input type="checkbox" data-task-key="2"><span>核对项 2</span></label><div class="reading-task-body"><p>按天统计行数，看最近 3 天是不是明显偏低（= 还在补写）</p></div></li><li class="reading-task" data-reading-task="3"><label class="reading-task-title"><input type="checkbox" data-task-key="3"><span>核对项 3</span></label><div class="reading-task-body"><p>grep 一遍所有 is_deleted / is_valid / status 类的列，</p><p>确认你的 SQL 都过滤了</p></div></li><li class="reading-task" data-reading-task="4"><label class="reading-task-title"><input type="checkbox" data-task-key="4"><span>核对项 4</span></label><div class="reading-task-body"><p>主键真的唯一吗？（第 6 章）</p></div></li></ul></div></section>
+<hr>
 <h2 id="_4">📡 三、埋点：本章的重点</h2>
 <p><strong>埋点不是数据工程产的，是产品经理提需求、客户端开发写的。</strong>
 它的生命周期完全由产品迭代驱动，而你的模型，<strong>不在任何人的考虑范围内</strong>。</p>
@@ -416,8 +416,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 而这一列的<strong>含义已经换了一个</strong>。</p>
 </blockquote>
 <h3 id="33">3.3 采样率：一个安静的乘数</h3>
-<section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">埋点上报量太大</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">数据团队开采样：只上报 10%</span></div><div class="vb-flow-row"><span class="vb-flow-step">你的&quot;曝光次数&quot;特征全部 ÷10（但你不知道）</span></div><div class="vb-flow-row"><span class="vb-flow-step">更糟的是：采样往往【不是随机的】</span></div><div class="vb-flow-row"><span class="vb-flow-step">常见做法是按 user_id 哈希取模</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">只保留 10% 的【用户】</span></div><div class="vb-flow-row"><span class="vb-flow-step">用户级特征的分布没变，但【全站聚合特征】全错 ⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 而且采样率会随大促临时调整，事后再调回来</span></div><div class="vb-flow-row"><span class="vb-flow-step">你的历史数据里有一段是 10%，一段是 100%</span></div></div></section>
-<hr />
+<section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">埋点上报量太大</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">数据团队开采样：只上报 10%</span></div><div class="vb-flow-row"><span class="vb-flow-step">你的"曝光次数"特征全部 ÷10（但你不知道）</span></div><div class="vb-flow-row"><span class="vb-flow-step">更糟的是：采样往往【不是随机的】</span></div><div class="vb-flow-row"><span class="vb-flow-step">常见做法是按 user_id 哈希取模</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">只保留 10% 的【用户】</span></div><div class="vb-flow-row"><span class="vb-flow-step">用户级特征的分布没变，但【全站聚合特征】全错 ⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 而且采样率会随大促临时调整，事后再调回来</span></div><div class="vb-flow-row"><span class="vb-flow-step">你的历史数据里有一段是 10%，一段是 100%</span></div></div></section>
+<hr>
 <h2 id="schema">🧪 四、口径指纹：抓「schema 没变但语义变了」</h2>
 <p>既然 schema 校验拦不住时机变化和采样变化，就需要另一套东西：
 <strong>每天给每个关键字段拍一张「指纹」，然后比昨天。</strong></p>
@@ -469,12 +469,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong><code>diff_fingerprint</code> 里最关键的设计是「看绝对量，不看比率」</strong>：
 如果只监控 CTR，曝光口径收紧会让 CTR <strong>变好看</strong>，你还以为模型进步了。
 <strong>只有同时盯分子和分母的绝对值，才能看见分母被换掉。</strong>
-（这条和 <a href="../模型上线之后/11-从告警到根因.html">模型上线之后 11</a> 的「分母变了」是同一件事的两端。）</p>
+（这条和 <a href="../%E6%A8%A1%E5%9E%8B%E4%B8%8A%E7%BA%BF%E4%B9%8B%E5%90%8E/11-%E4%BB%8E%E5%91%8A%E8%AD%A6%E5%88%B0%E6%A0%B9%E5%9B%A0.html">模型上线之后 11</a> 的「分母变了」是同一件事的两端。）</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_5">✍️ 五、人工标注：唯一为你而生的数据，也是最贵的</h2>
-<section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>看到一份标注数据，必须问清六件事：</li><li>标注指南是哪一版？现在线上用的是哪一版？ ⭐（第1章那个事故）</li><li>每条标了几遍？一致性（Kappa）是多少？ （第10章）</li><li>标注员是谁？外包还是业务专家？流失率多少？</li><li>样本是怎么抽的？随机还是按某种规则挑的？ （第15章）</li><li>有没有&quot;不确定&quot;这个选项？它被怎么处理了？</li><li>标注时标注员能看到什么？会不会看到答案？ ⚠️ 泄漏</li><li>⭐ 六个问题里，第①和第②决定了这份数据的【天花板】：</li><li>标注员之间都对不齐的东西，模型不可能学对。</li></ol></section>
-<hr />
+<section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>看到一份标注数据，必须问清六件事：</li><li>标注指南是哪一版？现在线上用的是哪一版？ ⭐（第1章那个事故）</li><li>每条标了几遍？一致性（Kappa）是多少？ （第10章）</li><li>标注员是谁？外包还是业务专家？流失率多少？</li><li>样本是怎么抽的？随机还是按某种规则挑的？ （第15章）</li><li>有没有"不确定"这个选项？它被怎么处理了？</li><li>标注时标注员能看到什么？会不会看到答案？ ⚠️ 泄漏</li><li>⭐ 六个问题里，第①和第②决定了这份数据的【天花板】：</li><li>标注员之间都对不齐的东西，模型不可能学对。</li></ol></section>
+<hr>
 <h2 id="_6">💰 六、外购数据：三个必问，一个必查</h2>
 <div class="tw"><table>
 <thead>
@@ -499,21 +499,21 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p>一个必查：</p>
-<section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 外部数据里有没有混进你的目标？</span></div><div class="vb-flow-row"><span class="vb-flow-step">典型：买了一份&quot;企业风险评分&quot;来做信贷模型</span></div><div class="vb-flow-row"><span class="vb-flow-step">结果这份评分本身就用了【是否已逾期】做输入</span></div><div class="vb-flow-row"><span class="vb-flow-step">你的模型 AUC 从 0.76 跳到 0.91</span></div><div class="vb-flow-row"><span class="vb-flow-step">上线后崩到 0.68（新客户还没逾期，评分是空的）</span></div><div class="vb-flow-row"><span class="vb-flow-step">✅ 查法：把外部特征单独拿出来训一个模型，</span></div><div class="vb-flow-row"><span class="vb-flow-step">如果【单它一个】就能到 0.85+，几乎一定有问题（第14章）</span></div></div></section>
-<hr />
+<section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 外部数据里有没有混进你的目标？</span></div><div class="vb-flow-row"><span class="vb-flow-step">典型：买了一份"企业风险评分"来做信贷模型</span></div><div class="vb-flow-row"><span class="vb-flow-step">结果这份评分本身就用了【是否已逾期】做输入</span></div><div class="vb-flow-row"><span class="vb-flow-step">你的模型 AUC 从 0.76 跳到 0.91</span></div><div class="vb-flow-row"><span class="vb-flow-step">上线后崩到 0.68（新客户还没逾期，评分是空的）</span></div><div class="vb-flow-row"><span class="vb-flow-step">✅ 查法：把外部特征单独拿出来训一个模型，</span></div><div class="vb-flow-row"><span class="vb-flow-step">如果【单它一个】就能到 0.85+，几乎一定有问题（第14章）</span></div></div></section>
+<hr>
 <h2 id="_7">🧬 七、合成数据：边缘像，联合不像</h2>
-<section class="visual-block visual-block-flow" aria-label="流程图"><p class="visual-block-title">流程图</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">最常见的三种合成：</span></div><div class="vb-flow-row"><span class="vb-flow-step">① 规则生成（faker、模板） —— 分布完全由你的想象决定</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 过采样/SMOTE —— ⚠️ 在特征空间插值，可能造出物理上不存在的样本</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 生成模型（GAN/扩散/LLM） —— 边缘分布很像，但【条件依赖结构】常常错</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 一个必做的检验：训练一个&quot;真假判别器&quot;</span></div><div class="vb-flow-row"><span class="vb-flow-step">把真实数据标 1、合成数据标 0，训一个分类器</span></div><div class="vb-flow-row"><span class="vb-flow-step">· AUC ≈ 0.5</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">合成得很好</span></div><div class="vb-flow-row"><span class="vb-flow-step">· AUC ≈ 0.99</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">合成数据有明显指纹，模型会学到&quot;这是合成的&quot;这件事本身</span></div></div></section>
+<section class="visual-block visual-block-flow" aria-label="流程图"><p class="visual-block-title">流程图</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">最常见的三种合成：</span></div><div class="vb-flow-row"><span class="vb-flow-step">① 规则生成（faker、模板） —— 分布完全由你的想象决定</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 过采样/SMOTE —— ⚠️ 在特征空间插值，可能造出物理上不存在的样本</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 生成模型（GAN/扩散/LLM） —— 边缘分布很像，但【条件依赖结构】常常错</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 一个必做的检验：训练一个"真假判别器"</span></div><div class="vb-flow-row"><span class="vb-flow-step">把真实数据标 1、合成数据标 0，训一个分类器</span></div><div class="vb-flow-row"><span class="vb-flow-step">· AUC ≈ 0.5</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">合成得很好</span></div><div class="vb-flow-row"><span class="vb-flow-step">· AUC ≈ 0.99</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">合成数据有明显指纹，模型会学到"这是合成的"这件事本身</span></div></div></section>
 <blockquote>
 <p>⚠️ <strong>SMOTE 有个几乎人人都踩的坑</strong>：
 <strong>必须在训练集内部做，且在交叉验证的每一折内部做。</strong>
 先 SMOTE 再切分 = 合成样本的"父样本"在训练集、"子样本"在验证集
 → <strong>指标虚高</strong>（第 6 章、第 14 章会详细说这个机制）。</p>
 </blockquote>
-<p>（合成数据的完整讨论在 <a href="16-合成数据.html">第 16 章</a>。）</p>
-<hr />
+<p>（合成数据的完整讨论在 <a href="16-%E5%90%88%E6%88%90%E6%95%B0%E6%8D%AE.html">第 16 章</a>。）</p>
+<hr>
 <h2 id="19">💀 八、事故复盘：曝光口径改了一行，模型偏了 19 天</h2>
 <h3 id="_8">发生了什么</h3>
-<section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">系统：信息流推荐的 CTR 预估模型，日均请求 2.6 亿</span></div><div class="vb-flow-row"><span class="vb-flow-step">训练数据：曝光日志 × 点击日志 join，曝光为负样本、点击为正样本</span></div><div class="vb-flow-row"><span class="vb-flow-step">3 月 12 日，产品上线了一个&quot;曝光质量优化&quot;：</span></div><div class="vb-flow-row"><span class="vb-flow-step">曝光定义： item 进入视口 （旧）</span></div><div class="vb-flow-row"><span class="vb-flow-step">item 在视口内停留 ≥1s （新）</span></div><div class="vb-flow-row"><span class="vb-flow-step">目的：让报表里的 CTR 更&quot;真实&quot;，对齐竞品口径</span></div><div class="vb-flow-row"><span class="vb-flow-step">埋点字段名：impression —— 没改</span></div><div class="vb-flow-row"><span class="vb-flow-step">埋点参数： 类型、必填性 —— 没改</span></div><div class="vb-flow-row"><span class="vb-flow-step">通知了谁：产品群、数据看板群 —— 算法团队不在里面 ⚠️</span></div></div></section>
+<section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">系统：信息流推荐的 CTR 预估模型，日均请求 2.6 亿</span></div><div class="vb-flow-row"><span class="vb-flow-step">训练数据：曝光日志 × 点击日志 join，曝光为负样本、点击为正样本</span></div><div class="vb-flow-row"><span class="vb-flow-step">3 月 12 日，产品上线了一个"曝光质量优化"：</span></div><div class="vb-flow-row"><span class="vb-flow-step">曝光定义： item 进入视口 （旧）</span></div><div class="vb-flow-row"><span class="vb-flow-step">item 在视口内停留 ≥1s （新）</span></div><div class="vb-flow-row"><span class="vb-flow-step">目的：让报表里的 CTR 更"真实"，对齐竞品口径</span></div><div class="vb-flow-row"><span class="vb-flow-step">埋点字段名：impression —— 没改</span></div><div class="vb-flow-row"><span class="vb-flow-step">埋点参数： 类型、必填性 —— 没改</span></div><div class="vb-flow-row"><span class="vb-flow-step">通知了谁：产品群、数据看板群 —— 算法团队不在里面 ⚠️</span></div></div></section>
 <h3 id="_9">为什么没被发现</h3>
 <div class="tw"><table>
 <thead>
@@ -563,13 +563,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">⭐ 训练侧的连锁反应：</span></div><div class="vb-flow-row"><span class="vb-flow-step">曝光（负样本）少了 34%，点击（正样本）几乎没变</span></div><div class="vb-flow-row"><span class="vb-flow-step">正样本比例 4.1%</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">6.2%，涨了 51%</span></div><div class="vb-flow-row"><span class="vb-flow-step">模型预估的绝对值整体抬高约 1.5 倍</span></div><div class="vb-flow-row"><span class="vb-flow-step">而下游的【竞价出价】和【冷启动流量阈值】是按绝对预估值配的固定阈值</span></div><div class="vb-flow-row"><span class="vb-flow-step">阈值全部失效：低质内容被判定为&quot;高预估 CTR&quot;，拿到了大量流量</span></div></div></section>
+<section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">⭐ 训练侧的连锁反应：</span></div><div class="vb-flow-row"><span class="vb-flow-step">曝光（负样本）少了 34%，点击（正样本）几乎没变</span></div><div class="vb-flow-row"><span class="vb-flow-step">正样本比例 4.1%</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">6.2%，涨了 51%</span></div><div class="vb-flow-row"><span class="vb-flow-step">模型预估的绝对值整体抬高约 1.5 倍</span></div><div class="vb-flow-row"><span class="vb-flow-step">而下游的【竞价出价】和【冷启动流量阈值】是按绝对预估值配的固定阈值</span></div><div class="vb-flow-row"><span class="vb-flow-step">阈值全部失效：低质内容被判定为"高预估 CTR"，拿到了大量流量</span></div></div></section>
 <h3 id="_10">怎么发现的</h3>
 <p><strong>不是监控发现的。</strong> 是 3 月 31 日一个运营在群里问：
 「为什么最近推荐的东西越来越水？」</p>
 <section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">发现延迟 = 19 天</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 而模型的所有技术指标在这 19 天里都是正常甚至变好的：</span></div><div class="vb-flow-row"><span class="vb-flow-step">离线 AUC 0.712</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">0.719（因为正负比更平衡，AUC 反而好看）</span></div><div class="vb-flow-row"><span class="vb-flow-step">线上 CTR 报表 4.1%</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">6.3%（分母变小）</span></div><div class="vb-flow-row"><span class="vb-flow-step">服务成功率、延迟、特征缺失率 —— 全部正常</span></div></div></section>
 <h3 id="_11">代价</h3>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>19 天 × 2.6 亿请求 ≈ 49 亿次受影响的曝光</p><p>低质内容分发占比从 3.2% 涨到 11.7%</p><p>次日留存 -0.9pp（事后用断点回归估的，见《模型上线之后》13）</p><p>重建训练集 + 回溯 60 天曝光 + 重训 + 灰度：14 人日</p><p>⭐ 真正的修复只用了 14 人日；19 天全花在&quot;没人知道&quot;上</p></div></section>
+<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>19 天 × 2.6 亿请求 ≈ 49 亿次受影响的曝光</p><p>低质内容分发占比从 3.2% 涨到 11.7%</p><p>次日留存 -0.9pp（事后用断点回归估的，见《模型上线之后》13）</p><p>重建训练集 + 回溯 60 天曝光 + 重训 + 灰度：14 人日</p><p>⭐ 真正的修复只用了 14 人日；19 天全花在"没人知道"上</p></div></section>
 <h3 id="_12">该补什么</h3>
 <div class="tw"><table>
 <thead>
@@ -581,7 +581,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <tbody>
 <tr>
 <td><strong>算法团队不在埋点变更通知链里</strong></td>
-<td>数据契约里必须有<strong>消费者清单</strong>，改动前必须通知（<a href="03-数据契约.html">第 3 章</a>）⭐</td>
+<td>数据契约里必须有<strong>消费者清单</strong>，改动前必须通知（<a href="03-%E6%95%B0%E6%8D%AE%E5%A5%91%E7%BA%A6.html">第 3 章</a>）⭐</td>
 </tr>
 <tr>
 <td><strong>只监控比率，不监控绝对量</strong></td>
@@ -593,11 +593,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 <tr>
 <td><strong>「指标变好」不触发任何检查</strong></td>
-<td><strong>CTR 单日跳变 &gt; 20%（无论方向）一律告警</strong>（<a href="08-数据质量怎么量.html">第 8 章</a>）⭐</td>
+<td><strong>CTR 单日跳变 &gt; 20%（无论方向）一律告警</strong>（<a href="08-%E6%95%B0%E6%8D%AE%E8%B4%A8%E9%87%8F%E6%80%8E%E4%B9%88%E9%87%8F.html">第 8 章</a>）⭐</td>
 </tr>
 <tr>
 <td><strong>模型输出的绝对值没被监控</strong></td>
-<td>预估分的分位数进监控（<a href="../模型上线之后/05-该监控什么.html">模型上线之后 05</a>）</td>
+<td>预估分的分位数进监控（<a href="../%E6%A8%A1%E5%9E%8B%E4%B8%8A%E7%BA%BF%E4%B9%8B%E5%90%8E/05-%E8%AF%A5%E7%9B%91%E6%8E%A7%E4%BB%80%E4%B9%88.html">模型上线之后 05</a>）</td>
 </tr>
 </tbody>
 </table></div>
@@ -607,10 +607,54 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 在数据这一关，<strong>向上的跳变和向下的跳变同样危险</strong> ——
 而绝大多数监控体系只对向下的那一半设了告警。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_13">🗺️ 九、一张来源溯源表（建议每个项目都建一份）</h2>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>| 字段 | 来源层 | 产出方 | 口径定义链接 | 更新频率 | 最近变更 | 我们的用途 |</p><p>|------|--------|--------|-------------|---------|---------|-----------|</p><p>| impression | 埋点 | 客户端-Feed组 | wiki/xxx | 实时 | 2026-03-12 ⚠️ | 负样本 |</p><p>| order_amt | 业务 | 交易服务 | wiki/yyy | T+1 | 2025-11-03 | 特征 |</p><p>| risk_score | 外购 | XX数据 | 合同附件3 | 月更 | 未知 ⚠️ | 特征 |</p><p>⭐ 「最近变更」那一列如果写着&quot;未知&quot;，就是一个待办事项。</p><p>⭐ 这张表本身就是第 3 章数据契约的雏形，也是第 17 章血缘的人工版。</p></div></section>
-<hr />
+<p>先沿一行追踪一个字段的来源，再看「最近变更」是否有待确认项。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>来源层</th>
+<th>产出方</th>
+<th>口径定义链接</th>
+<th>更新频率</th>
+<th>最近变更</th>
+<th>我们的用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>impression</code></td>
+<td>埋点</td>
+<td>客户端-Feed组</td>
+<td>wiki/xxx</td>
+<td>实时</td>
+<td>2026-03-12 ⚠️</td>
+<td>负样本</td>
+</tr>
+<tr>
+<td><code>order_amt</code></td>
+<td>业务</td>
+<td>交易服务</td>
+<td>wiki/yyy</td>
+<td>T+1</td>
+<td>2025-11-03</td>
+<td>特征</td>
+</tr>
+<tr>
+<td><code>risk_score</code></td>
+<td>外购</td>
+<td>XX数据</td>
+<td>合同附件3</td>
+<td>月更</td>
+<td>未知 ⚠️</td>
+<td>特征</td>
+</tr>
+</tbody>
+</table></div>
+<p>⭐ 「最近变更」那一列如果写着“未知”，就是一个待办事项。</p>
+<p>⭐ 这张表本身就是第 3 章数据契约的雏形，也是第 17 章血缘的人工版。</p>
+<hr>
 <h2 id="_14">🔗 这一章连到哪里</h2>
 <div class="tw"><table>
 <thead>
@@ -621,24 +665,24 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </thead>
 <tbody>
 <tr>
-<td><a href="../推荐算法/03-数据长什么样.html">推荐算法 03 数据长什么样</a></td>
+<td><a href="../%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/03-%E6%95%B0%E6%8D%AE%E9%95%BF%E4%BB%80%E4%B9%88%E6%A0%B7.html">推荐算法 03 数据长什么样</a></td>
 <td>那边具体展示曝光/点击日志的结构；<strong>本章讲这些日志是怎么被改掉的</strong></td>
 </tr>
 <tr>
-<td><a href="../模型上线之后/06-数据漂移与概念漂移.html">模型上线之后 06 数据漂移与概念漂移</a></td>
+<td><a href="../%E6%A8%A1%E5%9E%8B%E4%B8%8A%E7%BA%BF%E4%B9%8B%E5%90%8E/06-%E6%95%B0%E6%8D%AE%E6%BC%82%E7%A7%BB%E4%B8%8E%E6%A6%82%E5%BF%B5%E6%BC%82%E7%A7%BB.html">模型上线之后 06 数据漂移与概念漂移</a></td>
 <td>漂移是「世界变了」，本章的口径变更是「<strong>记录世界的方式变了</strong>」—— 现象一样，处理完全不同 ⭐</td>
 </tr>
 <tr>
-<td><a href="../模型上线之后/11-从告警到根因.html">模型上线之后 11 从告警到根因</a></td>
+<td><a href="../%E6%A8%A1%E5%9E%8B%E4%B8%8A%E7%BA%BF%E4%B9%8B%E5%90%8E/11-%E4%BB%8E%E5%91%8A%E8%AD%A6%E5%88%B0%E6%A0%B9%E5%9B%A0.html">模型上线之后 11 从告警到根因</a></td>
 <td>「分母变了」那一条就是本章事故的排查视角</td>
 </tr>
 <tr>
-<td><a href="../AI基础设施/22-数据管线与存储.html">AI 基础设施 22 数据管线与存储</a></td>
+<td><a href="../AI%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD/22-%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%BA%BF%E4%B8%8E%E5%AD%98%E5%82%A8.html">AI 基础设施 22 数据管线与存储</a></td>
 <td>采样、去重、补数这些动作发生在哪一层</td>
 </tr>
 </tbody>
 </table></div>
-<hr />
+<hr>
 <h2 id="_15">✅ 检查点</h2>
 <ol>
 <li>五种数据来源分别是什么？各自「为谁的 KPI 服务」？</li>
@@ -667,7 +711,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>产品把曝光从「进入视口」改成「停留 ≥1s」，<strong>字段名和类型都没改，算法团队不在通知链里</strong>。连锁反应：曝光（负样本）-34%，点击几乎不变 → 正样本率 4.1%→6.2%（+51%）→ 预估值整体抬高约 1.5 倍 → 下游按绝对值配的竞价出价和冷启阈值全部失效。六项校验全过是因为字段/类型/非空/主键都没变，日行数 -34% 没超 ±40% 阈值，而 CTR 从 4.1% 涨到 6.2% 没人告警，因为它变"好"了。发现延迟 19 天，靠运营一句「为什么推荐的越来越水」。代价：约 49 亿次曝光受影响、低质分发占比 3.2%→11.7%、次日留存 -0.9pp，而修复只要 14 人日。最该记住的：「指标变好了」从来不是「不用查」的理由——向上的跳变和向下的跳变同样危险。</li>
 </ol>
 </details>
-<hr />
+<hr>
 <h2 id="_16">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
@@ -680,7 +724,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⚠️ 外购数据必查一条：<strong>单独拿它训一个模型</strong>，如果单它一个就到很高的 AUC，⭐ <strong>几乎一定是你的目标混进去了。</strong></p>
 <p>💀 那个事故：产品把曝光口径从「进入视口」改成「停留一秒」，<strong>字段名和类型全没改，而算法团队不在通知群里</strong>。</p>
 </blockquote>
-<p><strong>下一节</strong> 👉 <a href="03-数据契约.html">03-数据契约.md</a></p>
+<p><strong>下一节</strong> 👉 <a href="03-%E6%95%B0%E6%8D%AE%E5%A5%91%E7%BA%A6.html">03-数据契约.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="01-数据才是那个瓶颈.html"><div class="dir">← 上一节</div>🕳️ 01 · 数据才是那个瓶颈</a><a class="next" href="03-数据契约.html"><div class="dir">下一节 →</div>📜 03 · 数据契约</a></nav>
@@ -707,4 +751,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

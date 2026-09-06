@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -315,7 +315,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <hr />
 <h2 id="_2">🥚 一、鸡生蛋问题</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">想做聚类：</span></div><div class="vb-tree-row"><span class="vb-tree-node">如果知道每个点属于哪一簇 → 就能算出每簇的中心 ✅</span></div><div class="vb-tree-row"><span class="vb-tree-node">如果知道每簇的中心 → 就能判断每个点属于哪簇 ✅</span></div><div class="vb-tree-row"><span class="vb-tree-node">但两个都不知道 💀</span><span class="vb-tree-note">这就是【隐变量】问题</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>想做聚类：</span></li><li><span>如果知道每个点属于哪一簇 → 就能算出每簇的中心 ✅</span></li><li><span>如果知道每簇的中心 → 就能判断每个点属于哪簇 ✅</span></li><li><span>但两个都不知道 💀</span> <span>这就是【隐变量】问题</span></li></ul></section>
 <p><strong>EM 的解法简单粗暴</strong>：</p>
 <section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">随便初始化</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">循环{</span></div><div class="vb-flow-row"><span class="vb-flow-step">E 步 (Expectation)：假装参数是对的，猜出隐变量</span></div><div class="vb-flow-row"><span class="vb-flow-step">M 步 (Maximization)：假装隐变量是对的，更新参数</span></div><div class="vb-flow-row"><span class="vb-flow-step">} 直到不变</span></div></div></section>
 <p>💡 <strong>人话</strong>：<em>两个未知量，先固定一个求另一个，来回倒腾直到都不动了。</em></p>
@@ -449,13 +449,14 @@ softmax 后变成 one-hot —— 也就是硬分配。</p>
 <li><strong>E 步</strong>：固定 θ，选 $q(z) = p(z|X,\theta)$ → <strong>让下界【等于】对数似然</strong>（贴紧）</li>
 <li><strong>M 步</strong>：固定 q，最大化下界 → <strong>下界上升，所以对数似然至少不降</strong></li>
 </ul>
-<section aria-label="结构路径" class="visual-block visual-block-tree">
-<p class="visual-block-title">结构路径</p>
-<div class="vb-tree-flow">
-<div class="vb-tree-row"><span class="vb-tree-node">对数似然 ▔▔▔▔ ▔▔▔▔</span></div>
-<div class="vb-tree-row"><span class="vb-tree-node">↑M步：抬高下界</span></div>
-<div class="vb-tree-row"><span class="vb-tree-node">下界 ____↑E步：把下界顶到贴着似然</span></div>
-</div>
+<figure class="dia reading-diagram repair-diagram" id="relationship-theorymd-13-2" style="--diagram-width:720px"><svg viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="横轴是参数，纵轴向上表示目标值更大。E 步构造在当前参数处贴住似然的下界，M 步提高该下界；虚线始终不高于实线。曲线为关系示意。"><title>横轴是参数，纵轴向上表示目标值更大。E 步构造在当前参数处贴住似然的下界，M 步提高该下界；虚线始终不高于实线。曲线为关系示意。</title><line x1="65" y1="325" x2="660" y2="325" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="660.0,325.0 651.0,330.0 651.0,320.0"/><line x1="65" y1="325" x2="65" y2="50" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="65.0,50.0 70.0,59.0 60.0,59.0"/><text x="25" y="35" font-size="18" text-anchor="start" fill="var(--fg)">目标值</text><text x="570" y="369" font-size="17" text-anchor="start" fill="var(--fg)">参数</text><polyline points="90.00,215.32 94.00,212.36 98.00,209.44 102.00,206.56 106.00,203.72 110.00,200.92 114.00,198.16 118.00,195.43 122.00,192.74 126.00,190.09 130.00,187.48 134.00,184.91 138.00,182.37 142.00,179.88 146.00,177.42 150.00,175.00 154.00,172.62 158.00,170.28 162.00,167.97 166.00,165.71 170.00,163.48 174.00,161.29 178.00,159.14 182.00,157.03 186.00,154.96 190.00,152.92 194.00,150.92 198.00,148.96 202.00,147.04 206.00,145.16 210.00,143.32 214.00,141.52 218.00,139.75 222.00,138.02 226.00,136.33 230.00,134.68 234.00,133.07 238.00,131.49 242.00,129.96 246.00,128.46 250.00,127.00 254.00,125.58 258.00,124.20 262.00,122.85 266.00,121.55 270.00,120.28 274.00,119.05 278.00,117.86 282.00,116.71 286.00,115.60 290.00,114.52 294.00,113.48 298.00,112.48 302.00,111.52 306.00,110.60 310.00,109.72 314.00,108.88 318.00,108.07 322.00,107.30 326.00,106.57 330.00,105.88 334.00,105.23 338.00,104.61 342.00,104.04 346.00,103.50 350.00,103.00 354.00,102.54 358.00,102.12 362.00,101.73 366.00,101.39 370.00,101.08 374.00,100.81 378.00,100.58 382.00,100.39 386.00,100.24 390.00,100.12 394.00,100.04 398.00,100.00 402.00,100.00 406.00,100.04 410.00,100.12 414.00,100.24 418.00,100.39 422.00,100.58 426.00,100.81 430.00,101.08 434.00,101.39 438.00,101.73 442.00,102.12 446.00,102.54 450.00,103.00 454.00,103.50 458.00,104.04 462.00,104.61 466.00,105.23 470.00,105.88 474.00,106.57 478.00,107.30 482.00,108.07 486.00,108.88 490.00,109.72 494.00,110.60 498.00,111.52 502.00,112.48 506.00,113.48 510.00,114.52 514.00,115.60 518.00,116.71 522.00,117.86 526.00,119.05 530.00,120.28 534.00,121.55 538.00,122.85 542.00,124.20 546.00,125.58 550.00,127.00 554.00,128.46 558.00,129.96 562.00,131.49 566.00,133.07 570.00,134.68 574.00,136.33 578.00,138.02 582.00,139.75 586.00,141.52 590.00,143.32 594.00,145.16 598.00,147.04 602.00,148.96 606.00,150.92 610.00,152.92 614.00,154.96 618.00,157.03 622.00,159.14 626.00,161.29 630.00,163.48 634.00,165.71 638.00,167.97" fill="none" stroke="var(--accent)" stroke-width="3"/><polyline points="90.00,225.40 94.00,221.78 98.00,218.23 102.00,214.73 106.00,211.29 110.00,207.92 114.00,204.61 118.00,201.35 122.00,198.16 126.00,195.03 130.00,191.96 134.00,188.95 138.00,186.00 142.00,183.11 146.00,180.29 150.00,177.52 154.00,174.81 158.00,172.17 162.00,169.59 166.00,167.06 170.00,164.60 174.00,162.20 178.00,159.86 182.00,157.58 186.00,155.36 190.00,153.20 194.00,151.10 198.00,149.07 202.00,147.09 206.00,145.17 210.00,143.32 214.00,141.53 218.00,139.79 222.00,138.12 226.00,136.51 230.00,134.96 234.00,133.47 238.00,132.04 242.00,130.67 246.00,129.37 250.00,128.12 254.00,126.93 258.00,125.81 262.00,124.75 266.00,123.74 270.00,122.80 274.00,121.92 278.00,121.10 282.00,120.34 286.00,119.64 290.00,119.00 294.00,118.42 298.00,117.91 302.00,117.45 306.00,117.05 310.00,116.72 314.00,116.45 318.00,116.23 322.00,116.08 326.00,115.99 330.00,115.96 334.00,115.99 338.00,116.08 342.00,116.23 346.00,116.45 350.00,116.72 354.00,117.05 358.00,117.45 362.00,117.91 366.00,118.42 370.00,119.00 374.00,119.64 378.00,120.34 382.00,121.10 386.00,121.92 390.00,122.80 394.00,123.74 398.00,124.75 402.00,125.81 406.00,126.93 410.00,128.12 414.00,129.37 418.00,130.67 422.00,132.04 426.00,133.47 430.00,134.96 434.00,136.51 438.00,138.12 442.00,139.79 446.00,141.53 450.00,143.32 454.00,145.17 458.00,147.09 462.00,149.07 466.00,151.10 470.00,153.20 474.00,155.36 478.00,157.58 482.00,159.86 486.00,162.20 490.00,164.60 494.00,167.06 498.00,169.59 502.00,172.17 506.00,174.81 510.00,177.52 514.00,180.29 518.00,183.11 522.00,186.00 526.00,188.95 530.00,191.96 534.00,195.03 538.00,198.16 542.00,201.35 546.00,204.61 550.00,207.92 554.00,211.29 558.00,214.73 562.00,218.23 566.00,221.78 570.00,225.40 574.00,229.08 578.00,232.82 582.00,236.62 586.00,240.48 590.00,244.40 594.00,248.38 598.00,252.43 602.00,256.53 606.00,260.69 610.00,264.92 614.00,269.21 618.00,273.55 622.00,277.96 626.00,282.43 630.00,286.96 634.00,291.55 638.00,296.20" fill="none" stroke="var(--muted)" stroke-width="3" stroke-dasharray="6 5"/><polyline points="90.00,255.64 94.00,251.35 98.00,247.12 102.00,242.95 106.00,238.85 110.00,234.80 114.00,230.81 118.00,226.89 122.00,223.03 126.00,219.22 130.00,215.48 134.00,211.80 138.00,208.18 142.00,204.62 146.00,201.12 150.00,197.68 154.00,194.30 158.00,190.99 162.00,187.73 166.00,184.53 170.00,181.40 174.00,178.33 178.00,175.31 182.00,172.36 186.00,169.47 190.00,166.64 194.00,163.87 198.00,161.16 202.00,158.51 206.00,155.93 210.00,153.40 214.00,150.93 218.00,148.53 222.00,146.19 226.00,143.90 230.00,141.68 234.00,139.52 238.00,137.42 242.00,135.38 246.00,133.40 250.00,131.48 254.00,129.62 258.00,127.83 262.00,126.09 266.00,124.41 270.00,122.80 274.00,121.25 278.00,119.75 282.00,118.32 286.00,116.95 290.00,115.64 294.00,114.39 298.00,113.20 302.00,112.07 306.00,111.01 310.00,110.00 314.00,109.05 318.00,108.17 322.00,107.35 326.00,106.58 330.00,105.88 334.00,105.24 338.00,104.66 342.00,104.14 346.00,103.68 350.00,103.28 354.00,102.94 358.00,102.67 362.00,102.45 366.00,102.29 370.00,102.20 374.00,102.17 378.00,102.19 382.00,102.28 386.00,102.43 390.00,102.64 394.00,102.91 398.00,103.24 402.00,103.63 406.00,104.09 410.00,104.60 414.00,105.17 418.00,105.81 422.00,106.51 426.00,107.26 430.00,108.08 434.00,108.96 438.00,109.90 442.00,110.90 446.00,111.96 450.00,113.08 454.00,114.26 458.00,115.51 462.00,116.81 466.00,118.17 470.00,119.60 474.00,121.09 478.00,122.63 482.00,124.24 486.00,125.91 490.00,127.64 494.00,129.43 498.00,131.28 502.00,133.19 506.00,135.17 510.00,137.20 514.00,139.29 518.00,141.45 522.00,143.67 526.00,145.94 530.00,148.28 534.00,150.68 538.00,153.14 542.00,155.66 546.00,158.24 550.00,160.88 554.00,163.58 558.00,166.35 562.00,169.17 566.00,172.05 570.00,175.00 574.00,178.01 578.00,181.07 582.00,184.20 586.00,187.39 590.00,190.64 594.00,193.95 598.00,197.32 602.00,200.75 606.00,204.25 610.00,207.80 614.00,211.41 618.00,215.09 622.00,218.83 626.00,222.62 630.00,226.48 634.00,230.40 638.00,234.38" fill="none" stroke="var(--link)" stroke-width="3" stroke-dasharray="6 5"/><text x="352" y="76" font-size="18" text-anchor="start" fill="var(--fg)">对数似然</text><text x="135" y="275" font-size="18" text-anchor="start" fill="var(--fg)">旧下界</text><text x="300" y="315" font-size="18" text-anchor="start" fill="var(--link)">蓝虚线：更新后的下界</text><line x1="210" y1="260" x2="300" y2="192" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="300.0,192.0 295.8,201.4 289.8,193.4"/></svg><figcaption>横轴是参数，纵轴向上表示目标值更大。E 步构造在当前参数处贴住似然的下界，M 步提高该下界；虚线始终不高于实线。曲线为关系示意。</figcaption></figure>
+<section class="reading-information">
+<p class="reading-information-title">图下说明</p>
+<ul>
+<li><span>对数似然  </span></li>
+<li><span>↑M步：抬高下界</span></li>
+<li><span>下界 ↑E步：把下界顶到贴着似然</span></li>
+</ul>
 </section>
 <p>💡 <strong>这就是"变分推断"的雏形</strong>——VAE 里的 ELBO 就是这个。</p>
 </details>
@@ -645,9 +646,8 @@ softmax 后变成 one-hot —— 也就是硬分配。</p>
 <hr />
 <h2 id="_7">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>EM 解<strong>隐变量问题</strong>——鸡生蛋：<strong>知道点属于哪簇就能算簇中心，知道中心就能定归属，但两个都不知道</strong>。解法：随便初始化，循环 <strong>E 步（假装参数对，猜隐变量）→ M 步（假装隐变量对，更新参数）</strong> 直到不变。⭐这个"交替优化"到处都是：ALS、GAN、坐标下降。<strong>GMM</strong>：<code>p(x) = Σ πₖ N(x|μₖ,Σₖ)</code>，<strong>你只看到点、没看到"用了哪个高斯"，那就是隐变量</strong>。<strong>E 步算"责任" γ</strong>——⭐<strong>它就是贝叶斯后验</strong>（先验 πₖ × 似然 N 归一化）；<strong>M 步就是普通均值/协方差公式，只是每个样本带权重 γ</strong>。⭐<strong>K-Means 是 GMM 的特例</strong>：三个限制 <strong>Σₖ = σ²I（球形等大）、σ²→0、πₖ 相等</strong>；σ²→0 时密度指数上的负数被放大到极端，<strong>最近的 μ 相对其他项趋于无穷、softmax 后变 one-hot</strong>，<strong>软分配退化成硬分配、M 步变取平均</strong>。⭐这也是"<strong>K-Means 只能找球形簇</strong>"的根因，<strong>GMM 放开这个假设就能找椭圆簇</strong>。<strong>软分配保留了"有多像"</strong>：51% 像 A 和 99% 像 A 的点<strong>在 K-Means 眼里一模一样</strong>，保留下来就能<strong>做概率异常检测（所有簇概率都低＝异常）</strong>。⭐<strong>保证：对数似然每次迭代单调不减</strong>（所以一定收敛），本质是<strong>E 步把 ELBO 下界顶到贴着似然、M 步抬高下界</strong>——<strong>这就是变分推断的雏形，VAE 的 ELBO 就是它</strong>；⚠️<strong>但只到局部最优</strong> → <strong>多次随机初始化取似然最高的</strong>（<code>n_init</code>）。⚠️<strong>协方差退化</strong>：某成分只含极少点时协方差→0、似然→∞，<strong>这是真实的数学奇点不是数值误差</strong>，必须加 <code>reg_covar</code>。⭐<strong>优势：它有似然，能用 BIC/AIC 客观选 K</strong>，K-Means 只能靠肘部法则。EM 远不止聚类：缺失值填补、HMM、LDA、<strong>MoE（隐变量＝路由到哪个专家）</strong>都是。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>EM 在估计隐变量分布与更新参数之间交替推进。</li><li>GMM 的 E 步计算各成分责任，M 步按这些权重更新分布参数。</li><li>似然改善不保证全局最优；多次初始化并处理协方差退化，再比较模型。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="14-实战与挑战项目.html">14-实战与挑战项目.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -675,4 +675,4 @@ softmax 后变成 one-hot —— 也就是硬分配。</p>
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

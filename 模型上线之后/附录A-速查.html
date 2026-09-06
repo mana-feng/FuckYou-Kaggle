@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -313,9 +313,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h1 id="a">附录 A · 速查</h1>
 <blockquote>
 <p>📌 <code>Ctrl+F</code> 搜。<strong>不要通读。</strong>
-出事的时候翻这一页，平时翻<a href="11-从告警到根因.html">第 11 章</a>。</p>
+出事的时候翻这一页，平时翻<a href="11-%E4%BB%8E%E5%91%8A%E8%AD%A6%E5%88%B0%E6%A0%B9%E5%9B%A0.html">第 11 章</a>。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_1">🚨 线上出问题了，从这里开始</h2>
 <section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>是真的吗 口径改了？数据跑完了？【分母变了吗】？版本号对吗？</li><li>什么时候起 按【小时】画曲线找拐点 —— 信息量最大的一个数字 ⭐</li><li>谁变了 发布 / 上游 / 配置 / 外部。能回滚就先回滚 ⭐</li><li>哪部分流量 新老、渠道、版本、地域、实验组</li><li>哪个特征 特征监控 + SHAP 对比异常/正常时段 ⭐</li><li>模型本身 最后才怀疑它</li></ol></section>
 <div class="tw"><table>
@@ -365,7 +365,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p>⭐ <strong>一次只改一个变量</strong>；⭐ <strong>「没报错」不等于「没出错」</strong>。</p>
-<hr />
+<hr>
 <h2 id="_2">🌊 四种变差方式 → 该做什么</h2>
 <div class="tw"><table>
 <thead>
@@ -412,7 +412,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>PSI 和对抗验证对概念漂移完全失明</strong>：外卖 ETA 并单上限 3→5，输入特征一个没变
 （PSI 全 &lt;0.06），只有 <strong>MAE 6.1→9.8</strong> 报了出来。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="9">📡 最小监控清单（9 个）</h2>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>1 错误率 / P99 延迟</p><p>2 降级触发次数 ⭐ 静默失效的唯一信号</p><p>3 模型版本号</p><p>4 每个特征的缺失率 ⭐ 上游故障最快的信号</p><p>5 Top-5 重要特征的均值漂移</p><p>6 预测值的均值和标准差 ⭐ 标准差塌缩 = 特征大面积缺失</p><p>7 核心业务指标（按小时）</p><p>8 训练/线上特征一致性抽检 ⭐</p><p>9 新鲜度（特征/上游表/模型）⭐ 唯一在坏数据【进模型之前】报警的</p></div></section>
 <div class="tw"><table>
@@ -437,13 +437,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<hr />
+<hr>
 <h2 id="_3">🔍 训练/推理不一致：九种形态</h2>
-<section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>两套代码（时区/空值/边界） ② 时间窗口对不齐</li><li>特征穿越 ⭐ 离线 CV 发现不了 ④ 新类别静默映射到 0 💀</li><li>归一化参数没保存 ⑥ 缺失值处理不同</li><li>特征顺序错位 💀 类型全对、不报错，表现像&quot;模型不行&quot;</li><li>线上有降级样本训练集没有 ⭐ 占 2~5%，高峰期 15%</li><li>统计特征口径 —— 只伤长尾，整体指标看不出来</li></ol></section>
+<section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>两套代码（时区/空值/边界） ② 时间窗口对不齐</li><li>特征穿越 ⭐ 离线 CV 发现不了 ④ 新类别静默映射到 0 💀</li><li>归一化参数没保存 ⑥ 缺失值处理不同</li><li>特征顺序错位 💀 类型全对、不报错，表现像"模型不行"</li><li>线上有降级样本训练集没有 ⭐ 占 2~5%，高峰期 15%</li><li>统计特征口径 —— 只伤长尾，整体指标看不出来</li></ol></section>
 <blockquote>
 <p>⭐ 只做一件事，就做<strong>逐字段比对</strong>（代码 3️⃣）—— ⑦⑨ 分布监控完全抓不到。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_4">🔨 代码速查</h2>
 <blockquote>
 <p>默认已 <code>import numpy as np, pandas as pd, shap, json</code>。</p>
@@ -518,7 +518,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;黄金样本对不上&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<hr />
+<hr>
 <h2 id="_5">📏 关键公式与阈值</h2>
 <p>$$\text{PSI} = \sum_i (p_i^{\text{线上}} - p_i^{\text{训练}})\ln\frac{p_i^{\text{线上}}}{p_i^{\text{训练}}}$$</p>
 <div class="tw"><table>
@@ -591,13 +591,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<hr />
+<hr>
 <h2 id="ab">🧪 A/B 实验检查清单</h2>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>设计</p><p>[ ] 主指标只有一个，实验前写下来 ⭐</p><p>[ ] 算过 MDE（比业务有意义的提升还大就别跑）⭐</p><p>[ ] 时长 ≥ 一个完整周期（≥1 周）</p><p>[ ] 分流按用户哈希 + 加实验名的盐 ⭐</p><p>[ ] 想过网络效应（SUTVA）</p><p>运行</p><p>[ ] 先跑 A/A 验证分流系统</p><p>[ ] 中途只止损 ⭐ 负向可早停，正向必须等满</p><p>[ ] 护栏指标在看 ⭐ 用红线否决，不要加权求和</p><p>分析</p><p>[ ] SRM 检查 ⭐ 没修好之前不要看任何结论</p><p>[ ] 报置信区间，不只报均值</p><p>[ ] 分人群看（辛普森）／ 看逐日曲线（新奇效应）⭐</p></div></section>
+<section class="reading-checklist" aria-label="对照"><p class="visual-block-title">逐项核对</p><div class="vb-compare"><p>设计</p><ul class="reading-task-list"><li class="reading-task" data-reading-task="1"><label class="reading-task-title"><input type="checkbox" data-task-key="1"><span>核对项 1</span></label><div class="reading-task-body"><p>主指标只有一个，实验前写下来 ⭐</p></div></li><li class="reading-task" data-reading-task="2"><label class="reading-task-title"><input type="checkbox" data-task-key="2"><span>核对项 2</span></label><div class="reading-task-body"><p>算过 MDE（比业务有意义的提升还大就别跑）⭐</p></div></li><li class="reading-task" data-reading-task="3"><label class="reading-task-title"><input type="checkbox" data-task-key="3"><span>核对项 3</span></label><div class="reading-task-body"><p>时长 ≥ 一个完整周期（≥1 周）</p></div></li><li class="reading-task" data-reading-task="4"><label class="reading-task-title"><input type="checkbox" data-task-key="4"><span>核对项 4</span></label><div class="reading-task-body"><p>分流按用户哈希 + 加实验名的盐 ⭐</p></div></li><li class="reading-task" data-reading-task="5"><label class="reading-task-title"><input type="checkbox" data-task-key="5"><span>核对项 5</span></label><div class="reading-task-body"><p>想过网络效应（SUTVA）</p><p>运行</p></div></li><li class="reading-task" data-reading-task="6"><label class="reading-task-title"><input type="checkbox" data-task-key="6"><span>核对项 6</span></label><div class="reading-task-body"><p>先跑 A/A 验证分流系统</p></div></li><li class="reading-task" data-reading-task="7"><label class="reading-task-title"><input type="checkbox" data-task-key="7"><span>核对项 7</span></label><div class="reading-task-body"><p>中途只止损 ⭐ 负向可早停，正向必须等满</p></div></li><li class="reading-task" data-reading-task="8"><label class="reading-task-title"><input type="checkbox" data-task-key="8"><span>核对项 8</span></label><div class="reading-task-body"><p>护栏指标在看 ⭐ 用红线否决，不要加权求和</p><p>分析</p></div></li><li class="reading-task" data-reading-task="9"><label class="reading-task-title"><input type="checkbox" data-task-key="9"><span>核对项 9</span></label><div class="reading-task-body"><p>SRM 检查 ⭐ 没修好之前不要看任何结论</p></div></li><li class="reading-task" data-reading-task="10"><label class="reading-task-title"><input type="checkbox" data-task-key="10"><span>核对项 10</span></label><div class="reading-task-body"><p>报置信区间，不只报均值</p></div></li><li class="reading-task" data-reading-task="11"><label class="reading-task-title"><input type="checkbox" data-task-key="11"><span>核对项 11</span></label><div class="reading-task-body"><p>分人群看（辛普森）／ 看逐日曲线（新奇效应）⭐</p></div></li></ul></div></section>
 <p><strong>SRM 排查顺序</strong> ⭐：分层看哪一层 → 有没有一组没上报日志 → 哈希加盐了吗 → <strong>过滤条件是否不对称</strong>。</p>
-<hr />
+<hr>
 <h2 id="_6">🪤 七个陷阱（自查用）</h2>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>[ ] 分人群看还成立吗？ 辛普森 ⭐</p><p>[ ] 样本是怎么来的、谁被筛掉了？ 幸存者</p><p>[ ] 有对照组吗？ 均值回归 ⭐</p><p>[ ] 数据在决策时点存在吗？ 前视偏差</p><p>[ ] 相对值和绝对值都看了吗？</p><p>[ ] 分母变了吗？ 比率陷阱 ⭐</p><p>[ ] 指标被优化后还代表价值吗？ 古德哈特 ⭐</p></div></section>
+<section class="reading-checklist" aria-label="对照"><p class="visual-block-title">逐项核对</p><div class="vb-compare"><ul class="reading-task-list"><li class="reading-task" data-reading-task="12"><label class="reading-task-title"><input type="checkbox" data-task-key="12"><span>核对项 12</span></label><div class="reading-task-body"><p>分人群看还成立吗？ 辛普森 ⭐</p></div></li><li class="reading-task" data-reading-task="13"><label class="reading-task-title"><input type="checkbox" data-task-key="13"><span>核对项 13</span></label><div class="reading-task-body"><p>样本是怎么来的、谁被筛掉了？ 幸存者</p></div></li><li class="reading-task" data-reading-task="14"><label class="reading-task-title"><input type="checkbox" data-task-key="14"><span>核对项 14</span></label><div class="reading-task-body"><p>有对照组吗？ 均值回归 ⭐</p></div></li><li class="reading-task" data-reading-task="15"><label class="reading-task-title"><input type="checkbox" data-task-key="15"><span>核对项 15</span></label><div class="reading-task-body"><p>数据在决策时点存在吗？ 前视偏差</p></div></li><li class="reading-task" data-reading-task="16"><label class="reading-task-title"><input type="checkbox" data-task-key="16"><span>核对项 16</span></label><div class="reading-task-body"><p>相对值和绝对值都看了吗？</p></div></li><li class="reading-task" data-reading-task="17"><label class="reading-task-title"><input type="checkbox" data-task-key="17"><span>核对项 17</span></label><div class="reading-task-body"><p>分母变了吗？ 比率陷阱 ⭐</p></div></li><li class="reading-task" data-reading-task="18"><label class="reading-task-title"><input type="checkbox" data-task-key="18"><span>核对项 18</span></label><div class="reading-task-body"><p>指标被优化后还代表价值吗？ 古德哈特 ⭐</p></div></li></ul></div></section>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -624,7 +624,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<hr />
+<hr>
 <h2 id="_7">🧭 因果方法选择</h2>
 <div class="tw"><table>
 <thead>
@@ -675,7 +675,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <blockquote>
 <p>⭐ <strong>当"是否接受处理"由用户自己选择时，未观测混杂几乎必然存在。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_8">📊 特征重要性怎么选</h2>
 <div class="tw"><table>
 <thead>
@@ -713,18 +713,18 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table></div>
 <p>判读：<strong>mean 没超过 std 两倍 = 噪声</strong>；⭐ 加一列纯噪声当哨兵，排它后面的可以删。
 ⭐ <strong>重要性高 ≠ 值得监控</strong> → 监控优先级 = 重要性 × 历史故障率。</p>
-<hr />
+<hr>
 <h2 id="_9">🚀 上线流程</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">影子 → 灰度 1% → 10% → A/B 50/50 → 全量</span></div><div class="vb-tree-row"><span class="vb-tree-node">每档至少一个完整业务周期</span></div><div class="vb-tree-row"><span class="vb-tree-node">逐字段比对训练/推理特征（1000 条，要求完全一致）⭐</span></div></div></section>
-<p>⚠️ <strong>别跳过影子</strong>：有工程 bug 时那 1% 拿到的是彻底错误的结果。💀 影子链路必须禁写。
-⭐ <strong>1% 灰度看不出效果</strong>：基线 CTR 4%、百万请求/天，检出 +5% 提升要 150 天 —— 它是看崩不崩的。
-回滚三条件：快、完整（模型+特征逻辑+配置一起回）⭐、可验证；
-⭐ 「有回滚方案」和「MTTR 是 5 分钟」是两回事，后者只能靠演练。
-降级链路：新模型 → 旧模型 → 简单规则 → 静态兜底。⚠️ 降级本身要有监控。
-发布单元五样 ⭐：模型、特征逻辑、预处理产物（编码器/归一化/分桶边界）、配置、环境。</p>
-<hr />
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>影子 → 灰度 1% → 10% → A/B 50/50 → 全量</span></li><li><span>每档至少一个完整业务周期</span></li><li><span>逐字段比对训练/推理特征（1000 条，要求完全一致）⭐</span></li></ul></section>
+<p>⚠️ <strong>别跳过影子</strong>：有工程 bug 时那 1% 拿到的是彻底错误的结果。💀 影子链路必须禁写。</p>
+<p>⭐ <strong>1% 灰度看不出效果</strong>：基线 CTR 4%、百万请求/天，检出 +5% 提升要 150 天 —— 它是看崩不崩的。</p>
+<p>回滚三条件：快、完整（模型+特征逻辑+配置一起回）⭐、可验证；
+⭐ 「有回滚方案」和「MTTR 是 5 分钟」是两回事，后者只能靠演练。</p>
+<p>降级链路：新模型 → 旧模型 → 简单规则 → 静态兜底。⚠️ 降级本身要有监控。</p>
+<p>发布单元五样 ⭐：模型、特征逻辑、预处理产物（编码器/归一化/分桶边界）、配置、环境。</p>
+<hr>
 <h2 id="_10">♻️ 重训五道闸</h2>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>闸1 数据质量 ⭐ 挡&quot;管道坏了还硬训&quot;，必须含【逐特征 PSI】</p><p>闸2 训练健康</p><p>闸3 效果对比 同一验证集不差于现役 + ⭐【分人群】对比</p><p>闸4 一致性 ⭐ 训练/推理特征比对</p><p>闸5 灰度指标</p></div></section>
+<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>闸1 数据质量 ⭐ 挡"管道坏了还硬训"，必须含【逐特征 PSI】</p><p>闸2 训练健康</p><p>闸3 效果对比 同一验证集不差于现役 + ⭐【分人群】对比</p><p>闸4 一致性 ⭐ 训练/推理特征比对</p><p>闸5 灰度指标</p></div></section>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -751,13 +751,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>💀 26 小时脏数据只占窗口 <strong>1.2%</strong>，却通过了全部五道闸，新设备欺诈召回 <strong>61%→38%</strong>。
 ⭐ <strong>脏数据占比小 ≠ 影响小</strong> —— 随机噪声会被平均掉，<strong>系统性错误会被认真地学进去</strong>。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_11">📋 模型卡必备</h2>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>用途 / 版本 / 负责人</p><p>⭐【不应用于】—— 整张卡最有价值的一节</p><p>训练数据（来源、时间、人群构成、已知偏差）</p><p>评估（整体 + 分人群 + 公平性定义选了哪个）</p><p>局限与已知失效模式 ／ 运维（监控、重训、降级、回滚、联系人）</p></div></section>
 <p>⚠️ <strong>难点不是写，是不腐烂</strong> → ⭐ 关键字段自动生成。
 ⭐ <strong>公平性的几个定义互相冲突</strong>：除非各群体基础率恰好相同，否则不可能同时满足。
 ⭐ 删掉敏感特征不会消除偏见，只会消除你发现偏见的能力。</p>
-<hr />
+<hr>
 <h2 id="_12">💀 事故一行版</h2>
 <div class="tw"><table>
 <thead>
@@ -768,60 +768,60 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </thead>
 <tbody>
 <tr>
-<td><a href="01-训练完才是开始.html">01</a></td>
+<td><a href="01-%E8%AE%AD%E7%BB%83%E5%AE%8C%E6%89%8D%E6%98%AF%E5%BC%80%E5%A7%8B.html">01</a></td>
 <td>埋点秒→毫秒，特征大 1000 倍 → 不报错，两周后产品经理才发现</td>
 </tr>
 <tr>
-<td><a href="01-训练完才是开始.html">01</a></td>
+<td><a href="01-%E8%AE%AD%E7%BB%83%E5%AE%8C%E6%89%8D%E6%98%AF%E5%BC%80%E5%A7%8B.html">01</a></td>
 <td>兜底静默用昨天特征，被当成"假期效应" → ⭐<strong>「说得通的解释」≠「找到了原因」</strong></td>
 </tr>
 <tr>
-<td><a href="02-离线好不等于线上好.html">02</a></td>
+<td><a href="02-%E7%A6%BB%E7%BA%BF%E5%A5%BD%E4%B8%8D%E7%AD%89%E4%BA%8E%E7%BA%BF%E4%B8%8A%E5%A5%BD.html">02</a></td>
 <td>评估集 SQL 里三年前的 <code>WHERE</code> → <strong>每个 WHERE 都要有人能解释</strong></td>
 </tr>
 <tr>
-<td><a href="03-灰度影子与回滚.html">03</a></td>
+<td><a href="03-%E7%81%B0%E5%BA%A6%E5%BD%B1%E5%AD%90%E4%B8%8E%E5%9B%9E%E6%BB%9A.html">03</a></td>
 <td>只回模型不回 schema → 31%→38%，<strong>MTTR 其实 6 小时</strong></td>
 </tr>
 <tr>
-<td><a href="04-训练推理一致性.html">04</a></td>
+<td><a href="04-%E8%AE%AD%E7%BB%83%E6%8E%A8%E7%90%86%E4%B8%80%E8%87%B4%E6%80%A7.html">04</a></td>
 <td>sklearn 升级换了列顺序 → 监控全绿，坏账 1.8%→4.1%</td>
 </tr>
 <tr>
-<td><a href="07-没有标签怎么发现退化.html">07</a></td>
+<td><a href="07-%E6%B2%A1%E6%9C%89%E6%A0%87%E7%AD%BE%E6%80%8E%E4%B9%88%E5%8F%91%E7%8E%B0%E9%80%80%E5%8C%96.html">07</a></td>
 <td>完播率当代理并去优化 → 留存 −1.2pp，<strong>r 0.61→0.08</strong></td>
 </tr>
 <tr>
-<td><a href="08-告警为什么没人看.html">08</a></td>
+<td><a href="08-%E5%91%8A%E8%AD%A6%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B2%A1%E4%BA%BA%E7%9C%8B.html">08</a></td>
 <td>48 次 P0 只 1 次真 → 真出事被静音 22 分钟</td>
 </tr>
 <tr>
-<td><a href="10-SHAP能做什么不能做什么.html">10</a></td>
+<td><a href="10-SHAP%E8%83%BD%E5%81%9A%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E5%81%9A%E4%BB%80%E4%B9%88.html">10</a></td>
 <td>按 SHAP 加三个加购入口 → <strong>它解释模型，不解释世界</strong></td>
 </tr>
 <tr>
-<td><a href="11-从告警到根因.html">11</a></td>
+<td><a href="11-%E4%BB%8E%E5%91%8A%E8%AD%A6%E5%88%B0%E6%A0%B9%E5%9B%A0.html">11</a></td>
 <td>Redis key 配错触发降级 → P99 反而更低，<strong>发现延迟 31 小时</strong></td>
 </tr>
 <tr>
-<td><a href="13-不能做AB时的因果推断.html">13</a></td>
+<td><a href="13-%E4%B8%8D%E8%83%BD%E5%81%9AAB%E6%97%B6%E7%9A%84%E5%9B%A0%E6%9E%9C%E6%8E%A8%E6%96%AD.html">13</a></td>
 <td>PSM 达标就缩编客服 → 满意度 −9，<strong>临界 Γ 只有 1.15</strong></td>
 </tr>
 <tr>
-<td><a href="14-辛普森悖论与七个陷阱.html">14</a></td>
+<td><a href="14-%E8%BE%9B%E6%99%AE%E6%A3%AE%E6%82%96%E8%AE%BA%E4%B8%8E%E4%B8%83%E4%B8%AA%E9%99%B7%E9%98%B1.html">14</a></td>
 <td>一次解决率当 KPI → 71%→89% 而投诉 <strong>+34%</strong></td>
 </tr>
 <tr>
-<td><a href="18-成本与容量.html">18</a></td>
+<td><a href="18-%E6%88%90%E6%9C%AC%E4%B8%8E%E5%AE%B9%E9%87%8F.html">18</a></td>
 <td>3 秒 GC + 无退避重试 → 空白 22 分钟，<strong>触发≠持续原因</strong></td>
 </tr>
 <tr>
-<td><a href="19-合规审计与模型卡.html">19</a></td>
+<td><a href="19-%E5%90%88%E8%A7%84%E5%AE%A1%E8%AE%A1%E4%B8%8E%E6%A8%A1%E5%9E%8B%E5%8D%A1.html">19</a></td>
 <td>删掉性别姓名 → 女性通过率 0.61 倍，团队<strong>算不出这个比值</strong></td>
 </tr>
 </tbody>
 </table></div>
-<hr />
+<hr>
 <h2 id="_13">📖 术语对照</h2>
 <div class="tw"><table>
 <thead>
@@ -889,9 +889,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<hr />
-<p>🔗 <a href="../机器学习与深度学习基础/05-评估与过拟合.html">ML 基础 · 评估与过拟合</a> ／
-<a href="../推荐算法/12-评估与AB实验.html">推荐算法 · 评估与 A/B 实验</a></p>
+<hr>
+<p>🔗 <a href="../%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/05-%E8%AF%84%E4%BC%B0%E4%B8%8E%E8%BF%87%E6%8B%9F%E5%90%88.html">ML 基础 · 评估与过拟合</a> ／
+<a href="../%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/12-%E8%AF%84%E4%BC%B0%E4%B8%8EAB%E5%AE%9E%E9%AA%8C.html">推荐算法 · 评估与 A/B 实验</a></p>
 <p>👉 <a href="index.html">回到首页</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -919,4 +919,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -185,9 +185,9 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -618,7 +618,7 @@ PostgreSQL(+pgvector) + Redis + Python 服务 + 一个 cron 训练脚本。
 <h2 id="_16">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>工程 80%：特征平台（解决离线在线不一致）、在线服务（200ms 预算 + 多级降级，绝不返回空）、模型服务（批量推理是最大优化）、训练更新（天级全量+小时级增量，样本拼接要存特征快照防穿越）、监控（预估分数分布是最有价值的早期信号）。上线 SOP：离线→一致性校验→影子→1%灰度→AB→全量+反转组。每步能 5 分钟回滚。<!--RECAP-EXT-->⭐ 如果只记一句，记这句：<b>可用性 &gt; 准确性</b>。降级要一层层设计好——减召回路 → 跳精排用粗排结果 → 用上次缓存 → 返回全局热门榜，<b>永远不能返回空列表</b>：白屏比推得不准严重一百倍。⚠️ <b>特征快照是全系统最容易做错、后果最严重的一件事</b>。正确做法只有一个：<b>在线推理时把实际用到的特征原样打进日志</b>，训练时直接读日志里的值——事后重算一定会穿越。⭐ 样本拼接靠<b>延迟窗口</b>（曝光先进等待队列，等 30 分钟，期间关联到的点击算正样本，超时才落成负样本）；但购买这类转化可能延迟几天，那叫<b>延迟反馈问题</b>，得用延迟反馈建模或「先当负样本、后续正样本重要性加权」修正。日志里还要一并记下曝光位置（纠位置偏差）、实验分组、召回路来源（做归因）。⚠️ <b>小团队别一上来就搭 Kafka + Flink + Feast</b>——那是给亿级流量准备的；PostgreSQL(+pgvector) + Redis + 一个 cron 训练脚本就够跑很久了。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>上线链路要可观察、可降级、可回滚，不能只追求离线准确率。</li><li>训练样本必须对应当时可见的特征、曝光与反馈窗口。</li><li>从一致性校验、小流量验证到实验逐步放量，同时保留可追溯日志。</li></ul></section>
 </blockquote>
 <p><strong>下一节</strong> 👉 <a href="16-实战项目.html">16-实战项目.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
@@ -647,4 +647,5 @@ PostgreSQL(+pgvector) + Redis + Python 服务 + 一个 cron 训练脚本。
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
+</body></html>

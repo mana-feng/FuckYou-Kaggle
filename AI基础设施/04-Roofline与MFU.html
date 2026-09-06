@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -568,9 +568,8 @@ MFU 从 25% 提到 45%，在这个例子里省下的机时价值几十万元。<
 <hr />
 <h2 id="_6">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>⭐<strong>不会算 MFU，所有优化都是盲调</strong>。<strong>Roofline</strong>：可达性能 = min(峰值算力, 算术强度×带宽)；斜坡=带宽上限、屋顶=算力上限、<strong>拐点在 156</strong>（A100）。⭐<strong>它最大的价值是告诉你"不能"快多少</strong>——算术强度 2 的 kernel 怎么优化都超不过 4 TFLOPS，知道这个就不会浪费一周。⭐<strong>MFU = (6×参数量×tokens/秒) / (GPU数×峰值FLOPS)</strong>；<strong>每 token 训练 FLOP ≈ 6N</strong>（前向2N + 反向对输入2N + 反向对权重2N），⚠️<strong>忽略了 attention 的 O(n²)，序列≥8K 时要加 12·L·h·s</strong>。<strong>基准</strong>：&lt;20% 有明显问题、20-35% 偏低、<strong>45-55% 良好</strong>、55-60% 优秀、&gt;60% 检查公式；⭐<strong>天花板是 60% 不是 100%，因为通信/LayerNorm/Softmax/数据加载/kernel启动/优化器更新占时间但不算有效 FLOP</strong>。<strong>MFU 低了按序查</strong>：GPU在跑吗 → ⭐<strong>把 dataloader 换成随机张量（5 分钟排除一整类问题）</strong> → 通信占比 → 非矩阵乘占比 → Tensor Core 用上没（精度和维度对齐）→ 检查点开太狠。<strong>读 trace 三信号</strong>：<strong>时间轴有空隙</strong>=在等CPU/数据、<strong>一堆小 kernel</strong>=没融合、<strong>nccl 占比大</strong>=通信瓶颈。<strong>训练时间 ≈ 6ND / (GPU数×峰值×MFU)</strong>（7B/1T tokens/64卡/MFU45% ≈ <strong>54 天</strong>，MFU 25% 则 97 天）。⭐<strong>推理最有用的心算：理论最快解码速度 = 显存带宽 ÷ 模型大小</strong>（7B BF16 在 A100 上 ≈ <strong>143 tokens/秒</strong>）——它解释了<strong>量化为什么直接提速</strong>和<strong>批处理为什么是免费的</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>Roofline 比较算力上限和带宽上限，帮助判断理论上还能快多少。</li><li>MFU 的计算口径要对应模型、精度和硬件，不能拿 GPU-Util 代替。</li><li>先保留基线，再从时间线检查数据等待、通信与算子开销，一次只改一个因素。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="05-互联与集群拓扑.html">05-互联与集群拓扑.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -598,4 +597,4 @@ MFU 从 25% 提到 45%，在这个例子里省下的机时价值几十万元。<
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

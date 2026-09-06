@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -529,9 +529,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>读到这里，你已经知道那几个参数各自在分布上做了什么手脚 —— 这足够让你看懂 API 文档里的 <code>temperature</code> / <code>top_p</code> / <code>top_k</code> 分别是什么。</p>
 <p>⚠️ <strong>什么时候看下一页</strong>：你已经知道它们是什么，但<strong>不知道该配成多少</strong>；或者线上出现了复读、JSON 偶尔打不开、同样输入两次结果不一样。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>模型每一步吐出来的是一个<strong>概率分布</strong>，不是一个词。一步 decode 里发生四个动作，顺序是：<strong>① 吐 logits（不是概率）→ ② 温度缩放 → ③ top_k / top_p 截断 → ④ softmax 归一化后抽签</strong>。⭐ 所以 <code>temperature</code> 和 <code>top_p</code> <strong>不是独立的两个旋钮</strong> —— 温度先改分布形状，截断再在改过的分布上切：降温到 0.3 之后，同样的 <code>top_p=0.9</code> 会从 6 个候选缩到 2 个。<strong>Greedy</strong> 永远选概率最大的那个，稳但平庸。<strong>Beam Search</strong> 保留多条候选序列一起往下走，适合<strong>有唯一正确输出</strong>的任务（翻译、语音识别、OCR、结构化摘要）；⚠️ 开放式生成不用它有四条理由：高概率 ≠ 好文本（人类文本的逐词概率本来就是起伏的，追求「最可能的一句话」得到的是最平庸的那句）、文本退化（beam 越宽越短越干瘪，这正是核采样被提出来的动机）、多样性塌缩、以及 k 倍的 KV Cache 成本。<strong>top-k</strong> 固定砍到 k 个，问题是它不看分布形状：分布尖的时候硬塞进 49 个荒唐候选，分布平的时候又砍掉合理选项。<strong>top-p（核采样）</strong>改成按累计概率截断，候选集大小自适应。⚠️ <code>top_p = 1.0</code> <strong>不是安全值</strong>，它表示完全不截断，长尾里那 0.001% 的怪词有真实机会被抽中 —— 想让它「别乱来」该设 0.9 而不是 1.0。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>模型输出的是候选分数，解码策略决定怎样从中选出下一个 token。</li><li>温度改变分布的尖锐程度，top-k 与 top-p 限制候选集合。</li><li>贪心、束搜索与采样的目标不同，用真实输出比较稳定性、多样性和成本。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="06c-解码参数怎么调.html">06c-解码参数怎么调.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -559,4 +558,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

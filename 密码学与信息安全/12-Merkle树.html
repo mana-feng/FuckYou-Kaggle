@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -365,7 +365,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="2-2">坑 ② 叶子数不是 2 的幂时怎么补</h3>
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">❌ 危险做法：复制最后一个叶子来凑满</span></div><div class="vb-flow-row"><span class="vb-flow-step">💥 后果：[A, B, C] 和 [A, B, C, C] 会产生【相同的根】</span></div><div class="vb-flow-row"><span class="vb-flow-step">比特币早期版本就有这个缺陷（CVE-2012-2459）⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">可以构造出两个不同的区块却有相同的 Merkle 根</span></div><div class="vb-flow-row"><span class="vb-flow-step">✅ 解法：把叶子数编进根里，或用不平衡树（RFC 6962 的做法）</span></div></div></section>
 <h3 id="3">坑 ③ 证明"不存在"要另想办法</h3>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">Merkle 树天然能证明&quot;X 在里面&quot;（包含证明）</span></div><div class="vb-tree-row"><span class="vb-tree-node">❌ 但证明&quot;X 【不】在里面&quot;需要额外结构</span></div><div class="vb-tree-row"><span class="vb-tree-node">✅ 解法：</span></div><div class="vb-tree-row"><span class="vb-tree-node">【排序 Merkle 树】：证明相邻的两个元素 A &lt; X &lt; B 都在树里</span></div><div class="vb-tree-row"><span class="vb-tree-node">→ 说明 X 不在（因为如果在，它必须排在 A 和 B 之间）⭐</span></div><div class="vb-tree-row"><span class="vb-tree-node">稀疏 Merkle 树：为每个可能的 key 都留位置，证明那个位置是空的</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>Merkle 树天然能证明"X 在里面"（包含证明）</span></li><li><span>❌ 但证明"X 【不】在里面"需要额外结构</span></li><li><span>✅ 解法：</span></li><li><span>【排序 Merkle 树】：证明相邻的两个元素 A &lt; X &lt; B 都在树里</span></li><li><span>→ 说明 X 不在（因为如果在，它必须排在 A 和 B 之间）⭐</span></li><li><span>稀疏 Merkle 树：为每个可能的 key 都留位置，证明那个位置是空的</span></li></ul></section>
 <hr />
 <h2 id="_4">🌍 四、它在哪些地方支撑着现代系统</h2>
 <div class="tw"><table>
@@ -467,9 +467,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_8">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>Merkle 树：<strong>用一个 32 字节的根哈希锁定任意大的数据集</strong>，叶子是数据哈希、父节点是子节点拼接再哈希。两性质：⭐<strong>承诺</strong>（改任何一字节根就变）+ ⭐<strong>证明只需 log₂n 个哈希</strong>（<strong>10 亿条数据的证明也不到 1KB</strong>）→ <strong>验证成本从 O(n) 降到 O(log n)</strong>，手机不下载整条链就能验证交易。验证方法：拿<strong>兄弟路径</strong>自底向上重算到根，比对。<strong>三个真实的坑</strong>：①⭐<strong>叶子和内部节点必须域分隔</strong>（叶子 H(0x00‖data)、内部 H(0x01‖l‖r)）——否则攻击者把<strong>内部节点的两个子哈希拼起来当"数据"</strong>就能伪造不存在的数据及其合法证明（RFC 6962 明确规定了前缀）②<strong>叶子数不是2的幂时不能复制最后一个叶子</strong>——<strong>[A,B,C] 和 [A,B,C,C] 根相同</strong>，💥比特币早期 CVE-2012-2459 ③<strong>证明"不存在"要另想办法</strong>：⭐<strong>排序 Merkle 树</strong>（证明相邻的 A&lt;X&lt;B 都在树里 ⟹ X 不在）或稀疏 Merkle 树。应用：比特币 SPV 轻节点、<strong>证书透明性 CT</strong>、Git（每个 commit 就是一棵 Merkle 树）、IPFS、ZFS。⭐<strong>CT 解决"被攻破的 CA 偷偷给 google.com 签证书"</strong>：所有证书进公开 Merkle 日志，Merkle 树提供<strong>包含证明</strong> + ⭐<strong>一致性证明</strong>（用 O(log n) 个哈希证明新日志是旧日志的<strong>纯追加</strong>，没删改历史）——<strong>这让"仅追加日志"变成可验证的</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>Merkle 树把大量数据汇总为根哈希，并用兄弟路径验证某个叶子。</li><li>验证时从叶子向上重算，最终与可信根比较。</li><li>节点编码、叶子数量与不存在证明都需要明确规则，不能只画一棵树。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="13-数论工具箱.html">13-数论工具箱.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -497,4 +496,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

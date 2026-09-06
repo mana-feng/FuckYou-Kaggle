@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,21 +271,21 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
   <span class="title">13 · 多 Agent 协作</span>
-  <span class="prevnext"><a href="12-Harness-长时任务的骨架.html">←</a>
+  <span class="prevnext"><a href="12b-持久化审批与故障恢复.html">←</a>
   <a href="14-评测Evals.html">→</a></span>
   <button class="js-done-btn">☐ 打卡</button>
   <button id="themeToggle" title="切换深浅色">🌗</button>
@@ -348,7 +348,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_3">🗂️ 三、五种协作模式</h2>
 <h3 id="1-agent">① 编排器-子 Agent（默认起点）</h3>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">编排器：规划 → 派发 → 综合</span></div><div class="vb-tree-row"><span class="vb-tree-node">子 Agent 1（干净上下文） 摘要</span></div><div class="vb-tree-row"><span class="vb-tree-node">子 Agent 2 摘要</span></div><div class="vb-tree-row"><span class="vb-tree-node">子 Agent 3 摘要</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-agentmd-13-1" style="--diagram-width:720px"><svg viewBox="0 0 720 485" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="方框表示不同角色或分支，箭头表示信息去向；图下保留各项的详细说明。"><title>方框表示不同角色或分支，箭头表示信息去向；图下保留各项的详细说明。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">主从编排：派发与汇总</text><rect x="230" y="60" width="260" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="360.0" y="88" font-size="18" text-anchor="middle" fill="var(--fg)">编排器：规划与派发</text><rect x="20.0" y="190" width="210.0" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="125.0" y="218" font-size="18" text-anchor="middle" fill="var(--fg)">子 Agent 1</text><line x1="360" y1="108" x2="125.0" y2="190" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="125.0,190.0 131.9,182.3 135.1,191.8"/><line x1="125.0" y1="238" x2="360" y2="365" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="360.0,365.0 349.7,365.1 354.5,356.3"/><rect x="246.66666666666666" y="190" width="210.0" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="351.66666666666663" y="218" font-size="18" text-anchor="middle" fill="var(--fg)">子 Agent 2</text><line x1="360" y1="108" x2="351.66666666666663" y2="190" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="351.7,190.0 347.6,180.5 357.6,181.6"/><line x1="351.66666666666663" y1="238" x2="360" y2="365" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="360.0,365.0 354.4,356.3 364.4,355.7"/><rect x="473.3333333333333" y="190" width="210.0" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="578.3333333333333" y="218" font-size="18" text-anchor="middle" fill="var(--fg)">子 Agent 3</text><line x1="360" y1="108" x2="578.3333333333333" y2="190" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="578.3,190.0 568.1,191.5 571.7,182.2"/><line x1="578.3333333333333" y1="238" x2="360" y2="365" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="360.0,365.0 365.3,356.2 370.3,364.8"/><rect x="195" y="365" width="330" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="360.0" y="393" font-size="18" text-anchor="middle" fill="var(--fg)">编排器：核对摘要并综合</text></svg><figcaption>方框表示不同角色或分支，箭头表示信息去向；图下保留各项的详细说明。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>编排器：规划 → 派发 → 综合</span></li><li><span>子 Agent 1（干净上下文） 摘要</span></li><li><span>子 Agent 2 摘要</span></li><li><span>子 Agent 3 摘要</span></li></ul></section>
 <p>适合：任务分解清晰、子任务之间依赖少
 局限：一个子 Agent 的发现该影响另一个时，编排器成瓶颈
 <strong>为什么是默认</strong>：以<strong>最小的协调复杂度</strong>覆盖最广的问题范围</p>
@@ -357,7 +358,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><strong>适合</strong>：标准可显式定义的质量关键场景
 ⚠️ 局限：「检查一下好不好」这类<strong>含糊标准会失败</strong>——必须能写成具体条目</p>
 <h3 id="3-agent">③ Agent 团队（持久化工作者）</h3>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">任务队列</span><span class="vb-tree-note">工作者A（持久，跨任务保持状态）</span></div><div class="vb-tree-row"><span class="vb-tree-node">工作者B</span></div><div class="vb-tree-row"><span class="vb-tree-node">工作者C</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-agentmd-13-2" style="--diagram-width:720px"><svg viewBox="0 0 720 305" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="方框表示不同角色或分支，箭头表示信息去向；图下保留各项的详细说明。"><title>方框表示不同角色或分支，箭头表示信息去向；图下保留各项的详细说明。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">任务队列连接多个工作者</text><rect x="230" y="60" width="260" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="360.0" y="88" font-size="18" text-anchor="middle" fill="var(--fg)">任务队列</text><rect x="20.0" y="190" width="210.0" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="125.0" y="218" font-size="18" text-anchor="middle" fill="var(--fg)">工作者 A</text><line x1="360" y1="108" x2="125.0" y2="190" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="125.0,190.0 131.9,182.3 135.1,191.8"/><rect x="246.66666666666666" y="190" width="210.0" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="351.66666666666663" y="218" font-size="18" text-anchor="middle" fill="var(--fg)">工作者 B</text><line x1="360" y1="108" x2="351.66666666666663" y2="190" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="351.7,190.0 347.6,180.5 357.6,181.6"/><rect x="473.3333333333333" y="190" width="210.0" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="578.3333333333333" y="218" font-size="18" text-anchor="middle" fill="var(--fg)">工作者 C</text><line x1="360" y1="108" x2="578.3333333333333" y2="190" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="578.3,190.0 568.1,191.5 571.7,182.2"/></svg><figcaption>方框表示不同角色或分支，箭头表示信息去向；图下保留各项的详细说明。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>任务队列</span> <span>工作者A（持久，跨任务保持状态）</span></li><li><span>工作者B</span></li><li><span>工作者C</span></li></ul></section>
 <p><strong>和子 Agent 的关键区别</strong>：</p>
 <div class="tw"><table>
 <thead>
@@ -703,7 +705,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><strong>下一节</strong> 👉 <a href="14-评测Evals.html">14-评测Evals.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
-<nav class="pagenav"><a href="12-Harness-长时任务的骨架.html"><div class="dir">← 上一节</div>🏗️ 12 · Harness 骨架</a><a class="next" href="14-评测Evals.html"><div class="dir">下一节 →</div>🧪 14 · 评测 Evals</a></nav>
+<nav class="pagenav"><a href="12b-持久化审批与故障恢复.html"><div class="dir">← 上一节</div>💾 12b · 审批与故障恢复</a><a class="next" href="14-评测Evals.html"><div class="dir">下一节 →</div>🧪 14 · 评测 Evals</a></nav>
 </main>
 <script>(function(){
   var KEY="agent-progress", FILE="13-\u591aAgent\u534f\u4f5c.md";
@@ -727,4 +729,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

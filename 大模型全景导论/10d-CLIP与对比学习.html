@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -467,9 +467,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_6">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>CLIP 训出来的是一个图片和文字共享的向量空间</strong>，所以能文字搜图、图搜图、零样本分类，还能复用现成的向量检索设施。它的 <strong>InfoNCE</strong> 损失是：把一个 batch 的 N 对图文编码成 <strong>N×N 相似度矩阵</strong>，要求对角线最大 —— 本质是「N 选 1 选对」的交叉熵（图找文、文找图各算一次取平均）。⭐ <strong>负样本是白捡的</strong>：同一批次里别人的正样本就是我的负样本（in-batch 负采样）。<strong>温度系数 τ</strong> 很关键：<strong>τ 小（0.01）分布尖锐</strong>，最难的负样本梯度极大，学得锋利但对错标极敏感、容易训崩；<strong>τ 大（0.5）分布平坦</strong>，训得稳但向量挤在一起、区分度不够。CLIP 干脆把它做成<strong>可学习参数</strong>，说明它重要到值得让模型自己学。⚠️ <strong>batch size 是对比学习最直接的效果杠杆</strong>：batch=256 只有 255 个干扰项，CLIP 用的 batch=32768 有 32767 个 —— 干扰项越多这道多选题越难，向量必须分得越开。代价是显存（N×N 矩阵要多卡 all-gather）。<strong>SigLIP</strong> 把 softmax 对比损失换成<strong>逐对的 sigmoid 二分类</strong>，每对自己判「配不配」，不再需要对整行归一化，于是小 batch 也能训。⭐⭐ 最值得记的一条：<strong>这整套和推荐系统的双塔召回是同一套东西</strong> —— 图文编码器 ↔ 用户塔/物品塔、in-batch 负采样、温度系数 τ，连坑都一样（热门样本被过度当负样本要做 LogQ 校正、负样本选错会训废、batch 越大越好）。投影层有两条路线：<strong>LLaVA 用一个 MLP 直接投影</strong>（简单、几小时训完、细节不丢，但吃 token），<strong>BLIP-2 的 Q-Former</strong> 用可学习 query 把视觉特征压成固定个数（省 token、多图友好，但压缩必然丢细节，OCR 和小字最明显）—— 主流赢家是 LLaVA 那条。训练分两阶段：<strong>阶段一只训投影层</strong>（视觉编码器和 LLM 全冻），本质是训一个「翻译器」；<strong>阶段二训投影层 + LLM</strong>（视觉编码器仍冻）。⚠️ 视觉编码器不解冻，是因为它的表征是几亿图文对训出来的，随便动会破坏好不容易对齐的空间。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>CLIP 把图片与文字映射到可比较的表示空间，用配对关系训练匹配能力。</li><li>批内负样本与温度影响区分难度，也会放大错配数据的影响。</li><li>视觉投影还要权衡保留细节与输入长度，不是所有压缩都没有代价。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="10b-图像生成.html">10b-图像生成.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -497,4 +496,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

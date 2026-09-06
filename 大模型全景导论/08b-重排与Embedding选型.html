@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -293,8 +293,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
 <ul>
 <li><a href="#_1">🎯 一句话</a></li>
-<li><a href="#_2">🎯 环节三：重排（性价比最高的一步）</a></li>
-<li><a href="#embedding">🧭 Embedding 选型：排在重排之后的那件事</a></li>
+<li><a href="#_2">🎯 环节三：重排候选集里已有的证据</a></li>
+<li><a href="#embedding">🧭 Embedding 选型：从错误证据决定顺序</a></li>
 <li><a href="#_5">🔗 想再深一层，去哪一套</a></li>
 <li><a href="#_6">✅ 检查点</a></li>
 <li><a href="#_7">🛑 可以停在这里</a></li>
@@ -302,85 +302,72 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </details>
 <h1 id="08b-embedding">08b · 重排与 Embedding 选型</h1>
-<p>⏱ <strong>26 分钟</strong> ｜ ⭐ <strong>性价比最高的一步，以及排在它之后的那件事</strong></p>
+<p>⏱ <strong>26 分钟</strong> ｜ ⭐ <strong>按错误发生的位置决定优化顺序</strong></p>
 <hr />
 <h2 id="_1">🎯 一句话</h2>
 <p>正确文档已经被召回了、却排在第 15 位被截断 —— 这是 RAG 最常见的失败形态，
-而<strong>重排是修它性价比最高的一步</strong>，通常比换 embedding 模型更划算。
-⚠️ 换 embedding 排在重排<strong>之后</strong>考虑，而且它有一条运维铁律。</p>
+而<strong>重排是修它性价比最高的一步</strong>，是否划算需要用相同任务集比较质量、成本与延迟。
+先查故障发生在哪一层：输入前缀、语种、截断或向量版本错了，应先修配置；候选集已有正确资料再比较重排。换 embedding 时还要处理索引迁移。</p>
 <hr />
-<h2 id="_2">🎯 环节三：重排（性价比最高的一步）</h2>
-<section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">双塔 Embedding（检索用） Cross-Encoder（重排用）</span></div><div class="vb-flow-row"><span class="vb-flow-step">问题和文档分别编码，点积 问题和文档拼在一起过模型</span></div><div class="vb-flow-row"><span class="vb-flow-step">✅ 快，能扫全库 ✅ 准得多（能做深度交互）</span></div><div class="vb-flow-row"><span class="vb-flow-step">❌ 不能做深度交互 ❌ 慢，只能处理几十上百条</span></div><div class="vb-flow-row"><span class="vb-flow-step">先用向量+BM25 召回 100 条，再用 Cross-Encoder 精排出 10 条</span></div></div></section>
+<h2 id="_2">🎯 环节三：重排候选集里已有的证据</h2>
+<section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">双塔 Embedding（检索用） Cross-Encoder（重排用）</span></div><div class="vb-flow-row"><span class="vb-flow-step">问题和文档分别编码，点积 问题和文档拼在一起过模型</span></div><div class="vb-flow-row"><span class="vb-flow-step">✅ 快，能扫全库 ✅ 能做深度交互，效果需实测</span></div><div class="vb-flow-row"><span class="vb-flow-step">❌ 不能做深度交互 ❌ 慢，只能处理几十上百条</span></div><div class="vb-flow-row"><span class="vb-flow-step">先用向量+BM25 召回 100 条，再用 Cross-Encoder 精排出 10 条</span></div></div></section>
 <blockquote>
 <p>🔗 <strong>完全是推荐算法第 8 章的「双塔做召回、精排做交叉」</strong>。同一套思想。</p>
 </blockquote>
-<p><strong>这一步通常是投入产出比最高的优化</strong>——加一个重排模型，往往比换更好的 embedding 模型收益大。</p>
+<p><strong>固定同一候选集比较重排前后</strong>，再看答案质量和额外延迟。重排无效时保留简单基线，不凭经验断定它一定优于更换 embedding。</p>
 <h3 id="cross-encoder-colbert-llm">🥊 Cross-Encoder / ColBERT / LLM：三种重排怎么选</h3>
 <p>"重排"不是一种东西，是三条不同的路线。<strong>它们的核心差别只有一个：问题和文档在什么时候相遇。</strong></p>
 <div class="tw"><table>
 <thead>
 <tr>
 <th>路线</th>
-<th>问题和文档什么时候相遇</th>
-<th>文档能预计算吗</th>
-<th>100 条候选的延迟</th>
-<th>效果</th>
-<th>什么时候选它</th>
+<th>交互位置</th>
+<th>文档预计算</th>
+<th>主要代价</th>
+<th>选型依据</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>双塔 Embedding（对照组，<strong>不是重排</strong>）</td>
-<td><strong>从不</strong> —— 各自编码成一个向量，最后才点积</td>
-<td>✅ 全部离线</td>
-<td>≈ 0（它就是检索本身）</td>
-<td>基线</td>
-<td>召回阶段</td>
+<td>双塔</td>
+<td>各自编码后比较向量</td>
+<td>可以</td>
+<td>编码与索引查询</td>
+<td>建立召回基线；查询并非零延迟</td>
 </tr>
 <tr>
-<td><strong>Cross-Encoder</strong></td>
-<td><strong>最早</strong> —— 拼成一条输入一起过模型</td>
-<td>❌ 一条都不能</td>
-<td>几十~几百毫秒</td>
-<td>⭐ 最好</td>
-<td><strong>绝大多数场景的默认答案</strong></td>
+<td>Cross-Encoder</td>
+<td>问题与文档联合编码</td>
+<td>不能缓存与查询无关的完整联合编码</td>
+<td>在线成对推理，可批处理</td>
+<td>候选相关性、语种与延迟实测</td>
 </tr>
 <tr>
-<td><strong>ColBERT（后期交互）</strong></td>
-<td><strong>中间</strong> —— 各自编码成 token 级向量矩阵，查询时才交互</td>
-<td>✅ 文档侧可离线</td>
-<td>个位数毫秒</td>
-<td>介于两者之间</td>
-<td>候选量大到 Cross-Encoder 跑不动</td>
+<td>ColBERT</td>
+<td>各自 token 向量的后期交互</td>
+<td>文档侧可以</td>
+<td>多向量存储、索引与 MaxSim</td>
+<td>用实际规模比较质量/存储/延迟</td>
 </tr>
 <tr>
-<td><strong>LLM 重排</strong></td>
-<td>最早，而且是"读懂了再排"</td>
-<td>❌</td>
-<td>秒级 + token 账单</td>
-<td>复杂/多条件问题上最好</td>
-<td>候选很少（20 条以内）、单次价值高</td>
+<td>LLM 重排</td>
+<td>读取候选并按任务比较</td>
+<td>通常需在线推理，缓存取决于服务</td>
+<td>token、输出约束、顺序偏差</td>
+<td>高价值复杂条件任务的受控对照</td>
 </tr>
 </tbody>
 </table></div>
+<p>不固定宣称哪一路最准或几毫秒；硬件、候选数、文本长度、模型和批量会改变结果。<a href="https://www.sbert.net/examples/sentence_transformer/applications/retrieve_rerank/README.html">机制与实践依据</a>。</p>
 <p><strong>ColBERT 的机制值得单独说清楚</strong>（它是这三条里最容易讲错的）：</p>
-<section class="visual-block visual-block-calc" aria-label="算一算"><p class="visual-block-title">算一算</p><div class="vb-calc"><p>Cross-Encoder：[问题 + 文档] 拼一起进模型 → 一个分数</p><p>→ 100 条候选 = 100 次前向，全在线算 → 贵</p><p>ColBERT：问题编成 Q 个向量，文档编成 D 个向量（每个 token 一个）</p><p>分数 = 对每个【问题 token】，取它和所有【文档 token】里最像的那个</p><p>的相似度，然后全部加起来 ← 这就是 MaxSim</p><p>→ 文档那 D 个向量【可以离线算好存起来】⭐</p><p>→ 在线只剩一堆点积，比 Cross-Encoder 快一到两个数量级</p><p>⚠️ 代价是存储爆炸：一个块从「1 个向量」变成「几百个向量」，</p><p>索引体积膨胀一个数量级。ColBERTv2 用残差压缩把它压回来一些，</p><p>但仍然远大于单向量索引。</p></div></section>
+<section class="visual-block visual-block-calc" aria-label="算一算"><p class="visual-block-title">算一算</p><div class="vb-calc"><p>Cross-Encoder：[问题 + 文档] 拼一起进模型 → 一个分数</p><p>→ 100 条候选 = 100 对输入；可批处理，在线计算量仍随候选增长</p><p>ColBERT：问题编成 Q 个向量，文档编成 D 个向量（每个 token 一个）</p><p>分数 = 对每个【问题 token】，取它和所有【文档 token】里最像的那个</p><p>的相似度，然后全部加起来 ← 这就是 MaxSim</p><p>→ 文档那 D 个向量【可以离线算好存起来】⭐</p><p>→ 在线主要是查询编码与向量交互；延迟收益取决于索引、硬件和候选规模</p><p>⚠️ 代价是存储爆炸：一个块从「1 个向量」变成「几百个向量」，</p><p>索引体积膨胀一个数量级。ColBERTv2 用残差压缩把它压回来一些，</p><p>但仍然远大于单向量索引。</p></div></section>
 <blockquote>
-<p>🔑 <strong>一句话选型</strong>：<strong>默认 Cross-Encoder。</strong>
-只有"候选太多、Cross-Encoder 跑不动"才上 <strong>ColBERT</strong>（拿存储换延迟）；
-只有"候选很少但问题很绕"才上 <strong>LLM 重排</strong>（拿钱换效果）。
-⚠️ <strong>别从 ColBERT 开始</strong>——它解决的是<strong>规模</strong>问题，不是<strong>效果</strong>问题。用它替代 Cross-Encoder 通常是效果的降级。</p>
+<p>🔑 <strong>按瓶颈选择</strong>：先测简单基线与 Cross-Encoder；需要多向量交互时再评估 ColBERT，需要复杂条件判断时再评估 LLM 重排。三者没有固定的质量排序，ColBERT 也不只是降级方案。</p>
 </blockquote>
 <p>💡 <strong>LLM 重排还有一个更划算的用法</strong>：不当线上重排器，而当<strong>离线评测集的标注器</strong>——让它给 100 个问题的召回结果打分，人再抽查 10%。线上跑不起的成本，离线跑得起。</p>
 <hr />
-<h2 id="embedding">🧭 Embedding 选型：排在重排之后的那件事</h2>
-<p><strong>先把这一节的位置摆正。</strong> 前面已经说过两次同一件事：</p>
-<ul>
-<li>环节一：高维空间里「最近邻」这个概念本身在变弱，<strong>只靠调 embedding 模型救不回来</strong></li>
-<li>环节三：<strong>加一个重排模型，往往比换更好的 embedding 收益大</strong></li>
-</ul>
-<p>所以正确顺序是 <strong>切分 → 混合检索 → 重排 → 然后才轮到换 embedding</strong>。
-这一节回答的是"轮到了之后怎么选"，<strong>不是"一上来先选哪个"</strong>。</p>
+<h2 id="embedding">🧭 Embedding 选型：从错误证据决定顺序</h2>
+<p>先检查文档是否入库、权限是否正确、模型语种与前缀是否匹配，再比较召回、融合与重排。若正确文档根本没进入候选，重排无法找回它；若已在候选里却排错，再做固定候选的重排对照。不存在所有项目都必须走的“切分、混合、重排、最后换 embedding”顺序。</p>
 <h3 id="_3">什么时候是真的该换了</h3>
 <div class="tw"><table>
 <thead>
@@ -396,7 +383,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 <tr>
 <td>⭐ <strong>领域词汇完全在分布外</strong></td>
-<td>医学、法律、化学式、内部工单代号。通用模型没见过这些词，它们的向量互相挤在一起，怎么调都分不开</td>
+<td>医学、法律、化学式、内部工单代号。通用模型没见过这些词，它们的向量互相挤在一起，可能难以区分，需要领域题集与难负例验证</td>
 </tr>
 <tr>
 <td>⚠️ <strong>文本长度对不上</strong></td>
@@ -409,7 +396,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <h3 id="768-1024-1536">维度怎么取舍（768 / 1024 / 1536）</h3>
-<section class="visual-block visual-block-calc" aria-label="算一算"><p class="visual-block-title">算一算</p><div class="vb-calc"><p>维度 ↑ → 表达能力略强，但【边际收益递减很快】</p><p>→ 存储、内存、ANN 检索延迟【线性增长】</p><p>100 万块 × 1536 维 × 4 字节 = 6.1 GB （还没算索引结构本身）</p><p>100 万块 × 768 维 × 4 字节 = 3.1 GB</p><p>⭐ 判断顺序（不要反过来）：</p><p>先量出 1536 维比 768 维在【你自己那 20 个问题】上高几个点，</p><p>再问这几个点值不值 2 倍存储 + 更慢的检索。</p><p>多数企业知识库场景：不值。</p></div></section>
+<section class="visual-block visual-block-calc" aria-label="算一算"><p class="visual-block-title">算一算</p><div class="vb-calc"><p>维度 ↑ → 表达能力略强，但【边际收益递减很快】</p><p>→ 原始向量存储随维度线性增长；ANN 延迟还取决于索引、硬件与过滤</p><p>100 万块 × 1536 维 × 4 字节 = 6.1 GB （还没算索引结构本身）</p><p>100 万块 × 768 维 × 4 字节 = 3.1 GB</p><p>⭐ 判断顺序（不要反过来）：</p><p>先量出 1536 维比 768 维在【你自己那 20 个问题】上高几个点，</p><p>再问这几个点值不值 2 倍存储 + 更慢的检索。</p><p>是否值得，依据业务保留集与资源预算判断。</p></div></section>
 <p>💡 <strong>一个常被忽略的选项：MRL（套娃表示）</strong>。有些模型在训练时就让"前 256 维"自己也是一个能用的向量，于是同一份 embedding 可以<strong>截断后粗筛、完整维度精算</strong>，存储和延迟一起省。选型时留意模型卡上有没有这一条。</p>
 <h3 id="mteb">MTEB 榜怎么看（榜首≠对你最好）</h3>
 <ol>
@@ -429,24 +416,24 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </thead>
 <tbody>
 <tr>
-<td>领域术语密集，且<strong>有 1000 条以上</strong>「问题 → 正确文档」的真实数据（可以从线上点击日志里挖）</td>
+<td>领域术语密集，且有一定数量、经核验的「问题 → 正确文档」的真实数据（可以从线上点击日志里挖）</td>
 <td>✅ 值得试</td>
 </tr>
 <tr>
 <td>只有几百条</td>
-<td>🟡 先试<strong>指令前缀</strong>和<strong>领域词典做查询扩展</strong>，成本低一个数量级</td>
+<td>🟡 先试<strong>指令前缀</strong>和<strong>领域词典做查询扩展</strong>，先验证低成本的配置修复</td>
 </tr>
 <tr>
-<td>还没做混合检索和重排</td>
-<td>❌ 顺序错了，回去做那两件</td>
+<td>还没定位错误来源</td>
+<td>先对照简单基线，按漏召回或错排序选择实验</td>
 </tr>
 </tbody>
 </table></div>
 <blockquote>
-<p>🔗 <strong>微调 embedding 用的就是对比学习 + in-batch 负采样 + 温度系数</strong>，和<a href="../推荐算法/08-深度学习推荐模型.html">推荐算法第 8 章的双塔训练</a>是<strong>同一套方法，连坑都一样</strong>：负样本选错（用"曝光未点击"当负样本会训废）、热门项支配（要 LogQ 校正）、温度系数 τ 从 0.05 开始调。要动手微调之前先去读那一节。</p>
+<p>🔗 <strong>微调 embedding 用的就是对比学习 + in-batch 负采样 + 温度系数</strong>，和<a href="../推荐算法/08-深度学习推荐模型.html">推荐算法第 8 章的双塔训练</a>是<strong>同一套方法，连坑都一样</strong>：负样本选错（用"曝光未点击"当负样本会训废）、采样分布与假负例偏差；是否用 LogQ、温度取值要结合具体损失与验证结果。要动手微调之前先去读那一节。</p>
 <p>🚨 <strong>最后一条是运维铁律</strong>：<strong>换了 embedding 模型，全库必须重建索引。</strong>
 新旧模型的向量空间<strong>不通用</strong>，混在一个索引里检索结果是乱的——而且<strong>不报错</strong>，只是变差。
-灰度期必须<strong>双索引并行</strong>（新旧各一份，按流量切），不能原地替换。</p>
+需要不停机灰度时，用<strong>双索引并行</strong>（新旧各一份，按流量切）；允许停机时可完整重建后切换，不能混合不同空间。</p>
 </blockquote>
 <hr />
 <h2 id="_5">🔗 想再深一层，去哪一套</h2>
@@ -476,16 +463,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_6">✅ 检查点</h2>
 <ol>
 <li>为什么说重排是性价比最高的一步？</li>
-<li>Cross-Encoder、ColBERT、LLM 重排三条路线的核心差别是什么？默认该选哪个、为什么不该从 ColBERT 开始？</li>
+<li>Cross-Encoder、ColBERT、LLM 重排三条路线的核心差别是什么？应该依据哪些质量、候选规模与资源证据选择？</li>
 <li>ColBERT 的 MaxSim 是怎么算的？它换来了什么、代价是什么？</li>
 <li>什么信号说明“该换 embedding 模型了”？换模型有一条什么运维铁律？</li>
 </ol>
 <details>
 <summary>👀 答案</summary>
 <ol>
-<li>双塔检索快但不能深度交互；Cross-Encoder 把问题和文档拼一起过模型，<strong>准得多</strong>。在已召回的几十条上重排，成本可控而收益大，通常比换 embedding 模型更划算。</li>
-<li>核心差别是<strong>问题和文档在什么时候相遇</strong>：Cross-Encoder 最早（拼一起过模型，文档一条都不能预计算，最准也最慢）；ColBERT 在中间（各自编成 token 级向量，查询时才 MaxSim，文档侧可离线）；LLM 重排是“读懂了再排”（秒级 + token 账单）。默认 Cross-Encoder。不该从 ColBERT 开始是因为它解决的是规模问题不是效果问题——拿它替代 Cross-Encoder 通常是效果的降级。</li>
-<li>对<strong>每个问题 token</strong>，取它和所有文档 token 里最像的那个的相似度，全部加起来。换来的是文档那几百个向量可以离线算好，在线只剩点积，比 Cross-Encoder 快一到两个数量级。代价是存储爆炸：一个块从 1 个向量变成几百个向量，索引体积膨胀一个数量级（ColBERTv2 用残差压缩压回来一些）。</li>
+<li>Cross-Encoder 联合编码问题与文档，能做深度相关性比较；是否更准、更划算，必须在固定候选与题集上比较质量、延迟和成本。</li>
+<li>双塔在向量比较时交互，Cross-Encoder 联合编码，ColBERT 在 token 向量间做后期交互，LLM 按任务读取候选。按实际质量、候选规模、存储与延迟选择，没有永远最好的路线。</li>
+<li>MaxSim 对每个问题 token 取最相似文档 token 的得分，再求和。文档表示可预计算，代价是多向量存储与索引复杂度；延迟和质量优势都需实测。</li>
 <li>四个信号：<strong>语种不对</strong>（英文模型跑中文是配置错误不是效果问题）、领域词汇完全在分布外（医学/法律/工单代号）、⚠️块长超过模型 <code>max_seq_len</code> 被静默截断（最隐蔽，因为不报错）、非对称检索没加 query/document 前缀。铁律：换 embedding 必须全库重建索引——新旧向量空间不通用，混在一个索引里检索结果会乱且不报错；灰度期要双索引并行。</li>
 </ol>
 </details>
@@ -494,9 +481,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>召回对了、也排到前面了 —— 到这里 RAG 的检索侧就基本齐了。</p>
 <p>⚠️ <strong>什么时候看下一页</strong>：你已经没法凭感觉判断「这次改动到底有没有变好」。那说明该上评估了。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>重排是 RAG 性价比最高的一步</strong>：双塔检索快但问题和文档不能深度交互；Cross-Encoder 把两者拼在一起过一遍模型，<strong>准得多</strong>。因为只在已召回的几十条上做，成本可控而收益大 —— ⭐ <strong>通常比换 embedding 模型更划算</strong>。三条重排路线的核心差别是<strong>问题和文档在什么时候相遇</strong>：<strong>Cross-Encoder</strong> 最早相遇（拼一起过模型，文档一条都不能预计算，最准也最慢），<strong>ColBERT</strong> 在中间（各自编成 token 级向量，查询时才做 MaxSim，文档侧可以离线算），<strong>LLM 重排</strong>是「读懂了再排」（秒级延迟 + token 账单）。⭐ 默认选 Cross-Encoder；⚠️ <strong>不该从 ColBERT 开始</strong>——它解决的是规模问题不是效果问题，拿它替代 Cross-Encoder 通常是效果的降级。ColBERT 的 <strong>MaxSim</strong> 是：对每个问题 token，取它和所有文档 token 里最像的那个的相似度，全部加起来；换来的是文档向量可离线预计算、在线只剩点积，快一到两个数量级，代价是<strong>存储爆炸</strong>（一个块从 1 个向量变成几百个）。<strong>换 embedding 模型</strong>排在重排之后，四个信号说明该换了：语种不对、领域词汇完全在分布外、⚠️<strong>块长超过 <code>max_seq_len</code> 被静默截断</strong>（最隐蔽，因为不报错）、非对称检索没加 query/document 前缀。💀 <strong>一条运维铁律：换 embedding 必须全库重建索引</strong> —— 新旧向量空间不通用，混在一个索引里检索结果会乱<strong>而且不报错</strong>，灰度期必须双索引并行。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>召回先找候选，重排再细看问题与文档的匹配程度。</li><li>不同重排方式在交互深度、预计算、存储和延迟之间取舍。</li><li>更换 embedding 前检查截断、前缀与语种；新旧空间不能随意混用。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="08c-RAG怎么评估.html">08c-RAG怎么评估.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -524,4 +510,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

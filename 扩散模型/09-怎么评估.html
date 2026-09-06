@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -465,9 +465,8 @@ B. n=20000 时：
 <p>读到这里，你已经能看懂论文表格里那两列数字在说什么、以及它们各自漏掉了什么，也能给自己那套图搭一个不至于骗自己的评测流程：<strong>固定的提示词集 + 盲评成对比较 + FID/CLIP 只当粗筛 + dev/test 分开</strong>。</p>
 <p><strong>什么时候回来</strong>：看到别人报的 FID 想判断能不能信时，回看第二、三节那三个要先问的问题（样本量、真图那一侧、预处理）；发现「指标一直在涨、图看着没变好」时，回看第六节 —— 那基本就是尺子磨损或者代理失效。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>FID 分三步：真图和生成图都过 Inception 取 <strong>2048 维</strong>特征 → 两堆特征各当成一个高斯 → 算两个高斯的 Fréchet 距离，<strong>越小越好</strong>。公式两项分别是「中心差多远」和「形状差多少」，⭐ <strong>全程只用了均值和协方差</strong>，四个坑全从这一句来。<strong>坑①对样本量极敏感</strong>：两组来自同一分布、真值该是 0 的特征，实测 n=100 算出 <strong>21.4</strong>、n=10000 才降到 <strong>0.214</strong>，样本翻倍虚高减半，而且偏差永远是正的 —— 所以业界惯例是 50000 张，低于一万张的 FID 不该拿来横比。<strong>坑②依赖特征网络</strong>：换 CLIP 或 DINOv2 特征分数就变，Inception 是 ImageNet 分类模型，对纹理敏感、对文字版式无感。<strong>坑③只看分布不看单张</strong>：实测一组高斯 vs 一组每维只取 ±1 的样本（形状完全不同、两阶矩一模一样）FID 是 <strong>0.1127</strong>，而同一分布的基线是 <strong>0.1088</strong> —— 两个天差地别的分布得分毫无区别，所以「每张都很怪但整体分布对」照样能拿高分。<strong>坑④跨论文不可比</strong>：样本量、真图取自哪、resize 与裁剪方式各家都不同，看到 FID 先问这三件事。<strong>CLIP Score</strong> 是图和提示词两个编码器输出的余弦相似度，越大越好，坑是<strong>只测对不对、不测好不好看</strong>；而且它和 CFG 强度单调相关，CFG 拉高则 CLIP Score 涨、FID 差，论文里那条 FID–CLIP 权衡曲线就是它。<strong>人评</strong>三条：成对比较胜过 1–5 打分（绝对刻度不可比且会漂移）、必须盲评且左右顺序随机、题目集固定并来自真实请求。⭐ <strong>最要紧的收尾</strong>：这两个指标都不测构图、手指、小字和审美，它们只是<strong>代理</strong>；《数据这一关》13 那句「尺子本身也是一份数据，会被抽错、被污染、被磨损」在这里加倍成立 —— 拿评测分挑过 200 次候选，分数至少虚高 <strong>4.5 个百分点</strong>且不出现在任何置信区间里。对策是把提示词集切成 dev/test（test 每季度只跑三次），并定期拿「FID 变化 vs 人评变化」画散点回验相关性。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>FID 比较特征分布，CLIP Score 衡量图文匹配，两者都不是完整的画质判据。</li><li>样本量、特征网络和预处理必须一致，才能合理比较指标。</li><li>固定开发与测试提示词，结合盲评和具体失败案例，防止反复挑选造成评测过拟合。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="附录A-速查.html">附录A-速查.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -495,4 +494,4 @@ B. n=20000 时：
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,16 +271,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
- onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script><link rel="stylesheet" href="../assets/guided-lessons.css"><link rel="stylesheet" href="../assets/guided-batch1.css"><script defer src="../assets/guided-batch1.js"></script><link rel="stylesheet" href="../assets/guided-batch2.css"><script defer src="../assets/guided-batch2.js"></script><script defer src="../assets/guided-lessons.js"></script></head><body class="guided-reading">
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
@@ -305,19 +305,32 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 </div>
 </details>
-<h1 id="11">11 · 训练调试手册</h1>
+<div class="lesson-layout" data-lesson="ml-11" data-batch="ml-rest" data-reading-mode="lookup">
+<div class="lesson-content"><section class="lesson-hero" id="lesson-start" data-route="先知道这页解决什么">
+<div><p class="lesson-eyebrow">11 / 按问题查，不必顺读</p><h1>先找当前症状，<br>一次只排查一个原因。</h1><p class="lesson-lead">调试不是同时换模型、学习率和数据；先做一个能证伪猜测的小实验。</p></div>
+<aside class="lesson-advice"><strong>一次只处理一个问题</strong><p>可以从入口直接跳到需要的部分。正文、图解、代码和检查点都在下方。</p><a href="#first-pause">先看懂这一点就可以停 →</a></aside></section>
+<div class="lesson-overview-grid">
+<section class="lesson-card" id="first-example" data-route="先看一个具体结果"><p class="lesson-kicker">先抓住一个具体结果</p><h2>先做 10 个样本的小实验</h2><p>暂时关闭数据增强和强正则，检查模型能否拟合极少量训练样本。如果仍做不到，优先排查数据、损失与更新链路；症状表提供线索，不是唯一诊断。</p></section>
+<section class="lesson-card lesson-task-entry" id="reading-choices" data-route="按需要选择下一步"><p class="lesson-kicker">接下来，按需要选一项</p><h2>你现在想看什么？</h2><nav aria-label="本页阅读入口"><a href="#_3">按症状查线索 <span aria-hidden="true">→</span></a><a href="#10">小样本仍学不会 <span aria-hidden="true">→</span></a><a href="#_7">补齐观察记录 <span aria-hidden="true">→</span></a></nav><p class="lesson-note">这些入口是选择，不是必须按顺序完成的任务。</p></section>
+<section class="lesson-card lesson-pause lesson-wide" id="first-pause" data-route="可以停在这里"><h2>可以停在这里</h2><p>调试不是同时换模型、学习率和数据；先做一个能证伪猜测的小实验。</p><a href="#full-lesson">需要更多细节时，继续看完整正文 →</a></section></div>
+<section class="lesson-full" id="full-lesson" aria-label="完整正文">
+<div class="lesson-divider"><span>继续探索</span><p>原有正文、图解和例子都在下方。按需跳转，不必一次读完。</p></div>
+<h2 id="11" class="lesson-original-title">11 · 训练调试手册</h2>
+<!-- guided-lesson: ml-11 -->
+
 <p>⏱ <strong>42 分钟</strong> ｜ ⭐⭐ <strong>最难自学、最值钱的一章</strong></p>
 <blockquote>
 <p>教科书教你模型怎么工作，<strong>没人教你模型不工作时该怎么办</strong>。
 这一章就是那本没人写的手册。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_1">🎯 一句话</h2>
 <p>调试深度学习的核心方法论只有一条：<strong>先证明模型能过拟合，再考虑泛化。</strong>
 <strong>在你的模型能把 10 个样本背下来之前，讨论任何调参都是浪费时间。</strong></p>
-<hr />
+<hr>
 <h2 id="_2">🩺 一、黄金诊断流程（按顺序做，别跳）</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">第 0 步：在【10 个样本】上训练，能不能把 loss 降到接近 0？</span></div><div class="vb-tree-row"><span class="vb-tree-node">❌ 不能 → 有 BUG，别调参了，去第二节查</span></div><div class="vb-tree-row"><span class="vb-tree-node">✅ 能 → 模型和数据管线是通的</span></div><div class="vb-tree-row"><span class="vb-tree-node">第 1 步：全量数据训练，训练 loss 降吗？</span></div><div class="vb-tree-row"><span class="vb-tree-node">❌ 不降 → 欠拟合：加容量 / 加 lr / 减正则</span></div><div class="vb-tree-row"><span class="vb-tree-node">✅ 降 → 看验证 loss</span></div><div class="vb-tree-row"><span class="vb-tree-node">第 2 步：验证 loss 跟着降吗？</span></div><div class="vb-tree-row"><span class="vb-tree-node">❌ 不降或上升 → 过拟合：加数据 / 加正则 / 早停</span></div><div class="vb-tree-row"><span class="vb-tree-node">✅ 降 → 恭喜，现在才轮到调参提分</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-mlmd-11-1" style="--diagram-width:720px"><svg viewBox="0 0 720 533" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="从上往下读问题；满足条件走右边，不满足再往下。右侧是选择入口，具体限制与原有说明保留在图下。"><title>从上往下读问题；满足条件走右边，不满足再往下。右侧是选择入口，具体限制与原有说明保留在图下。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">按问题逐步判断</text><rect x="20" y="65" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="170.0" y="93" font-size="18" text-anchor="middle" fill="var(--fg)">10 个样本仍不能拟合？</text><rect x="395" y="65" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="545.0" y="93" font-size="18" text-anchor="middle" fill="var(--fg)">先检查实现与数据管线</text><line x1="320" y1="101" x2="395" y2="101" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="395.0,101.0 386.0,106.0 386.0,96.0"/><text x="356" y="87" font-size="16" text-anchor="middle" fill="var(--fg)">是</text><line x1="170" y1="113" x2="170" y2="195" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="170.0,195.0 165.0,186.0 175.0,186.0"/><text x="187" y="138" font-size="16" text-anchor="start" fill="var(--fg)">否</text><rect x="20" y="195" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="170.0" y="223" font-size="18" text-anchor="middle" fill="var(--fg)">全量训练 loss 不下降？</text><rect x="395" y="195" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="545.0" y="223" font-size="18" text-anchor="middle" fill="var(--fg)">检查优化与模型容量</text><line x1="320" y1="231" x2="395" y2="231" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="395.0,231.0 386.0,236.0 386.0,226.0"/><text x="356" y="217" font-size="16" text-anchor="middle" fill="var(--fg)">是</text><line x1="170" y1="243" x2="170" y2="325" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="170.0,325.0 165.0,316.0 175.0,316.0"/><text x="187" y="268" font-size="16" text-anchor="start" fill="var(--fg)">否</text><rect x="20" y="325" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="170.0" y="353" font-size="18" text-anchor="middle" fill="var(--fg)">验证 loss 不降或上升？</text><rect x="395" y="325" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="545.0" y="353" font-size="18" text-anchor="middle" fill="var(--fg)">检查过拟合与泛化</text><line x1="320" y1="361" x2="395" y2="361" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="395.0,361.0 386.0,366.0 386.0,356.0"/><text x="356" y="347" font-size="16" text-anchor="middle" fill="var(--fg)">是</text><line x1="170" y1="373" x2="170" y2="455" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="170.0,455.0 165.0,446.0 175.0,446.0"/><text x="187" y="419" font-size="16" text-anchor="start" fill="var(--fg)">否</text><rect x="20" y="455" width="675" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="357.5" y="483" font-size="18" text-anchor="middle" fill="var(--fg)">通过这些检查后，再有记录地调参提分</text></svg><figcaption>从上往下读问题；满足条件走右边，不满足再往下。右侧是选择入口，具体限制与原有说明保留在图下。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>第 0 步：在【10 个样本】上训练，能不能把 loss 降到接近 0？</span></li><li><span>❌ 不能 → 有 BUG，别调参了，去第二节查</span></li><li><span>✅ 能 → 模型和数据管线是通的</span></li><li><span>第 1 步：全量数据训练，训练 loss 降吗？</span></li><li><span>❌ 不降 → 欠拟合：加容量 / 加 lr / 减正则</span></li><li><span>✅ 降 → 看验证 loss</span></li><li><span>第 2 步：验证 loss 跟着降吗？</span></li><li><span>❌ 不降或上升 → 过拟合：加数据 / 加正则 / 早停</span></li><li><span>✅ 降 → 恭喜，现在才轮到调参提分</span></li></ul></section>
 <blockquote>
 <p>🔑 <strong>第 0 步是全章最重要的一步</strong>，却是最多人跳过的。
 它能在 30 秒内把「模型有 bug」和「模型没调好」区分开——<strong>这两件事的解法完全不同。</strong></p>
@@ -367,7 +380,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-flow" aria-label="流程图"><p class="visual-block-title">流程图</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">分类任务（C 类，初始时模型在均匀乱猜）：</span></div><div class="vb-flow-row"><span class="vb-flow-step">第一个 loss ≈ ln(C)</span></div><div class="vb-flow-row"><span class="vb-flow-step">2 类</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">0.693</span></div><div class="vb-flow-row"><span class="vb-flow-step">10 类</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">2.303</span></div><div class="vb-flow-row"><span class="vb-flow-step">100 类</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">4.605</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 明显偏离说明：</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 大得多</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">初始化太大 / 标签错位 / 输出层有问题</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 小得多</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">【标签泄漏】或者类别极度不平衡</span></div></div></section>
 <p>💡 <strong>这是全章性价比最高的一个检查</strong>——一行 <code>print</code>，能挡掉一大类事故。
 <strong>回归任务的对应版本</strong>：第一个 MSE 应该 ≈ 标签的方差（因为模型在预测均值附近）。</p>
-<hr />
+<hr>
 <h2 id="_3">🐛 二、症状 → 病因速查表</h2>
 <h3 id="loss">loss 相关</h3>
 <div class="tw"><table>
@@ -386,7 +399,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 <tr>
 <td><strong>loss 完全不动</strong>（逐位相同）</td>
-<td>① 忘了 <code>optimizer.step()</code> ② 梯度断了（用了 <code>.detach()</code> / <code>.item()</code> / <code>no_grad</code>）③ 输入全是 0　⚠️ <strong>几乎不会是 lr 太小——逐位相同是 bug，不是超参</strong>（<a href="09-优化器与学习率.html">第 9 章</a>的诊断表专门把这两种病分开）</td>
+<td>① 忘了 <code>optimizer.step()</code> ② 梯度断了（用了 <code>.detach()</code> / <code>.item()</code> / <code>no_grad</code>）③ 输入全是 0　⚠️ <strong>几乎不会是 lr 太小——逐位相同是 bug，不是超参</strong>（<a href="09-%E4%BC%98%E5%8C%96%E5%99%A8%E4%B8%8E%E5%AD%A6%E4%B9%A0%E7%8E%87.html">第 9 章</a>的诊断表专门把这两种病分开）</td>
 <td>打印 <code>param.grad.abs().mean()</code> 看梯度是不是 0</td>
 </tr>
 <tr>
@@ -447,9 +460,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<hr />
+<hr>
 <h2 id="10">🔍 三、「10 个样本过拟合不了」的必查五项</h2>
-<section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 标签对齐了吗？</span></div><div class="vb-flow-row"><span class="vb-flow-step">打印几个 (输入, 标签) 对，肉眼确认没错位</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ shuffle 时 X 和 y 分别 shuffle 是经典事故</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 梯度真的在流吗？</span></div><div class="vb-flow-row"><span class="vb-flow-step">for n,p in model.named_parameters():</span></div><div class="vb-flow-row"><span class="vb-flow-step">print(n, p.grad.abs().mean() if p.grad is not None else &quot;None&quot;)</span></div><div class="vb-flow-row"><span class="vb-flow-step">出现 None 或 0：梯度断了</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ loss 函数用对了吗？</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 多分类用 CrossEntropyLoss（输入是 logits，不要自己加 softmax！）</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 二分类用 BCEWithLogitsLoss（不要自己加 sigmoid！）</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 重复加激活是最高频的错误之一</span></div><div class="vb-flow-row"><span class="vb-flow-step">④ 输入的形状/数值对吗？</span></div><div class="vb-flow-row"><span class="vb-flow-step">print(X.shape, X.dtype, X.min(), X.max(), X.mean())</span></div><div class="vb-flow-row"><span class="vb-flow-step">全 0？没归一化？dtype 是 int 不是 float？</span></div><div class="vb-flow-row"><span class="vb-flow-step">⑤ lr 是不是离谱？</span></div><div class="vb-flow-row"><span class="vb-flow-step">试 1e-2 / 1e-3 / 1e-4 三档，如果全都不动，那是 bug 不是 lr</span></div></div></section>
+<section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 标签对齐了吗？</span></div><div class="vb-flow-row"><span class="vb-flow-step">打印几个 (输入, 标签) 对，肉眼确认没错位</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ shuffle 时 X 和 y 分别 shuffle 是经典事故</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 梯度真的在流吗？</span></div><div class="vb-flow-row"><span class="vb-flow-step">for n,p in model.named_parameters():</span></div><div class="vb-flow-row"><span class="vb-flow-step">print(n, p.grad.abs().mean() if p.grad is not None else "None")</span></div><div class="vb-flow-row"><span class="vb-flow-step">出现 None 或 0：梯度断了</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ loss 函数用对了吗？</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 多分类用 CrossEntropyLoss（输入是 logits，不要自己加 softmax！）</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 二分类用 BCEWithLogitsLoss（不要自己加 sigmoid！）</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 重复加激活是最高频的错误之一</span></div><div class="vb-flow-row"><span class="vb-flow-step">④ 输入的形状/数值对吗？</span></div><div class="vb-flow-row"><span class="vb-flow-step">print(X.shape, X.dtype, X.min(), X.max(), X.mean())</span></div><div class="vb-flow-row"><span class="vb-flow-step">全 0？没归一化？dtype 是 int 不是 float？</span></div><div class="vb-flow-row"><span class="vb-flow-step">⑤ lr 是不是离谱？</span></div><div class="vb-flow-row"><span class="vb-flow-step">试 1e-2 / 1e-3 / 1e-4 三档，如果全都不动，那是 bug 不是 lr</span></div></div></section>
 <h3 id="_5">🔨 一个能一次性查完的自检函数</h3>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sanity_check</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">loader</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
     <span class="n">xb</span><span class="p">,</span> <span class="n">yb</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">loader</span><span class="p">))</span>
@@ -547,7 +560,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>实跑输出：<code>优化器管 34624 个参数，模型一共 39754 个，差 5130</code>，然后断言炸掉。
 ⭐ <strong>那个 5130 正好是 <code>head</code> 层的 <code>512×10 + 10</code></strong> —— 自检把漏掉的那一层精确指了出来。</p>
 </details>
-<hr />
+<hr>
 <h2 id="_7">📊 四、必须打印的六个数字</h2>
 <p>不看这些就是盲调：</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`e` 来自你自己的代码，这一段只看写法</span>
@@ -596,7 +609,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="n">grad_norm</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clip_grad_norm_</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="mf">1e9</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>  <span class="c1"># 只测量不裁剪</span>
 </code></pre></div>
 
-<hr />
+<hr>
 <h2 id="gpu">⚡ 五、性能问题：GPU 跑不满</h2>
 <div class="tw"><table>
 <thead>
@@ -633,10 +646,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
         <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">();</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
 </code></pre></div>
 
-<hr />
+<hr>
 <h2 id="_8">📋 六、可复现性检查单</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">☐ 固定所有随机种子（python / numpy / torch / cuda）</span></div><div class="vb-tree-row"><span class="vb-tree-node">☐ DataLoader 的 shuffle 也受种子控制</span></div><div class="vb-tree-row"><span class="vb-tree-node">☐ 记录：代码版本、超参、数据版本、库版本</span></div><div class="vb-tree-row"><span class="vb-tree-node">☐ 同样配置跑 3 次，看方差有多大 ⭐</span></div><div class="vb-tree-row"><span class="vb-tree-node">这个方差决定了「涨 0.3% 算不算真的涨」（第 5 章）</span></div></div></section>
-
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="1"><label class="reading-task-title"><input type="checkbox" data-task-key="1"><span>核对项 1</span></label><div class="reading-task-body">固定所有随机种子（python / numpy / torch / cuda）</div></li>
+<li class="reading-task" data-reading-task="2"><label class="reading-task-title"><input type="checkbox" data-task-key="2"><span>核对项 2</span></label><div class="reading-task-body">DataLoader 的 shuffle 也受种子控制</div></li>
+<li class="reading-task" data-reading-task="3"><label class="reading-task-title"><input type="checkbox" data-task-key="3"><span>核对项 3</span></label><div class="reading-task-body">记录：代码版本、超参、数据版本、库版本</div></li>
+<li class="reading-task" data-reading-task="4"><label class="reading-task-title"><input type="checkbox" data-task-key="4"><span>核对项 4</span></label><div class="reading-task-body">同样配置跑 3 次，看方差有多大 ⭐</div></li>
+</ul>
+<p>这个方差决定了「涨 0.3% 算不算真的涨」（第 5 章）。</p>
 <div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_seed</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="mi">42</span><span class="p">):</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">random</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">torch</span>
     <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">s</span><span class="p">);</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
@@ -644,7 +662,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
     <span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">deterministic</span> <span class="o">=</span> <span class="kc">True</span>
 </code></pre></div>
 
-<hr />
+<hr>
 <h2 id="_9">🧠 七、五条心法</h2>
 <ol>
 <li><strong>一次只改一个变量。</strong> 同时改了 lr 和模型结构，涨了你也不知道是谁的功劳。</li>
@@ -654,9 +672,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><strong>保留一个能跑通的 baseline。</strong> 改崩了能回退——这比什么都重要。</li>
 </ol>
 <blockquote>
-<p>🔗 这五条和你在<a href="../智能体工程教程/14-评测Evals.html">智能体工程第 14 章</a>学的评测纪律是同一套思维方式。</p>
+<p>🔗 这五条和你在<a href="../%E6%99%BA%E8%83%BD%E4%BD%93%E5%B7%A5%E7%A8%8B%E6%95%99%E7%A8%8B/14-%E8%AF%84%E6%B5%8BEvals.html">智能体工程第 14 章</a>学的评测纪律是同一套思维方式。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_10">✅ 检查点</h2>
 <ol>
 <li>黄金诊断流程的第 0 步是什么？为什么它最重要？做的时候要注意关掉什么？</li>
@@ -681,13 +699,23 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>得到分数的<strong>自然波动幅度</strong>，才能判断一个改动带来的提升是真实的还是噪声。</li>
 </ol>
 </details>
-<hr />
+<hr>
 <h2 id="_11">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>核心方法论：先证明模型能过拟合，再考虑泛化。</strong> 黄金流程：<strong>第0步在10个样本上训到loss≈0</strong>(30秒区分bug和调参问题；<strong>记得先关Dropout和数据增强</strong>)→全量训练loss降吗(不降=欠拟合)→验证loss跟着降吗(不降=过拟合)。⭐ <strong>5秒自检：分类任务第一个loss应≈ln(类别数)</strong>(10类=2.303)——偏大=初始化/标签错位，<strong>偏小=标签泄漏</strong>；回归版是"第一个MSE≈标签方差"。NaN四因：lr太大/log(0)/除0/数据有NaN。loss不动先打印<strong>梯度</strong>(None或0=梯度断了)；<strong>梯度断流四来源</strong>：detach、<strong>.item()参与计算</strong>、no_grad包多了、原地操作；⚠️<strong>更隐蔽的是"参数没传给优化器"</strong>——比对优化器管的参数数和模型可训参数总数就能查出。<strong>CrossEntropyLoss别自己加softmax</strong>(高频错误)。必打印六数字：train/val loss、lr、梯度范数、输出分布、用时。GPU忽高忽低=数据加载瓶颈。五心法：一次改一个变量、跑通&gt;跑对&gt;跑好、信数字、最简解释通常对、留个能跑的baseline。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>先检查数据、标签、形状和损失，再怀疑网络结构。</li><li>先让模型拟合很小一批样本；连这一步都失败时，不要急着扩大训练。</li><li>观察损失、梯度和预测分布，一次只改一个因素。</li><li>训练流程正确后，再按曲线判断学习率、容量与正则化的问题。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="12-CNN.html">12-CNN.md</a></p>
+</section></div>
+<aside class="lesson-rail" aria-label="本页分类跳转">
+<button type="button" class="lesson-route-toggle" aria-expanded="true" aria-controls="lesson-route">本页分类跳转 <span aria-hidden="true">⌄</span></button>
+<div id="lesson-route">
+<p class="lesson-position" aria-live="polite">从第一站开始</p>
+<div class="lesson-track" aria-hidden="true"><span></span></div>
+<nav class="lesson-route-links" aria-label="章节跳转"></nav>
+<div class="lesson-rail-note"><strong>一次只读一张卡片</strong><p>先找到眼前的问题。长代码可以展开阅读，正文和图解不会被省略。</p></div>
+<button type="button" class="lesson-save">记住当前位置</button>
+<p class="lesson-save-status" role="status"></p>
+</div></aside></div>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="10-正则化全家桶.html"><div class="dir">← 上一节</div>🛡️ 10 · 正则化全家桶</a><a class="next" href="12-CNN.html"><div class="dir">下一节 →</div>🖼️ 12 · CNN 处理图像</a></nav>
@@ -714,4 +742,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

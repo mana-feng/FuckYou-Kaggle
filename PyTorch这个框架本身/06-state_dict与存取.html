@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -763,15 +763,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_7">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><code>state_dict()</code> 的 key 是「模块路径加属性名」拼出来的，value 是 <code>Tensor</code> 而不是 <code>Parameter</code>（出门前 detach 过）。⭐⭐ <strong>但 detach 过不等于拷贝过</strong>——实测它和模型参数<strong>是同一块内存</strong>。💀 <strong>这就是早停模板里那行 clone 的全部理由</strong>：不 clone 的话权重一边训、备份一边跟着变，<strong>回滚等于没回滚，而且不报任何错</strong>。⭐ <strong>存盘不用 clone（落盘本身就是快照），内存里留一份必须 clone。</strong></p>
-<p>⭐ <strong>key 是拼出来的</strong>，所以<strong>改属性名、中间插一层、套一层 DDP 都会让旧 checkpoint 对不上</strong>；<code>Sequential</code> 里更是只有下标没有名字。⭐ <strong>改 key 是一行推导式，比改模型便宜。</strong></p>
-<p>加载报错只有三种：形状不匹配、文件里多的、模型里缺的。⭐ <strong>读法一句话：缺的和多的数量一样多、名字还长得像，那就是前缀问题，不是结构问题。</strong></p>
-<p>⚠️⚠️ <strong><code>strict=False</code> 只放过 key，不放过形状</strong>，而且<strong>它有返回值</strong>——不接这个返回值就会出现最贵的那一幕：<strong>前缀拼错、所有 key 进了「缺失」、一个权重都没加载、模型其实是随机初始化的，而程序一声不吭开始训练。</strong></p>
-<p>⚠️ 优化器那份 <strong>第一次更新之前是空的</strong>，而且 ⭐ <strong>它的 key 是整数下标不是参数名——参数顺序一变，动量就安错人。</strong></p>
-<p>⚠️ 整个模型对象直接存会把类的引用路径腌进去，换个脚本加载就报找不到那个类；只存 <code>state_dict</code> 没这问题。⭐ <strong>另外新版 <code>torch.load</code> 默认只读权重，因为 pickle 反序列化等于执行代码。</strong></p>
-<p>⭐ 能恢复训练的 checkpoint 要含模型、优化器、scheduler、epoch、随机数状态和 scaler，⭐ <strong>再加一个 config——否则半年后你得靠猜隐藏层宽度才能把模型构造出来。</strong></p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>state_dict 按模块路径组织参数和缓冲区，值并不是独立的模型副本。</li><li>detach 不等于复制；继续训练时，直接留下的状态字典可能跟着变化。</li><li>内存中保存最佳权重时复制张量；存取后核对键、设备与恢复出的结果。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="07-train和eval改了什么.html">07-train和eval改了什么.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -799,4 +792,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

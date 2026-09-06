@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -513,9 +513,8 @@ MSA 里两列强相关 → 这两个残基大概率挨着 → 这是距离矩阵
 ⭐ 这条思路在任何「预测几何对象」的问题上都成立。</p>
 <p>⚠️ <strong>什么时候看下一页</strong>：你想知道<strong>另一条路</strong> —— 不换目标，而是把对称性直接写进网络结构。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>结构预测最难的一点在输出空间，不在网络。</strong> 你要输出几千个原子的三维坐标，<strong>而整体旋转平移之后是同一个答案</strong> —— 于是<strong>同一个正确答案有无穷多组坐标，MSE 只认其中一组</strong>：💀 网络输出一个完全正确但朝向不同的结构，损失函数会重罚它，<strong>你在惩罚它答对</strong>，梯度在教错的东西。⭐ <strong>绕法是先预测距离矩阵</strong>：距离对旋转平移天然不变，同一个结构只有一种表示，可以直接上 MSE；代价是大小从 $N \times 3$ 变成平方级的 $N \times N$。⭐⭐ <strong>这是全站可复用的招式：输出空间带对称性而损失不认它时，换一个对该对称性不变的等价目标。</strong> 更省的版本是只预测<strong>接触图</strong>（距离小于阈值算 1），把回归变二分类。<strong>距离够不够？实测</strong>：从 12 个原子的坐标算出距离矩阵，再只用距离矩阵做<strong>经典 MDS</strong> 恢复坐标 —— 距离矩阵恢复偏差 <strong>1.07e-14</strong>（机器精度，<strong>信息一点没丢</strong>），坐标本身却差 <strong>23.145</strong>，而做完<strong>刚体对齐（Kabsch）后回到 8.88e-15</strong> —— ⭐ 证明差的<strong>只是</strong>那个整体旋转平移。⚠️ 两个真限制：<strong>分不出镜像</strong>（照镜子所有距离不变，而手性是真的）、真实预测的距离矩阵<strong>带噪且不一定自洽</strong>。距离信息来自<strong>共进化</strong>（03 章），但要注意互信息会把间接相关误报成接触。<strong>端到端后来赢了</strong>，三个改变：序列表示和结构表示<strong>互相更新</strong>、<strong>等变性内建进结构模块</strong>（05 章正题）、端到端梯度 —— ⭐ 其中第二条和「换目标」是<strong>同一个问题的两条路</strong>。⚠️ 拿到预测结构后：<strong>置信度不均匀</strong>（无序区天生低，那不是模型的错，💀 去修是在修一个不存在的问题）、<strong>预测结构不等于实验结构</strong>（侧链和口袋细节不能直接用）、<strong>对你设计出来的序列不可靠</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>同一结构可以有不同的整体位置与朝向，直接逐坐标比较可能惩罚正确预测。</li><li>距离等不变目标能消除部分坐标歧义，但要注意镜像和几何自洽性。</li><li>预测置信度、结构用途和实验验证需要分别判断，不能把预测结构当成实验事实。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="05-等变与不变.html">05-等变与不变.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -543,4 +542,4 @@ MSA 里两列强相关 → 这两个残基大概率挨着 → 这是距离矩阵
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

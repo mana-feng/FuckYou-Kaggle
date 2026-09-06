@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -513,7 +513,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;手写等价:&quot;</span><span class="p">,</span> <span class="n">flaky2</span><span class="p">())</span>
 </code></pre></div>
 
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>--- 定义 flaky ---</p><p>[1] retry(times) 执行，times = 3</p><p>[2] decorator(fn) 执行，fn = flaky</p><p>--- 定义完了 ---</p><p>[3] 第 1 次失败: 第 1 次不行</p><p>[3] 第 2 次失败: 第 2 次不行</p><p>结果: 第 3 次成功</p><p>[1] retry(times) 执行，times = 3</p><p>[2] decorator(fn) 执行，fn = flaky2</p><p>手写等价: ok</p></div></section>
+<section class="comparison-repair" id="comparison-repair-29"><section class="reading-information"><p class="reading-information-title">执行记录：按先后顺序读</p><ol><li>--- 定义 flaky ---</li><li>[1] retry(times) 执行，times = 3</li><li>[2] decorator(fn) 执行，fn = flaky</li><li>--- 定义完了 ---</li><li>[3] 第 1 次失败: 第 1 次不行</li><li>[3] 第 2 次失败: 第 2 次不行</li><li>结果: 第 3 次成功</li><li>[1] retry(times) 执行，times = 3</li><li>[2] decorator(fn) 执行，fn = flaky2</li><li>手写等价: ok</li></ol></section></section>
 <p>⭐ <strong>三层对应三批参数，一句话记住</strong>：</p>
 <div class="tw"><table>
 <thead>
@@ -771,7 +771,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>[正常] __enter__ 跑了</p><p>body: ⭐ as 绑的是 __enter__ 的【返回值】</p><p>[正常] __exit__ 收到 exc_type = None</p><p>---</p><p>[出错] __enter__ 跑了</p><p>[出错] __exit__ 收到 exc_type = &lt;class &#x27;ValueError&#x27;&gt;</p><p>异常照常传出来: ValueError : 炸了</p><p>---</p><p>[提前 return] __enter__ 跑了</p><p>[提前 return] __exit__ 收到 exc_type = None</p><p>f() = 返回值</p><p>---</p><p>[break-0] __enter__ 跑了</p><p>[break-0] __exit__ 收到 exc_type = None</p><p>[break-1] __enter__ 跑了</p><p>[break-1] __exit__ 收到 exc_type = None</p></div></section>
-<p>⚠️ <strong><code>as x</code> 绑的是 <code>__enter__</code> 的返回值，不是那个对象本身。</strong> 上面 <code>x</code> 是一个字符串，不是 <code>Trace</code> 实例。多数库返回 <code>self</code>（所以你以为它们是一回事），但也有反例：<code>open()</code> 返回文件对象本身，而 <code>contextlib.suppress()</code> 的 <code>__enter__</code> 返回 <code>None</code>。⭐ <strong>写自己的上下文管理器时，<code>__enter__</code> 里忘了 <code>return self</code> 会让 <code>as x</code> 拿到 <code>None</code>，而这不报错</strong> —— 直到你用 <code>x.something</code> 才炸出一个 <code>AttributeError: 'NoneType' object has no attribute ...</code>。</p>
+<p>⚠️ <strong><code>as x</code> 绑的是 <code>__enter__</code> 的返回值，不是那个对象本身。</strong> 上面 <code>x</code> 是一个字符串，不是 <code>Trace</code> 实例。</p>
+<p>多数库返回 <code>self</code>（所以你以为它们是一回事），但也有反例：<code>open()</code> 返回文件对象本身，而 <code>contextlib.suppress()</code> 的 <code>__enter__</code> 返回 <code>None</code>。</p>
+<p>⭐ <strong>写自己的上下文管理器时，<code>__enter__</code> 里忘了 <code>return self</code> 会让 <code>as x</code> 拿到 <code>None</code>，而这不报错</strong> —— 直到你用 <code>x.something</code> 才炸出一个 <code>AttributeError: 'NoneType' object has no attribute ...</code>。</p>
 <p>⭐ <strong><code>__exit__</code> 的执行是无条件的</strong>：正常结束、<code>return</code>、<code>break</code>、<code>continue</code>、抛异常，五条路都会走到它。这正是它比手写清理可靠的全部原因。</p>
 <hr />
 <h2 id="with-tryfinally">⭐ 七、<code>with</code> 就是 <code>try/finally</code>，外加它多干的三件事</h2>
@@ -1335,4 +1337,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

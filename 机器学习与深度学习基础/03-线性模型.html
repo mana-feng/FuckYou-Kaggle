@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,16 +271,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
- onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script><link rel="stylesheet" href="../assets/guided-lessons.css"><link rel="stylesheet" href="../assets/guided-batch1.css"><script defer src="../assets/guided-batch1.js"></script><script defer src="../assets/guided-lessons.js"></script></head><body class="guided-reading">
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
@@ -296,7 +296,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><a href="#_2">📈 一、线性回归：预测一个数</a></li>
 <li><a href="#_3">🎯 二、逻辑回归：预测一个概率</a></li>
 <li><a href="#_4">🧪 第二遍实战：正则化怎么防过拟合</a></li>
-<li><a href="#_5">⚠️ 三、必须做的预处理：标准化</a></li>
+<li><a href="#_5">⚠️ 三、常用的预处理：标准化</a></li>
 <li><a href="#_6">🧪 第二遍实战：看正则化怎么起作用</a></li>
 <li><a href="#_7">🧩 线性模型的能力边界</a></li>
 <li><a href="#_8">✅ 检查点</a></li>
@@ -304,12 +304,29 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 </div>
 </details>
-<h1 id="03">03 · 线性模型：一切的起点</h1>
+<div class="lesson-layout" data-lesson="linear">
+<div class="lesson-content"><section class="lesson-hero" id="lesson-start" data-route="先分清两种预测">
+<div><p class="lesson-eyebrow">03 / 线性模型 · 从一个预测开始</p><h1>先分清预测什么，<br>再看公式怎么做。</h1><p class="lesson-lead">预测房价是一个数；判断是否违约，先得到一个概率。两者都从加权求和出发。</p></div>
+<aside class="lesson-advice"><strong>这次只抓住一个区别</strong><p>线性回归输出数值，逻辑回归把分数转成概率。不用先背完损失函数。</p><a href="#first-pause">先看本次停靠点 →</a></aside>
+</section>
+<section class="lesson-mission"><div><p class="lesson-kicker">你先带走这句就够了</p><h2>先预测，再衡量差多少，<br>最后调整权重。</h2><p>下面的蓝色下划线可以点开：解释的是它在当前公式里的作用。</p></div><ol class="lesson-steps"><li><span>1</span><strong>把特征组合起来</strong><p>权重决定方向和力度，偏置调整起点。</p></li><li><span>2</span><strong>看预测与答案的差距</strong><p>用与任务相配的损失衡量。</p></li><li><span>3</span><strong>让下一次预测更好</strong><p>训练调整参数；验证集检查是否学偏。</p></li></ol></section>
+<div class="lesson-overview-grid">
+<section class="lesson-card" id="linear-number" data-route="预测一个数"><p class="lesson-kicker">01 / 数值预测</p><h2>线性回归：加权求和</h2><div class="formula-box" data-formula-name="线性回归的预测">$$\hat y = w^\top x + b$$</div><p>例如只有“面积”一个输入：权重 0.8、面积 100、偏置 20，模型预测 100（示意单位）。</p><p class="lesson-note">负权重表示：其他输入不变，这一项增加会让预测降低。它不是因果证明。</p></section>
+<section class="lesson-card" id="linear-probability" data-route="预测一个概率"><p class="lesson-kicker">02 / 二分类</p><h2>逻辑回归：分数转成概率</h2><div class="formula-box" data-formula-name="逻辑回归的概率预测">$$\hat p = \sigma(w^\top x + b)$$</div><p>Sigmoid 把分数压进 0 到 1。分数是 0 时，预测概率为 0.5；分数是 2 时，约为 0.881。</p><p class="lesson-note">概率还不是类别。是否判为正类，要另外选择阈值；0.5 只是常见起点。</p></section>
+<section class="lesson-card lesson-wide" id="linear-error" data-route="用两个样本算误差"><p class="lesson-kicker">03 / 先算一次，再记名字</p><h2>MSE：把每次预测的误差平方，再取平均</h2><div class="formula-box" data-formula-name="两个样本的均方误差">$$\mathcal{L}=\frac{1}{n}\sum_{i=1}^{n}(y_i-\hat y_i)^2$$</div><div class="lesson-split-example"><div><strong>样本 A：真实 3，预测 2</strong><p>误差平方：(3 − 2)² = 1</p></div><div><strong>样本 B：真实 5，预测 7</strong><p>误差平方：(5 − 7)² = 4</p></div></div><p><strong>平均误差是 (1 + 4) / 2 = 2.5。</strong>这是回归示例；二分类通常用后文的交叉熵。</p></section>
+<section class="lesson-card lesson-pause lesson-wide" id="first-pause" data-route="可以停在这里"><h2>可以停在这里</h2><p>能分清“数值”和“概率”，能用两个样本算出 MSE，就完成了这次的小目标。</p><a href="#full-lesson">继续看图解、交叉熵和标准化 →</a><p class="lesson-note">L1/L2 与实验保留在正文的“第二遍实战”里，需要时再展开。</p></section>
+</div>
+
+<section class="lesson-full" id="full-lesson" aria-label="完整正文">
+<div class="lesson-divider"><span>继续探索</span><p>原有正文、图解和例子都在下方。按需跳转，不必一次读完。</p></div>
+<h2 id="03" class="lesson-original-title">03 · 线性模型：一切的起点</h2>
+<!-- guided-lesson: linear -->
+
 <p>⏱ <strong>26 分钟</strong> ｜ ⭐ <strong>核心</strong> ｜ 🔨 有代码</p>
 <hr />
 <h2 id="_1">🎯 一句话</h2>
 <p>线性模型就是 <strong><code>y = w₁x₁ + w₂x₂ + ... + b</code></strong> ——给每个特征配一个权重，加起来。
-简单到不像个「AI」，但<strong>神经网络的每一层都是它</strong>，所以必须搞透。</p>
+简单到不像个「AI」，但<strong>神经网络的许多层都包含这样的加权求和</strong>，再接非线性等运算，所以值得理解。</p>
 <div class="rule"><b>这一页怎么读</b><br>
 <strong>第一遍只走主线：</strong>线性回归 → 逻辑回归 → 标准化 → 能力边界。<br>
 <strong>第二遍再打开实战：</strong>正则化、C 的调参实验和 L1 特征选择。先会分清“预测数值”和“预测概率”，已经完成最重要的一半。</div>
@@ -345,7 +362,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <blockquote>
-<p>💡 <strong>不要把权重当成因果结论。</strong> “楼龄权重为负”只是在这份数据里、控制其他特征后，它与房价同向变化的统计关系；不等于楼龄本身单独造成房价下降。
+<p>💡 <strong>不要把权重当成因果结论。</strong> “楼龄权重为负”表示在这个模型里、其他特征不变时，楼龄增加会让预测房价降低；这是模型中的反向关系，不等于楼龄本身单独造成房价下降。
 <strong>损失函数</strong>（第 2 章三要素之二）—— 均方误差 MSE：</p>
 </blockquote>
 <p>$$\mathcal{L} = \frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2$$</p>
@@ -361,8 +378,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>💡 <strong>人话</strong>：真实是 1，模型说 0.9 → 罚得轻；说 0.01 → 罚到飞起。
 <strong>它专门重罚「很自信但错了」的预测。</strong></p>
 <blockquote>
-<p>⚠️ <strong>为什么分类不用 MSE</strong>：配 Sigmoid 用 MSE 会导致梯度消失（预测越错梯度反而越小，模型学不动）。
-交叉熵配 Sigmoid，梯度正好是 <code>(预测 − 真实)</code>，干净利落。<strong>这是个经典考点。</strong></p>
+<p>⚠️ <strong>为什么二分类通常优先用交叉熵</strong>：Sigmoid 配 MSE 时，自信但错误的饱和预测可能得到很小的梯度，纠错变慢；并不是分类绝对不能用 MSE。
+单样本二元交叉熵对 <strong>Sigmoid 前的分数 z</strong> 求导，结果是 <code>(预测概率 − 真实标签)</code>；按 n 个样本取平均时还要除以 n。这不保证深层网络的所有梯度都不会消失。</p>
 <p>⭐ <strong>既然是经典考点，它多半会以「写一下」而不是「说一下」的形式出现</strong>：
 🔗 <a href="附录C-手撕代码速查.html">附录 C 第 10 题</a>把这句话写成了 10 行纯 numpy 的逻辑回归（在 breast_cancer 上跑到 98.2%，
 sklearn 是 98.8%），<a href="附录C-手撕代码速查.html">第 1 题</a>是它的<strong>多分类版本</strong>——
@@ -376,7 +393,9 @@ softmax + 交叉熵的反向就是 $p-\text{onehot}(y)$，和这里的 <code>(�
 <details>
 <summary>展开：L1、L2、C 的方向，以及一组真实实验</summary>
 <p>第 1 章你看到过拟合了。线性模型怎么防？<strong>别让权重太大。</strong></p>
-<p>$$\mathcal{L}_{L2} = \text{原损失} + \lambda\sum_i w_i^2 \qquad \mathcal{L}_{L1} = \text{原损失} + \lambda\sum_i |w_i|$$</p>
+<p>$$\mathcal{L}_{L2} = \text{原损失} + \lambda\sum_i w_i^2$$</p>
+<p>L2 用平方惩罚大权重；L1 换成绝对值惩罚：</p>
+<p>$$\mathcal{L}_{L1} = \text{原损失} + \lambda\sum_i |w_i|$$</p>
 <div class="rule"><b>先固定方向，别看反：</b><br>
 <strong>λ 小 → 正则弱 → 更容易过拟合；λ 大 → 正则强 → 更容易欠拟合。</strong><br>
 本页代码库用的是 <code>C = 1 / λ</code>，所以方向正好相反：<strong>C 小 → 正则强；C 大 → 正则弱。</strong></div>
@@ -393,8 +412,8 @@ softmax + 交叉熵的反向就是 $p-\text{onehot}(y)$，和这里的 <code>(�
 <tr>
 <td><strong>L2 / Ridge</strong></td>
 <td>$\lambda\sum w_i^2$</td>
-<td>权重都变小但不为 0，<strong>平滑</strong></td>
-<td>⭐ 默认选它</td>
+<td>通常整体收缩权重，不以制造恰好为 0 的系数为特点</td>
+<td>常用起点，再用验证集比较</td>
 </tr>
 <tr>
 <td><strong>L1 / Lasso</strong></td>
@@ -451,9 +470,9 @@ softmax + 交叉熵的反向就是 $p-\text{onehot}(y)$，和这里的 <code>(�
 </blockquote>
 </details>
 <hr />
-<h2 id="_5">⚠️ 三、必须做的预处理：标准化</h2>
+<h2 id="_5">⚠️ 三、常用的预处理：标准化</h2>
 <p>线性模型对特征尺度极度敏感：</p>
-<figure class="dia"><svg viewBox="0 0 760 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="标准化让面积和房间数使用同一把尺度"><defs><marker id="scale-arrow__f3" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 Z" fill="var(--accent)"/></marker></defs><text class="dia-t" x="188" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="var(--fg)">原始尺度不同</text><text class="dia-t" x="570" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="var(--fg)">标准化后：同一把尺</text><text class="dia-t" x="42" y="100" font-size="16" font-weight="700" fill="var(--fg)">面积</text><line x1="112" y1="94" x2="300" y2="94" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/><circle cx="112" cy="94" r="6" fill="var(--accent)"/><circle cx="300" cy="94" r="6" fill="var(--accent)"/><text class="dia-t" x="112" y="122" text-anchor="middle" font-size="14" fill="var(--muted)">1 ㎡</text><text class="dia-t" x="300" y="122" text-anchor="middle" font-size="14" fill="var(--muted)">200 ㎡</text><text class="dia-t" x="42" y="192" font-size="16" font-weight="700" fill="var(--fg)">房间数</text><line x1="112" y1="186" x2="168" y2="186" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/><circle cx="112" cy="186" r="6" fill="var(--accent)"/><circle cx="168" cy="186" r="6" fill="var(--accent)"/><text class="dia-t" x="112" y="214" text-anchor="middle" font-size="14" fill="var(--muted)">1 个</text><text class="dia-t" x="168" y="214" text-anchor="middle" font-size="14" fill="var(--muted)">5 个</text><path d="M332 140 H408" fill="none" stroke="var(--accent)" stroke-width="3" marker-end="url(#scale-arrow__f3)"/><rect x="337" y="155" width="67" height="34" rx="9" fill="var(--accent-soft)"/><text class="dia-t" x="370" y="178" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent)">标准化</text><text class="dia-t" x="440" y="100" font-size="16" font-weight="700" fill="var(--fg)">面积</text><line x1="510" y1="94" x2="700" y2="94" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/><circle cx="510" cy="94" r="6" fill="var(--accent)"/><circle cx="605" cy="94" r="6" fill="var(--accent)"/><circle cx="700" cy="94" r="6" fill="var(--accent)"/><text class="dia-t" x="510" y="122" text-anchor="middle" font-size="14" fill="var(--muted)">−1</text><text class="dia-t" x="605" y="122" text-anchor="middle" font-size="14" fill="var(--muted)">0</text><text class="dia-t" x="700" y="122" text-anchor="middle" font-size="14" fill="var(--muted)">+1</text><text class="dia-t" x="440" y="192" font-size="16" font-weight="700" fill="var(--fg)">房间数</text><line x1="510" y1="186" x2="700" y2="186" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/><circle cx="510" cy="186" r="6" fill="var(--accent)"/><circle cx="605" cy="186" r="6" fill="var(--accent)"/><circle cx="700" cy="186" r="6" fill="var(--accent)"/><text class="dia-t" x="510" y="214" text-anchor="middle" font-size="14" fill="var(--muted)">−1</text><text class="dia-t" x="605" y="214" text-anchor="middle" font-size="14" fill="var(--muted)">0</text><text class="dia-t" x="700" y="214" text-anchor="middle" font-size="14" fill="var(--muted)">+1</text><text class="dia-t" x="380" y="288" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">每一列都变成：均值 0、标准差 1</text></svg><figcaption>标准化不改变样本之间的相对关系；它只是让“面积”和“房间数”都用同一把尺说话。</figcaption></figure>
+<figure class="dia"><svg viewBox="0 0 760 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="标准化让面积和房间数使用同一把尺度"><defs><marker id="scale-arrow__f3" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 Z" fill="var(--accent)"/></marker></defs><text class="dia-t" x="188" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="var(--fg)">原始尺度不同</text><text class="dia-t" x="570" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="var(--fg)">标准化后：同一把尺</text><text class="dia-t" x="42" y="100" font-size="16" font-weight="700" fill="var(--fg)">面积</text><line x1="112" y1="94" x2="300" y2="94" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/><circle cx="112" cy="94" r="6" fill="var(--accent)"/><circle cx="300" cy="94" r="6" fill="var(--accent)"/><text class="dia-t" x="112" y="122" text-anchor="middle" font-size="14" fill="var(--muted)">1 ㎡</text><text class="dia-t" x="300" y="122" text-anchor="middle" font-size="14" fill="var(--muted)">200 ㎡</text><text class="dia-t" x="42" y="192" font-size="16" font-weight="700" fill="var(--fg)">房间数</text><line x1="112" y1="186" x2="168" y2="186" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/><circle cx="112" cy="186" r="6" fill="var(--accent)"/><circle cx="168" cy="186" r="6" fill="var(--accent)"/><text class="dia-t" x="112" y="214" text-anchor="middle" font-size="14" fill="var(--muted)">1 个</text><text class="dia-t" x="168" y="214" text-anchor="middle" font-size="14" fill="var(--muted)">5 个</text><path d="M332 140 H408" fill="none" stroke="var(--accent)" stroke-width="3" marker-end="url(#scale-arrow__f3)"/><rect x="337" y="155" width="67" height="34" rx="9" fill="var(--accent-soft)"/><text class="dia-t" x="370" y="178" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent)">标准化</text><text class="dia-t" x="440" y="100" font-size="16" font-weight="700" fill="var(--fg)">面积</text><line x1="510" y1="94" x2="700" y2="94" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/><circle cx="510" cy="94" r="6" fill="var(--accent)"/><circle cx="605" cy="94" r="6" fill="var(--accent)"/><circle cx="700" cy="94" r="6" fill="var(--accent)"/><text class="dia-t" x="510" y="122" text-anchor="middle" font-size="14" fill="var(--muted)">−1</text><text class="dia-t" x="605" y="122" text-anchor="middle" font-size="14" fill="var(--muted)">0</text><text class="dia-t" x="700" y="122" text-anchor="middle" font-size="14" fill="var(--muted)">+1</text><text class="dia-t" x="440" y="192" font-size="16" font-weight="700" fill="var(--fg)">房间数</text><line x1="510" y1="186" x2="700" y2="186" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/><circle cx="510" cy="186" r="6" fill="var(--accent)"/><circle cx="605" cy="186" r="6" fill="var(--accent)"/><circle cx="700" cy="186" r="6" fill="var(--accent)"/><text class="dia-t" x="510" y="214" text-anchor="middle" font-size="14" fill="var(--muted)">−1</text><text class="dia-t" x="605" y="214" text-anchor="middle" font-size="14" fill="var(--muted)">0</text><text class="dia-t" x="700" y="214" text-anchor="middle" font-size="14" fill="var(--muted)">+1</text><text class="dia-t" x="380" y="288" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">非恒定列：训练集上均值 0、标准差 1</text></svg><figcaption>标准化不改变样本之间的相对关系；它只是让“面积”和“房间数”都用同一把尺说话。</figcaption></figure>
 
 <div class="tw"><table>
 <thead>
@@ -499,7 +518,7 @@ softmax + 交叉熵的反向就是 $p-\text{onehot}(y)$，和这里的 <code>(�
 
 <blockquote>
 <p>🔗 这是<a href="../推荐算法/03-数据长什么样.html">推荐算法第 3 章「数据泄漏」</a>在预处理环节的版本。
-<strong>树模型不需要标准化</strong>（它只看特征的相对大小），线性模型和神经网络必须做。</p>
+<strong>树模型通常不需要标准化</strong>。尺度差异较大的数值特征，在线性模型和神经网络里通常值得先缩放，但不是所有模型、所有输入都必须使用 StandardScaler。常数列也不能变成标准差 1。</p>
 </blockquote>
 <hr />
 <h2 id="_6">🧪 第二遍实战：看正则化怎么起作用</h2>
@@ -537,8 +556,11 @@ softmax + 交叉熵的反向就是 $p-\text{onehot}(y)$，和这里的 <code>(�
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">C</span><span class="si">:</span><span class="s2">&lt;12</span><span class="si">}{</span><span class="n">m</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">Xte</span><span class="p">,</span><span class="n">y_te</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;8.1%</span><span class="si">}{</span><span class="n">n_used</span><span class="si">:</span><span class="s2">&gt;13</span><span class="si">}</span><span class="s2"> / 30&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<p>你会看到的实测结果：</p>
-<figure class="dia"><svg viewBox="0 0 760 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="不同正则强度下训练集和测试集准确率的变化"><rect x="350" y="38" width="110" height="230" rx="12" fill="var(--accent-soft)" opacity=".7"/><line x1="70" y1="268" x2="714" y2="268" stroke="var(--fg)" stroke-width="2"/><line x1="70" y1="40" x2="70" y2="268" stroke="var(--fg)" stroke-width="2"/><line x1="70" y1="230" x2="714" y2="230" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="6 5"/><line x1="70" y1="154" x2="714" y2="154" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="6 5"/><line x1="70" y1="78" x2="714" y2="78" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="6 5"/><text class="dia-t" x="58" y="272" text-anchor="end" font-size="14" fill="var(--muted)">88%</text><text class="dia-t" x="58" y="158" text-anchor="end" font-size="14" fill="var(--muted)">94%</text><text class="dia-t" x="58" y="82" text-anchor="end" font-size="14" fill="var(--muted)">100%</text><path d="M92 251 L196 116 L300 69 L405 66 L510 60 L614 50" fill="none" stroke="var(--fg)" stroke-width="4" stroke-linejoin="round"/><path d="M92 236 L196 159 L300 75 L405 67 L510 75 L614 112" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linejoin="round"/><g fill="var(--fg)"><circle cx="92" cy="251" r="5"/><circle cx="196" cy="116" r="5"/><circle cx="300" cy="69" r="5"/><circle cx="405" cy="66" r="5"/><circle cx="510" cy="60" r="5"/><circle cx="614" cy="50" r="5"/></g><g fill="var(--accent)"><circle cx="92" cy="236" r="6"/><circle cx="196" cy="159" r="6"/><circle cx="300" cy="75" r="6"/><circle cx="405" cy="67" r="7"/><circle cx="510" cy="75" r="6"/><circle cx="614" cy="112" r="6"/></g><text class="dia-t" x="92" y="295" text-anchor="middle" font-size="14" fill="var(--muted)">0.001</text><text class="dia-t" x="196" y="295" text-anchor="middle" font-size="14" fill="var(--muted)">0.01</text><text class="dia-t" x="300" y="295" text-anchor="middle" font-size="14" fill="var(--muted)">0.1</text><text class="dia-t" x="405" y="295" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent)">1 ★</text><text class="dia-t" x="510" y="295" text-anchor="middle" font-size="14" fill="var(--muted)">10</text><text class="dia-t" x="614" y="295" text-anchor="middle" font-size="14" fill="var(--muted)">100</text><text class="dia-t" x="392" y="324" text-anchor="middle" font-size="14" fill="var(--muted)">C 越大 → 正则越弱</text><line x1="505" y1="27" x2="530" y2="27" stroke="var(--fg)" stroke-width="4"/><text class="dia-t" x="538" y="32" font-size="14" fill="var(--fg)">训练集</text><line x1="612" y1="27" x2="637" y2="27" stroke="var(--accent)" stroke-width="5"/><text class="dia-t" x="645" y="32" font-size="14" fill="var(--accent)">测试集</text><text class="dia-t" x="405" y="116" text-anchor="middle" font-size="15" font-weight="700" fill="var(--accent)">测试集最高：甜点区</text></svg><figcaption>不要看训练集一直上涨就高兴：真正要盯的是橙色的测试集曲线。它在 C=1 附近最高，之后开始掉头。</figcaption></figure>
+<p>下方保留一组历史实验结果，供观察趋势；不同版本与划分不保证逐项相同。</p>
+<blockquote>
+<p><strong>实验边界：不要照着测试分数调 C。</strong> 这组结果用于展示正则强弱的现象。实际调参应在训练数据内切验证集或做交叉验证，选定 C 后才用独立测试集报告一次成绩。C=1 不是通用最优值。</p>
+</blockquote>
+<figure class="dia"><svg viewBox="0 0 760 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="不同正则强度下训练集和测试集准确率的变化"><rect x="350" y="38" width="110" height="230" rx="12" fill="var(--accent-soft)" opacity=".7"/><line x1="70" y1="268" x2="714" y2="268" stroke="var(--fg)" stroke-width="2"/><line x1="70" y1="40" x2="70" y2="268" stroke="var(--fg)" stroke-width="2"/><line x1="70" y1="230" x2="714" y2="230" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="6 5"/><line x1="70" y1="154" x2="714" y2="154" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="6 5"/><line x1="70" y1="78" x2="714" y2="78" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="6 5"/><text class="dia-t" x="58" y="272" text-anchor="end" font-size="14" fill="var(--muted)">88%</text><text class="dia-t" x="58" y="158" text-anchor="end" font-size="14" fill="var(--muted)">94%</text><text class="dia-t" x="58" y="82" text-anchor="end" font-size="14" fill="var(--muted)">100%</text><path d="M92 251 L196 116 L300 69 L405 66 L510 60 L614 50" fill="none" stroke="var(--fg)" stroke-width="4" stroke-linejoin="round"/><path d="M92 236 L196 159 L300 75 L405 67 L510 75 L614 112" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linejoin="round"/><g fill="var(--fg)"><circle cx="92" cy="251" r="5"/><circle cx="196" cy="116" r="5"/><circle cx="300" cy="69" r="5"/><circle cx="405" cy="66" r="5"/><circle cx="510" cy="60" r="5"/><circle cx="614" cy="50" r="5"/></g><g fill="var(--accent)"><circle cx="92" cy="236" r="6"/><circle cx="196" cy="159" r="6"/><circle cx="300" cy="75" r="6"/><circle cx="405" cy="67" r="7"/><circle cx="510" cy="75" r="6"/><circle cx="614" cy="112" r="6"/></g><text class="dia-t" x="92" y="295" text-anchor="middle" font-size="14" fill="var(--muted)">0.001</text><text class="dia-t" x="196" y="295" text-anchor="middle" font-size="14" fill="var(--muted)">0.01</text><text class="dia-t" x="300" y="295" text-anchor="middle" font-size="14" fill="var(--muted)">0.1</text><text class="dia-t" x="405" y="295" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent)">1 ★</text><text class="dia-t" x="510" y="295" text-anchor="middle" font-size="14" fill="var(--muted)">10</text><text class="dia-t" x="614" y="295" text-anchor="middle" font-size="14" fill="var(--muted)">100</text><text class="dia-t" x="392" y="324" text-anchor="middle" font-size="14" fill="var(--muted)">C 越大 → 正则越弱</text><line x1="505" y1="27" x2="530" y2="27" stroke="var(--fg)" stroke-width="4"/><text class="dia-t" x="538" y="32" font-size="14" fill="var(--fg)">训练集</text><line x1="612" y1="27" x2="637" y2="27" stroke="var(--accent)" stroke-width="5"/><text class="dia-t" x="645" y="32" font-size="14" fill="var(--accent)">测试集</text><text class="dia-t" x="405" y="116" text-anchor="middle" font-size="15" font-weight="700" fill="var(--accent)">本次划分：C=1 较高</text></svg><figcaption>先看两条曲线开始分开的地方：这份历史数据中 C=1 的留出成绩较高。正式选 C 应改用验证集或交叉验证，不反复查看最终测试集。</figcaption></figure>
 <div class="rule"><b>先只记住这三行：</b><br>
 <strong>C = 0.001：</strong>测试集 90.1%，正则太强，模型学不动。<br>
 <strong>C = 1：</strong>测试集 98.8%，这是这组数据的甜点区。<br>
@@ -635,7 +657,7 @@ softmax + 交叉熵的反向就是 $p-\text{onehot}(y)$，和这里的 <code>(�
 <strong>2.</strong> 测试集在 C=1 达到峰值后开始跌，但训练集还在涨 —— 又是第 1 章那个拐点。<br>
 <strong>3.</strong> L1 用 14 个特征拿到 97.7% —— 一半特征是冗余的。</div>
 <blockquote>
-<p>⚠️ <strong>版本提示</strong>：sklearn 1.8 起 <code>penalty="l1"</code> 被 <code>l1_ratio=1</code> 取代。
+<p>⚠️ <strong>版本提示</strong>：sklearn 1.8 起弃用 <code>penalty</code> 参数（不是立即删除）；新代码可用 <code>l1_ratio=1</code> 指定 L1，配合支持它的 <code>solver="saga"</code>。参见 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html">官方参数说明</a>。
 老版本报错的话改回 <code>penalty="l1", solver="liblinear"</code>。</p>
 </blockquote>
 </details>
@@ -691,8 +713,8 @@ softmax + 交叉熵的反向就是 $p-\text{onehot}(y)$，和这里的 <code>(�
 <summary>👀 答案</summary>
 <ol>
 <li>线性回归预测数值，用 MSE；逻辑回归套 Sigmoid 输出概率做分类，用交叉熵。</li>
-<li>Sigmoid + MSE 会梯度消失（预测越错梯度越小，学不动）；Sigmoid + 交叉熵的梯度正好是（预测−真实），干净且不消失。</li>
-<li>L2 让权重都变小但不为零（平滑，默认选它）；L1 会把一部分权重压成 0（自动特征选择，特征多且怀疑很多没用时选它）。</li>
+<li>Sigmoid + MSE 在自信但错误的饱和区可能梯度很小；单样本交叉熵对 logit 的梯度是预测概率减真实标签。它不保证整张网络没有梯度消失。</li>
+<li>L2 通常收缩权重，不以产生零系数为特点；L1 可能把一部分权重压到恰好 0，用于稀疏化和特征选择。</li>
 <li>权重大 = 模型对该特征极度敏感 = 输入微变输出剧变 = 在拟合噪声。压小权重让模型"稳重"。</li>
 <li>用全部数据（含测试集）去 fit scaler，导致测试集信息泄漏。正确做法是只 fit 训练集。<strong>树模型不需要标准化</strong>。</li>
 </ol>
@@ -703,11 +725,22 @@ softmax + 交叉熵的反向就是 $p-\text{onehot}(y)$，和这里的 <code>(�
 <ul>
 <li><strong>线性回归</strong>：预测一个数，用 MSE；<strong>逻辑回归</strong>：预测概率，用 Sigmoid + 交叉熵。</li>
 <li><strong>分类别用 MSE</strong>：Sigmoid 配 MSE 会让“错得很离谱”的样本梯度反而变小；交叉熵专门重罚自信但错误的预测。</li>
-<li><strong>标准化是必做项</strong>：只用训练集算均值和标准差；树模型通常不需要，线性模型和神经网络需要。</li>
+<li><strong>缩放要避免泄漏</strong>：只用训练集估计均值和标准差；数值型线性模型和神经网络常受益，树模型通常不需要。</li>
 <li><strong>正则化是第二遍重点</strong>：L2 默认让所有权重变小；L1 会把一部分权重压成 0，顺便筛特征。</li>
 <li><strong>能力边界</strong>：一条直线画不出 XOR；加上非线性并堆叠，才走到神经网络。</li>
 </ul>
 <p><strong>下一节</strong> 👉 <a href="04-决策树与集成学习.html">04-决策树与集成学习.md</a></p>
+</section></div>
+<aside class="lesson-rail" aria-label="本节学习路线">
+<button type="button" class="lesson-route-toggle" aria-expanded="true" aria-controls="lesson-route">本节学习路线 <span aria-hidden="true">⌄</span></button>
+<div id="lesson-route">
+<p class="lesson-position" aria-live="polite">从第一站开始</p>
+<div class="lesson-track" aria-hidden="true"><span></span></div>
+<nav class="lesson-route-links" aria-label="章节跳转"></nav>
+<div class="lesson-rail-note"><strong>一次只读一张卡片</strong><p>蓝色下划线可以点开解释。关掉窗口，接着原来的位置读。</p></div>
+<button type="button" class="lesson-save">记住当前位置</button>
+<p class="lesson-save-status" role="status"></p>
+</div></aside></div>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="02-机器学习到底在干什么.html"><div class="dir">← 上一节</div>🎯 02 · 机器学习在干什么</a><a class="next" href="04-决策树与集成学习.html"><div class="dir">下一节 →</div>🌲 04 · 决策树：怎么切一刀</a></nav>
@@ -734,4 +767,4 @@ softmax + 交叉熵的反向就是 $p-\text{onehot}(y)$，和这里的 <code>(�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

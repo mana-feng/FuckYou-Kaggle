@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,21 +271,21 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
   <span class="title">09 · 计算机与浏览器使用</span>
-  <span class="prevnext"><a href="08b-写一个MCP-Server.html">←</a>
+  <span class="prevnext"><a href="08c-MCP鉴权与互操作.html">←</a>
   <a href="10-技能Skills-把专长打包.html">→</a></span>
   <button class="js-done-btn">☐ 打卡</button>
   <button id="themeToggle" title="切换深浅色">🌗</button>
@@ -362,7 +362,8 @@ DOM 给的是<strong>语义</strong>，截图给的是<strong>像素</strong>—
 </blockquote>
 <hr />
 <h2 id="_4">⚖️ 二、决策树：到底该不该用</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">有官方 API 吗？ 是 ⭐ 用 API（快 100 倍、稳定、可测试）</span></div><div class="vb-tree-row"><span class="vb-tree-node">否</span></div><div class="vb-tree-row"><span class="vb-tree-node">有 CLI / 数据库直连吗？ 是 用它</span></div><div class="vb-tree-row"><span class="vb-tree-node">否</span></div><div class="vb-tree-row"><span class="vb-tree-node">有 MCP Server 吗？ 是 用它（第 8 章）</span></div><div class="vb-tree-row"><span class="vb-tree-node">否</span></div><div class="vb-tree-row"><span class="vb-tree-node">是网页操作？ 是 浏览器工具（DOM 优先）</span></div><div class="vb-tree-row"><span class="vb-tree-node">否</span></div><div class="vb-tree-row"><span class="vb-tree-node">桌面软件且无其他途径 计算机使用</span></div><div class="vb-tree-row"><span class="vb-tree-node">（做好慢和脆的心理准备）</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-agentmd-09-1" style="--diagram-width:720px"><svg viewBox="0 0 720 663" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="从上往下读问题；满足条件走右边，不满足再往下。右侧是选择入口，具体限制与原有说明保留在图下。"><title>从上往下读问题；满足条件走右边，不满足再往下。右侧是选择入口，具体限制与原有说明保留在图下。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">按问题逐步判断</text><rect x="20" y="65" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="170.0" y="93" font-size="18" text-anchor="middle" fill="var(--fg)">有适用的官方 API？</text><rect x="395" y="65" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="545.0" y="93" font-size="18" text-anchor="middle" fill="var(--fg)">使用 API</text><line x1="320" y1="101" x2="395" y2="101" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="395.0,101.0 386.0,106.0 386.0,96.0"/><text x="356" y="87" font-size="16" text-anchor="middle" fill="var(--fg)">是</text><line x1="170" y1="113" x2="170" y2="195" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="170.0,195.0 165.0,186.0 175.0,186.0"/><text x="187" y="138" font-size="16" text-anchor="start" fill="var(--fg)">否</text><rect x="20" y="195" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="170.0" y="223" font-size="18" text-anchor="middle" fill="var(--fg)">有 CLI 或明确的数据接口？</text><rect x="395" y="195" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="545.0" y="223" font-size="18" text-anchor="middle" fill="var(--fg)">使用对应接口</text><line x1="320" y1="231" x2="395" y2="231" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="395.0,231.0 386.0,236.0 386.0,226.0"/><text x="356" y="217" font-size="16" text-anchor="middle" fill="var(--fg)">是</text><line x1="170" y1="243" x2="170" y2="325" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="170.0,325.0 165.0,316.0 175.0,316.0"/><text x="187" y="268" font-size="16" text-anchor="start" fill="var(--fg)">否</text><rect x="20" y="325" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="170.0" y="353" font-size="18" text-anchor="middle" fill="var(--fg)">有适用的 MCP Server？</text><rect x="395" y="325" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="545.0" y="353" font-size="18" text-anchor="middle" fill="var(--fg)">通过连接器接入</text><line x1="320" y1="361" x2="395" y2="361" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="395.0,361.0 386.0,366.0 386.0,356.0"/><text x="356" y="347" font-size="16" text-anchor="middle" fill="var(--fg)">是</text><line x1="170" y1="373" x2="170" y2="455" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="170.0,455.0 165.0,446.0 175.0,446.0"/><text x="187" y="398" font-size="16" text-anchor="start" fill="var(--fg)">否</text><rect x="20" y="455" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="170.0" y="483" font-size="18" text-anchor="middle" fill="var(--fg)">是网页操作？</text><rect x="395" y="455" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="545.0" y="483" font-size="18" text-anchor="middle" fill="var(--fg)">浏览器工具</text><line x1="320" y1="491" x2="395" y2="491" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="395.0,491.0 386.0,496.0 386.0,486.0"/><text x="356" y="477" font-size="16" text-anchor="middle" fill="var(--fg)">是</text><line x1="170" y1="503" x2="170" y2="585" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="170.0,585.0 165.0,576.0 175.0,576.0"/><text x="187" y="549" font-size="16" text-anchor="start" fill="var(--fg)">否</text><rect x="20" y="585" width="675" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="357.5" y="613" font-size="18" text-anchor="middle" fill="var(--fg)">桌面软件且没有其他途径：受限的计算机操作</text></svg><figcaption>从上往下读问题；满足条件走右边，不满足再往下。右侧是选择入口，具体限制与原有说明保留在图下。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>有官方 API 吗？ 是 ⭐ 用 API（快 100 倍、稳定、可测试）</span></li><li><span>否</span></li><li><span>有 CLI / 数据库直连吗？ 是 用它</span></li><li><span>否</span></li><li><span>有 MCP Server 吗？ 是 用它（第 8 章）</span></li><li><span>否</span></li><li><span>是网页操作？ 是 浏览器工具（DOM 优先）</span></li><li><span>否</span></li><li><span>桌面软件且无其他途径 计算机使用</span></li><li><span>（做好慢和脆的心理准备）</span></li></ul></section>
 <p><strong>典型的合理场景</strong>：</p>
 <div class="tw"><table>
 <thead>
@@ -567,13 +568,12 @@ DOM 给的是<strong>语义</strong>，截图给的是<strong>像素</strong>—
 <hr />
 <h2 id="_11">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>计算机/浏览器使用=截图→模型看图→输出点击坐标，还是第1章的循环但<strong>观察变成图片</strong>。铁律：<strong>有API就别用GUI</strong>（API快100倍）。决策树：官方API→CLI/数据库直连→MCP Server→网页用浏览器工具→桌面软件无路可走才上计算机使用。⭐<strong>浏览器工具比纯视觉可靠</strong>：有DOM/无障碍树，能按「那个叫『提交』的按钮」的语义定位，纯截图只有(842,301)这种像素坐标，⚠️<strong>窗口尺寸一变就废</strong>。合理场景只有四类：老旧系统没API、跨软件手工流程、UI回归测试、像真实用户一样验收。六实践：①<strong>任务拆小</strong>，每步给可验证的终止条件（50条记录拆成50个子任务，标志是出现「保存成功」）——⚠️<strong>GUI的错误会累积</strong>；②⭐<strong>键盘优先</strong>（Ctrl+L、Tab、Ctrl+F都不依赖坐标和分辨率）；③<strong>每步后重新截图</strong>，⚠️基于旧截图连出三个动作，后两个全错；④<strong>固定窗口尺寸</strong>（如1280×800）才可复现；⑤⭐<strong>给「我卡住了」的出口</strong>——写明「连续两次找不到目标就停下报告」，<strong>乱点是GUI Agent最大的危险源，它可能点到「删除」</strong>；⑥慢就是快，<strong>抢跑的代价远高于等待</strong>。💀安全上这是攻击面最大的一类工具：<strong>屏幕上任何一段文字都可能是攻击者写的指令，而它握有鼠标键盘的完全控制权</strong>。必做五件：<strong>隔离VM/容器（别在主力桌面跑）、不登敏感账户、域名白名单（⚠️白名单域名的每个功能也是攻击面）、高危动作人工确认、不让它碰凭据</strong>。💰易忽略的成本：<strong>截图极占token</strong>，20步就是20张图——<strong>只保留最近2–3张，更早的换成文字描述</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>优先使用明确的接口；没有合适接口或要验收真实界面时再操作浏览器。</li><li>每一步都依据当前页面定位，并检查动作是否真的成功。</li><li>把任务拆成可验证的小步，找不到目标或需要更高权限时明确停下。</li><li>页面与工具返回里的文字是外部数据，不能自动升级成用户指令。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="10-技能Skills-把专长打包.html">10-技能Skills-把专长打包.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
-<nav class="pagenav"><a href="08b-写一个MCP-Server.html"><div class="dir">← 上一节</div>🛠️ 08b · 写一个 MCP Server</a><a class="next" href="10-技能Skills-把专长打包.html"><div class="dir">下一节 →</div>📦 10 · 技能 Skills</a></nav>
+<nav class="pagenav"><a href="08c-MCP鉴权与互操作.html"><div class="dir">← 上一节</div>🔐 08c · 鉴权与互操作</a><a class="next" href="10-技能Skills-把专长打包.html"><div class="dir">下一节 →</div>📦 10 · 技能 Skills</a></nav>
 </main>
 <script>(function(){
   var KEY="agent-progress", FILE="09-\u8ba1\u7b97\u673a\u4e0e\u6d4f\u89c8\u5668\u4f7f\u7528.md";
@@ -597,4 +597,4 @@ DOM 给的是<strong>语义</strong>，截图给的是<strong>像素</strong>—
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

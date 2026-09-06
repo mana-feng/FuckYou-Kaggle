@@ -180,9 +180,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -610,7 +610,7 @@ th,td{min-width:5.2em}
 <h2 id="_11">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>离线指标：精排看 GAUC（分用户算，比 AUC 靠谱），召回看 Recall@K，排序质量看 NDCG。五大陷阱：随机切分、负采样评测、曝光偏差（最根本）、位置偏差、只看总体。在线 A/B：分层实验复用流量、核心+护栏+诊断三档指标、必做 AA 测试、别偷看结果、跑满一周、用反转实验看长期。离线在线不一致先查一致性校验。<!--RECAP-EXT-->⭐ <b>先算样本量再开实验</b>：CTR 5% 想检出 2% 的相对提升，每组要约 75 万曝光；如果算出来得跑三个月，这个实验就不该做——换更敏感的指标或更大流量。⭐ <b>分流哈希必须带上 exp_id</b>，否则多个实验共用同一套分桶、结论互相污染；分层实验里同一层内的实验必须互斥，层与层之间用不同 salt 才正交。⚠️ <b>护栏指标是一票否决项，不是参考项</b>：CTR +3% 但 P99 延迟 +200ms、举报率 +50% 的实验，必须回滚。⚠️ 别拿 CV/NLP 的数量级直觉看 AUC——推荐里 <b>AUC 涨 0.001（一个千分点）就是有意义的改进</b>，反过来看到 0.85+ 先怀疑特征穿越。⭐ 曝光偏差治不好只能缓解：留 1% 随机曝光流量攒一份无偏评估集，或用 <b>IPS / Doubly Robust 做反事实评估</b>。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>离线评估要对应各层任务，并检查时间、曝光和位置带来的偏差。</li><li>实验开始前确定分流、样本量、观察周期及护栏。</li><li>离线与线上结论不一致时先查链路和特征一致性，再解释模型收益。</li></ul></section>
 </blockquote>
 <p><strong>下一节</strong> 👉 <a href="13-冷启动与探索利用.html">13-冷启动与探索利用.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
@@ -639,4 +639,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
+</body></html>

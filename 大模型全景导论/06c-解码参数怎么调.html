@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -572,9 +572,8 @@ T=0 是纯利用（每次都选当前最优），T 大是探索。
 <p>读完这一页，你手上有一张可以直接用的排查表：<strong>输出飘 → 先看 T 和 top_p；复读 → 先问是不是没东西可说，再考虑 penalty；JSON 崩 → penalty 是不是没留 0；结果不可复现 → 那不是你的 bug。</strong></p>
 <p>⚠️ <strong>什么时候回来</strong>：这些都调过了输出还是不行，那问题多半不在解码，在提示词或检索 —— 去 08 系列。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><code>temperature</code> 的数学是 $p_i = e^{z_i/T} / \sum_j e^{z_j/T}$：它改变的是<strong>候选之间的差距</strong>，<strong>没改变排序</strong>（<code>argmax</code> 永远是同一个词）。概率比 $p_i/p_j = e^{(z_i-z_j)/T}$ —— logits 差 2.0 时，T=0.5 放大到 <strong>e⁴ ≈ 54.6 倍</strong>，T=1 是 <strong>e² ≈ 7.4 倍</strong>，T=2 压到 <strong>e ≈ 2.7 倍</strong>。<strong>复读机</strong>的成因是<strong>自我强化回路</strong>：模型刚写出的模式进了上下文，「出现过」这件事本身抬高了它再次出现的概率，greedy 和低温尤其容易掉进去。三个 penalty 的区别：<code>frequency_penalty</code> 按出现<strong>次数</strong>累加地罚（越多越狠），<code>presence_penalty</code> 只罚「出现过」这个事实、作用是推动换话题，<code>repetition_penalty</code> 是乘性的、出现 1 次和 100 次罚得一样。⚠️ <strong>代码 / JSON / 工具调用场景一律留 0</strong> —— 那些 token 本来就该重复。⭐ 更根本的一条：复读常常是「没东西可说」的症状，不是解码的病。调参三条规则：<strong>① <code>temperature</code> 和 <code>top_p</code> 只调一个</strong>（常见做法是把 top_p 钉死在 0.9 只调 T），②<strong>先固定随机性再调提示词</strong>，③<strong>T=0 也不保证逐位复现</strong>。第二条不只是习惯问题：T=0.9 时你分不清输出变化是提示词起效了还是抽签换了结果，<strong>没有归因，提示词工程就无法迭代</strong>。💀 第三条的根源在推理优化那一章：GPU 浮点加法不满足结合律，归约顺序随 batch 组成变化，而 batch 组成动态变化正是<strong>连续批处理</strong>造成的 —— <strong>吞吐优化和逐位复现是一对天然矛盾</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>先固定其他条件，再改一个解码参数，才容易判断变化来自哪里。</li><li>不同重复惩罚的作用不同；代码和结构化输出中有些重复本来就必要。</li><li>低温不等于逐位可复现，复读也可能来自上下文或任务信息不足。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="07-本地部署与开源生态.html">07-本地部署与开源生态.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -602,4 +601,4 @@ T=0 是纯利用（每次都选当前最优），T 大是探索。
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

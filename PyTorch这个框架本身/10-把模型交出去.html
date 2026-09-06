@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -415,6 +415,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>实跑输出：</p>
+<details>
+<summary>查看完整报错：安全加载拒绝了自定义类（不要直接照提示关闭安全限制）</summary>
 <div class="codehilite"><pre><span></span><code>UnpicklingError:
 Weights only load failed. This file can still be loaded, to do so you have two options, do those steps only if you trust the source of the checkpoint.
     (1) In PyTorch 2.6, we changed the default value of the `weights_only` argument in `torch.load` from `False` to `True`. Re-running `torch.load` with `weights_only` set to `False` will likely succeed, but it can result in arbitrary code execution. Do it only if you got the file from a trusted source.
@@ -422,6 +424,7 @@ Weights only load failed. This file can still be loaded, to do so you have two o
     WeightsUnpickler error: Unsupported global: GLOBAL mymodel.Net was not an allowed global by default. Please use `torch.serialization.add_safe_globals([mymodel.Net])` or the `torch.serialization.safe_globals([mymodel.Net])` context manager to allowlist this global if you trust this class/function.
 </code></pre></div>
 
+</details>
 <p>⭐ <strong>原因写在报错里了：pickle 反序列化等于执行任意代码。</strong> 一个 <code>.pt</code> 文件可以在你 <code>torch.load</code> 的那一刻删你的家目录 —— 而 HuggingFace 上的权重是<strong>别人上传的</strong>。
 2.6 之后默认 <code>weights_only=True</code>：只允许张量和一小撮内置类型，遇到别的一律拒绝。</p>
 <p>⚠️ <strong>这条会以一种意外的方式咬你：连你自己存的 checkpoint 也可能过不了。</strong></p>
@@ -637,8 +640,8 @@ Weights only load failed. This file can still be loaded, to do so you have two o
 
 <p>实跑输出：</p>
 <section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">类型: RecursiveScriptModule</span></div><div class="vb-flow-row"><span class="vb-flow-step">输出: [-0.1947, -0.1502]</span></div><div class="vb-flow-row"><span class="vb-flow-step">还能看到源码:</span></div><div class="vb-flow-row"><span class="vb-flow-step">def forward(self,</span></div><div class="vb-flow-row"><span class="vb-flow-step">x: Tensor) -&gt; Tensor:</span></div><div class="vb-flow-row"><span class="vb-flow-step">fc2 = self.fc2</span></div><div class="vb-flow-row"><span class="vb-flow-step">fc1 = self.fc1</span></div><div class="vb-flow-row"><span class="vb-flow-step">_0 = (fc2).forward(torch.relu((fc1).forward(x, )), )</span></div><div class="vb-flow-row"><span class="vb-flow-step">return _0</span></div></div></section>
-<p>⭐ <strong>和第一节形成了完整对照</strong>：同一个目录、同样没有 <code>mymodel.py</code>，<code>torch.load("whole.pt")</code> 报 <code>ModuleNotFoundError</code>，而 <code>torch.jit.load("scripted.pt")</code> <strong>跑出了一模一样的 <code>[-0.1947, -0.1502]</code></strong>。
-「怎么算」这一半真的进了文件 —— 而且 <code>m.code</code> 还能把它打印出来。这就是 TorchScript 的全部卖点：一个不需要你的 Python 代码就能跑的模型（C++ 的 LibTorch 也能直接加载它）。</p>
+<p>⭐ <strong>和第一节形成了完整对照</strong>：同一个目录、同样没有 <code>mymodel.py</code>，<code>torch.load("whole.pt")</code> 报 <code>ModuleNotFoundError</code>，而 <code>torch.jit.load("scripted.pt")</code> <strong>跑出了一模一样的 <code>[-0.1947, -0.1502]</code></strong>。</p>
+<p>「怎么算」这一半真的进了文件 —— 而且 <code>m.code</code> 还能把它打印出来。这就是 TorchScript 的全部卖点：一个不需要你的 Python 代码就能跑的模型（C++ 的 LibTorch 也能直接加载它）。</p>
 <p>🗓️ <strong>但 TorchScript 现在处于维护状态</strong>，PyTorch 的力量都投在 <code>torch.export</code> 上（第六节）。⭐ <strong>新项目从 <code>torch.export</code> 起步；<code>torch.jit</code> 主要是维护存量、或者你要交给一个只认 TorchScript 的老部署环境。</strong></p>
 <hr />
 <h2 id="onnx">🕸️ 五、ONNX：交给另一个运行时</h2>
@@ -774,8 +777,8 @@ Weights only load failed. This file can still be loaded, to do so you have two o
 
 <p>实跑输出（省去两条 <code>TracerWarning</code>）：</p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>图里的节点: [&#x27;Constant&#x27;]</p><p>图的输入 : []</p><p>ort 要的输入: []</p><p>跑一次 : [[1.0, 2.0, 3.0]]</p><p>pytorch 换个输入: [[4.0, 5.0, 6.0]]</p></div></section>
-<p>💀💀💀 <strong>导出的模型没有输入</strong>。整个计算被折成了一个常数，永远返回 <code>[[1.0, 2.0, 3.0]]</code>，而 PyTorch 换个输入给的是 <code>[[4.0, 5.0, 6.0]]</code>。
-<strong><code>torch.onnx.export</code> 没有报错</strong>，只给了两条 <code>TracerWarning</code>（<code>Converting a tensor to a NumPy array might cause the trace to be incorrect</code> 和 <code>torch.from_numpy results are registered as constants in the trace</code>）。</p>
+<p>💀💀💀 <strong>导出的模型没有输入</strong>。整个计算被折成了一个常数，永远返回 <code>[[1.0, 2.0, 3.0]]</code>，而 PyTorch 换个输入给的是 <code>[[4.0, 5.0, 6.0]]</code>。</p>
+<p><strong><code>torch.onnx.export</code> 没有报错</strong>，只给了两条 <code>TracerWarning</code>（<code>Converting a tensor to a NumPy array might cause the trace to be incorrect</code> 和 <code>torch.from_numpy results are registered as constants in the trace</code>）。</p>
 <p>⭐ <strong>由此得到一条最省事的自检</strong>：<strong>导完先看一眼图的输入列表和节点数</strong>。输入是空的、或者节点少得不像话，就说明有大段计算被折成常量了。</p>
 <p>⚠️ 顺便回答上一章留的问题：<strong>导出的是推理图，你写的 <code>backward</code> 会被整个丢掉</strong>（推理不需要它，所以这没关系）。真正的问题只在于 <code>forward</code> 里有没有绕出框架。</p>
 <hr />
@@ -871,8 +874,8 @@ consider using data-dependent friendly APIs such as guard_or_false, guard_or_tru
 
 <p>实跑输出：</p>
 <section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 不声明动态维，喂 batch=5 -&gt; AssertionError: Guard failed: x.size()[0] == 2</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 声明 batch 是动态维，喂 batch=5: torch.Size([5, 2])</span></div></div></section>
-<p>⭐ <strong>默认所有形状都是写死的</strong>（<code>Guard failed: x.size()[0] == 2</code> 把这件事说得很直白），要动态就用 <code>torch.export.Dim</code> 明确声明 —— 和 ONNX 的 <code>dynamic_axes</code> 是同一个概念。
-⚠️ <strong>样例输入的 batch 不要用 1</strong>：0 和 1 会被当成特殊值做特化，拿 <code>batch=1</code> 的样例去声明动态维会得到 <code>Constraints violated (batch)! … your code specialized it to be a constant (1)</code>。用 2 或更大。</p>
+<p>⭐ <strong>默认所有形状都是写死的</strong>（<code>Guard failed: x.size()[0] == 2</code> 把这件事说得很直白），要动态就用 <code>torch.export.Dim</code> 明确声明 —— 和 ONNX 的 <code>dynamic_axes</code> 是同一个概念。</p>
+<p>⚠️ <strong>样例输入的 batch 不要用 1</strong>：0 和 1 会被当成特殊值做特化，拿 <code>batch=1</code> 的样例去声明动态维会得到 <code>Constraints violated (batch)! … your code specialized it to be a constant (1)</code>。用 2 或更大。</p>
 <hr />
 <h2 id="torchcompile">⚡ 七、<code>torch.compile</code> 不是一种交付格式</h2>
 <p>这是最容易被归错类的一个。</p>
@@ -1102,4 +1105,4 @@ Error(s) in loading state_dict for Net:
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

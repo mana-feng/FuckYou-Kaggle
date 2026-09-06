@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -519,9 +519,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 就够你在读任何一篇讲接触预测的东西时不被绕进去。</p>
 <p>⚠️ <strong>什么时候看下一页</strong>：你想知道从「哪些残基挨着」到「三维坐标」中间还差什么。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>掩码语言建模的目标搬到蛋白序列上原样能用，但「语法」的来源变了</strong> —— 语言里是人类习惯，序列里是<strong>物理和演化的约束</strong>：配不上的个体活不下来、从来没进过数据库，⭐ <strong>数据集本身就是一台筛选器</strong>。⭐⭐ 题眼是<strong>共进化</strong>：同一个蛋白在几千个物种里各有版本，摞成 MSA 之后，<strong>空间上挨着的两个残基必须一起变</strong>，于是那两列强相关 —— 而完形填空要猜准就<strong>被迫</strong>学会这件事。实测：4000 条序列、只让三对位置真耦合，用<strong>互信息</strong>去捞，三对真实接触整齐排在 <strong>1、2、3</strong>，MI 约 <strong>3.5 bit</strong>，其余 777 对背景只有 <strong>0.066 bit</strong>，<strong>五十倍以上的分离</strong> —— 结构信息真的躺在序列统计里，不需要任何标签。💀 <strong>但互信息会撒谎</strong>：5-15 接触、15-25 接触而 5 和 25 并不接触时，<strong>(5,25) 拿到 2.973 bit 排第三</strong>，比背景高四十倍，看起来和真接触一模一样 —— 相关性顺着中介传递过去了。⭐ <strong>这就是直接耦合分析（DCA）被发明的原因</strong>：要问的是「扣掉其他位置的中介后还直接相关吗」。⭐⭐ 也正是深度模型的优势：注意力让所有位置在同一层互相看，天然<strong>联合建模</strong>而非逐对统计，间接相关会被其他位置解释掉。<strong>用法</strong>上，绝大多数人不该自己训，而是<strong>拿训好的主干冻结、取 embedding、上面接小模型</strong> —— 06 章实测 20 条标签时把 R² 从 <strong>0.374</strong> 抬到 <strong>0.696</strong>。⚠️ <strong>三件它做不了的</strong>：不理解能量学（学的是「出现过什么」不是「自由能变多少」）、对分布外的设计序列不可靠（高分没校准过）、embedding 带着数据库采样偏差（热门家族表示好、冷门差，<strong>而平均指标会把这个差别摊平</strong>）。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>序列预训练利用共现与演化约束学习表示，无标签数据也可能携带结构信息。</li><li>相关不等于直接接触，间接关联需要单独辨别。</li><li>小数据任务可先用冻结表示建立基线，并检查家族覆盖和分布外限制。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="04-从序列到结构.html">04-从序列到结构.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -549,4 +548,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

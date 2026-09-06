@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -364,7 +364,7 @@ Mt. Gox 曾以此为破产理由之一。</p>
 <h3 id="_3">❌ 教科书版本</h3>
 <section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">σ = M^d mod n，验证 σ^e ≟ M</span></div><div class="vb-flow-row"><span class="vb-flow-step">💥 三个致命问题：</span></div><div class="vb-flow-row"><span class="vb-flow-step">① 存在性伪造：随便选一个 σ，算 M = σ^e</span></div><div class="vb-flow-row"><span class="vb-flow-step">(M, σ) 就是一个合法的&quot;签名对&quot;！攻击者无需私钥 ⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 同态伪造：σ₁·σ₂ 是 M₁·M₂ 的合法签名</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 只能签比 n 短的消息</span></div></div></section>
 <h3 id="_4">✅ 必须先哈希再填充</h3>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">FDH（全域哈希）：σ = H(M)^d mod n</span></div><div class="vb-tree-row"><span class="vb-tree-node">哈希破坏了同态性（H(M₁·M₂) ≠ H(M₁)·H(M₂)）✅</span></div><div class="vb-tree-row"><span class="vb-tree-node">反算的 σ^e 几乎不可能恰好是某个消息的哈希 ✅</span></div><div class="vb-tree-row"><span class="vb-tree-node">任意长度消息都能签 ✅</span></div><div class="vb-tree-row"><span class="vb-tree-node">PSS（概率签名方案）⭐ 实际标准：</span></div><div class="vb-tree-row"><span class="vb-tree-node">加入随机盐 → 同一消息每次签名不同</span></div><div class="vb-tree-row"><span class="vb-tree-node">有更紧的安全归约</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>FDH（全域哈希）：σ = H(M)^d mod n</span></li><li><span>哈希破坏了同态性（H(M₁·M₂) ≠ H(M₁)·H(M₂)）✅</span></li><li><span>反算的 σ^e 几乎不可能恰好是某个消息的哈希 ✅</span></li><li><span>任意长度消息都能签 ✅</span></li><li><span>PSS（概率签名方案）⭐ 实际标准：</span></li><li><span>加入随机盐 → 同一消息每次签名不同</span></li><li><span>有更紧的安全归约</span></li></ul></section>
 <blockquote>
 <p>💥 <strong>PKCS#1 v1.5 签名的 Bleichenbacher'06 攻击</strong>：
 如果验证实现<strong>没有严格检查填充结构</strong>（只是"找到 hash 就通过"），
@@ -598,4 +598,4 @@ Mt. Gox 曾以此为破产理由之一。</p>
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

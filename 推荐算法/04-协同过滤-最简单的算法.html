@@ -185,9 +185,9 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -540,7 +540,7 @@ D 的得分 = 0.67 × 0(小明没看D) + 0 × 1(小红喜欢D) = 0
 <h2 id="_8">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>协同过滤两个方向：UserCF（像你的人喜欢啥）、ItemCF（你喜欢的像啥）。工业界爱 ItemCF：可离线算、可解释、更稳。三个必备改进：活跃用户降权、热门惩罚(α)、top-k 截断。致命缺陷是冷启动 + 用不了副信息 → 所以有了下一节的矩阵分解。<!--RECAP-EXT-->⭐ <b>三个改进的分量比算法本身重</b>：活跃用户降权（防一个刷子污染所有相似度）、<b>热门惩罚 α</b>（不加的话热门和谁都像）、top-k 截断（长尾噪声比信号多）。⭐⭐ <b>致命缺陷要理解成「后面所有算法的出发点」</b>：CF 只会数共现，<b>没见过的组合它一无所知</b>，也用不了物品的内容和用户的画像。下一节的矩阵分解把「数出来的相似度」变成「学出来的向量」，从此有了泛化能力 —— 这是整个推荐算法史上最重要的一次跃迁。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>UserCF 找相似用户，ItemCF 找相似物品，都依赖已有行为关系。</li><li>活跃用户、热门物品与噪声会扭曲相似度，需要相应降权与截断。</li><li>冷启动和副信息利用有限，是继续学习向量表示的重要原因。</li></ul></section>
 </blockquote>
 <p><strong>下一节</strong> 👉 <a href="05-矩阵分解.html">05-矩阵分解.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
@@ -569,4 +569,5 @@ D 的得分 = 0.67 × 0(小明没看D) + 0 × 1(小红喜欢D) = 0
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
+</body></html>

@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -463,14 +463,23 @@ Prefill 和 Decode 的硬件需求完全不同（<a href="15-推理和训练是�
 <blockquote>
 <p>🔗 <strong>上面 ②③ 两条都是「解码策略」的名字，这一章只把它们当负载形态用，没讲它们各自在干什么</strong>：
 <a href="../大模型全景导论/06b-解码策略.html">《大模型全景导论》06b · 解码策略</a>。
-⭐ 去那里主要为了两件对<strong>容量规划</strong>很实际的事：
-① <strong>Beam Search 和「并行采样 n 个候选」看着都是 n 条路，用途完全相反</strong>：
+</p>
+</blockquote>
+<p>⭐ 去那里主要为了两件对<strong>容量规划</strong>很实际的事：</p>
+<blockquote>
+<p>① <strong>Beam Search 和「并行采样 n 个候选」看着都是 n 条路，用途完全相反</strong>：
 beam 是<strong>全局按累计对数概率排序取前 k</strong>，目标是「最可能的那一句」，所以 <strong>k 条 beam 常常只差一两个词</strong>；
 并行采样是 n 次独立抽签，目标恰恰是「<strong>不一样的</strong> n 个结果」。
 ⚠️ <strong>那一章的明确结论：要 n 个不同的候选就采样 n 次，别用 beam search。</strong>
-② <strong>beam 的成本是 k 份 KV Cache</strong>——这正是块共享在救的东西，也是它值得在这一节被点名的原因；
-但块共享只能省掉公共前缀那部分，<strong>分歧之后每条 beam 的显存还是各算各的</strong>。
-那一章还有一个真实的搬运事故：把翻译服务调好的 <code>num_beams=5</code> 原样搬到「生成营销文案」上。</p>
+</p>
+</blockquote>
+<p>② <strong>beam 的成本是 k 份 KV Cache</strong>——这正是块共享在救的东西，也是它值得在这一节被点名的原因；</p>
+<blockquote>
+<p>但块共享只能省掉公共前缀那部分，<strong>分歧之后每条 beam 的显存还是各算各的</strong>。
+</p>
+</blockquote>
+<p>那一章还有一个真实的搬运事故：把翻译服务调好的 <code>num_beams=5</code> 原样搬到「生成营销文案」上。</p>
+<blockquote>
 <p>🔑 <strong>这是 PagedAttention 最漂亮的地方</strong>：
 <strong>它解决碎片问题的同时，顺带让"共享前缀"变成几乎免费的。</strong>
 而共享前缀在 Agent、多候选生成、树搜索里到处都是。</p>
@@ -667,4 +676,4 @@ beam 是<strong>全局按累计对数概率排序取前 k</strong>，目标是�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

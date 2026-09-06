@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,22 +271,22 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
   <span class="title">08b · 写一个 MCP Server</span>
   <span class="prevnext"><a href="08-MCP-接入外部世界.html">←</a>
-  <a href="09-计算机与浏览器使用.html">→</a></span>
+  <a href="08c-MCP鉴权与互操作.html">→</a></span>
   <button class="js-done-btn">☐ 打卡</button>
   <button id="themeToggle" title="切换深浅色">🌗</button>
 </div></header>
@@ -311,64 +311,69 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_1">🎯 一句话</h2>
 <p><strong>一个 MCP Server 就是「报家门 + 按名字执行函数」的进程。</strong>
-协议核心只有三个方法：<code>initialize</code>（握手）、<code>tools/list</code>（我有哪些工具）、<code>tools/call</code>（执行一个）。
-⭐ 代码量小到出乎意料，<strong>而它的质量几乎全押在一样东西上：你给每个工具写的那句描述。</strong></p>
+先分清协议版本：下面的手写练习使用 <strong>2025-06-18 的旧握手</strong>，只演示工具相关的 JSON-RPC 子集。<strong>2026-07-28</strong> 已改为逐请求声明版本与能力，并使用 <code>server/discover</code> 发现服务，不再使用初始化握手。完整应用使用锁定版本的 SDK；<a href="08c-MCP鉴权与互操作.html">08c 的互操作实验</a>把新旧协议与 HTTP 授权分开验收。
+工具描述决定模型是否会选对；参数校验、资源授权、错误处理和副作用控制决定调用是否可靠。两部分都要验收。</p>
 <hr />
 <h2 id="_2">🧱 一、先手写一次，看清协议本身</h2>
-<p><strong>MCP 的传输层是 JSON-RPC 2.0</strong>：一行一个 JSON，带 <code>id</code> 的是请求（必须回复），不带 <code>id</code> 的是通知（不回复）。
-下面这段<strong>不依赖任何第三方包</strong>，复制到空文件就能跑。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 纯标准库手写一个 MCP Server —— 看清协议本身长什么样</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span>
+<p>MCP 消息使用 JSON-RPC；<strong>stdio</strong> 用换行分隔 JSON，HTTP 有自己的响应协商，不能把“一行一个 JSON”推广到所有传输。</p>
+<p>下面是 <strong>2025-06-18 工具消息子集练习</strong>，不是完整协议实现。它不实现完整生命周期、分页或取消。复制到空文件能运行；没有输入时会等待 stdin。普通说明只写 stderr，stdout 每行都必须是协议消息。</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
-<span class="n">TOOLS</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;word_count&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;数一段文本有多少个字符。传入 text，返回一个整数。&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;inputSchema&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span> <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">],</span>      <span class="c1"># ⭐ 字段名是驼峰</span>
-                          <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">}}}}]</span>
+<span class="n">VERSION</span> <span class="o">=</span> <span class="s2">&quot;2025-06-18&quot;</span>
+<span class="n">TOOLS</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;word_count&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;统计 text 的字符数，上限 20000 字符。&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;inputSchema&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span> <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">],</span>
+                          <span class="s2">&quot;additionalProperties&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                          <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="s2">&quot;maxLength&quot;</span><span class="p">:</span> <span class="mi">20000</span><span class="p">}}}}]</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">ok</span><span class="p">(</span><span class="n">rid</span><span class="p">,</span> <span class="n">payload</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;jsonrpc&quot;</span><span class="p">:</span> <span class="s2">&quot;2.0&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">rid</span><span class="p">,</span> <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">payload</span><span class="p">}</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">error</span><span class="p">(</span><span class="n">rid</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;jsonrpc&quot;</span><span class="p">:</span> <span class="s2">&quot;2.0&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">rid</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;code&quot;</span><span class="p">:</span> <span class="n">code</span><span class="p">,</span> <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">message</span><span class="p">}}</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">handle</span><span class="p">(</span><span class="n">req</span><span class="p">):</span>
-    <span class="n">m</span><span class="p">,</span> <span class="n">rid</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;method&quot;</span><span class="p">),</span> <span class="n">req</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="s2">&quot;initialize&quot;</span><span class="p">:</span>                          <span class="c1"># ① 握手：报协议版本和能力</span>
-        <span class="k">return</span> <span class="n">ok</span><span class="p">(</span><span class="n">rid</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;protocolVersion&quot;</span><span class="p">:</span> <span class="s2">&quot;2025-06-18&quot;</span><span class="p">,</span> <span class="s2">&quot;capabilities&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;tools&quot;</span><span class="p">:</span> <span class="p">{}},</span>
-                        <span class="s2">&quot;serverInfo&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;bare-notes&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;0.1.0&quot;</span><span class="p">}})</span>
-    <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="s2">&quot;tools/list&quot;</span><span class="p">:</span>                          <span class="c1"># ② 报家门：我有哪些工具</span>
-        <span class="k">return</span> <span class="n">ok</span><span class="p">(</span><span class="n">rid</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;tools&quot;</span><span class="p">:</span> <span class="n">TOOLS</span><span class="p">})</span>
-    <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="s2">&quot;tools/call&quot;</span><span class="p">:</span>                          <span class="c1"># ③ 按名字分派并执行</span>
-        <span class="n">name</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;params&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;params&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;arguments&quot;</span><span class="p">,</span> <span class="p">{})</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;word_count&quot;</span><span class="p">:</span>                   <span class="c1"># ⭐ 业务失败走 result，不走 error</span>
-            <span class="k">return</span> <span class="n">ok</span><span class="p">(</span><span class="n">rid</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;isError&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-                      <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;没有名为 </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> 的工具&quot;</span><span class="p">}]})</span>
-        <span class="k">return</span> <span class="n">ok</span><span class="p">(</span><span class="n">rid</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;isError&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-                  <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)))}]})</span>
-    <span class="k">if</span> <span class="n">rid</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">None</span>                                <span class="c1"># ⚠️ 通知没有 id，不能回复</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;jsonrpc&quot;</span><span class="p">:</span> <span class="s2">&quot;2.0&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">rid</span><span class="p">,</span>           <span class="c1"># 协议层错误才用 error 字段</span>
-            <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;code&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">32601</span><span class="p">,</span> <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;未实现的方法 </span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}}</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">or</span> <span class="n">req</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;jsonrpc&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;2.0&quot;</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;method&quot;</span><span class="p">),</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">error</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">32600</span><span class="p">,</span> <span class="s2">&quot;Invalid Request&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;id&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">req</span><span class="p">:</span>  <span class="c1"># 通知不回复；完整生命周期交给 SDK</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">rid</span><span class="p">,</span> <span class="n">method</span> <span class="o">=</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="n">req</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rid</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rid</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">error</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">32600</span><span class="p">,</span> <span class="s2">&quot;Invalid request id&quot;</span><span class="p">)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;params&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">error</span><span class="p">(</span><span class="n">rid</span><span class="p">,</span> <span class="o">-</span><span class="mi">32602</span><span class="p">,</span> <span class="s2">&quot;params must be an object&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;initialize&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;protocolVersion&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">VERSION</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">error</span><span class="p">(</span><span class="n">rid</span><span class="p">,</span> <span class="o">-</span><span class="mi">32602</span><span class="p">,</span> <span class="s2">&quot;This teaching subset only supports &quot;</span> <span class="o">+</span> <span class="n">VERSION</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;protocolVersion&quot;</span><span class="p">:</span> <span class="n">VERSION</span><span class="p">,</span> <span class="s2">&quot;capabilities&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;tools&quot;</span><span class="p">:</span> <span class="p">{}},</span>
+                  <span class="s2">&quot;serverInfo&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;bare-notes&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;0.2.0&quot;</span><span class="p">}}</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;tools/list&quot;</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;tools&quot;</span><span class="p">:</span> <span class="n">TOOLS</span><span class="p">}</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;tools/call&quot;</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;arguments&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;word_count&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">error</span><span class="p">(</span><span class="n">rid</span><span class="p">,</span> <span class="o">-</span><span class="mi">32602</span><span class="p">,</span> <span class="s2">&quot;Unknown tool&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">!=</span> <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">}</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">error</span><span class="p">(</span><span class="n">rid</span><span class="p">,</span> <span class="o">-</span><span class="mi">32602</span><span class="p">,</span> <span class="s2">&quot;Expected only a string text argument&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">20000</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">error</span><span class="p">(</span><span class="n">rid</span><span class="p">,</span> <span class="o">-</span><span class="mi">32602</span><span class="p">,</span> <span class="s2">&quot;text too long&quot;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;isError&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]))}]}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">error</span><span class="p">(</span><span class="n">rid</span><span class="p">,</span> <span class="o">-</span><span class="mi">32601</span><span class="p">,</span> <span class="s2">&quot;Method not found&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;jsonrpc&quot;</span><span class="p">:</span> <span class="s2">&quot;2.0&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">rid</span><span class="p">,</span> <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">}</span>
 
-<span class="k">for</span> <span class="n">req</span> <span class="ow">in</span> <span class="p">[</span>                                       <span class="c1"># 先替宿主走一遍</span>
-    <span class="p">{</span><span class="s2">&quot;jsonrpc&quot;</span><span class="p">:</span> <span class="s2">&quot;2.0&quot;</span><span class="p">,</span> <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;notifications/initialized&quot;</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;jsonrpc&quot;</span><span class="p">:</span> <span class="s2">&quot;2.0&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;tools/list&quot;</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;jsonrpc&quot;</span><span class="p">:</span> <span class="s2">&quot;2.0&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;tools/call&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;word_count&quot;</span><span class="p">,</span> <span class="s2">&quot;arguments&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;你好 MCP&quot;</span><span class="p">}}},</span>
-<span class="p">]:</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">handle</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">req</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">],</span> <span class="s2">&quot;→&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">if</span> <span class="n">r</span> <span class="k">else</span> <span class="s2">&quot;(通知，不回复)&quot;</span><span class="p">)</span>
-
-<span class="c1"># ⭐ 真正的 stdio Server 就是下面这几行：一行读进来，一行写回去</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;(接下来从标准输入读请求)&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="n">handle</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;读取 stdin；本示例是旧版协议教学子集&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="k">continue</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">handle</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+        <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">error</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">32700</span><span class="p">,</span> <span class="s2">&quot;Parse error&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">allow_nan</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 
-<p>实跑输出的最后一行：</p>
-<div class="codehilite"><pre><span></span><code>tools/call → {&quot;jsonrpc&quot;: &quot;2.0&quot;, &quot;id&quot;: 3, &quot;result&quot;: {&quot;isError&quot;: false, &quot;content&quot;: [{&quot;type&quot;: &quot;text&quot;, &quot;text&quot;: &quot;6&quot;}]}}
-</code></pre></div>
-
+<p>发送 <code>tools/call</code>、参数为 <code>{"name":"word_count","arguments":{"text":"你好 MCP"}}</code> 时，返回文本为 <strong>6</strong>。通知没有响应；坏 JSON 返回 <code>-32700</code>；未知工具与参数类型错返回 <code>-32602</code>。这些结果由本轮独立进程测试核对，不能只凭退出码判断协议正常。</p>
 <blockquote>
 <p>⭐ <strong>三件值得记住的事</strong>：
 ① <code>tools/list</code> 返回的每个工具就是<strong>名字 + 描述 + 一份 JSON Schema</strong>，和<a href="07-工具设计-能力的上限.html">第 7 章</a>讲的东西一模一样，MCP 只是给它加了个信封。
@@ -377,9 +382,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="sdk-server">🛠️ 二、官方 SDK：一个能跑的 Server 只要十行</h2>
-<p>手写一遍是为了不怕它，日常还是用 SDK（<code>pip install mcp</code>）：</p>
+<p>手写练习帮助阅读报文，日常使用 SDK。以下示例锁定 <code>mcp==2.1.1</code>；安装命令为 <code>python -m pip install "mcp==2.1.1"</code>。升级时重跑互操作测试，不混用不同版本教程。</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># 一个完整可跑的 stdio MCP Server</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server.mcpserver</span><span class="w"> </span><span class="kn">import</span> <span class="n">MCPServer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server</span><span class="w"> </span><span class="kn">import</span> <span class="n">MCPServer</span>
 
 <span class="n">mcp</span> <span class="o">=</span> <span class="n">MCPServer</span><span class="p">(</span><span class="s2">&quot;notes&quot;</span><span class="p">)</span>
 
@@ -399,7 +404,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="w"> </span><span class="nt">&quot;outputSchema&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span><span class="p">}}}}</span>
 </code></pre></div>
 
-<p>⭐ <strong>SDK 只做了两件事，而这两件事就是全部</strong>：</p>
+<p>SDK 从下面两类 Python 信息生成工具定义；此外还处理协议、校验和传输：</p>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -410,25 +415,26 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <tbody>
 <tr>
 <td>函数的 <strong>docstring</strong></td>
-<td><code>description</code> —— 模型判断「什么时候该调它」的唯一依据</td>
+<td><code>description</code> —— 模型判断「什么时候该调它」的重要依据</td>
 </tr>
 <tr>
 <td>函数的<strong>类型注解和参数名</strong></td>
-<td><code>inputSchema</code> / <code>outputSchema</code> —— 模型判断「怎么填参数」的唯一依据</td>
+<td><code>inputSchema</code> / <code>outputSchema</code> —— 参数结构与类型约束的来源</td>
 </tr>
 </tbody>
 </table></div>
 <blockquote>
 <p>🗓️ <strong>一个已经过期过一次的点</strong>：这套装饰器早期叫 <code>FastMCP</code>（<code>from mcp.server.fastmcp import FastMCP</code>），
-SDK 的 2.x 改名成了 <code>MCPServer</code>；本章实测于 <strong>mcp 2.1.1</strong>。⭐ 好在报错很直白：旧写法会拿到
-<code>ModuleNotFoundError: No module named 'mcp.server.fastmcp'</code>，后面直接跟着「FastMCP was renamed to MCPServer」和迁移链接。
-<strong>装饰器的形状没变，变的只有导入那一行。</strong> 以官方文档为准。</p>
+SDK 的 2.x 改名成了 <code>MCPServer</code>；本章实测于 <strong>mcp 2.1.1</strong>。</p>
+<p>⭐ 好在报错很直白：旧写法会拿到
+<code>ModuleNotFoundError: No module named 'mcp.server.fastmcp'</code>，后面直接跟着「FastMCP was renamed to MCPServer」和迁移链接。</p>
+<p>这两个最小工具的迁移很短，但不能据此推断整个应用只改 import。Client、授权、会话与结果类型需要按<a href="https://py.sdk.modelcontextprotocol.io/migration/">官方迁移指南</a>逐项核对。</p>
 </blockquote>
 <hr />
 <h2 id="_3">📦 三、三类东西在代码里长什么样</h2>
 <p>上一章那张表说 Server 能暴露 <strong>Tools / Resources / Prompts</strong>。在 SDK 里就是三个装饰器：</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># 三类东西各写一个，完整可跑</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server.mcpserver</span><span class="w"> </span><span class="kn">import</span> <span class="n">MCPServer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server</span><span class="w"> </span><span class="kn">import</span> <span class="n">MCPServer</span>
 
 <span class="n">mcp</span> <span class="o">=</span> <span class="n">MCPServer</span><span class="p">(</span><span class="s2">&quot;notes&quot;</span><span class="p">)</span>
 <span class="n">NOTES</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -481,11 +487,7 @@ SDK 的 2.x 改名成了 <code>MCPServer</code>；本章实测于 <strong>mcp 2.
 </tr>
 </tbody>
 </table></div>
-<blockquote>
-<p>⚠️ <strong>最常见的选错：把只读查询做成 Resource。</strong> Resource 要用户先点，模型不会主动去读；
-「查一下这个工单现在什么状态」<strong>必须是 Tool</strong>，否则模型永远拿不到它。
-🔑 判据：<strong>动词做 Tool，名词做 Resource。</strong></p>
-</blockquote>
+<p>只读查询可以是 Tool，也可以通过 Resource 暴露。<strong>Tool 通常便于模型提出带参数的调用；Resource 由应用控制怎样读取、怎样放入上下文</strong>，并不要求用户先手动点击。需要模型直接查工单状态时，Tool 是方便的接口；需要稳定 URI、订阅或文档浏览时再考虑 Resource。检查实际宿主支持什么，不把“动词/名词”口诀当成协议限制。</p>
 <hr />
 <h2 id="stdio-http-run">🔌 四、stdio 和 HTTP，只差 <code>run()</code> 那一行</h2>
 <p>上一章说「远程 Server 是生产主流形态」。好消息是<strong>工具代码一行都不用改</strong>：</p>
@@ -493,46 +495,44 @@ SDK 的 2.x 改名成了 <code>MCPServer</code>；本章实测于 <strong>mcp 2.
 <span class="n">mcp</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">transport</span><span class="o">=</span><span class="s2">&quot;streamable-http&quot;</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8931</span><span class="p">)</span>
 </code></pre></div>
 
-<p>实测这么启动后，用标准库 <code>urllib</code> POST 到 <code>http://127.0.0.1:8931/mcp</code>：握手响应头多出一个
-<code>mcp-session-id</code>（实测值 <code>ab272cca0180495b945cbfbc2cdef142</code>），后续请求都要带回去；
-响应体也不再是一行 JSON，而是 SSE 帧 —— <code>event: message</code> 后面跟一行 <code>data: {...}</code>。</p>
-<p>⭐ <strong>同一个 <code>word_count</code>、同一份 <code>tools/list</code>，只是换了个信封。</strong> 但工程上多出四件事：</p>
+<p><strong>切换传输后，工具函数可以复用，授权与连接行为仍须重测。</strong></p>
 <div class="tw"><table>
 <thead>
 <tr>
-<th></th>
+<th>项目</th>
 <th>stdio</th>
-<th>HTTP（streamable-http）</th>
+<th>Streamable HTTP</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>谁启动它</td>
-<td>宿主当<strong>子进程</strong>拉起来，随宿主生死</td>
-<td>你自己部署，独立发版、独立扩容</td>
+<td>消息边界</td>
+<td>stdout 每行一个 JSON；日志走 stderr</td>
+<td>按协议和请求协商使用 JSON 或 SSE；代理不能擅自缓冲流</td>
 </tr>
 <tr>
-<td>会话</td>
-<td>一个进程就是一个会话，天然一对一</td>
-<td><strong>必须带 <code>mcp-session-id</code></strong>，多用户靠它区分</td>
+<td>2025-11-25 会话</td>
+<td>旧版握手与能力协商</td>
+<td>Server 可选择建立会话；只有它返回会话 ID 后才按规范回传；ID 不是用户身份</td>
 </tr>
 <tr>
-<td>认证</td>
-<td>没有，靠操作系统的进程边界</td>
-<td>⚠️ <strong>必须自己做</strong>，这是新增的攻击面</td>
+<td>2026-07-28</td>
+<td>每请求元数据；<code>server/discover</code></td>
+<td>无协议级 session ID；断流重发用新 RPC ID，业务幂等键仍保持稳定</td>
 </tr>
 <tr>
-<td>返回形状</td>
-<td>一行一个 JSON</td>
-<td>SSE 帧，要处理超时、断连和重连</td>
+<td>身份与隔离</td>
+<td>宿主限制子进程权限、环境和文件范围</td>
+<td>每次请求验证 token；每个业务资源继续做租户和权限检查</td>
+</tr>
+<tr>
+<td>故障</td>
+<td>子进程退出、管道阻塞、错误输出、取消后未清理</td>
+<td>授权失败、超时、断流、重发后的重复动作</td>
 </tr>
 </tbody>
 </table></div>
-<blockquote>
-<p>⭐ <strong>所以「本地调通了直接上线」不成立</strong>：换成 HTTP 要额外解决<strong>会话、认证、超时、重连</strong>四样，
-恰好就是<a href="../AI全栈/03-后端骨架.html">《AI 全栈》03 · 后端骨架</a>在讲的东西 —— Server 只是又一个 Web 服务。
-上一章的口诀仍然有效：<strong>Server 和用户在同一台机器上 → stdio，不在 → HTTP。</strong></p>
-</blockquote>
+<p>旧版观察到的 SSE 响应和 <code>mcp-session-id</code> 不能写成跨版本的固定规则。依据：<a href="https://modelcontextprotocol.io/specification/2025-11-25/basic/transports">2025 传输</a>、<a href="https://modelcontextprotocol.io/specification/2026-07-28/changelog">2026 变更</a>。完整 HTTP Client、授权负例与排障入口在<a href="08c-MCP鉴权与互操作.html">08c</a>。</p>
 <hr />
 <!--MIDSTOP-->
 <blockquote>
@@ -595,7 +595,7 @@ read_file -&gt; description = &#39;读一个文件的内容。path 必须是绝�
 </code></pre></div>
 
 <p>🗓️ 这个文件叫什么、放在哪各家宿主不一样（用户级配置、项目根目录 <code>.mcp.json</code> 都有），
-<strong>但 <code>mcpServers</code> 这个结构和 <code>command</code> / <code>args</code> / <code>env</code> 三个键是通用的</strong>。路径去宿主的文档核对。</p>
+<strong>这些键常见于部分宿主配置，不能假定所有宿主都使用相同文件结构</strong>。路径去宿主的文档核对。</p>
 <p>⭐ 命令行往往比手改文件省事。以 Claude Code 为例，实测这台机器上：</p>
 <div class="codehilite"><pre><span></span><code>claude mcp add my-server -e API_KEY=xxx -- npx my-mcp-server
 claude mcp add --transport http sentry https://mcp.sentry.dev/mcp
@@ -608,7 +608,7 @@ claude mcp list        # 列出来并做健康检查，实测每行结尾是 ✔
 <li><strong>手动跑一遍那条启动命令</strong> —— <code>python xxx.py</code> 自己都起不来，宿主更起不来。一半的问题到这步就结束了。</li>
 <li>💀 <strong>看有没有往标准输出打别的东西。</strong> stdio 下<strong>标准输出就是协议信道</strong>，<code>print()</code> 出来的任何一行都会被当成一条 JSON-RPC 消息，<strong>一句调试日志就能让握手失败</strong>。⭐ 日志一律走 <code>stderr</code>。</li>
 <li><strong>路径和解释器写绝对的</strong> —— 宿主拉子进程时的工作目录和 <code>PATH</code> 跟你的终端不一样。</li>
-<li><strong>拿第一节那个手写客户端发一条 <code>initialize</code></strong>：能拿回 <code>serverInfo</code> 就说明 Server 是好的，问题在宿主配置。HTTP 的还要多查 <code>mcp-session-id</code> 有没有带回去、鉴权头有没有配。</li>
+<li><strong>用同协议版本的 Client 做真实调用</strong>：旧版检查初始化，新版检查发现与每请求元数据。连通之后仍需验证工具、身份和错误；HTTP 同时检查授权头、JSON/SSE 与代理行为，旧版仅在 Server 创建会话时回送 session ID。</li>
 </ol>
 <hr />
 <h2 id="_5">🕳️ 七、三个真实的坑</h2>
@@ -616,7 +616,7 @@ claude mcp list        # 列出来并做健康检查，实测每行结尾是 ✔
 <p>上一章叫它<strong>甜蜜陷阱</strong>，这里给一个你自己能跑出来的量级：</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># 量一遍：一个工具定义在线上占多少字符</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server.mcpserver</span><span class="w"> </span><span class="kn">import</span> <span class="n">MCPServer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server</span><span class="w"> </span><span class="kn">import</span> <span class="n">MCPServer</span>
 
 <span class="n">mcp</span> <span class="o">=</span> <span class="n">MCPServer</span><span class="p">(</span><span class="s2">&quot;issues&quot;</span><span class="p">)</span>
 
@@ -638,18 +638,18 @@ claude mcp list        # 列出来并做健康检查，实测每行结尾是 ✔
 <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 </code></pre></div>
 
-<p>实跑输出：<code>一个工具的定义占 608 个字符；20 个就是 12160</code>，<strong>而这些每一轮对话都要重发一遍</strong>。</p>
+<p>运行后记录当前版本的字符数；它不是 token 数。实际请求是否每轮携带全量工具、是否缓存或按需发现，由宿主与模型接口决定。</p>
 <p>⚠️ 这条坑的形状是：<strong>它不是"慢"，是"挤"</strong> —— 工具菜单占掉的位置本来留给任务本身（<a href="04-上下文工程.html">第 4 章</a>的核心命题）。
 所以上一章那张表里 Tool Search「省 token 的同时准确率反而上升」才不反直觉：<strong>工具菜单本身就是噪声</strong>。
 你能做的是：<strong>一个意图一个工具</strong>，能给默认值就给默认值。</p>
 <h3 id="_6">坑二：返回体积不控制</h3>
-<p><code>return</code> 出去的东西<strong>会永久占据宿主的上下文</strong>，而且每一轮都带着。最常见的形态是「查询工具默认返回全部」——
+<p><code>return</code> 的内容可能被宿主加入后续上下文；保留、截断与压缩策略由宿主决定。最常见的形态是「查询工具默认返回全部」——
 第 7 章那个 <code>list_contacts()</code> 返回 5000 条的例子换成 MCP 一模一样，只是现在坏的是<strong>别人的</strong>上下文。
 对策：<code>limit</code> 给默认值和硬上限；截断时说明还剩多少、怎么取下一页；<strong>返回摘要而不是原始记录</strong>。</p>
 <h3 id="_7">坑三：💀 错误信息对模型没用 —— 而且默认就是没用的</h3>
 <p>这是本章实测里最值钱的一条：</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># 同一个失败，两种写法 —— 完整可跑</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server.mcpserver</span><span class="w"> </span><span class="kn">import</span> <span class="n">MCPServer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server</span><span class="w"> </span><span class="kn">import</span> <span class="n">MCPServer</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server.mcpserver.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ToolError</span>
 
 <span class="n">mcp</span> <span class="o">=</span> <span class="n">MCPServer</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">)</span>
@@ -670,10 +670,25 @@ claude mcp list        # 列出来并做健康检查，实测每行结尾是 ✔
 </code></pre></div>
 
 <p>两个都传 <code>path="a.txt"</code>，模型实际收到的 <code>content</code> 是：</p>
-<div class="codehilite"><pre><span></span><code>read_file_bad  -&gt; &quot;Error executing tool read_file_bad&quot;
-read_file_good -&gt; &quot;Error executing tool read_file_good: path 必须是绝对路径。收到的是 &#39;a.txt&#39;。请改成以盘符或 / 开头的完整路径，例如 /data/a.txt，然后重试。&quot;
-</code></pre></div>
-
+<div class="tw"><table>
+<thead>
+<tr>
+<th>写法</th>
+<th>返回给调用方的信息</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>read_file_bad</code></td>
+<td>普通异常被屏蔽为通用工具错误</td>
+</tr>
+<tr>
+<td><code>read_file_good</code></td>
+<td><code>ToolError</code> 的预期错误说明可以传给调用方；只包含可公开的信息</td>
+</tr>
+</tbody>
+</table></div>
+<p>这是错误类型对照；确切字符串可能随 SDK 版本变化，以真实 Client 返回为准。</p>
 <p>💀 <strong>第一行那句精心写好的报错，模型一个字都看不到。</strong> SDK 把普通异常当成「崩溃」：堆栈只进服务端日志，
 给客户端的只剩一句 <code>Error executing tool &lt;名字&gt;</code>。这是<strong>防信息泄露的正确默认</strong>，但你必须知道有这么回事，
 否则你会以为自己已经把话说清楚了。</p>
@@ -716,7 +731,7 @@ read_file_good -&gt; &quot;Error executing tool read_file_good: path 必须是�
 <hr />
 <h2 id="_9">✅ 检查点</h2>
 <ol>
-<li>不用任何 SDK，一个最小的 MCP Server 要实现哪三个方法？工具执行失败时该放 <code>error</code> 字段还是 <code>result</code> 里？</li>
+<li>本章的 2025 教学子集实现哪三个方法？为何不能直接代表 2026 协议？工具执行失败时该放 <code>error</code> 字段还是 <code>result</code> 里？</li>
 <li>用官方 SDK 时，函数的 docstring 和类型注解分别变成了协议里的什么？没写 docstring 会怎样？</li>
 <li>Tool / Resource / Prompt 分别由谁触发？「查一下这个工单现在什么状态」该做成哪一类，为什么？</li>
 <li>从 stdio 换成 HTTP，工具代码要改吗？工程上多出来哪四件事？</li>
@@ -728,12 +743,12 @@ read_file_good -&gt; &quot;Error executing tool read_file_good: path 必须是�
 <details>
 <summary>👀 答案</summary>
 <ol>
-<li><code>initialize</code>（握手，回报协议版本、capabilities、serverInfo）、<code>tools/list</code>（返回每个工具的<strong>名字 + 描述 + inputSchema</strong>）、<code>tools/call</code>（按名字分派执行）。失败要放进 <code>result</code> 并标 <code>"isError": true</code> —— 那是<strong>业务失败，模型要看到并据以改正</strong>；<code>error</code> 留给协议层错误（方法不存在、参数结构非法），是给宿主看的。⭐ 带 <code>id</code> 的是请求必须回，不带 <code>id</code> 的通知不能回。</li>
-<li>docstring → <code>description</code>（模型判断「什么时候该调」的唯一依据）；类型注解和参数名 → <code>inputSchema</code> / <code>outputSchema</code>（模型判断「怎么填参数」的唯一依据）。⚠️ 没写 docstring 时 <code>description</code> 是<strong>空字符串</strong>，不报错不警告，模型从此对这个工具一无所知。</li>
-<li>Tool 由<strong>模型</strong>自己触发（九成场景）；Resource 要宿主/用户挑了才读；Prompt 是用户从菜单点。查工单状态<strong>必须做成 Tool</strong> —— Resource 模型不会主动去读，做成 Resource 就永远拿不到。🔑 动词做 Tool，名词做 Resource。</li>
-<li><strong>工具代码一行都不用改</strong>，只改 <code>mcp.run()</code> 那一行的 <code>transport</code>。多出来的是<strong>会话</strong>（必须带 <code>mcp-session-id</code>）、<strong>认证</strong>（stdio 靠进程边界，HTTP 必须自己做）、<strong>超时</strong>、<strong>断连重连</strong>（响应变成 SSE 帧）。</li>
+<li>本章 2025 教学子集包含 <code>initialize</code>、<code>tools/list</code> 与 <code>tools/call</code>；完整生命周期还包含通知等规则。2026-07-28 移除了初始化握手，见 08c。业务失败放入结果并标 <code>isError</code>，协议结构错误用 JSON-RPC error；通知不回复。</li>
+<li>docstring 通常成为 description，函数参数及类型注解参与生成 schema；名字、参数与上下文也影响工具选择。缺描述会降低可理解性，不代表模型对工具一无所知。输出结构需核对实际 outputSchema 与 structuredContent。</li>
+<li>Tool 通常供模型提出调用，Resource 由应用控制读取与上下文装配，Prompt 通常由用户选择。查工单可以做 Tool，也可由宿主读取 Resource；看目标宿主支持与交互需要，不能规定必须手动点击。</li>
+<li>纯业务函数可以复用；传输、身份获取与启动配置需要适配。检查认证授权、超时、断流恢复与协议版本。旧版 session 是可选机制，2026 已移除；HTTP 响应可能是 JSON 或 SSE。</li>
 <li>stdio 下<strong>标准输出就是协议信道</strong>，<code>print()</code> 出来的任何一行都会被当成一条 JSON-RPC 消息，一句调试日志就能让握手失败。日志一律走 <code>stderr</code>。</li>
-<li>实测 <strong>608 个字符</strong>，20 个就是 <strong>12160 个字符</strong>，而且<strong>每一轮都要重发</strong>。要紧是因为它<strong>不是慢而是挤</strong> —— 工具菜单占掉的位置本来留给任务本身，所以 Tool Search 才会「省 token 的同时准确率反而上升」。</li>
+<li>字符数由 schema、SDK 版本与描述决定，用本章脚本实测；字符不等于 token。工具定义是否全量重发、缓存或按需暴露由宿主和模型接口决定，预算必须测实际请求。</li>
 <li>💀 模型只看到 <code>Error executing tool read_file_bad</code>，那句话<strong>一个字都传不到</strong> —— SDK 把普通异常当崩溃，堆栈只进服务端日志。正确写法是 <code>raise ToolError("...")</code>，消息会原样出现在模型面前。⭐ 判据是<strong>这个失败你预见到了吗</strong>：预见到的用 <code>ToolError</code>，没预见到的让它崩、别漏内部细节。</li>
 <li>看<strong>宿主的健康检查</strong>说没说连上，不是看配置文件写没写 —— 例如 <code>claude mcp list</code> 输出里那行结尾的 <code>✔ Connected</code>。前两步：① 终端手动跑一遍启动命令；② 检查有没有往标准输出打日志。</li>
 </ol>
@@ -741,16 +756,12 @@ read_file_good -&gt; &quot;Error executing tool read_file_good: path 必须是�
 <hr />
 <h2 id="_10">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>⭐ <strong>一个 MCP Server 就是「报家门 + 按名字执行函数」的进程</strong>，传输层是 <strong>JSON-RPC 2.0</strong>，一行一个 JSON。核心只有三个方法：<code>initialize</code> 握手、<code>tools/list</code> 报出每个工具的<strong>名字 + 描述 + inputSchema</strong>、<code>tools/call</code> 按名字执行。⭐ <strong>带 <code>id</code> 的是请求必须回，不带 <code>id</code> 的通知不能回</strong>；⚠️ <strong>业务失败放 <code>result</code> 里标 <code>isError: true</code></strong>（模型要看到），<code>error</code> 字段留给协议层错误。</p>
-<p>⭐ <strong>用官方 SDK 时，SDK 只做了两件事，而这两件事就是全部</strong>：<strong>docstring 变成 description</strong>，<strong>类型注解变成 inputSchema</strong>。💀 没写 docstring 时 description 是<strong>空字符串</strong>，不报错不警告，模型只是从此对这个工具一无所知。🗓️ 这套装饰器早期叫 <code>FastMCP</code>，2.x 改名 <code>MCPServer</code>（实测于 <strong>2.1.1</strong>），<strong>形状没变，变的只有导入那一行</strong>。三类东西按「谁触发」分：Tool 是<strong>模型</strong>自己调（九成场景）、Resource 要用户挑了才读、Prompt 是用户从菜单点 —— 🔑 <strong>动词做 Tool，名词做 Resource</strong>，把「查工单状态」做成 Resource 模型就永远拿不到。</p>
-<p>⭐ <strong>stdio 换 HTTP，工具代码一行不改，只改 <code>run()</code> 那一行</strong>，但工程上多出<strong>会话（<code>mcp-session-id</code>）、认证、超时、断连重连</strong>四件事，响应也从一行 JSON 变成 SSE 帧。💀 stdio 下<strong>标准输出就是协议信道</strong>，一句 <code>print()</code> 调试日志就能让握手失败 —— 日志一律走 stderr。⭐ 确认它真被加载了<strong>要看宿主的健康检查</strong>（<code>claude mcp list</code> 那行 <code>✔ Connected</code>），不是看配置文件写没写。</p>
-<p>⚠️ <strong>三个坑</strong>：① 一个描述像样的五参数工具实测 <strong>608 字符</strong>、<strong>20 个就是 12160 字符</strong>且每轮重发 —— 它不是"慢"是"挤"。② 返回体积会永久占上下文，<code>limit</code> 要有默认值和硬上限。③ 💀 <strong>最贵的一条：<code>raise ValueError(...)</code> 那句精心写的报错模型一个字都看不到</strong>，只剩 <code>Error executing tool &lt;名字&gt;</code>；预见得到的失败要用 <strong><code>ToolError</code></strong> 抛才会原样送到模型面前，判据是「<strong>这个失败你预见到了吗</strong>」。</p>
-</blockquote>
-<p><strong>下一节</strong> 👉 <a href="09-计算机与浏览器使用.html">09-计算机与浏览器使用.md</a></p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>本章手写示例属于 2025 教学子集；新协议实作看 08c。</li><li>请求带有 id，需要对应响应；通知没有 id，不应当作请求回复。</li><li>区分协议错误与工具业务失败，让调用方和模型都能获得可处理的信息。</li></ul></section>
+
+<p><strong>实践下一站</strong> 👉 <a href="08c-MCP鉴权与互操作.html">08c · 鉴权与互操作</a>；随后继续 <a href="09-计算机与浏览器使用.html">09 · 计算机与浏览器使用</a>。</p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
-<nav class="pagenav"><a href="08-MCP-接入外部世界.html"><div class="dir">← 上一节</div>🔌 08 · MCP 接入外部</a><a class="next" href="09-计算机与浏览器使用.html"><div class="dir">下一节 →</div>🖥️ 09 · 计算机与浏览器使用</a></nav>
+<nav class="pagenav"><a href="08-MCP-接入外部世界.html"><div class="dir">← 上一节</div>🔌 08 · MCP 接入外部</a><a class="next" href="08c-MCP鉴权与互操作.html"><div class="dir">下一节 →</div>🔐 08c · 鉴权与互操作</a></nav>
 </main>
 <script>(function(){
   var KEY="agent-progress", FILE="08b-\u5199\u4e00\u4e2aMCP-Server.md";
@@ -774,4 +785,4 @@ read_file_good -&gt; &quot;Error executing tool read_file_good: path 必须是�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

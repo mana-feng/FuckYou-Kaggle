@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -326,7 +326,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="cbc">⛓️ 二、CBC：把前一块的密文混进来</h2>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>C₀ = IV ← 随机初始向量</p><p>Cᵢ = E_K(Mᵢ ⊕ Cᵢ₋₁)</p><p>解密：Mᵢ = D_K(Cᵢ) ⊕ Cᵢ₋₁</p></div></section>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">M₁ M₂ M₃</span></div><div class="vb-tree-row"><span class="vb-tree-node">⊕ IV ⊕ ⊕</span></div><div class="vb-tree-row"><span class="vb-tree-node">[E] [E] [E]</span></div><div class="vb-tree-row"><span class="vb-tree-node">C₁ C₂ C₃</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="cbc-chaining-restored" style="--diagram-width:480px"><svg viewBox="0 0 480 472" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="先把 M₁ 与 IV 异或再加密；之后每块都先与前一块密文异或。连线表示依赖而非模块包含关系。这里只解释 CBC 结构，不表示它自带完整性认证。"><title>先把 M₁ 与 IV 异或再加密；之后每块都先与前一块密文异或。连线表示依赖而非模块包含关系。这里只解释 CBC 结构，不表示它自带完整性认证。</title><text x="25" y="28" font-size="18" text-anchor="start" fill="var(--fg)">CBC：前一块密文参与下一块的异或</text><rect x="20" y="65" width="90" height="46" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="65.0" y="94.0" font-size="18" text-anchor="middle" fill="var(--fg)">M1</text><line x1="110" y1="88" x2="181" y2="88" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="181.0,88.0 172.0,93.0 172.0,83.0"/><text x="200" y="95" font-size="30" text-anchor="middle" fill="var(--fg)">⊕</text><line x1="219" y1="88" x2="270" y2="88" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="270.0,88.0 261.0,93.0 261.0,83.0"/><rect x="270" y="65" width="95" height="46" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="317.5" y="94.0" font-size="18" text-anchor="middle" fill="var(--fg)">Eₖ</text><line x1="365" y1="88" x2="402" y2="88" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="402.0,88.0 393.0,93.0 393.0,83.0"/><text x="421" y="94" font-size="20" text-anchor="middle" fill="var(--fg)">C1</text><line x1="423" y1="110" x2="423" y2="165" stroke="var(--muted)" stroke-width="2"/><line x1="423" y1="165" x2="200" y2="165" stroke="var(--muted)" stroke-width="2"/><line x1="200" y1="165" x2="200" y2="218" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="200.0,218.0 195.0,209.0 205.0,209.0"/><rect x="20" y="220" width="90" height="46" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="65.0" y="249.0" font-size="18" text-anchor="middle" fill="var(--fg)">M2</text><line x1="110" y1="243" x2="181" y2="243" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="181.0,243.0 172.0,248.0 172.0,238.0"/><text x="200" y="250" font-size="30" text-anchor="middle" fill="var(--fg)">⊕</text><line x1="219" y1="243" x2="270" y2="243" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="270.0,243.0 261.0,248.0 261.0,238.0"/><rect x="270" y="220" width="95" height="46" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="317.5" y="249.0" font-size="18" text-anchor="middle" fill="var(--fg)">Eₖ</text><line x1="365" y1="243" x2="402" y2="243" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="402.0,243.0 393.0,248.0 393.0,238.0"/><text x="421" y="249" font-size="20" text-anchor="middle" fill="var(--fg)">C2</text><line x1="423" y1="265" x2="423" y2="320" stroke="var(--muted)" stroke-width="2"/><line x1="423" y1="320" x2="200" y2="320" stroke="var(--muted)" stroke-width="2"/><line x1="200" y1="320" x2="200" y2="373" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="200.0,373.0 195.0,364.0 205.0,364.0"/><rect x="20" y="375" width="90" height="46" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="65.0" y="404.0" font-size="18" text-anchor="middle" fill="var(--fg)">M3</text><line x1="110" y1="398" x2="181" y2="398" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="181.0,398.0 172.0,403.0 172.0,393.0"/><text x="200" y="405" font-size="30" text-anchor="middle" fill="var(--fg)">⊕</text><line x1="219" y1="398" x2="270" y2="398" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="270.0,398.0 261.0,403.0 261.0,393.0"/><rect x="270" y="375" width="95" height="46" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="317.5" y="404.0" font-size="18" text-anchor="middle" fill="var(--fg)">Eₖ</text><line x1="365" y1="398" x2="402" y2="398" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="402.0,398.0 393.0,403.0 393.0,393.0"/><text x="421" y="404" font-size="20" text-anchor="middle" fill="var(--fg)">C3</text><text x="200" y="52" font-size="19" text-anchor="middle" fill="var(--fg)">IV</text><line x1="200" y1="55" x2="200" y2="67" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="200.0,67.0 195.0,58.0 205.0,58.0"/></svg><figcaption>先把 M₁ 与 IV 异或再加密；之后每块都先与前一块密文异或。连线表示依赖而非模块包含关系。这里只解释 CBC 结构，不表示它自带完整性认证。</figcaption></figure>
 <p>💡 <strong>人话</strong>：<em>每一块加密前先和上一块的密文异或 —— 让相同的明文块产生不同的密文块。</em></p>
 <div class="tw"><table>
 <thead>
@@ -472,7 +472,7 @@ Java 的多个框架、以及大量自制的"加密 cookie"方案。</p>
 </blockquote>
 <hr />
 <h2 id="_3">🧭 五、那实际该用什么</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">❌ 不要单独用任何一个上面的模式</span></div><div class="vb-tree-row"><span class="vb-tree-node">✅ 用【认证加密 AEAD】：</span></div><div class="vb-tree-row"><span class="vb-tree-node">AES-GCM</span><span class="vb-tree-note">CTR + GMAC，有硬件加速时最快</span></div><div class="vb-tree-row"><span class="vb-tree-node">ChaCha20-Poly1305</span><span class="vb-tree-note">无硬件加速时更快，移动端首选</span></div><div class="vb-tree-row"><span class="vb-tree-node">AES-GCM-SIV ⭐ nonce 重复时&quot;只泄露该消息重复&quot;，不会灾难性崩溃</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>❌ 不要单独用任何一个上面的模式</span></li><li><span>✅ 用【认证加密 AEAD】：</span></li><li><span>AES-GCM</span> <span>CTR + GMAC，有硬件加速时最快</span></li><li><span>ChaCha20-Poly1305</span> <span>无硬件加速时更快，移动端首选</span></li><li><span>AES-GCM-SIV ⭐ nonce 重复时"只泄露该消息重复"，不会灾难性崩溃</span></li></ul></section>
 
 <div class="codehilite"><pre><span></span><code><span class="c1"># ✅ 这才是你应该写的代码</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cryptography.hazmat.primitives.ciphers.aead</span><span class="w"> </span><span class="kn">import</span> <span class="n">AESGCM</span>
@@ -568,9 +568,8 @@ Java 的多个框架、以及大量自制的"加密 cookie"方案。</p>
 <hr />
 <h2 id="_6">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>分组密码一次只能加密128bit，<strong>长消息靠「工作模式」——选错模式比选错算法后果严重</strong>。<strong>ECB</strong>（每块单独加密）💀绝不使用：E_K 确定性 → <strong>相同明文块产生相同密文块 → 明文结构原样保留</strong>（企鹅图）；IND-CPA 语言：提交"AAAA|AAAA"和"AAAA|BBBB"，<strong>看密文两块是否相同就100%分辨</strong>。<strong>CBC</strong>：Cᵢ=E_K(Mᵢ⊕Cᵢ₋₁)，⭐<strong>IV 必须随机且不可预测</strong>（不只是唯一）——💥<strong>BEAST</strong> 就是因为 TLS1.0 用上条消息的末块当IV使其可预测，逐字节破解cookie；💥<strong>Padding Oracle</strong>：服务器对"填充错误"返回不同响应 = 送给攻击者一个<strong>解密预言机</strong>，约256次询问解出一字节，<strong>完全不需要密钥</strong>（打穿过 ASP.NET/Rails）→ ⭐<strong>根本解法不是隐藏错误信息，而是 Encrypt-then-MAC：先验MAC，不过就根本不解密</strong>。<strong>CTR</strong>：Cᵢ=Mᵢ⊕E_K(nonce‖i)，⭐<strong>加解密完全并行、不需填充、支持随机访问、只需实现加密方向</strong>（E_K 从没被反着用过）；<strong>nonce 只需唯一</strong>，但重复=密钥复用的OTP。⭐<strong>三种模式都不提供完整性 → 都不该单独使用</strong>。✅实际用 <strong>AEAD</strong>：AES-GCM（有硬件加速最快）、ChaCha20-Poly1305（移动端）、⭐<strong>AES-GCM-SIV</strong>（<strong>nonce 误用弹性</strong>——普通GCM的nonce重复会泄露认证密钥导致可伪造任意消息，SIV 最多泄露"两条消息相同"）。<strong>AAD</strong> 放需要明文可见但不能被篡改的字段（消息头、路由信息）。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>工作模式决定多个分组怎样连接，ECB 会暴露重复结构。</li><li>CBC 使用前一密文参与下一块，CTR 生成密钥流；两者的 IV 或 nonce 要求不同。</li><li>加密与认证要一起考虑，验证失败时不能继续使用未认证的明文。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="08-安全定义.html">08-安全定义.md</a> ⭐</p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -598,4 +597,4 @@ Java 的多个框架、以及大量自制的"加密 cookie"方案。</p>
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

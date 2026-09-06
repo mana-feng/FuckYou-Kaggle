@@ -180,9 +180,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -875,8 +875,7 @@ th,td{min-width:5.2em}
 <hr />
 <h2 id="recap">🛑 可以停在这里</h2>
 <blockquote>
-<p>⚡ <strong>走神救援</strong><br />
-⭐<strong>CV 赛里数据增强的收益仅次于「换更好的预训练模型」，而成本低得多</strong>。<strong>通常用在线增强</strong>（每轮不同，多样性高）。四个混合类增强的关系：<strong>Cutout（遮一块填0）→ CutMix（粘另一张图的一块）是「填什么」的升级；MixUp 是全局版；Mosaic（4图拼1图）是检测专属</strong>。⚠️⭐<strong>检测/分割做增强时标注必须同步变换</strong>（框坐标、掩码），忘了同步是这类任务最经典的 bug。⚠️<strong>增强不是越强越好</strong>——过强会让训练分布偏离测试分布；判断：训练 loss 降不下去且验证也不涨就是太强，<strong>要做强度消融别凭感觉</strong>。<strong>TTA 只用训练时见过且保持语义的变换</strong>（翻转、多尺度）——训练时教会不变性，TTA 才能用它降方差。⭐<strong>数据管线值得单独优化</strong>：GPU 利用率忽高忽低就是卡在加载上；调 num_workers/pin_memory、预处理离线做、用 opencv、必要时打包格式——<strong>快 2-3 倍直接等于更多实验次数</strong>。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>图像变化时，框、掩码等标注必须同步变换。</li><li>增强强度用消融验证，不能越强越好。</li><li>加载与预处理也占训练时间，先测等待来源再优化管线。</li></ul></section>
 </blockquote>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -904,4 +903,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
+</body></html>

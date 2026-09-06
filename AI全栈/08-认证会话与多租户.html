@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -655,9 +655,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_9">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>认证问「你是谁」（进门一次），授权问「你能做什么」（每次访问资源）—— 所以认证能外包、授权外包不掉。<strong>三条登录路</strong>：自己做密码 / OAuth / 托管服务，⭐ <strong>建议后两条</strong>：密码校验是最简单的一格，后面还有改密、忘密、验证码、限流、撞库、多设备登出、合规十几格；真自己做则<strong>慢哈希、每人独立盐、等时比较</strong>缺一不可。<strong>会话两种形状</strong>：Cookie（自动带、能 <code>HttpOnly</code> 躲 XSS、⚠️ 怕 CSRF）和 Bearer（手动放 header、跨域方便、⚠️ 怕 XSS）—— <strong>同域网页选 Cookie + <code>HttpOnly</code> + <code>Secure</code> + <code>SameSite=Lax</code></strong>。签名自包含凭证两点：<strong>payload 只是 base64 不是加密</strong>、<strong>吊销难</strong>（解法：短时效访问凭证 + 长时效刷新凭证）。⚠️ <strong><code>EventSource</code> 带不了 <code>Authorization</code></strong>，但别把 token 塞进 query —— URL 会被服务端日志、代理日志、浏览器历史、Referer 各抄一份。<strong>依赖注入</strong>的价值是<strong>把漏写变成写不出来</strong>：想用 <code>user</code> 就必须声明它；⭐ <strong>租户号只能来自已验签的凭证，永不来自请求参数</strong>。<strong>多租户三档</strong>：共享表加 <code>tenant_id</code>（默认）/ 分 schema / 分库。⚠️ 「忘了加 WHERE tenant_id」四个可怕之处：<strong>不报错、测试库只有一个租户所以看不出来、静默越权无告警、看到了收不回</strong>。所以防线是<strong>「写错跑不通」三层</strong>：① 绑定租户的句柄（条件由句柄拼，没有忘记的机会）② <strong>毒丸测试</strong>（每张租户表断言换个租户查出 0 行，按表自动生成）③ <strong>Postgres RLS</strong> 兜住绕过（要 <code>FORCE</code>，每事务 <code>SET LOCAL</code>）。最便宜的一条：<strong>测试种子数据永远至少两个租户</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>认证回答你是谁，授权回答你能访问什么；登录外包后仍要逐次检查权限。</li><li>会话、凭证与租户身份必须由可信的服务端流程建立，不能相信请求里的租户号。</li><li>数据库访问统一绑定租户条件，并用至少两个租户的数据测试隔离。</li><li>Cookie、Bearer 和刷新凭证各有风险，按本章流程检查存储、过期与退出。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="08b-同源策略与CORS.html">08b-同源策略与CORS.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -685,4 +684,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

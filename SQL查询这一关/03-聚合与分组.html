@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -542,9 +542,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table></div>
 <p>⭐ <strong>第④条那个 SQLite 特例值得单独警惕</strong>：<code>SELECT feature, user_id, MAX(cents) … GROUP BY feature</code>
 里的 <code>user_id</code> 会跟着 <code>MAX</code> 命中的那一行走（<code>summary</code> 组给出 <code>u2</code>，正是 10.2 那行的人）。
-这看起来太好用了 —— 「每组花得最多的那个人是谁」一句就写出来了。
-💀 <strong>但这是 SQLite 的私货，别的库不保证，换库就静默变错。</strong>
-⭐ 「每组里最大/最新的那一整行」的可移植工具是窗口函数 <code>ROW_NUMBER()</code>，那是 <a href="07-窗口函数.html">07 章</a>的正题。</p>
+这看起来太好用了 —— 「每组花得最多的那个人是谁」一句就写出来了。</p>
+<p>💀 <strong>但这是 SQLite 的私货，别的库不保证，换库就静默变错。</strong></p>
+<p>⭐ 「每组里最大/最新的那一整行」的可移植工具是窗口函数 <code>ROW_NUMBER()</code>，那是 <a href="07-窗口函数.html">07 章</a>的正题。</p>
 <hr />
 <!--MIDSTOP-->
 <blockquote>
@@ -1072,9 +1072,9 @@ Postgres 有 <code>PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY ms)</code> 🗓�
 ⭐ <strong>判据：只要写了 <code>GROUP BY</code>，调用方就必须能处理「零行」。</strong>
 不写 <code>GROUP BY</code> 时，则要能处理 <code>SUM</code> 返回 <code>NULL</code>（<code>COALESCE(SUM(cents), 0)</code> 兜底成 0）。</p>
 <p><strong>坑② <code>GROUP BY</code> 只会造出【数据里存在的组】。</strong>
-表里没有 <code>ocr</code> 的调用，<code>ocr</code> 就不会出现在结果里 —— <strong>不是「0 次」，是「没这一行」</strong>。
-⭐ 要让「零调用」的项目也占一行，得从一张维度表 <code>LEFT JOIN</code> 过来。
-⚠️⚠️ 而这时必须写 <code>COUNT(c.feature)</code> 不能写 <code>COUNT(*)</code>：
+表里没有 <code>ocr</code> 的调用，<code>ocr</code> 就不会出现在结果里 —— <strong>不是「0 次」，是「没这一行」</strong>。</p>
+<p>⭐ 要让「零调用」的项目也占一行，得从一张维度表 <code>LEFT JOIN</code> 过来。</p>
+<p>⚠️⚠️ 而这时必须写 <code>COUNT(c.feature)</code> 不能写 <code>COUNT(*)</code>：
 实跑里 <code>COUNT(*)</code> 把 <code>ocr</code> 数成了 1 —— 因为 <code>LEFT JOIN</code> 给它补了一行全 <code>NULL</code>，那也是一行，<code>COUNT(*)</code> 照数不误。
 （这正好回收第一节那句：<code>COUNT(*)</code> 数行，<code>COUNT(列)</code> 数值。）</p>
 <p><strong>坑③ <code>GROUP BY</code> 把所有 <code>NULL</code> 归进【同一组】</strong>，实跑 <code>(None, 2)</code>，<code>DISTINCT</code> 也一样只留一个 <code>None</code>。
@@ -1082,9 +1082,9 @@ Postgres 有 <code>PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY ms)</code> 🗓�
 ⭐ <strong>不矛盾，只是两套规则</strong>：<code>JOIN</code> 用的是 <code>=</code>（<code>NULL = NULL</code> 判不出真），
 <code>GROUP BY</code> / <code>DISTINCT</code> 用的是「是不是同一个值」这套判断。<a href="04-NULL与三值逻辑.html">04 章</a>会把这两套摆在一起讲清楚。</p>
 <p><strong>坑④ <code>COUNT(DISTINCT a, b)</code> 在 SQLite 上直接报错</strong>（<code>wrong number of arguments to function COUNT()</code>），
-MySQL 支持、Postgres 要写成 <code>COUNT(DISTINCT (a, b))</code> 🗓️ 未实跑 —— sqlite 无此语法。
-⭐ <strong>三个库都能跑的写法是包一层子查询先 <code>DISTINCT</code> 再数</strong>，实跑得到 3。
-⚠️ 常见的偷懒写法 <code>COUNT(DISTINCT a || '|' || b)</code> 有风险：分隔符本身出现在数据里就会撞（<code>'a|b'</code> + <code>'c'</code> 和 <code>'a'</code> + <code>'b|c'</code> 拼出同一个串）。</p>
+MySQL 支持、Postgres 要写成 <code>COUNT(DISTINCT (a, b))</code> 🗓️ 未实跑 —— sqlite 无此语法。</p>
+<p>⭐ <strong>三个库都能跑的写法是包一层子查询先 <code>DISTINCT</code> 再数</strong>，实跑得到 3。</p>
+<p>⚠️ 常见的偷懒写法 <code>COUNT(DISTINCT a || '|' || b)</code> 有风险：分隔符本身出现在数据里就会撞（<code>'a|b'</code> + <code>'c'</code> 和 <code>'a'</code> + <code>'b|c'</code> 拼出同一个串）。</p>
 <p><strong>坑⑤ SQLite 没有 <code>ROLLUP</code> / <code>GROUPING SETS</code>，合计行要手工拼。</strong></p>
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
@@ -1285,4 +1285,4 @@ GROUP BY 用列序号 / SELECT 别名:
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

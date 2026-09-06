@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -504,7 +504,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_6">📁 六、什么时候从单文件拆出来</h2>
 <p><strong>别一上来就建八个目录。</strong> 判据只有一条：<strong>当你为了改一件事必须在同一个文件里上下反复横跳时</strong>就该拆，通常在 300～500 行、第三个路由出现时。按「变化的理由」分，不要按「技术种类」分：</p>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">app/</span></div><div class="vb-tree-row"><span class="vb-tree-node">main.py # 只做装配：建 app、挂路由、注册异常处理器</span></div><div class="vb-tree-row"><span class="vb-tree-node">api/ # HTTP 层：路由、请求/响应模型</span></div><div class="vb-tree-row"><span class="vb-tree-node">deps.py # 依赖：current_user / quota / trace</span></div><div class="vb-tree-row"><span class="vb-tree-node">services/ # 业务编排：一次对话该做哪几步</span></div><div class="vb-tree-row"><span class="vb-tree-node">llm/ # ⭐ 第 4 章的调用层：超时/重试/记账/缓存/假客户端</span></div><div class="vb-tree-row"><span class="vb-tree-node">store/ # 第 6/7 章：数据库与向量库</span></div><div class="vb-tree-row"><span class="vb-tree-node">settings.py # 配置一律从环境变量读</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-stackmd-03-1" style="--diagram-width:720px"><svg viewBox="0 0 720 466" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="这是文件组织关系，不是一次请求的执行链。"><title>这是文件组织关系，不是一次请求的执行链。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">目录与职责</text><rect x="20" y="65" width="680" height="376" rx="12" fill="var(--quote-bg)" stroke="var(--border)"/><text x="40" y="97" font-size="20" text-anchor="start" fill="var(--fg)">app/ 项目目录</text><rect x="44" y="117" width="632" height="34" rx="6" fill="var(--card)" stroke="var(--border)"/><text x="58" y="140" font-size="18" text-anchor="start" fill="var(--fg)">main.py：应用装配</text><rect x="44" y="159" width="632" height="34" rx="6" fill="var(--card)" stroke="var(--border)"/><text x="58" y="182" font-size="18" text-anchor="start" fill="var(--fg)">api/：HTTP 路由与模型</text><rect x="44" y="201" width="632" height="34" rx="6" fill="var(--card)" stroke="var(--border)"/><text x="58" y="224" font-size="18" text-anchor="start" fill="var(--fg)">deps.py：依赖</text><rect x="44" y="243" width="632" height="34" rx="6" fill="var(--card)" stroke="var(--border)"/><text x="58" y="266" font-size="18" text-anchor="start" fill="var(--fg)">services/：业务编排</text><rect x="44" y="285" width="632" height="34" rx="6" fill="var(--card)" stroke="var(--border)"/><text x="58" y="308" font-size="18" text-anchor="start" fill="var(--fg)">llm/：调用层</text><rect x="44" y="327" width="632" height="34" rx="6" fill="var(--card)" stroke="var(--border)"/><text x="58" y="350" font-size="18" text-anchor="start" fill="var(--fg)">store/：数据库与向量库</text><rect x="44" y="369" width="632" height="34" rx="6" fill="var(--card)" stroke="var(--border)"/><text x="58" y="392" font-size="18" text-anchor="start" fill="var(--fg)">settings.py：配置</text></svg><figcaption>这是文件组织关系，不是一次请求的执行链。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>app/</span></li><li><span>main.py # 只做装配：建 app、挂路由、注册异常处理器</span></li><li><span>api/ # HTTP 层：路由、请求/响应模型</span></li><li><span>deps.py # 依赖：current_user / quota / trace</span></li><li><span>services/ # 业务编排：一次对话该做哪几步</span></li><li><span>llm/ # ⭐ 第 4 章的调用层：超时/重试/记账/缓存/假客户端</span></li><li><span>store/ # 第 6/7 章：数据库与向量库</span></li><li><span>settings.py # 配置一律从环境变量读</span></li></ul></section>
 <p>⭐ 唯一强制的一条：<strong><code>api/</code> 里不许直接出现模型 SDK 的名字</strong>。为什么，下一章第一节整节都在讲。</p>
 <hr />
 <h2 id="_7">🔄 七、换个栈怎么对应</h2>
@@ -653,4 +654,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

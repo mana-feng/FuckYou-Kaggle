@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -432,13 +432,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>适合：跨多文件的代码修改、多来源信息搜集
 <strong>这是多 Agent 的默认起点</strong>（<a href="13-多Agent协作.html">第 13 章</a>）</p>
 <blockquote>
-<p>⭐ <strong>注意这一节讲的五种模式，「拆分逻辑」都还写在你的代码里</strong>——是你决定了「先分类再分发」或者「编排器负责拆」。
-<strong>还有一档介于工作流和 Agent 之间：让模型自己先把整个计划写出来，再按计划执行。</strong>
-🔗 <a href="13-多Agent协作.html">第 13 章</a>把这一档拆成了三种可选骨架：
+<p>⭐ <strong>注意这一节讲的五种模式，「拆分逻辑」都还写在你的代码里</strong>——是你决定了「先分类再分发」或者「编排器负责拆」。</p>
+<p><strong>还有一档介于工作流和 Agent 之间：让模型自己先把整个计划写出来，再按计划执行。</strong></p>
+<p>🔗 <a href="13-多Agent协作.html">第 13 章</a>把这一档拆成了三种可选骨架：
 <strong>Plan-and-Execute</strong>（先全盘规划再逐步执行，比 ReAct 省 token、但计划过时了要重规划）、
 <strong>ReWOO</strong>（把计划里的中间结果用占位符串起来，<strong>规划阶段完全不看工具返回</strong>，token 更省），
-以及大家最熟的 <strong>ReAct</strong>（想一步做一步，最灵活也最贵）。
-<strong>知道有这一档很重要</strong>——很多人在这一章的决策树末端直接跳到「上多 Agent」，
+以及大家最熟的 <strong>ReAct</strong>（想一步做一步，最灵活也最贵）。</p>
+<p><strong>知道有这一档很重要</strong>——很多人在这一章的决策树末端直接跳到「上多 Agent」，
 ⚠️ 而实际上<strong>单 Agent 换个规划骨架就够了，成本差一个量级</strong>（第六节那个成本量级感就是在说这件事）。</p>
 </blockquote>
 <h3 id="5-evaluator-optimizer">⑤ 评估器-优化器（Evaluator-Optimizer）</h3>
@@ -452,7 +452,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 代价：token 至少翻倍</p>
 <hr />
 <h2 id="_7">🗺️ 四、选型决策树</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">单次调用质量可接受？</span></div><div class="vb-tree-row"><span class="vb-tree-node">是 → ⭐ 停。别加花样</span></div><div class="vb-tree-row"><span class="vb-tree-node">否 ↓</span></div><div class="vb-tree-row"><span class="vb-tree-node">有明确的输入类别？</span></div><div class="vb-tree-row"><span class="vb-tree-node">是 → 【路由】（还能顺便省钱）</span></div><div class="vb-tree-row"><span class="vb-tree-node">否 ↓</span></div><div class="vb-tree-row"><span class="vb-tree-node">步骤有天然先后依赖？</span></div><div class="vb-tree-row"><span class="vb-tree-node">是 → 【提示词链】</span></div><div class="vb-tree-row"><span class="vb-tree-node">否 ↓</span></div><div class="vb-tree-row"><span class="vb-tree-node">子任务独立且延迟是瓶颈？</span></div><div class="vb-tree-row"><span class="vb-tree-node">是 → 【并行化】（先定聚合策略！）</span></div><div class="vb-tree-row"><span class="vb-tree-node">否 ↓</span></div><div class="vb-tree-row"><span class="vb-tree-node">有可衡量的质量标准，且值得多花 token？</span></div><div class="vb-tree-row"><span class="vb-tree-node">是 → 【评估器-优化器】（先定停止标准！）</span></div><div class="vb-tree-row"><span class="vb-tree-node">否 ↓</span></div><div class="vb-tree-row"><span class="vb-tree-node">子任务无法预先确定？</span></div><div class="vb-tree-row"><span class="vb-tree-node">是 → 【编排器-工作者】</span></div><div class="vb-tree-row"><span class="vb-tree-node">否 ↓</span></div><div class="vb-tree-row"><span class="vb-tree-node">路径真的不可预测 + 有可靠反馈信号 + 付得起代价？</span></div><div class="vb-tree-row"><span class="vb-tree-node">是 → 【自主 Agent】</span></div><div class="vb-tree-row"><span class="vb-tree-node">否 → 回去重新想需求</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-agentmd-06-1" style="--diagram-width:720px"><svg viewBox="0 0 720 923" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="从上往下读问题；满足条件走右边，不满足再往下。右侧是选择入口，具体限制与原有说明保留在图下。"><title>从上往下读问题；满足条件走右边，不满足再往下。右侧是选择入口，具体限制与原有说明保留在图下。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">按问题逐步判断</text><rect x="20" y="65" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="170.0" y="93" font-size="18" text-anchor="middle" fill="var(--fg)">单次调用质量可接受？</text><rect x="395" y="65" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="545.0" y="93" font-size="18" text-anchor="middle" fill="var(--fg)">停在简单方案</text><line x1="320" y1="101" x2="395" y2="101" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="395.0,101.0 386.0,106.0 386.0,96.0"/><text x="356" y="87" font-size="16" text-anchor="middle" fill="var(--fg)">是</text><line x1="170" y1="113" x2="170" y2="195" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="170.0,195.0 165.0,186.0 175.0,186.0"/><text x="187" y="138" font-size="16" text-anchor="start" fill="var(--fg)">否</text><rect x="20" y="195" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="170.0" y="223" font-size="18" text-anchor="middle" fill="var(--fg)">有明确的输入类别？</text><rect x="395" y="195" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="545.0" y="223" font-size="18" text-anchor="middle" fill="var(--fg)">路由</text><line x1="320" y1="231" x2="395" y2="231" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="395.0,231.0 386.0,236.0 386.0,226.0"/><text x="356" y="217" font-size="16" text-anchor="middle" fill="var(--fg)">是</text><line x1="170" y1="243" x2="170" y2="325" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="170.0,325.0 165.0,316.0 175.0,316.0"/><text x="187" y="268" font-size="16" text-anchor="start" fill="var(--fg)">否</text><rect x="20" y="325" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="170.0" y="353" font-size="18" text-anchor="middle" fill="var(--fg)">步骤有天然先后依赖？</text><rect x="395" y="325" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="545.0" y="353" font-size="18" text-anchor="middle" fill="var(--fg)">提示词链</text><line x1="320" y1="361" x2="395" y2="361" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="395.0,361.0 386.0,366.0 386.0,356.0"/><text x="356" y="347" font-size="16" text-anchor="middle" fill="var(--fg)">是</text><line x1="170" y1="373" x2="170" y2="455" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="170.0,455.0 165.0,446.0 175.0,446.0"/><text x="187" y="398" font-size="16" text-anchor="start" fill="var(--fg)">否</text><rect x="20" y="455" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="170.0" y="483" font-size="18" text-anchor="middle" fill="var(--fg)">子任务独立且需降延迟？</text><rect x="395" y="455" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="545.0" y="483" font-size="18" text-anchor="middle" fill="var(--fg)">并行并确定汇总规则</text><line x1="320" y1="491" x2="395" y2="491" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="395.0,491.0 386.0,496.0 386.0,486.0"/><text x="356" y="477" font-size="16" text-anchor="middle" fill="var(--fg)">是</text><line x1="170" y1="503" x2="170" y2="585" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="170.0,585.0 165.0,576.0 175.0,576.0"/><text x="187" y="528" font-size="16" text-anchor="start" fill="var(--fg)">否</text><rect x="20" y="585" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="170.0" y="613" font-size="18" text-anchor="middle" fill="var(--fg)">有可衡量的优化标准？</text><rect x="395" y="585" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="545.0" y="613" font-size="18" text-anchor="middle" fill="var(--fg)">评估器—优化器</text><line x1="320" y1="621" x2="395" y2="621" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="395.0,621.0 386.0,626.0 386.0,616.0"/><text x="356" y="607" font-size="16" text-anchor="middle" fill="var(--fg)">是</text><line x1="170" y1="633" x2="170" y2="715" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="170.0,715.0 165.0,706.0 175.0,706.0"/><text x="187" y="658" font-size="16" text-anchor="start" fill="var(--fg)">否</text><rect x="20" y="715" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="170.0" y="743" font-size="18" text-anchor="middle" fill="var(--fg)">子任务无法预先确定？</text><rect x="395" y="715" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="545.0" y="743" font-size="18" text-anchor="middle" fill="var(--fg)">编排器—工作者</text><line x1="320" y1="751" x2="395" y2="751" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="395.0,751.0 386.0,756.0 386.0,746.0"/><text x="356" y="737" font-size="16" text-anchor="middle" fill="var(--fg)">是</text><line x1="170" y1="763" x2="170" y2="845" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="170.0,845.0 165.0,836.0 175.0,836.0"/><text x="187" y="809" font-size="16" text-anchor="start" fill="var(--fg)">否</text><rect x="20" y="845" width="675" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="357.5" y="873" font-size="18" text-anchor="middle" fill="var(--fg)">最后才评估：动态路径、可靠反馈与可承受代价</text></svg><figcaption>从上往下读问题；满足条件走右边，不满足再往下。右侧是选择入口，具体限制与原有说明保留在图下。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>单次调用质量可接受？</span></li><li><span>是 → ⭐ 停。别加花样</span></li><li><span>否 ↓</span></li><li><span>有明确的输入类别？</span></li><li><span>是 → 【路由】（还能顺便省钱）</span></li><li><span>否 ↓</span></li><li><span>步骤有天然先后依赖？</span></li><li><span>是 → 【提示词链】</span></li><li><span>否 ↓</span></li><li><span>子任务独立且延迟是瓶颈？</span></li><li><span>是 → 【并行化】（先定聚合策略！）</span></li><li><span>否 ↓</span></li><li><span>有可衡量的质量标准，且值得多花 token？</span></li><li><span>是 → 【评估器-优化器】（先定停止标准！）</span></li><li><span>否 ↓</span></li><li><span>子任务无法预先确定？</span></li><li><span>是 → 【编排器-工作者】</span></li><li><span>否 ↓</span></li><li><span>路径真的不可预测 + 有可靠反馈信号 + 付得起代价？</span></li><li><span>是 → 【自主 Agent】</span></li><li><span>否 → 回去重新想需求</span></li></ul></section>
 <hr />
 <h2 id="agent">🤖 五、什么时候才真的需要 Agent</h2>
 <p><strong>三个条件必须同时满足</strong>：</p>
@@ -603,9 +604,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_13">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>能不用Agent就不用</strong>，<strong>复杂度必须由数据证明必要</strong>。根本区分是<strong>谁决定路径</strong>：工作流是你预写的代码路径（可预测、好调试、成本可估），Agent 是模型看反馈动态决定（难调试、更贵，<strong>错误还会复利放大</strong>）。判断技巧：<strong>能提前画出流程图就用工作流</strong>（哪怕带分支）；画不出来才考虑 Agent。升级梯子：单次调用（<strong>大多数需求到这就够了</strong>）→+工具→工作流→Agent，每级用<strong>降级测试</strong>（20个真实样例的成功率表，要含难例）证明必要，三个用处：证明复杂度必要、<strong>找性价比拐点（常常②就够，④只多 3% 却贵 10 倍）</strong>、模型升级后重跑帮你砍架构。⚠️<strong>最常见的错误是跳过降级测试直接上 Agent，然后花两周调一个工作流两小时就能做好的东西</strong>。五模式：链式(加闸门，用延迟换准确率)、<strong>路由(最被低估的省钱手段</strong>，⚠️分类错了后面全错，<strong>要给分类器一个「不确定」的出口</strong>)、并行(分片/投票，<strong>先定聚合策略</strong>——多数决/并集宁可误报/交集宁可漏报/模型仲裁，否则只是更快收到一堆矛盾结果)、编排器-工作者(子任务动态拆分，<strong>不可预先确定</strong>)、评估器-优化器(<strong>先定停止标准+评估器独立上下文</strong>，否则无限循环烧钱、自评还有正面偏差)。Agent三条件必须同时满足：路径不可测+<strong>有可靠反馈信号(最易忽略最致命)</strong>+付得起代价——⭐<strong>没有反馈信号的 Agent 就是没有指南针还在自信前进的旅行者</strong>。成本量级：单次 1×、三步工作流 3×、评估器-优化器 2–5×、<strong>多Agent贵约15倍</strong>，是一个数量级。<strong>可预测性是优点不是缺点。</strong></p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>路径可以预先写清时，优先使用可预测的工作流。</li><li>确实需要根据反馈动态决定行动，才考虑增加 Agent 的自主性。</li><li>用同一组真实样例比较成功率、成本与延迟，证明复杂度有必要。</li><li>没有可靠反馈和停止标准，循环越长也不意味着结果越好。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="07-工具设计-能力的上限.html">07-工具设计-能力的上限.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -633,4 +633,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

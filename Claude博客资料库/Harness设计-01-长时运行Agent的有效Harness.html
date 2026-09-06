@@ -334,8 +334,7 @@ th,td{min-width:5.2em}
 </details>
 </div>
 <div class="recap"><h2 id="recap">🛑 可以停在这里</h2>
-<p>⚡ <strong>走神救援</strong><br />
-⭐Harness = 包在模型外面的那层工程结构——模型决定「做什么」，Harness 决定「怎么把它跑稳」。<br class="prose-beat">五部分：循环控制、状态管理（上下文裁剪+进度持久化）、错误处理（失败了要不要重试、重试几次）、终止条件、可观测性（每步可记录可回放）。<br class="prose-beat"><strong>没有 Harness 的 Agent 只能做演示</strong>，因为演示只需「顺利那条路」跑通，生产要处理超时/限流/格式不对/意外返回/任务超长——<strong>这些是 Harness 的职责，不是模型能力问题</strong>。<br class="prose-beat">⚠️⭐最容易忽略的是终止条件：很多实现只设了「成功就停」，没设步数上限、成本上限、无进展检测，结果在死循环里反复尝试同样的失败操作烧掉大量 token；「无进展检测」尤其容易漏——连续 N 轮状态没实质变化就该停下求助。</p></div>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>Harness 管理循环、状态、错误、终止与可观测性。</li><li>成功退出之外，还要处理超时、预算耗尽和持续无进展。</li><li>记录每一步的结果，让失败可以定位和恢复。</li></ul></section></div>
 <nav class="pagenav"><a href="index.html"><div class="dir">← 返回</div>📚 资料库目录</a>
 <a class="next" href="../智能体工程教程/index.html"><div class="dir">系统学习 →</div>🎓 智能体工程教程</a></nav>
 </main><script>(function(){
@@ -349,4 +348,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
+</body></html>

@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -303,12 +303,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </details>
 <h1 id="15">15 · 实战与挑战项目</h1>
 <p>⏱ <strong>项目 1–2 天 / 挑战 4–7 天</strong> ｜ ⭐ <strong>RL 尤其必须动手</strong></p>
-<hr />
+<hr>
 <h2 id="_1">🎯 一句话</h2>
 <p>RL 的算法看起来都很简单，<strong>但它们出错的方式和监督学习完全不同 ——
 不会报错，只是学不出来。</strong>
 <strong>这一章的四个项目，一半的价值在于让你亲眼看到那些失败模式。</strong></p>
-<hr />
+<hr>
 <h2 id="rl">🧰 开工前：三条 RL 特有的调试铁律</h2>
 <div class="tw"><table>
 <thead>
@@ -337,59 +337,69 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div class="codehilite"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>gymnasium<span class="w"> </span>numpy<span class="w"> </span>torch<span class="w"> </span>matplotlib
 </code></pre></div>
 
-<hr />
+<hr>
 <h1 id="1">🥉 项目一：表格法三件套（1 天）</h1>
-<p>目标：把<a href="04-动态规划.html">第 4</a>–<a href="07-探索与利用.html">7 章</a>全部跑一遍。</p>
-<ul>
-<li>[ ] <strong>T1 (45min)</strong> 自己实现 <code>FrozenLake</code> 或一个 5×5 格子世界（<strong>别用现成环境</strong>，自己写才懂状态转移）</li>
-<li>[ ] <strong>T2 (60min)</strong> <strong>价值迭代</strong>：算出最优价值函数和策略，可视化成箭头图</li>
-<li>[ ] <strong>T3 (60min)</strong> <strong>Q-learning</strong>：从零学，画出"每回合累计奖励"曲线</li>
-<li>[ ] <strong>T4 (45min)</strong> <strong>SARSA</strong>：同一环境跑一遍，和 Q-learning 对比</li>
-<li>[ ] <strong>T5 (45min)</strong> ⭐ <strong>悬崖行走实验</strong>：这是区分两者的经典环境</li>
-<li>[ ] <strong>T6 (30min)</strong> 扫 ε：0.01 / 0.1 / 0.3 / 线性衰减，对比学习曲线</li>
+<p>目标：把<a href="04-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92.html">第 4</a>–<a href="07-%E6%8E%A2%E7%B4%A2%E4%B8%8E%E5%88%A9%E7%94%A8.html">7 章</a>全部跑一遍。</p>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="1"><label class="reading-task-title"><input type="checkbox" data-task-key="1"><span>任务 T1</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> 自己实现 <code>FrozenLake</code> 或一个 5×5 格子世界（<strong>别用现成环境</strong>，自己写才懂状态转移）</div></li>
+<li class="reading-task" data-reading-task="2"><label class="reading-task-title"><input type="checkbox" data-task-key="2"><span>任务 T2</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> <strong>价值迭代</strong>：算出最优价值函数和策略，可视化成箭头图</div></li>
+<li class="reading-task" data-reading-task="3"><label class="reading-task-title"><input type="checkbox" data-task-key="3"><span>任务 T3</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> <strong>Q-learning</strong>：从零学，画出"每回合累计奖励"曲线</div></li>
+<li class="reading-task" data-reading-task="4"><label class="reading-task-title"><input type="checkbox" data-task-key="4"><span>任务 T4</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> <strong>SARSA</strong>：同一环境跑一遍，和 Q-learning 对比</div></li>
+<li class="reading-task" data-reading-task="5"><label class="reading-task-title"><input type="checkbox" data-task-key="5"><span>任务 T5</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> ⭐ <strong>悬崖行走实验</strong>：这是区分两者的经典环境</div></li>
+<li class="reading-task" data-reading-task="6"><label class="reading-task-title"><input type="checkbox" data-task-key="6"><span>任务 T6</span></label><p class="reading-task-time">参考用时 · 30 分钟</p><div class="reading-task-body"> 扫 ε：0.01 / 0.1 / 0.3 / 线性衰减，对比学习曲线</div></li>
 </ul>
 <h3 id="t5">🎯 该看到的现象（T5 是重点）</h3>
-<section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">悬崖行走（走边缘最短但掉下去 -100）：</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ Q-learning 学到【最优路径】：贴着悬崖边走</span></div><div class="vb-flow-row"><span class="vb-flow-step">但训练过程中因为 ε-贪心偶尔失足，【实际得分更低】</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ SARSA 学到【安全路径】：绕远一点</span></div><div class="vb-flow-row"><span class="vb-flow-step">因为它是 on-policy，把&quot;我会以 ε 概率乱走&quot;也考虑进去了</span></div><div class="vb-flow-row"><span class="vb-flow-step">这个差别就是 on-policy 和 off-policy 的直观体现 ⭐</span></div></div></section>
+<section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">悬崖行走（走边缘最短但掉下去 -100）：</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ Q-learning 学到【最优路径】：贴着悬崖边走</span></div><div class="vb-flow-row"><span class="vb-flow-step">但训练过程中因为 ε-贪心偶尔失足，【实际得分更低】</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ SARSA 学到【安全路径】：绕远一点</span></div><div class="vb-flow-row"><span class="vb-flow-step">因为它是 on-policy，把"我会以 ε 概率乱走"也考虑进去了</span></div><div class="vb-flow-row"><span class="vb-flow-step">这个差别就是 on-policy 和 off-policy 的直观体现 ⭐</span></div></div></section>
 <h3 id="_2">✅ 通关标准</h3>
 <ul>
 <li>价值迭代的结果和 Q-learning 收敛到的策略<strong>一致</strong></li>
 <li><strong>能解释悬崖行走里两者为什么不同</strong></li>
 <li>ε 的对比曲线体现出探索-利用的权衡</li>
 </ul>
-<hr />
+<hr>
 <h1 id="dqn-cartpole12">🥈 项目二：DQN 打 CartPole（1–2 天）</h1>
 <p>目标：<a href="08-DQN.html">第 8 章</a>。</p>
-<ul>
-<li>[ ] <strong>T1 (60min)</strong> 最朴素版本：<strong>故意不加</strong>经验回放和目标网络 → 看它怎么崩</li>
-<li>[ ] <strong>T2 (60min)</strong> 加经验回放，对比</li>
-<li>[ ] <strong>T3 (45min)</strong> 加目标网络，对比</li>
-<li>[ ] <strong>T4 (45min)</strong> 调 ε 衰减策略</li>
-<li>[ ] <strong>T5 (60min)</strong> 实现 <strong>Double DQN</strong>，对比 Q 值估计</li>
-<li>[ ] <strong>T6 (45min)</strong> ⭐ <strong>画 Q 值曲线</strong>：验证标准 DQN 的 Q 值系统性高于真实回报</li>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="7"><label class="reading-task-title"><input type="checkbox" data-task-key="7"><span>任务 T1</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 最朴素版本：<strong>故意不加</strong>经验回放和目标网络 → 看它怎么崩</div></li>
+<li class="reading-task" data-reading-task="8"><label class="reading-task-title"><input type="checkbox" data-task-key="8"><span>任务 T2</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 加经验回放，对比</div></li>
+<li class="reading-task" data-reading-task="9"><label class="reading-task-title"><input type="checkbox" data-task-key="9"><span>任务 T3</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> 加目标网络，对比</div></li>
+<li class="reading-task" data-reading-task="10"><label class="reading-task-title"><input type="checkbox" data-task-key="10"><span>任务 T4</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> 调 ε 衰减策略</div></li>
+<li class="reading-task" data-reading-task="11"><label class="reading-task-title"><input type="checkbox" data-task-key="11"><span>任务 T5</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 实现 <strong>Double DQN</strong>，对比 Q 值估计</div></li>
+<li class="reading-task" data-reading-task="12"><label class="reading-task-title"><input type="checkbox" data-task-key="12"><span>任务 T6</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> ⭐ <strong>画 Q 值曲线</strong>：验证标准 DQN 的 Q 值系统性高于真实回报</div></li>
 </ul>
 <h3 id="_3">🎯 该看到的数字</h3>
-<section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">CartPole-v1（满分 500）：</span></div><div class="vb-flow-row"><span class="vb-flow-step">T1 朴素版</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">剧烈震荡，经常回到 10 分左右 💀</span></div><div class="vb-flow-row"><span class="vb-flow-step">T2 +经验回放</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">明显稳定</span></div><div class="vb-flow-row"><span class="vb-flow-step">T3 +目标网络</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">能稳定到 400+ ✅</span></div><div class="vb-flow-row"><span class="vb-flow-step">T5 Double DQN</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">Q 值估计明显更接近真实回报</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ T6 是这个项目的灵魂：</span></div><div class="vb-flow-row"><span class="vb-flow-step">把&quot;网络预测的 Q&quot; 和 &quot;实际跑出来的折扣回报&quot; 画在一起</span></div><div class="vb-flow-row"><span class="vb-flow-step">标准 DQN 的曲线会明显【偏高】</span></div><div class="vb-flow-row"><span class="vb-flow-step">Double DQN 的曲线贴得更紧</span></div></div></section>
+<section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">CartPole-v1（满分 500）：</span></div><div class="vb-flow-row"><span class="vb-flow-step">T1 朴素版</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">剧烈震荡，经常回到 10 分左右 💀</span></div><div class="vb-flow-row"><span class="vb-flow-step">T2 +经验回放</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">明显稳定</span></div><div class="vb-flow-row"><span class="vb-flow-step">T3 +目标网络</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">能稳定到 400+ ✅</span></div><div class="vb-flow-row"><span class="vb-flow-step">T5 Double DQN</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">Q 值估计明显更接近真实回报</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ T6 是这个项目的灵魂：</span></div><div class="vb-flow-row"><span class="vb-flow-step">把"网络预测的 Q" 和 "实际跑出来的折扣回报" 画在一起</span></div><div class="vb-flow-row"><span class="vb-flow-step">标准 DQN 的曲线会明显【偏高】</span></div><div class="vb-flow-row"><span class="vb-flow-step">Double DQN 的曲线贴得更紧</span></div></div></section>
 <h3 id="_4">✅ 通关标准</h3>
 <ul>
 <li><strong>T1 真的崩了</strong>（这一步别跳过 —— 亲眼看到才记得住）</li>
 <li>T3 能稳定通关</li>
 <li><strong>T6 的高估现象可见</strong></li>
 </ul>
-<hr />
+<hr>
 <h1 id="a-ppo34">🥇 挑战 A：从零实现 PPO（3–4 天）</h1>
 <p><strong>难度 ★★★★☆</strong></p>
-<ul>
-<li>[ ] <strong>T1</strong> 实现 Actor-Critic 网络（共享 backbone + 两个头）</li>
-<li>[ ] <strong>T2</strong> ⭐ 实现 <strong>GAE</strong>（<a href="10-Actor-Critic.html">第 10 章</a>）</li>
-<li>[ ] <strong>T3</strong> ⭐ 实现 <strong>裁剪目标</strong>（<a href="11-PPO.html">第 11 章</a>）</li>
-<li>[ ] <strong>T4</strong> 加上那六个实现细节：优势标准化、梯度裁剪、log 空间算 ratio、熵奖励、观测归一化、学习率退火</li>
-<li>[ ] <strong>T5</strong> 在 <code>CartPole</code> 上通关，再上 <code>LunarLander</code></li>
-<li>[ ] <strong>T6</strong> ⭐ <strong>消融实验</strong>：逐个关掉 T4 的六个细节，各跑 3 个种子，量化每个的贡献</li>
-<li>[ ] <strong>T7</strong> ⭐ 扫 clip ε：0.05 / 0.1 / 0.2 / 0.5，观察<strong>KL 散度</strong>怎么变</li>
-<li>[ ] <strong>T8</strong>（加分）连续动作版本（高斯策略），跑 <code>Pendulum</code></li>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="13"><label class="reading-task-title"><input type="checkbox" data-task-key="13"><span>任务 T1</span></label><div class="reading-task-body"> 实现 Actor-Critic 网络（共享 backbone + 两个头）</div></li>
+<li class="reading-task" data-reading-task="14"><label class="reading-task-title"><input type="checkbox" data-task-key="14"><span>任务 T2</span></label><div class="reading-task-body"> ⭐ 实现 <strong>GAE</strong>（<a href="10-Actor-Critic.html">第 10 章</a>）</div></li>
+<li class="reading-task" data-reading-task="15"><label class="reading-task-title"><input type="checkbox" data-task-key="15"><span>任务 T3</span></label><div class="reading-task-body"> ⭐ 实现 <strong>裁剪目标</strong>（<a href="11-PPO.html">第 11 章</a>）</div></li>
+<li class="reading-task" data-reading-task="16"><label class="reading-task-title"><input type="checkbox" data-task-key="16"><span>任务 T4</span></label><div class="reading-task-body"> 加上那六个实现细节：优势标准化、梯度裁剪、log 空间算 ratio、熵奖励、观测归一化、学习率退火</div></li>
+<li class="reading-task" data-reading-task="17"><label class="reading-task-title"><input type="checkbox" data-task-key="17"><span>任务 T5</span></label><div class="reading-task-body"> 在 <code>CartPole</code> 上通关，再上 <code>LunarLander</code></div></li>
+<li class="reading-task" data-reading-task="18"><label class="reading-task-title"><input type="checkbox" data-task-key="18"><span>任务 T6</span></label><div class="reading-task-body"> ⭐ <strong>消融实验</strong>：逐个关掉 T4 的六个细节，各跑 3 个种子，量化每个的贡献</div></li>
+<li class="reading-task" data-reading-task="19"><label class="reading-task-title"><input type="checkbox" data-task-key="19"><span>任务 T7</span></label><div class="reading-task-body"> ⭐ 扫 clip ε：0.05 / 0.1 / 0.2 / 0.5，观察<strong>KL 散度</strong>怎么变</div></li>
+<li class="reading-task" data-reading-task="20"><label class="reading-task-title"><input type="checkbox" data-task-key="20"><span>任务 T8</span></label><div class="reading-task-body">（加分）连续动作版本（高斯策略），跑 <code>Pendulum</code></div></li>
 </ul>
 <h3 id="_5">🎯 该看到的现象</h3>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">T6 的消融（这是整个项目最有价值的部分）：</span></div><div class="vb-tree-row"><span class="vb-tree-node">关掉【优势标准化】 → 训练明显变慢或不稳 ⭐</span></div><div class="vb-tree-row"><span class="vb-tree-node">关掉【梯度裁剪】 → 偶尔某个种子直接发散</span></div><div class="vb-tree-row"><span class="vb-tree-node">关掉【熵奖励】 → 早期就收敛到某个动作，分数卡住 ⭐</span></div><div class="vb-tree-row"><span class="vb-tree-node">关掉【观测归一化】 → 在 LunarLander 上影响巨大</span></div><div class="vb-tree-row"><span class="vb-tree-node">T7：ε 越大 → KL 越大 → 训练越快但越容易崩</span></div><div class="vb-tree-row"><span class="vb-tree-node">⭐ 你会亲眼看到 clip 就是在控制 KL</span></div></div></section>
+<section class="reading-ablation" aria-label="T6 消融实验对照">
+<p><strong>T6：一次关掉一项，和完整版本比较。</strong></p>
+<p>下面是本练习要检查的现象，不是所有种子都必然出现的结果。</p>
+<div class="table-scroll"><div class="tw"><table><thead><tr><th>关闭哪一项</th><th>观察什么</th></tr></thead><tbody>
+<tr><td>优势标准化</td><td>训练是否明显变慢或更不稳定</td></tr>
+<tr><td>梯度裁剪</td><td>是否有种子出现发散</td></tr>
+<tr><td>熵奖励</td><td>是否过早集中于某个动作，分数停滞</td></tr>
+<tr><td>观测归一化</td><td>LunarLander 的训练与最终表现是否明显改变</td></tr>
+</tbody></table></div></div>
+<p><strong>T7：单独扫描 ε。</strong>把 KL、训练速度与稳定性一起记录，检查增大裁剪范围后它们怎样变化。这里比较的是不同设置，不是一条“结构路径”。</p>
+</section>
 <h3 id="_6">✅ 通关标准</h3>
 <ol>
 <li>LunarLander 稳定通关（200+ 分）</li>
@@ -401,32 +411,32 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>RL 论文里"我们的方法提升了 15%"，很可能来自实现细节而不是算法本身。</strong>
 这就是 RL 复现危机的根源。</p>
 </blockquote>
-<hr />
+<hr>
 <h1 id="b-rlhf47">🥇 挑战 B：迷你 RLHF（4–7 天）</h1>
 <p><strong>难度 ★★★★★</strong> ｜ <strong>把第 12、13 章跑通</strong></p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>⚠️ 用【小模型】做（GPT-2 small 或更小），普通 GPU 就能跑</p><p>目标不是效果，是【把流程全跑通并看到那些现象】⭐</p></div></section>
 <h3 id="1sft">阶段 1：SFT（半天）</h3>
-<ul>
-<li>[ ] 找一个小的指令数据集，微调一个小模型</li>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="21"><label class="reading-task-title"><input type="checkbox" data-task-key="21"><span>核对项 21</span></label><div class="reading-task-body">找一个小的指令数据集，微调一个小模型</div></li>
 </ul>
 <h3 id="212">阶段 2：奖励模型（1–2 天）</h3>
-<ul>
-<li>[ ] <strong>T1</strong> 构造偏好数据（可以用规则生成：比如"更长的/更礼貌的算 chosen"）</li>
-<li>[ ] <strong>T2</strong> ⭐ 实现 <strong>Bradley–Terry 损失</strong>训练 RM</li>
-<li>[ ] <strong>T3</strong> 评估 RM 在留出集上的<strong>成对准确率</strong></li>
-<li>[ ] <strong>T4</strong> ⭐ <strong>故意注入长度偏好</strong>，验证 RM 学到了它</li>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="22"><label class="reading-task-title"><input type="checkbox" data-task-key="22"><span>任务 T1</span></label><div class="reading-task-body"> 构造偏好数据（可以用规则生成：比如"更长的/更礼貌的算 chosen"）</div></li>
+<li class="reading-task" data-reading-task="23"><label class="reading-task-title"><input type="checkbox" data-task-key="23"><span>任务 T2</span></label><div class="reading-task-body"> ⭐ 实现 <strong>Bradley–Terry 损失</strong>训练 RM</div></li>
+<li class="reading-task" data-reading-task="24"><label class="reading-task-title"><input type="checkbox" data-task-key="24"><span>任务 T3</span></label><div class="reading-task-body"> 评估 RM 在留出集上的<strong>成对准确率</strong></div></li>
+<li class="reading-task" data-reading-task="25"><label class="reading-task-title"><input type="checkbox" data-task-key="25"><span>任务 T4</span></label><div class="reading-task-body"> ⭐ <strong>故意注入长度偏好</strong>，验证 RM 学到了它</div></li>
 </ul>
 <h3 id="323">阶段 3：对齐（2–3 天）</h3>
-<ul>
-<li>[ ] <strong>T5</strong> 实现 <strong>DPO</strong>（<a href="13-DPO与免RL对齐.html">第 13 章</a>）—— 先做这个，因为它简单</li>
-<li>[ ] <strong>T6</strong> ⭐ <strong>观察"概率下降现象"</strong>：画出 chosen 和 rejected 的绝对对数概率</li>
-<li>[ ] <strong>T7</strong> 实现简化版 <strong>PPO</strong>（策略 + 参考 + RM + Critic）</li>
-<li>[ ] <strong>T8</strong> ⭐ <strong>复现奖励攻击</strong>：把 KL 系数 β 设成 0，看模型怎么退化</li>
-<li>[ ] <strong>T9</strong> ⭐ 画出「奖励分数」和「KL 散度」两条曲线，<strong>找到它们分道扬镳的那个点</strong></li>
-<li>[ ] <strong>T10</strong> 对比 DPO 和 PPO 的最终效果与训练成本</li>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="26"><label class="reading-task-title"><input type="checkbox" data-task-key="26"><span>任务 T5</span></label><div class="reading-task-body"> 实现 <strong>DPO</strong>（<a href="13-DPO%E4%B8%8E%E5%85%8DRL%E5%AF%B9%E9%BD%90.html">第 13 章</a>）—— 先做这个，因为它简单</div></li>
+<li class="reading-task" data-reading-task="27"><label class="reading-task-title"><input type="checkbox" data-task-key="27"><span>任务 T6</span></label><div class="reading-task-body"> ⭐ <strong>观察"概率下降现象"</strong>：画出 chosen 和 rejected 的绝对对数概率</div></li>
+<li class="reading-task" data-reading-task="28"><label class="reading-task-title"><input type="checkbox" data-task-key="28"><span>任务 T7</span></label><div class="reading-task-body"> 实现简化版 <strong>PPO</strong>（策略 + 参考 + RM + Critic）</div></li>
+<li class="reading-task" data-reading-task="29"><label class="reading-task-title"><input type="checkbox" data-task-key="29"><span>任务 T8</span></label><div class="reading-task-body"> ⭐ <strong>复现奖励攻击</strong>：把 KL 系数 β 设成 0，看模型怎么退化</div></li>
+<li class="reading-task" data-reading-task="30"><label class="reading-task-title"><input type="checkbox" data-task-key="30"><span>任务 T9</span></label><div class="reading-task-body"> ⭐ 画出「奖励分数」和「KL 散度」两条曲线，<strong>找到它们分道扬镳的那个点</strong></div></li>
+<li class="reading-task" data-reading-task="31"><label class="reading-task-title"><input type="checkbox" data-task-key="31"><span>任务 T10</span></label><div class="reading-task-body"> 对比 DPO 和 PPO 的最终效果与训练成本</div></li>
 </ul>
 <h3 id="_7">🎯 该看到的现象（这才是项目的产出）</h3>
-<section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">⭐ T4：RM 对更长的回答系统性给高分</span></div><div class="vb-flow-row"><span class="vb-flow-step">你亲手造出了&quot;长度偏好&quot;</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ T6：DPO 训练中，chosen 的绝对概率也在下降</span></div><div class="vb-flow-row"><span class="vb-flow-step">亲眼看到第 13 章说的那个反直觉现象</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ T8（β=0）：模型开始生成</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 极长的重复文本</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 疯狂使用某几个高分短语</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 完全不通顺但 RM 给分很高</span></div><div class="vb-flow-row"><span class="vb-flow-step">这就是奖励攻击 💀</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ T9：奖励分数还在涨，但 KL 已经飙升</span></div><div class="vb-flow-row"><span class="vb-flow-step">这个分叉点就是&quot;该早停了&quot;的信号</span></div><div class="vb-flow-row"><span class="vb-flow-step">理解为什么第 12 章说【要盯 KL 而不是奖励】</span></div></div></section>
+<section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">⭐ T4：RM 对更长的回答系统性给高分</span></div><div class="vb-flow-row"><span class="vb-flow-step">你亲手造出了"长度偏好"</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ T6：DPO 训练中，chosen 的绝对概率也在下降</span></div><div class="vb-flow-row"><span class="vb-flow-step">亲眼看到第 13 章说的那个反直觉现象</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ T8（β=0）：模型开始生成</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 极长的重复文本</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 疯狂使用某几个高分短语</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 完全不通顺但 RM 给分很高</span></div><div class="vb-flow-row"><span class="vb-flow-step">这就是奖励攻击 💀</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ T9：奖励分数还在涨，但 KL 已经飙升</span></div><div class="vb-flow-row"><span class="vb-flow-step">这个分叉点就是"该早停了"的信号</span></div><div class="vb-flow-row"><span class="vb-flow-step">理解为什么第 12 章说【要盯 KL 而不是奖励】</span></div></div></section>
 <h3 id="_8">✅ 通关标准</h3>
 <ol>
 <li>RM 的成对准确率明显高于 50%</li>
@@ -441,7 +451,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 奖励分数上涨看起来很美好，但模型可能正在变成一个专门讨好评分器的东西。
 <strong>这个直觉，看多少篇论文都不如亲手跑一次。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_9">📝 报告模板</h2>
 <div class="codehilite"><pre><span></span><code><span class="gh"># 实验：____</span>
 <span class="gu">## 环境与设定（含种子数量）</span>
@@ -451,7 +461,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="gu">## 我原本以为 ___，实际上 ___</span>
 </code></pre></div>
 
-<hr />
+<hr>
 <!--XREF-->
 <h2 id="_10">🔗 这一章连到哪里</h2>
 <div class="tw"><table>
@@ -463,20 +473,20 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </thead>
 <tbody>
 <tr>
-<td><a href="../模型上线之后/17-版本回溯与可复现.html">上线之后 17</a></td>
+<td><a href="../%E6%A8%A1%E5%9E%8B%E4%B8%8A%E7%BA%BF%E4%B9%8B%E5%90%8E/17-%E7%89%88%E6%9C%AC%E5%9B%9E%E6%BA%AF%E4%B8%8E%E5%8F%AF%E5%A4%8D%E7%8E%B0.html">上线之后 17</a></td>
 <td>⚠️ RL 实验对种子极其敏感，报告要能复现，先看那边的可复现清单</td>
 </tr>
 <tr>
-<td><a href="../Kaggle竞赛方法论/04_超参数调优与工程实践.html">Kaggle 04</a></td>
+<td><a href="../Kaggle%E7%AB%9E%E8%B5%9B%E6%96%B9%E6%B3%95%E8%AE%BA/04_%E8%B6%85%E5%8F%82%E6%95%B0%E8%B0%83%E4%BC%98%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5.html">Kaggle 04</a></td>
 <td>实验记录与调参的工程做法，报告模板可以直接抄</td>
 </tr>
 <tr>
-<td><a href="../推荐算法/20-挑战项目B-信息流模拟器-亲手养出信息茧房.html">推荐算法 20</a></td>
+<td><a href="../%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/20-%E6%8C%91%E6%88%98%E9%A1%B9%E7%9B%AEB-%E4%BF%A1%E6%81%AF%E6%B5%81%E6%A8%A1%E6%8B%9F%E5%99%A8-%E4%BA%B2%E6%89%8B%E5%85%BB%E5%87%BA%E4%BF%A1%E6%81%AF%E8%8C%A7%E6%88%BF.html">推荐算法 20</a></td>
 <td>同构的沙盘项目：也是自己造环境、自己观察策略把环境带偏</td>
 </tr>
 </tbody>
 </table></div>
-<hr />
+<hr>
 <h2 id="_11">✅ 检查点</h2>
 <ol>
 <li>RL 调试的三条铁律是什么？为什么第二条特别重要？</li>
@@ -501,20 +511,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>意味着<strong>模型正在钻奖励模型的漏洞而不是真的变好</strong>——这个分叉点就是"该早停了"的信号，也是第 12 章说"要盯 KL 而不是奖励"的实证。</li>
 </ol>
 </details>
-<hr />
+<hr>
 <h2 id="_12">🛑 完成了？</h2>
-<p>去<a href="附录A-速查.html">附录 A</a> 把公式和超参过一遍，然后回<a href="../index.html">总目录</a>。</p>
-<hr />
+<p>去<a href="%E9%99%84%E5%BD%95A-%E9%80%9F%E6%9F%A5.html">附录 A</a> 把公式和超参过一遍，然后回<a href="../index.html">总目录</a>。</p>
+<hr>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>⭐⭐ <strong>RL 的错误方式和监督学习完全不同：它不会报错，只是学不出来。</strong></p>
-<p><strong>三条调试铁律</strong>：先在最简环境跑通；⭐⭐ <strong>跑多个种子</strong>——<strong>同代码同超参换几个种子，结果可能差好几倍，所以一个种子的结果毫无意义</strong>；画曲线别只看最终分数。</p>
-<p>表格法那个项目的重点是<strong>悬崖行走</strong>：⭐ <strong>一个学出贴着悬崖的最优路径、另一个学出绕远的安全路径</strong>——⭐ <strong>根源是后者把「我会以一定概率乱走」也算进了价值。</strong></p>
-<p>DQN 那个项目 ⭐ <strong>别跳过「先跑故意不加修补的版本看它怎么崩」</strong>，再逐个把稳定化手段加回去。⭐ 灵魂是把<strong>预测值和实际回报画在一张图上</strong>——<strong>亲眼看到系统性高估，以及改进版贴得更紧。</strong></p>
-<p>⭐⭐ <strong>PPO 那个挑战的核心是消融实验</strong>：关掉优势标准化训练变慢、关掉熵奖励早早卡住、关掉梯度裁剪偶尔发散；再扫一遍裁剪参数看散度——<strong>亲眼看到裁剪就是在控制它</strong>。⭐ <strong>做完你会理解：RL 论文里的「提升百分之十几」很可能来自实现细节而不是算法——这就是复现危机的根源。</strong></p>
-<p>⭐ 迷你 RLHF 那个挑战的四个必看现象里，最值钱的是<strong>把惩罚项关掉去复现奖励攻击</strong>（极长的重复文本、疯狂堆高分短语、不通顺但打分很高），以及 ⭐ <strong>把奖励和散度两条曲线画在一起找分叉点</strong>——<strong>奖励还在涨而散度飙升，就是正在钻漏洞</strong>。⭐ <strong>这就是「该盯散度不是盯奖励」的实证。</strong></p>
-<p>⭐ <strong>这个项目真正的价值是让你对「对齐」产生健康的怀疑。</strong> 报告模板里 ⭐ <strong>RL 必须有误差带</strong>，而「失败模式：我看到它怎么崩的」是最有价值的一节。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>先在简单环境跑通，再增加复杂度；运行多个种子，画曲线和误差带。</li><li>表格法比较不同策略的路径；DQN 逐项加入稳定化措施，观察价值估计与实际回报。</li><li>PPO 用消融实验比较实现细节，记录训练速度、稳定性和最终表现。</li><li>迷你 RLHF 同时看奖励、行为变化和散度；报告要留下失败模式，而不只展示最高分。</li></ul></section>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="14-RL在推荐与智能体里.html"><div class="dir">← 上一节</div>🔌 14 · RL 在推荐与智能体里</a><a class="next" href="附录A-速查.html"><div class="dir">下一节 →</div>📇 附录A · 速查</a></nav>
@@ -541,4 +543,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,22 +271,22 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
   <span class="title">16c · 接进真实产品</span>
   <span class="prevnext"><a href="16b-框架这层皮.html">←</a>
-  <a href="17-实战项目.html">→</a></span>
+  <a href="16d-LangGraph实作与运行边界.html">→</a></span>
   <button class="js-done-btn">☐ 打卡</button>
   <button id="themeToggle" title="切换深浅色">🌗</button>
 </div></header>
@@ -855,7 +855,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <blockquote>
 <p>⭐ <strong>能说错话和能做错事，代价差几个量级。</strong>
 说错一句话，你道个歉、改个提示词；转错一笔钱、删掉一张表、发出去一封邮件——<strong>没有撤销键</strong>。
-这就是<a href="15-安全-沙箱与提示注入.html">第 15 章</a>那条铁律在产品层的样子：<strong>确定性的环境层边界才是底线</strong>。输入侧和输出侧都是概率性的，必有漏网；动作侧的 <code>if</code> 不会。</p>
+这就是<a href="15-安全-沙箱与提示注入.html">第 15 章</a>那条铁律在产品层的样子：<strong>确定性的环境层边界才是底线</strong>。输入侧和输出侧都是概率性的，必有漏网；动作侧可以确定性执行既定规则，但规则、可信输入、并发与实现也会出错，必须用负例验证。</p>
 </blockquote>
 <h3 id="_16">护栏在链路里站哪个位置</h3>
 <div class="tw"><table>
@@ -875,7 +875,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <tr>
 <td>首 token 之前</td>
 <td>鉴权、取上下文、输入侧结论汇合</td>
-<td>⭐ 一切<strong>可能失败</strong>的事都必须在这之前做完</td>
+<td>先完成已知的前置校验；流开始后仍可能失败，须有流中错误与清理协议</td>
 </tr>
 <tr>
 <td>流式过程中</td>
@@ -917,7 +917,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 </tr>
 <tr>
 <td>漏出风险</td>
-<td>✅ 零漏出</td>
+<td>避免未经审核即发送；审核器仍可能漏判</td>
 <td>💀 <strong>命中前已经吐出去的收不回来</strong></td>
 </tr>
 <tr>
@@ -929,7 +929,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 </table></div>
 <blockquote>
 <p>⭐ <strong>中间有一个很好用的折中：延迟发送。</strong>
-先在服务端缓冲 100 字符左右再往外吐，用 <strong>0.5 秒左右的 TTFT</strong> 换来一个<strong>永远领先于用户视线的审核窗口</strong>。
+先在服务端缓冲 100 字符左右再往外吐，用 <strong>0.5 秒左右的 TTFT</strong> 换来一个领先于已发送内容的审核窗口，但不能保证检测到所有问题。
 用户几乎感知不到 0.5 秒，但你把「已经漏出去」变成了「还在缓冲区里」。</p>
 </blockquote>
 <h3 id="_18">⚠️ 审核模型本身也会错</h3>
@@ -1039,46 +1039,47 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 </tr>
 </tbody>
 </table></div>
-<p>下面这段把动作侧硬闸和审计留痕合在一起，是最该抄走的一段：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 动作侧护栏：工具调用前的同步硬闸 + 审计留痕（是代码里的 if，不是提示词里的一句话）</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<p>下面的独立脚本演示<strong>执行前检查</strong>：未知工具默认拒绝；订单事实从服务端数据取得；金额使用整数分。<code>user</code> 必须来自服务器认证上下文，不能从模型参数反序列化而来。</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
 
-<span class="n">POLICY</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;2026-08-04.1&quot;</span><span class="p">,</span>          <span class="c1"># ⭐ 规则带版本号，改了才能和历史审计对上</span>
-    <span class="s2">&quot;refund&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;max_amount&quot;</span><span class="p">:</span> <span class="mi">2000</span><span class="p">,</span> <span class="s2">&quot;needs_human_above&quot;</span><span class="p">:</span> <span class="mi">500</span><span class="p">},</span>
-<span class="p">}</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">_deny</span><span class="p">(</span><span class="n">rec</span><span class="p">,</span> <span class="n">audit</span><span class="p">,</span> <span class="n">rule</span><span class="p">,</span> <span class="n">human_msg</span><span class="p">):</span>
-    <span class="n">rec</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;deny&quot;</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">rule</span><span class="p">)</span>          <span class="c1"># ⭐ 拦了什么、按哪条拦的，都要落库</span>
-    <span class="n">audit</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;ok&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;trace_id&quot;</span><span class="p">:</span> <span class="n">rec</span><span class="p">[</span><span class="s2">&quot;trace_id&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;这笔退款我不能直接处理（</span><span class="si">%s</span><span class="s2">）。已转人工，编号 </span><span class="si">%s</span><span class="s2">。&quot;</span>
-                       <span class="o">%</span> <span class="p">(</span><span class="n">human_msg</span><span class="p">,</span> <span class="n">rec</span><span class="p">[</span><span class="s2">&quot;trace_id&quot;</span><span class="p">])}</span>
-
+<span class="n">POLICY</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;2026-09-06.1&quot;</span><span class="p">,</span> <span class="s2">&quot;max_cents&quot;</span><span class="p">:</span> <span class="mi">200000</span><span class="p">,</span> <span class="s2">&quot;approval_above_cents&quot;</span><span class="p">:</span> <span class="mi">50000</span><span class="p">}</span>
+<span class="c1"># 本地假订单；生产中在可信数据库中按租户、订单和用户查询。</span>
+<span class="n">ORDERS</span> <span class="o">=</span> <span class="p">{(</span><span class="s2">&quot;tenant-a&quot;</span><span class="p">,</span> <span class="s2">&quot;o1&quot;</span><span class="p">):</span> <span class="p">{</span><span class="s2">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;alice&quot;</span><span class="p">,</span> <span class="s2">&quot;paid_cents&quot;</span><span class="p">:</span> <span class="mi">100000</span><span class="p">,</span> <span class="s2">&quot;refunded_cents&quot;</span><span class="p">:</span> <span class="mi">10000</span><span class="p">}}</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">gate_tool_call</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">audit</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;在【每一次】工具调用之前同步跑。不能异步，不能采样。&quot;&quot;&quot;</span>
-    <span class="n">rec</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;trace_id&quot;</span><span class="p">:</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="p">[:</span><span class="mi">8</span><span class="p">],</span> <span class="s2">&quot;layer&quot;</span><span class="p">:</span> <span class="s2">&quot;action&quot;</span><span class="p">,</span> <span class="s2">&quot;tool&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
-           <span class="s2">&quot;policy_version&quot;</span><span class="p">:</span> <span class="n">POLICY</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">],</span> <span class="s2">&quot;ts&quot;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">(),</span> <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">user</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]}</span>
-    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;refund&quot;</span><span class="p">:</span>
-        <span class="n">amt</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">amt</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">amt</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span> <span class="ow">or</span> <span class="n">amt</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">_deny</span><span class="p">(</span><span class="n">rec</span><span class="p">,</span> <span class="n">audit</span><span class="p">,</span> <span class="s2">&quot;amount_invalid&quot;</span><span class="p">,</span> <span class="s2">&quot;金额格式不对&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">amt</span> <span class="o">&gt;</span> <span class="n">POLICY</span><span class="p">[</span><span class="s2">&quot;refund&quot;</span><span class="p">][</span><span class="s2">&quot;max_amount&quot;</span><span class="p">]:</span>
-            <span class="k">return</span> <span class="n">_deny</span><span class="p">(</span><span class="n">rec</span><span class="p">,</span> <span class="n">audit</span><span class="p">,</span> <span class="s2">&quot;over_max&quot;</span><span class="p">,</span> <span class="s2">&quot;超出单笔上限&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">amt</span> <span class="o">&gt;</span> <span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;order_paid&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>        <span class="c1"># ⭐ 和事实核对，不只和常量比</span>
-            <span class="k">return</span> <span class="n">_deny</span><span class="p">(</span><span class="n">rec</span><span class="p">,</span> <span class="n">audit</span><span class="p">,</span> <span class="s2">&quot;over_paid&quot;</span><span class="p">,</span> <span class="s2">&quot;退款不能大于订单实付&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">amt</span> <span class="o">&gt;</span> <span class="n">POLICY</span><span class="p">[</span><span class="s2">&quot;refund&quot;</span><span class="p">][</span><span class="s2">&quot;needs_human_above&quot;</span><span class="p">]:</span>
-            <span class="n">rec</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;escalate&quot;</span>
-            <span class="n">audit</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;ok&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;escalate&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;trace_id&quot;</span><span class="p">:</span> <span class="n">rec</span><span class="p">[</span><span class="s2">&quot;trace_id&quot;</span><span class="p">]}</span>
-    <span class="n">rec</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;allow&quot;</span>
-    <span class="n">audit</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;ok&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;trace_id&quot;</span><span class="p">:</span> <span class="n">rec</span><span class="p">[</span><span class="s2">&quot;trace_id&quot;</span><span class="p">]}</span>
+    <span class="n">rec</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;trace_id&quot;</span><span class="p">:</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="p">,</span> <span class="s2">&quot;policy_version&quot;</span><span class="p">:</span> <span class="n">POLICY</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">],</span>
+           <span class="s2">&quot;ts&quot;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">(),</span> <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">),</span> <span class="s2">&quot;tool&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">}</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">finish</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">rule</span><span class="p">):</span>
+        <span class="n">audit</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="o">**</span><span class="n">rec</span><span class="p">,</span> <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="n">action</span><span class="p">,</span> <span class="s2">&quot;rule&quot;</span><span class="p">:</span> <span class="n">rule</span><span class="p">})</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;ok&quot;</span><span class="p">:</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;allow&quot;</span><span class="p">,</span> <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="n">action</span><span class="p">,</span> <span class="s2">&quot;rule&quot;</span><span class="p">:</span> <span class="n">rule</span><span class="p">,</span> <span class="s2">&quot;trace_id&quot;</span><span class="p">:</span> <span class="n">rec</span><span class="p">[</span><span class="s2">&quot;trace_id&quot;</span><span class="p">]}</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;refund&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">finish</span><span class="p">(</span><span class="s2">&quot;deny&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown_tool&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">set</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">!=</span> <span class="p">{</span><span class="s2">&quot;order_id&quot;</span><span class="p">,</span> <span class="s2">&quot;amount_cents&quot;</span><span class="p">}:</span>
+        <span class="k">return</span> <span class="n">finish</span><span class="p">(</span><span class="s2">&quot;deny&quot;</span><span class="p">,</span> <span class="s2">&quot;invalid_arguments&quot;</span><span class="p">)</span>
+    <span class="n">cents</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;amount_cents&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">cents</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">int</span> <span class="ow">or</span> <span class="n">cents</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># 同时拒绝 bool、float、NaN</span>
+        <span class="k">return</span> <span class="n">finish</span><span class="p">(</span><span class="s2">&quot;deny&quot;</span><span class="p">,</span> <span class="s2">&quot;invalid_amount&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s2">&quot;order_id&quot;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">finish</span><span class="p">(</span><span class="s2">&quot;deny&quot;</span><span class="p">,</span> <span class="s2">&quot;invalid_order_id&quot;</span><span class="p">)</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">ORDERS</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">user</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tenant&quot;</span><span class="p">),</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;order_id&quot;</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="n">order</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">order</span><span class="p">[</span><span class="s2">&quot;owner&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">user</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">finish</span><span class="p">(</span><span class="s2">&quot;deny&quot;</span><span class="p">,</span> <span class="s2">&quot;not_authorized&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cents</span> <span class="o">&gt;</span> <span class="nb">min</span><span class="p">(</span><span class="n">POLICY</span><span class="p">[</span><span class="s2">&quot;max_cents&quot;</span><span class="p">],</span> <span class="n">order</span><span class="p">[</span><span class="s2">&quot;paid_cents&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">order</span><span class="p">[</span><span class="s2">&quot;refunded_cents&quot;</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="n">finish</span><span class="p">(</span><span class="s2">&quot;deny&quot;</span><span class="p">,</span> <span class="s2">&quot;insufficient_refundable_balance&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cents</span> <span class="o">&gt;</span> <span class="n">POLICY</span><span class="p">[</span><span class="s2">&quot;approval_above_cents&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">finish</span><span class="p">(</span><span class="s2">&quot;requires_approval&quot;</span><span class="p">,</span> <span class="s2">&quot;human_approval_required&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">finish</span><span class="p">(</span><span class="s2">&quot;allow&quot;</span><span class="p">,</span> <span class="s2">&quot;precheck_passed&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">audit</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">session_user</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;alice&quot;</span><span class="p">,</span> <span class="s2">&quot;tenant&quot;</span><span class="p">:</span> <span class="s2">&quot;tenant-a&quot;</span><span class="p">}</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">gate_tool_call</span><span class="p">(</span><span class="s2">&quot;refund&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;order_id&quot;</span><span class="p">:</span> <span class="s2">&quot;o1&quot;</span><span class="p">,</span> <span class="s2">&quot;amount_cents&quot;</span><span class="p">:</span> <span class="mi">40000</span><span class="p">},</span> <span class="n">session_user</span><span class="p">,</span> <span class="n">audit</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">gate_tool_call</span><span class="p">(</span><span class="s2">&quot;unregistered&quot;</span><span class="p">,</span> <span class="p">{},</span> <span class="n">session_user</span><span class="p">,</span> <span class="n">audit</span><span class="p">))</span>
 </code></pre></div>
 
+<p>第一条是允许进入下一步，第二条是拒绝。<strong><code>allow</code> 不代表已退款，<code>requires_approval</code> 也不代表已经转人工。</strong> 此脚本没有执行退款、创建审批或持久化审计。</p>
+<p>检查与执行之间，订单可能被其他请求修改。正式执行还要在事务中重新核对余额，以条件更新防并发超退，并将幂等记录与本地业务更新一起提交。远程支付不能被本地事务包住：要用下游幂等键、结果查询与对账。可实际重启、重复投递的例子在<a href="12b-持久化审批与故障恢复.html">12b</a>。</p>
 <h3 id="32">💀 事故复盘：审核只在末尾做，有害内容已经吐了 3.2 秒</h3>
 <p>某 C 端问答产品，输出审核放在「<strong>流结束后</strong>」做全文复审，而前端是边收边渲染的。</p>
 <div class="tw"><table>
@@ -1198,7 +1199,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <p><strong>下一节</strong> 👉 <a href="17-实战项目.html">17-实战项目.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
-<nav class="pagenav"><a href="16b-框架这层皮.html"><div class="dir">← 上一节</div>🧅 16b · 框架这层皮</a><a class="next" href="17-实战项目.html"><div class="dir">下一节 →</div>🔨 17 · 实战项目</a></nav>
+<nav class="pagenav"><a href="16b-框架这层皮.html"><div class="dir">← 上一节</div>🧅 16b · 框架这层皮</a><a class="next" href="16d-LangGraph实作与运行边界.html"><div class="dir">下一节 →</div>🔄 16d · LangGraph 实作</a></nav>
 </main>
 <script>(function(){
   var KEY="agent-progress", FILE="16c-\u63a5\u8fdb\u771f\u5b9e\u4ea7\u54c1.md";
@@ -1222,4 +1223,4 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

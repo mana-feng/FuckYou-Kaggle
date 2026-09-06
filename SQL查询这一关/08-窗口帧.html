@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -577,9 +577,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 帧里一行都没有时，<code>SUM</code> 给 <code>NULL</code> 而不是 0 —— 这是 <a href="04-NULL与三值逻辑.html">04 章</a>的老规矩：
 <strong>「没有数据」不等于「数据是零」</strong>。想要 0 就套一层 <code>COALESCE(…, 0)</code>，⭐ 但套之前先想清楚这两件事在你的看板上是不是真的一样。</p>
 <p>⭐ <strong>注意「移动3」那一列的前两行</strong>：<code>03-01</code> 是 120.0（只有它自己），<code>03-02</code> 是 130.0（两行的均值）。
-<strong>帧在分区开头自动缩水到 1 行、2 行</strong>，实测 <code>COUNT</code> 那张表是 <code>1, 2, 3, 3, 3, 3</code>。
-⚠️ 于是头几行的「3 日均值」其实是 1 日、2 日均值 —— 它不报错，但画到趋势图上就是「开头那一段莫名其妙地平」。
-要么在正文里说明，要么加一句 <code>WHERE</code> 把窗不满的行滤掉（拿 <code>COUNT(*) OVER (…) = 3</code> 当条件，⚠️ 记得它得写在 CTE 外面 —— 这是 07 章第六节的规矩）。</p>
+<strong>帧在分区开头自动缩水到 1 行、2 行</strong>，实测 <code>COUNT</code> 那张表是 <code>1, 2, 3, 3, 3, 3</code>。</p>
+<p>⚠️ 于是头几行的「3 日均值」其实是 1 日、2 日均值 —— 它不报错，但画到趋势图上就是「开头那一段莫名其妙地平」。</p>
+<p>要么在正文里说明，要么加一句 <code>WHERE</code> 把窗不满的行滤掉（拿 <code>COUNT(*) OVER (…) = 3</code> 当条件，⚠️ 记得它得写在 CTE 外面 —— 这是 07 章第六节的规矩）。</p>
 <hr />
 <h2 id="range">🕳️ 四、<code>RANGE</code>：数的是值，不是行</h2>
 <p><strong>这一节是全章的正题。</strong></p>
@@ -1215,4 +1215,4 @@ bob    2026-03-04   4.0      3.67       3.67       3
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

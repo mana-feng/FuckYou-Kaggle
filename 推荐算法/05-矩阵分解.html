@@ -186,9 +186,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -450,7 +450,7 @@ $$\min_{P,Q} \sum_{(u,i) \in \mathcal{K}} \left( r_{ui} - \mathbf{p}_u^\top \mat
 <h2 id="_9">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>矩阵分解：给每个用户和物品配一个 k 维向量（Embedding），点积 = 喜欢程度。加偏置项 μ+bu+bi 性价比极高。隐式反馈用 ALS（置信度加权）或 BPR（pairwise，学「正样本分&gt;负样本分」）。核心跃迁：相似度从「数出来」变成「学出来」，从此有了泛化能力。<!--RECAP-EXT-->⭐ <b>ALS 和 BPR 解决的是两种不同的问题</b>：ALS 把隐式反馈当成<b>带置信度的评分</b>（点了 10 次比点 1 次更可信）；BPR 干脆不预测绝对分，只学<b>「正样本分 &gt; 负样本分」</b>这个序关系 —— 而排序场景本来就只关心序。⭐ 偏置项 μ+bu+bi 是性价比最高的一步：它单独就能解释很大一部分方差（有人给分普遍高、有些电影普遍受欢迎），把这部分剥掉之后，向量才去学真正的「口味匹配」。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>矩阵分解为用户和物品学习向量，用匹配关系解释交互。</li><li>偏置项先处理整体打分倾向，向量再学习更细的偏好。</li><li>ALS 的置信度目标与 BPR 的相对排序目标不同，按反馈类型选择并验证。</li></ul></section>
 </blockquote>
 <p><strong>下一节</strong> 👉 <a href="06-工业架构-召回粗排精排重排.html">06-工业架构-召回粗排精排重排.md</a> ⭐ <strong>这是全教程最重要的一节</strong></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
@@ -479,4 +479,5 @@ $$\min_{P,Q} \sum_{(u,i) \in \mathcal{K}} \left( r_{ui} - \mathbf{p}_u^\top \mat
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
+</body></html>

@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -310,19 +310,19 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </details>
 <h1 id="12-ab">12 · A/B 实验：你以为你懂了</h1>
 <p>⏱ <strong>48 分钟</strong> ｜ ⭐ <strong>每一条都有人踩过</strong></p>
-<hr />
+<hr>
 <h2 id="_1">🎯 一句话</h2>
 <p><strong>A/B 实验的原理五分钟能讲完，但把它做对需要避开十几个坑 ——
 而这些坑不会报错，只会给你一个看起来很合理的错误结论。</strong></p>
-<hr />
+<hr>
 <h2 id="_2">🎲 一、先把原理说清（五分钟）</h2>
 <section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">随机把用户分成两组</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">一组用旧的（对照），一组用新的（实验）</span></div><div class="vb-flow-row"><span class="vb-flow-step">因为是【随机】分的，两组在所有方面都可比</span></div><div class="vb-flow-row"><span class="vb-flow-step">观察到的差异只可能来自「你改的那个东西」 ⭐</span></div></div></section>
 <blockquote>
 <p>🔑 <strong>随机化的全部意义</strong>：它让两组在<strong>你知道的和你不知道的</strong>因素上都均衡。
 <strong>「你不知道的」那部分，是任何观察性方法都做不到的</strong>
-—— 这就是为什么 A/B 是因果推断的黄金标准（<a href="13-不能做AB时的因果推断.html">第 13 章</a>会讲没它时怎么办）。</p>
+—— 这就是为什么 A/B 是因果推断的黄金标准（<a href="13-%E4%B8%8D%E8%83%BD%E5%81%9AAB%E6%97%B6%E7%9A%84%E5%9B%A0%E6%9E%9C%E6%8E%A8%E6%96%AD.html">第 13 章</a>会讲没它时怎么办）。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_3">📏 二、坑一：样本量不够就下结论</h2>
 <p><strong>先算需要多少样本，再开始实验。</strong></p>
 <p>$$n \approx \frac{16\,\sigma^2}{\delta^2}\quad(\text{每组，}\alpha=0.05,\ \text{power}=0.8)$$</p>
@@ -411,13 +411,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>这是一个改十行代码就能把实验效率翻倍的方法，却常年被忽略。</strong></p>
 <p>⚠️ <strong>一条铁律</strong>：<code>y_pre</code> <strong>必须取自实验开始之前</strong>。
 用实验期内的数据当协变量 = <strong>把实验效果本身扣掉了</strong>，
-这就是<a href="04-训练推理一致性.html">第 4 章的特征穿越</a>在实验分析里的形态。</p>
+这就是<a href="04-%E8%AE%AD%E7%BB%83%E6%8E%A8%E7%90%86%E4%B8%80%E8%87%B4%E6%80%A7.html">第 4 章的特征穿越</a>在实验分析里的形态。</p>
 <p>⚠️ <strong>样本量不够时会发生什么</strong>：
 你会得到一个<strong>不显著</strong>的结果，然后误以为「新模型没用」——
 但实际可能是<strong>你的实验根本没有能力检测出这个大小的提升</strong>。
 <strong>这叫 power 不足，它造成的损失是"把好东西扔掉"，而且你永远不会知道。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="peeking">👀 三、坑二：偷看（peeking）</h2>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>❌ 错误做法：</p><p>每天看一眼，一旦 p &lt; 0.05 就宣布成功、停止实验</p><p>为什么错：</p><p>p 值本身是波动的。</p><p>即使两组【完全没有差异】，</p><p>连续看 10 次，也有很大概率某一次会 p &lt; 0.05 💀</p></div></section>
 <p>💡 <strong>一个能说服人的数字</strong>：</p>
@@ -450,9 +450,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>「负向可以早停，正向必须等满」</strong> —— 因为早停止损的代价是可接受的，
 而提前宣布成功会系统性地高估效果。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_4">⏱️ 四、坑三：实验时长不够一个周期</h2>
-<section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">⭐ 最少跑满一个完整的【周】—— 而不是&quot;样本量够了就停&quot;</span></div><div class="vb-flow-row"><span class="vb-flow-step">原因：</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 工作日和周末的用户行为完全不同</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 新奇效应（novelty effect）：新东西刚上线时用户会多点几下 ⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">前 2-3 天的数据系统性偏高</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 有些行为周期长（下单、续费）</span></div></div></section>
+<section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">⭐ 最少跑满一个完整的【周】—— 而不是"样本量够了就停"</span></div><div class="vb-flow-row"><span class="vb-flow-step">原因：</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 工作日和周末的用户行为完全不同</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 新奇效应（novelty effect）：新东西刚上线时用户会多点几下 ⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">前 2-3 天的数据系统性偏高</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 有些行为周期长（下单、续费）</span></div></div></section>
 <blockquote>
 <p>⚠️ <strong>新奇效应是最容易骗人的</strong>：
 前三天涨 8%，一周后变成 +2%，一个月后变成 0。
@@ -460,9 +460,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><strong>对策</strong>：<strong>看逐日的效果曲线，而不只是累计值</strong> ——
 如果效果在稳定衰减，那多半是新奇效应。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_5">🧪 五、坑四：多重比较</h2>
-<section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">同时看 20 个指标，每个都用 p&lt;0.05</span></div><div class="vb-flow-row"><span class="vb-flow-step">即使新模型完全没用，</span></div><div class="vb-flow-row"><span class="vb-flow-step">平均也会有 1 个指标&quot;显著&quot; 💀</span></div><div class="vb-flow-row"><span class="vb-flow-step">同理：同时跑 20 个实验组也一样</span></div></div></section>
+<section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">同时看 20 个指标，每个都用 p&lt;0.05</span></div><div class="vb-flow-row"><span class="vb-flow-step">即使新模型完全没用，</span></div><div class="vb-flow-row"><span class="vb-flow-step">平均也会有 1 个指标"显著" 💀</span></div><div class="vb-flow-row"><span class="vb-flow-step">同理：同时跑 20 个实验组也一样</span></div></div></section>
 <p><strong>三个应对</strong>：</p>
 <section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>提前指定【一个】主指标（primary metric）⭐</li><li>其他都是次要指标，只用来看有没有副作用</li><li>多重比较校正（Bonferroni：阈值除以比较次数）</li><li>简单但保守</li><li>分层：主指标决定成败，护栏指标只看有没有明显恶化</li></ol></section>
 <blockquote>
@@ -471,7 +471,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 否则事后从 20 个指标里挑一个涨了的，<strong>在统计上毫无意义</strong>
 （这叫 HARKing —— 先看结果再编假设）。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_6">🕸️ 六、坑五：分流单元错了 / 有干扰</h2>
 <h3 id="_7">分流单元</h3>
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">❌ 按【请求】分流</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">同一用户一会儿新一会儿旧</span></div><div class="vb-flow-row"><span class="vb-flow-step">✅ 按【用户】分流</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">同一用户始终在同一组 ⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 但如果你的效应会在用户之间传播，按用户分也不够</span></div></div></section>
@@ -479,15 +479,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">A/B 的基本假设：一个用户的处理不影响另一个用户的结果</span></div><div class="vb-flow-row"><span class="vb-flow-step">（统计上叫 SUTVA）</span></div><div class="vb-flow-row"><span class="vb-flow-step">什么时候会破：</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 社交产品：实验组用户发了内容，对照组用户也看到了 💀</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 双边市场：实验组司机被多派单</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">对照组司机接不到单 💀</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 共享库存/预算：实验组多花了预算</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">对照组预算少了 💀</span></div></div></section>
 <p><strong>对策</strong>：换分流单元 —— 按城市、按时间片、按社交圈分流（cluster randomization），
 代价是<strong>样本量大幅下降</strong>（有效样本变成"簇"的个数，不是用户数）。</p>
-<hr />
+<hr>
 <h2 id="_8">📊 七、坑六：只看均值</h2>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>总体 +2%，但可能是：</p><p>· 90% 的用户没变化，10% 的重度用户 +20%</p><p>· 或者：新用户 −5%，老用户 +4% ⭐</p><p>⭐ 一定要看【分布】和【分人群】：</p><p>· 分位数（P50 / P90）而不只是均值</p><p>· 按新老、渠道、活跃度分层看</p></div></section>
 <blockquote>
-<p>🔗 分人群看还能避免<a href="14-辛普森悖论与七个陷阱.html">第 14 章</a>那种反转。</p>
+<p>🔗 分人群看还能避免<a href="14-%E8%BE%9B%E6%99%AE%E6%A3%AE%E6%82%96%E8%AE%BA%E4%B8%8E%E4%B8%83%E4%B8%AA%E9%99%B7%E9%98%B1.html">第 14 章</a>那种反转。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_9">📋 八、实验前的检查清单</h2>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>设计</p><p>[ ] 主指标只有一个，且实验前就写下来 ⭐</p><p>[ ] 算过样本量，知道能检测多大的提升</p><p>[ ] 时长 ≥ 一个完整周期（通常 ≥ 1 周）</p><p>[ ] 分流单元正确，且哈希加了实验名的盐（第 3 章）</p><p>[ ] 想过有没有网络效应</p><p>运行</p><p>[ ] 先跑 A/A 验证分流系统本身没问题 ⭐</p><p>[ ] 中途只用于止损，不提前宣布成功</p><p>[ ] 护栏指标（延迟、错误率、核心业务）在看</p><p>分析</p><p>[ ] 报告置信区间，不只报 p 值和均值 ⭐</p><p>[ ] 分人群看过</p><p>[ ] 检查了两组的样本量是否符合预期（SRM 检查）⭐</p></div></section>
+<section class="reading-checklist" aria-label="对照"><p class="visual-block-title">逐项核对</p><div class="vb-compare"><p>设计</p><ul class="reading-task-list"><li class="reading-task" data-reading-task="1"><label class="reading-task-title"><input type="checkbox" data-task-key="1"><span>核对项 1</span></label><div class="reading-task-body"><p>主指标只有一个，且实验前就写下来 ⭐</p></div></li><li class="reading-task" data-reading-task="2"><label class="reading-task-title"><input type="checkbox" data-task-key="2"><span>核对项 2</span></label><div class="reading-task-body"><p>算过样本量，知道能检测多大的提升</p></div></li><li class="reading-task" data-reading-task="3"><label class="reading-task-title"><input type="checkbox" data-task-key="3"><span>核对项 3</span></label><div class="reading-task-body"><p>时长 ≥ 一个完整周期（通常 ≥ 1 周）</p></div></li><li class="reading-task" data-reading-task="4"><label class="reading-task-title"><input type="checkbox" data-task-key="4"><span>核对项 4</span></label><div class="reading-task-body"><p>分流单元正确，且哈希加了实验名的盐（第 3 章）</p></div></li><li class="reading-task" data-reading-task="5"><label class="reading-task-title"><input type="checkbox" data-task-key="5"><span>核对项 5</span></label><div class="reading-task-body"><p>想过有没有网络效应</p><p>运行</p></div></li><li class="reading-task" data-reading-task="6"><label class="reading-task-title"><input type="checkbox" data-task-key="6"><span>核对项 6</span></label><div class="reading-task-body"><p>先跑 A/A 验证分流系统本身没问题 ⭐</p></div></li><li class="reading-task" data-reading-task="7"><label class="reading-task-title"><input type="checkbox" data-task-key="7"><span>核对项 7</span></label><div class="reading-task-body"><p>中途只用于止损，不提前宣布成功</p></div></li><li class="reading-task" data-reading-task="8"><label class="reading-task-title"><input type="checkbox" data-task-key="8"><span>核对项 8</span></label><div class="reading-task-body"><p>护栏指标（延迟、错误率、核心业务）在看</p><p>分析</p></div></li><li class="reading-task" data-reading-task="9"><label class="reading-task-title"><input type="checkbox" data-task-key="9"><span>核对项 9</span></label><div class="reading-task-body"><p>报告置信区间，不只报 p 值和均值 ⭐</p></div></li><li class="reading-task" data-reading-task="10"><label class="reading-task-title"><input type="checkbox" data-task-key="10"><span>核对项 10</span></label><div class="reading-task-body"><p>分人群看过</p></div></li><li class="reading-task" data-reading-task="11"><label class="reading-task-title"><input type="checkbox" data-task-key="11"><span>核对项 11</span></label><div class="reading-task-body"><p>检查了两组的样本量是否符合预期（SRM 检查）⭐</p></div></li></ul></div></section>
 <blockquote>
 <p>⭐ <strong>最后一条 SRM（Sample Ratio Mismatch）值得单独说</strong>：
 如果你设的是 50/50，实际却是 50.4/49.6 ——
@@ -554,8 +554,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>这就是为什么 SRM 被公认为投入产出比最高的一项实验检查。</strong></p>
 </blockquote>
 <p><strong>SRM 出现时的排查顺序</strong>（照抄即可）：</p>
-<section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 分层看：哪个平台/版本/地域 SRM？</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">根因通常就在那一层 ⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 是不是有一组用户【根本没上报日志】（崩溃、白屏、超时）⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 分流哈希是不是没加实验名的盐（和上一个实验相关了，第 3 章）</span></div><div class="vb-flow-row"><span class="vb-flow-step">④ 有没有中途改过分流比例 —— 改比例前后的数据不能合并算</span></div><div class="vb-flow-row"><span class="vb-flow-step">⑤ 过滤条件是不是对两组不对称（例如&quot;只看有曝光的用户&quot;）💀</span></div><div class="vb-flow-row"><span class="vb-flow-step">⑥ 机器人/爬虫流量是不是只被其中一组吸引</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 在修好之前，不要看任何实验结论 —— 包括&quot;看起来很合理&quot;的那些</span></div></div></section>
-<hr />
+<section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 分层看：哪个平台/版本/地域 SRM？</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">根因通常就在那一层 ⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 是不是有一组用户【根本没上报日志】（崩溃、白屏、超时）⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 分流哈希是不是没加实验名的盐（和上一个实验相关了，第 3 章）</span></div><div class="vb-flow-row"><span class="vb-flow-step">④ 有没有中途改过分流比例 —— 改比例前后的数据不能合并算</span></div><div class="vb-flow-row"><span class="vb-flow-step">⑤ 过滤条件是不是对两组不对称（例如"只看有曝光的用户"）💀</span></div><div class="vb-flow-row"><span class="vb-flow-step">⑥ 机器人/爬虫流量是不是只被其中一组吸引</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 在修好之前，不要看任何实验结论 —— 包括"看起来很合理"的那些</span></div></div></section>
+<hr>
 <h2 id="_10">⚠️ 九、一张坑表（每一条都有人踩过）</h2>
 <div class="tw"><table>
 <thead>
@@ -609,7 +609,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <tr>
 <td><strong>多个实验共用同一个哈希</strong></td>
 <td>实验之间相关，效应互相污染</td>
-<td>哈希加<strong>实验名的盐</strong>（<a href="03-灰度影子与回滚.html">第 3 章</a>）</td>
+<td>哈希加<strong>实验名的盐</strong>（<a href="03-%E7%81%B0%E5%BA%A6%E5%BD%B1%E5%AD%90%E4%B8%8E%E5%9B%9E%E6%BB%9A.html">第 3 章</a>）</td>
 </tr>
 <tr>
 <td><strong>只报 p 值不报置信区间</strong></td>
@@ -618,7 +618,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<hr />
+<hr>
 <h2 id="_11">🔗 十、和站内其他章的关系</h2>
 <div class="tw"><table>
 <thead>
@@ -629,32 +629,32 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </thead>
 <tbody>
 <tr>
-<td><a href="../推荐算法/12-评估与AB实验.html">推荐算法 12</a> A/B 基础</td>
+<td><a href="../%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/12-%E8%AF%84%E4%BC%B0%E4%B8%8EAB%E5%AE%9E%E9%AA%8C.html">推荐算法 12</a> A/B 基础</td>
 <td>这里是它的深水区</td>
 </tr>
 <tr>
-<td><a href="03-灰度影子与回滚.html">第 3 章</a>哈希加盐</td>
+<td><a href="03-%E7%81%B0%E5%BA%A6%E5%BD%B1%E5%AD%90%E4%B8%8E%E5%9B%9E%E6%BB%9A.html">第 3 章</a>哈希加盐</td>
 <td>分流单元</td>
 </tr>
 <tr>
-<td><a href="../Kaggle竞赛方法论/22_竞赛元策略.html">Kaggle 22</a> shake-up</td>
+<td><a href="../Kaggle%E7%AB%9E%E8%B5%9B%E6%96%B9%E6%B3%95%E8%AE%BA/22_%E7%AB%9E%E8%B5%9B%E5%85%83%E7%AD%96%E7%95%A5.html">Kaggle 22</a> shake-up</td>
 <td>同样是"小样本上的结论不稳"</td>
 </tr>
 <tr>
-<td><a href="../机器学习的数学原理/09-PAC学习.html">数学原理 09</a></td>
+<td><a href="../%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86/09-PAC%E5%AD%A6%E4%B9%A0.html">数学原理 09</a></td>
 <td>样本量和精度的平方关系同源</td>
 </tr>
 <tr>
-<td><a href="../机器学习的数学原理/08-偏差方差分解.html">数学原理 08</a>方差</td>
+<td><a href="../%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86/08-%E5%81%8F%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%88%86%E8%A7%A3.html">数学原理 08</a>方差</td>
 <td>CUPED 缩的就是它</td>
 </tr>
 <tr>
-<td><a href="../智能体工程教程/14-评测Evals.html">智能体工程 14</a> Evals</td>
+<td><a href="../%E6%99%BA%E8%83%BD%E4%BD%93%E5%B7%A5%E7%A8%8B%E6%95%99%E7%A8%8B/14-%E8%AF%84%E6%B5%8BEvals.html">智能体工程 14</a> Evals</td>
 <td>Agent 场景的同一套实验纪律</td>
 </tr>
 </tbody>
 </table></div>
-<hr />
+<hr>
 <h2 id="_12">✅ 检查点</h2>
 <ol>
 <li>随机化的全部意义是什么？为什么它是黄金标准？</li>
@@ -681,7 +681,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>设 50/50 实际却是 50.4/49.6 —— <strong>大样本下这个偏差统计上不可能</strong>，说明分流系统有 bug。分流都错了，两组就不再可比，所有结论都失去基础。 案例：实验组 1,043,221 / 对照组 1,051,884，差 0.83%，卡方 p ≈ 3×10⁻⁹。链条是：新模型响应多了一个字段 → 某老版本 App（占 4.1%）解析失败崩溃 → 这批用户没产生曝光日志，从实验组分母里消失 → 而消失的恰好是低活跃、CTR 本来就低的人 → +6.2% 全部来自"实验组少了一批 CTR 低的用户"。代价是后续 5 个实验都建立在错误基线上，三个月方向被带偏；而发现它只要一行卡方、10 秒钟。</li>
 </ol>
 </details>
-<hr />
+<hr>
 <h2 id="_13">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
@@ -691,7 +691,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ 实验前该算的是 <strong>MDE 不是样本量</strong>（流量通常是给定的）。MDE 比业务上有意义的提升还大，这个实验就别跑。流量不够时用 <strong>CUPED</strong>：拿实验开始前的同口径指标当协变量，均值不变所以无偏，方差降下来等于缩短实验时长；⚠️ 铁律是 y_pre 只能取实验开始之前。</p>
 <p>💀 那个「CTR +6.2%、p=0.003，全量上线后大盘纹丝不动」的案例：唯一被跳过的检查就是 SRM。某老版本 App 解析崩溃，这批用户从实验组分母里消失，而消失的恰好是 CTR 本来就低的人——<strong>涨幅全部来自「实验组少了一批差用户」</strong>。发现它只要十秒。</p>
 </blockquote>
-<p><strong>下一节</strong> 👉 <a href="13-不能做AB时的因果推断.html">13-不能做AB时的因果推断.md</a> ⭐</p>
+<p><strong>下一节</strong> 👉 <a href="13-%E4%B8%8D%E8%83%BD%E5%81%9AAB%E6%97%B6%E7%9A%84%E5%9B%A0%E6%9E%9C%E6%8E%A8%E6%96%AD.html">13-不能做AB时的因果推断.md</a> ⭐</p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="11-从告警到根因.html"><div class="dir">← 上一节</div>🧰 11 · 从告警到根因</a><a class="next" href="13-不能做AB时的因果推断.html"><div class="dir">下一节 →</div>🔀 13 · 不能做 A/B 时</a></nav>
@@ -718,4 +718,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

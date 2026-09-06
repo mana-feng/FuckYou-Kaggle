@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -303,12 +303,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </details>
 <h1 id="20">20 · 实战与挑战项目</h1>
 <p>⏱ <strong>项目 1–2 天 / 挑战 4–6 天</strong> ｜ ⭐ <strong>这一套必须动手才有用</strong></p>
-<hr />
+<hr>
 <h2 id="_1">🎯 一句话</h2>
 <p><strong>这一套教程的所有内容，都只有在你亲手制造过一次故障之后才会变成直觉。</strong>
 所以这四个项目的产出不是模型，而是 ——
 <strong>你亲手造的一次事故，以及你抓住它的全过程。</strong></p>
-<hr />
+<hr>
 <h2 id="_2">🧰 开工前：造一个能反复实验的沙盘</h2>
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
@@ -365,21 +365,25 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 如果你在预测时对每一天的数据<strong>重新 <code>fit</code> 一次 StandardScaler</strong>，
 <strong>注入的管道故障会被归一化自己抹平</strong>，你什么都看不到 ——
 然后你会以为「监控没用」。
-<strong>这正是<a href="04-训练推理一致性.html">第 4 章</a>那个坑，而它在这里会真实地咬你一口。</strong></p>
+<strong>这正是<a href="04-%E8%AE%AD%E7%BB%83%E6%8E%A8%E7%90%86%E4%B8%80%E8%87%B4%E6%80%A7.html">第 4 章</a>那个坑，而它在这里会真实地咬你一口。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h1 id="1">🥉 项目一：亲手制造并抓住三种故障（1 天）</h1>
 <p>目标：让第 1、4、6 章的三类问题在你眼前发生，并用监控抓住。</p>
-<ul>
-<li>[ ] <strong>T1 (45min)</strong> 用前 60 天训一个模型，在后 60 天上「上线」，画出逐日 AUC</li>
-<li>[ ] <strong>T2 (45min)</strong> <strong>注入管道故障</strong>（<code>break_day=80</code>，income 单位变了）</li>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="1"><label class="reading-task-title"><input type="checkbox" data-task-key="1"><span>任务 T1</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> 用前 60 天训一个模型，在后 60 天上「上线」，画出逐日 AUC</div></li>
+<li class="reading-task" data-reading-task="2"><label class="reading-task-title"><input type="checkbox" data-task-key="2"><span>任务 T2</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> <strong>注入管道故障</strong>（<code>break_day=80</code>，income 单位变了）<ul>
 <li>观察：AUC 掉多少？<strong>预测值分布怎么变？</strong></li>
 <li>⭐ 关键问题：<strong>如果没有标签，你能发现吗？</strong></li>
-<li>[ ] <strong>T3 (45min)</strong> <strong>注入数据漂移</strong>（<code>drift_day=70</code>，人群变年轻）</li>
+</ul>
+</div></li>
+<li class="reading-task" data-reading-task="3"><label class="reading-task-title"><input type="checkbox" data-task-key="3"><span>任务 T3</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> <strong>注入数据漂移</strong>（<code>drift_day=70</code>，人群变年轻）<ul>
 <li>用 PSI 检测，看它在第几天越过 0.25</li>
-<li>[ ] <strong>T4 (60min)</strong> 实现<a href="05-该监控什么.html">第 5 章</a>的 <code>feature_profile</code> + <code>check</code>，
-      让它自动报出上面两次故障</li>
-<li>[ ] <strong>T5 (30min)</strong> 对比：<strong>监控发现的时间 vs 真实标签发现的时间</strong>，差几天？</li>
+</ul>
+</div></li>
+<li class="reading-task" data-reading-task="4"><label class="reading-task-title"><input type="checkbox" data-task-key="4"><span>任务 T4</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 实现<a href="05-%E8%AF%A5%E7%9B%91%E6%8E%A7%E4%BB%80%E4%B9%88.html">第 5 章</a>的 <code>feature_profile</code> + <code>check</code>，
+      让它自动报出上面两次故障</div></li>
+<li class="reading-task" data-reading-task="5"><label class="reading-task-title"><input type="checkbox" data-task-key="5"><span>任务 T5</span></label><p class="reading-task-time">参考用时 · 30 分钟</p><div class="reading-task-body"> 对比：<strong>监控发现的时间 vs 真实标签发现的时间</strong>，差几天？</div></li>
 </ul>
 <h3 id="_3">📏 你该看到的参考数字（差太多说明哪里错了）</h3>
 <div class="tw"><table>
@@ -444,7 +448,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <tbody>
 <tr>
 <td>AUC 从第一天就是 <strong>0.5</strong></td>
-<td>特征列顺序或 dtype 不对（就是<a href="04-训练推理一致性.html">第 4 章</a>那个坑）</td>
+<td>特征列顺序或 dtype 不对（就是<a href="04-%E8%AE%AD%E7%BB%83%E6%8E%A8%E7%90%86%E4%B8%80%E8%87%B4%E6%80%A7.html">第 4 章</a>那个坑）</td>
 </tr>
 <tr>
 <td>AUC 高得离谱（<strong>＞ 0.95</strong>）</td>
@@ -470,17 +474,19 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>💡 <strong>这个项目的价值在 T5</strong>：<strong>你会亲眼看到「有监控」和「等指标掉下来」差了多少天</strong> ——
 那个天数就是监控的全部价值。</p>
 </blockquote>
-<hr />
+<hr>
 <h1 id="1_1">🥈 项目二：训练/推理不一致的七种制造法（1 天）</h1>
-<p>目标：把<a href="04-训练推理一致性.html">第 4 章</a>那七种不一致亲手做出来，看它们各自造成多大损失。</p>
-<ul>
-<li>[ ] <strong>T1 (60min)</strong> 搭一个「离线训练 + 线上推理」的双管道（可以就是两个函数）</li>
-<li>[ ] <strong>T2 (90min)</strong> 逐个注入七种不一致，每种记录：</li>
+<p>目标：把<a href="04-%E8%AE%AD%E7%BB%83%E6%8E%A8%E7%90%86%E4%B8%80%E8%87%B4%E6%80%A7.html">第 4 章</a>那七种不一致亲手做出来，看它们各自造成多大损失。</p>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="6"><label class="reading-task-title"><input type="checkbox" data-task-key="6"><span>任务 T1</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 搭一个「离线训练 + 线上推理」的双管道（可以就是两个函数）</div></li>
+<li class="reading-task" data-reading-task="7"><label class="reading-task-title"><input type="checkbox" data-task-key="7"><span>任务 T2</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> 逐个注入七种不一致，每种记录：<ul>
 <li>AUC 掉了多少</li>
 <li><strong>有没有任何报错</strong> ⭐</li>
 <li>特征分布监控能不能发现</li>
-<li>[ ] <strong>T3 (45min)</strong> 实现<a href="04-训练推理一致性.html">第 4 章</a>的 <code>compare_features</code>，验证它能全抓出来</li>
-<li>[ ] <strong>T4 (30min)</strong> 做一张表：<strong>七种不一致 × 损失大小 × 能否被监控发现</strong></li>
+</ul>
+</div></li>
+<li class="reading-task" data-reading-task="8"><label class="reading-task-title"><input type="checkbox" data-task-key="8"><span>任务 T3</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> 实现<a href="04-%E8%AE%AD%E7%BB%83%E6%8E%A8%E7%90%86%E4%B8%80%E8%87%B4%E6%80%A7.html">第 4 章</a>的 <code>compare_features</code>，验证它能全抓出来</div></li>
+<li class="reading-task" data-reading-task="9"><label class="reading-task-title"><input type="checkbox" data-task-key="9"><span>任务 T4</span></label><p class="reading-task-time">参考用时 · 30 分钟</p><div class="reading-task-body"> 做一张表：<strong>七种不一致 × 损失大小 × 能否被监控发现</strong></div></li>
 </ul>
 <h3 id="_6">📏 该做出来的那张表（附参考数字）</h3>
 <p><strong>基线 AUC 取 0.82。你自己跑出来的数会有出入，但「相对大小」和「能否被发现」应该对得上</strong>：</p>
@@ -540,14 +546,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table></div>
 <blockquote>
 <p>⭐ <strong>这张表的结论</strong>：<strong>七种里只有两三种能被分布监控抓到。</strong>
-所以<a href="04-训练推理一致性.html">第 4 章的逐字段比对</a>不是"更严谨一点"，
+所以<a href="04-%E8%AE%AD%E7%BB%83%E6%8E%A8%E7%90%86%E4%B8%80%E8%87%B4%E6%80%A7.html">第 4 章的逐字段比对</a>不是"更严谨一点"，
 <strong>它是唯一能覆盖另外四五种的手段。</strong></p>
 </blockquote>
 <h3 id="_7">⚠️ 最容易翻车的地方</h3>
-<section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">💀 「七种我都注入了，但 AUC 都没怎么变」</span></div><div class="vb-flow-row"><span class="vb-flow-step">99% 是因为你的&quot;线上推理&quot;和&quot;离线训练&quot;其实是同一段代码，</span></div><div class="vb-flow-row"><span class="vb-flow-step">中间根本没有真正断开。</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 正确的做法：写成【两个互相不 import 的函数】，</span></div><div class="vb-flow-row"><span class="vb-flow-step">故意让它们只通过一个 dict（模拟 JSON 请求）通信 ——</span></div><div class="vb-flow-row"><span class="vb-flow-step">这样才能造出真实的不一致。</span></div></div></section>
-<hr />
+<section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">💀 「七种我都注入了，但 AUC 都没怎么变」</span></div><div class="vb-flow-row"><span class="vb-flow-step">99% 是因为你的"线上推理"和"离线训练"其实是同一段代码，</span></div><div class="vb-flow-row"><span class="vb-flow-step">中间根本没有真正断开。</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 正确的做法：写成【两个互相不 import 的函数】，</span></div><div class="vb-flow-row"><span class="vb-flow-step">故意让它们只通过一个 dict（模拟 JSON 请求）通信 ——</span></div><div class="vb-flow-row"><span class="vb-flow-step">这样才能造出真实的不一致。</span></div></div></section>
+<hr>
 <h1 id="a34">🥇 挑战项目 A：复现辛普森悖论并做对因果（3–4 天）</h1>
-<p><strong>难度 ★★★★</strong> ｜ 练<a href="12-AB实验你以为你懂了.html">第 12–14 章</a></p>
+<p><strong>难度 ★★★★</strong> ｜ 练<a href="12-AB%E5%AE%9E%E9%AA%8C%E4%BD%A0%E4%BB%A5%E4%B8%BA%E4%BD%A0%E6%87%82%E4%BA%86.html">第 12–14 章</a></p>
 <h3 id="_8">🧰 起步骨架（直接抄）</h3>
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
@@ -568,23 +574,25 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <h3 id="_9">阶段一：造出悖论</h3>
-<ul>
-<li>[ ] <strong>T1</strong> 构造一个数据生成过程，使得<strong>新策略在每个子群都更好、总体更差</strong></li>
-<li>[ ] <strong>T2</strong> 复现<a href="14-辛普森悖论与七个陷阱.html">第 14 章</a>那张表的数字（9.50/9.00、2.20/2.00、3.42/7.83）</li>
-<li>[ ] <strong>T3</strong> 用 SRM 检查，验证它能不能预警这种情况</li>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="10"><label class="reading-task-title"><input type="checkbox" data-task-key="10"><span>任务 T1</span></label><div class="reading-task-body"> 构造一个数据生成过程，使得<strong>新策略在每个子群都更好、总体更差</strong></div></li>
+<li class="reading-task" data-reading-task="11"><label class="reading-task-title"><input type="checkbox" data-task-key="11"><span>任务 T2</span></label><div class="reading-task-body"> 复现<a href="14-%E8%BE%9B%E6%99%AE%E6%A3%AE%E6%82%96%E8%AE%BA%E4%B8%8E%E4%B8%83%E4%B8%AA%E9%99%B7%E9%98%B1.html">第 14 章</a>那张表的数字（9.50/9.00、2.20/2.00、3.42/7.83）</div></li>
+<li class="reading-task" data-reading-task="12"><label class="reading-task-title"><input type="checkbox" data-task-key="12"><span>任务 T3</span></label><div class="reading-task-body"> 用 SRM 检查，验证它能不能预警这种情况</div></li>
 </ul>
 <h3 id="_10">阶段二：用四种方法估计真实效应</h3>
-<ul>
-<li>[ ] <strong>T4</strong> 已知真实效应（你自己造的数据，所以知道真值）⭐</li>
-<li>[ ] <strong>T5</strong> 分别用：<strong>朴素比较 / 分层加权 / PSM / DID</strong>，各估一次</li>
-<li>[ ] <strong>T6</strong> 对比每种方法的估计值和真值的偏差</li>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="13"><label class="reading-task-title"><input type="checkbox" data-task-key="13"><span>任务 T4</span></label><div class="reading-task-body"> 已知真实效应（你自己造的数据，所以知道真值）⭐</div></li>
+<li class="reading-task" data-reading-task="14"><label class="reading-task-title"><input type="checkbox" data-task-key="14"><span>任务 T5</span></label><div class="reading-task-body"> 分别用：<strong>朴素比较 / 分层加权 / PSM / DID</strong>，各估一次</div></li>
+<li class="reading-task" data-reading-task="15"><label class="reading-task-title"><input type="checkbox" data-task-key="15"><span>任务 T6</span></label><div class="reading-task-body"> 对比每种方法的估计值和真值的偏差</div></li>
 </ul>
 <h3 id="_11">阶段三：破坏假设，看方法什么时候失效</h3>
-<ul>
-<li>[ ] <strong>T7</strong> 加一个<strong>未观测的混杂变量</strong>（不放进 PSM 的协变量里）</li>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="16"><label class="reading-task-title"><input type="checkbox" data-task-key="16"><span>任务 T7</span></label><div class="reading-task-body"> 加一个<strong>未观测的混杂变量</strong>（不放进 PSM 的协变量里）<ul>
 <li>看 PSM 的估计偏差变多大 ⭐</li>
-<li>[ ] <strong>T8</strong> 破坏 DID 的<strong>平行趋势</strong>假设，看它错多少</li>
-<li>[ ] <strong>T9</strong> 做敏感性分析：<strong>多强的未观测混杂能推翻结论？</strong></li>
+</ul>
+</div></li>
+<li class="reading-task" data-reading-task="17"><label class="reading-task-title"><input type="checkbox" data-task-key="17"><span>任务 T8</span></label><div class="reading-task-body"> 破坏 DID 的<strong>平行趋势</strong>假设，看它错多少</div></li>
+<li class="reading-task" data-reading-task="18"><label class="reading-task-title"><input type="checkbox" data-task-key="18"><span>任务 T9</span></label><div class="reading-task-body"> 做敏感性分析：<strong>多强的未观测混杂能推翻结论？</strong></div></li>
 </ul>
 <h3 id="_12">✅ 通关标准（带数字，可以自己判卷）</h3>
 <div class="tw"><table>
@@ -622,26 +630,30 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <h3 id="_13">⚠️ 最容易翻车的地方</h3>
-<section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">💀 「PSM 加了未观测混杂，偏差却没怎么变」</span></div><div class="vb-flow-row"><span class="vb-flow-step">你的未观测混杂强度不够。</span></div><div class="vb-flow-row"><span class="vb-flow-step">它必须【同时强烈影响 treat 和 y】才会造成偏差 ——</span></div><div class="vb-flow-row"><span class="vb-flow-step">只影响其中一个是不会的 ⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「分层加权算出来和朴素比较一样」</span></div><div class="vb-flow-row"><span class="vb-flow-step">你八成是用【各组自己的样本量】做权重了。</span></div><div class="vb-flow-row"><span class="vb-flow-step">必须用【同一套权重】（通常是总体的人群构成），</span></div><div class="vb-flow-row"><span class="vb-flow-step">这一点第 14 章讲过。</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「样本量 24000 时结果每次都不一样」</span></div><div class="vb-flow-row"><span class="vb-flow-step">正常。⭐ 把 seed 循环 200 次，报【偏差的均值和分布】，</span></div><div class="vb-flow-row"><span class="vb-flow-step">而不是单次结果 —— 这才是&quot;系统性偏差&quot;的正确证明方式</span></div></div></section>
+<section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">💀 「PSM 加了未观测混杂，偏差却没怎么变」</span></div><div class="vb-flow-row"><span class="vb-flow-step">你的未观测混杂强度不够。</span></div><div class="vb-flow-row"><span class="vb-flow-step">它必须【同时强烈影响 treat 和 y】才会造成偏差 ——</span></div><div class="vb-flow-row"><span class="vb-flow-step">只影响其中一个是不会的 ⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「分层加权算出来和朴素比较一样」</span></div><div class="vb-flow-row"><span class="vb-flow-step">你八成是用【各组自己的样本量】做权重了。</span></div><div class="vb-flow-row"><span class="vb-flow-step">必须用【同一套权重】（通常是总体的人群构成），</span></div><div class="vb-flow-row"><span class="vb-flow-step">这一点第 14 章讲过。</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「样本量 24000 时结果每次都不一样」</span></div><div class="vb-flow-row"><span class="vb-flow-step">正常。⭐ 把 seed 循环 200 次，报【偏差的均值和分布】，</span></div><div class="vb-flow-row"><span class="vb-flow-step">而不是单次结果 —— 这才是"系统性偏差"的正确证明方式</span></div></div></section>
 <blockquote>
 <p>🔑 <strong>这个项目的核心价值</strong>：
 <strong>你是唯一知道真值的人</strong> —— 这在真实工作里永远做不到。
 <strong>正是这一点让你能真正看清每种方法在什么时候会骗你。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h1 id="b46">🏆 挑战项目 B：搭一个完整的模型运维沙盘（4–6 天）</h1>
 <p><strong>难度 ★★★★★</strong> ｜ 把整套教程串起来</p>
 <section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>目标：一个能【自动发现问题、定位原因、决定是否重训】的闭环</p></div></section>
-<ul>
-<li>[ ] <strong>T1</strong> 数据流 + 模型服务 + 每日重训任务（用沙盘生成）</li>
-<li>[ ] <strong>T2</strong> 三层监控（<a href="05-该监控什么.html">第 5 章</a>）+ 告警分级（<a href="08-告警为什么没人看.html">第 8 章</a>）</li>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="19"><label class="reading-task-title"><input type="checkbox" data-task-key="19"><span>任务 T1</span></label><div class="reading-task-body"> 数据流 + 模型服务 + 每日重训任务（用沙盘生成）</div></li>
+<li class="reading-task" data-reading-task="20"><label class="reading-task-title"><input type="checkbox" data-task-key="20"><span>任务 T2</span></label><div class="reading-task-body"> 三层监控（<a href="05-%E8%AF%A5%E7%9B%91%E6%8E%A7%E4%BB%80%E4%B9%88.html">第 5 章</a>）+ 告警分级（<a href="08-%E5%91%8A%E8%AD%A6%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B2%A1%E4%BA%BA%E7%9C%8B.html">第 8 章</a>）<ul>
 <li>⭐ 用历史数据<strong>回测告警阈值</strong>，把误报率压到可接受</li>
-<li>[ ] <strong>T3</strong> 随机注入故障：管道坏 / 数据漂移 / 概念漂移 / 特征不一致（随机选、随机时间）</li>
-<li>[ ] <strong>T4</strong> 实现<a href="11-从告警到根因.html">第 11 章</a>的排查流程，尽量自动化：</li>
+</ul>
+</div></li>
+<li class="reading-task" data-reading-task="21"><label class="reading-task-title"><input type="checkbox" data-task-key="21"><span>任务 T3</span></label><div class="reading-task-body"> 随机注入故障：管道坏 / 数据漂移 / 概念漂移 / 特征不一致（随机选、随机时间）</div></li>
+<li class="reading-task" data-reading-task="22"><label class="reading-task-title"><input type="checkbox" data-task-key="22"><span>任务 T4</span></label><div class="reading-task-body"> 实现<a href="11-%E4%BB%8E%E5%91%8A%E8%AD%A6%E5%88%B0%E6%A0%B9%E5%9B%A0.html">第 11 章</a>的排查流程，尽量自动化：<ul>
 <li>自动定位拐点 → 自动拆人群 → 自动做 SHAP 对比</li>
-<li>[ ] <strong>T5</strong> 实现<a href="16-重训练.html">第 16 章</a>的五道闸门，<strong>验证它能挡住「管道坏了还硬训」</strong> ⭐</li>
-<li>[ ] <strong>T6</strong> 记录每次故障的<strong>发现延迟</strong>和定位延迟</li>
-<li>[ ] <strong>T7</strong> 迭代三轮，让这两个数字下降</li>
+</ul>
+</div></li>
+<li class="reading-task" data-reading-task="23"><label class="reading-task-title"><input type="checkbox" data-task-key="23"><span>任务 T5</span></label><div class="reading-task-body"> 实现<a href="16-%E9%87%8D%E8%AE%AD%E7%BB%83.html">第 16 章</a>的五道闸门，<strong>验证它能挡住「管道坏了还硬训」</strong> ⭐</div></li>
+<li class="reading-task" data-reading-task="24"><label class="reading-task-title"><input type="checkbox" data-task-key="24"><span>任务 T6</span></label><div class="reading-task-body"> 记录每次故障的<strong>发现延迟</strong>和定位延迟</div></li>
+<li class="reading-task" data-reading-task="25"><label class="reading-task-title"><input type="checkbox" data-task-key="25"><span>任务 T7</span></label><div class="reading-task-body"> 迭代三轮，让这两个数字下降</div></li>
 </ul>
 <h3 id="_14">✅ 通关标准（带数字）</h3>
 <div class="tw"><table>
@@ -674,25 +686,25 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 <tr>
 <td>文档</td>
-<td>一份完整的模型卡（<a href="19-合规审计与模型卡.html">第 19 章</a>）</td>
+<td>一份完整的模型卡（<a href="19-%E5%90%88%E8%A7%84%E5%AE%A1%E8%AE%A1%E4%B8%8E%E6%A8%A1%E5%9E%8B%E5%8D%A1.html">第 19 章</a>）</td>
 </tr>
 </tbody>
 </table></div>
 <blockquote>
 <p>⭐ <strong>「误报率」那一行是最容易被跳过、也最能拉开差距的一条</strong>：
 一个把所有阈值都调到极敏感的系统，<strong>发现延迟会非常好看</strong> ——
-然后它每天报 20 次警，<strong>三周后就没人看了</strong>（<a href="08-告警为什么没人看.html">第 8 章</a>）。
+然后它每天报 20 次警，<strong>三周后就没人看了</strong>（<a href="08-%E5%91%8A%E8%AD%A6%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B2%A1%E4%BA%BA%E7%9C%8B.html">第 8 章</a>）。
 <strong>这两个指标必须一起报，只报一个等于没做。</strong></p>
 </blockquote>
 <h3 id="_15">⚠️ 最容易翻车的地方</h3>
-<section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">💀 「四种故障我的系统全部报成&#x27;数据漂移&#x27;」</span></div><div class="vb-flow-row"><span class="vb-flow-step">你只用了 PSI 一个信号。</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 区分四种至少需要四路信号：</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 特征分布突变（PSI 一天内跳）</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">管道</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 特征分布缓慢移动</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">数据漂移</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 特征分布没变、但 预测↔标签 关系变了</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">概念漂移</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 训练/推理逐字段比对不通过</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">一致性</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 关键在【突变 vs 缓变】和【输入变了 vs 关系变了】这两个轴</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「回测阈值时误报率永远压不下来」</span></div><div class="vb-flow-row"><span class="vb-flow-step">多半是你在用【绝对阈值】。</span></div><div class="vb-flow-row"><span class="vb-flow-step">改成【相对于同一星期几、同一时段的基线】，误报会大幅下降</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「三轮迭代后发现延迟没降」</span></div><div class="vb-flow-row"><span class="vb-flow-step">检查你每轮到底改了什么。⭐ 有效的改动通常是</span></div><div class="vb-flow-row"><span class="vb-flow-step">&quot;把某个信号从业务层往输入层前移&quot;，而不是&quot;把阈值调低&quot;</span></div></div></section>
+<section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">💀 「四种故障我的系统全部报成'数据漂移'」</span></div><div class="vb-flow-row"><span class="vb-flow-step">你只用了 PSI 一个信号。</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 区分四种至少需要四路信号：</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 特征分布突变（PSI 一天内跳）</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">管道</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 特征分布缓慢移动</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">数据漂移</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 特征分布没变、但 预测↔标签 关系变了</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">概念漂移</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 训练/推理逐字段比对不通过</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">一致性</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 关键在【突变 vs 缓变】和【输入变了 vs 关系变了】这两个轴</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「回测阈值时误报率永远压不下来」</span></div><div class="vb-flow-row"><span class="vb-flow-step">多半是你在用【绝对阈值】。</span></div><div class="vb-flow-row"><span class="vb-flow-step">改成【相对于同一星期几、同一时段的基线】，误报会大幅下降</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「三轮迭代后发现延迟没降」</span></div><div class="vb-flow-row"><span class="vb-flow-step">检查你每轮到底改了什么。⭐ 有效的改动通常是</span></div><div class="vb-flow-row"><span class="vb-flow-step">"把某个信号从业务层往输入层前移"，而不是"把阈值调低"</span></div></div></section>
 <h3 id="_16">🏆 加分</h3>
 <ul>
 <li>加入反馈闭环（模型影响下一批数据），观察不做纠偏时的退化</li>
-<li>实现长期 holdback 组，对比累计效果（<a href="15-长期效应与代理指标.html">第 15 章</a>）</li>
-<li>实现<a href="17-版本回溯与可复现.html">第 17 章的黄金样本自检</a>，并<strong>故意升级一次依赖</strong>验证它能拦住</li>
+<li>实现长期 holdback 组，对比累计效果（<a href="15-%E9%95%BF%E6%9C%9F%E6%95%88%E5%BA%94%E4%B8%8E%E4%BB%A3%E7%90%86%E6%8C%87%E6%A0%87.html">第 15 章</a>）</li>
+<li>实现<a href="17-%E7%89%88%E6%9C%AC%E5%9B%9E%E6%BA%AF%E4%B8%8E%E5%8F%AF%E5%A4%8D%E7%8E%B0.html">第 17 章的黄金样本自检</a>，并<strong>故意升级一次依赖</strong>验证它能拦住</li>
 </ul>
-<hr />
+<hr>
 <h2 id="_17">📝 报告模板</h2>
 <div class="codehilite"><pre><span></span><code><span class="gh"># 事故 / 实验：____</span>
 <span class="gu">## 注入的问题（真值）</span>
@@ -703,7 +715,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="gu">## 改进项：加什么能更早发现  ← 最有价值的一节</span>
 </code></pre></div>
 
-<hr />
+<hr>
 <!--XREF-->
 <h2 id="_18">🔗 这一章连到哪里</h2>
 <div class="tw"><table>
@@ -715,20 +727,20 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </thead>
 <tbody>
 <tr>
-<td><a href="../推荐算法/20-挑战项目B-信息流模拟器-亲手养出信息茧房.html">推荐算法 20</a></td>
+<td><a href="../%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/20-%E6%8C%91%E6%88%98%E9%A1%B9%E7%9B%AEB-%E4%BF%A1%E6%81%AF%E6%B5%81%E6%A8%A1%E6%8B%9F%E5%99%A8-%E4%BA%B2%E6%89%8B%E5%85%BB%E5%87%BA%E4%BF%A1%E6%81%AF%E8%8C%A7%E6%88%BF.html">推荐算法 20</a></td>
 <td>同类沙盘：也是自己造环境，观察模型把环境带偏</td>
 </tr>
 <tr>
-<td><a href="../Kaggle竞赛方法论/25_实战Pipeline模板.html">Kaggle 25</a></td>
+<td><a href="../Kaggle%E7%AB%9E%E8%B5%9B%E6%96%B9%E6%B3%95%E8%AE%BA/25_%E5%AE%9E%E6%88%98Pipeline%E6%A8%A1%E6%9D%BF.html">Kaggle 25</a></td>
 <td>沙盘的骨架可以从那份 Pipeline 模板起步</td>
 </tr>
 <tr>
-<td><a href="../智能体工程教程/19-挑战项目B-评测驱动开发.html">智能体 19</a></td>
+<td><a href="../%E6%99%BA%E8%83%BD%E4%BD%93%E5%B7%A5%E7%A8%8B%E6%95%99%E7%A8%8B/19-%E6%8C%91%E6%88%98%E9%A1%B9%E7%9B%AEB-%E8%AF%84%E6%B5%8B%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91.html">智能体 19</a></td>
 <td>⭐ 「先建评测，再写实现」的同一条纪律，那边有完整的七天切分</td>
 </tr>
 </tbody>
 </table></div>
-<hr />
+<hr>
 <h2 id="_19">✅ 检查点</h2>
 <ol>
 <li>为什么这套教程必须动手？沙盘解决了什么问题？</li>
@@ -755,18 +767,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>至少四路：<strong>特征分布一天内突变</strong>（管道）、特征分布缓慢移动（数据漂移）、特征分布没变但预测↔标签关系变了（概念漂移）、训练/推理逐字段比对不通过（一致性）。两个判别轴是 「突变 vs 缓变」 和 「输入变了 vs 关系变了」。</li>
 </ol>
 </details>
-<hr />
+<hr>
 <h2 id="_20">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>⭐ <strong>这套教程必须动手——监控、排查、归因只有亲手造过一次故障，才会变成直觉。</strong> 沙盘让你几分钟造出真实世界几个月才遇一次的故障。</p>
-<p>项目一最有价值的一步是<strong>对比「监控发现的时间」和「等标签掉下来」差几天</strong>——那个天数就是监控的全部价值。项目二是亲手做出七种训练/推理不一致，然后做一张「损失 × 能否被监控发现」的表。</p>
-<p>⭐ <strong>那张表的真正结论：七种不一致里，分布监控只抓得到两三种。</strong> 特征顺序错位会让 AUC 掉到接近瞎猜却零报错，类别静默映射连分布监控都发现不了——<strong>因为每列的分布真的没变</strong>。所以逐字段比对不是「更严谨一点」，是唯一能覆盖其余的手段。</p>
-<p>⭐ 挑战 A 的核心价值是<strong>你是唯一知道真值的人</strong>（真实工作里永远做不到），所以能看清每种因果方法什么时候会骗你。挑战 B 最难的通关标准是<strong>系统能自动区分故障类型，而不只是报「有问题」</strong>，关键判别轴是「突变还是缓变」「输入变了还是关系变了」。</p>
-<p>💀 最容易翻车的一件事：<strong>预测时重新 fit 归一化器 → 你注入的故障被自己抹平了，然后你以为「监控没用」</strong>（这就是第 4 章那个坑）。其次是七种不一致都注入了 AUC 却不变——那说明你的「线上」和「离线」其实是同一段代码。</p>
-<p>⭐ 挑战 B 必须<strong>同时报「发现延迟」和「误报率」</strong>：只报延迟的话，把阈值调到极敏感就能拿满分，然后三周后没人看告警了。</p>
-</blockquote>
-<p><strong>下一节</strong> 👉 <a href="附录A-速查.html">附录A-速查.md</a></p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>在沙盘中注入已知故障，保存真值、告警时间与排查过程。</li><li>对比监控提前发现了多久；训练与推理不一致还要逐字段核对，不能只看分布。</li><li>因果实验写明方法假设与失效情形，不能仅凭漂亮结果判断归因正确。</li><li>故障分类同时观察突变或缓变、输入变化或关系变化；一起报告发现延迟与误报率。</li></ul></section>
+
+<p><strong>下一节</strong> 👉 <a href="%E9%99%84%E5%BD%95A-%E9%80%9F%E6%9F%A5.html">附录A-速查.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="19-合规审计与模型卡.html"><div class="dir">← 上一节</div>📋 19 · 合规、审计与模型卡</a><a class="next" href="附录A-速查.html"><div class="dir">下一节 →</div>📇 附录A · 速查</a></nav>
@@ -793,4 +799,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script></body></html>
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>12b · 人批了、进程断了：动作到底做没做 · 智能体工程教程</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">12b · 审批与故障恢复</span>
+  <span class="prevnext"><a href="12-Harness-长时任务的骨架.html">←</a>
+  <a href="13-多Agent协作.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">🔬 先跑一次“工单已创建，但响应丢了”</a></li>
+<li><a href="#_3">一、审批绑定的是哪一个动作</a></li>
+<li><a href="#tryexcept">二、幂等不是一个 try/except</a></li>
+<li><a href="#_4">三、故障注入怎样算验收</a></li>
+<li><a href="#_5">四、恢复状态不等于恢复授权</a></li>
+<li><a href="#_6">✅ 检查点</a></li>
+<li><a href="#_7">🔗 接下来去哪</a></li>
+</ul>
+</div>
+</details>
+<h1 id="12b">12b · 人批了、进程断了：动作到底做没做</h1>
+<p>⏱ <strong>按故障实践</strong> ｜ 将 Harness 的状态变成可恢复记录</p>
+<h2 id="_1">🎯 一句话</h2>
+<p><strong>超时代表结果未知，不能直接等同于执行失败。</strong> 创建工单、退款、发消息这样的动作，恢复前先确认外部状态。</p>
+<p>🔗 先读<a href="12-Harness-长时任务的骨架.html">Harness</a>。共同项目的 <a href="../examples/knowledge-assistant/workflow.py">workflow.py</a> 把草稿、独立审批、执行与对账放进可检查的状态机；<a href="../examples/knowledge-assistant/test_core.py">测试</a>实际注入提交前后故障。环境见<a href="17b-企业知识助手交付项目.html">17b</a>。</p>
+<h2 id="_2">🔬 先跑一次“工单已创建，但响应丢了”</h2>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>examples/knowledge-assistant/lab.py<span class="w"> </span>demo
+python<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w"> </span>discover<span class="w"> </span>-s<span class="w"> </span>examples/knowledge-assistant<span class="w"> </span>-p<span class="w"> </span>test_core.py<span class="w"> </span>-v
+</code></pre></div>
+
+<p>观察 demo 的恢复结果与工单数量。它先写入模拟外部系统，再故意抛出响应丢失异常；重试按同一业务操作号查询已有工单，最终只有一张。模拟外部系统是一张<strong>使用独立事务</strong>的表，方便复现“业务副作用与本地确认不能原子提交”的间隙；它不等于已联调真实工单 SaaS。</p>
+<h2 id="_3">一、审批绑定的是哪一个动作</h2>
+<figure class="dia"><svg viewBox="0 0 730 300" role="img" aria-label="草稿经审批后执行，执行响应未知时先对账，取消与过期阻止新执行"><rect x="15" y="35" width="145" height="70" rx="10" fill="var(--card)" stroke="var(--border)"/><text x="87" y="64" text-anchor="middle" fill="var(--fg)" font-size="16">待审批草稿</text><text x="87" y="87" text-anchor="middle" fill="var(--muted)" font-size="13">身份、内容指纹</text><rect x="205" y="35" width="145" height="70" rx="10" fill="var(--card)" stroke="var(--border)"/><text x="277" y="64" text-anchor="middle" fill="var(--fg)" font-size="16">已审批</text><text x="277" y="87" text-anchor="middle" fill="var(--muted)" font-size="13">操作者、到期时间</text><rect x="395" y="35" width="145" height="70" rx="10" fill="var(--card)" stroke="var(--border)"/><text x="467" y="64" text-anchor="middle" fill="var(--fg)" font-size="16">执行中</text><text x="467" y="87" text-anchor="middle" fill="var(--muted)" font-size="13">稳定操作号</text><rect x="585" y="35" width="130" height="70" rx="10" fill="var(--accent-soft)" stroke="var(--accent)"/><text x="650" y="75" text-anchor="middle" fill="var(--fg)" font-size="16">已完成</text><path d="M160 70H195 M350 70H385 M540 70H575" fill="none" stroke="var(--accent)" stroke-width="2"/><polygon points="201,70 191,64 191,76" fill="var(--accent)"/><polygon points="391,70 381,64 381,76" fill="var(--accent)"/><polygon points="581,70 571,64 571,76" fill="var(--accent)"/><rect x="45" y="205" width="270" height="65" rx="10" fill="var(--card)" stroke="var(--border)"/><text x="180" y="233" text-anchor="middle" fill="var(--fg)" font-size="15">取消 / 审批过期</text><text x="180" y="255" text-anchor="middle" fill="var(--muted)" font-size="13">不得发起新的业务动作</text><path d="M85 110V190 M275 110V190" fill="none" stroke="var(--muted)" stroke-width="2"/><polygon points="85,200 79,188 91,188" fill="var(--muted)"/><polygon points="275,200 269,188 281,188" fill="var(--muted)"/><rect x="395" y="205" width="290" height="65" rx="10" fill="var(--card)" stroke="var(--border)"/><text x="540" y="233" text-anchor="middle" fill="var(--fg)" font-size="15">响应未知：按操作号对账</text><text x="540" y="255" text-anchor="middle" fill="var(--muted)" font-size="13">已有结果则确认，未执行才判断重试</text><path d="M465 110V190 M650 200V120" fill="none" stroke="var(--muted)" stroke-width="2"/><polygon points="465,200 459,188 471,188" fill="var(--muted)"/><polygon points="650,110 644,122 656,122" fill="var(--muted)"/><text x="482" y="162" fill="var(--muted)" font-size="13">先查，不盲重发</text></svg><figcaption>看右下角的恢复分支：未知状态先查询已有结果；审批过期会阻止新动作，但不应阻止查清已完成的动作。</figcaption></figure>
+
+<div class="tw"><table>
+<thead>
+<tr>
+<th>审批记录</th>
+<th>为什么绑定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tenant、请求人、业务对象</td>
+<td>防止另一用户拿着 run_id 执行</td>
+</tr>
+<tr>
+<td>动作类型与规范化参数指纹</td>
+<td>防止批准 50 元后改成 5000 元</td>
+</tr>
+<tr>
+<td>审批人身份与 scope</td>
+<td>模型不能自己返回一个 approved 就获权</td>
+</tr>
+<tr>
+<td>到期时间、状态</td>
+<td>旧审批不能无限期重复使用</td>
+</tr>
+<tr>
+<td>稳定业务操作号</td>
+<td>网络重试仍代表同一笔业务动作</td>
+</tr>
+</tbody>
+</table></div>
+<p>金额用整数分表示，拒绝 bool、NaN、无穷大及非法范围。订单归属、已支付金额、已退款余额从业务库读取，不能相信模型参数。这个原则同样适用于草稿工单的归属与内容。</p>
+<h2 id="tryexcept">二、幂等不是一个 try/except</h2>
+<p>本地先持久化执行意图，调用方使用稳定操作号；模拟下游以唯一约束保证同操作只创建一条记录。相同操作号与相同内容可以回放，不同内容必须冲突。测试同时发起 12 次相同执行，检查只有一张工单。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>下游能力</th>
+<th>恢复策略</th>
+<th>不能声称的保证</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>支持幂等键与结果查询</td>
+<td>同键重发或先查询</td>
+<td>幂等键超过保存期后仍永远去重</td>
+</tr>
+<tr>
+<td>只支持业务号查询</td>
+<td>先查，未知转对账或人工</td>
+<td>查询暂未可见就一定没执行</td>
+</tr>
+<tr>
+<td>既不支持幂等也无法查询</td>
+<td>限制自动重试，人工核对</td>
+<td>仅靠本地锁就能端到端 exactly-once</td>
+</tr>
+</tbody>
+</table></div>
+<p>跨系统无法用本地 SQLite 事务包住真实网络副作用。生产可用 outbox 可靠投递意图，用 inbox/下游唯一键去重，再靠状态查询收敛；这仍要求明确下游语义。网络断开、进程退出和超时都是“未知”的来源。</p>
+<h2 id="_4">三、故障注入怎样算验收</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>注入点</th>
+<th>必须观察的结果</th>
+<th>本项目状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>未批准直接执行</td>
+<td>拒绝，工单数为零</td>
+<td>已有自动测试</td>
+</tr>
+<tr>
+<td>模型冒充审批者</td>
+<td>缺审批 scope，拒绝</td>
+<td>已有自动测试</td>
+</tr>
+<tr>
+<td>审批后修改参数</td>
+<td>指纹不符，拒绝</td>
+<td>已有自动测试</td>
+</tr>
+<tr>
+<td>批准过期且未执行</td>
+<td>不再创建工单</td>
+<td>已有自动测试</td>
+</tr>
+<tr>
+<td>写执行意图后、调用前失败</td>
+<td>可用原操作号恢复</td>
+<td>已有自动测试</td>
+</tr>
+<tr>
+<td>下游创建后响应丢失</td>
+<td>查出已有工单，无重复</td>
+<td>已有自动测试</td>
+</tr>
+<tr>
+<td>响应丢失后审批过期</td>
+<td>可对账已有结果，不能发起新动作</td>
+<td>已有自动测试</td>
+</tr>
+<tr>
+<td>执行前用户取消</td>
+<td>后续调用拒绝</td>
+<td>已有自动测试</td>
+</tr>
+<tr>
+<td>执行中用户取消</td>
+<td>返回需对账，不能承诺撤销</td>
+<td>代码返回明确状态；真实下游补撤销协议</td>
+</tr>
+</tbody>
+</table></div>
+<p>网络错误只对允许重试的动作采用退避与抖动，遵守 Retry-After 和总预算。权限错误、参数错误、审批失效不应自动重试。对长任务增加租约、心跳和所有权 fencing，避免旧 worker 恢复后与新 worker 同时写；当前单机示例未实现分布式调度。</p>
+<h2 id="_5">四、恢复状态不等于恢复授权</h2>
+<p>恢复时重新读取可信用户身份和业务权限。历史 checkpoint 里保存过角色或 token，不意味着它现在仍有效。不要把原始 bearer token 写入持久化状态；必要凭证从秘密管理系统重新获取，日志只记安全的凭证标识。</p>
+<p>审计最少记录 run_id、操作号、状态前后、请求人、审批人、内容指纹、时间、错误类型和下游对象号。记录事实，不记录模型“我已经完成”的自述。按数据保留规则清理正文；删除业务内容与保留必要审计要分别设计。</p>
+<blockquote>
+<p>🛑 <strong>现在可以停</strong>：能用故障注入解释动作发生了几次，再去接框架的恢复 API。</p>
+</blockquote>
+<h2 id="_6">✅ 检查点</h2>
+<ol>
+<li>超时后为什么不能换一个操作号直接重试？</li>
+<li>为什么 checkpoint 中有 approved=true 仍不能执行？</li>
+<li>审批已经过期，是否应该拒绝查询丢失的执行结果？</li>
+</ol>
+<details>
+<summary>展开答案</summary>
+<ol>
+<li>下游可能已经成功；新号会被视为另一笔动作，产生重复副作用。</li>
+<li>还需要当前身份、资源权限、动作指纹和有效的服务端审批记录。</li>
+<li>不应拒绝对账已有动作；但未发生的动作必须重新满足审批条件。</li>
+</ol>
+</details>
+<div class="reading-recap"><strong>⚡ 走神救援</strong><p>审批绑定内容与身份；操作号跨重试保持稳定；未知先对账；checkpoint 不能代替当前授权。</p></div>
+
+<h2 id="_7">🔗 接下来去哪</h2>
+<p>➡️ 下一站：<a href="16d-LangGraph实作与运行边界.html">16d · LangGraph 实作与运行边界</a>。</p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="12-Harness-长时任务的骨架.html"><div class="dir">← 上一节</div>🏗️ 12 · Harness 骨架</a><a class="next" href="13-多Agent协作.html"><div class="dir">下一节 →</div>👥 13 · 多 Agent 协作</a></nav>
+</main>
+<script>(function(){
+  var KEY="agent-progress", FILE="12b-\u6301\u4e45\u5316\u5ba1\u6279\u4e0e\u6545\u969c\u6062\u590d.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
