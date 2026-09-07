@@ -349,7 +349,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 和上一章依赖注入同类，只是那层管<strong>进来的边界</strong>，这层管<strong>出去的边界</strong>。</p>
 </blockquote>
 <p><strong>地基是两样东西：一个你自己的返回结构，一个假客户端。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># llm.py —— 调用层的地基：统一返回结构 + 假客户端</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># llm.py —— 调用层的地基：统一返回结构 + 假客户端</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
@@ -426,7 +426,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 想更早识别「真卡住」，靠的<strong>不是把超时调小，而是让静默期里有字节在流动</strong>——上游若在静默期发保活帧，那些字节同样会刷新读取超时；你自己往前端发的 <code>ping</code> 注释帧（05 章）就是同一招的下游版本。</p>
 </blockquote>
 <p>💀 <strong>不设超时的下场</strong>：连接永远挂着不释放，进程里的连接数只增不减。症状是「<strong>服务跑几天越来越慢，重启一下就好</strong>」——⚠️ 这个症状太温和，通常拖很久才有人去查。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🗓️ 未实跑 —— 需要 httpx 和真实网络。要看的是【形状】：两个数分开设。</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🗓️ 未实跑 —— 需要 httpx 和真实网络。要看的是【形状】：两个数分开设。</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
 
 <span class="c1"># ⚠️ read 这个数按【最长的一次合法静默】定，不是拍脑袋：流式 + 工具调用时它可能是几十秒</span>
@@ -465,7 +465,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table></div>
 <p>⚠️ <strong>必须写成白名单</strong>：<code>except Exception: retry</code> 会把「prompt 超长」这种确定性错误也重试三遍，让本该 0.2 秒返回的 400 变成 8 秒——<strong>而且日志里看起来像上游在抖</strong>。</p>
 <p>⚠️ <strong>白名单漏一类，症状同样安静</strong>：比如漏了 <strong>5xx</strong>，上游一次瞬时故障就直接变成用户看见的报错，而日志里只有一次失败，看不出「它本该重试一次就好」。所以白名单要对着上面那张表逐行写，别凭记忆敲。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># retry.py —— 哪些错该重试、退避怎么算（可直接跑，看得见退避序列）</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># retry.py —— 哪些错该重试、退避怎么算（可直接跑，看得见退避序列）</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
@@ -559,7 +559,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<div class="codehilite"><pre><span></span><code><span class="c1"># cost.py —— 每次调用都记 token 和钱。⚠️ 单价是【占位数字】，用前去官方价格页抄一遍</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># cost.py —— 每次调用都记 token 和钱。⚠️ 单价是【占位数字】，用前去官方价格页抄一遍</span>
 <span class="n">PRICES</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;small&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;in&quot;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s2">&quot;out&quot;</span><span class="p">:</span> <span class="mf">8.0</span><span class="p">},</span>          <span class="c1"># 🗓️ 元 / 百万 token</span>
           <span class="s2">&quot;big&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;in&quot;</span><span class="p">:</span> <span class="mf">20.0</span><span class="p">,</span> <span class="s2">&quot;out&quot;</span><span class="p">:</span> <span class="mf">60.0</span><span class="p">}}</span>
 
@@ -614,7 +614,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<div class="codehilite"><pre><span></span><code><span class="c1"># cache.py —— 什么能缓存、key 里必须放什么（可直接跑）</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># cache.py —— 什么能缓存、key 里必须放什么（可直接跑）</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
@@ -775,4 +775,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

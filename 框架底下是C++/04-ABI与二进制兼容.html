@@ -374,7 +374,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="c">🧩 二、C++ 的函数名，不是你写的那个</h2>
 <p>要理解 ① 得先知道一件事：<strong>你写的函数名不会原样出现在编译产物里。</strong></p>
 <p>C++ 允许重载 —— 同名不同参的函数可以有好几个。但链接器只认名字，不认参数。所以编译器会<strong>把参数类型、命名空间、是不是 const 全部编码进名字里</strong>，这个过程叫 <strong>name mangling（名字修饰）</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// c04_names.cpp</span>
+<div class="codehilite" data-code-language="cpp"><pre><span></span><code><span class="c1">// c04_names.cpp</span>
 <span class="c1">// g++ -O2 -std=c++17 -c c04_names.cpp -o c04_names.o</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;vector&gt;</span>
@@ -421,7 +421,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 <h3 id="ctypes">🚦 用 <code>ctypes</code> 亲眼看一次</h3>
 <p>把这两种函数编进一个动态库，然后从 Python 按名字去找：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># c04_findsym.py</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># c04_findsym.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">ctypes</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
 
 <span class="n">lib</span> <span class="o">=</span> <span class="n">ctypes</span><span class="o">.</span><span class="n">CDLL</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;c04lib.dll&#39;</span><span class="p">))</span>     <span class="c1"># Linux/macOS 换成 ./c04lib.so</span>
@@ -436,7 +436,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>对应的库这么编：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// c04_lib.cpp</span>
+<div class="codehilite" data-code-language="cpp"><pre><span></span><code><span class="c1">// c04_lib.cpp</span>
 <span class="c1">// g++ -O2 -std=c++17 -shared -static c04_lib.cpp -o c04lib.dll</span>
 <span class="kt">int</span><span class="w"> </span><span class="nf">add_cpp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w">            </span><span class="c1">// C++ 名字会被修饰</span>
 <span class="k">extern</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">add_c</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w">   </span><span class="c1">// ⭐ 保持原名</span>
@@ -490,7 +490,7 @@ mylib::helper(mylib::Engine const&amp;, double)
 <h2 id="_3">🧩 四、第一道关：符号对不上</h2>
 <p>最经典的一次 ABI 断裂，是 GCC 5 改了 <code>std::string</code> 的内部结构。为了让老程序还能用，libstdc++ 同时保留了两套实现，用宏 <code>_GLIBCXX_USE_CXX11_ABI</code> 切换。</p>
 <p>同一份源码，只改这一个宏，看符号名会怎样：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// c04_abi.cpp</span>
+<div class="codehilite" data-code-language="cpp"><pre><span></span><code><span class="c1">// c04_abi.cpp</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string&gt;</span>
 <span class="kt">int</span><span class="w"> </span><span class="nf">consume</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">);</span>
 <span class="kt">int</span><span class="w"> </span><span class="nf">consume</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
@@ -507,7 +507,7 @@ consume(std::string const&amp;)
 <p>⭐ <strong>这就是 <code>undefined symbol</code> 家族的真面目</strong>：不是「函数没实现」，是<strong>两边对同一个函数名的编码方式不一致</strong>。你去源码里找，函数明明白白写在那儿。</p>
 <p>⚠️ <strong>看到 <code>std::__cxx11</code> 出现在报错里，基本可以确定是这个宏对不上。</strong></p>
 <p>📋 <strong>这件事在 PyTorch 生态里的具体形态</strong>：预编译的 <code>libtorch</code> 是用某一套设定编的，你的扩展必须用<strong>同一套</strong>。本机装的 torch 报告的是：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># c04_torch_abi.py</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># c04_torch_abi.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;torch          =&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;_GLIBCXX_USE_CXX11_ABI =&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">_C</span><span class="o">.</span><span class="n">_GLIBCXX_USE_CXX11_ABI</span><span class="p">)</span>
@@ -541,7 +541,7 @@ _GLIBCXX_USE_CXX11_ABI = True
 <p>⭐ <strong><code>ldd</code> 的正确读法</strong>：你要找的<strong>不是</strong>列出来的那些，是没被列出来的那一行 —— 在 Linux 上缺失的依赖会显示成 <code>=&gt; not found</code>。那一行就是你要装的东西。</p>
 <h3 id="a-a">🚦 ⚠️ 报错指着 A，缺的其实是 A 的依赖</h3>
 <p>这是这道关最误导人的地方。实跑三种情况：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># c04_load.py</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># c04_load.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">ctypes</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
 <span class="n">p</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s1">&#39;c04dyn.dll&#39;</span><span class="p">)</span>
 
@@ -598,7 +598,7 @@ _GLIBCXX_USE_CXX11_ABI = True
 <h2 id="_5">🧩 六、💀 第三道关：什么都不报，数据是错的</h2>
 <p>前两道关至少会告诉你出事了。这一道不会。</p>
 <p>场景很常见：<strong>库升级了，加了个字段；而你这边还在用旧头文件编译。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// lib_v2.cpp —— 「库」这一侧（新版：中间插了一个字段）</span>
+<div class="codehilite" data-code-language="cpp"><pre><span></span><code><span class="c1">// lib_v2.cpp —— 「库」这一侧（新版：中间插了一个字段）</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstdio&gt;</span>
 <span class="k">struct</span><span class="w"> </span><span class="nc">Config</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kt">int</span><span class="w">       </span><span class="n">version</span><span class="p">;</span>
@@ -611,7 +611,7 @@ _GLIBCXX_USE_CXX11_ABI = True
 <span class="p">}</span>
 </code></pre></div>
 
-<div class="codehilite"><pre><span></span><code><span class="c1">// app_v1.cpp —— 「调用方」这一侧（还在用旧头文件）</span>
+<div class="codehilite" data-code-language="cpp"><pre><span></span><code><span class="c1">// app_v1.cpp —— 「调用方」这一侧（还在用旧头文件）</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstdio&gt;</span>
 <span class="k">struct</span><span class="w"> </span><span class="nc">Config</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kt">int</span><span class="w">       </span><span class="n">version</span><span class="p">;</span>
@@ -667,7 +667,7 @@ _GLIBCXX_USE_CXX11_ABI = True
 <h2 id="wheel-manylinux">🧩 七、于是有了 wheel 标签和 manylinux</h2>
 <p>上面三道关合起来说明一件事：<strong>一个编译好的二进制，不是「哪都能跑」的。</strong> 那 pip 装轮子的时候是怎么知道该给你哪一个的？</p>
 <p>答案是<strong>文件名里写着</strong>。本机的规则可以直接问出来：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># c04_tags.py</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># c04_tags.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sysconfig</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;EXT_SUFFIX =&quot;</span><span class="p">,</span> <span class="n">sysconfig</span><span class="o">.</span><span class="n">get_config_var</span><span class="p">(</span><span class="s1">&#39;EXT_SUFFIX&#39;</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SOABI      =&quot;</span><span class="p">,</span> <span class="n">sysconfig</span><span class="o">.</span><span class="n">get_config_var</span><span class="p">(</span><span class="s1">&#39;SOABI&#39;</span><span class="p">))</span>
@@ -901,4 +901,4 @@ _GLIBCXX_USE_CXX11_ABI = True
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

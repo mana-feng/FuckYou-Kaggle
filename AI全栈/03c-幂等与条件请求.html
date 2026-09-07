@@ -442,7 +442,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <p>所以要把第一次的<strong>状态码和响应体</strong>存下来原样重放，并让客户端能分辨这是重放（🗓️ 头的名字各家不统一）。⚠️ 代价是存储，以及响应体里可能有用户原话，<strong>留存期要和<a href="../数据这一关/19-隐私脱敏与留存.html">《数据这一关》19 章</a>对齐</strong>。⚠️ 流式重放不了：<a href="05-流式输出.html">05 章</a>讲过状态码在第一帧发出时就定死成 200，SSE 边生成边发，你手上没有一份「完整响应」可存 —— ⭐ 务实的形状是把花钱的那一步和流分开：先用一个带幂等键的普通 POST 创建 / 预扣，拿到 id 再去开流。</p>
 <p>⭐ <strong>键必须限定在租户内。</strong> 这是重放机制自己带来的安全洞：既然「拿着键就能拿到那次响应」，全局唯一的键就意味着 <strong>A 租户猜中 B 的键便能读到 B 的响应体</strong>。所以主键是 <code>(tenant_id, key)</code>，而那个 <code>tenant_id</code> ⚠️ 只能来自已验签的凭证（<a href="08-认证会话与多租户.html">08 章</a>）。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># idem_server.py —— Idempotency-Key 的服务端协议（sqlite3，直接可跑）</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># idem_server.py —— Idempotency-Key 的服务端协议（sqlite3，直接可跑）</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">hashlib</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
@@ -528,7 +528,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 ⚠️ <strong>B 的 <code>PUT</code> 把 A 的改动整段覆盖，没有任何报错</strong> —— A 只是过一会儿发现自己改的东西没了。</p>
 </blockquote>
 <p>流程：<code>GET</code> 拿到 <code>ETag</code> → 改 → <code>PUT</code> 时带 <code>If-Match</code> → 服务端比对，对不上返 <strong><code>412 Precondition Failed</code></strong>。⭐ <strong>服务端实现只有一条 SQL，不需要任何锁</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">UPDATE</span><span class="w"> </span><span class="n">docs</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="k">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">version</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="k">UPDATE</span><span class="w"> </span><span class="n">docs</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="k">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">version</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
 <span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="k">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">?</span><span class="w">      </span><span class="c1">-- ⭐ 受影响行数 = 0 就是冲突，返 412</span>
 </code></pre></div>
 
@@ -563,7 +563,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⚠️ <strong>对多人可同时改的资源要强制带 <code>If-Match</code></strong>，不带就拒（🗓️ 正式做法是返 <code>428 Precondition Required</code>）—— 不强制的话，忘了带的那个客户端<strong>仍然在无声覆盖别人</strong>。想表达「我就是要覆盖，只要它还在」，标准写法是 <code>If-Match: *</code>。</p>
 <p>⭐ <strong>为什么这个板块尤其该用乐观锁</strong>：<a href="06-关系数据库.html">06 章第六节</a>警告过「别在 <code>SELECT ... FOR UPDATE</code> 之后调外部服务 —— 那是攥着一把行锁在等」（那节的可跑对照：池 5、并发 40、LLM 1 秒时 <strong>8.15 秒 vs 1.15 秒</strong>）。而 AI 应用最典型的写路径正是「读一份文档 → 调模型改写（几十秒） → 写回去」，悲观行锁在这段时间根本不能用，版本号则什么都不锁。⚠️ 代价是冲突处理被推给了客户端，所以 412 至少要带上当前版本，否则客户端只能盲目重 GET 再赌一次。</p>
 <p>💡 同一个形状后面还会再见到：<a href="11-长任务与队列.html">第 11 章</a>那条队列认领语句里的 <code>WHERE status='queued'</code>，本质就是拿状态当版本号的乐观锁。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># conditional.py —— 条件请求的两次比对（纯 stdlib 可直接跑；框架写法见文末对照表）</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># conditional.py —— 条件请求的两次比对（纯 stdlib 可直接跑；框架写法见文末对照表）</span>
 <span class="n">DOC</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;c_42&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;旧标题&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">}</span>
 
 
@@ -752,4 +752,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

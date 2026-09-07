@@ -511,7 +511,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 - <strong>A100 及以下</strong> → 用 <strong>AWQ / GPTQ 的 W4A16</strong>
 - <strong>要极致压缩 / CPU 部署</strong> → GGUF</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`LLM` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`LLM` 来自你自己的代码，这一段只看写法</span>
 <span class="c1"># vLLM 加载量化模型：通常不用改代码</span>
 <span class="n">llm</span> <span class="o">=</span> <span class="n">LLM</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;TheBloke/Llama-2-7B-AWQ&quot;</span><span class="p">,</span> <span class="n">quantization</span><span class="o">=</span><span class="s2">&quot;awq&quot;</span><span class="p">)</span>
 <span class="n">llm</span> <span class="o">=</span> <span class="n">LLM</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="n">quantization</span><span class="o">=</span><span class="s2">&quot;fp8&quot;</span><span class="p">)</span>            <span class="c1"># ⭐ H100</span>
@@ -527,7 +527,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 因为后者需要精确的多步计算，误差会累积。</p>
 <p><strong>所以"PPL 只涨了 0.1"不能作为通过的依据。</strong> 必须测你真正在用的能力。</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`base` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`base` 来自你自己的代码，这一段只看写法</span>
 <span class="c1"># ⭐ 最小可行的质量对照</span>
 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="p">[(</span><span class="s2">&quot;fp16&quot;</span><span class="p">,</span> <span class="n">base</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;awq&quot;</span><span class="p">,</span> <span class="n">quant</span><span class="p">)]:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">my_business_testset</span><span class="p">))</span>
@@ -649,4 +649,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

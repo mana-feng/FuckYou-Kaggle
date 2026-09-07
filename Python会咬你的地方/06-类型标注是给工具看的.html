@@ -314,7 +314,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 标注被存在一个普通字典里，任何代码都能把它读出来。理解这一点，你就知道该在哪标、标了能换来什么、以及<strong>标了之后仍然不会有人替你检查</strong>。</p>
 <hr />
 <h2 id="_2">🧩 一、先把最反直觉的一条钉死：写错类型照跑</h2>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ann_runtime.py —— 标注在运行时不做任何检查</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># ann_runtime.py —— 标注在运行时不做任何检查</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
 
@@ -336,7 +336,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 解释器不看它，<code>if</code> 不看它，<code>+</code> 不看它。看它的是别人写的程序。</p>
 </blockquote>
 <p>💀 这条最贵的实战形态是<strong>静默类型污染</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># silent_str.py —— 标注说 int，实际收到 str，结果是一个合法但错误的值</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># silent_str.py —— 标注说 int，实际收到 str，结果是一个合法但错误的值</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">plan</span><span class="p">(</span><span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_tokens</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">max_tokens</span> <span class="o">*</span> <span class="mi">2</span>          <span class="c1"># ⭐ 期待 512，实际拿到 &quot;512512&quot;</span>
 
@@ -354,7 +354,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <p>它听起来像黑魔法，其实只有两个函数：<code>inspect.signature</code>（拿参数名和默认值）+
 <code>typing.get_type_hints</code>（拿解析好的类型）。下面这段 30 行<strong>就是一个能跑的最小实现</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># mini_tool.py —— @tool 的全部魔法：把签名和 docstring 读成 JSON schema</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># mini_tool.py —— @tool 的全部魔法：把签名和 docstring 读成 JSON schema</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">typing</span>
@@ -438,7 +438,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_3">🧩 三、⚠️ 一个会把上面那段打回原形的坑：字符串化的标注</h2>
 <p>在文件顶部加一行 <code>from __future__ import annotations</code>，所有标注<strong>会变成字符串</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ann_string.py —— 加了这一行之后，标注全变成字符串</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># ann_string.py —— 加了这一行之后，标注全变成字符串</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
@@ -521,7 +521,7 @@ get_type_hints  : {&#39;x&#39;: &lt;class &#39;int&#39;&gt;, &#39;y&#39;: list[s
 而 <code>mode: Literal["fast", "quality"]</code> 同时告诉了静态检查器、<strong>schema 生成器</strong>和读代码的人
 合法取值只有两个。在 Agent 工具里，它会直接变成 JSON schema 的 <code>enum</code>，模型就不会瞎编第三个值。</p>
 <h3 id="protocol">🚦 <code>Protocol</code>：鸭子类型的显式版，但别拿它当运行时校验</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># protocol_demo.py —— Protocol 是结构化子类型：长得像就算</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># protocol_demo.py —— Protocol 是结构化子类型：长得像就算</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
 
 
@@ -606,7 +606,7 @@ True
 </tr>
 </tbody>
 </table></div>
-<div class="codehilite"><pre><span></span><code><span class="c1"># pyd_vs_ann.py —— 同样的标注，一个校验一个不校验</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># pyd_vs_ann.py —— 同样的标注，一个校验一个不校验</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ValidationError</span>
 
 
@@ -792,4 +792,4 @@ pydantic 默认会做类型转换，不是「不合格就拒绝」。这对 Web 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

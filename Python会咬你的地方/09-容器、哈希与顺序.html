@@ -314,7 +314,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 上一章解决的是「两台机器不一样」，这一章解决的是<strong>同一台机器、同一个环境、同一份代码、同一个随机种子，跑两次还是不一样</strong>。</p>
 <hr />
 <h2 id="_2">🧩 一、同一批元素，两种容器，两种顺序</h2>
-<div class="codehilite"><pre><span></span><code><span class="c1"># order.py —— 同一批元素，dict 和 set 的迭代顺序</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># order.py —— 同一批元素，dict 和 set 的迭代顺序</span>
 <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;banana&quot;</span><span class="p">,</span> <span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;cherry&quot;</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="s2">&quot;elderberry&quot;</span><span class="p">]</span>
 
 <span class="n">d</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>          <span class="c1"># 只借它的键</span>
@@ -338,7 +338,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 它就是上面第一行，<code>list(dict.fromkeys(items))</code> 一步到位，而且是 O(n)。</p>
 <hr />
 <h2 id="set">🧩 二、⭐ 连跑两次，<code>set</code> 的顺序就变了</h2>
-<div class="codehilite"><pre><span></span><code><span class="c1"># crossproc.py —— 同一行代码，连跑 5 个进程，看 set 的迭代顺序变不变</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># crossproc.py —— 同一行代码，连跑 5 个进程，看 set 的迭代顺序变不变</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -422,7 +422,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>所以它不是 bug，是你换来的安全性；代价就是迭代顺序不再跨进程稳定。</strong></p>
 </blockquote>
 <h3 id="pythonhashseed">🚦 <code>PYTHONHASHSEED</code> 必须在解释器<strong>启动前</strong>就设好</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># hashseed_late.py —— 在脚本里设 PYTHONHASHSEED，太晚了</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># hashseed_late.py —— 在脚本里设 PYTHONHASHSEED，太晚了</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -473,7 +473,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table></div>
 <hr />
 <h2 id="_3">💀 三、这就是「种子固定了、结果还是不一样」的那个洞</h2>
-<div class="codehilite"><pre><span></span><code><span class="c1"># repro.py —— 种子全固定了，结果照样每次不同：因为中间遍历了一个 set</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># repro.py —— 种子全固定了，结果照样每次不同：因为中间遍历了一个 set</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -547,7 +547,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p>⭐ <strong>修法只有一句话：任何一个 <code>set</code> 在离开集合运算、变成「一串东西」的那一刻，套一个 <code>sorted()</code>。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># setfix.py —— 集合运算的结果落地成「一串东西」时，三种写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># setfix.py —— 集合运算的结果落地成「一串东西」时，三种写法</span>
 <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;zeta&quot;</span><span class="p">,</span> <span class="s2">&quot;yak&quot;</span><span class="p">,</span> <span class="s2">&quot;xray&quot;</span><span class="p">,</span> <span class="s2">&quot;wolf&quot;</span><span class="p">]</span>
 <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;yak&quot;</span><span class="p">]</span>
 
@@ -582,7 +582,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>⭐ <strong>在它当 key 期间，<code>hash()</code> 的值不许变</strong>。字典是先按哈希找槽、再用 <code>==</code> 确认，
    <strong>哈希变了就等于换了个槽去找，原来那格永远够不着。</strong></li>
 </ol>
-<div class="codehilite"><pre><span></span><code><span class="c1"># key.py —— 什么能当 key，以及改了 key 之后会发生什么</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># key.py —— 什么能当 key，以及改了 key 之后会发生什么</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Point</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
@@ -666,7 +666,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <h3 id="110true-key">🚦 同一个契约的另一面：<code>1</code>、<code>1.0</code>、<code>True</code> 是同一个 key</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># numkey.py —— hash 相等 + == 相等 ⇒ 字典认为是同一个 key</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># numkey.py —— hash 相等 + == 相等 ⇒ 字典认为是同一个 key</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;hash(1) == hash(1.0) == hash(True) →&quot;</span><span class="p">,</span> <span class="nb">hash</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="nb">hash</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span> <span class="o">==</span> <span class="nb">hash</span><span class="p">(</span><span class="kc">True</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;1 == 1.0 == True                   →&quot;</span><span class="p">,</span> <span class="mi">1</span> <span class="o">==</span> <span class="mf">1.0</span> <span class="o">==</span> <span class="kc">True</span><span class="p">)</span>
 
@@ -688,7 +688,7 @@ value 用最后写入的那个（<code>'bool'</code>）</strong>。计数那行�
 没有任何报错，你会以为数据本来就这样。</p>
 <hr />
 <h2 id="dict">🧩 五、<code>dict</code> 的「插入序」保证到什么程度</h2>
-<div class="codehilite"><pre><span></span><code><span class="c1"># dictorder.py —— dict 的「插入序」保证到什么程度</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># dictorder.py —— dict 的「插入序」保证到什么程度</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedDict</span>
 
 <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
@@ -826,7 +826,7 @@ value 用最后写入的那个（<code>'bool'</code>）</strong>。计数那行�
 </tbody>
 </table></div>
 <p>＊ 平均情况。<strong>最坏是 O(n)</strong> —— 大量哈希碰撞时哈希表退化，这正是第二节那条安全默认值要防的事。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># perf.py —— 复杂度不是理论：把「x in 容器」和「往头部插」量出来</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># perf.py —— 复杂度不是理论：把「x in 容器」和「往头部插」量出来</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">timeit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
@@ -864,7 +864,7 @@ value 用最后写入的那个（<code>'bool'</code>）</strong>。计数那行�
 <code>x in list</code> 涨了约 <strong>248 倍</strong>（7.56 → 1877.69 µs）—— 一条平的，一条线性的。
 倍数从 156x 变成 24706x，说明数据一大，这个选择就从「无所谓」变成「决定成败」。</p>
 <p>💀 <strong>最高频的一个实际形态</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># lookup.py —— 把「被查的那一侧」先转成 set</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># lookup.py —— 把「被查的那一侧」先转成 set</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
 <span class="n">big</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">20_000</span><span class="p">))</span>
@@ -898,7 +898,7 @@ value 用最后写入的那个（<code>'bool'</code>）</strong>。计数那行�
 </blockquote>
 <hr />
 <h2 id="collections">🧩 七、<code>collections</code>：三个专门替掉样板代码的容器</h2>
-<div class="codehilite"><pre><span></span><code><span class="c1"># coll.py —— defaultdict / Counter / deque 各替掉了哪几行样板代码</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># coll.py —— defaultdict / Counter / deque 各替掉了哪几行样板代码</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span><span class="p">,</span> <span class="n">defaultdict</span><span class="p">,</span> <span class="n">deque</span>
 
 <span class="n">rows</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;dog&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;bird&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;dog&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
@@ -1091,4 +1091,4 @@ value 用最后写入的那个（<code>'bool'</code>）</strong>。计数那行�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

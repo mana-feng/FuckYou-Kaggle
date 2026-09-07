@@ -373,7 +373,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 （比如只知道「$\le 2$」，不知道到底是 2 还是 $-7$）。
 ⭐ 这不是缺陷，第 12 章会看到 TreeStrap 这类算法专门拿这些界当训练目标。</p>
 <p>讲义给的伪代码：</p>
-<div class="codehilite"><pre><span></span><code>function alphabeta(node, depth, α, β)
+<div class="codehilite" data-code-language="text"><pre><span></span><code>function alphabeta(node, depth, α, β)
     if node is terminal or depth = 0 { return heuristic value of node }
     if we are to play at node                    // MAX
         foreach child of node
@@ -441,7 +441,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><strong>账</strong>：9 个叶子看了 7 个。⚠️ 第 4 步值得盯一眼：$D$ 也触发了截断条件，但触发得太晚（最后一个孩子），收益是零。
 ⭐ <strong>剪枝省多少，完全取决于「该剪的分支排在第几个」</strong> —— 这就是下一节。</p>
 <h3 id="_6">🔨 把开关拨一下，数给你看</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 同一棵树，prune 开关一拨，数一数少看了几个叶子</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 同一棵树，prune 开关一拨，数一数少看了几个叶子</span>
 <span class="n">TREE</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">is_max</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">seen</span><span class="p">,</span> <span class="n">prune</span><span class="p">):</span>
@@ -473,7 +473,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>不剪枝 根值=3  看了 9 个叶子：[3, 12, 8, 2, 4, 6, 14, 5, 2]
+<div class="codehilite" data-code-language="text"><pre><span></span><code>不剪枝 根值=3  看了 9 个叶子：[3, 12, 8, 2, 4, 6, 14, 5, 2]
 α-β   根值=3  看了 7 个叶子：[3, 12, 8, 2, 14, 5, 2]
 </code></pre></div>
 
@@ -634,4 +634,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

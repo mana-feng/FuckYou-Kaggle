@@ -350,7 +350,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="over-partition-by-order-by">🧩 二、三件套：<code>OVER</code> / <code>PARTITION BY</code> / <code>ORDER BY</code></h2>
 <p>语法只有一个形状：</p>
-<div class="codehilite"><pre><span></span><code><span class="err">函数</span><span class="p">(</span><span class="err">参数</span><span class="p">)</span><span class="w"> </span><span class="n">OVER</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">PARTITION</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="err">分组列</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="err">排序列</span><span class="w"> </span><span class="p">)</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="err">函数</span><span class="p">(</span><span class="err">参数</span><span class="p">)</span><span class="w"> </span><span class="n">OVER</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">PARTITION</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="err">分组列</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="err">排序列</span><span class="w"> </span><span class="p">)</span>
 </code></pre></div>
 
 <p>三个部件各管一件事，<strong>都可以省略</strong>：</p>
@@ -384,7 +384,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="group-by">📊 三、和 <code>GROUP BY</code> 的根本差别：塌不塌行</h2>
 <p>同一张表、同一个 <code>AVG</code>，两种写法：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE runs (model TEXT, dt TEXT, auc REAL)&quot;</span><span class="p">)</span>
@@ -455,7 +455,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_3">🥇 四、排名三兄弟：区别全在并列上</h2>
 <p>不并列的时候三个函数结果完全一样，所以<strong>必须拿有并列值的数据来看</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE runs (model TEXT, dt TEXT, auc REAL)&quot;</span><span class="p">)</span>
@@ -555,7 +555,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="lag-lead">↔️ 五、<code>LAG</code> / <code>LEAD</code>：和上一行、下一行比</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE runs (model TEXT, dt TEXT, auc REAL)&quot;</span><span class="p">)</span>
@@ -607,7 +607,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">FROM</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">WHERE</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">GROUP BY</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">HAVING</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">⭐ 窗口函数</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">SELECT</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">ORDER BY</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">LIMIT</span></div></div></section>
 <p>⭐ <strong>窗口函数是在 <code>WHERE</code> / <code>GROUP BY</code> / <code>HAVING</code> 全部做完之后才求值的。</strong>
 <code>WHERE</code> 执行的那一刻，<code>ROW_NUMBER()</code> 还不存在，所以它引用不了。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE runs (model TEXT, dt TEXT, auc REAL)&quot;</span><span class="p">)</span>
@@ -799,4 +799,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

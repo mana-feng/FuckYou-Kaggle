@@ -450,7 +450,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="pkce">🔐 三、PKCE：公开客户端存不住秘密</h2>
 <p>第 7 步说「拿客户端凭证去换」，但有一类客户端<strong>根本没法保管凭证</strong>：纯前端应用（代码在浏览器里，打开 DevTools 就能看见）、手机 app（二进制装在用户手机上，反编译就能翻出来）。这和<a href="13-配置与密钥.html">第 13 章</a>那条「⚠️ 密钥绝不放前端，<strong>加密也不行，因为解密的代码也在前端</strong>」是同一条判据。</p>
 <p>这类客户端叫<strong>公开客户端</strong>。它们的处境是：<code>code</code> 一旦被截获（移动端最典型的路径是恶意 app 抢注了同一个自定义 URL scheme），攻击者就能直接换出 token。<strong>PKCE 的做法是让客户端每次登录临时造一个只有自己知道的秘密，把 code 和自己绑死。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># PKCE：verifier 留在本机，出门的只有它的哈希</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># PKCE：verifier 留在本机，出门的只有它的哈希</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">base64</span><span class="o">,</span><span class="w"> </span><span class="nn">hashlib</span><span class="o">,</span><span class="w"> </span><span class="nn">secrets</span>
 
 
@@ -669,4 +669,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

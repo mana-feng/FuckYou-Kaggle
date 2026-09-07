@@ -313,7 +313,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="traceback">🧩 一、traceback 从哪头读</h2>
 <p>先看一个真的：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># tb_read.py —— 一个三层调用崩掉的样子</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># tb_read.py —— 一个三层调用崩掉的样子</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_batch</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">to_score</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">]</span>
 
@@ -384,7 +384,7 @@ ValueError: invalid literal for int() with base 10: &#39;n/a&#39;
 <hr />
 <h2 id="raise-from">🧩 二、异常链：<code>raise ... from</code> 和它的两个变体</h2>
 <p>底层报了个 <code>ValueError</code>，你想换成业务语言的 <code>ConfigError</code> 抛出去。这有三种写法，<strong>三种 traceback 完全不同</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># chain.py —— 同一个错误，三种转抛方式</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># chain.py —— 同一个错误，三种转抛方式</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">traceback</span>
 
 
@@ -449,7 +449,7 @@ ValueError: invalid literal for int() with base 10: &#39;n/a&#39;
 <hr />
 <h2 id="except">🧯 三、<code>except</code> 该写多宽：三个真正的分界</h2>
 <h3 id="except-exception-except">🚦 <code>except Exception</code> 和裸 <code>except:</code> 差在哪</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># bare_except.py —— 裸 except 会连 Ctrl-C 一起吞</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># bare_except.py —— 裸 except 会连 Ctrl-C 一起吞</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">catcher</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">body</span><span class="p">()</span>
@@ -529,7 +529,7 @@ ValueError: invalid literal for int() with base 10: &#39;n/a&#39;
 <p>⭐ <strong>这条判断的机制正是异常类型层次</strong>：<code>except</code> 后面写什么，就是你在声明「我能处理哪一类」。
 写 <code>Exception</code> 等于声明「什么我都能处理」—— 你显然不能。</p>
 <p>⭐ <strong>自定义异常该分几层，判据是「调用方要不要分开处理」</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 够用的三层，别再多了</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 够用的三层，别再多了</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">AppError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span> <span class="o">...</span>            <span class="c1"># 兜底：所有自己抛的</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">RetryableError</span><span class="p">(</span><span class="n">AppError</span><span class="p">):</span> <span class="o">...</span>       <span class="c1"># ⭐ 调用方看到它就重试</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">FatalError</span><span class="p">(</span><span class="n">AppError</span><span class="p">):</span> <span class="o">...</span>           <span class="c1"># ⭐ 调用方看到它就放弃并上报</span>
@@ -540,7 +540,7 @@ ValueError: invalid literal for int() with base 10: &#39;n/a&#39;
 <hr />
 <h2 id="_3">🧩 四、两个会静默改变语义的写法</h2>
 <h3 id="finally-return">💀 <code>finally</code> 里 <code>return</code></h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># finally_return.py —— finally 里的 return 会把异常整个吃掉</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># finally_return.py —— finally 里的 return 会把异常整个吃掉</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">bad</span><span class="p">():</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;真正的错误&quot;</span><span class="p">)</span>
@@ -568,7 +568,7 @@ ValueError: invalid literal for int() with base 10: &#39;n/a&#39;
 <strong>没有报错、没有警告、traceback 里什么都没有。</strong> <code>finally</code> 里的 <code>return</code>（以及 <code>break</code>、<code>continue</code>）
 会覆盖掉正在飞的异常。⭐ <strong>规则：<code>finally</code> 里只写清理，不写控制流。</strong></p>
 <h3 id="assert-o">💀 <code>assert</code> 在 <code>-O</code> 下会被整条删掉</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># assert_o.py —— 同一份代码，加不加 -O 结果相反</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># assert_o.py —— 同一份代码，加不加 -O 结果相反</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -630,7 +630,7 @@ ValueError: invalid literal for int() with base 10: &#39;n/a&#39;
 <hr />
 <h2 id="traceback_1">🧩 五、traceback 不够用的时候：让解释器多说一点</h2>
 <h3 id="-x-dev">🚦 <code>-X dev</code>：把平时压着的警告放出来</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># devmode.py —— 忘了关文件，默认一声不吭</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># devmode.py —— 忘了关文件，默认一声不吭</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -661,7 +661,7 @@ ValueError: invalid literal for int() with base 10: &#39;n/a&#39;
 在长跑脚本里，「文件句柄没关」会一路积累到 <code>OSError: Too many open files</code> ——
 那个报错出现的位置和真正的泄漏点<strong>完全无关</strong>，非常难查。</p>
 <h3 id="-w-error">🚦 <code>-W error</code>：把警告变成异常，拿到出事的那一行</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># werror.py —— DeprecationWarning 平时只是一行字</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># werror.py —— DeprecationWarning 平时只是一行字</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -693,7 +693,7 @@ ValueError: invalid literal for int() with base 10: &#39;n/a&#39;
 <h3 id="breakpoint-pdb">🚦 <code>breakpoint()</code>：不是只有 pdb 一条路</h3>
 <p><code>breakpoint()</code> 是 Python 3.7 起的内置函数，它做的事只有一件：<strong>调用 <code>sys.breakpointhook()</code></strong>。
 默认那个 hook 是「进 pdb」，但你可以换掉它 —— 这就得到一个<strong>不打断执行的观察点</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># bp_hook.py —— 把 breakpoint() 换成「打印我关心的几个变量」</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># bp_hook.py —— 把 breakpoint() 换成「打印我关心的几个变量」</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
@@ -723,7 +723,7 @@ ValueError: invalid literal for int() with base 10: &#39;n/a&#39;
 <section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>[score:20] {&#x27;total&#x27;: 2, &#x27;i&#x27;: 1, &#x27;r&#x27;: {&#x27;v&#x27;: -1}}</p><p>结果 = 7</p></div></section>
 <p>⭐ <strong>这比 <code>print</code> 好在两处</strong>：行号和函数名是自动的（<code>print</code> 大坑就是「我到底是哪个 print 打的」），
 而且<strong>一个环境变量就能全关掉</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># bp_off.py —— PYTHONBREAKPOINT=0 让所有 breakpoint() 变成空操作</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># bp_off.py —— PYTHONBREAKPOINT=0 让所有 breakpoint() 变成空操作</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -898,4 +898,4 @@ ValueError: invalid literal for int() with base 10: &#39;n/a&#39;
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -310,11 +310,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>🔗 先完成<a href="11b-文档入库与数据治理.html">入库与数据治理</a>，环境见<a href="17b-企业知识助手交付项目.html">共同项目</a>。代码见 <a href="../examples/knowledge-assistant/lab.py">lab.py</a> 与 <a href="../examples/knowledge-assistant/models.py">models.py</a>。命令在仓库根目录运行。</p>
 <h2 id="_2">🔬 一、让实验产生文件</h2>
 <p>先跑不需要下载模型的基线：</p>
-<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>examples/knowledge-assistant/lab.py<span class="w"> </span>evaluate<span class="w"> </span>--report<span class="w"> </span>output/rag-bm25.json
+<div class="codehilite" data-code-language="bash"><pre><span></span><code>python<span class="w"> </span>examples/knowledge-assistant/lab.py<span class="w"> </span>evaluate<span class="w"> </span>--report<span class="w"> </span>output/rag-bm25.json
 </code></pre></div>
 
 <p>安装项目依赖后，下面命令首次下载公开 ONNX 模型，需要联网和额外磁盘空间；不调用付费 API：</p>
-<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>examples/knowledge-assistant/lab.py<span class="w"> </span>evaluate<span class="w"> </span>--neural<span class="w"> </span>--rerank<span class="w"> </span>--report<span class="w"> </span>output/rag-neural.json
+<div class="codehilite" data-code-language="bash"><pre><span></span><code>python<span class="w"> </span>examples/knowledge-assistant/lab.py<span class="w"> </span>evaluate<span class="w"> </span>--neural<span class="w"> </span>--rerank<span class="w"> </span>--report<span class="w"> </span>output/rag-neural.json
 </code></pre></div>
 
 <p>每次评测使用临时数据库，不覆盖日常练习的文档。默认 embedding 为 <code>BAAI/bge-small-zh-v1.5</code>，带中文查询前缀；默认重排器 <code>Xenova/ms-marco-MiniLM-L-6-v2</code> 面向英文，<strong>在这里故意测中文迁移是否成立</strong>。模型不匹配是可检验的假设，不能因为接口成功就忽略它。</p>
@@ -410,7 +410,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p>例如只缩小候选量，输出到另一个文件：</p>
-<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>examples/knowledge-assistant/lab.py<span class="w"> </span>evaluate<span class="w"> </span>--neural<span class="w"> </span>--rerank<span class="w"> </span>--candidate-k<span class="w"> </span><span class="m">6</span><span class="w"> </span>--report<span class="w"> </span>output/rag-candidates6.json
+<div class="codehilite" data-code-language="bash"><pre><span></span><code>python<span class="w"> </span>examples/knowledge-assistant/lab.py<span class="w"> </span>evaluate<span class="w"> </span>--neural<span class="w"> </span>--rerank<span class="w"> </span>--candidate-k<span class="w"> </span><span class="m">6</span><span class="w"> </span>--report<span class="w"> </span>output/rag-candidates6.json
 </code></pre></div>
 
 <p>本项目融合用 RRF：每路按名次贡献分数，常数为 60；每路先去重，避免重复项多次加分。它不要求 BM25 与余弦分数同量纲。若改线性加权，先校准分数分布，再用开发集调权重。原始相似度没有通用的“0.8 以上可信”含义。</p>
@@ -509,4 +509,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

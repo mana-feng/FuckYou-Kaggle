@@ -372,7 +372,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 很多云厂商的便宜实例是 <strong>8 卡挂在 PCIe 上</strong>，
 跑张量并行会慢到不可用。<strong>开机第一件事是查拓扑。</strong></p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code>nvidia-smi<span class="w"> </span>topo<span class="w"> </span>-m
+<div class="codehilite" data-code-language="bash"><pre><span></span><code>nvidia-smi<span class="w"> </span>topo<span class="w"> </span>-m
 </code></pre></div>
 
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">输出解读（关键的几个值）：</span></div><div class="vb-flow-row"><span class="vb-flow-step">NV8 / NV12</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">NVLink 直连，几条链路 ✅ 最好</span></div><div class="vb-flow-row"><span class="vb-flow-step">NODE</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">同 NUMA 节点，走 PCIe ⚠️</span></div><div class="vb-flow-row"><span class="vb-flow-step">SYS</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">跨 NUMA / 跨 CPU socket 💀 最慢</span></div><div class="vb-flow-row"><span class="vb-flow-step">PIX / PXB</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">经过 1 个 / 多个 PCIe 交换机</span></div></div></section>
@@ -477,7 +477,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="_6">🧪 六、上手先做的三件事</h2>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ① 看拓扑</span>
+<div class="codehilite" data-code-language="bash"><pre><span></span><code><span class="c1"># ① 看拓扑</span>
 nvidia-smi<span class="w"> </span>topo<span class="w"> </span>-m
 
 <span class="c1"># ② 实测卡间带宽（NCCL 官方测试工具）</span>
@@ -603,4 +603,4 @@ NVLink 还是 PCIe、走的哪张网卡。</p>
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

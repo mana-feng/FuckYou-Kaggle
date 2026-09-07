@@ -347,7 +347,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_3">🧱 二、最小骨架：两个模型和一个路由</h2>
 <p>形状是<strong>一个入口 + 一份「进来的长什么样」+ 一份「出去的长什么样」</strong>，任何框架都有这三样，只是叫法不同。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 最小骨架：一对请求/响应模型 + 一个路由</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 最小骨架：一对请求/响应模型 + 一个路由</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
 
@@ -390,7 +390,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <p>同步模型下一个工作进程被这 3 秒完全占住，8 个进程就只能同时服务 8 个人；async 下等待期间控制权交回事件循环，一个进程能同时挂着上千个「正在等模型」的请求。</p>
 <h3 id="async_1">⚠️ 但 async 函数里一个同步阻塞调用，会卡死整个进程</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 一段能自己跑出结论的对照：async 里写同步阻塞调用，会把整个事件循环卡死。</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 一段能自己跑出结论的对照：async 里写同步阻塞调用，会把整个事件循环卡死。</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
@@ -426,7 +426,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_4">🔌 四、依赖注入不是花架子</h2>
 <p>它解决一个很具体的问题：<strong>有些事每个请求都要做，却不属于任何一个业务函数</strong>——鉴权、限流、拿连接、生成 trace_id、识别租户。写进业务函数就是十个路由十份复制粘贴，改一次漏三处。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 依赖注入：把&quot;每个请求都要做的事&quot;挪出业务函数，变成可替换的挂载点</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 依赖注入：把&quot;每个请求都要做的事&quot;挪出业务函数，变成可替换的挂载点</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Header</span><span class="p">,</span> <span class="n">HTTPException</span>
 
@@ -459,7 +459,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_5">🚨 五、错误处理：对外一种形状，对内保留细节</h2>
 <p>模型应用比普通 CRUD 多一大类错误：<strong>上游 429、上游超时、内容被拒、输出校验失败</strong>。每个路由自己 <code>try/except</code> 自己拼 JSON，前端就得认十种格式。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 统一错误响应：一种形状、一个可报的编号、一句人话；细节只进日志</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 统一错误响应：一种形状、一个可报的编号、一句人话；细节只进日志</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span><span class="o">,</span><span class="w"> </span><span class="nn">uuid</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Request</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.responses</span><span class="w"> </span><span class="kn">import</span> <span class="n">JSONResponse</span>
@@ -654,4 +654,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -380,7 +380,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_3">🧪 二、六段可跑的检查代码</h2>
 <p>每段独立可跑，最后合成一个统一框架。</p>
 <p><strong>① 完整性 —— 别只查「值缺不缺」，还要查「行缺不缺」</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_completeness</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">required</span><span class="p">,</span> <span class="n">min_rows</span><span class="p">,</span> <span class="n">max_rows</span><span class="p">,</span> <span class="n">group_col</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_completeness</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">required</span><span class="p">,</span> <span class="n">min_rows</span><span class="p">,</span> <span class="n">max_rows</span><span class="p">,</span> <span class="n">group_col</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;required: {列名: 允许的最大缺失率}&quot;&quot;&quot;</span>
     <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -403,7 +403,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 而那个渠道刚好只占 0.4% 的流量。<strong>任何比率型断言都要有一个分组版本。</strong></p>
 </blockquote>
 <p><strong>② 唯一性</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_uniqueness</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pk_cols</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_uniqueness</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pk_cols</span><span class="p">,</span> <span class="n">sample</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
     <span class="n">d</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="n">pk_cols</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">bad</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">d</span><span class="p">,</span> <span class="n">pk_cols</span><span class="p">]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">[(</span><span class="s2">&quot;主键唯一&quot;</span><span class="p">,</span> <span class="ow">not</span> <span class="n">d</span><span class="o">.</span><span class="n">any</span><span class="p">(),</span>
@@ -414,7 +414,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p><strong>③ 有效性 —— 范围 / 枚举 / 正则 / 引用完整性</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">check_validity</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ranges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">enums</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">regexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fk</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -441,7 +441,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p><strong>④ 一致性 —— 跨字段逻辑 + 跨表对账</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_consistency</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">rules</span><span class="p">,</span> <span class="n">recon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_consistency</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">rules</span><span class="p">,</span> <span class="n">recon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;rules: {规则名: 返回布尔 Series 的函数}</span>
 <span class="sd">       recon: (明细聚合后的 Series, 汇总表的 Series) —— 对账&quot;&quot;&quot;</span>
     <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
@@ -464,7 +464,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p><strong>⑤ 时效性 —— 本章事故的主角</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">check_timeliness</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ts_col</span><span class="p">,</span> <span class="n">partition_ts</span><span class="p">,</span> <span class="n">max_lag_h</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">prev_fingerprint</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -482,7 +482,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p><strong>⑥ 准确性 —— 只能抽样，只能靠外部</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">sample_for_review</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">strata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;分层抽样出待人工复核的样本；⭐ 别用简单随机抽，稀有类会抽不到&quot;&quot;&quot;</span>
@@ -502,7 +502,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p><strong>把六项合起来的最小框架</strong>（真实项目里可以换成 Great Expectations / Soda / dbt tests，逻辑一样）：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Any</span>
 
 <span class="nd">@dataclass</span>
@@ -890,4 +890,4 @@ MAD 动态阈值在第 60~73 天连报 14 天，<strong>然后从第 74 天起�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

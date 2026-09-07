@@ -314,7 +314,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_2">🚦 一、八步，按真正的先后排</h2>
 <p>你写下的是这个顺序：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w">   </span><span class="n">feature</span><span class="p">,</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">cents</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="k">SELECT</span><span class="w">   </span><span class="n">feature</span><span class="p">,</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">cents</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total</span>
 <span class="k">FROM</span><span class="w">     </span><span class="n">calls</span>
 <span class="k">WHERE</span><span class="w">    </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;big&#39;</span>
 <span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">feature</span>
@@ -385,7 +385,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p>把上面那条查询每一步剩多少行量出来：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;CREATE TABLE calls(</span>
@@ -420,7 +420,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>结果: [(&#39;summary&#39;, 12.84)]
+<div class="codehilite" data-code-language="text"><pre><span></span><code>结果: [(&#39;summary&#39;, 12.84)]
 FROM 之后: 5
 WHERE 之后: 3
 GROUP BY 之后: 2
@@ -440,7 +440,7 @@ HAVING 之后: 1
 <h3 id="1-where-select">① <code>WHERE</code> 里用 <code>SELECT</code> 的别名</h3>
 <p>按逻辑顺序，<code>WHERE</code>（②）跑的时候 <code>SELECT</code>（⑤）还没执行，<strong>别名根本不存在</strong>。</p>
 <p>⚠️ <strong>但 SQLite 会放你过去</strong> —— 这是它的一个扩展，不是标准行为：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE calls(feature TEXT, cents REAL)&quot;</span><span class="p">)</span>
@@ -478,7 +478,7 @@ HAVING 之后: 1
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>ORDER BY 用别名: [(&#39;summary&#39;, 102.0), (&#39;summary&#39;, 26.400000000000002), (&#39;chat&#39;, 0.56)]
+<div class="codehilite" data-code-language="text"><pre><span></span><code>ORDER BY 用别名: [(&#39;summary&#39;, 102.0), (&#39;summary&#39;, 26.400000000000002), (&#39;chat&#39;, 0.56)]
 WHERE 用别名: [(&#39;summary&#39;, 26.400000000000002), (&#39;summary&#39;, 102.0)]
 WHERE 放聚合 -&gt; OperationalError : misuse of aggregate: SUM()
 HAVING 放聚合: [(&#39;summary&#39;, 12.84)]
@@ -572,7 +572,7 @@ SQLite 报 <code>misuse of aggregate: SUM()</code>，Postgres 报 <code>aggregat
 <h2 id="_5">🚧 四、逻辑顺序 ≠ 物理执行顺序</h2>
 <p>上面那张八步表描述的是<strong>语义</strong>：结果必须<strong>看起来像是</strong>按这个顺序算出来的。
 真正跑的时候，优化器可以随便重排，只要结果一样。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE calls(user_id TEXT, feature TEXT, cents REAL)&quot;</span><span class="p">)</span>
@@ -593,7 +593,7 @@ SQLite 报 <code>misuse of aggregate: SUM()</code>，Postgres 报 <code>aggregat
 </code></pre></div>
 
 <p>实跑输出（5000 行，SQLite 3.50.4）：</p>
-<div class="codehilite"><pre><span></span><code>(9, 0, 62, &#39;SEARCH calls USING INDEX idx_feature (feature=?)&#39;)
+<div class="codehilite" data-code-language="text"><pre><span></span><code>(9, 0, 62, &#39;SEARCH calls USING INDEX idx_feature (feature=?)&#39;)
 (14, 0, 0, &#39;USE TEMP B-TREE FOR GROUP BY&#39;)
 (58, 0, 0, &#39;USE TEMP B-TREE FOR ORDER BY&#39;)
 ---
@@ -811,4 +811,4 @@ SQLite 报 <code>misuse of aggregate: SUM()</code>，Postgres 报 <code>aggregat
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

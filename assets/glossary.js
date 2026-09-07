@@ -224,7 +224,7 @@
     var parent = node.parentElement;
     // A nested glossary button would steal summary/label activation. Keep
     // disclosure headings and form labels as one predictable control.
-    return !parent || parent.closest("script,style,pre,code,a,button,summary,label,[role=button],textarea,select,option,svg,math,.katex,.formula-box,#formula-explainer,.lesson-rail,#site-glossary,.glossary-term");
+    return !parent || parent.closest("script,style,pre,code,a,button,summary,label,[role=button],textarea,select,option,svg,math,.katex,.formula-box,#formula-explainer,.lesson-rail,#site-glossary,.glossary-term,.cr-card");
   }
 
   function findMatches(text, used, remaining) {

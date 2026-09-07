@@ -358,7 +358,7 @@ MySQL 是 <code>EXPLAIN FORMAT=TREE</code>，输出的字面完全不一样。
 <hr />
 <h2 id="_3">🔤 二、怎么读一份计划：两个动词，一个陷阱</h2>
 <p>一张 20 万行的事件表，<code>user_id</code> 上有索引。六种查询各看一次计划：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">random</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">random</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE ev (id INTEGER PRIMARY KEY, user_id TEXT, ts TEXT, amount REAL)&quot;</span><span class="p">)</span>
@@ -393,7 +393,7 @@ MySQL 是 <code>EXPLAIN FORMAT=TREE</code>，输出的字面完全不一样。
 </code></pre></div>
 
 <p><strong>实测输出</strong>（Python 3.13.14 / SQLite 3.50.4）：</p>
-<div class="codehilite"><pre><span></span><code>① 没有条件 —— 整张表都要读
+<div class="codehilite" data-code-language="text"><pre><span></span><code>① 没有条件 —— 整张表都要读
     SCAN ev
 ② 条件用上了索引 —— SEARCH
     SEARCH ev USING INDEX ix_user (user_id=?)
@@ -472,7 +472,7 @@ MySQL 是 <code>EXPLAIN FORMAT=TREE</code>，输出的字面完全不一样。
 于是「谁在外层」和「内层能不能用索引」这两件事，直接决定快慢。</p>
 </blockquote>
 <p>2000 个用户、20 万条事件，⭐ SQLite 里 <code>CROSS JOIN</code> 的作用<strong>就是禁止优化器重排顺序</strong>，正好拿来手工指定谁在外层：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">random</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">random</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE users  (id INTEGER PRIMARY KEY, city TEXT)&quot;</span><span class="p">)</span>
@@ -516,7 +516,7 @@ MySQL 是 <code>EXPLAIN FORMAT=TREE</code>，输出的字面完全不一样。
 </code></pre></div>
 
 <p>实测输出：</p>
-<div class="codehilite"><pre><span></span><code>users 2000 行，events 200000 行
+<div class="codehilite" data-code-language="text"><pre><span></span><code>users 2000 行，events 200000 行
 
 ===== 没有任何索引 =====
 users 在外层       0.2380 s
@@ -577,7 +577,7 @@ Postgres / MySQL 8.0 还有 Hash Join（把小表做成哈希表，适合大表�
 <p>这件事有个专门的词：<strong>sargable</strong>（Search ARGument ABLE，「能当搜索条件用的」）。
 ⭐ <strong>判据只有一句：索引列必须自己一个人待在比较符的一边，不能被任何东西包住。</strong></p>
 <p>20 万行，<code>user_id</code> 和 <code>ts</code> 上都有索引：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">random</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">random</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE ev (id INTEGER PRIMARY KEY, user_id TEXT, ts TEXT, amount REAL)&quot;</span><span class="p">)</span>
@@ -630,7 +630,7 @@ Postgres / MySQL 8.0 还有 Hash Join（把小表做成哈希表，适合大表�
 </code></pre></div>
 
 <p>实测输出：</p>
-<div class="codehilite"><pre><span></span><code>== ① 函数包住列 ==
+<div class="codehilite" data-code-language="text"><pre><span></span><code>== ① 函数包住列 ==
 substr(ts,1,10)=&#39;...&#39;      16.2629 ms   SCAN ev USING COVERING INDEX ix_ts
 date(ts)=&#39;...&#39;             26.2926 ms   SCAN ev USING COVERING INDEX ix_ts
 ✅ 半开区间                      0.2750 ms   SEARCH ev USING COVERING INDEX ix_ts (ts&gt;? AND ts&lt;?)
@@ -770,7 +770,7 @@ OR 两侧都有索引                   0.6862 ms   MULTI-INDEX OR
 <hr />
 <h2 id="or-like">🔧 五、<code>OR</code> 的三种命运，和一个 <code>LIKE</code> 的意外</h2>
 <p><code>OR</code> 值得单独一节，因为它是<strong>唯一一个「同一个写法，命运取决于另一侧」</strong>的坑：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">random</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">random</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE ev (id INTEGER PRIMARY KEY, user_id TEXT, uid_int INTEGER, amount REAL)&quot;</span><span class="p">)</span>
@@ -813,7 +813,7 @@ OR 两侧都有索引                   0.6862 ms   MULTI-INDEX OR
 </code></pre></div>
 
 <p>实测输出：</p>
-<div class="codehilite"><pre><span></span><code>== OR 的三种命运（20 万行）==
+<div class="codehilite" data-code-language="text"><pre><span></span><code>== OR 的三种命运（20 万行）==
 ① 两侧都有索引                 0.0066 ms
                         MULTI-INDEX OR
                         INDEX 1
@@ -1051,4 +1051,4 @@ LIKE &#39;u00123%&#39;（默认）      10.3474 ms
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

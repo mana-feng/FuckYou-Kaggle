@@ -385,7 +385,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>用 SSE：每帧一行 <code>data: {JSON}</code>，帧间空一行，帧的类型放在 JSON 负载的 <code>type</code> 字段里（<code>delta</code> / <code>usage</code> / <code>error</code> / <code>done</code>）。</p>
 <p>⭐ 类型不放进 SSE 的 <code>event:</code> 行，是因为前端用 <code>fetch</code> 手动解析（第四节说了为什么不用 <code>EventSource</code>），而 <code>event:</code> 行只对 <code>EventSource</code> 有意义——放进负载，一行 <code>JSON.parse</code> 就拿到全部信息。</p>
 <p>⭐ 全板块统一这个格式，<a href="05-流式输出.html">05</a> / <a href="10-把流式接到界面上.html">10</a> 都照它来。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># app.py —— 一个能上线的最小 AI 后端</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># app.py —— 一个能上线的最小 AI 后端</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Request</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.responses</span><span class="w"> </span><span class="kn">import</span> <span class="n">StreamingResponse</span><span class="p">,</span> <span class="n">FileResponse</span><span class="p">,</span> <span class="n">JSONResponse</span>
@@ -436,7 +436,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_5">🧩 四、前端：核心就是「读流 + 拼帧」</h2>
 <p>⚠️ <strong>别用 <code>EventSource</code>。</strong> 它只能发 GET，问题就得塞进 URL——长文本超限、换行要转义、还进浏览器历史。用 <code>fetch</code> 拿到 <code>response.body</code> 自己读，也就多五行。</p>
-<div class="codehilite"><pre><span></span><code><span class="cp">&lt;!doctype html&gt;</span>
+<div class="codehilite" data-code-language="html"><pre><span></span><code><span class="cp">&lt;!doctype html&gt;</span>
 <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;utf-8&quot;</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">textarea</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;q&quot;</span> <span class="na">rows</span><span class="o">=</span><span class="s">&quot;3&quot;</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;width:100%&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">textarea</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;go&quot;</span><span class="p">&gt;</span>发送<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
@@ -474,7 +474,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>那两行 <code>⭐</code> 各堵一个必然发生的 bug</strong>：少了 <code>{stream: true}</code>，网络分片会把一个 UTF-8 汉字（<strong>3 字节</strong>）切成两半，屏幕上蹦出 <code>�</code>——英文是单字节，怎么切都不坏，所以英文测试全绿。少了 <code>frames.pop()</code>，一次 <code>read()</code> 拿到 <code>data: {"te</code> 就 <code>JSON.parse</code> 必崩——最后一段永远留在缓冲区等下一批。</p>
 <hr />
 <h2 id="_6">🧩 五、跑起来</h2>
-<div class="codehilite"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>fastapi<span class="w"> </span>uvicorn
+<div class="codehilite" data-code-language="bash"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>fastapi<span class="w"> </span>uvicorn
 uvicorn<span class="w"> </span>app:app<span class="w"> </span>--reload<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
 </code></pre></div>
 
@@ -743,4 +743,4 @@ uvicorn<span class="w"> </span>app:app<span class="w"> </span>--reload<span clas
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

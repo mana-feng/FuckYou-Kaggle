@@ -916,7 +916,7 @@ SMOTE 的合成样本是<strong>两个真实少数类样本之间的插值点</s
 <hr />
 <h2 id="_6">🔧 十二、一套上线前的泄漏体检（可以直接抄）</h2>
 <p><strong>第 1 段：单特征 AUC 排序 —— 抓代理变量，10 行，最划算的一段代码</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">roc_auc_score</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">single_feature_auc</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">warn</span><span class="o">=</span><span class="mf">0.85</span><span class="p">):</span>
@@ -936,7 +936,7 @@ SMOTE 的合成样本是<strong>两个真实少数类样本之间的插值点</s
 </code></pre></div>
 
 <p><strong>第 2 段：切分体检 —— 三个边界一次查完</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">hashlib</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">hashlib</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">split_audit</span><span class="p">(</span><span class="n">X_tr</span><span class="p">,</span> <span class="n">X_te</span><span class="p">,</span> <span class="n">t_tr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">t_te</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">g_tr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">g_te</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;一次查完：时间重叠 / 组重叠 / 重复样本跨集&quot;&quot;&quot;</span>
@@ -955,7 +955,7 @@ SMOTE 的合成样本是<strong>两个真实少数类样本之间的插值点</s
 </code></pre></div>
 
 <p><strong>第 3 段：正确的 out-of-fold 目标编码（带平滑）</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">KFold</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">oof_target_encode</span><span class="p">(</span><span class="n">cat_tr</span><span class="p">,</span> <span class="n">y_tr</span><span class="p">,</span> <span class="n">cat_te</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
@@ -1096,4 +1096,4 @@ SMOTE 的合成样本是<strong>两个真实少数类样本之间的插值点</s
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

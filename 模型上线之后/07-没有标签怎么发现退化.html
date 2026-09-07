@@ -514,7 +514,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_8">🔨 七、三段可以直接跑的代码</h2>
 <h3 id="1">① 先量一下你的标签延迟到底是多少</h3>
 <p><strong>第五节说"很多团队从没量过"。量它只要几行</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">label_delay_profile</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">t_pred</span><span class="o">=</span><span class="s2">&quot;predict_time&quot;</span><span class="p">,</span> <span class="n">t_label</span><span class="o">=</span><span class="s2">&quot;label_time&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;df 里每行是一次预测；label_time 为空 = 标签还没来&quot;&quot;&quot;</span>
@@ -531,7 +531,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">一个真实场景跑出来的结果（退货预测）：</span></div><div class="vb-flow-row"><span class="vb-flow-step">标签到达率 93.2% ← ⚠️ 有 6.8% 永远不会来</span></div><div class="vb-flow-row"><span class="vb-flow-step">P50 2.1 天</span></div><div class="vb-flow-row"><span class="vb-flow-step">P80 6.8 天</span></div><div class="vb-flow-row"><span class="vb-flow-step">P90 11.4 天</span></div><div class="vb-flow-row"><span class="vb-flow-step">P95 19.7 天 ← ⭐ 尾巴比想象长得多</span></div><div class="vb-flow-row"><span class="vb-flow-step">P99 58.3 天</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 结论：如果你按"7 天后统计准确率"，</span></div><div class="vb-flow-row"><span class="vb-flow-step">实际只覆盖了 80% 的样本，而且【漏掉的那 20% 系统性偏向慢退货】</span></div><div class="vb-flow-row"><span class="vb-flow-step">你算出来的准确率是【乐观偏差】的</span></div></div></section>
 <h3 id="2-">② 冠军-挑战者的差异监控</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">spearmanr</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">spearmanr</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">champion_challenger_gap</span><span class="p">(</span><span class="n">p_main</span><span class="p">,</span> <span class="n">p_simple</span><span class="p">,</span> <span class="n">base_gap</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;p_main / p_simple: 同一批请求上两个模型的预测分数&quot;&quot;&quot;</span>
@@ -553,7 +553,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>哨兵的价值是缩小搜索空间，不是直接给答案。</strong></p>
 </blockquote>
 <h3 id="3_1">③ 分层抽样的权重还原</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">stratified_accuracy</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">strata</span><span class="p">,</span> <span class="n">strata_pop_share</span><span class="p">):</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">stratified_accuracy</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">strata</span><span class="p">,</span> <span class="n">strata_pop_share</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;strata: 每条抽样样本所属的层；strata_pop_share: 各层在总体中的占比&quot;&quot;&quot;</span>
     <span class="n">acc</span><span class="p">,</span> <span class="n">se2</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span>
     <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">strata_pop_share</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -756,4 +756,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

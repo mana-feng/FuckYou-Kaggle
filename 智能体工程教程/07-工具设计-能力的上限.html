@@ -396,7 +396,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="2">② 命名空间</h3>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>asana_search / asana_create / asana_update</p><p>jira_search / jira_create / jira_update</p><p>⭐ 好处：</p><p>· 几十个工具时，前缀帮模型快速缩小范围</p><p>· 明确边界：模型不会拿 asana 的 id 去调 jira</p></div></section>
 <h3 id="3">③ 返回有意义的上下文</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ❌ 技术标识符，模型抄写会出错</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># ❌ 技术标识符，模型抄写会出错</span>
 <span class="p">{</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="s2">&quot;a3f8b21c-4e5d-11ee-be56-0242ac120002&quot;</span><span class="p">,</span>
  <span class="s2">&quot;mime_type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/vnd.ms-excel&quot;</span><span class="p">,</span> <span class="s2">&quot;ts&quot;</span><span class="p">:</span> <span class="mi">1753574400</span><span class="p">}</span>
 
@@ -427,7 +427,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">search_docs</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">response_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;concise&quot;</span><span class="p">):</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">search_docs</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">response_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;concise&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    response_format:</span>
 <span class="sd">      &quot;concise&quot;  - 只返回标题和一句话摘要（默认，省 token）</span>
@@ -437,7 +437,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <h3 id="4-token">④ 为 token 效率优化</h3>
 <p>四个手段：分页、过滤、范围选择、<strong>带指引的截断</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ✅ 截断时要告诉模型&quot;还有更多&quot;以及&quot;怎么拿&quot;</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># ✅ 截断时要告诉模型&quot;还有更多&quot;以及&quot;怎么拿&quot;</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">format_results</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="n">formatted</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">limit</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">formatted</span><span class="p">[:</span><span class="n">limit</span><span class="p">]</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
@@ -447,7 +447,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <h3 id="5">⑤ ⭐ 工具描述就是提示词</h3>
 <p>像给<strong>新入职同事</strong>写说明一样写：把隐性知识显式化、参数命名无歧义、给用法示例和边界。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ❌ 开发者视角的描述</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># ❌ 开发者视角的描述</span>
 <span class="sd">&quot;&quot;&quot;Query the events table.&quot;&quot;&quot;</span>
 
 <span class="c1"># ✅ 使用者视角的描述</span>
@@ -506,7 +506,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ✅ 防呆示例：三重保护</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># ✅ 防呆示例：三重保护</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">delete_records</span><span class="p">(</span>
     <span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>              <span class="c1"># enum 限定</span>
     <span class="n">where</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>              <span class="c1"># 必填，不允许空（防止全表删除）</span>
@@ -521,7 +521,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_4">🩺 四、错误信息：写给模型看的教学材料</h2>
 <p>这是最容易被忽略、收益却极高的一环。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ❌ 给人看的报错</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># ❌ 给人看的报错</span>
 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid input&quot;</span><span class="p">)</span>
 
 <span class="c1"># ✅ 给模型看的教学</span>
@@ -581,7 +581,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="think">🎭 六、「think」工具：一个值得知道的小历史</h2>
 <p>2025 年官方发现：给 Agent 一个<strong>什么都不做</strong>的 <code>think</code> 工具
 （唯一作用是让模型写下思考），在复杂多步任务上显著提效。</p>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">think</span><span class="p">(</span><span class="n">thought</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">think</span><span class="p">(</span><span class="n">thought</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;记录你的思考过程。不执行任何操作，仅用于整理思路。&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s2">&quot;已记录。&quot;</span>      <span class="c1"># ← 真的什么都不做</span>
 </code></pre></div>
@@ -745,4 +745,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

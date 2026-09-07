@@ -334,7 +334,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p>这一章从头到尾<strong>只有一块裸内存和一个循环</strong>，不涉及任何数组对象的描述方式。下面这段就是全章的引子：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// c03_order.cpp</span>
+<div class="codehilite" data-code-language="cpp"><pre><span></span><code><span class="c1">// c03_order.cpp</span>
 <span class="c1">// g++ -O2 -std=c++17 c03_order.cpp -o c03_order</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstdio&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;vector&gt;</span>
@@ -411,7 +411,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="cpu">🧩 二、CPU 不按元素取数，按「一条」取</h2>
 <p>上一节那十几倍的原因只有一句话：<strong>内存到 CPU 之间的最小搬运单位不是一个数，是一条固定长度的块</strong>，叫 <strong>cache line</strong>（缓存行）。</p>
 <p>本机这个长度是多少，标准库直接告诉你：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// c03_probe.cpp</span>
+<div class="codehilite" data-code-language="cpp"><pre><span></span><code><span class="c1">// c03_probe.cpp</span>
 <span class="c1">// g++ -O2 -std=c++17 c03_probe.cpp -o c03_probe</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstdio&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;new&gt;</span>
@@ -458,7 +458,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table></div>
 <h3 id="_3">🚦 把这件事直接量出来</h3>
 <p>如果成本真的挂在「搬了多少条」而不是「取了多少个数」上，那就应该能观察到这样一个现象：<strong>取的元素少 16 倍，耗时却不会少 16 倍</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// c03_line.cpp</span>
+<div class="codehilite" data-code-language="cpp"><pre><span></span><code><span class="c1">// c03_line.cpp</span>
 <span class="c1">// g++ -O2 -std=c++17 c03_line.cpp -o c03_line</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstdio&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;vector&gt;</span>
@@ -548,7 +548,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="line">🧩 三、这条 line 从多远的地方来</h2>
 <p>「搬一条」也不是只有一个价钱 —— 取决于它当时在哪一级。这一层结构可以自己测出来：让指针在一块内存里<strong>随机地</strong>一跳一跳走下去（随机是关键，否则硬件会提前把下一块取来，测不出真实代价），然后改变这块内存的大小。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// c03_ws.cpp</span>
+<div class="codehilite" data-code-language="cpp"><pre><span></span><code><span class="c1">// c03_ws.cpp</span>
 <span class="c1">// g++ -O2 -std=c++17 c03_ws.cpp -o c03_ws</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstdio&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;vector&gt;</span>
@@ -647,7 +647,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_4">🧩 四、结构体为什么会莫名变胖</h2>
 <p>前面讲的是「怎么访问」。这一节开始讲「怎么摆」，第一件事是：<strong>你写的字段顺序，直接决定这个结构体占多少字节。</strong></p>
 <p>原因是<strong>对齐</strong>：硬件要求一个 8 字节的数必须放在 8 的倍数地址上，编译器只好在字段之间<strong>插空洞</strong>来满足它。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// c03_pad.cpp</span>
+<div class="codehilite" data-code-language="cpp"><pre><span></span><code><span class="c1">// c03_pad.cpp</span>
 <span class="c1">// g++ -O2 -std=c++17 c03_pad.cpp -o c03_pad</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstdio&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstdint&gt;</span>
@@ -737,7 +737,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p>⭐ <strong>如果你的循环只用其中一个属性，这两种摆法的差别是巨大的。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// c03_aos.cpp</span>
+<div class="codehilite" data-code-language="cpp"><pre><span></span><code><span class="c1">// c03_aos.cpp</span>
 <span class="c1">// g++ -O2 -std=c++17 c03_aos.cpp -o c03_aos</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstdio&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;vector&gt;</span>
@@ -860,7 +860,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>这一节兑现 <a href="02-值语义与所有权.html">02 章</a>第六节留下的那句话 —— 那里说 <code>shared_ptr</code> 的引用计数是原子操作、「多线程下会真的争抢缓存行」。代价有多大，现在量出来。</p>
 <p>⚠️ <strong>前提</strong>：cache line 是缓存的最小单位，也是<strong>多核之间保持一致的最小单位</strong>。一个核改了某条 line 里的任何一个字节，其它核手上那条 line 的副本就整条作废。</p>
 <p>于是就有了这个荒谬的场景：<strong>四个线程各改各的变量，谁也不碰别人的，但因为这四个变量挤在同一条 line 里，它们互相把对方的缓存打掉。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// c03_false.cpp</span>
+<div class="codehilite" data-code-language="cpp"><pre><span></span><code><span class="c1">// c03_false.cpp</span>
 <span class="c1">// g++ -O2 -std=c++17 -pthread c03_false.cpp -o c03_false</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstdio&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;thread&gt;</span>
@@ -951,7 +951,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="python">🧩 七、Python 侧也逃不掉</h2>
 <p>前面全是 C++。但这件事<strong>不是 C++ 的特性，是硬件的特性</strong> —— 用纯 Python 也能把它跑出来。</p>
 <p><a href="01-Python调C++的那条边界.html">01 章</a>第二节说过「那 1000 个对象散落在堆的各处，遍历它们等于 1000 次指针跳转」，当时留了一句「这一条会在 03 章变成一个更大的数字」。就是下面这个：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># c03_pyscatter.py</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># c03_pyscatter.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">random</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span><span class="o">,</span><span class="w"> </span><span class="nn">array</span>
 
 <span class="n">N</span> <span class="o">=</span> <span class="mi">2_000_000</span>
@@ -1129,4 +1129,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

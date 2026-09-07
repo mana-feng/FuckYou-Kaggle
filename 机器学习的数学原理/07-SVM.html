@@ -479,7 +479,9 @@ SVM 的 C 和岭回归的 λ 是同一个旋钮的两种写法。</strong></p>
 </blockquote>
 <hr>
 </section><section class="cross-unit" id="read-tuning" aria-labelledby="read-tuning-title"><h2 id="read-tuning-title">把理解变成调参选择</h2><p class="cross-cue">实践建议与适用场景一起看，不把经验当保证。</p><h3 id="_9">🎛️ 五、实用调参</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.svm</span><span class="w"> </span><span class="kn">import</span> <span class="n">SVC</span>
+<p>先把标准化和 SVM 放进同一个流程，再配置参数搜索。点击讲解卡片，可定位对应代码。</p>
+<div class="cr-study" data-code-title="标准化与 SVM 配置">
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.svm</span><span class="w"> </span><span class="kn">import</span> <span class="n">SVC</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_pipeline</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">GridSearchCV</span>
@@ -493,6 +495,13 @@ SVM 的 C 和岭回归的 λ 是同一个旋钮的两种写法。</strong></p>
 <span class="p">},</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
 
+<aside aria-label="SVM 代码讲解" class="cr-notes">
+<p>先看这两处 · 点击定位</p>
+<button class="cr-note" type="button" data-code-lines="7"><strong>1 · 把预处理放进流程</strong><span><code>StandardScaler</code> 与 <code>SVC</code> 放在同一个 Pipeline 中。</span><span class="cr-note-detail">后续做交叉验证时，标准化会在每个训练折上拟合，避免用到验证折的信息。</span><span class="cr-note-range">定位第 7 行 ↗</span></button>
+<button class="cr-note" type="button" data-code-lines="9-12"><strong>2 · 列出要尝试的参数</strong><span><code>C</code> 和 <code>gamma</code> 各提供一组候选值。</span><span class="cr-note-detail"><code>cv=5</code> 指定 5 折交叉验证；这里只完成配置，调用 <code>fit</code> 后才开始搜索。</span><span class="cr-note-range">定位第 9–12 行 ↗</span></button>
+</aside>
+<p class="cr-context">使用边界：这段代码只配置流程与参数搜索，尚未提供数据，也没有调用 <code>fit</code> 开始训练。</p>
+</div>
 <p><strong>C 和 γ 的交互（经典的对角线现象）</strong>：</p>
 <figure class="dia reading-diagram repair-diagram" id="relationship-theorymd-07-2" style="--diagram-width:720px"><svg viewBox="0 0 720 490" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="横轴 C，纵轴 γ。两者共同影响拟合；斜带只表示需要联合搜索的区域，不是固定的最佳参数规律。实际应看交叉验证热图。"><title>横轴 C，纵轴 γ。两者共同影响拟合；斜带只表示需要联合搜索的区域，不是固定的最佳参数规律。实际应看交叉验证热图。</title><line x1="100" y1="425" x2="650" y2="425" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="650.0,425.0 641.0,430.0 641.0,420.0"/><line x1="100" y1="425" x2="100" y2="60" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="100.0,60.0 105.0,69.0 95.0,69.0"/><text x="650" y="455" font-size="18" text-anchor="start" fill="var(--fg)">C</text><text x="65" y="60" font-size="18" text-anchor="start" fill="var(--fg)">γ</text><rect x="102" y="62" width="545" height="360" fill="var(--quote-bg)" stroke="var(--border)"/><path d="M110 85 L170 65 L640 385 L580 422 Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-dasharray="5 5"/><text x="380" y="105" font-size="20" text-anchor="start" fill="var(--fg)">过局部 / 约束过严</text><text x="150" y="365" font-size="20" text-anchor="start" fill="var(--fg)">欠拟合风险</text><text x="245" y="244" font-size="20" text-anchor="start" fill="var(--fg)">候选区域需实测</text></svg><figcaption>横轴 C，纵轴 γ。两者共同影响拟合；斜带只表示需要联合搜索的区域，不是固定的最佳参数规律。实际应看交叉验证热图。</figcaption></figure>
 <section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>过拟合 过拟合</span> <span>(太局部) (太局部+太严)</span></li><li><span>⭐ 好的区域在对角线附近</span></li><li><span>欠拟合</span></li></ul></section>
@@ -678,4 +687,4 @@ SVM 的 C 和岭回归的 λ 是同一个旋钮的两种写法。</strong></p>
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

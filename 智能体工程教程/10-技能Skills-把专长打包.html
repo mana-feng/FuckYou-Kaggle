@@ -316,7 +316,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <figure class="dia reading-diagram repair-diagram" id="relationship-agentmd-10-1" style="--diagram-width:720px"><svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="这四个文件是同一目录里的不同职责，不是要按文件顺序依次执行。"><title>这四个文件是同一目录里的不同职责，不是要按文件顺序依次执行。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">技能包包含什么</text><rect x="20" y="65" width="680" height="250" rx="12" fill="var(--quote-bg)" stroke="var(--border)"/><text x="40" y="97" font-size="20" text-anchor="start" fill="var(--fg)">deploy-service/</text><rect x="44" y="117" width="632" height="34" rx="6" fill="var(--card)" stroke="var(--border)"/><text x="58" y="140" font-size="18" text-anchor="start" fill="var(--fg)">SKILL.md：主说明</text><rect x="44" y="159" width="632" height="34" rx="6" fill="var(--card)" stroke="var(--border)"/><text x="58" y="182" font-size="18" text-anchor="start" fill="var(--fg)">checklist.md：上线检查单</text><rect x="44" y="201" width="632" height="34" rx="6" fill="var(--card)" stroke="var(--border)"/><text x="58" y="224" font-size="18" text-anchor="start" fill="var(--fg)">rollback.md：回滚流程</text><rect x="44" y="243" width="632" height="34" rx="6" fill="var(--card)" stroke="var(--border)"/><text x="58" y="266" font-size="18" text-anchor="start" fill="var(--fg)">verify.sh：验证脚本</text></svg><figcaption>这四个文件是同一目录里的不同职责，不是要按文件顺序依次执行。</figcaption></figure>
 <section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>deploy-service/</span></li><li><span>SKILL.md</span> <span>主文件（必须有）</span></li><li><span>checklist.md</span> <span>附件：上线检查单</span></li><li><span>rollback.md</span> <span>附件：回滚流程</span></li><li><span>verify.sh</span> <span>⭐ 可执行脚本，让 Skill 自带"考卷"</span></li></ul></section>
 <p><strong>SKILL.md 的结构</strong>：</p>
-<div class="codehilite"><pre><span></span><code>---
+<div class="codehilite" data-code-language="markdown"><pre><span></span><code>---
 name: deploy
 description: 部署服务到生产环境，含上线检查单和回滚流程。
 <span class="gu">             当用户要求部署、上线、发布、灰度时使用。</span>
@@ -459,7 +459,7 @@ description: 部署服务到生产环境，含上线检查单和回滚流程。
 <h2 id="skill_1">✍️ 四、写好 Skill 的五条</h2>
 <h3 id="1-description">① description 决定生死</h3>
 <p><strong>它是唯一常驻上下文的部分</strong>——写不好，这个技能永远沉睡。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ❌ 太抽象，模型不知道什么时候用</span>
+<div class="codehilite" data-code-language="yaml"><pre><span></span><code><span class="c1"># ❌ 太抽象，模型不知道什么时候用</span>
 <span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">处理部署相关事务</span>
 
 <span class="c1"># ✅ 说清&quot;什么时候该想起我&quot;，并包含用户可能说的词</span>
@@ -498,7 +498,7 @@ description: 部署服务到生产环境，含上线检查单和回滚流程。
 <p>这是最容易被忽略、价值最高的一条：</p>
 <section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">Skill 定义流程</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">Agent 执行</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">Skill 里的脚本验证</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">不过就继续改</span></div><div class="vb-flow-row"><span class="vb-flow-step">↑</span></div><div class="vb-flow-row"><span class="vb-flow-step">Skill 不只是说明书，还自带考卷</span></div></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="gu">## 验证</span>
+<div class="codehilite" data-code-language="markdown"><pre><span></span><code><span class="gu">## 验证</span>
 完成后运行 <span class="sb">`./verify.sh`</span>。它会检查：
 <span class="k">-</span><span class="w"> </span>健康检查端点返回 200
 <span class="k">-</span><span class="w"> </span>近 5 分钟错误率 &lt; 0.1%
@@ -697,4 +697,4 @@ description: 部署服务到生产环境，含上线检查单和回滚流程。
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

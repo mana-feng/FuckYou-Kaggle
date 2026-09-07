@@ -356,7 +356,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <p><strong>左臂（编码器）</strong>几轮「卷积块 → 下采样」，分辨率一路减半、通道一路翻倍；<strong>底部（瓶颈）</strong>分辨率最低，⭐ 自注意力通常只插在这附近 —— 注意力的代价是 token 数的平方，压小之后才付得起；<strong>右臂（解码器）</strong>几轮「上采样 → 卷积块」抬回原分辨率。条件走交叉注意力进来：Query 来自图像特征，Key/Value 来自文本嵌入。</p>
 <p>跳跃连接把左臂每一级送到右臂同分辨率那一级。⭐ <strong>它用的是拼接，不是残差那种相加</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 跳跃连接把通道数变成了多少</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 跳跃连接把通道数变成了多少</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
@@ -378,7 +378,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_3">✂️ 三、跳跃连接到底救了什么</h2>
 <p>标准答案是「保留细节」。这句话可以量出来 —— 下面这段几秒钟跑完：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 下采样到底压掉了什么：把细纹和粗块一起送进 8 倍下采样再还原</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 下采样到底压掉了什么：把细纹和粗块一起送进 8 倍下采样再还原</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
 
@@ -413,7 +413,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="dit-token">🧩 四、DiT：把潜空间切成 token</h2>
 <p>DiT 把整个 U 形扔掉，换成一摞完全一样的 Transformer 块。关键是开头和结尾那两步转换：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># DiT 的第一步和最后一步：把潜空间切成 token，过完 Transformer 再拼回去</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># DiT 的第一步和最后一步：把潜空间切成 token，过完 Transformer 再拼回去</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
@@ -576,4 +576,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

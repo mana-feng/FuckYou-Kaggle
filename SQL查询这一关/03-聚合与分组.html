@@ -314,7 +314,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_2">🚦 一、差的那一行去哪了</h2>
 <p>三行数据，<code>city</code> 缺一个、<code>score</code> 缺一个。把八个聚合一次问出来：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE u(id INT, city TEXT, score REAL)&quot;</span><span class="p">)</span>
@@ -337,7 +337,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>表里一共 3 行，city 缺 1 个，score 缺 1 个
+<div class="codehilite" data-code-language="text"><pre><span></span><code>表里一共 3 行，city 缺 1 个，score 缺 1 个
   COUNT(*)               = 3
   COUNT(city)            = 2
   COUNT(score)           = 2
@@ -404,7 +404,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 还是「他考了 0 分但没录进来」（该算 0，<code>AVG(COALESCE(score,0))</code> = 0.6667 才对）。
 ⚠️ <strong>SQL 不会替你决定，它只是默默选了前者。</strong></p>
 <h3 id="count-count1"><code>COUNT(*)</code> / <code>COUNT(1)</code> 和一列全空的时候</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE calls(user_id TEXT, feature TEXT, cents REAL, ms INT)&quot;</span><span class="p">)</span>
@@ -430,7 +430,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>COUNT(*) / COUNT(1) / COUNT(常量) 完全一样，只有 COUNT(列) 跳过 NULL:
+<div class="codehilite" data-code-language="text"><pre><span></span><code>COUNT(*) / COUNT(1) / COUNT(常量) 完全一样，只有 COUNT(列) 跳过 NULL:
   COUNT(*)     = 5
   COUNT(1)     = 5
   COUNT(&#39;x&#39;)   = 5
@@ -452,7 +452,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="group-by-select">🧩 二、<code>GROUP BY</code> 之后，<code>SELECT</code> 里能放什么</h2>
 <p>01 章那句「<code>GROUP BY</code> 是一道单向门」，门后最具体的后果就是<strong>你不能再随便写列名了</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE calls(user_id TEXT, feature TEXT, model TEXT, cents REAL)&quot;</span><span class="p">)</span>
@@ -486,7 +486,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>① 分组键 + 聚合（合法，三个库都对）:
+<div class="codehilite" data-code-language="text"><pre><span></span><code>① 分组键 + 聚合（合法，三个库都对）:
    (&#39;chat&#39;, 2, 0.086)
    (&#39;summary&#39;, 2, 12.84)
    (&#39;translate&#39;, 1, 0.4)
@@ -555,7 +555,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="where-having">📋 三、<code>WHERE</code> 筛行，<code>HAVING</code> 筛组 —— 以及第三个选项</h2>
 <p>01 章从执行顺序讲了它们<strong>为什么</strong>不同（<code>WHERE</code> 在第②步、<code>HAVING</code> 在第④步）。这一节看它们<strong>筛出来的东西</strong>差在哪。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE calls(user_id TEXT, feature TEXT, model TEXT, cents REAL)&quot;</span><span class="p">)</span>
@@ -602,7 +602,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>① WHERE 筛【行】—— 先扔掉 small 的调用，再分组:
+<div class="codehilite" data-code-language="text"><pre><span></span><code>① WHERE 筛【行】—— 先扔掉 small 的调用，再分组:
    (&#39;summary&#39;, 12.84)
    (&#39;translate&#39;, 0.4)
 
@@ -653,7 +653,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 这个 <code>CASE WHEN</code> 套在聚合函数里的写法叫<strong>条件聚合</strong>，是下一节看板的主力零件。</p>
 <h3 id="having-group-by"><code>HAVING</code> 不带 <code>GROUP BY</code></h3>
 <p>⭐ 一个容易忘的合法写法：<strong><code>HAVING</code> 可以单独出现，此时整张表被当成【一个组】判一次。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE calls(feature TEXT, cents REAL)&quot;</span><span class="p">)</span>
@@ -669,7 +669,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>HAVING 不带 GROUP BY —— 全表当【一个组】，判一次:
+<div class="codehilite" data-code-language="text"><pre><span></span><code>HAVING 不带 GROUP BY —— 全表当【一个组】，判一次:
   HAVING SUM(cents) &gt; 1  -&gt; [(5, 13.326)]
   HAVING SUM(cents) &gt; 99 -&gt; []
 </code></pre></div>
@@ -680,7 +680,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="calls">🧮 四、把那张 <code>calls</code> 表的看板真写出来</h2>
 <p>前面都是零件，这一节把它们装成一张真看板。八次模型调用，其中两次失败（一次耗时没记上、一次计费没记上）：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;CREATE TABLE calls(</span>
@@ -741,7 +741,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>=== 按 feature 的看板（一条查询六个指标）===
+<div class="codehilite" data-code-language="text"><pre><span></span><code>=== 按 feature 的看板（一条查询六个指标）===
    (&#39;summary&#39;, 3, 3, 13.94, 0, 0.0, 3)
    (&#39;translate&#39;, 1, 1, 0.4, 0, 0.0, 1)
    (&#39;chat&#39;, 4, 3, 0.106, 2, 50.0, 3)
@@ -837,7 +837,7 @@ chat 没有任何 <code>model='big'</code> 的行，<code>SUM</code> 在零个�
 <h2 id="avg">🧯 五、<code>AVG</code> 会骗你的两件事</h2>
 <h3 id="1">① 比率的平均，不等于平均的比率</h3>
 <p>三天的曝光和点击，其中一天量特别大：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE daily(dt TEXT, shows INT, clicks INT)&quot;</span><span class="p">)</span>
@@ -860,7 +860,7 @@ chat 没有任何 <code>model='big'</code> 的行，<code>SUM</code> 在零个�
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>每天的 CTR:
+<div class="codehilite" data-code-language="text"><pre><span></span><code>每天的 CTR:
    (&#39;2026-08-01&#39;, 100, 20, 20.0)
    (&#39;2026-08-02&#39;, 100, 10, 10.0)
    (&#39;2026-08-03&#39;, 10000, 300, 3.0)
@@ -879,7 +879,7 @@ chat 没有任何 <code>model='big'</code> 的行，<code>SUM</code> 在零个�
 而那时你应该在注释里写清楚这是<strong>故意的</strong>。</p>
 </blockquote>
 <p>⚠️ <strong>别忘了那个 <code>* 1.0</code></strong>：两个整数相除会截断。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE ab(a INT, b INT)&quot;</span><span class="p">)</span>
@@ -889,7 +889,7 @@ chat 没有任何 <code>model='big'</code> 的行，<code>SUM</code> 在零个�
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>SUM(a)/SUM(b)     = 0
+<div class="codehilite" data-code-language="text"><pre><span></span><code>SUM(a)/SUM(b)     = 0
 SUM(a)*1.0/SUM(b) = 0.2222222222222222
 </code></pre></div>
 
@@ -897,7 +897,7 @@ SUM(a)*1.0/SUM(b) = 0.2222222222222222
 （Postgres 和 MySQL 的整数除法行为也各有各的脾气 🗓️ 未实跑 —— 见附录 A。
 ⭐ <strong>无脑对策：任何要当小数看的除法，分子先乘 <code>1.0</code>。</strong>）</p>
 <h3 id="2">② 平均值把「形状」藏起来了</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SQLite 版本:&quot;</span><span class="p">,</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">sqlite_version</span><span class="p">)</span>
@@ -932,7 +932,7 @@ SUM(a)*1.0/SUM(b) = 0.2222222222222222
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>SQLite 版本: 3.50.4
+<div class="codehilite" data-code-language="text"><pre><span></span><code>SQLite 版本: 3.50.4
 全部 ms 排序 = [90, 110, 120, 450, 900, 3100]
 AVG(ms)     = 795.0
 
@@ -975,7 +975,7 @@ Postgres 有 <code>PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY ms)</code> 🗓�
 </blockquote>
 <hr />
 <h2 id="_3">🔎 六、五个安静的坑</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE calls(feature TEXT, cents REAL)&quot;</span><span class="p">)</span>
@@ -1022,7 +1022,7 @@ Postgres 有 <code>PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY ms)</code> 🗓�
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>坑① 空结果集上：COUNT 是 0，SUM 是 NULL
+<div class="codehilite" data-code-language="text"><pre><span></span><code>坑① 空结果集上：COUNT 是 0，SUM 是 NULL
   不分组，无匹配行: (0, None, None)
   分组，无匹配行  : []
   ⭐ 不分组时【一定返回一行】，分组时【一行都不返回】
@@ -1086,7 +1086,7 @@ MySQL 支持、Postgres 要写成 <code>COUNT(DISTINCT (a, b))</code> 🗓️ �
 <p>⭐ <strong>三个库都能跑的写法是包一层子查询先 <code>DISTINCT</code> 再数</strong>，实跑得到 3。</p>
 <p>⚠️ 常见的偷懒写法 <code>COUNT(DISTINCT a || '|' || b)</code> 有风险：分隔符本身出现在数据里就会撞（<code>'a|b'</code> + <code>'c'</code> 和 <code>'a'</code> + <code>'b|c'</code> 拼出同一个串）。</p>
 <p><strong>坑⑤ SQLite 没有 <code>ROLLUP</code> / <code>GROUPING SETS</code>，合计行要手工拼。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SQLite 版本:&quot;</span><span class="p">,</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">sqlite_version</span><span class="p">)</span>
@@ -1128,7 +1128,7 @@ MySQL 支持、Postgres 要写成 <code>COUNT(DISTINCT (a, b))</code> 🗓️ �
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>SQLite 版本: 3.50.4
+<div class="codehilite" data-code-language="text"><pre><span></span><code>SQLite 版本: 3.50.4
 ROLLUP -&gt; OperationalError : no such function: ROLLUP
 GROUPING SETS -&gt; OperationalError : near &quot;SETS&quot;: syntax error
 
@@ -1285,4 +1285,4 @@ GROUP BY 用列序号 / SELECT 别名:
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

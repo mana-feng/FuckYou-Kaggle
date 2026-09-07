@@ -346,7 +346,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table></div>
 <section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">外部名单（姓名+准标识符） 你的&quot;脱敏&quot;数据集</span></div><div class="vb-flow-row"><span class="vb-flow-step">姓名 / 生日 / 性别 / 邮编 join → 生日 / 性别 / 邮编 / 诊断</span></div><div class="vb-flow-row"></div><div class="vb-flow-row"><span class="vb-flow-step">姓名 ←</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">诊断 ← 攻击完成</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ join 用的钥匙从来不是①，是②。</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 所以你在①上做的一切（删除、哈希、加密），对这条链路【毫无影响】。</span></div></div></section>
 <p><strong>实跑</strong>（296,000 条就诊记录，612 个邮编，年龄 18–85）：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
 
 <span class="n">rng</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">nz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">7</span><span class="p">),</span> <span class="mi">296_000</span><span class="p">,</span> <span class="mi">612</span>
@@ -411,7 +411,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="pii_1">🔎 二、怎么把 PII 找出来（以及自动找不到的那四类）</h2>
 <p>自动扫描靠<strong>四路信号叠加</strong>（列名 + 值正则 + 校验位 + 唯一度），任何单路都会漏：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 
 <span class="n">PAT</span>  <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;手机号&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;^1[3-9]\d</span><span class="si">{9}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="s2">&quot;身份证&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;^\d</span><span class="si">{17}</span><span class="s2">[\dXx]$&quot;</span><span class="p">,</span>
         <span class="s2">&quot;邮箱&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;^[\w.+-]+@[\w-]+\.[\w.]+$&quot;</span><span class="p">,</span> <span class="s2">&quot;银行卡&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;^\d{16,19}$&quot;</span><span class="p">}</span>
@@ -524,7 +524,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <h3 id="_3">💀 确定性哈希的两个死法（都实跑了）</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
 
@@ -573,7 +573,7 @@ ECB 把每一个明文块都正确加密了 —— <strong>但相同的块产生
 <h2 id="k-">📏 四、k-匿名：这一章唯一能算出数的东西</h2>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>k-匿名：把准标识符泛化，直到【每一种取值组合至少对应 k 个人】</p><p>等价类 = 准标识符取值完全相同的一组记录；一条记录的 k = 它所在等价类的大小</p><p>数据集的 k = 所有等价类里【最小的那个】 ⭐ 是最小值，不是平均值</p></div></section>
 <p><strong>代价有多大？实跑</strong>（12 万条，用年龄 + 收入预测一个二分类目标）：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">roc_auc_score</span>
 
@@ -694,7 +694,7 @@ k 必须对历史全部版本的并集算，不是对单次发布算。</p>
 <h3 id="_6">💀 为什么"我加了随机噪声"不等于差分隐私</h3>
 <p>差分攻击实跑：①某邮编阳性人数（真值 41）、②同一邮编<strong>排除张三</strong>后（真值 40），各自独立加 ε=1 噪声，
 攻击者重复查 m 次取平均，看差值是否 ＞ 0.5：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">):</span>
     <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">laplace</span><span class="p">(</span><span class="mi">41</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">laplace</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
@@ -1075,4 +1075,4 @@ k 必须对历史全部版本的并集算，不是对单次发布算。</p>
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

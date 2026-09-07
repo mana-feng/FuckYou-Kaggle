@@ -315,7 +315,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <hr />
 <h2 id="oom">🩺 一、先诊断：你的 OOM 属于哪一类</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">reset_peak_memory_stats</span><span class="p">()</span>
 <span class="n">train_step</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;峰值 </span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">max_memory_allocated</span><span class="p">()</span><span class="o">/</span><span class="mf">1e9</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> GB  &quot;</span>
@@ -338,7 +338,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="1">① 梯度检查点 —— 最常用</h3>
 <section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">正常：前向时保存【每一层】的激活，反向时用</span></div><div class="vb-flow-row"><span class="vb-flow-step">检查点：只保存【少数几个】节点的激活</span></div><div class="vb-flow-row"><span class="vb-flow-step">反向时从最近的节点【重新前向计算】出中间激活</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 显存：O(L)</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">O(√L)</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 时间：+20~35%（多一次前向）</span></div></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`model` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`model` 来自你自己的代码，这一段只看写法</span>
 <span class="c1"># 整个模型</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.checkpoint</span><span class="w"> </span><span class="kn">import</span> <span class="n">checkpoint_sequential</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">checkpoint_sequential</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">,</span> <span class="n">segments</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="nb">input</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
@@ -397,7 +397,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">bitsandbytes</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bnb</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">bitsandbytes</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bnb</span>
 <span class="n">opt</span> <span class="o">=</span> <span class="n">bnb</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">AdamW8bit</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">3e-4</span><span class="p">)</span>   <span class="c1"># ⭐ 一行换掉</span>
 </code></pre></div>
 
@@ -412,7 +412,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="7-batch">⑦ 减小 batch + 梯度累积</h3>
 <section class="visual-block visual-block-flow" aria-label="流程图"><p class="visual-block-title">流程图</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">micro_batch=1，累积 32 步</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">等效 batch=32</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 但要知道代价：</span></div><div class="vb-flow-row"><span class="vb-flow-step">· micro batch 太小</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">GPU 利用率下降（第 2 章：warp 不够）</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 通信次数不变但计算变少</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">通信占比上升</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 所以这是【最后手段】，不是第一手段</span></div></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`loader` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`loader` 来自你自己的代码，这一段只看写法</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">batch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">loader</span><span class="p">):</span>
     <span class="n">loss</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span> <span class="o">/</span> <span class="n">accum_steps</span>        <span class="c1"># ⭐ 别忘了除</span>
     <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
@@ -428,7 +428,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="oom_1">🧩 四、显存碎片：那个"明明还有显存却 OOM"</h2>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>症状：</p><p>· 报错说&quot;tried to allocate 2GB，free 8GB&quot;但还是失败</p><p>· 训练跑了几小时后突然 OOM</p><p>· reserved 比 allocated 大很多（&gt;20%）</p><p>原因：PyTorch 的缓存分配器把显存切成了很多小块，</p><p>没有【连续】的大块可用</p></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="c1"># ⭐ 三个常用手段</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># ⭐ 三个常用手段</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;PYTORCH_CUDA_ALLOC_CONF&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;expandable_segments:True&quot;</span>
@@ -621,4 +621,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

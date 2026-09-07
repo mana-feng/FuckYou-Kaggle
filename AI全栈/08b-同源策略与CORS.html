@@ -389,7 +389,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="cors">🔓 二、CORS：它是【放宽】同源策略的机制，不是收紧的</h2>
 <p>这是最常见的误解，而且方向正好反了：很多人以为「配了 CORS = 加了一层防护」。⭐ <strong>实际上不配 CORS 才是最严的状态</strong>（没有任何跨源页面能读你的响应），配了才开始有源被放行。</p>
 <h3 id="cors_1">⚠️ 先看一个反直觉的实测：被 CORS「拒绝」的请求，业务代码照样执行了</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 三种 CORS 配置，用 TestClient 当场看它回了什么头（pip install fastapi httpx）</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 三种 CORS 配置，用 TestClient 当场看它回了什么头（pip install fastapi httpx）</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.middleware.cors</span><span class="w"> </span><span class="kn">import</span> <span class="n">CORSMiddleware</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
@@ -520,7 +520,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><strong>没有任何报错、告警、指标会动</strong></li>
 </ol>
 <p>⭐ 这就是<a href="16-上线前检查单.html">第 16 章</a>安全那节「CORS 不是 <code>*</code>」那条检查项的由来，它给的验证动作是<strong>用一个你不认识的 Origin 去打预检</strong>：</p>
-<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>-i<span class="w"> </span>-X<span class="w"> </span>OPTIONS<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Origin: https://evil.example&quot;</span><span class="w"> </span><span class="se">\</span>
+<div class="codehilite" data-code-language="bash"><pre><span></span><code>curl<span class="w"> </span>-i<span class="w"> </span>-X<span class="w"> </span>OPTIONS<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Origin: https://evil.example&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">     </span>-H<span class="w"> </span><span class="s2">&quot;Access-Control-Request-Method: POST&quot;</span><span class="w"> </span>你的域/api/chat
 </code></pre></div>
 
@@ -698,4 +698,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

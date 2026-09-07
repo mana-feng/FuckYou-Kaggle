@@ -88,6 +88,7 @@
       updateProgress();
     }
     full.querySelectorAll('pre').forEach((pre, i) => {
+      if (window.CodeReader) return;
       const lines = pre.textContent.trimEnd().split('\n').length;
       if (lines < 25) return;
       pre.id ||= `long-code-${i}`;

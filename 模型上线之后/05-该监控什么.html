@@ -375,7 +375,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>对每个进入模型的特征，监控四件事：</p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>1. 缺失率 —— 突然从 2% 涨到 40%？上游挂了</p><p>2. 取值范围 —— 出现了训练时没见过的极值？单位可能变了</p><p>3. 分布 —— 均值/分位数漂移（第 6 章详讲）</p><p>4. 类别集合 —— 出现新类别？消失了某个类别？⭐</p></div></section>
 <h3 id="_3">🔨 一个够用的实现</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">feature_profile</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;训练时算一次存下来，线上定期算同样的指标做对比&quot;&quot;&quot;</span>
@@ -556,7 +556,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ⭐ 一个直接可跑的新鲜度检查：只查元数据，不扫全表，几乎零成本</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># ⭐ 一个直接可跑的新鲜度检查：只查元数据，不扫全表，几乎零成本</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
 
 <span class="n">FRESHNESS_SLA</span> <span class="o">=</span> <span class="p">{</span>                    <span class="c1"># 表名 -&gt; 允许的最大滞后（小时）</span>
@@ -786,4 +786,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

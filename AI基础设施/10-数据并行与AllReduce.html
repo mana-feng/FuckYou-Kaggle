@@ -380,7 +380,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 因为等效 batch 变成了 N 倍，要保持梯度的尺度不变。
 <strong>求和的话相当于学习率被放大了 N 倍。</strong></p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="c1"># PyTorch DDP：标准写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># PyTorch DDP：标准写法</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.distributed</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">dist</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.nn.parallel</span><span class="w"> </span><span class="kn">import</span> <span class="n">DistributedDataParallel</span> <span class="k">as</span> <span class="n">DDP</span>
 
@@ -413,7 +413,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>太小则通信次数多、开销大；太大则重叠机会少。</strong></p>
 </blockquote>
 <h3 id="2">② 梯度累积时要关掉同步</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`loader` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`loader` 来自你自己的代码，这一段只看写法</span>
 <span class="c1"># ❌ 每个 micro batch 都 AllReduce → 通信量翻 N 倍</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">batch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">loader</span><span class="p">):</span>
     <span class="n">loss</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span> <span class="o">/</span> <span class="n">accum</span>
@@ -608,4 +608,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

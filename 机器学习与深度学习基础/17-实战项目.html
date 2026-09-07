@@ -364,7 +364,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li class="reading-task" data-reading-task="6"><label class="reading-task-title"><input type="checkbox" data-task-key="6"><span>任务 T6</span></label><p class="reading-task-time">参考用时 · 30 分钟</p><div class="reading-task-body"> ⭐ <strong>诚实性检查</strong>（这一步才是这个项目的灵魂）</div></li>
 </ul>
 <h3 id="t2">🔨 T2 的骨架（照抄就能开始）</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_pipeline</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_pipeline</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">cross_val_score</span><span class="p">,</span> <span class="n">KFold</span>
 
@@ -414,7 +414,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li class="reading-task" data-reading-task="13"><label class="reading-task-title"><input type="checkbox" data-task-key="13"><span>任务 T7</span></label><p class="reading-task-time">参考用时 · 30 分钟</p><div class="reading-task-body"> 和 sklearn 的 <code>MLPClassifier</code> 对比精度，验证自己实现是对的</div></li>
 </ul>
 <h3 id="_7">🔑 关键提示</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># Softmax + 交叉熵的梯度（和第8章的 sigmoid 版一样干净）</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># Softmax + 交叉熵的梯度（和第8章的 sigmoid 版一样干净）</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">softmax</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
     <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">-</span> <span class="n">z</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>      <span class="c1"># ⭐ 数值稳定，防 exp 溢出</span>
@@ -489,7 +489,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li class="reading-task" data-reading-task="20"><label class="reading-task-title"><input type="checkbox" data-task-key="20"><span>任务 T7</span></label><p class="reading-task-time">参考用时 · 30 分钟</p><div class="reading-task-body"> 三个方案的对比表：精度 / 训练时间 / 数据需求</div></li>
 </ul>
 <h3 id="b-c">🔨 B 和 C 的关键代码差异（就这几行）</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torchvision</span><span class="o">,</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torchvision</span><span class="o">,</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 <span class="n">m</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">resnet18</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="s2">&quot;IMAGENET1K_V1&quot;</span><span class="p">)</span>
 <span class="n">m</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">fc</span><span class="o">.</span><span class="n">in_features</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">)</span>     <span class="c1"># 换分类头（两个方案都要）</span>
@@ -569,7 +569,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 <hr>
 <h2 id="readme">📝 项目 README 模板</h2>
-<div class="codehilite"><pre><span></span><code><span class="gh"># 项目名</span>
+<div class="codehilite" data-code-language="markdown"><pre><span></span><code><span class="gh"># 项目名</span>
 <span class="gu">## 问题定义（数据、任务、指标）</span>
 <span class="gu">## 结果</span>
 | 方案 | CV 分数 | 测试分数 | 备注 |
@@ -658,4 +658,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

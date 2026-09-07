@@ -325,7 +325,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 只是<strong>你的输入数据在中途被人改掉了</strong>。</p>
 <hr>
 </section><section class="cross-unit" id="read-observe" aria-labelledby="read-observe-title"><h2 id="read-observe-title">先观察：两种读取，两种结果</h2><p class="cross-cue">先预测 b 会不会变，再运行第一段代码核对。</p><h3 id="_2">🧩 一、两行只差一对方括号</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">b</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>          <span class="c1"># 基础切片</span>
@@ -359,7 +359,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </section><section class="cross-unit" id="read-decide" aria-labelledby="read-decide-title"><h2 id="read-decide-title">怎么判断是否共享内存</h2><p class="cross-cue">判据说明和完整写法表放在一起；.base 回答的不是同一个问题。</p><h3 id="npshares_memory-base">🔍 二、判据：<code>np.shares_memory</code>，不是 <code>.base</code></h3>
 <p>结论先放这儿，这一行你会用一辈子：⭐ <strong><code>np.shares_memory(a, b)</code></strong> —— 唯一在所有情况下都对的判据。</p>
 <p><code>.base</code> 看起来更直观 —— 视图有 <code>base</code>、拷贝没有 —— 而且在最简单的情形下它确实对：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># 情形一：源数组自己就是内存的持有者</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
@@ -420,7 +420,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr>
 <h3 id="_3">📋 三、一张判据表</h3>
 <p>把常见写法一次跑完，别猜：</p>
-<details class="cross-code"><summary>展开完整代码（34 行，原样保留）</summary><div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<details class="cross-code"><summary>展开完整代码（34 行，原样保留）</summary><div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>      <span class="c1"># ⭐ 让 a 自己持有内存，a.base is None</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"a.base is None ="</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">base</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
@@ -620,7 +620,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr>
 </section><section class="cross-unit" id="read-write" aria-labelledby="read-write-title"><h2 id="read-write-title">读取结果是拷贝，不等于不能写回原数组</h2><p class="cross-cue">把“先取出来再改”和“直接给下标赋值”分清。</p><h3 id="b02-1">💀 四、最容易记反的一条：<code>b[[0,2]] += 1</code> 会改原数组</h3>
 <p>第一节说「花式索引给的是拷贝」。<strong>很多人由此推出「所以花式索引改不了原数组」—— 这是错的。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># ① 先取出来，再改那个取出来的东西 —— 花式索引给的是拷贝，原数组不动</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
@@ -679,7 +679,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p>⚠️ <strong>还有第三种，最阴</strong>：下标<strong>不在</strong>等号左边、但看起来像在：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># ① 链式下标 + 基础切片：中间那步是视图，写得进去</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
@@ -728,7 +728,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr>
 </section><section class="cross-unit" id="read-incidents" aria-labelledby="read-incidents-title"><h2 id="read-incidents-title">两场事故：结果正常，却改坏了输入</h2><p class="cross-cue">K-means 看原数据变化；梯度检查先看两个扰动是否独立。</p><h3 id="k-means">💀 五、事故：拿切片当 K-means 的初始中心</h3>
 <p>判据讲完了，看它在真代码里长什么样。下面这段 K-means 除了初始中心的取法之外，两版<strong>一个字符都不差</strong>：</p>
-<details class="cross-code"><summary>展开完整代码（45 行，原样保留）</summary><div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<p class="cr-reading-cue">先看这个关系：<code>X[:3]</code> 与原数组共享内存，<code>X[[0, 1, 2]]</code> 得到独立拷贝。展开实验后，重点找初始化与 <code>C[j] = …</code> 的就地更新；结果与事故解释保留在代码下方。</p>
+
+<details class="cr-fold">
+<summary>查看 K-means 完整实验 · 数据生成、两种初始化与结果比较</summary>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -775,7 +779,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="s2">"  两版标签一致的样本 ="</span><span class="p">,</span> <span class="p">(</span><span class="n">lab_bad</span> <span class="o">==</span> <span class="n">lab_ok</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="s2">"/"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X0</span><span class="p">))</span>
 </code></pre></div>
 
-</details><p>实跑输出：</p>
+</details>
+<p>实跑输出：</p>
 <div class="table-scroll"><div class="tw"><table class="experiment-results"><caption>实验结果：逐项核对，不是执行步骤</caption><thead><tr><th scope="col">观察项</th><th scope="col">原样结果与说明</th></tr></thead><tbody><tr><th scope="row">错误初始化的共享</th><td>X[:3] 和 X 共享内存吗: True</td></tr><tr><th scope="row">原数据被改的行数</th><td>跑完之后 X 被改掉了 3 行 / 共 180 行</td></tr><tr><th scope="row">第 1 行前后对比</th><td>第 1 行 原本 [0.32 0.052] 现在 [4.86 0.014] &lt;- 从第一簇被搬到第二簇的位置上了</td></tr><tr><th scope="row">正确初始化的共享</th><td>X[[0,1,2]] 和 X 共享内存吗: False</td></tr><tr><th scope="row">正确版改动行数</th><td>跑完之后 X 被改掉了 0 行</td></tr><tr><th scope="row">评估使用哪份数据</th><td>拿【原始数据】评两版的簇内平方和:</td></tr><tr><th scope="row">错误版误差</th><td>错版 inertia = 133.080</td></tr><tr><th scope="row">正确版误差</th><td>对版 inertia = 89.828</td></tr><tr><th scope="row">相同标签的数量</th><td>两版标签一致的样本 = 178 / 180</td></tr></tbody></table></div></div>
 <p>💀 <strong>事故报告</strong>：</p>
 <div class="tw"><table>
@@ -810,7 +815,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr>
 <h3 id="a-b-a-a-b">🧯 六、<code>a += b</code> 和 <code>a = a + b</code>（兑现上一章的预告）</h3>
 <p><a href="03-%E5%B9%BF%E6%92%AD%E7%9A%84%E4%B8%89%E6%9D%A1%E8%A7%84%E5%88%99.html">03 章第六节</a>末尾留了一句「这两个是两件不同的事」，这里是完整版：</p>
-<details class="cross-code"><summary>展开完整代码（48 行，原样保留）</summary><div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<details class="cross-code"><summary>展开完整代码（48 行，原样保留）</summary><div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># ---- 同一个数组，两种写法 ----</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
@@ -911,7 +916,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr>
 </section><section class="cross-unit" id="read-boundary" aria-labelledby="read-boundary-title"><h2 id="read-boundary-title">需要独立数据时，在哪一处切断</h2><p class="cross-cue">写法、成本和函数边界约定一起保留。</p><h3 id="_4">✂️ 七、想切断的时候，写哪一个</h3>
-<details class="cross-code"><summary>展开完整代码（31 行，原样保留）</summary><div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<details class="cross-code"><summary>展开完整代码（31 行，原样保留）</summary><div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="n">v</span> <span class="o">=</span> <span class="n">a</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>                          <span class="c1"># 一个视图</span>
@@ -1260,4 +1265,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

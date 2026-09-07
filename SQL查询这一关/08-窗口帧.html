@@ -317,7 +317,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_2">🕳️ 一、你早就写过帧了，只是没写出来</h2>
 <p>先看一句最普通的累计求和。五行数据，⭐ <strong><code>03-02</code> 那天有两笔</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE pay (d TEXT, amt INTEGER)&quot;</span><span class="p">)</span>
@@ -348,7 +348,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p><strong>实测输出</strong>（Python 3.13.14 / SQLite 3.50.4）：</p>
-<div class="codehilite"><pre><span></span><code>d       amt   默认帧   显式RANGE   显式ROWS
+<div class="codehilite" data-code-language="text"><pre><span></span><code>d       amt   默认帧   显式RANGE   显式ROWS
 03-01    10      10        10        10
 03-02    20      60        60        30
 03-02    30      60        60        60
@@ -405,7 +405,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 排名类（<code>ROW_NUMBER</code> / <code>RANK</code> / <code>DENSE_RANK</code>）和 <code>LAG</code> / <code>LEAD</code> 不受帧影响，所以 07 章一路无事。</p>
 <hr />
 <h2 id="_3">📐 二、帧的完整语法：三个部件</h2>
-<div class="codehilite"><pre><span></span><code><span class="err">函数</span><span class="p">(</span><span class="err">…</span><span class="p">)</span><span class="w"> </span><span class="n">OVER</span><span class="w"> </span><span class="p">(</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="err">函数</span><span class="p">(</span><span class="err">…</span><span class="p">)</span><span class="w"> </span><span class="n">OVER</span><span class="w"> </span><span class="p">(</span>
 <span class="w">  </span><span class="n">PARTITION</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="err">…</span>
 <span class="w">  </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="err">…</span>
 <span class="w">  </span><span class="k">ROWS</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">RANGE</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">GROUPS</span><span class="w">  </span><span class="k">BETWEEN</span><span class="w">  </span><span class="err">起点</span><span class="w">  </span><span class="k">AND</span><span class="w">  </span><span class="err">终点</span>
@@ -484,7 +484,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table></div>
 <p>⚠️ <strong>起点不能排在终点后面</strong>，否则报错。
 ⭐ <strong>省略 <code>BETWEEN</code> 是合法的简写，终点默认是 <code>CURRENT ROW</code></strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">ROWS</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">PRECEDING</span><span class="w">   </span><span class="err">≡</span><span class="w">   </span><span class="k">ROWS</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">PRECEDING</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="k">CURRENT</span><span class="w"> </span><span class="k">ROW</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="k">ROWS</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">PRECEDING</span><span class="w">   </span><span class="err">≡</span><span class="w">   </span><span class="k">ROWS</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">PRECEDING</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="k">CURRENT</span><span class="w"> </span><span class="k">ROW</span>
 </code></pre></div>
 
 <p>⚠️ ⭐ <strong><code>PARTITION BY</code> 是硬边界，帧永远不会越过它。</strong>
@@ -492,7 +492,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="rows">🧮 三、<code>ROWS</code>：累计、移动平均、还剩多少</h2>
 <p>三个最常用的形状，一次跑完。这是一张服务的日 p99 延迟表：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE lat (svc TEXT, d TEXT, p99 REAL)&quot;</span><span class="p">)</span>
@@ -524,7 +524,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>实测输出：</p>
-<div class="codehilite"><pre><span></span><code>d       p99    累计    移动3    还剩    占全组
+<div class="codehilite" data-code-language="text"><pre><span></span><code>d       p99    累计    移动3    还剩    占全组
 03-01  120.0   120.0   120.0   822.0   12.7%
 03-02  140.0   260.0   130.0   682.0   14.9%
 03-03  132.0   392.0   130.7   550.0   14.0%
@@ -585,7 +585,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><strong>这一节是全章的正题。</strong></p>
 <p>上面所有「近 3 天」其实都是骗人的 —— 我写的是 <code>ROWS 2 PRECEDING</code>，它是近 3 行。
 只要<strong>每天都恰好有一行</strong>，两者就一样。⚠️ <strong>而「每天都有一行」几乎从不成立</strong>：服务器没请求、店铺没成交、客服休假、任务失败没写数 —— 那一天在表里根本没有行。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE clk (day INTEGER, n INTEGER)&quot;</span><span class="p">)</span>
@@ -622,7 +622,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>实测输出：</p>
-<div class="codehilite"><pre><span></span><code>day   n   最近3行   最近3天   窗内行数
+<div class="codehilite" data-code-language="text"><pre><span></span><code>day   n   最近3行   最近3天   窗内行数
   1   5       5         5         1
   2   3       8         8         2
   3   9      17        17         3
@@ -697,7 +697,7 @@ RANGE 带偏移量时，窗口里只能有一个 ORDER BY 列：
 <hr />
 <h2 id="last_value">🎭 五、<code>LAST_VALUE</code> 的默认帧陷阱，和命名窗口</h2>
 <p><strong>这是默认帧引发的第二起事故，比累计和那个更常见。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE f (uid INTEGER, t INTEGER, v REAL)&quot;</span><span class="p">)</span>
@@ -725,7 +725,7 @@ RANGE 带偏移量时，窗口里只能有一个 ORDER BY 列：
 </code></pre></div>
 
 <p>实测输出：</p>
-<div class="codehilite"><pre><span></span><code>uid  t    v     FIRST_VALUE   LAST_VALUE(默认帧)   LAST_VALUE(全帧)   MAX(无排序)
+<div class="codehilite" data-code-language="text"><pre><span></span><code>uid  t    v     FIRST_VALUE   LAST_VALUE(默认帧)   LAST_VALUE(全帧)   MAX(无排序)
  1   1   0.10      0.10            0.10              0.30            0.30
  1   2   0.20      0.10            0.20              0.30            0.30
  1   3   0.30      0.10            0.30              0.30            0.30
@@ -779,7 +779,7 @@ RANGE 带偏移量时，窗口里只能有一个 ORDER BY 列：
 <hr />
 <h2 id="groups-exclude">🧪 六、<code>GROUPS</code> 和 <code>EXCLUDE</code>：知道有这两个就够了</h2>
 <p>它俩用得少，但知道存在能省下「明明该有这个功能怎么没有」的半小时。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE pay (day INTEGER, amt INTEGER)&quot;</span><span class="p">)</span>
@@ -813,7 +813,7 @@ RANGE 带偏移量时，窗口里只能有一个 ORDER BY 列：
 </code></pre></div>
 
 <p>实测输出：</p>
-<div class="codehilite"><pre><span></span><code>day  amt   ROWS 1P   RANGE 1P   GROUPS 1P
+<div class="codehilite" data-code-language="text"><pre><span></span><code>day  amt   ROWS 1P   RANGE 1P   GROUPS 1P
  1    10      10         10          10
  2    20      30         60          60
  2    30      50         60          60
@@ -916,7 +916,7 @@ PostgreSQL 从 11 开始支持，MySQL 8.0 的窗口帧<strong>只有 <code>ROWS
 <hr />
 <h2 id="_4">📋 七、把帧接回真实需求：滚动特征，和「只看过去」</h2>
 <p>现在把前面所有零件用在一个真问题上。一张客服工单评分表，⚠️ <strong><code>alice</code> 在 3 月 4–8 日休假，一张单都没有</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE tk (agent TEXT, ts TEXT, score REAL)&quot;</span><span class="p">)</span>
@@ -958,7 +958,7 @@ PostgreSQL 从 11 开始支持，MySQL 8.0 的窗口帧<strong>只有 <code>ROWS
 </code></pre></div>
 
 <p>实测输出：</p>
-<div class="codehilite"><pre><span></span><code>agent  ts           score  近3单均分  近3天均分  近3天单数
+<div class="codehilite" data-code-language="text"><pre><span></span><code>agent  ts           score  近3单均分  近3天均分  近3天单数
 alice  2026-03-01   4.0      4.00       4.00       1
 alice  2026-03-02   5.0      4.50       4.50       2
 alice  2026-03-03   3.0      4.00       4.00       3
@@ -1215,4 +1215,4 @@ bob    2026-03-04   4.0      3.67       3.67       3
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -436,7 +436,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 这样 $\alpha$（软硬损失的配比）才有稳定含义，你调 T 的时候不会顺带把有效学习率改了 64 倍。</p>
 </details>
 <p>下面这段可以直接跑，<strong>它就是上面那段推导的数值验证</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
 
 <span class="n">teacher</span>  <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">6.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">]])</span>
@@ -614,7 +614,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="1-15">事故一：整体掉 1 个点，某个人群掉 15 个点</h3>
 <p>发生了什么：一个客服意图分类服务，7B teacher 蒸成 1.3B student。验收指标：teacher 准确率 93.3%，student 92.3%，<strong>整体只掉 1.03pp</strong>，远好于 3pp 的红线，一次通过上线。上线两周后运营反馈：某类低频工单（占总量 1%）的转人工率翻了 3 倍。回头一查——那个分组的准确率从 85% 掉到了 70%，掉了 15pp。</p>
 <p>这段代码就是<strong>当时应该跑而没跑的那一步</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">stratified_report</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">groups</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;rows: (分组, teacher是否正确, student是否正确) 的列表&quot;&quot;&quot;</span>
@@ -867,4 +867,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

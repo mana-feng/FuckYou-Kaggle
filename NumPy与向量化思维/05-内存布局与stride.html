@@ -322,7 +322,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_2">🧩 一、说明书里有什么</h2>
 <p>数组本体只是一段字节。剩下的全在说明书里：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">base</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
@@ -355,7 +355,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <figure class="dia" data-fig="numpy_strides"><svg viewBox="0 0 760 386" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="NumPy 数组转置前后共用同一块内存，shape 和 strides 的两个跨度互换"><text class="dia-t" x="386" y="24" font-size="13.5" text-anchor="middle" fill="var(--fg)" font-weight="700">同一块连续内存（base）</text><text class="dia-t" x="386" y="44" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">每格 1 个 int64 = 8 B</text><rect x="30" y="56" width="230" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><text class="dia-t" x="48" y="77" font-size="14" text-anchor="start" fill="var(--accent)" font-weight="700">a</text><text class="dia-t" x="48" y="94" font-size="11" text-anchor="start" fill="var(--muted)" font-weight="normal">shape (3, 4) · strides (32, 8)</text><rect x="500" y="56" width="230" height="48" rx="10" fill="var(--card)" stroke="var(--link)" stroke-width="1.8"/><text class="dia-t" x="518" y="77" font-size="14" text-anchor="start" fill="var(--link)" font-weight="700">a.T</text><text class="dia-t" x="518" y="94" font-size="11" text-anchor="start" fill="var(--muted)" font-weight="normal">shape (4, 3) · strides (8, 32)</text><rect x="340" y="82" width="92" height="22" fill="var(--card)" stroke="var(--border)" stroke-width="1"/><text class="dia-t" x="364" y="97" font-size="11.5" text-anchor="middle" fill="var(--fg)" font-weight="normal">0</text><text class="dia-t" x="418" y="97" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">0 B</text><rect x="340" y="104" width="92" height="22" fill="var(--card)" stroke="var(--border)" stroke-width="1"/><text class="dia-t" x="364" y="119" font-size="11.5" text-anchor="middle" fill="var(--fg)" font-weight="normal">1</text><text class="dia-t" x="418" y="119" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">8 B</text><rect x="340" y="126" width="92" height="22" fill="var(--card)" stroke="var(--border)" stroke-width="1"/><text class="dia-t" x="364" y="141" font-size="11.5" text-anchor="middle" fill="var(--fg)" font-weight="normal">2</text><text class="dia-t" x="418" y="141" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">16 B</text><rect x="340" y="148" width="92" height="22" fill="var(--card)" stroke="var(--border)" stroke-width="1"/><text class="dia-t" x="364" y="163" font-size="11.5" text-anchor="middle" fill="var(--fg)" font-weight="normal">3</text><text class="dia-t" x="418" y="163" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">24 B</text><rect x="340" y="170" width="92" height="22" fill="var(--card)" stroke="var(--border)" stroke-width="1"/><text class="dia-t" x="364" y="185" font-size="11.5" text-anchor="middle" fill="var(--fg)" font-weight="normal">4</text><text class="dia-t" x="418" y="185" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">32 B</text><rect x="340" y="192" width="92" height="22" fill="var(--card)" stroke="var(--border)" stroke-width="1"/><text class="dia-t" x="364" y="207" font-size="11.5" text-anchor="middle" fill="var(--fg)" font-weight="normal">5</text><text class="dia-t" x="418" y="207" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">40 B</text><rect x="340" y="214" width="92" height="22" fill="var(--card)" stroke="var(--border)" stroke-width="1"/><text class="dia-t" x="364" y="229" font-size="11.5" text-anchor="middle" fill="var(--fg)" font-weight="normal">6</text><text class="dia-t" x="418" y="229" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">48 B</text><rect x="340" y="236" width="92" height="22" fill="var(--card)" stroke="var(--border)" stroke-width="1"/><text class="dia-t" x="364" y="251" font-size="11.5" text-anchor="middle" fill="var(--fg)" font-weight="normal">7</text><text class="dia-t" x="418" y="251" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">56 B</text><rect x="340" y="258" width="92" height="22" fill="var(--card)" stroke="var(--border)" stroke-width="1"/><text class="dia-t" x="364" y="273" font-size="11.5" text-anchor="middle" fill="var(--fg)" font-weight="normal">8</text><text class="dia-t" x="418" y="273" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">64 B</text><rect x="340" y="280" width="92" height="22" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><text class="dia-t" x="364" y="295" font-size="11.5" text-anchor="middle" fill="var(--fg)" font-weight="700">9</text><text class="dia-t" x="418" y="295" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">72 B</text><rect x="340" y="302" width="92" height="22" fill="var(--card)" stroke="var(--border)" stroke-width="1"/><text class="dia-t" x="364" y="317" font-size="11.5" text-anchor="middle" fill="var(--fg)" font-weight="normal">10</text><text class="dia-t" x="418" y="317" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">80 B</text><rect x="340" y="324" width="92" height="22" fill="var(--card)" stroke="var(--border)" stroke-width="1"/><text class="dia-t" x="364" y="339" font-size="11.5" text-anchor="middle" fill="var(--fg)" font-weight="normal">11</text><text class="dia-t" x="418" y="339" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">88 B</text><line x1="318" y1="93.0" x2="318" y2="174.0" stroke="var(--accent)" stroke-width="2.4"/><polygon points="313,173.0 323,173.0 318,181.0" fill="var(--accent)"/><text class="dia-t" x="210" y="129.0" font-size="11.5" text-anchor="middle" fill="var(--accent)" font-weight="700">行 +1</text><text class="dia-t" x="210" y="146.0" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">跨 4 格 = +32 B</text><line x1="298" y1="93.0" x2="298" y2="110.0" stroke="var(--accent)" stroke-width="2.4"/><polygon points="293,109.0 303,109.0 298,116.0" fill="var(--accent)"/><text class="dia-t" x="208" y="155.0" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="600">列 +1：跨 1 格 = +8 B</text><line x1="454" y1="93.0" x2="454" y2="110.0" stroke="var(--link)" stroke-width="2.4"/><polygon points="449,109.0 459,109.0 454,116.0" fill="var(--link)"/><text class="dia-t" x="564" y="155.0" font-size="11" text-anchor="middle" fill="var(--link)" font-weight="600">行 +1：跨 1 格 = +8 B</text><line x1="474" y1="93.0" x2="474" y2="174.0" stroke="var(--link)" stroke-width="2.4"/><polygon points="469,173.0 479,173.0 474,181.0" fill="var(--link)"/><text class="dia-t" x="565" y="129.0" font-size="11.5" text-anchor="middle" fill="var(--link)" font-weight="700">列 +1</text><text class="dia-t" x="565" y="146.0" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">跨 4 格 = +32 B</text><line x1="432" y1="291.0" x2="490" y2="291.0" stroke="var(--accent)" stroke-width="1.8" stroke-dasharray="4 3"/><text class="dia-t" x="500" y="285.0" font-size="11.5" text-anchor="start" fill="var(--accent)" font-weight="700">a[2, 1]</text><text class="dia-t" x="480" y="303.0" font-size="11" text-anchor="start" fill="var(--muted)" font-weight="normal">2×32 + 1×8 = 72 B → 第 9 格</text><text class="dia-t" x="386" y="366" font-size="12.3" text-anchor="middle" fill="var(--fg)" font-weight="700">转置前后：中间 12 格一字未动，只有两组 strides 互换</text></svg><figcaption>看中间那条内存：转置前后它一个字节都没动，动的只是两组箭头的跨度。<b>shape / strides 是说明书，不是另一份数据。</b></figcaption></figure>
 </div>
 <p>⭐ <strong>有了这两个数，任意下标都能直接算出地址</strong>，不需要真的「一行一行找过去」：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">base</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
@@ -371,7 +371,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_3">🧩 二、转置为什么是免费的</h2>
 <p>既然地址是算出来的，那么<strong>把 strides 换个顺序，就等于换了一种读法</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 
@@ -389,7 +389,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="base">🚦 三、⚠️ <code>.base</code> 不是「上一层」，是最终持有内存的那个</h2>
 <p>上一章教了用 <code>.base</code> 判断是不是视图。这里有个<strong>会让你判断错</strong>的细节：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">base</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
@@ -403,7 +403,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⚠️ 所以上一章那个 <code>c.base is b</code> 的写法，<strong>只在 <code>b</code> 自己就是内存持有者时才成立</strong>。
 一旦 <code>b</code> 本身也是个视图，<code>c.base is b</code> 就会给你 <code>False</code>，但它们<strong>确实共享内存</strong>。</p>
 <p>⚠️⚠️ <strong>而且它还会朝另一个方向骗你</strong> —— <code>.base</code> 不是 <code>None</code>，却<strong>根本不共享内存</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">base</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
@@ -422,7 +422,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>所以 <code>.base</code> 两个方向都会判错</strong>：
 <code>is None</code> 不代表拷贝，<code>is not None</code> 也不代表共享。<strong>它根本不是用来做这个判断的。</strong></p>
 <p>⭐ <strong>稳妥的判据永远是这个</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">base</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
@@ -437,7 +437,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="c-f">🧩 四、C 序和 F 序：同一张表，两种铺法</h2>
 <p>同样一个 2×3 的表，在内存里可以按行铺，也可以按列铺：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
 <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asfortranarray</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
@@ -488,7 +488,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><strong>能</strong> → 返回视图，零成本</li>
 <li><strong>不能</strong> → <strong>默默拷贝一份</strong>，然后在拷贝上 reshape</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 
@@ -502,7 +502,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <p>⚠️ <strong>注意 <code>reshape</code> 不报错</strong>。它拷贝的时候一声不吭 —— 对 10 个元素无所谓，对 10 GB 的数组就是一次内存翻倍。</p>
 <p>⭐ <strong>想要「不许拷贝，要拷就报错给我看」，有个专门的写法</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 
@@ -515,7 +515,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⚠️ 这个方法名是 PyTorch 的（NumPy 里对应的是 <code>np.ascontiguousarray</code>），
 但两边修的是同一件事：<strong>把一个「strides 乱了」的数组，重新拷贝成一块连续内存。</strong></p>
 <p>它存在的唯一原因是：有些操作只写了针对连续内存的快路径，遇到不连续的就罢工或绕远路。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 
@@ -547,7 +547,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>这两句<strong>是同一次内存遍历</strong> —— <code>big.T</code> 只换了说明书，<code>axis</code> 也跟着换了，走的字节顺序一模一样。
 我第一版就是这么测的，结果「不连续」反而更快，因为测的根本不是连续性。</p>
 <p>⭐ <strong>公平的对比要拿同样的数据、同样的元素个数，只让内存布局不同</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">timeit</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">timeit</span>
 
 <span class="n">n</span> <span class="o">=</span> <span class="mi">4000</span>
 <span class="n">full</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
@@ -574,7 +574,7 @@ CPU 一次从内存搬的是一整条 cache line（通常 64 字节），
 <hr />
 <h2 id="as_strided">🧩 八、<code>as_strided</code>：直接手写说明书</h2>
 <p>既然形状只是说明书，那<strong>能不能自己编一份</strong>？能，而且这是滑动窗口的经典实现：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.lib.stride_tricks</span><span class="w"> </span><span class="kn">import</span> <span class="n">as_strided</span>
 
 <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
@@ -596,7 +596,7 @@ CPU 一次从内存搬的是一整条 cache line（通常 64 字节），
 shape 写大一格，它就去读数组后面那块不属于你的内存 —— 不报错，读出垃圾数，
 运气不好直接段错误。</p>
 <p>⭐ <strong>实际工作中请用 <code>np.lib.stride_tricks.sliding_window_view</code></strong>，它做同样的事但有边界检查：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
 <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">stride_tricks</span><span class="o">.</span><span class="n">sliding_window_view</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
@@ -701,4 +701,4 @@ shape 写大一格，它就去读数组后面那块不属于你的内存 —— 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

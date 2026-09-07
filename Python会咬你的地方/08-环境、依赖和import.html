@@ -343,7 +343,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p>⚠️ <strong><code>ModuleNotFoundError</code> 只告诉你「没找到」，从不告诉你「在哪找过」。</strong> 自己打出来：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># whereis.py —— import 失败时，把「解释器到底在哪找过」打出来</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># whereis.py —— import 失败时，把「解释器到底在哪找过」打出来</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
@@ -399,7 +399,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <h3 id="1">🚦 第 ① 步的缓存：模块体一个进程里只跑一次</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># modcache.py —— import 两次，模块体只跑一次</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># modcache.py —— import 两次，模块体只跑一次</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -432,7 +432,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <code>print</code> 一堆东西，任何人 import 你都得付这个代价。⭐ <strong>顶层只放定义，副作用放进函数。</strong></p>
 <hr />
 <h2 id="0-randompy">🧯 二、<code>[0]</code> 排在标准库前面：你自己写的 <code>random.py</code> 会顶掉标准库</h2>
-<div class="codehilite"><pre><span></span><code><span class="c1"># shadow.py —— 自己写的 random.py 会顶掉标准库</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># shadow.py —— 自己写的 random.py 会顶掉标准库</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -462,7 +462,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <code>string.py</code> <code>queue.py</code> <code>copy.py</code> <code>logging.py</code> <code>test.py</code> <code>parser.py</code> <code>platform.py</code></p>
 <p>⭐ <strong>一秒确认</strong>：<code>python -c "import 那个名字 as m; print(m.__file__)"</code>。指到你自己的目录就是撞了。</p>
 <h3 id="import">🚦 同一类的另一个形态：循环 import</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># circular.py —— 循环 import 的报错长什么样，以及为什么换个写法就好了</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># circular.py —— 循环 import 的报错长什么样，以及为什么换个写法就好了</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -526,7 +526,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="python-xpy-python-m-x">🧩 三、<code>python x.py</code> 和 <code>python -m x</code> 不是一回事</h2>
-<div class="codehilite"><pre><span></span><code><span class="c1"># dashm.py —— python pkg/tool.py 和 python -m pkg.tool 不是一回事</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># dashm.py —— python pkg/tool.py 和 python -m pkg.tool 不是一回事</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -585,7 +585,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 <hr />
 <h2 id="venv-sysprefix">🧩 四、venv 只做了一件事：换掉 <code>sys.prefix</code></h2>
-<div class="codehilite"><pre><span></span><code><span class="c1"># venv_probe.py —— venv 到底改了什么：建一个，然后拿它和外面的解释器对比</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># venv_probe.py —— venv 到底改了什么：建一个，然后拿它和外面的解释器对比</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -631,7 +631,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 ⚠️ 这也解释了一个常见困惑：在 VS Code / Jupyter 里「激活了 venv」但还是 import 不到 ——
 那些工具是自己按配置挑解释器的，根本不看你终端里的 PATH。</p>
 <p>💡 <strong>一行确认自己在不在 venv 里</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># in_venv.py —— 两行判断当前解释器属于哪个环境</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># in_venv.py —— 两行判断当前解释器属于哪个环境</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;解释器：&quot;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">)</span>
@@ -654,7 +654,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_2">🧩 五、声明的和装上的不是一回事</h2>
 <h3 id="requirements">🚦 一行 requirements 会拉进来多少个包</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># deps.py —— 你写了 1 行 requirements，实际装进来几个包</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># deps.py —— 你写了 1 行 requirements，实际装进来几个包</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">importlib.metadata</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">md</span>
 
 
@@ -723,7 +723,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 把 sklearn 从 1.2 悄悄升到 1.4 当成事故来讲 —— ⭐ <strong>那条事故的技术根因就在这张表里</strong>：
 镜像里写的是意图不是锁，重建时解析器给了个更新的版本。</p>
 <h3 id="pip-install-e">🚦 <code>pip install -e .</code> 装进去的是什么</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># editable.py —— pip install -e . 装进去的到底是什么</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># editable.py —— pip install -e . 装进去的到底是什么</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -805,7 +805,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="__pycache__-mtime">🧩 六、<code>__pycache__</code> 认的不是内容，是 mtime 和字节数</h2>
-<div class="codehilite"><pre><span></span><code><span class="c1"># pycache.py —— .pyc 失效认的是「源文件 mtime（秒）+ 字节数」，不认内容</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># pycache.py —— .pyc 失效认的是「源文件 mtime（秒）+ 字节数」，不认内容</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -868,7 +868,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_3">💀 七、本项目自己的事故：读新的、写旧的，两边都不报错</h2>
 <p>这个站的构建脚本曾经这么写：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`os` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`os` 来自你自己的代码，这一段只看写法</span>
 <span class="n">ROOT</span>    <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\desktop\claude&quot;</span>                          <span class="c1"># ← 硬编码，指向【老位置】</span>
 <span class="n">SCRATCH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>    <span class="c1"># ← 跟着脚本走，指向【新位置】</span>
 </code></pre></div>
@@ -878,7 +878,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>全套校验脚本全绿</strong>，因为它们的 <code>ROOT</code> 也硬编码成老目录，查的是同一份老产物。
 实况是：一整轮改完 md、构建、跑完 8 个校验脚本全部通过，回头一看 107 个文件还是旧文本。</p>
 <p>⭐ <strong>正解只有一句话：路径要么来自 <code>__file__</code>，要么来自参数，绝不来自 <code>os.getcwd()</code>，更不能硬编码。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># roots.py —— 同一个脚本，从两个不同目录启动，两种路径写法的差别</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># roots.py —— 同一个脚本，从两个不同目录启动，两种路径写法的差别</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
@@ -908,7 +908,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>两次启动，<code>__file__</code> 推出来的那一行完全相同，<code>cwd</code> 推出来的那一行变了。</strong>
 「在编辑器里点运行好使、在终端里 <code>cd</code> 到别处跑就找不到文件」，全部是这一行的差别。</p>
 <p>现在全站脚本统一写成：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
 <span class="n">ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)))</span>   <span class="c1"># ⭐ 「我上一级的上一级」</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ROOT =&quot;</span><span class="p">,</span> <span class="n">ROOT</span><span class="p">)</span>
@@ -1074,4 +1074,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

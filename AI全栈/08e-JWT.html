@@ -312,7 +312,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="jwt">🧾 一、JWT 的三段</h2>
 <p>第 8 章说过 ⚠️ <strong>「payload 只是 base64、不是加密」</strong>。这一节把它变成你能亲手验证的东西 —— JWT 就是 <code>头部.载荷.签名</code>，三段都是 base64url，用点号连起来：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 手工拆开一个 JWT —— 不需要密钥，也不需要任何第三方库</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 手工拆开一个 JWT —— 不需要密钥，也不需要任何第三方库</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">base64</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span>
 
 <span class="n">TOKEN</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9&quot;</span>
@@ -343,7 +343,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 头部里的 <code>alg</code>、<code>kid</code> 都是<strong>攻击者可以随便写的字段</strong>，验证逻辑一照着它们走，就等于让嫌疑人自己出具证词。</p>
 </blockquote>
 <p>下面这段能直接跑，同时演示前两种绕过。⚠️ 里面那个用纯整数运算写的玩具 RSA <strong>只为让这段不依赖第三方库</strong>，别照抄 —— <a href="../密码学与信息安全/14-RSA.html">《密码学》第 14 章</a>的教训正是<strong>数学写对了，实现照样能漏</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 💀 两种经典绕过：alg:none 与 算法混淆（RS256 当 HS256 用）</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 💀 两种经典绕过：alg:none 与 算法混淆（RS256 当 HS256 用）</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">base64</span><span class="o">,</span><span class="w"> </span><span class="nn">hashlib</span><span class="o">,</span><span class="w"> </span><span class="nn">hmac</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span>
 
 <span class="c1"># ⚠️ 教科书 RSA，只为让这段能用纯标准库跑起来；真实项目绝不自己实现签名</span>
@@ -398,7 +398,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 查不到就直接拒，不要「回退到默认密钥」。</p>
 </blockquote>
 <p><strong>④ 不校验 <code>exp</code> / <code>aud</code> / <code>iss</code></strong> —— 验签通过 ≠ 这张票能用。三个字段各挡一件事，<strong>其中 <code>aud</code> 最容易漏</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ✅ 验签之外该查的三件事；顺带看看「不查 aud」会漏成什么样</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># ✅ 验签之外该查的三件事；顺带看看「不查 aud」会漏成什么样</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">base64</span><span class="o">,</span><span class="w"> </span><span class="nn">hashlib</span><span class="o">,</span><span class="w"> </span><span class="nn">hmac</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 
 <span class="n">SECRET</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;idp-signing-key&quot;</span>          <span class="c1"># 同一个签发方，一把密钥，签给好几个服务</span>
@@ -684,4 +684,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

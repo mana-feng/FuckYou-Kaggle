@@ -432,7 +432,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>各家对象存储的签名算法不一样（🗓️ 而且会随版本变，动手前查你那家的文档），
 ⭐ <strong>但它们是同一个形状</strong>：<strong>把一组约束序列化 → 用只有服务端知道的密钥签名 → 存储端验签之后照着这组约束执行</strong>。</p>
 <p>下面这段用 <code>hmac</code> 把这个形状<strong>当场跑出来</strong>，它不是任何一家的真实协议，但<strong>验签、过期、体积上限、类型限制这四件事的逻辑就是这样</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">base64</span><span class="o">,</span><span class="w"> </span><span class="nn">hashlib</span><span class="o">,</span><span class="w"> </span><span class="nn">hmac</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">base64</span><span class="o">,</span><span class="w"> </span><span class="nn">hashlib</span><span class="o">,</span><span class="w"> </span><span class="nn">hmac</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 
 <span class="n">SECRET</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;only-the-server-has-this&quot;</span>      <span class="c1"># ⭐ 只存在于服务端（第 13 章）</span>
 
@@ -585,7 +585,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="1">① ⚠️ 客户端说的类型和扩展名，是<strong>用户输入</strong>，不是事实</h3>
 <p><code>Content-Type</code> 是请求头里的一个字符串，扩展名是文件名里的几个字符 —— <strong>两个都由对方随手写</strong>。
 要判类型，得去读文件开头那几个字节（<strong>magic bytes</strong>）：</p>
-<div class="codehilite"><pre><span></span><code><span class="n">MAGIC</span> <span class="o">=</span> <span class="p">[</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="n">MAGIC</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">(</span><span class="sa">b</span><span class="s2">&quot;%PDF-&quot;</span><span class="p">,</span>             <span class="s2">&quot;application/pdf&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x89</span><span class="s2">PNG</span><span class="se">\r\n\x1a\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;image/png&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\xff\xd8\xff</span><span class="s2">&quot;</span><span class="p">,</span>      <span class="s2">&quot;image/jpeg&quot;</span><span class="p">),</span>
@@ -635,7 +635,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 ⭐ <strong>所以判据是「白名单 + 头字节复核」，不是「查杀」。</strong></p>
 <h3 id="2">② ⭐ 用户给的文件名，<strong>根本不该被当成路径</strong></h3>
 <p>经典的路径穿越是 <code>../../etc/passwd</code>。很多人的第一反应是「那我把它洗干净」：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">re</span><span class="o">,</span><span class="w"> </span><span class="nn">unicodedata</span><span class="o">,</span><span class="w"> </span><span class="nn">uuid</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">re</span><span class="o">,</span><span class="w"> </span><span class="nn">unicodedata</span><span class="o">,</span><span class="w"> </span><span class="nn">uuid</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">safe_display_name</span><span class="p">(</span><span class="n">raw</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fallback</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;file&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -937,4 +937,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

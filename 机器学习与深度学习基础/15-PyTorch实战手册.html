@@ -327,7 +327,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 这一章给你小例子、配对表和一份<strong>带数据与模型准备的二分类训练模板</strong>。先跑适用的例子，再按自己的任务修改，不必背完所有写法。</p>
 <hr />
 <h2 id="numpy">🧱 一、张量：会自动求导的 numpy</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">]])</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>          <span class="c1"># torch.Size([2,2]) torch.float32 cpu</span>
@@ -344,7 +344,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>自动求导（第 8 章的框架版）：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="n">w</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">2.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">loss</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">-</span> <span class="mi">6</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
 <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>          <span class="c1"># 自动算梯度</span>
@@ -357,7 +357,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 - 梯度默认累加 → 独立更新前清零；有意做梯度累积时则按累积周期清零</p>
 <hr />
 <h2 id="_2">🏗️ 二、定义模型：两种写法</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 <span class="c1"># 写法1：Sequential —— 简单直筒结构</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
@@ -412,7 +412,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_3">📦 三、数据加载</h2>
 <p>先用小张量演示内存数据。自定义 Dataset 的例子采用 NumPy 文件，每个文件存一条样本；使用时传入自己的文件路径。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">TensorDataset</span><span class="p">,</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">Dataset</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">TensorDataset</span><span class="p">,</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">Dataset</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
@@ -444,7 +444,7 @@ CPU 到 CUDA 传输可测试 <code>pin_memory=True</code>。Windows 多进程加
 <h2 id="_4">🔁 四、完整训练模板（包含数据与模型准备）</h2>
 <p><strong>运行条件：</strong>已安装 NumPy、scikit-learn 与 PyTorch；使用库自带数据，无需下载数据、无需 GPU。先划分训练/验证/测试，再只用训练集拟合标准化器。</p>
 <p><strong>本次校验范围：</strong>已做语法检查；当前预览环境没有 PyTorch 和 scikit-learn，未重跑此训练。下方历史日志不作为补全后模板逐项一致的承诺。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">torch</span><span class="o">,</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">torch</span><span class="o">,</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">TensorDataset</span><span class="p">,</span> <span class="n">DataLoader</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_breast_cancer</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
@@ -589,7 +589,7 @@ CPU 到 CUDA 传输可测试 <code>pin_memory=True</code>。Windows 多进程加
 <hr />
 <h2 id="_5">⚡ 六、提速三件套</h2>
 <p>下面是接入已有训练循环的写法片段，不是独立训练脚本。先定位瓶颈，再比较速度、显存与稳定性。梯度累积还需处理最后不足一个周期的批次，不能丢掉它们的梯度。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 1. CUDA 混合精度：收益取决于硬件和算子，不保证显存减半</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 1. CUDA 混合精度：收益取决于硬件和算子，不保证显存减半</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="n">scaler</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">amp</span><span class="o">.</span><span class="n">GradScaler</span><span class="p">()</span>
 <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">amp</span><span class="o">.</span><span class="n">autocast</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span><span class="p">):</span>
@@ -701,4 +701,4 @@ CPU 到 CUDA 传输可测试 <code>pin_memory=True</code>。Windows 多进程加
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

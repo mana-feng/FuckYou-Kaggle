@@ -366,7 +366,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>04 章那个重试器的签名是 <code>call_with_retry(fn, tries=4, base=0.5, cap=8.0, sleep=time.sleep, rng=None)</code>。</p>
 <p>⭐ <strong><code>sleep</code> 和 <code>rng</code> 出现在参数列表里不是风格问题，是这个函数可不可测的分界线</strong>：写死成 <code>time.sleep()</code> 的话，一个「重试三次」的用例要<strong>真睡 3.5 秒</strong>（几十个这样的用例，整套测试就没人在本地跑了），退避序列藏在函数肚子里断言不出来，而全抖动（04 章讲了为什么要有）会让「等了多久」每次都不同 —— </p>
 <p>⭐ 测试里想要确定，就把随机数也注入进来。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># test_failure_paths.py —— 故障路径：让假客户端故意抛 429、故意超时</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># test_failure_paths.py —— 故障路径：让假客户端故意抛 429、故意超时</span>
 <span class="c1"># pip install pytest ；跑法 pytest -q test_failure_paths.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
 
@@ -468,7 +468,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table></div>
 <p>⭐ <strong>第三类最能抓到真实事故</strong>：「模型引用了一个不在检索结果里的文档 id」在页面上是一条点不开的引用链接，在代码里就是一行 <code>set(cites) &lt;= set(doc_ids)</code>。
 ⭐ <strong>第四类最容易被忘</strong>，因为一想到「测 AI」就只盯那段文字 —— 可计费、日志字段、状态机在同一次调用里也全发生了，而它们是确定的。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># test_uncertain_output.py —— 输出每次都不一样，但这四类断言每次都成立</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># test_uncertain_output.py —— 输出每次都不一样，但这四类断言每次都成立</span>
 <span class="c1"># pip install pytest ；跑法 pytest -q test_uncertain_output.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
@@ -637,7 +637,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="ci">💸 七、CI 里怎么不烧钱：靠结构，不靠记性</h2>
 <p>规则很简单：<strong>默认全走假客户端，真实调用只在一个单独的、手动触发的作业里。</strong> 难的是「默认」怎么保证 —— ⚠️ <strong>靠「大家记得设那个环境变量」是不行的</strong>，总有人新写一个测试忘了。两条结构性做法：① 让真实客户端在测试环境里根本构造不出来（缺条件当场抛）；② 装一条断网闸。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># test_no_real_calls.py —— 让「不小心真调上游」在测试里变成【当场炸】</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># test_no_real_calls.py —— 让「不小心真调上游」在测试里变成【当场炸】</span>
 <span class="c1"># pip install pytest ；⚠️ 这段用了 fixture，跑法是 pytest -q test_no_real_calls.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">socket</span>
 
@@ -823,4 +823,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

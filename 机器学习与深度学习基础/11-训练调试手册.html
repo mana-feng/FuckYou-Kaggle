@@ -335,7 +335,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>🔑 <strong>第 0 步是全章最重要的一步</strong>，却是最多人跳过的。
 它能在 30 秒内把「模型有 bug」和「模型没调好」区分开——<strong>这两件事的解法完全不同。</strong></p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 第 0 步的标准写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 第 0 步的标准写法</span>
 <span class="n">tiny_x</span><span class="p">,</span> <span class="n">tiny_y</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:</span><span class="mi">10</span><span class="p">],</span> <span class="n">y</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500</span><span class="p">):</span>
     <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
@@ -347,7 +347,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <details>
 <summary>📋 直接能跑的完整版（补上一个最小模型和随机数据）</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -464,7 +464,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="10">🔍 三、「10 个样本过拟合不了」的必查五项</h2>
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 标签对齐了吗？</span></div><div class="vb-flow-row"><span class="vb-flow-step">打印几个 (输入, 标签) 对，肉眼确认没错位</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ shuffle 时 X 和 y 分别 shuffle 是经典事故</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 梯度真的在流吗？</span></div><div class="vb-flow-row"><span class="vb-flow-step">for n,p in model.named_parameters():</span></div><div class="vb-flow-row"><span class="vb-flow-step">print(n, p.grad.abs().mean() if p.grad is not None else "None")</span></div><div class="vb-flow-row"><span class="vb-flow-step">出现 None 或 0：梯度断了</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ loss 函数用对了吗？</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 多分类用 CrossEntropyLoss（输入是 logits，不要自己加 softmax！）</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 二分类用 BCEWithLogitsLoss（不要自己加 sigmoid！）</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 重复加激活是最高频的错误之一</span></div><div class="vb-flow-row"><span class="vb-flow-step">④ 输入的形状/数值对吗？</span></div><div class="vb-flow-row"><span class="vb-flow-step">print(X.shape, X.dtype, X.min(), X.max(), X.mean())</span></div><div class="vb-flow-row"><span class="vb-flow-step">全 0？没归一化？dtype 是 int 不是 float？</span></div><div class="vb-flow-row"><span class="vb-flow-step">⑤ lr 是不是离谱？</span></div><div class="vb-flow-row"><span class="vb-flow-step">试 1e-2 / 1e-3 / 1e-4 三档，如果全都不动，那是 bug 不是 lr</span></div></div></section>
 <h3 id="_5">🔨 一个能一次性查完的自检函数</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sanity_check</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">loader</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sanity_check</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">loader</span><span class="p">,</span> <span class="n">criterion</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
     <span class="n">xb</span><span class="p">,</span> <span class="n">yb</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">loader</span><span class="p">))</span>
     <span class="n">xb</span><span class="p">,</span> <span class="n">yb</span> <span class="o">=</span> <span class="n">xb</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">yb</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 
@@ -519,7 +519,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p>⚠️ <strong>还有一个更隐蔽的</strong>：<strong>参数没被传给优化器</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ❌ 后来加的层没进优化器 → 它的梯度算了但永远不更新</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># ❌ 后来加的层没进优化器 → 它的梯度算了但永远不更新</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">AdamW</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
@@ -533,7 +533,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <details>
 <summary>📋 直接能跑的完整版（会当场触发那句 assert —— 那就是它该做的事）</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 
@@ -563,7 +563,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr>
 <h2 id="_7">📊 四、必须打印的六个数字</h2>
 <p>不看这些就是盲调：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`e` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`e` 来自你自己的代码，这一段只看写法</span>
 <span class="c1"># 每个 epoch 打印</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;epoch </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2"> | train </span><span class="si">{</span><span class="n">train_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> | val </span><span class="si">{</span><span class="n">val_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> &quot;</span>
       <span class="sa">f</span><span class="s2">&quot;| lr </span><span class="si">{</span><span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;lr&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2"> &quot;</span>
@@ -604,7 +604,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`model` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`model` 来自你自己的代码，这一段只看写法</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="n">grad_norm</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clip_grad_norm_</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="mf">1e9</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>  <span class="c1"># 只测量不裁剪</span>
 </code></pre></div>
@@ -637,7 +637,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`loader` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`loader` 来自你自己的代码，这一段只看写法</span>
 <span class="c1"># 梯度累积：用小显存模拟大 batch</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">loader</span><span class="p">):</span>
     <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">xb</span><span class="p">),</span> <span class="n">yb</span><span class="p">)</span> <span class="o">/</span> <span class="n">accum_steps</span>
@@ -655,7 +655,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li class="reading-task" data-reading-task="4"><label class="reading-task-title"><input type="checkbox" data-task-key="4"><span>核对项 4</span></label><div class="reading-task-body">同样配置跑 3 次，看方差有多大 ⭐</div></li>
 </ul>
 <p>这个方差决定了「涨 0.3% 算不算真的涨」（第 5 章）。</p>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_seed</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="mi">42</span><span class="p">):</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_seed</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="mi">42</span><span class="p">):</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">random</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">torch</span>
     <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">s</span><span class="p">);</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
     <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">s</span><span class="p">);</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">manual_seed_all</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
@@ -742,4 +742,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

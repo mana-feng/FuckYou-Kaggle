@@ -313,7 +313,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr>
 <h2 id="_2">🧰 开工前：一个通用的实验脚手架</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>          <span class="c1"># ⭐ 固定种子，否则结论不可复现</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="n">setting_fn</span><span class="p">,</span> <span class="n">n_repeat</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
@@ -339,7 +339,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li class="reading-task" data-reading-task="4"><label class="reading-task-title"><input type="checkbox" data-task-key="4"><span>对比两组系数</span></label><div class="reading-task-body"> —— 应该到小数点后 6 位一致 ⭐</div></li>
 <li class="reading-task" data-reading-task="5"><label class="reading-task-title"><input type="checkbox" data-task-key="5"><span>核对项 5</span></label><div class="reading-task-body">换成拉普拉斯噪声（重尾）+ 加 3 个离群点 → 对比 MSE 和 L1（<code>HuberRegressor</code> / 分位数回归）的拟合线</div></li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 路线 B 的核心（写出来才有感觉）</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 路线 B 的核心（写出来才有感觉）</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">minimize</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">neg_log_lik</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
@@ -400,7 +400,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
       用剩下的点重训，<strong>对比两条决策边界</strong></div></li>
 <li class="reading-task" data-reading-task="16"><label class="reading-task-title"><input type="checkbox" data-task-key="16"><span>任务 T5</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> 测 SVM 的 O(n²)：n = 1000/5000/20000，记录训练时间，<strong>画增长曲线</strong></div></li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="c1"># T4 的核心：三行就能验证一个理论断言 ⭐</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># T4 的核心：三行就能验证一个理论断言 ⭐</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="n">sv_idx</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">support_</span>
 <span class="n">clf2</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;rbf&quot;</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="n">g</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">sv_idx</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">sv_idx</span><span class="p">])</span>
@@ -526,7 +526,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr>
 <h2 id="_7">📝 报告模板</h2>
-<div class="codehilite"><pre><span></span><code><span class="gh"># 理论断言：____</span>
+<div class="codehilite" data-code-language="markdown"><pre><span></span><code><span class="gh"># 理论断言：____</span>
 <span class="gu">## 断言的精确表述（公式）</span>
 <span class="gu">## 实验设计（怎么造数据、控制什么变量、重复多少次）</span>
 <span class="gu">## 结果（表 + 图，带误差棒）</span>
@@ -623,4 +623,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

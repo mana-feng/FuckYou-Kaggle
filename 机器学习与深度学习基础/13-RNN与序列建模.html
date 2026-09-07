@@ -422,7 +422,7 @@ RNN 就是这个问题的第一个像样的答案。</p>
 <p>💡 <strong>权重共享带来两个好处</strong>（和 CNN 完全同构的道理）：</p>
 <section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 参数量【和序列长度无关】</span></div><div class="vb-flow-row"><span class="vb-flow-step">处理 10 个词和 1000 个词，用的是同一套 W、U</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 学到的规律能【跨位置迁移】</span></div><div class="vb-flow-row"><span class="vb-flow-step">在第 3 个词学到的模式，第 300 个词也能用</span></div></div></section>
 <h3 id="rnn_1">🔨 五行看懂 RNN</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`hidden` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`hidden` 来自你自己的代码，这一段只看写法</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">hidden</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">x_t</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">:</span>                       <span class="c1"># ⭐ 注意这个 for 循环</span>
@@ -444,7 +444,7 @@ RNN 就是这个问题的第一个像样的答案。</p>
 <strong>而且乘的是同一个 W</strong>（权重共享的代价），所以要么一起消失，要么一起爆炸。</p>
 </blockquote>
 <p>⚠️ <strong>梯度爆炸在 RNN 里比在 CNN 里常见得多</strong>，标准解法是<strong>梯度裁剪</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`model` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`model` 来自你自己的代码，这一段只看写法</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clip_grad_norm_</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">max_norm</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>   <span class="c1"># ⭐ RNN 几乎必加</span>
 </code></pre></div>
@@ -739,4 +739,4 @@ LSTM 的细胞状态、ResNet 的残差、Transformer 的残差、Highway Networ
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

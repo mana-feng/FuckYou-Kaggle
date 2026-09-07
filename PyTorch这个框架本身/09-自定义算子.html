@@ -318,7 +318,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⚠️ <strong>「我想让它更快」不在清单里。</strong> 如果你的操作只是把已有算子组合起来（<code>x.sigmoid() * w + b</code> 这种），autograd 自己求出来的导数既正确又不慢，手写一个 <code>Function</code> 只会多一层 Python 调用、多一个会写错的地方。</p>
 <p>✅ 真正需要它的是这三种，每一种都是<strong>框架自己算不出来</strong>：</p>
 <h3 id="1-0">① 真实的梯度是 0，或者根本不存在</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">torch</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
@@ -330,7 +330,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong><code>round</code> 是阶梯函数，除了跳变点之外导数处处为 0</strong> —— 框架没算错，它算得完全正确。
 但正确的梯度是 0 意味着：<strong>这一步之前的所有参数都收不到任何信号，整个网络的前半截等于没训。</strong></p>
 <p>于是有了一个业界通用的作弊法，叫<strong>直通估计</strong>（Straight-Through Estimator）：<strong>前向照样取整，反向假装自己是恒等函数</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">RoundSTE</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">Function</span><span class="p">):</span>
@@ -354,7 +354,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>前向是取整（0/1/1），梯度是恒等（全 1）—— 前向和反向【故意不匹配】。</strong>
 这在数学上是错的，在工程上是量化感知训练（QAT）、二值网络、离散隐变量的标准做法。你在 <a href="../AI基础设施/18-量化.html">《AI基础设施》18 · 量化</a> 里看到的「QAT 是在训练时插入伪量化节点」，那个节点的反向就是这么写出来的。</p>
 <h3 id="2">② 前向绕出框架去算了</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -376,7 +376,7 @@ RuntimeError: element 0 of tensors does not require grad and does not have a gra
 <hr />
 <h2 id="_3">🔧 二、合同的四条条款</h2>
 <p>最小的一个 <code>Function</code>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Square</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">Function</span><span class="p">):</span>
@@ -440,7 +440,7 @@ RuntimeError: element 0 of tensors does not require grad and does not have a gra
 </tbody>
 </table></div>
 <h3 id="_4">⚠️ 一条会把你带偏的报错</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Square</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">Function</span><span class="p">):</span>
@@ -468,7 +468,7 @@ RuntimeError: Legacy autograd function with non-static forward method is depreca
 真正的原因是那个 <code>Square()</code> —— 你实例化了它。正确写法永远是 <code>Square.apply(x)</code>，一个括号的差别。
 ⚠️ 这条报错会让人回去反复检查装饰器，那是白费的；<strong>看到 <code>non-static forward method</code> 先去找有没有 <code>()</code>。</strong></p>
 <h3 id="4">④ 返回几个梯度：数着输入参数来</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">ScaleBad</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">Function</span><span class="p">):</span>
@@ -491,14 +491,14 @@ RuntimeError: Legacy autograd function with non-static forward method is depreca
 </code></pre></div>
 
 <p>✅ 修法是<strong>给非张量参数返回 <code>None</code></strong>：</p>
-<div class="codehilite"><pre><span></span><code>    <span class="nd">@staticmethod</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code>    <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">backward</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">g</span> <span class="o">*</span> <span class="n">ctx</span><span class="o">.</span><span class="n">k</span><span class="p">,</span> <span class="kc">None</span>           <span class="c1"># ⭐ k 是个 float，它没有梯度，但位置要占住</span>
 </code></pre></div>
 
 <p>⭐ <strong><code>None</code> 的意思是「这个入参我不给梯度」</strong>，不是「我忘了」。超参数、形状、字符串、布尔开关，全都返回 <code>None</code>。</p>
 <h3 id="needs_input_grad">🚦 <code>needs_input_grad</code>：别算没人要的梯度</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Clip</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">Function</span><span class="p">):</span>
@@ -533,7 +533,7 @@ RuntimeError: Legacy autograd function with non-static forward method is depreca
 <p>💡 <strong>有多个张量输入时这条能省很多</strong>：冻结了 backbone（见 <a href="04-detach与no_grad.html">04 · <code>detach</code> / <code>no_grad</code> / <code>requires_grad</code></a>）之后，<code>needs_input_grad[0]</code> 就是 <code>False</code>，那一大坨矩阵乘法可以直接跳过。</p>
 <h3 id="_5">🧯 把断掉的图焊回去</h3>
 <p>回到第一节那个 numpy 的例子，现在能补完整了：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 
@@ -569,7 +569,7 @@ RuntimeError: Legacy autograd function with non-static forward method is depreca
 <hr />
 <h2 id="ctxsave_for_backwardx-ctxx-x">🧷 三、<code>ctx.save_for_backward(x)</code> 和 <code>ctx.x = x</code> 的差别</h2>
 <p>这两行看起来只是写法不同，实际上差着一整套<strong>版本检查</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">SaveViaCtx</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">Function</span><span class="p">):</span>
@@ -646,7 +646,7 @@ RuntimeError: Legacy autograd function with non-static forward method is depreca
 <p>这是自定义算子最有工程价值的一个用法。</p>
 <p>先看问题：前向每做一步，autograd 就要为反向留下一份中间结果。做 8 次 <code>tanh</code>，就留 8 份。</p>
 <p>⭐ <strong>可以直接量出来</strong>：<code>torch.autograd.graph.saved_tensors_hooks</code> 会在<strong>每一个张量被存进图的时候</strong>回调一次，把它们的字节数加起来，就是「这次前向为了反向留了多少」。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">DEPTH</span> <span class="o">=</span> <span class="mi">8</span>
 <span class="n">N</span> <span class="o">=</span> <span class="mi">512</span>
@@ -738,7 +738,7 @@ RuntimeError: Legacy autograd function with non-static forward method is depreca
 </tbody>
 </table></div>
 <h3 id="grad-mode">🧯 两个 grad mode 的坑</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Probe</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">Function</span><span class="p">):</span>
@@ -772,7 +772,7 @@ RuntimeError: Legacy autograd function with non-static forward method is depreca
 
 <p>⚠️ <strong>注意这条报错和第一节 numpy 那个例子是同一句话</strong> —— 它的含义永远是「<strong>你要求导的那个东西不在图上</strong>」，但成因至少有三种：忘了 <code>requires_grad=True</code>、中途绕出了框架、或者这里的忘了 <code>enable_grad</code>。附录 A 把这条单列了一行。</p>
 <h3 id="functionpytorch">💡 这个 Function，PyTorch 已经替你写好了</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.checkpoint</span><span class="w"> </span><span class="kn">import</span> <span class="n">checkpoint</span>
 
 <span class="c1"># ... block / measure 同上 ...</span>
@@ -786,7 +786,7 @@ RuntimeError: Legacy autograd function with non-static forward method is depreca
 <strong>手写一遍的价值在于</strong>：你现在知道了 <code>checkpoint</code> 不是什么魔法，它就是一个「前向不存、反向重跑」的 <code>Function</code>，以及它为什么会让你的训练变慢。</p>
 <details>
 <summary>👀 `torch.utils.checkpoint` 那段的完整可跑版（点开复制）</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.checkpoint</span><span class="w"> </span><span class="kn">import</span> <span class="n">checkpoint</span>
 
 <span class="n">DEPTH</span><span class="p">,</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">512</span>
@@ -848,7 +848,7 @@ FlashAttention 那种「连注意力矩阵都不存、反向现算」的极端�
 <h2 id="gradcheck">🧪 五、<code>gradcheck</code>：不要靠眼睛检查导数</h2>
 <p>反向写错<strong>不会报错</strong>，只会让模型收敛得差一点 —— 这是本章所有坑里最贵的一个。
 PyTorch 自带一个数值验证工具：<strong>它拿有限差分算一遍数值梯度，和你的 <code>backward</code> 对答案。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.autograd</span><span class="w"> </span><span class="kn">import</span> <span class="n">gradcheck</span>
 
 
@@ -890,7 +890,7 @@ PyTorch 自带一个数值验证工具：<strong>它拿有限差分算一遍数�
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>正确的实现: True</p><p>少乘 2 的: GradcheckError</p><p>Jacobian mismatch for output 0 with respect to input 0,</p><p>numerical:tensor([[2.0000, 0.0000],</p><p>[0.0000, 4.0000]], dtype=torch.float64)</p><p>analytical:tensor([[1., 0.],</p><p>[0., 2.]], dtype=torch.float64)</p></div></section>
 <p>⭐ <strong><code>numerical</code> 是差分算的（可信），<code>analytical</code> 是你的 <code>backward</code> 算的。</strong> 这里对角线正好差 2 倍 —— <strong>比值本身就是线索</strong>：差常数倍是系数写错，差符号是正负写反，只有某几个位置不对通常是 mask / 边界条件写错。</p>
 <h3 id="gradcheck-float64">⚠️⚠️ <code>gradcheck</code> 必须用 <code>float64</code></h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.autograd</span><span class="w"> </span><span class="kn">import</span> <span class="n">gradcheck</span>
 
 
@@ -917,7 +917,7 @@ PyTorch 自带一个数值验证工具：<strong>它拿有限差分算一遍数�
 ⚠️ <strong>所以 <code>gradcheck</code> 失败的第一件事不是改代码，是先确认输入是不是 <code>torch.double</code>。</strong> PyTorch 好心给了那条 warning，但它混在一堆输出里很容易被忽略。</p>
 <hr />
 <h2 id="_6">🔁 六、二阶导：默认能，除非你明说不能</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.autograd.function</span><span class="w"> </span><span class="kn">import</span> <span class="n">once_differentiable</span>
 
 
@@ -1105,4 +1105,4 @@ PyTorch 自带一个数值验证工具：<strong>它拿有限差分算一遍数�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

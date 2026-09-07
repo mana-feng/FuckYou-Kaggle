@@ -316,7 +316,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_2">🧩 一、⭐ 起点还是那条报错</h2>
 <p>本章 Python 侧的输出全是<strong>实跑的</strong>，环境 <code>torch 2.13.0+cpu</code> + CPython 3.13，<strong>CUDA 不可用</strong>。</p>
 <p>沿用 <a href="05-算子怎么注册进PyTorch.html">05 章</a>第一节那条：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># c06_start.py</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># c06_start.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">to_sparse</span><span class="p">()</span>
@@ -481,13 +481,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table></div>
 <h3 id="_4">🚦 ⭐ 用本机能跑的两条命令，把这张账本反推出来</h3>
 <p>⭐ <code>func:</code> 那一段<strong>不用去仓库找</strong>，它就在你装好的包里：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">aten</span><span class="o">.</span><span class="n">gelu</span><span class="o">.</span><span class="n">default</span><span class="o">.</span><span class="n">_schema</span><span class="p">)</span>
 <span class="c1"># aten::gelu(Tensor self, *, str approximate=&quot;none&quot;) -&gt; Tensor</span>
 </code></pre></div>
 
 <p>⭐ <code>dispatch:</code> 那一段的<strong>结果</strong>，也能直接 dump 出来（本机 torch 2.13.0+cpu 实测）：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">_C</span><span class="o">.</span><span class="n">_dispatch_dump</span><span class="p">(</span><span class="s2">&quot;aten::gelu&quot;</span><span class="p">))</span>
 </code></pre></div>
 
@@ -541,7 +541,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_5">🧩 四、你机器上已经有半个源码树</h2>
 <p>⭐ <strong>很多人不知道：pip 装的 torch 里就带着一大堆 C++ 头文件。</strong> 现场看一眼：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># c06_layout.py</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># c06_layout.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
@@ -600,7 +600,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="python">🧩 五、⭐ 不下载源码、只用 Python 就能查的三件事</h2>
 <p>这一节是全章最实用的部分。<strong>一个 REPL 就够</strong>，不 clone、不编译。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># c06_probe.py</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># c06_probe.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="c1"># ① 这个算子的签名到底长什么样</span>
@@ -644,7 +644,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table></div>
 <p>⚠️ <strong>4362 随版本变</strong>（<code>torch 2.13.0+cpu</code> 上是这个数，你的一定不同），要看的是量级：<strong>四千多条</strong>。⭐ 这个数字本身就是一条信息 —— 「把 PyTorch 源码通读一遍」在数量级上就是不成立的目标，你只能反查。</p>
 <p>第三件的真正用法是当<strong>离线索引</strong>来 grep：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># c06_grep.py</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># c06_grep.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">kw</span> <span class="o">=</span> <span class="s2">&quot;gelu&quot;</span>                                              <span class="c1"># ⭐ 换成你要找的算子</span>
@@ -862,4 +862,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

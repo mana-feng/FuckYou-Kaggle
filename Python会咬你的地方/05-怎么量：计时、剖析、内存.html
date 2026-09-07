@@ -316,7 +316,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_2">🧩 一、三个时钟，各管各的</h2>
 <p>Python 手上不止一个时钟，它们数的<strong>不是同一件事</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 你手上的三个时钟分别是什么脾气</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 你手上的三个时钟分别是什么脾气</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
 <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="s2">&quot;perf_counter&quot;</span><span class="p">,</span> <span class="s2">&quot;process_time&quot;</span><span class="p">,</span> <span class="s2">&quot;monotonic&quot;</span><span class="p">):</span>
@@ -330,7 +330,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⚠️ <strong>注意第一列</strong>：网上流传的「Windows 上 <code>time.time()</code> 精度只有 15.6 毫秒」在这个版本上已经不成立了，四个时钟都是 100 纳秒。<strong>别照抄那条过时的理由。</strong></p>
 <p>⭐ <strong>真正的区别在第二列</strong>：<code>time.time()</code> 是<strong>墙上的日历钟</strong>，它会被调。NTP 校时、夏令时切换、虚拟机挂起恢复、有人手动改了系统时间——只要发生在你两次取值之间，你的测量结果就是垃圾，而且可能是负数。<code>perf_counter</code> 是单调的，它唯一的用途就是量间隔，天生免疫这些。</p>
 <p>第三个时钟数的是另一件事：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># perf_counter 数的是墙上的时间，process_time 数的是 CPU 真给你的时间</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># perf_counter 数的是墙上的时间，process_time 数的是 CPU 真给你的时间</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
 <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">();</span> <span class="n">c1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>
@@ -372,7 +372,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_3">⚠️ 二、单次测量是没有信息的</h2>
 <p>这是本章最重要的一节。先看一个真实的翻车。</p>
 <p>下面这个计时上下文管理器是最常见的写法（<code>@contextmanager</code> 的机制见 <a href="03-装饰器与上下文管理器.html">03 章</a>），拿它来验证一处优化：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 量 → 改 → 再量：一个可复用的计时上下文管理器</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 量 → 改 → 再量：一个可复用的计时上下文管理器</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 
 <span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
@@ -403,7 +403,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>同一处改动，两次运行给出「6.7 倍」和「1.5 倍」两个结论。</strong> 如果你只跑了第一次，会去汇报「优化了 6.7 倍」；只跑了第二次，可能觉得「不值得改」。<strong>两个结论都是噪声。</strong></p>
 <p>⚠️ 那个 <code>try / finally</code> 不是装饰：没有它，被计时的代码一抛异常，<code>timed</code> 就不会打印任何东西——<strong>你会以为程序卡住了，其实是计时器把异常吞在半路</strong>。</p>
 <p>换成重复测量取最小值，结论立刻稳定：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 同一处改动，用 timeit 重复测量取最小值</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 同一处改动，用 timeit 重复测量取最小值</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">timeit</span>
 
 <span class="n">setup</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
@@ -423,7 +423,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_4">⭐ 三、为什么取最小值，不取平均</h2>
 <p>看一眼分布就明白了：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># timeit.repeat 为什么看最小值：噪声只会往上加，不会往下减</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># timeit.repeat 为什么看最小值：噪声只会往上加，不会往下减</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">statistics</span><span class="o">,</span><span class="w"> </span><span class="nn">timeit</span>
 
 <span class="n">setup</span> <span class="o">=</span> <span class="s2">&quot;data = list(range(20000))&quot;</span>
@@ -505,7 +505,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⚠️ <strong><code>number</code> 和 <code>repeat</code> 是两件事，最容易混</strong>：<code>repeat(..., repeat=15, number=20)</code> 返回 <strong>15 个数</strong>，每个数是 20 次的总和。要换算成「单次」得自己除以 <code>number</code>——上面那段的 <code>r / 20</code> 就是干这个的。⚠️ 忘了除，你的所有数字会整整大 20 倍，而且看起来毫无破绽。</p>
 <hr />
 <h2 id="_5">⚠️ 四、三样会让你测出假数字的东西</h2>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 三样会让你测出假数字的东西</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 三样会让你测出假数字的东西</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">functools</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span><span class="o">,</span><span class="w"> </span><span class="nn">timeit</span>
 
 <span class="c1"># ① 第一次里混着一次性的钱</span>
@@ -577,7 +577,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="cprofile">🧩 五、<code>cProfile</code>：时间花在哪一行</h2>
 <p>计时告诉你「一共 3 秒」，剖析告诉你「其中 2.4 秒在哪」。标准库自带 <code>cProfile</code>（C 实现，开销小）和 <code>pstats</code>（读报告）。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># cProfile：一份最小但完整的剖析报告</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># cProfile：一份最小但完整的剖析报告</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">cProfile</span><span class="o">,</span><span class="w"> </span><span class="nn">pstats</span><span class="o">,</span><span class="w"> </span><span class="nn">io</span><span class="o">,</span><span class="w"> </span><span class="nn">random</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">200_000</span><span class="p">):</span>
@@ -688,7 +688,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_6">⚠️ 六、剖析器自己要钱，而且收费不均</h2>
 <p>这是剖析报告最容易被误读的地方：<strong>它给你的秒数不是真实秒数</strong>，而且<strong>不同函数被多收的钱不一样多</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 剖析器自己是要钱的，而且不是每个函数收一样多</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 剖析器自己是要钱的，而且不是每个函数收一样多</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">cProfile</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">tiny</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -756,7 +756,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_7">🧩 七、内存：要量的是峰值，不是结束时</h2>
 <p><strong>杀死你进程的是峰值，不是结束时还剩多少。</strong> 标准库的 <code>tracemalloc</code> 两个都给：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 内存怎么量：峰值 vs 结束时，以及 getsizeof 为什么骗你</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 内存怎么量：峰值 vs 结束时，以及 getsizeof 为什么骗你</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">tracemalloc</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">build_list</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">):</span>
@@ -787,7 +787,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>⚠️ <strong><code>sys.getsizeof</code> 会骗你</strong>：它报 <strong>8.4 MB</strong>，因为它只数了列表里那一百万个指针；把指向的 int 对象也算上是 36.4 MB，差 4 倍多。⚠️ 对嵌套字典、对象树这类结构，<code>getsizeof</code> 的低估会更离谱。它只适合量单个扁平对象。</li>
 </ol>
 <p><strong>峰值和结束时不是一个数</strong>，这是最常见的 OOM 场景：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 峰值和「结束时」是两个数，OOM 杀的是峰值</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 峰值和「结束时」是两个数，OOM 杀的是峰值</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">tracemalloc</span>
 
 <span class="n">tracemalloc</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
@@ -1000,4 +1000,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

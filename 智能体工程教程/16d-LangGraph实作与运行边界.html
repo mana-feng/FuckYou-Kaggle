@@ -308,11 +308,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><strong>框架保存“运行到了哪里”，业务系统决定“现在还有没有权执行”。</strong> 用同一个工单流程验证这两层，不需要先下载大模型。</p>
 <p>🔗 概念见<a href="16b-框架这层皮.html">框架这层皮</a>，业务状态见<a href="12b-持久化审批与故障恢复.html">12b</a>。完整实现 <a href="../examples/knowledge-assistant/framework.py">framework.py</a>；安装见<a href="17b-企业知识助手交付项目.html">17b</a>。命令均在仓库根目录运行。</p>
 <h2 id="_2">🔬 一、先暂停，再换进程恢复</h2>
-<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>examples/knowledge-assistant/framework.py<span class="w"> </span>--db<span class="w"> </span>output/graph-business.db<span class="w"> </span>--checkpoints<span class="w"> </span>output/graph-checkpoints.db<span class="w"> </span>--thread<span class="w"> </span>interview-001
+<div class="codehilite" data-code-language="bash"><pre><span></span><code>python<span class="w"> </span>examples/knowledge-assistant/framework.py<span class="w"> </span>--db<span class="w"> </span>output/graph-business.db<span class="w"> </span>--checkpoints<span class="w"> </span>output/graph-checkpoints.db<span class="w"> </span>--thread<span class="w"> </span>interview-001
 </code></pre></div>
 
 <p>第一次输出含 <code>__interrupt__</code>，展示草稿与指纹后<strong>进程已经退出</strong>，没有工单副作用。现在用另一个命令进程恢复：</p>
-<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>examples/knowledge-assistant/framework.py<span class="w"> </span>--db<span class="w"> </span>output/graph-business.db<span class="w"> </span>--checkpoints<span class="w"> </span>output/graph-checkpoints.db<span class="w"> </span>--thread<span class="w"> </span>interview-001<span class="w"> </span>--resume<span class="w"> </span>yes
+<div class="codehilite" data-code-language="bash"><pre><span></span><code>python<span class="w"> </span>examples/knowledge-assistant/framework.py<span class="w"> </span>--db<span class="w"> </span>output/graph-business.db<span class="w"> </span>--checkpoints<span class="w"> </span>output/graph-checkpoints.db<span class="w"> </span>--thread<span class="w"> </span>interview-001<span class="w"> </span>--resume<span class="w"> </span>yes
 </code></pre></div>
 
 <p>预期 result 为 <code>created</code>。再次使用相同线程发起新任务会被拒绝，避免把旧状态当新会话。要做新的演示，换 <code>--thread interview-002</code>；拒绝审批用 <code>--resume no</code>。</p>
@@ -408,7 +408,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p>自动化验证命令：</p>
-<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w"> </span>discover<span class="w"> </span>-s<span class="w"> </span>examples/knowledge-assistant<span class="w"> </span>-p<span class="w"> </span>test_protocol.py<span class="w"> </span>-v
+<div class="codehilite" data-code-language="bash"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w"> </span>discover<span class="w"> </span>-s<span class="w"> </span>examples/knowledge-assistant<span class="w"> </span>-p<span class="w"> </span>test_protocol.py<span class="w"> </span>-v
 </code></pre></div>
 
 <p>其中框架用例启动两个不同 Python 进程，最后直接查业务库工单数。它比在同一个 Python 对象上继续调用更能证明持久化；但还没有覆盖集群迁移、checkpoint schema 升级与节点重命名。</p>
@@ -464,4 +464,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

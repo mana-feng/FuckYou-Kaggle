@@ -323,7 +323,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <hr />
 <h2 id="_2">🧩 一、先说清什么算「就地」</h2>
 <p>判据只有一条：<strong>结果写回原来那块内存，还是写进新分配的一块。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">])</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">1</span>                      <span class="c1"># 非就地：结果放进新分配的一块内存</span>
@@ -392,7 +392,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <hr />
 <h2 id="_3">🧩 二、版本计数器：它怎么发现你改了</h2>
 <p>PyTorch 给每一块张量存储挂了一个整数，<strong>每被就地改一次就加一</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;刚建出来      _version =&quot;</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">_version</span><span class="p">)</span>
@@ -431,7 +431,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 </blockquote>
 <hr />
 <h2 id="1">🧩 三、形态①：叶子被就地改（报在你写的那一行）</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">try</span><span class="p">:</span>
@@ -479,7 +479,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 第九节会把这两行手写出来。</p>
 <hr />
 <h2 id="2">🧩 四、形态②：叶子的视图被就地改（报的是另一句话）</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">try</span><span class="p">:</span>
@@ -537,7 +537,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 正确的做法是先把各段算出来，最后拼。</p>
 <hr />
 <h2 id="3-backward">🧩 五、形态③：反向要用的中间结果被就地改（报在 <code>backward()</code> 那一行）</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -587,7 +587,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <hr />
 <h2 id="x-2-sigmoid">🧩 六、为什么 <code>x * 2</code> 不报错、<code>sigmoid</code> 报错</h2>
 <p>同样是「就地改中间结果」，有的炸有的不炸。这不是玄学，判据很硬：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">try_one</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
@@ -676,7 +676,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <h2 id="4">🧩 七、💀 形态④：根本不报错的那种</h2>
 <p>前三种都有版本计数器兜着。<strong>这一种没有</strong> —— 它是本章最贵的一节。</p>
 <h3 id="data">破法一：<code>.data</code> 绕过版本计数器</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">2.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -726,7 +726,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 要改参数用 <code>with torch.no_grad():</code>。⚠️ 老教程和老仓库里 <code>.data</code> 满地都是，抄的时候要换掉。</p>
 <h3 id="autograd">破法二：前向的值被悄悄改掉（autograd 根本不知情）</h3>
 <p>版本计数器只管「反向要用的张量」。⚠️ <strong>你自己还要用的张量，它一概不管。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -775,7 +775,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <hr />
 <h2 id="no_grad-detach">🧩 八、<code>no_grad</code> 和 <code>detach</code> 都拦不住版本计数器</h2>
 <p>很多人以为「包一层 <code>no_grad</code> 就不记账了」，或者「先 <code>detach</code> 再改就安全了」。两个都不成立：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">2.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -828,7 +828,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <h2 id="_4">🧩 九、那还要不要用就地操作</h2>
 <p>要。而且你<strong>每一次训练迭代都在用</strong>，只是没意识到。</p>
 <h3 id="_5">它省的到底是什么</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
@@ -854,7 +854,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <code>inplace=True</code> 之后 ReLU 存的仍然是它的输出（只不过那块内存和输入共用）。
 ⭐ <strong>所以别指望 <code>inplace=True</code> 解决 OOM</strong> —— 真正的大头在 <a href="../AI基础设施/09-显存优化全家桶.html">AI 基础设施 09</a>。</p>
 <h3 id="_6">训练循环里你已经在用的两处</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">w</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
@@ -922,7 +922,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <p>⭐ 先说站内现状：<code>inplace=True</code> 这个写法在立项时全站 392 页 HTML 里命中 0 次（旧板块至今仍是 0） ——
 也就是说你在站内任何一页抄到的代码都不带它。但它在外面的开源实现里（torchvision 的 ResNet 就是）遍地都是，
 所以你迟早会抄到。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -984,7 +984,7 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
 <hr />
 <h2 id="_7">🧩 十一、撞上了怎么定位、怎么改</h2>
 <h3 id="set_detect_anomaly-forward">定位：<code>set_detect_anomaly</code> 会告诉你是 forward 的哪一行</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">set_detect_anomaly</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1229,4 +1229,4 @@ PyTorch 用一个叫版本计数器的东西来抓这件事 —— 它能抓住�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

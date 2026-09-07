@@ -43,7 +43,7 @@
       const target = headings.find(h => h.textContent.includes(link.dataset.headingJump));
       if (target) link.href = "#" + target.id;
     });
-    if (document.querySelector('.lesson-layout[data-lesson="pytorch"]')) {
+    if (!window.CodeReader && document.querySelector('.lesson-layout[data-lesson="pytorch"]')) {
       full.querySelectorAll('pre').forEach(pre => {
         const lines = pre.textContent.trimEnd().split('\n').length;
         if (lines < 25) return;

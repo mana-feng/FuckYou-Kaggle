@@ -363,7 +363,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>拿到一张没见过的表，先别写业务查询。<strong>先花十分钟问五个和业务无关的问题。</strong></p>
 <p>⭐ 好消息是这五问可以合成<strong>一条查询</strong>（<code>UNION ALL</code> 把互不相干的问句摞成一张表），
 一次往返、一屏看完：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;CREATE TABLE calls(</span>
 <span class="s2">  id INTEGER, user_id TEXT, feature TEXT, city TEXT, cents REAL, ts TEXT)&quot;&quot;&quot;</span><span class="p">)</span>
@@ -405,7 +405,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>① 行数           9
+<div class="codehilite" data-code-language="text"><pre><span></span><code>① 行数           9
 ② id 唯一吗       9 行 / 8 个 id
 ③ city 空多少     2 行为 NULL
 ④ cents 范围     -1.0 ~ 10.2
@@ -476,7 +476,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 只能人工抽检 / 对账，不是查询问题。那边给的检查代码是 pandas 版。</p>
 <p>⭐ <strong>这里把能自动查的那五个，写成纯 SQL 断言</strong> —— 因为如果数据在库里，
 你根本没必要先把它拉进内存：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;CREATE TABLE calls(</span>
 <span class="s2">  id INTEGER, user_id TEXT, feature TEXT, city TEXT,</span>
@@ -530,7 +530,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>完整性 · city 非空率               75.0%          &gt;= 99.5%   FAIL
+<div class="codehilite" data-code-language="text"><pre><span></span><code>完整性 · city 非空率               75.0%          &gt;= 99.5%   FAIL
 唯一性 · id 无重复                 1 个多余行         = 0        FAIL
 有效性 · cents &gt;= 0             1 行为负          = 0        FAIL
 有效性 · feature 在白名单里          1 行越界          = 0        FAIL
@@ -570,7 +570,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="where">⭐ 四、每一个 WHERE 都要有人负责解释：三个动作</h2>
 <p>现在到第三层。假设你手上有一份评估集，它的构造 SQL 长这样（三条 <code>WHERE</code>，看起来都很合理）：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">uid</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">traffic</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">uid</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">traffic</span>
 <span class="k">WHERE</span><span class="w"> </span><span class="n">click_7d</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w">        </span><span class="c1">-- 过滤掉无行为用户</span>
 <span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">is_new</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w">          </span><span class="c1">-- 排除新用户</span>
 <span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">region</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="s1">&#39;C&#39;</span><span class="w">       </span><span class="c1">-- 去掉 C 区</span>
@@ -604,7 +604,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p>十万行的合成数据，跑一遍：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">random</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">random</span>
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE traffic (uid INTEGER PRIMARY KEY, click_7d INT, is_new INT, region TEXT)&quot;</span><span class="p">)</span>
 <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>                                   <span class="c1"># ⭐ 固定种子，你跑出来的数和这里一样</span>
@@ -645,7 +645,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>① 差集核对：全量 100000，评估集 18119，被这几个 WHERE 挡掉 81881（81.9%）
+<div class="codehilite" data-code-language="text"><pre><span></span><code>① 差集核对：全量 100000，评估集 18119，被这几个 WHERE 挡掉 81881（81.9%）
 ② 每个 WHERE 单独负责多少 —— 去掉这一条会多出多少行：
    去掉 `click_7d &gt; 0  `(过滤掉无行为用户) →  53731 行，多出  35612
    去掉 `is_new = 0    `(排除新用户) →  22636 行，多出   4517
@@ -727,7 +727,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_6">🔎 五、把被挡掉的人捞回来看一眼</h2>
 <p>动作③给的是<strong>留下的人</strong>的画像。⭐ 真正的收尾动作是反过来：
 <strong>给被挡掉的 81881 人也做一份画像，两份并排放。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">random</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">random</span>
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE traffic (uid INTEGER PRIMARY KEY, click_7d INT, is_new INT, region TEXT)&quot;</span><span class="p">)</span>
 <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
@@ -772,7 +772,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>留下 vs 被挡掉，两个人群长什么样：
+<div class="codehilite" data-code-language="text"><pre><span></span><code>留下 vs 被挡掉，两个人群长什么样：
     (&#39;被挡掉&#39;, 81881, 2.99, 24.3, 24397, 24594, 32890)
     (&#39;留下&#39;, 18119, 15.52, 0.0, 9027, 9092, 0)
 
@@ -823,7 +823,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_7">📋 六、交付之前的两条自检</h2>
 <p>前五节审的是<strong>别人给你的数据</strong>。这一节审<strong>你自己刚写完那条查询</strong>。</p>
 <p>⭐ 两条自检，都只要两行代码，但它们抓的是不同的东西：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE orders(oid INTEGER, uid TEXT, amount REAL)&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE items (oid INTEGER, sku TEXT, qty INT)&quot;</span><span class="p">)</span>
@@ -857,7 +857,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>① 行数守恒：orders 3 行 → JOIN 之后 3 行（一样）
+<div class="codehilite" data-code-language="text"><pre><span></span><code>① 行数守恒：orders 3 行 → JOIN 之后 3 行（一样）
 ② 对拍：JOIN 写法 = 205.0，EXISTS 写法 = 125.0 → ⚠️ 不一致，两个口径至少有一个是错的
 ③ 双向对账： (1, 0)
 </code></pre></div>
@@ -1119,4 +1119,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

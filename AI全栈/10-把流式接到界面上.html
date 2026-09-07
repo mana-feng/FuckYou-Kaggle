@@ -317,7 +317,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="eventsource">🚧 一、第一个坑：<code>EventSource</code> 用不了</h2>
 <p>浏览器有个专门收 SSE 的内置 API，叫 <code>EventSource</code>。看起来完美：</p>
-<div class="codehilite"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">es</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">EventSource</span><span class="p">(</span><span class="s1">&#39;/api/chat&#39;</span><span class="p">);</span>
+<div class="codehilite" data-code-language="javascript"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">es</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">EventSource</span><span class="p">(</span><span class="s1">&#39;/api/chat&#39;</span><span class="p">);</span>
 <span class="nx">es</span><span class="p">.</span><span class="nx">onmessage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* 每帧一次 */</span><span class="w"> </span><span class="p">};</span>
 </code></pre></div>
 
@@ -355,7 +355,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>后端按 SSE 格式吐（<a href="01-第一天-两小时上线.html">第 1 章</a>、<a href="05-流式输出.html">第 5 章</a>定的全板块统一帧格式：
 每帧一行 <code>data: {JSON}</code>，帧间空一行，<strong>帧的类型放在 JSON 负载的 <code>type</code> 字段里</strong>——<code>delta</code> / <code>usage</code> / <code>error</code> / <code>done</code>）。
 浏览器这边要做三件事：<strong>读字节 → 解码成文本 → 按空行切帧</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">streamChat</span><span class="p">(</span><span class="nx">messages</span><span class="p">,</span><span class="w"> </span><span class="nx">onFrame</span><span class="p">,</span><span class="w"> </span><span class="nx">signal</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<div class="codehilite" data-code-language="javascript"><pre><span></span><code><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">streamChat</span><span class="p">(</span><span class="nx">messages</span><span class="p">,</span><span class="w"> </span><span class="nx">onFrame</span><span class="p">,</span><span class="w"> </span><span class="nx">signal</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;/api/chat&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nx">method</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
 <span class="w">    </span><span class="nx">headers</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
@@ -501,7 +501,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>🗓️ <strong>浏览器端事实标准是 DOMPurify</strong>（<code>DOMPurify.sanitize(html)</code>，就是「解析成树再裁剪」这个形状）；服务端渲染那一侧各语言都有对应的库。⚠️ <strong>库名和默认配置都会变，会过期的是名字、不过期的是上面那四条判据。</strong></p>
 <p>⚠️ <strong>还有一个位置问题</strong>：<strong>净化必须是写进 <code>innerHTML</code> 之前的最后一步</strong>。先净化、再拼字符串（比如再接一段「引用来源」）等于白做——拼接之后没人再检查过。</p>
 <p><strong>性能上的一个实用技巧</strong>：⭐ <strong>不要每帧都重绘整个消息列表</strong>，只更新最后一条：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// ❌ 每帧全量重绘：一秒几十次，还会打断用户选中文本</span>
+<div class="codehilite" data-code-language="javascript"><pre><span></span><code><span class="c1">// ❌ 每帧全量重绘：一秒几十次，还会打断用户选中文本</span>
 <span class="kd">function</span><span class="w"> </span><span class="nx">onFrame</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">messages</span><span class="p">.</span><span class="nx">at</span><span class="p">(</span><span class="o">-</span><span class="mf">1</span><span class="p">).</span><span class="nx">content</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="nx">f</span><span class="p">.</span><span class="nx">text</span><span class="p">;</span><span class="w"> </span><span class="nx">render</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
 
 <span class="c1">// ✅ 只更新最后一个 DOM 节点</span>
@@ -524,7 +524,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_3">📜 四、滚动跟随：判断「用户还在跟读吗」</h2>
 <p><a href="09-最小可用前端.html">上一章</a>给了判据，这里是完整实现和一个额外的坑。</p>
-<div class="codehilite"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">NEAR_BOTTOM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">80</span><span class="p">;</span><span class="w">   </span><span class="c1">// 像素</span>
+<div class="codehilite" data-code-language="javascript"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">NEAR_BOTTOM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">80</span><span class="p">;</span><span class="w">   </span><span class="c1">// 像素</span>
 <span class="kd">let</span><span class="w"> </span><span class="nx">following</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w">     </span><span class="c1">// ⭐ 用一个状态记住「用户是否在跟读」</span>
 
 <span class="nx">box</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;scroll&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
@@ -545,7 +545,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="abort">⏹ 五、停止生成：前端 abort + 后端要能感知</h2>
 <p>用户点「停止」，两件事都要做到：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// 发起时</span>
+<div class="codehilite" data-code-language="javascript"><pre><span></span><code><span class="c1">// 发起时</span>
 <span class="nx">controller</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">AbortController</span><span class="p">();</span>
 <span class="nx">streamChat</span><span class="p">(</span><span class="nx">messages</span><span class="p">,</span><span class="w"> </span><span class="nx">onFrame</span><span class="p">,</span><span class="w"> </span><span class="nx">controller</span><span class="p">.</span><span class="nx">signal</span><span class="p">);</span>
 
@@ -557,7 +557,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>⚠️ <strong><code>abort()</code> 会让 <code>await reader.read()</code> 抛异常</strong>，所以收流的地方要接住：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<div class="codehilite" data-code-language="javascript"><pre><span></span><code><span class="k">try</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">streamChat</span><span class="p">(...);</span>
 <span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">name</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;AbortError&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -581,7 +581,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 ⭐ <strong>HTTP 头已经发出去了（200 OK），后端没法再改成 500</strong> ——
 所以<strong>错误只能作为流里的一帧传过来</strong>。</p>
 <p>这就是为什么<a href="01-第一天-两小时上线.html">第 1 章</a>一开始就要求<strong>分帧</strong>而不是吐裸文本：</p>
-<div class="codehilite"><pre><span></span><code><span class="kd">function</span><span class="w"> </span><span class="nx">onFrame</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<div class="codehilite" data-code-language="javascript"><pre><span></span><code><span class="kd">function</span><span class="w"> </span><span class="nx">onFrame</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="s1">&#39;delta&#39;</span><span class="o">:</span><span class="w"> </span><span class="nx">messages</span><span class="p">.</span><span class="nx">at</span><span class="p">(</span><span class="o">-</span><span class="mf">1</span><span class="p">).</span><span class="nx">content</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="nx">f</span><span class="p">.</span><span class="nx">text</span><span class="p">;</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
 <span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="s1">&#39;error&#39;</span><span class="o">:</span><span class="w">                                    </span><span class="c1">// ⭐ 错误作为一帧</span>
@@ -798,4 +798,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

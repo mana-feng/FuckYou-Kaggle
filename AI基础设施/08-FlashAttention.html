@@ -386,7 +386,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">反向需要 P 矩阵，但它没被保存</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 解法：重算（recomputation）</span></div><div class="vb-flow-row"><span class="vb-flow-step">反向时用保存下来的 O、ℓ、m 重新算出 P</span></div><div class="vb-flow-row"><span class="vb-flow-step">又是&quot;用计算换显存&quot;</span></div><div class="vb-flow-row"><span class="vb-flow-step">因为是带宽瓶颈，重算的时间比读 HBM 还短 ⭐</span></div></div></section>
 <hr />
 <h2 id="_5">🔨 四、怎么用（几乎不用改代码）</h2>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`q` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`q` 来自你自己的代码，这一段只看写法</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
 
 <span class="c1"># ⭐ 首选：PyTorch 内置，自动选最优后端（含 FlashAttention）</span>
@@ -574,4 +574,4 @@ FA-1 里的 online softmax 有大量这类操作，FA-2 重新安排了顺序把
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -564,7 +564,7 @@ AdamW 把权重衰减<strong>解耦</strong>出来，是现在的正确做法。
 <hr />
 <h2 id="lr-range-test">🔨 四、怎么找学习率（LR Range Test）</h2>
 <p>不用瞎猜，有个标准方法：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`loader` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`loader` 来自你自己的代码，这一段只看写法</span>
 <span class="c1"># 让 lr 从 1e-7 指数增长到 1，记录每步的 loss</span>
 <span class="n">lrs</span><span class="p">,</span> <span class="n">losses</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
 <span class="n">lr</span> <span class="o">=</span> <span class="mf">1e-7</span>
@@ -599,7 +599,7 @@ AdamW 把权重衰减<strong>解耦</strong>出来，是现在的正确做法。
 <p>这种先增大学习率、观察损失变化来寻找合理范围的思路，可参见 <a href="https://arxiv.org/abs/1506.01186">Leslie Smith 的学习率范围测试说明</a>。</p>
 <hr />
 <h2 id="_6">📋 五、可以照抄的默认配置</h2>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`model` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`model` 来自你自己的代码，这一段只看写法</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">AdamW</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
@@ -676,7 +676,7 @@ AdamW 把权重衰减<strong>解耦</strong>出来，是现在的正确做法。
 </tr>
 </tbody>
 </table></div>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`loader` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`loader` 来自你自己的代码，这一段只看写法</span>
 <span class="c1"># 梯度累积：注意 loss 要除以 accum_steps ⭐</span>
 <span class="n">accum</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">loader</span><span class="p">):</span>
@@ -766,4 +766,4 @@ AdamW 把权重衰减<strong>解耦</strong>出来，是现在的正确做法。
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

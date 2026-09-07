@@ -751,7 +751,7 @@ RoPE 解耦是这个套路最干净的一个例子 —— <strong>64 维的额�
 <h3 id="1-kv-cache">① KV Cache 量化</h3>
 <section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">FP16</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">INT8：显存减半，能开 2 倍 batch</span></div><div class="vb-flow-row"><span class="vb-flow-step">FP16</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">FP8/INT4：减到 1/4（质量要测）</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 经验：K 比 V 对量化更敏感（K 影响 attention 分布）</span></div><div class="vb-flow-row"><span class="vb-flow-step">常见做法：K 用 INT8，V 用 INT4</span></div></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`LLM` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`LLM` 来自你自己的代码，这一段只看写法</span>
 <span class="c1"># vLLM</span>
 <span class="n">llm</span> <span class="o">=</span> <span class="n">LLM</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="n">kv_cache_dtype</span><span class="o">=</span><span class="s2">&quot;fp8&quot;</span><span class="p">)</span>     <span class="c1"># ⭐ 一行</span>
 </code></pre></div>
@@ -759,7 +759,7 @@ RoPE 解耦是这个套路最干净的一个例子 —— <strong>64 维的额�
 <h3 id="2-prefix-caching">② 前缀缓存（Prefix Caching）</h3>
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">场景：所有请求都带同一个 2000 token 的系统提示词</span></div><div class="vb-flow-row"><span class="vb-flow-step">❌ 每个请求都重新 Prefill 这 2000 token</span></div><div class="vb-flow-row"><span class="vb-flow-step">✅ 缓存它的 KV，所有请求共享</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">Prefill 成本接近零</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 在 Agent、RAG、多轮对话场景收益巨大</span></div><div class="vb-flow-row"><span class="vb-flow-step">（多轮对话里，前面所有轮次都是可复用的前缀）</span></div></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`LLM` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`LLM` 来自你自己的代码，这一段只看写法</span>
 <span class="n">llm</span> <span class="o">=</span> <span class="n">LLM</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="n">enable_prefix_caching</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>   <span class="c1"># ⭐</span>
 </code></pre></div>
 
@@ -769,7 +769,7 @@ RoPE 解耦是这个套路最干净的一个例子 —— <strong>64 维的额�
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>把不活跃请求的 KV Cache 换出到 CPU 内存</p><p>⚠️ 走 PCIe（第 3 章：慢约 40 倍）</p><p>⭐ 适合&quot;多轮对话中用户正在思考&quot;这种长间隔场景</p></div></section>
 <hr />
 <h2 id="batch">🧮 七、动手：算你能开多大 batch</h2>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">max_batch</span><span class="p">(</span><span class="n">gpu_gb</span><span class="p">,</span> <span class="n">model_gb</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">kv_heads</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">,</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">max_batch</span><span class="p">(</span><span class="n">gpu_gb</span><span class="p">,</span> <span class="n">model_gb</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">kv_heads</span><span class="p">,</span> <span class="n">head_dim</span><span class="p">,</span>
               <span class="n">seq_len</span><span class="p">,</span> <span class="n">dtype_bytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">overhead</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;能同时服务多少个请求&quot;&quot;&quot;</span>
     <span class="n">avail</span> <span class="o">=</span> <span class="n">gpu_gb</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">overhead</span><span class="p">)</span> <span class="o">-</span> <span class="n">model_gb</span>
@@ -919,4 +919,4 @@ RoPE 解耦是这个套路最干净的一个例子 —— <strong>64 维的额�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

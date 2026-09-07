@@ -336,7 +336,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ 第五节把「本机到底支不支持」的<strong>逐条探测输出</strong>整个贴出来了 —— 那一节全部是实测。</p>
 <hr />
 <h2 id="_2">📋 一、执行顺序（全教程最该背下来的一行）</h2>
-<div class="codehilite"><pre><span></span><code>FROM / JOIN  →  WHERE  →  GROUP BY  →  HAVING  →  SELECT  →  DISTINCT  →  ORDER BY  →  LIMIT
+<div class="codehilite" data-code-language="text"><pre><span></span><code>FROM / JOIN  →  WHERE  →  GROUP BY  →  HAVING  →  SELECT  →  DISTINCT  →  ORDER BY  →  LIMIT
                                                      ↑
                                        窗口函数在这一步之后算
 </code></pre></div>
@@ -514,7 +514,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⚠️ <strong>这八条不是「换个函数名」，是同一条 SQL 在三个库里给出【不同的数】。</strong>
 换库迁移时，这八条要逐条对一遍。</p>
 <h3 id="1-null">① <code>NULL</code> 默认排在哪一头</h3>
-<div class="codehilite"><pre><span></span><code>实测（SQLite）：
+<div class="codehilite" data-code-language="text"><pre><span></span><code>实测（SQLite）：
   ORDER BY v        → [None, 10, 20, 30]     ← NULL 在最前
   ORDER BY v DESC   → [30, 20, 10, None]     ← NULL 在最后
 </code></pre></div>
@@ -544,7 +544,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>一律显式写</strong> <code>ORDER BY x ASC NULLS LAST</code>（SQLite 3.30+ / PG 支持，<strong>实测</strong> SQLite 可用）。
 🗓️ MySQL 没有 <code>NULLS LAST</code>，要用 <code>ORDER BY (x IS NULL), x</code>。</p>
 <h3 id="2">② 整数除法</h3>
-<div class="codehilite"><pre><span></span><code>实测（SQLite）：SELECT 5/2, 5.0/2  →  (2, 2.5)
+<div class="codehilite" data-code-language="text"><pre><span></span><code>实测（SQLite）：SELECT 5/2, 5.0/2  →  (2, 2.5)
 </code></pre></div>
 
 <div class="tw"><table>
@@ -573,7 +573,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <code>成功数/总数</code> 会从 <code>0.83</code> 变成 <code>0</code>，而且<strong>不报错</strong>。⭐ 保险写法：分子乘 <code>1.0</code>，
 <code>100.0 * a / b</code>。</p>
 <h3 id="3">③ 除以零</h3>
-<div class="codehilite"><pre><span></span><code>实测（SQLite）：SELECT 1/0, 1.0/0  →  (None, None)
+<div class="codehilite" data-code-language="text"><pre><span></span><code>实测（SQLite）：SELECT 1/0, 1.0/0  →  (None, None)
 </code></pre></div>
 
 <div class="tw"><table>
@@ -600,21 +600,21 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table></div>
 <p>⭐ 三家都能用的写法：<code>a / NULLIF(b, 0)</code> —— 分母是 0 就变 <code>NULL</code>，不报错也不算错。</p>
 <h3 id="4">④ 字符串拼接符</h3>
-<div class="codehilite"><pre><span></span><code>实测（SQLite）：SELECT &#39;a&#39; || &#39;b&#39;       →  &#39;ab&#39;
+<div class="codehilite" data-code-language="text"><pre><span></span><code>实测（SQLite）：SELECT &#39;a&#39; || &#39;b&#39;       →  &#39;ab&#39;
 实测（SQLite）：SELECT CONCAT(&#39;a&#39;,&#39;b&#39;)  →  &#39;ab&#39;      （3.44+ 才有 CONCAT）
 </code></pre></div>
 
 <p>⚠️ <strong>两个竖线在 MySQL 里默认是逻辑「或」，不是拼接</strong>（除非开了 <code>PIPES_AS_CONCAT</code>）。
 🗓️ 未实跑。⭐ <strong>要三家通吃就用 <code>CONCAT()</code>。</strong></p>
 <p>⚠️ 但 <code>CONCAT()</code> 和竖线拼接<strong>对 <code>NULL</code> 的处理不一样</strong>：</p>
-<div class="codehilite"><pre><span></span><code>实测（SQLite）：SELECT &#39;a&#39; || NULL       →  None      ← 一个 NULL 毁掉整串
+<div class="codehilite" data-code-language="text"><pre><span></span><code>实测（SQLite）：SELECT &#39;a&#39; || NULL       →  None      ← 一个 NULL 毁掉整串
 实测（SQLite）：SELECT CONCAT(&#39;a&#39;, NULL)  →  &#39;a&#39;       ← NULL 被当空串跳过
 </code></pre></div>
 
 <p>💀 拼主键的时候这条会咬人：<code>a || '|' || b</code> 里 <code>b</code> 是 <code>NULL</code>，整个键变 <code>NULL</code>，
 那一行在后续 <code>GROUP BY</code> 里<strong>独自成组</strong>且看不出原因。⭐ 拼键之前一律 <code>COALESCE</code>。</p>
 <h3 id="5">⑤ 双引号</h3>
-<div class="codehilite"><pre><span></span><code>实测（SQLite）：SELECT COUNT(*) FROM t WHERE g = &quot;a&quot;   →  能跑，返回 2 行
+<div class="codehilite" data-code-language="text"><pre><span></span><code>实测（SQLite）：SELECT COUNT(*) FROM t WHERE g = &quot;a&quot;   →  能跑，返回 2 行
 </code></pre></div>
 
 <div class="tw"><table>
@@ -642,7 +642,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>规则很简单：字符串一律单引号，标识符一律不引</strong>（真要引，SQLite 三种引号都吃：
 <code>"x"</code>、<code>`x`</code>、<code>[x]</code> 全部<strong>实测</strong>能跑，但那只是兼容包袱，别用）。</p>
 <h3 id="6-like">⑥ <code>LIKE</code> 认不认大小写</h3>
-<div class="codehilite"><pre><span></span><code>实测（SQLite）：SELECT COUNT(*) FROM t WHERE g LIKE &#39;A&#39;   →  2   ← 匹配上了小写的 &#39;a&#39;
+<div class="codehilite" data-code-language="text"><pre><span></span><code>实测（SQLite）：SELECT COUNT(*) FROM t WHERE g LIKE &#39;A&#39;   →  2   ← 匹配上了小写的 &#39;a&#39;
 实测（SQLite）：ILIKE  →  OperationalError: near &quot;ILIKE&quot;: syntax error
 </code></pre></div>
 
@@ -672,7 +672,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 ⭐ 想要确定行为就自己动手：<code>WHERE LOWER(g) = LOWER('A')</code>
 （⚠️ 代价是这样写用不上 <code>g</code> 上的索引 —— <a href="09-计划里的连接与索引失效.html">09 章</a>的题目）。</p>
 <h3 id="7-group-by">⑦ <code>GROUP BY</code> 后面能不能跟没聚合的列</h3>
-<div class="codehilite"><pre><span></span><code>实测（SQLite）：SELECT g, v, COUNT(*) FROM t GROUP BY g   →  [(&#39;a&#39;, 10, 2), (&#39;b&#39;, 30, 2)]
+<div class="codehilite" data-code-language="text"><pre><span></span><code>实测（SQLite）：SELECT g, v, COUNT(*) FROM t GROUP BY g   →  [(&#39;a&#39;, 10, 2), (&#39;b&#39;, 30, 2)]
 </code></pre></div>
 
 <p>⚠️ <code>v</code> 既没在 <code>GROUP BY</code> 里也没被聚合，SQLite <strong>照跑不误</strong>，随便挑组里某一行的值给你。</p>
@@ -701,7 +701,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ Postgres 的严格是对的：那个值<strong>没有意义</strong>。要「组内某一行的完整信息」，
 正确写法是窗口函数 <code>ROW_NUMBER() ... = 1</code>，不是裸列。</p>
 <h3 id="8">⑧ 类型：声明了长度也不管用</h3>
-<div class="codehilite"><pre><span></span><code>实测（SQLite）：CREATE TABLE small(x VARCHAR(3));
+<div class="codehilite" data-code-language="text"><pre><span></span><code>实测（SQLite）：CREATE TABLE small(x VARCHAR(3));
               INSERT INTO small VALUES(&#39;abcdefgh&#39;);   ← 不报错
               SELECT x, LENGTH(x) FROM small  →  (&#39;abcdefgh&#39;, 8)
 </code></pre></div>
@@ -709,18 +709,18 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⚠️ SQLite 是<strong>动态类型 + 类型亲和性</strong>：<code>VARCHAR(3)</code> 里的 <code>3</code> 完全<strong>不生效</strong>。
 🗓️ Postgres 会报 <code>value too long</code>；MySQL 严格模式报错、非严格模式截断加 warning。</p>
 <p>⭐ SQLite 3.37+ 可以建 <strong><code>STRICT</code> 表</strong>（<strong>实测</strong>可用）把类型管起来：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">t</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="nb">INT</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">)</span><span class="w"> </span><span class="k">STRICT</span><span class="p">;</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">t</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="nb">INT</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">)</span><span class="w"> </span><span class="k">STRICT</span><span class="p">;</span>
 </code></pre></div>
 
 <p>⚠️ <strong>另一个相关的坑</strong>：</p>
-<div class="codehilite"><pre><span></span><code>实测（SQLite）：SELECT &#39;1&#39; = 1, &#39;1&#39; = &#39;1&#39;, 1 = 1.0   →  (0, 1, 1)
+<div class="codehilite" data-code-language="text"><pre><span></span><code>实测（SQLite）：SELECT &#39;1&#39; = 1, &#39;1&#39; = &#39;1&#39;, 1 = 1.0   →  (0, 1, 1)
 </code></pre></div>
 
 <p><code>'1' = 1</code> 是<strong>假</strong> —— 文本和数字属于不同的存储类，文本永远「大于」数字。
 🗓️ Postgres 和 MySQL 在这里会把字面量转成数字，结果是<strong>真</strong>。
 ⭐ 所以「把数字存成字符串」这件事，在 SQLite 上会以查不出行的形式发作，而不是报错。</p>
 <h3 id="length">🧯 还有一条不算「算错」但值得知道：<code>LENGTH</code> 数的是什么</h3>
-<div class="codehilite"><pre><span></span><code>实测（SQLite）：SELECT LENGTH(&#39;北京&#39;), LENGTH(CAST(&#39;北京&#39; AS BLOB))  →  (2, 6)
+<div class="codehilite" data-code-language="text"><pre><span></span><code>实测（SQLite）：SELECT LENGTH(&#39;北京&#39;), LENGTH(CAST(&#39;北京&#39; AS BLOB))  →  (2, 6)
 </code></pre></div>
 
 <p>SQLite / Postgres 的 <code>LENGTH</code> 数<strong>字符</strong>；🗓️ <strong>MySQL 的 <code>LENGTH()</code> 数字节</strong>，
@@ -835,7 +835,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_6">🧪 五、本机到底支不支持：逐条探测（全部实测）</h2>
 <p>⭐ 这一节不是从文档抄的，是<strong>在 SQLite 3.50.4 上逐条跑出来的</strong>：能跑就打印结果，
 不能跑就打印它抛的错。你换个版本重跑一遍，就知道自己那台机器的边界在哪。</p>
-<div class="codehilite"><pre><span></span><code>sqlite: 3.50.4
+<div class="codehilite" data-code-language="text"><pre><span></span><code>sqlite: 3.50.4
   OK   窗口函数 ROW_NUMBER            -&gt; [(1, 1), (2, 2), (3, 1)]
   FAIL 窗口 QUALIFY                 -&gt; OperationalError: near &quot;ROW_NUMBER&quot;: syntax error
   OK   FILTER (WHERE ...)         -&gt; [(2,)]
@@ -1096,4 +1096,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

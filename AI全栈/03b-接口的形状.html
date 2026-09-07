@@ -420,7 +420,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>💀 <strong>最贵的一条：把会改状态的操作写成 <code>GET</code></strong>（<code>GET /messages/{mid}/delete</code>）。它能跑、测试也过，然后 —— <strong>阅读器和浏览器会预取</strong>（带这个链接的页面被打开一遍，东西就没了）、CDN 会缓存住那个「成功」（下次点击根本没到你的服务器）、重试器会自动重发、⚠️ 参数还会被各层记进日志（和<a href="08-认证会话与多租户.html">第 8 章</a>那行 <code>GET /api/docs?tenant=globex</code> 是同一个家族的问题）。</p>
 <p>⭐ 反方向（把纯读写成 <code>POST /search</code>）代价温和些：丢掉缓存、丢掉「链接发给同事就能复现」；⚠️ 合法例外只有一个 —— 查询体太大放不进 URL。</p>
 <p>🚦 <strong>AI 应用的一个现实：生成天然不幂等。</strong> <a href="02-一个AI产品的解剖.html">第 2 章</a>四件难事的最后一条就是「同样输入不同输出」—— 同一段 prompt 发两次会得到两条回复、两笔账。⭐ 所以发消息就该是 <code>POST</code>，<strong>用承诺幂等的 <code>PUT</code> 去包装它是在对客户端撒谎</strong>；正确做法是承认它不幂等，再单独加一层保护（03c，也正是 11 章第四节结尾「更稳的是让客户端传 <code>Idempotency-Key</code> 头」指向的地方）。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># DELETE 的幂等承诺落成代码：删两次都该是 204</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># DELETE 的幂等承诺落成代码：删两次都该是 204</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
 
@@ -589,7 +589,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>403 承认了「这个 id 存在」。</strong> id 一旦可枚举，它就成了探测接口 —— 拿一个合法账号就能数出你有多少客户、哪些 id 是活的。
 <strong>判据：如果「存在与否」本身是敏感的，就返 404。</strong> ⚠️ 代价是你自己排查时也分不清「真没有」和「没权限」，⭐ 解法是<strong>对外统一 404、日志里记真实原因和 <code>trace_id</code></strong>（03 章那条原则）。</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 五个 4xx 各自在回答哪个问题：判据不是&quot;错了&quot;，是&quot;谁的错、要不要重试&quot;</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 五个 4xx 各自在回答哪个问题：判据不是&quot;错了&quot;，是&quot;谁的错、要不要重试&quot;</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Header</span><span class="p">,</span> <span class="n">HTTPException</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
@@ -668,7 +668,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table></div>
 <p>⭐ <strong><a href="11-长任务与队列.html">11 章第三节</a>那张「状态怎么让前端知道」的表（轮询 vs SSE），上游就是这里</strong> —— 那张表回答的是「怎么把状态送过去」，而<strong>先得有个东西可以被查</strong>，那个东西就是 <code>Location</code> 指向的 job 资源。没有它，轮询没有地址可轮。</p>
 <p>⚠️ <strong>两个坑</strong>：<strong>① job 不是消息的替代品，是它的一个阶段</strong> —— job 里要带 <code>result_url</code> 指回资源，否则前端只认识 job_id、不认识结果的位置。② 用户那条消息要先单独落库再入队 —— <a href="06-关系数据库.html">6 章第六节</a>已经立了这条（「用户消息先单独提交，LLM 失败就记 <code>failed</code> 状态」），⭐ 它在接口层的红利是：202 的响应里当场就能带上那条 user message 的 seq，前端立刻能渲染用户自己那句话。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 一次对话既是资源又是长任务：用 202 + 一个 job 资源把两种建模接起来</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 一次对话既是资源又是长任务：用 202 + 一个 job 资源把两种建模接起来</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">HTTPException</span><span class="p">,</span> <span class="n">Response</span>
@@ -923,4 +923,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

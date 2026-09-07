@@ -314,7 +314,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><strong>交付一个模型永远是交付两样东西：【权重】和【怎么算】。四种格式的差别只在于「怎么算」这一半装在哪里 —— 装在你的 <code>.py</code> 文件里、装在 pickle 的一根引用里、还是装进导出的那张图里。</strong>
 ⚠️ 这一章只管<strong>模型怎么变成一个可交付的文件</strong>。文件到手之后怎么起服务、怎么做健康检查、怎么灰度，是 <a href="../AI全栈/index.html">《AI 全栈》</a> 和 <a href="../模型上线之后/index.html">《模型上线之后》</a> 的事。</p>
 <p>本章所有实验用同一个玩具模型，它住在 <code>mymodel.py</code> 里：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 
@@ -331,7 +331,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⚠️ <strong>它只有 58 个参数</strong>（<code>fc1</code> 40 个 + <code>fc2</code> 18 个），所以下面所有文件体积<strong>基本全是元数据，不是权重</strong>。别拿这些字节数去比较格式谁更省空间 —— 它们比的是「装了多少结构信息」。</p>
 <hr />
 <h2 id="torchsavemodel">🧩 一、<code>torch.save(model)</code> 存的不是模型，是一根引用</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mymodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Net</span>
 
@@ -351,7 +351,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>实跑输出：</p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>whole.pt 3401 字节</p><p>sd.pt 2411 字节</p><p>state_dict 的 key: [&#x27;fc1.weight&#x27;, &#x27;fc1.bias&#x27;, &#x27;fc2.weight&#x27;, &#x27;fc2.bias&#x27;]</p><p>类型: OrderedDict</p></div></section>
 <p>差的那 990 字节里装了什么？<strong><code>.pt</code> 文件其实是个 zip</strong>，里面的 <code>data.pkl</code> 就是一段 pickle，可以直接拆开看它引用了哪些类：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pickletools</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">zipfile</span>
 
@@ -379,7 +379,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong><code>mymodel Net</code> —— 你的模块名和类名，一字不差地写在文件里了。</strong>
 但<strong>类的代码没有进去</strong>，进去的只是这个名字。加载的时候 pickle 会照着这个名字去 <code>import mymodel</code>，找不到就完。</p>
 <p>把两个文件拷到一个<strong>没有 <code>mymodel.py</code></strong> 的目录里：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- ① 整个模型 ---&quot;</span><span class="p">)</span>
 <span class="k">try</span><span class="p">:</span>
@@ -408,7 +408,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="pytorch-26-torchload">🔒 二、PyTorch 2.6 改了 <code>torch.load</code> 的默认值</h2>
 <p>即使 <code>mymodel.py</code> 就在手边，直接 <code>torch.load("whole.pt")</code> 现在也会失败：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mymodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Net</span>          <span class="c1"># ⭐ 类定义在，也照样试试</span>
 
 <span class="n">m</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;whole.pt&quot;</span><span class="p">)</span>       <span class="c1"># torch 2.13 的默认参数</span>
@@ -428,7 +428,7 @@ Weights only load failed. This file can still be loaded, to do so you have two o
 <p>⭐ <strong>原因写在报错里了：pickle 反序列化等于执行任意代码。</strong> 一个 <code>.pt</code> 文件可以在你 <code>torch.load</code> 的那一刻删你的家目录 —— 而 HuggingFace 上的权重是<strong>别人上传的</strong>。
 2.6 之后默认 <code>weights_only=True</code>：只允许张量和一小撮内置类型，遇到别的一律拒绝。</p>
 <p>⚠️ <strong>这条会以一种意外的方式咬你：连你自己存的 checkpoint 也可能过不了。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mymodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Net</span>
@@ -544,7 +544,7 @@ Weights only load failed. This file can still be loaded, to do so you have two o
 <li><strong><code>trace</code></strong>：喂一个样例输入进去，<strong>记录下真正执行过的那串算子</strong>。</li>
 <li><strong><code>script</code></strong>：直接<strong>读你的 Python 源码</strong>，编译成 TorchScript。</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 
@@ -611,7 +611,7 @@ Weights only load failed. This file can still be loaded, to do so you have two o
 </tbody>
 </table></div>
 <h3 id="_3">装进文件之后长什么样</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mymodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Net</span>
 
@@ -628,7 +628,7 @@ Weights only load failed. This file can still be loaded, to do so you have two o
 <p>实跑输出：</p>
 <section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>原模型输出: [-0.1947, -0.1502]</p><p>scripted.pt 5758 字节</p></div></section>
 <p>把 <code>scripted.pt</code> 和 <code>x.pt</code> 拷到<strong>没有 <code>mymodel.py</code></strong> 的目录里：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>                     <span class="c1"># ⭐ 注意：这个目录里没有 mymodel.py</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>                     <span class="c1"># ⭐ 注意：这个目录里没有 mymodel.py</span>
 
 <span class="n">m</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;scripted.pt&quot;</span><span class="p">)</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;x.pt&quot;</span><span class="p">)</span>
@@ -654,7 +654,7 @@ Weights only load failed. This file can still be loaded, to do so you have two o
 <div class="codehilite"><pre><span></span><code>DeprecationWarning: You are using the legacy TorchScript-based ONNX export. Starting in PyTorch 2.9, the new torch.export-based ONNX exporter has become the default.
 </code></pre></div>
 
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mymodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Net</span>
 
@@ -676,7 +676,7 @@ Weights only load failed. This file can still be loaded, to do so you have two o
 <p>实跑输出：</p>
 <section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>net.onnx 675 字节</p><p>原模型输出: [-0.1947, -0.1502]</p></div></section>
 <p>导出的东西可以直接拆开看：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">onnx</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ort</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
@@ -707,7 +707,7 @@ Weights only load failed. This file can still be loaded, to do so you have two o
 </ol>
 <h3 id="_4">💀 同一个坑：数据相关的分支</h3>
 <p>老的 ONNX 导出器是<strong>基于 trace 的</strong>，所以第四节那个坑原样存在：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">onnx</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">onnx</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ort</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
@@ -737,7 +737,7 @@ Weights only load failed. This file can still be loaded, to do so you have two o
 <p>⚠️ <strong>正样例对上了，负样例差得离谱。</strong> 这解释了一条老生常谈的部署纪律：<strong>导出之后必须拿一批真实数据逐条比对 PyTorch 和 ONNX 的输出</strong>，只测一条样例正好是最容易漏掉这个 bug 的做法。</p>
 <h3 id="_5">💀💀 更狠的一种：整张图变成一个常数</h3>
 <p>上一章那个「前向绕出去用 numpy 算」的 <code>Function</code>（<a href="09-自定义算子.html">09 · 自己写一个 autograd 算子</a>），导出时会发生这个：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">onnx</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">onnxruntime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ort</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
@@ -798,7 +798,7 @@ Weights only load failed. This file can still be loaded, to do so you have two o
 <hr />
 <h2 id="torchexport">🧭 六、<code>torch.export</code>：现在的正路</h2>
 <p><code>torch.export</code> 是 PyTorch 2.x 给出的答案，位置介于 trace 和 script 之间：<strong>它用符号执行走一遍你的代码</strong>，产出一张 ATen 级别的图。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mymodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Net</span>
 
@@ -818,7 +818,7 @@ Weights only load failed. This file can still be loaded, to do so you have two o
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>类型: ExportedProgram</p><p>def forward(self, p_fc1_weight, p_fc1_bias, p_fc2_weight, p_fc2_bias, x):</p><p>linear = torch.ops.aten.linear.default(x, p_fc1_weight, p_fc1_bias); x = p_fc1_weight = p_fc1_bias = None</p><p>relu = torch.ops.aten.relu.default(linear); linear = None</p><p>linear_1 = torch.ops.aten.linear.default(relu, p_fc2_weight, p_fc2_bias); relu = p_fc2_weight = p_fc2_bias = None</p><p>return (linear_1,)</p><p>net.pt2 11581 字节</p><p>原模型: [-0.1947, -0.1502]</p></div></section>
 <p>⭐ <strong>注意 <code>forward</code> 的签名</strong>：参数从 4 个权重开始，<code>x</code> 排在最后 —— <strong>权重被「提」成了函数的入参</strong>（这叫 functionalization）。图里没有任何状态，是一个纯函数。ONNX 里 <code>nn.Linear</code> 变成 <code>Gemm</code>，这里变成 <code>torch.ops.aten.linear.default</code>。</p>
 <p>同样，拷到<strong>没有 <code>mymodel.py</code></strong> 的目录里：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>                      <span class="c1"># ⭐ 这个目录里没有 mymodel.py</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>                      <span class="c1"># ⭐ 这个目录里没有 mymodel.py</span>
 
 <span class="n">ep</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;net.pt2&quot;</span><span class="p">)</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;x.pt&quot;</span><span class="p">)</span>        <span class="c1"># ④ 存的那份输入，和 net.pt2 一起拷过来</span>
@@ -830,7 +830,7 @@ Weights only load failed. This file can still be loaded, to do so you have two o
 <section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>类型: ExportedProgram</p><p>输出: [-0.1947, -0.1502]</p></div></section>
 <h3 id="trace">⭐ 它和 <code>trace</code> 最关键的一处不同：宁可报错，也不悄悄写死</h3>
 <p>同样那个 <code>Cond</code> 模型：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 
@@ -853,7 +853,7 @@ consider using data-dependent friendly APIs such as guard_or_false, guard_or_tru
 <p>⭐ <strong>这是本节最值得记住的一句：<code>trace</code> 给你一个错模型，<code>torch.export</code> 给你一个报错。</strong>
 报错难看，但它出现在<strong>你的机器上</strong>；错模型不难看，它出现在线上。</p>
 <h3 id="_6">形状也是同一个道理</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mymodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Net</span>
 
 <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -879,7 +879,7 @@ consider using data-dependent friendly APIs such as guard_or_false, guard_or_tru
 <hr />
 <h2 id="torchcompile">⚡ 七、<code>torch.compile</code> 不是一种交付格式</h2>
 <p>这是最容易被归错类的一个。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mymodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Net</span>
 
 <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -896,7 +896,7 @@ consider using data-dependent friendly APIs such as guard_or_false, guard_or_tru
 <p>⭐ <strong><code>torch.compile</code> 返回的是一个【包着你的模型的壳】</strong>，它没有产出任何文件。编译发生在第一次真正跑起来的时候，产物是这个进程里的一份编译缓存 —— 进程一结束就没了（磁盘上是有缓存的，但那是缓存，不是交付物）。
 <strong>它和前三节根本不是一类东西</strong>：那三个回答「怎么把模型变成文件」，这个回答「怎么让它在你的进程里跑得快」。</p>
 <h3 id="_orig_mod">💀💀 那个 <code>_orig_mod.</code> 前缀会咬人</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mymodel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Net</span>
 
 <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -917,7 +917,7 @@ Error(s) in loading state_dict for Net:
 </code></pre></div>
 
 <p>✅ <strong>修法：存原模型的 <code>state_dict</code></strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：接着上一段跑，Net / c / torch 都在那里定义</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：接着上一段跑，Net / c / torch 都在那里定义</span>
 <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">_orig_mod</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="s2">&quot;ok_sd.pt&quot;</span><span class="p">)</span>     <span class="c1"># ⭐ 穿过那层壳</span>
 <span class="n">fresh2</span> <span class="o">=</span> <span class="n">Net</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">fresh2</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;ok_sd.pt&quot;</span><span class="p">)))</span>
@@ -1105,4 +1105,4 @@ Error(s) in loading state_dict for Net:
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

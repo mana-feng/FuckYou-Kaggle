@@ -382,7 +382,7 @@ K-Means 的平方欧氏距离目标偏好紧凑、近似球形的簇；大小、
 那边还把「⑤ <code>n_init=10</code>」这个坑写成了代码（跑 10 次取惯性最小的那次）。</p>
 </blockquote>
 <p>怎么选 K：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">KMeans</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">KMeans</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">silhouette_score</span>
 
 <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span>
@@ -435,7 +435,7 @@ K-Means 的平方欧氏距离目标偏好紧凑、近似球形的簇；大小、
 <div class="vb-flow-row"><span class="vb-flow-step">曲线的【拐点】就是 eps</span></div>
 </div>
 </section>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.neighbors</span><span class="w"> </span><span class="kn">import</span> <span class="n">NearestNeighbors</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.neighbors</span><span class="w"> </span><span class="kn">import</span> <span class="n">NearestNeighbors</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="n">k</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">X_scaled</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -460,7 +460,7 @@ K-Means 的平方欧氏距离目标偏好紧凑、近似球形的簇；大小、
 方差越大 → 样本在这个方向上差异越大 → 这个方向越能区分样本。
 <strong>⚠️ 但注意："能区分样本" ≠ "能区分标签"</strong> —— 这是 PCA 最大的局限，见下。</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`X_scaled` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`X_scaled` 来自你自己的代码，这一段只看写法</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCA</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
@@ -511,7 +511,7 @@ K-Means 的平方欧氏距离目标偏好紧凑、近似球形的簇；大小、
 <li><strong>它是无监督的</strong>——方差大 ≠ 对预测有用。<strong>有时候降维反而掉分</strong> ⭐</li>
 <li><strong>⚠️ 必须在训练集上 fit，再 transform 验证集</strong> —— 在全量数据上 fit 是<strong>数据泄漏</strong></li>
 </ol>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`PCA` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`PCA` 来自你自己的代码，这一段只看写法</span>
 <span class="c1"># ❌ 泄漏：PCA 看到了验证集的分布</span>
 <span class="n">X_all</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="n">tr</span><span class="p">,</span> <span class="n">va</span> <span class="o">=</span> <span class="n">split</span><span class="p">(</span><span class="n">X_all</span><span class="p">)</span>
@@ -713,4 +713,4 @@ UMAP 也可以用于下游特征，但要在训练集拟合、再转换验证集
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

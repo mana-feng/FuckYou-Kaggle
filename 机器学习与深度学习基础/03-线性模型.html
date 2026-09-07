@@ -507,7 +507,7 @@ softmax + 交叉熵的反向就是 $p-\text{onehot}(y)$，和这里的 <code>(�
 </table></div>
 <p><strong>一句话结论：先标准化，再训练。</strong> 这会让正则化公平、梯度下降也更容易直接朝正确方向走。
 ⚠️ <strong>最经典的坑</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ❌ 错误：用全部数据算均值方差 → 测试集信息泄漏进训练</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># ❌ 错误：用全部数据算均值方差 → 测试集信息泄漏进训练</span>
 <span class="n">scaler</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>                    <span class="c1"># X 包含测试集！</span>
 
 <span class="c1"># ✅ 正确：只用训练集拟合，再变换两边</span>
@@ -524,7 +524,7 @@ softmax + 交叉熵的反向就是 $p-\text{onehot}(y)$，和这里的 <code>(�
 <h2 id="_6">🧪 第二遍实战：看正则化怎么起作用</h2>
 <details>
 <summary>展开实验：运行代码、看曲线、理解 L1 怎样筛特征</summary>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_breast_cancer</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
@@ -767,4 +767,4 @@ softmax + 交叉熵的反向就是 $p-\text{onehot}(y)$，和这里的 <code>(�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

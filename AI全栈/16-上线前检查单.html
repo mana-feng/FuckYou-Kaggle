@@ -640,7 +640,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>这三种在监控上长得和成功一模一样</strong> —— 就是本章开头那句「最危险的不是没做，是以为做了」。⚠️ <strong>托管数据库不豁免</strong>：托管商按时替你做了快照，但那还是<strong>写</strong>那一半。</p>
 <h3 id="_12">🧯 演练要演到第几步才算数</h3>
 <p>四道关卡，<strong>过不了第 ④ 道就不算演练过</strong>：① 取回文件 → ② 恢复成一个临时库 → ③ 查出数据、确认它停在哪个时间点 → ④ <strong>让应用真的连上去跑通一次读写</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ① 真的下载下来，而不是在界面上看它「成功」，然后 ② 恢复到【临时库】。⚠️ 绝不恢复到生产</span>
+<div class="codehilite" data-code-language="bash"><pre><span></span><code><span class="c1"># ① 真的下载下来，而不是在界面上看它「成功」，然后 ② 恢复到【临时库】。⚠️ 绝不恢复到生产</span>
 aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>s3://your-bucket/backups/db-2026-08-29-0300.dump<span class="w"> </span>./drill.dump
 createdb<span class="w"> </span>restore_drill<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pg_restore<span class="w"> </span>-d<span class="w"> </span>restore_drill<span class="w"> </span>--no-owner<span class="w"> </span>./drill.dump
 
@@ -874,4 +874,4 @@ psql<span class="w"> </span>restore_drill<span class="w"> </span>-c<span class="
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -329,7 +329,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>💡 <strong>人话</strong>：<em>要检测的差异（δ）越小，需要的样本量按</em><em>平方</em><em>增长。</em></p>
 <section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">⭐ 一个必须建立的直觉：</span></div><div class="vb-flow-row"><span class="vb-flow-step">要检测的提升【减半】</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">样本量【×4】</span></div><div class="vb-flow-row"><span class="vb-flow-step">转化率 5%，想检测 +0.5%（相对 +10%）</span></div><div class="vb-flow-row"><span class="vb-flow-step">每组约需 3 万人</span></div><div class="vb-flow-row"><span class="vb-flow-step">想检测 +0.25%（相对 +5%）</span></div><div class="vb-flow-row"><span class="vb-flow-step">每组约需 12 万人 ⭐</span></div></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.stats.power</span><span class="w"> </span><span class="kn">import</span> <span class="n">zt_ind_solve_power</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.stats.power</span><span class="w"> </span><span class="kn">import</span> <span class="n">zt_ind_solve_power</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.stats.proportion</span><span class="w"> </span><span class="kn">import</span> <span class="n">proportion_effectsize</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">sample_size</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span> <span class="n">lift_abs</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="mf">0.8</span><span class="p">):</span>
@@ -341,7 +341,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>但实践中更该跑的是反方向：<em>我只有这么多流量，到底能检测出多大的提升？</em></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.stats.power</span><span class="w"> </span><span class="kn">import</span> <span class="n">zt_ind_solve_power</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.stats.power</span><span class="w"> </span><span class="kn">import</span> <span class="n">zt_ind_solve_power</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.stats.proportion</span><span class="w"> </span><span class="kn">import</span> <span class="n">proportion_effectsize</span>
 
 
@@ -370,7 +370,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><strong>流量不够怎么办：CUPED（方差缩减）</strong> ⭐</p>
 <section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">核心观察：用户之间本来就差别巨大</span></div><div class="vb-flow-row"><span class="vb-flow-step">（重度用户天天点，轻度用户一周点一次）</span></div><div class="vb-flow-row"><span class="vb-flow-step">指标的方差里，绝大部分是【个体差异】，不是【实验效果】</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 如果你有这批用户【实验开始前】的同口径指标，</span></div><div class="vb-flow-row"><span class="vb-flow-step">就能把这部分个体差异扣掉 —— 均值不变，方差变小</span></div></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">cuped</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_pre</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;y: 实验期指标；y_pre: 同一批用户实验【开始前】同口径的指标 ⭐&quot;&quot;&quot;</span>
@@ -495,7 +495,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>SRM 一旦出现，整个实验结果都不可信，必须先修分流。</strong>
 这是业界公认最有效的实验健康检查，<strong>一行代码就能做</strong>：</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">chisquare</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">chisquare</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">srm_check</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="n">expect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;counts: 各组实际样本量，如 [n_a, n_b]；expect: 期望比例，默认等分</span>
@@ -718,4 +718,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

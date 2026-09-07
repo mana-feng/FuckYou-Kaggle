@@ -386,7 +386,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <p>还有一个反直觉的现实：<strong>开放式任务上强上 schema 会损失质量</strong>。模型被迫一边推理一边往格子里填，等于剥夺了它「先想清楚再下结论」的空间。这时更稳的是<strong>两段式</strong>——第一次调用让它自由地推理和讨论，第二次调用把上一段的结论抽成结构。多花一次调用，换来的是结论质量和格式正确率同时提升。什么时候该合成一次、什么时候该拆成两次，判断依据很简单：这个任务如果交给人，他需不需要先打草稿？</p>
 <h3 id="schema">⚠️ Schema 强约束只保证「格式对」，不保证「内容对」</h3>
 <p>这是最贵的一个误解。看这个字段：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># schema 只是一份【形状说明书】，不是一份事实核验</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># schema 只是一份【形状说明书】，不是一份事实核验</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
 <span class="n">FIELD</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;number&quot;</span><span class="p">,</span> <span class="s2">&quot;minimum&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
@@ -484,7 +484,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 </table></div>
 <h3 id="_7">🔨 一段框架无关的可跑代码</h3>
 <p>定义 schema → 调用 → 校验 → 失败时<strong>带着错误</strong>重试。只用标准库：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 结构化输出全流程：定义 → 调用 → 校验 → 带错误重试（框架无关，纯标准库）</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 结构化输出全流程：定义 → 调用 → 校验 → 带错误重试（框架无关，纯标准库）</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 
@@ -732,7 +732,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 <p>浏览器标签一关，TCP 连接断开，但<strong>你的后端协程可能毫不知情，继续把模型的 2000 个 output token 生成完</strong>。</p>
 <p>粗糙的量级感：一次长回答 2000 output token，如果 10% 的会话被用户中途放弃且没有取消传播，你就白付了 <strong>10% 的输出成本</strong>——而且这部分完全不产生任何用户价值。</p>
 <p>取消要<strong>穿透整条调用栈</strong>：HTTP 层检测到断开 → 通知模型调用层关闭上游流 → 正在跑的工具调用也要能被打断。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 取消传播：客户端断开 → 关掉上游模型流 → 别再烧 token（框架无关）</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 取消传播：客户端断开 → 关掉上游模型流 → 别再烧 token（框架无关）</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
 
@@ -1040,7 +1040,7 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
 </tbody>
 </table></div>
 <p>下面的独立脚本演示<strong>执行前检查</strong>：未知工具默认拒绝；订单事实从服务端数据取得；金额使用整数分。<code>user</code> 必须来自服务器认证上下文，不能从模型参数反序列化而来。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
 
 <span class="n">POLICY</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;2026-09-06.1&quot;</span><span class="p">,</span> <span class="s2">&quot;max_cents&quot;</span><span class="p">:</span> <span class="mi">200000</span><span class="p">,</span> <span class="s2">&quot;approval_above_cents&quot;</span><span class="p">:</span> <span class="mi">50000</span><span class="p">}</span>
@@ -1223,4 +1223,4 @@ Schema 越严，模型能表达的东西越少。它没法说「这单我判断�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

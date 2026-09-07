@@ -365,7 +365,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>🗓️ <strong>本章的 SQL 全部未实跑 —— 需要 PostgreSQL + pgvector 扩展</strong>，本地没有环境就跑不了。
 而且运算符、索引参数、支持的向量类型<strong>都随 pgvector 版本变</strong>，动手前查你那一版的文档。</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="c1">-- 🗓️ 未实跑，需要 PostgreSQL + pgvector</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="c1">-- 🗓️ 未实跑，需要 PostgreSQL + pgvector</span>
 <span class="k">CREATE</span><span class="w"> </span><span class="n">EXTENSION</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">vector</span><span class="p">;</span>
 
 <span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">documents</span><span class="w"> </span><span class="p">(</span><span class="w">                  </span><span class="c1">-- ⭐ 业务侧的文档表，chunks 挂在它下面</span>
@@ -389,7 +389,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>注意 <code>ON DELETE CASCADE</code></strong> —— 上一节那个一致性问题，在这里就是一行 DDL 解决的。
 删文档，它的所有 chunk 和向量跟着走，<strong>在同一个事务里</strong>。</p>
 <p>查询就是普通 SQL 加一个距离运算符：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">-- 🗓️ 未实跑，需要 PostgreSQL + pgvector</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="c1">-- 🗓️ 未实跑，需要 PostgreSQL + pgvector</span>
 <span class="k">SELECT</span><span class="w"> </span><span class="n">content</span><span class="p">,</span><span class="w"> </span><span class="n">embedding</span><span class="w"> </span><span class="o">&lt;=&gt;</span><span class="w"> </span><span class="err">$</span><span class="mi">1</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">distance</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">chunks</span>
 <span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">embedding</span><span class="w"> </span><span class="o">&lt;=&gt;</span><span class="w"> </span><span class="err">$</span><span class="mi">1</span>
@@ -483,7 +483,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>「在<strong>这个用户</strong>的、<strong>这个文件夹</strong>里的、<strong>没被归档</strong>的文档里，搜最相似的 5 条」</p>
 </blockquote>
 <p>在 Postgres 里，这就是加个 <code>WHERE</code>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">-- 🗓️ 未实跑，需要 PostgreSQL + pgvector</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="c1">-- 🗓️ 未实跑，需要 PostgreSQL + pgvector</span>
 <span class="k">SELECT</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">content</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">embedding</span><span class="w"> </span><span class="o">&lt;=&gt;</span><span class="w"> </span><span class="err">$</span><span class="mi">1</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">distance</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">chunks</span><span class="w"> </span><span class="k">c</span>
 <span class="k">JOIN</span><span class="w"> </span><span class="n">documents</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">document_id</span>
@@ -750,4 +750,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

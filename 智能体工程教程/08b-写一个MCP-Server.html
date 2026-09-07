@@ -317,7 +317,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_2">🧱 一、先手写一次，看清协议本身</h2>
 <p>MCP 消息使用 JSON-RPC；<strong>stdio</strong> 用换行分隔 JSON，HTTP 有自己的响应协商，不能把“一行一个 JSON”推广到所有传输。</p>
 <p>下面是 <strong>2025-06-18 工具消息子集练习</strong>，不是完整协议实现。它不实现完整生命周期、分页或取消。复制到空文件能运行；没有输入时会等待 stdin。普通说明只写 stderr，stdout 每行都必须是协议消息。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
 <span class="n">VERSION</span> <span class="o">=</span> <span class="s2">&quot;2025-06-18&quot;</span>
@@ -383,7 +383,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="sdk-server">🛠️ 二、官方 SDK：一个能跑的 Server 只要十行</h2>
 <p>手写练习帮助阅读报文，日常使用 SDK。以下示例锁定 <code>mcp==2.1.1</code>；安装命令为 <code>python -m pip install "mcp==2.1.1"</code>。升级时重跑互操作测试，不混用不同版本教程。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 一个完整可跑的 stdio MCP Server</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 一个完整可跑的 stdio MCP Server</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server</span><span class="w"> </span><span class="kn">import</span> <span class="n">MCPServer</span>
 
 <span class="n">mcp</span> <span class="o">=</span> <span class="n">MCPServer</span><span class="p">(</span><span class="s2">&quot;notes&quot;</span><span class="p">)</span>
@@ -398,7 +398,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>把它当子进程拉起来发一条 <code>tools/list</code>，实测拿回来的是：</p>
-<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;word_count&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;数一段文本有多少个字符。&quot;</span><span class="p">,</span>
+<div class="codehilite" data-code-language="json"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;word_count&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;数一段文本有多少个字符。&quot;</span><span class="p">,</span>
 <span class="w"> </span><span class="nt">&quot;inputSchema&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">],</span>
 <span class="w">                 </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Text&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">}}},</span>
 <span class="w"> </span><span class="nt">&quot;outputSchema&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span><span class="p">}}}}</span>
@@ -433,7 +433,7 @@ SDK 的 2.x 改名成了 <code>MCPServer</code>；本章实测于 <strong>mcp 2.
 <hr />
 <h2 id="_3">📦 三、三类东西在代码里长什么样</h2>
 <p>上一章那张表说 Server 能暴露 <strong>Tools / Resources / Prompts</strong>。在 SDK 里就是三个装饰器：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 三类东西各写一个，完整可跑</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 三类东西各写一个，完整可跑</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server</span><span class="w"> </span><span class="kn">import</span> <span class="n">MCPServer</span>
 
 <span class="n">mcp</span> <span class="o">=</span> <span class="n">MCPServer</span><span class="p">(</span><span class="s2">&quot;notes&quot;</span><span class="p">)</span>
@@ -491,7 +491,7 @@ SDK 的 2.x 改名成了 <code>MCPServer</code>；本章实测于 <strong>mcp 2.
 <hr />
 <h2 id="stdio-http-run">🔌 四、stdio 和 HTTP，只差 <code>run()</code> 那一行</h2>
 <p>上一章说「远程 Server 是生产主流形态」。好消息是<strong>工具代码一行都不用改</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：和上一段是同一个文件，只有最后这一行不一样</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：和上一段是同一个文件，只有最后这一行不一样</span>
 <span class="n">mcp</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">transport</span><span class="o">=</span><span class="s2">&quot;streamable-http&quot;</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8931</span><span class="p">)</span>
 </code></pre></div>
 
@@ -544,7 +544,7 @@ SDK 的 2.x 改名成了 <code>MCPServer</code>；本章实测于 <strong>mcp 2.
 <h2 id="server">✍️ 五、描述就是这个 Server 的全部界面</h2>
 <p>⭐⭐ <strong>这是全章最该记住的一节。</strong> 模型看不到你的源码、数据库和注释，它能看到的<strong>只有</strong> <code>tools/list</code> 里那份名字 + 描述 + schema。</p>
 <p>实测把 docstring 删掉之后：</p>
-<div class="codehilite"><pre><span></span><code>no_doc    -&gt; description = &#39;&#39;
+<div class="codehilite" data-code-language="text"><pre><span></span><code>no_doc    -&gt; description = &#39;&#39;
 read_file -&gt; description = &#39;读一个文件的内容。path 必须是绝对路径。&#39;
 </code></pre></div>
 
@@ -588,7 +588,7 @@ read_file -&gt; description = &#39;读一个文件的内容。path 必须是绝�
 <hr />
 <h2 id="_4">🔧 六、接进宿主：配置、确认、排查</h2>
 <p>stdio Server 的配置就是告诉宿主「用什么命令把你拉起来」：</p>
-<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<div class="codehilite" data-code-language="json"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="nt">&quot;notes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;python&quot;</span><span class="p">,</span>
 <span class="w">            </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;C:/work/notes_server.py&quot;</span><span class="p">],</span>
 <span class="w">            </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;NOTES_DB&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;C:/work/notes.sqlite&quot;</span><span class="p">}}}}</span>
@@ -597,7 +597,7 @@ read_file -&gt; description = &#39;读一个文件的内容。path 必须是绝�
 <p>🗓️ 这个文件叫什么、放在哪各家宿主不一样（用户级配置、项目根目录 <code>.mcp.json</code> 都有），
 <strong>这些键常见于部分宿主配置，不能假定所有宿主都使用相同文件结构</strong>。路径去宿主的文档核对。</p>
 <p>⭐ 命令行往往比手改文件省事。以 Claude Code 为例，实测这台机器上：</p>
-<div class="codehilite"><pre><span></span><code>claude mcp add my-server -e API_KEY=xxx -- npx my-mcp-server
+<div class="codehilite" data-code-language="text"><pre><span></span><code>claude mcp add my-server -e API_KEY=xxx -- npx my-mcp-server
 claude mcp add --transport http sentry https://mcp.sentry.dev/mcp
 claude mcp list        # 列出来并做健康检查，实测每行结尾是 ✔ Connected
 </code></pre></div>
@@ -614,7 +614,7 @@ claude mcp list        # 列出来并做健康检查，实测每行结尾是 ✔
 <h2 id="_5">🕳️ 七、三个真实的坑</h2>
 <h3 id="agent">坑一：工具太多，Agent 还没干活预算就没了</h3>
 <p>上一章叫它<strong>甜蜜陷阱</strong>，这里给一个你自己能跑出来的量级：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 量一遍：一个工具定义在线上占多少字符</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 量一遍：一个工具定义在线上占多少字符</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server</span><span class="w"> </span><span class="kn">import</span> <span class="n">MCPServer</span>
 
@@ -648,7 +648,7 @@ claude mcp list        # 列出来并做健康检查，实测每行结尾是 ✔
 对策：<code>limit</code> 给默认值和硬上限；截断时说明还剩多少、怎么取下一页；<strong>返回摘要而不是原始记录</strong>。</p>
 <h3 id="_7">坑三：💀 错误信息对模型没用 —— 而且默认就是没用的</h3>
 <p>这是本章实测里最值钱的一条：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 同一个失败，两种写法 —— 完整可跑</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 同一个失败，两种写法 —— 完整可跑</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server</span><span class="w"> </span><span class="kn">import</span> <span class="n">MCPServer</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server.mcpserver.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ToolError</span>
 
@@ -785,4 +785,4 @@ claude mcp list        # 列出来并做健康检查，实测每行结尾是 ✔
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

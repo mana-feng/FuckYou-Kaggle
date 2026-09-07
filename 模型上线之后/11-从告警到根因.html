@@ -346,7 +346,7 @@ CTR 跌了不一定是点击少了，<strong>可能是曝光暴涨</strong>（�
 <p><strong>配套要有的东西：一条变更时间线</strong></p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>把这些放进同一张图（或同一个查询）：</p><p>· 模型/服务发布记录</p><p>· 配置变更</p><p>· 上游数据表的产出时间和行数</p><p>· 运营活动排期</p><p>· 外部事件（大促、节假日）</p><p>⭐ 这个「变更时间线」值得专门做一个看板，</p><p>它能把 ③ 那一步从半小时压缩到一分钟</p></div></section>
 <p><strong>拐点其实可以让机器帮你找</strong>（不用肉眼盯曲线）：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">find_changepoint</span><span class="p">(</span><span class="n">series</span><span class="p">,</span> <span class="n">min_seg</span><span class="o">=</span><span class="mi">6</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;最小二乘单拐点检测：把序列切成两段，找「组内方差和」最小的切点。</span>
@@ -416,7 +416,7 @@ CTR 跌了不一定是点击少了，<strong>可能是曝光暴涨</strong>（�
 <h2 id="5-5910">⑤ 哪个特征（这一步用第 5、9、10 章的工具）</h2>
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 看特征监控看板：哪些特征的分布在拐点处变了（第 5、6 章）</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 按重要性排序，只看 Top-10（第 9 章）</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 取一批「异常时段」样本和一批「正常时段」样本</span></div><div class="vb-flow-row"><span class="vb-flow-step">分别算 SHAP，对比每个特征的平均贡献 ⭐（第 10 章）</span></div><div class="vb-flow-row"><span class="vb-flow-step">贡献变化最大的那个，通常就是元凶</span></div></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span><span class="o">,</span><span class="w"> </span><span class="nn">shap</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span><span class="o">,</span><span class="w"> </span><span class="nn">shap</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">diff_shap</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X_bad</span><span class="p">,</span> <span class="n">X_good</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;对比异常时段和正常时段，找出贡献变化最大的特征&quot;&quot;&quot;</span>
@@ -616,7 +616,7 @@ CTR 跌了不一定是点击少了，<strong>可能是曝光暴涨</strong>（�
 </blockquote>
 <hr>
 <h2 id="_5">📋 四、一份可以直接用的排查模板</h2>
-<div class="codehilite"><pre><span></span><code><span class="gu">## 事件：&lt;指标&gt; 于 &lt;时间&gt; 下降 &lt;幅度&gt;</span>
+<div class="codehilite" data-code-language="markdown"><pre><span></span><code><span class="gu">## 事件：&lt;指标&gt; 于 &lt;时间&gt; 下降 &lt;幅度&gt;</span>
 
 <span class="gu">### ① 确认</span>
 <span class="k">- [ ]</span> 口径未变 / 数据已跑完 / 基线合理 / 分母正常
@@ -814,4 +814,4 @@ CTR 跌了不一定是点击少了，<strong>可能是曝光暴涨</strong>（�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

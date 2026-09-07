@@ -309,7 +309,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>字符串题的本质常常是一个小状态机：<strong>当前读到哪里、已经确认了什么、下一类字符还允不允许出现。</strong></p>
 <h2 id="1atoi">🧩 题 1：把字符串转换成整数（atoi）</h2>
 <p>顺序固定：跳空格 → 读正负号 → 连续读数字 → 处理溢出。任何一步不符合规则就停止，而不是“尽量猜”。</p>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">my_atoi</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">my_atoi</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
     <span class="n">index</span><span class="p">,</span> <span class="n">sign</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span>
     <span class="k">while</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="ow">and</span> <span class="n">text</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">isspace</span><span class="p">():</span>
         <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -330,7 +330,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <h2 id="2">🧩 题 2：最长不含重复字符的子字符串</h2>
 <p>窗口的左边界只向右走。每次遇到重复字符，就把左边界跳到它上一次出现位置的后一格。</p>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">longest_unique</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">longest_unique</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
     <span class="n">last_seen</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">best</span> <span class="o">=</span> <span class="p">{},</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">right</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">last_seen</span> <span class="ow">and</span> <span class="n">last_seen</span><span class="p">[</span><span class="n">char</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">left</span><span class="p">:</span>
@@ -346,7 +346,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <h2 id="3">🧩 题 3：字符流中第一个不重复的字符</h2>
 <p>一边读一边维护两个事实：每个字符出现次数，以及第一次出现的顺序。队首若已经重复就淘汰。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span><span class="p">,</span> <span class="n">deque</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span><span class="p">,</span> <span class="n">deque</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">FirstUniqueStream</span><span class="p">:</span>
@@ -430,4 +430,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

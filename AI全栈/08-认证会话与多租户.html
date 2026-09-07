@@ -412,7 +412,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>第 3 章埋过一个伏笔：<strong>依赖注入的价值不在少写几行，在于让「必须做的事」没法被跳过</strong>。
 ❌ 每个接口开头写 <code>user = check_auth(request)</code>：三十个接口漏写一个，那个接口就匿名可访问，而且不报错。
 ✅ 声明成参数依赖：<strong>想用 <code>user</code> 就必须声明它，没声明就没有 user 可用</strong> —— 「用了却没验」写不出来。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 一处解析、处处可用（⚠️ 未实跑，需要 fastapi + uvicorn 🗓️）</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 一处解析、处处可用（⚠️ 未实跑，需要 fastapi + uvicorn 🗓️）</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">HTTPException</span><span class="p">,</span> <span class="n">Request</span>
@@ -486,7 +486,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <h3 id="_5">⭐ 三层结构性防御</h3>
 <p><strong>第一层：业务代码根本拿不到「不带租户」的入口。</strong>不给裸连接，只给一个已绑定租户的句柄，租户条件由句柄自己拼：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 让「忘了加 WHERE tenant_id」写不出来（sqlite3，可直接跑）</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 让「忘了加 WHERE tenant_id」写不出来（sqlite3，可直接跑）</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">TENANT_TABLES</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;docs&quot;</span><span class="p">}</span>       <span class="c1"># ⭐ 声明哪些表属于租户</span>
@@ -523,7 +523,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>最后一行是故意留的 —— <strong>这层只防手滑，不防绕过</strong>。所以三层一起上：<strong>① 句柄</strong>挡手滑；② 毒丸测试（每张租户表都断言「换个租户查出 0 行」，⭐ 按表自动生成，加表忘了防护测试直接红）挡新表和新查询路径；③ Postgres 行级安全 RLS ⭐ 挡绕过 —— 裸 SQL 也照样被拒：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">-- ⚠️ 未实跑，需要 PostgreSQL</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="c1">-- ⚠️ 未实跑，需要 PostgreSQL</span>
 <span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">docs</span><span class="w"> </span><span class="n">ENABLE</span><span class="w"> </span><span class="k">ROW</span><span class="w"> </span><span class="k">LEVEL</span><span class="w"> </span><span class="k">SECURITY</span><span class="p">;</span>
 <span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">docs</span><span class="w"> </span><span class="k">FORCE</span><span class="w"> </span><span class="k">ROW</span><span class="w"> </span><span class="k">LEVEL</span><span class="w"> </span><span class="k">SECURITY</span><span class="p">;</span><span class="w">      </span><span class="c1">-- ⭐ 连表的属主也一起管住</span>
 <span class="k">CREATE</span><span class="w"> </span><span class="n">POLICY</span><span class="w"> </span><span class="n">tenant_isolation</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">docs</span>
@@ -684,4 +684,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

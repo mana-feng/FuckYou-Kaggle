@@ -367,7 +367,7 @@ Postgres 还是 MySQL 五分钟能定；漏掉一列 token 数，三个月后你
 <hr />
 <h2 id="json">🧩 二、对话为什么是两张表，不是一张 JSON</h2>
 <p>最省事的做法是把消息塞进一个 JSON 列。<strong>能跑，但三件事会打脸</strong>：⚠️ 追加一条要<strong>整读、改、整写回</strong>，两个请求同时追加时后写的会整段覆盖先写的；算不了账（这个用户这月花了多少，没法直接 <code>SUM</code>）；查不了单条（「所有重试失败的 assistant 消息」在两张表里是一句 <code>WHERE</code>）。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">-- 整段可以直接喂给 sqlite3（已实跑）；Postgres 只需把类型换成 uuid / timestamptz</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="c1">-- 整段可以直接喂给 sqlite3（已实跑）；Postgres 只需把类型换成 uuid / timestamptz</span>
 <span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">conversations</span><span class="w"> </span><span class="p">(</span>
 <span class="w">  </span><span class="n">id</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span><span class="w"> </span><span class="n">user_id</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
 <span class="w">  </span><span class="n">created_at</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
@@ -423,7 +423,7 @@ Postgres 还是 MySQL 五分钟能定；漏掉一列 token 数，三个月后你
 <hr />
 <h2 id="schema">🧩 四、Schema 演进：迁移不是可选项</h2>
 <p>AI 产品的字段是<strong>天天加</strong>的：今天加 <code>reasoning_tokens</code>，明天加 <code>cache_read_tokens</code>。所以第一天就得回答：<strong>线上那个库怎么知道自己该长什么样？</strong> 答案是把每次结构变更写成一个带名字的脚本，把「跑过哪些」记在数据库自己里：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 <span class="n">MIGRATIONS</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;001_init&quot;</span><span class="p">,</span> <span class="s2">&quot;CREATE TABLE m (id INTEGER PRIMARY KEY, body TEXT)&quot;</span><span class="p">),</span>
               <span class="p">(</span><span class="s2">&quot;002_add_cost&quot;</span><span class="p">,</span> <span class="s2">&quot;ALTER TABLE m ADD COLUMN cost_usd REAL&quot;</span><span class="p">)]</span>  <span class="c1"># ⭐ 只往末尾追加</span>
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
@@ -492,7 +492,7 @@ Postgres 还是 MySQL 五分钟能定；漏掉一列 token 数，三个月后你
 <hr />
 <h2 id="llm">🧩 六、事务边界：⚠️ 别把 LLM 调用包在事务里</h2>
 <p><strong>这是 AI 应用最常见也最贵的数据库错误。</strong> 写法非常自然：开事务 → 写用户消息 → 调 LLM → 写回复 → 提交，「要么都成功要么都失败，多干净」。问题是<strong>中间那步要三秒到三十秒</strong>，这整段时间里一个连接被占着什么也没干：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 <span class="n">POOL</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">LLM</span><span class="p">,</span> <span class="n">DB</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.005</span>     <span class="c1"># 真实世界一次 LLM 调用常是 3–30 秒</span>
 
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">bad</span><span class="p">(</span><span class="n">sem</span><span class="p">):</span>
@@ -668,4 +668,4 @@ Postgres 还是 MySQL 五分钟能定；漏掉一列 token 数，三个月后你
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

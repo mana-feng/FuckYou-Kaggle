@@ -435,7 +435,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_5">🔍 四、检测：从便宜到贵</h2>
 <h3 id="41">4.1 精确重复：哈希</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">exact_dup_report</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">key_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">round_float</span><span class="o">=</span><span class="mi">6</span><span class="p">):</span>
@@ -516,7 +516,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 所以阈值<strong>必须用人工标注过的样本对来定</strong>，而且要按
 「漏掉一对的代价」和「错合并一对的代价」哪个更大来偏。</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">shingles</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
@@ -544,7 +544,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><strong>全量两两比较是不可能的。</strong> 20 万条记录实跑：</p>
 <section class="comparison-repair" id="comparison-repair-6"><div class="tw"><table><caption>先比较候选池规模</caption><thead><tr><th scope="col">候选构造</th><th scope="col">比较对数</th><th scope="col">减少到</th></tr></thead><tbody><tr><th scope="row">全量两两</th><td>2.000e+10 对</td><td>（两百亿次比较，跑不完）</td></tr><tr><th scope="row">按【城市】阻塞</th><td>5.883e+07 对</td><td>降到 1/339</td></tr><tr><th scope="row">按【城市+姓氏首字母】</th><td>2.262e+06 对</td><td>降到 1/8842 ⭐</td></tr></tbody></table></div><section class="reading-information"><p class="reading-information-title">速度收益与召回代价</p><ul><li>⚠️ 阻塞键的代价：任何一个阻塞键写错的记录，永远不会和它的真配对相遇 —— 阻塞是【只降召回，不降精确】的一步</li><li>⭐ 所以工程上用【多个阻塞键取并集】：城市 / 手机号后4位 / 姓名首字母 / 地址前6字；任何一个键对上，就进候选池</li></ul></section></section>
 
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">DSU</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;并查集：把两两判定的结果合并成实体簇。&quot;&quot;&quot;</span>
@@ -668,7 +668,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 如果是两件事但你不想让它们各算一票，<strong>用样本权重，别用删除。</strong></p>
 </blockquote>
 <p><strong>切分必须按实体切，不是按行切</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">GroupKFold</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">entity_split</span><span class="p">(</span><span class="n">entity_ids</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
@@ -844,4 +844,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -439,7 +439,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_6">🕰️ 四、还有一类攻击不在这个框架里：侧信道</h2>
 <section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>前面讨论的都是【攻击者只能看到输入输出】</span></li><li><span>但真实设备会【漏出别的东西】：</span></li><li><span>运行时间</span> <span>比较密码时提前返回 = 泄露了对了几位 ⭐</span></li><li><span>功耗曲线</span> <span>能看出 RSA 在算平方还是乘法</span></li><li><span>电磁辐射</span></li><li><span>缓存命中</span> <span>著名的 AES 缓存计时攻击</span></li><li><span>声音</span> <span>真的有论文用麦克风提取过密钥</span></li></ul></section>
 <p><strong>最常见也最容易避免的一个：时间侧信道</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ❌ 危险：一旦有一位不同就立刻返回</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># ❌ 危险：一旦有一位不同就立刻返回</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">check</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">):</span> <span class="k">return</span> <span class="kc">False</span>
     <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
@@ -552,4 +552,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

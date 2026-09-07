@@ -458,7 +458,7 @@ lr 过大是"指数增长"（正反馈）。打印梯度范数就能分开。</p
 </details>
 <hr>
 <h2 id="_4">🧪 每个实验的统一记录格式（六个数字）</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">log_step</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
     <span class="n">gn</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span>
              <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">grad</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
@@ -481,7 +481,7 @@ lr 过大是"指数增长"（正反馈）。打印梯度范数就能分开。</p
 <hr>
 <h2 id="_5">📓 产出：一份故障诊断手册</h2>
 <p>每个实验记录成这个格式：</p>
-<div class="codehilite"><pre><span></span><code><span class="gu">## 故障 N：&lt;名字&gt;</span>
+<div class="codehilite" data-code-language="markdown"><pre><span></span><code><span class="gu">## 故障 N：&lt;名字&gt;</span>
 
 <span class="gu">### 症状（我观察到什么）</span>
 <span class="k">-</span><span class="w"> </span>loss 曲线：...
@@ -512,7 +512,7 @@ lr 过大是"指数增长"（正反馈）。打印梯度范数就能分开。</p
 <li class="reading-task" data-reading-task="15"><label class="reading-task-title"><input type="checkbox" data-task-key="15"><span>Day 6–7</span></label><div class="reading-task-body">：整理成诊断手册，写下“我以前踩过但没意识到的坑”。</div></li>
 </ul>
 <h3 id="_10">脚手架建议</h3>
-<div class="codehilite"><pre><span></span><code><span class="n">BUGS</span> <span class="o">=</span> <span class="p">{</span>  <span class="c1"># 故障开关：一行切换</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="n">BUGS</span> <span class="o">=</span> <span class="p">{</span>  <span class="c1"># 故障开关：一行切换</span>
     <span class="s2">&quot;none&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">cfg</span><span class="p">:</span> <span class="n">cfg</span><span class="p">,</span>
     <span class="s2">&quot;huge_lr&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">cfg</span><span class="p">:</span> <span class="p">{</span><span class="o">**</span><span class="n">cfg</span><span class="p">,</span> <span class="s2">&quot;lr&quot;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">},</span>
     <span class="s2">&quot;no_zero_grad&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">cfg</span><span class="p">:</span> <span class="p">{</span><span class="o">**</span><span class="n">cfg</span><span class="p">,</span> <span class="s2">&quot;zero_grad&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
@@ -626,4 +626,4 @@ lr 过大是"指数增长"（正反馈）。打印梯度范数就能分开。</p
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

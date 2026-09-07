@@ -361,7 +361,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><strong>层级体系有一条特殊纪律</strong>：<strong>允许只标到能确定的那一层。</strong>
 强迫标注员在信息不足时硬标到叶子节点，得到的是随机叶子标签，
 而「粗类正确 + 细类留空」的数据是可用的（可以训两级模型，也可以做粗粒度评测）。</p>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">taxonomy_smell_test</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">label_col</span><span class="p">,</span> <span class="n">multi_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">other_label</span><span class="o">=</span><span class="s2">&quot;其他&quot;</span><span class="p">):</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">taxonomy_smell_test</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">label_col</span><span class="p">,</span> <span class="n">multi_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">other_label</span><span class="o">=</span><span class="s2">&quot;其他&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;三个测试的量化版：跑在试标注的前 200 条上&quot;&quot;&quot;</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
     <span class="n">other_rate</span> <span class="o">=</span> <span class="nb">float</span><span class="p">((</span><span class="n">df</span><span class="p">[</span><span class="n">label_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">other_label</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
@@ -506,7 +506,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 由标注工具在当前样本旁边自动弹出最相似的 3 条。
 <strong>让标注员"查得到"，而不是"记得住"。</strong></p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
 <span class="n">BOUNDARY_SCHEMA</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;pair&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;投诉&quot;</span><span class="p">,</span> <span class="s2">&quot;退款申请&quot;</span><span class="p">],</span>          <span class="c1"># ⭐ 按类别对索引，不按单类别</span>
@@ -594,7 +594,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 而不是<strong>指南变清楚了</strong>。前者不会外推到新数据上，后者才会。
 分辨方法：R3 之后再随机抽一批<strong>完全没讨论过</strong>的样本做一次验证轮，Kappa 掉超过 0.08 就是记答案。</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">pilot_converged</span><span class="p">(</span><span class="n">kappas</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">new_disputes</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
                     <span class="n">k_gain</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">dispute_max</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">):</span>
@@ -667,7 +667,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">annotator_health</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ann</span><span class="o">=</span><span class="s2">&quot;annotator&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="n">secs</span><span class="o">=</span><span class="s2">&quot;seconds&quot;</span><span class="p">,</span> <span class="n">gold</span><span class="o">=</span><span class="s2">&quot;gold_label&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;按标注员拆开看：⭐ 总体质检指标会把个别问题平均掉&quot;&quot;&quot;</span>
@@ -800,7 +800,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <p><strong>最后，质检指标必须按「标注员 × 类别」拆开看</strong>：整体准确率 96% 完全可能是
 「30 个类里有 2 个类的准确率是 61%」—— 而那 2 个类恰好是你最在乎的低频类。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">sample_size</span><span class="p">(</span><span class="n">defect_rate</span><span class="p">,</span> <span class="n">conf</span><span class="o">=</span><span class="mf">0.95</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;⭐ 抽多少条才能以 conf 的把握至少发现一条缺陷率为 defect_rate 的错误&quot;&quot;&quot;</span>
@@ -1016,4 +1016,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

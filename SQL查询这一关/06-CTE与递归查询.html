@@ -344,19 +344,19 @@ run manifest 里要有上游表 + 分区 + 每个上游的指纹 + 行数 + 数�
 <h2 id="with">🧩 二、<code>WITH</code>：把嵌套读成流水线</h2>
 <p>先看一个真问题：<strong>manifest 都记下来了，怎么发现「分区名没变、内容却变了」？</strong>
 （这正是 17 章的「死法 B」，它说没有指纹就无法被发现 —— 有了指纹，发现它是一条查询。）</p>
-<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">run_inputs</span><span class="w"> </span><span class="p">(</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">run_inputs</span><span class="w"> </span><span class="p">(</span>
 <span class="w">  </span><span class="n">run_id</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span><span class="w"> </span><span class="n">tbl</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span><span class="w"> </span><span class="n">part</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span><span class="w"> </span><span class="n">fingerprint</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span><span class="w"> </span><span class="n">n_rows</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">);</span>
 </code></pre></div>
 
 <p><strong>嵌套写法</strong>（只有两层就已经要从里往外读了）：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">tbl</span><span class="p">,</span><span class="w"> </span><span class="n">part</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">tbl</span><span class="p">,</span><span class="w"> </span><span class="n">part</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span>
 <span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">tbl</span><span class="p">,</span><span class="w"> </span><span class="n">part</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">fingerprint</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">k</span>
 <span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">run_inputs</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">tbl</span><span class="p">,</span><span class="w"> </span><span class="n">part</span>
 <span class="p">)</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">tbl</span><span class="p">,</span><span class="w"> </span><span class="n">part</span><span class="p">;</span>
 </code></pre></div>
 
 <p><strong>CTE 写法</strong>（从上往下读，每一段有名字）：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">WITH</span><span class="w"> </span><span class="n">per_part</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="k">WITH</span><span class="w"> </span><span class="n">per_part</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
 <span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">tbl</span><span class="p">,</span><span class="w"> </span><span class="n">part</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">fingerprint</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">k</span>
 <span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">run_inputs</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">tbl</span><span class="p">,</span><span class="w"> </span><span class="n">part</span>
 <span class="p">),</span><span class="w"> </span><span class="n">changed</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
@@ -366,7 +366,7 @@ run manifest 里要有上游表 + 分区 + 每个上游的指纹 + 行数 + 数�
 </code></pre></div>
 
 <p>整段可跑：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;CREATE TABLE run_inputs (</span>
@@ -438,7 +438,7 @@ SQLite 3.35 起可以用 <code>WITH x AS MATERIALIZED (...)</code> / <code>NOT M
 <h2 id="with-recursive">🌲 三、<code>WITH RECURSIVE</code>：两段式结构</h2>
 <p>普通 CTE 只能引用<strong>前面</strong>定义好的 CTE。<code>RECURSIVE</code> 解开了这条限制：<strong>CTE 可以在自己的定义里引用自己</strong>。</p>
 <p>结构永远是两段，中间用 <code>UNION</code> 或 <code>UNION ALL</code> 连起来：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">WITH</span><span class="w"> </span><span class="k">RECURSIVE</span><span class="w"> </span><span class="err">名字</span><span class="p">(</span><span class="err">列</span><span class="p">,</span><span class="w"> </span><span class="err">…</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="k">WITH</span><span class="w"> </span><span class="k">RECURSIVE</span><span class="w"> </span><span class="err">名字</span><span class="p">(</span><span class="err">列</span><span class="p">,</span><span class="w"> </span><span class="err">…</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
 <span class="w">    </span><span class="err">种子查询</span><span class="w">                     </span><span class="c1">-- ① 第一批行，不引用自己</span>
 <span class="w">  </span><span class="k">UNION</span><span class="w"> </span><span class="p">[</span><span class="k">ALL</span><span class="p">]</span>
 <span class="w">    </span><span class="err">递归步</span><span class="w"> </span><span class="err">…</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="err">名字</span><span class="w"> </span><span class="err">…</span><span class="w">          </span><span class="c1">-- ② 引用自己，拿上一批算出下一批</span>
@@ -449,7 +449,7 @@ SQLite 3.35 起可以用 <code>WITH x AS MATERIALIZED (...)</code> / <code>NOT M
 <p>⭐ <strong>执行模型只有一句话</strong>：拿种子当作「当前这一批」，反复代进递归步算出新的一批，<strong>直到某一轮不再产生新行为止</strong>。</p>
 <p><strong>最小的例子：造一根日历骨架。</strong> 这在数据活里天天要用 —— 表里只有「有数据的那些天」，
 而你要回答的是「<strong>哪几天根本没跑</strong>」，缺的那几天在表里是不存在的行，<code>GROUP BY</code> 永远数不出来：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE runs (dt TEXT, n_rows INTEGER)&quot;</span><span class="p">)</span>
@@ -485,7 +485,7 @@ SQLite 3.35 起可以用 <code>WITH x AS MATERIALIZED (...)</code> / <code>NOT M
 <hr />
 <h2 id="inputs">🕸️ 四、血缘：<code>inputs</code> 数组就是一张边表</h2>
 <p>17 章的 manifest 里，<code>inputs</code> 每一项是「<strong>这次产出用了哪张上游表</strong>」。把它摊平，就是一张两列的边表：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">edges</span><span class="w"> </span><span class="p">(</span><span class="n">child</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span><span class="w"> </span><span class="n">parent</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">);</span><span class="w">   </span><span class="c1">-- child 的上游是 parent</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">edges</span><span class="w"> </span><span class="p">(</span><span class="n">child</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span><span class="w"> </span><span class="n">parent</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">);</span><span class="w">   </span><span class="c1">-- child 的上游是 parent</span>
 </code></pre></div>
 
 <p>⚠️ <strong>列名要认死</strong>：<code>child</code> 是产出物，<code>parent</code> 是它的输入。方向搞反了，你查出来的是下游不是上游。</p>
@@ -537,7 +537,7 @@ SQLite 3.35 起可以用 <code>WITH x AS MATERIALIZED (...)</code> / <code>NOT M
 </tbody>
 </table></div>
 <p><strong>「<code>train_v37</code> 的全部上游」就是一条递归查询</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE edges (child TEXT, parent TEXT)&quot;</span><span class="p">)</span>
@@ -590,7 +590,7 @@ SQLite 3.35 起可以用 <code>WITH x AS MATERIALIZED (...)</code> / <code>NOT M
 ⚠️ <strong>但这个保护比你以为的脆弱得多，三处都亲手跑过。</strong></p>
 <h3 id="1union">坑 ①：<code>UNION</code> 去的是「整行」的重，不是「节点」的重</h3>
 <p>给递归多带一列 <code>path</code>（很自然的需求：想知道每个上游是<strong>怎么</strong>被依赖上的），去重立刻失效：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE edges (child TEXT, parent TEXT)&quot;</span><span class="p">)</span>
@@ -640,7 +640,7 @@ SQLite 3.35 起可以用 <code>WITH x AS MATERIALIZED (...)</code> / <code>NOT M
 <h3 id="3-depthunion">坑 ③：💀 加一列 <code>depth</code>，<code>UNION</code> 的防环就没了</h3>
 <p>真实血缘图<strong>会有环</strong>（有人把模型打分写回了 CRM 表，就是一条回边）。
 很多人以为「<code>UNION</code> 会去重，所以有环也不怕」—— ⚠️ <strong>只在你没带任何随轮次变化的列时才成立</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE edges (child TEXT, parent TEXT)&quot;</span><span class="p">)</span>
@@ -688,7 +688,7 @@ SQLite 3.35 起可以用 <code>WITH x AS MATERIALIZED (...)</code> / <code>NOT M
 <hr />
 <h2 id="_2">🧯 六、可以照抄的安全写法</h2>
 <p>把三个坑一次堵上：<strong><code>path</code> 判环 + <code>depth</code> 兜底刹车 + 最后按节点收敛</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE edges (child TEXT, parent TEXT)&quot;</span><span class="p">)</span>
@@ -854,4 +854,4 @@ SQLite 3.35 起可以用 <code>WITH x AS MATERIALIZED (...)</code> / <code>NOT M
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

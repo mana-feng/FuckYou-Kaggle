@@ -315,7 +315,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_2">🧩 一、⭐ 先看一条查表失败的报错</h2>
 <p>本章 Python 侧的输出全是<strong>实跑的</strong>，环境 <code>torch 2.13.0+cpu</code> + CPython 3.13，<strong>CUDA 不可用</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># c05_miss.py</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># c05_miss.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">to_sparse</span><span class="p">()</span>      <span class="c1"># ⭐ 转成稀疏张量，仅此而已</span>
@@ -362,7 +362,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 </ul>
 <h3 id="_3">🚦 ⭐ 它不是「稀疏张量不支持激活函数」</h3>
 <p>同一个稀疏张量，换个算子就能跑：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># c05_contrast.py</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># c05_contrast.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">s</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">to_sparse</span><span class="p">()</span>
@@ -375,7 +375,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 
 <p>⭐ <strong>同一列（<code>SparseCPU</code>）上，<code>mm</code> 那格填了，<code>sigmoid</code> 那格是空的。</strong> 这张表是<strong>逐格填的</strong>，不存在「某个后端整体支持 / 不支持」这回事。</p>
 <p>不用猜，直接查格子在不在：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># c05_probe.py</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># c05_probe.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;aten::gelu&quot;</span><span class="p">,</span> <span class="s2">&quot;aten::sigmoid&quot;</span><span class="p">,</span> <span class="s2">&quot;aten::mm&quot;</span><span class="p">]:</span>
@@ -427,7 +427,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 <hr />
 <h2 id="schema">🧩 二、行坐标：算子名和它的 schema</h2>
 <p><code>aten::gelu</code> 不是随手起的字符串，它背后挂着一条<strong>签名</strong>（schema）。Python 侧直接能问：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># c05_schema.py</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># c05_schema.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">aten</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">Tensor</span><span class="o">.</span><span class="n">_schema</span><span class="p">)</span>
@@ -500,7 +500,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 <hr />
 <h2 id="dispatchkeyset">🧩 三、列坐标：DispatchKeySet</h2>
 <p>一个 tensor 身上带的是<strong>一组</strong>分派键，不是一个：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># c05_keyset.py</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># c05_keyset.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;普通 CPU     :&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">_C</span><span class="o">.</span><span class="n">_dispatch_key_set</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
@@ -549,7 +549,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 <hr />
 <h2 id="dump">🧩 四、⭐ 直接把那张表 dump 出来</h2>
 <p>前面都在推理，现在直接看。PyTorch 有个内部接口能打印某一行的全部格子：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># c05_dump.py</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># c05_dump.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">_C</span><span class="o">.</span><span class="n">_dispatch_dump</span><span class="p">(</span><span class="s2">&quot;aten::gelu&quot;</span><span class="p">))</span>
@@ -573,7 +573,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 <hr />
 <h2 id="c">🧩 五、⭐ C++ 侧：两个宏，各管一件事</h2>
 <p>⚠️ <strong>本节及以后的 C++ 代码全部标 <code>🗓️ 未实跑 —— 本机无编译环境</code></strong>（MinGW g++ 配 MSVC 编译的 CPython + CPU 版 torch，编不出能导入的扩展）。写法取自本机 <code>torch/include/torch/library.h</code> 的官方注释和 PyTorch 文档，<strong>作者没有在本机编译运行过</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// myops.cpp   🗓️ 未实跑 —— 本机无编译环境</span>
+<div class="codehilite" data-code-language="cpp"><pre><span></span><code><span class="c1">// myops.cpp   🗓️ 未实跑 —— 本机无编译环境</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;torch/library.h&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ATen/ATen.h&gt;</span>
 
@@ -620,7 +620,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 <p>⚠️ <strong><code>TORCH_LIBRARY</code> 对同一个命名空间只能出现一次</strong> —— <code>library.h</code> 的注释里明写着「There may only be one TORCH_LIBRARY() for any given namespace」。分好几个文件写就用 <code>TORCH_LIBRARY_FRAGMENT</code>。</p>
 <h3 id="_5">🚦 ⭐ 宏展开成什么 —— 一个静态初始化对象</h3>
 <p>这是本章最该记住的机制。下面是 <code>torch/include/torch/library.h</code> 里的<strong>真实源码</strong>（本机头文件第 975 行起）：</p>
-<div class="codehilite"><pre><span></span><code><span class="cp">#define TORCH_LIBRARY(ns, m)                                                   \</span>
+<div class="codehilite" data-code-language="cpp"><pre><span></span><code><span class="cp">#define TORCH_LIBRARY(ns, m)                                                   \</span>
 <span class="cp">  static void TORCH_LIBRARY_init_##ns(torch::Library&amp;);                        \</span>
 <span class="cp">  static const torch::detail::TorchLibraryInit TORCH_LIBRARY_static_init_##ns( \</span>
 <span class="cp">      torch::Library::DEF,                                                     \</span>
@@ -690,7 +690,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 <p>⚠️ <strong>静态初始化的老毛病这里同样有</strong>：多个库注册同一个格子会互相覆盖（第四节那个 <code>Meta (inactive)</code> 就是活例子），而<strong>谁先谁后取决于加载顺序</strong>，不是你能控制的。</p>
 <h3 id="aten">🚦 给已有的 aten 算子换实现</h3>
 <p>同一套机制，命名空间换成 <code>aten</code>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// 🗓️ 未实跑</span>
+<div class="codehilite" data-code-language="cpp"><pre><span></span><code><span class="c1">// 🗓️ 未实跑</span>
 <span class="n">TORCH_LIBRARY_IMPL</span><span class="p">(</span><span class="n">aten</span><span class="p">,</span><span class="w"> </span><span class="n">CPU</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">m</span><span class="p">.</span><span class="n">impl</span><span class="p">(</span><span class="s">&quot;gelu&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">my_faster_gelu</span><span class="p">);</span><span class="w">     </span><span class="c1">// ⚠️ 覆盖官方的 CPU gelu</span>
 <span class="p">}</span>
@@ -727,7 +727,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 </tr>
 </tbody>
 </table></div>
-<div class="codehilite"><pre><span></span><code><span class="c1">// 🗓️ 未实跑 —— 本机无编译环境</span>
+<div class="codehilite" data-code-language="cpp"><pre><span></span><code><span class="c1">// 🗓️ 未实跑 —— 本机无编译环境</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;torch/library.h&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;torch/autograd.h&gt;</span>
 
@@ -758,7 +758,7 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
 <hr />
 <h2 id="cuda">🧩 七、CUDA 那一格，和不想编译的路子</h2>
 <p>⭐ <strong>好消息：CUDA 没有新机制</strong>，同一套宏换个键：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// 🗓️ 未实跑 —— 本机无 nvcc，torch 也是 CPU 版</span>
+<div class="codehilite" data-code-language="cpp"><pre><span></span><code><span class="c1">// 🗓️ 未实跑 —— 本机无 nvcc，torch 也是 CPU 版</span>
 <span class="n">TORCH_LIBRARY_IMPL</span><span class="p">(</span><span class="n">myops</span><span class="p">,</span><span class="w"> </span><span class="n">CUDA</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">m</span><span class="p">.</span><span class="n">impl</span><span class="p">(</span><span class="s">&quot;scaled_add&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">scaled_add_cuda</span><span class="p">);</span><span class="w">   </span><span class="c1">// ⭐ 唯一的区别就是这个键</span>
 <span class="p">}</span>
@@ -895,4 +895,4 @@ This could be because the operator doesn&#39;t exist for this backend, or was om
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

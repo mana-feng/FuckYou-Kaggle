@@ -322,7 +322,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">【离线：建索引】</span></div><div class="vb-flow-row"><span class="vb-flow-step">文档</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">切分成块</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">每块转成向量</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">存进向量库</span></div><div class="vb-flow-row"><span class="vb-flow-step">↑ Embedding 模型</span></div><div class="vb-flow-row"><span class="vb-flow-step">【在线：回答】</span></div><div class="vb-flow-row"><span class="vb-flow-step">问题</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">转成向量</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">找最相似的 K 块</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">塞进提示词</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">模型回答</span></div><div class="vb-flow-row"><span class="vb-flow-step">↑ 向量检索（ANN）</span></div></div></section>
 <p><strong>实现结构</strong>（下面是骨架；完整启动、数据与运行命令见<a href="11b-文档入库与数据治理.html">11b</a>和<a href="11c-检索评测与调优实验.html">11c</a>）：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：docs、split_documents、llm 与模型名称须由自己的工程提供。</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：docs、split_documents、llm 与模型名称须由自己的工程提供。</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sentence_transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SentenceTransformer</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
@@ -422,7 +422,7 @@ Embedding = 双塔模型的物品向量。<strong>整套基础设施完全相同
 <p>⚠️ <strong>最常见的诊断错误</strong>：答案不对就去调提示词。
 <strong>先查检索</strong>——如果正确文档根本没被召回，提示词再怎么调都没用。</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 最小可用的检索评估</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 最小可用的检索评估</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">eval_retrieval</span><span class="p">(</span><span class="n">qa_pairs</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
     <span class="n">hits</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">q</span><span class="p">,</span> <span class="n">gold_chunk_id</span> <span class="ow">in</span> <span class="n">qa_pairs</span><span class="p">:</span>
@@ -665,4 +665,4 @@ Embedding = 双塔模型的物品向量。<strong>整套基础设施完全相同
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

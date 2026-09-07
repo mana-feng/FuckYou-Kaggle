@@ -313,7 +313,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="_1">📦 环境</h2>
-<div class="codehilite"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>anthropic<span class="w">          </span><span class="c1"># 官方 SDK</span>
+<div class="codehilite" data-code-language="bash"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>anthropic<span class="w">          </span><span class="c1"># 官方 SDK</span>
 pip<span class="w"> </span>install<span class="w"> </span>requests<span class="w">           </span><span class="c1"># 第 17 节项目一</span>
 pip<span class="w"> </span>install<span class="w"> </span>pytest<span class="w">             </span><span class="c1"># 第 17 节项目二</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">ANTHROPIC_API_KEY</span><span class="o">=</span>...<span class="w">   </span><span class="c1"># Windows: setx ANTHROPIC_API_KEY &quot;...&quot;</span>
@@ -322,7 +322,7 @@ pip<span class="w"> </span>install<span class="w"> </span>pytest<span class="w">
 <p>零成本开发：先用第 1 节的 <code>MockModel</code> 把逻辑跑通，再换真模型。</p>
 <hr />
 <h2 id="agent-1">🔁 最小 Agent 循环（第 1 节）</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">run_agent</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tools</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">system</span><span class="p">,</span> <span class="n">max_steps</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
     <span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">system</span><span class="p">},</span>
@@ -341,7 +341,7 @@ pip<span class="w"> </span>install<span class="w"> </span>pytest<span class="w">
 </code></pre></div>
 
 <h2 id="tool-use-api">🔌 接官方 tool use API</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">anthropic</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">anthropic</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">anthropic</span><span class="o">.</span><span class="n">Anthropic</span><span class="p">()</span>
 
 <span class="n">TOOLS</span> <span class="o">=</span> <span class="p">[{</span>
@@ -372,7 +372,7 @@ pip<span class="w"> </span>install<span class="w"> </span>pytest<span class="w">
 </code></pre></div>
 
 <h2 id="tool-18-a">🏷️ @tool 装饰器（第 18 节挑战 A）</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">tool</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
     <span class="n">sig</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
@@ -395,7 +395,7 @@ pip<span class="w"> </span>install<span class="w"> </span>pytest<span class="w">
 </code></pre></div>
 
 <h2 id="418">🗜️ 上下文压缩（第 4、18 节）</h2>
-<div class="codehilite"><pre><span></span><code><span class="n">COMPACT_PROMPT</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;总结以下 Agent 工作历史。必须显式保留：</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="n">COMPACT_PROMPT</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;总结以下 Agent 工作历史。必须显式保留：</span>
 <span class="s2">1. 已完成的事</span>
 <span class="s2">2. 当前状态</span>
 <span class="s2">3. 下一步计划</span>
@@ -418,7 +418,7 @@ pip<span class="w"> </span>install<span class="w"> </span>pytest<span class="w">
 </code></pre></div>
 
 <h2 id="agent-413">🌿 子 Agent（第 4、13 节）</h2>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">spawn_subagent</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">tools</span><span class="p">,</span> <span class="n">system</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">spawn_subagent</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">tools</span><span class="p">,</span> <span class="n">system</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">depth</span> <span class="o">&gt;=</span> <span class="n">max_depth</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;已达子 Agent 深度上限&quot;</span>                     <span class="c1"># 防无限递归</span>
     <span class="k">return</span> <span class="n">run_agent</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tools</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">system</span><span class="p">,</span> <span class="n">max_steps</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
@@ -426,7 +426,7 @@ pip<span class="w"> </span>install<span class="w"> </span>pytest<span class="w">
 </code></pre></div>
 
 <h2 id="7">👮 好的工具错误信息（第 7 节）</h2>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calculator</span><span class="p">(</span><span class="n">expression</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calculator</span><span class="p">(</span><span class="n">expression</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;计算数学表达式。只支持数字和 + - * / ** ( )&quot;&quot;&quot;</span>
     <span class="n">ALLOWED</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="s2">&quot;0123456789+-*/(). &quot;</span><span class="p">)</span>
     <span class="n">bad</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">expression</span><span class="p">)</span> <span class="o">-</span> <span class="n">ALLOWED</span>
@@ -441,7 +441,7 @@ pip<span class="w"> </span>install<span class="w"> </span>pytest<span class="w">
 </code></pre></div>
 
 <h2 id="1520">🛡️ 环境层硬边界（第 15、20 节）</h2>
-<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Guard</span><span class="p">:</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Guard</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;确定性规则。模型碰不到这里——这才叫硬边界&quot;&quot;&quot;</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">whitelist</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;user_alice&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;user_bob&quot;</span><span class="p">}}</span>   <span class="c1"># 运行时不可变更</span>
@@ -464,7 +464,7 @@ pip<span class="w"> </span>install<span class="w"> </span>pytest<span class="w">
 <p>⚠️ 反例：把「不许转给白名单外的人」写进系统提示词——<strong>那是软防御，不是硬边界</strong>。</p>
 </blockquote>
 <h2 id="1419">📏 评测循环（第 14、19 节）</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">tasks</span><span class="p">,</span> <span class="n">code_scorer</span><span class="p">,</span> <span class="n">runs</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
@@ -490,7 +490,7 @@ pip<span class="w"> </span>install<span class="w"> </span>pytest<span class="w">
 </code></pre></div>
 
 <h2 id="llm-rubric">🧪 LLM 评委 rubric 模板</h2>
-<div class="codehilite"><pre><span></span><code><span class="n">RUBRIC</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;按以下维度给输出打分，每项 0-25 分：</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="n">RUBRIC</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;按以下维度给输出打分，每项 0-25 分：</span>
 <span class="s2">- 准确性：结论与事实/参考解一致吗</span>
 <span class="s2">- 完整性：要求的要素都覆盖了吗</span>
 <span class="s2">- 边界处理：异常/模糊输入处理得当吗</span>
@@ -607,4 +607,4 @@ pip<span class="w"> </span>install<span class="w"> </span>pytest<span class="w">
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

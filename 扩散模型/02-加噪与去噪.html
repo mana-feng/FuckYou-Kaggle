@@ -342,7 +342,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="1">🧪 为什么偏偏是 √(1−β) 和 √β</h3>
 <p>假设原图每个像素的方差是 1。代进公式：$\mathrm{Var}(x_t) = (1-\beta_t)\cdot 1 + \beta_t \cdot 1 = 1$。<strong>加完噪声，方差还是 1。</strong> 这就是所谓的 <strong>variance preserving（方差保持）</strong>：整条链上每一步的数值范围都差不多，网络不会在 $t=10$ 时看到 $\pm 1$ 的输入、在 $t=900$ 时看到 $\pm 30$ 的输入。</p>
 <p>跑一下就看得见：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># √(1-β_t) 这个系数不是随手挑的：它让方差在整条链上保持不变</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># √(1-β_t) 这个系数不是随手挑的：它让方差在整条链上保持不变</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -386,7 +386,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </details>
 <h3 id="_4">🔬 亲手验证一下</h3>
 <p>两种算法应该给出同一个分布 —— 迭代法每步重采一次噪声、走 $t$ 次；闭式法只采一次噪声、算一次乘加：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 验证：一步步加 T 次噪 vs 闭式一步跳到 t —— 两种算法得到同一个分布</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 验证：一步步加 T 次噪 vs 闭式一步跳到 t —— 两种算法得到同一个分布</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
@@ -434,7 +434,7 @@ t=1000 | 迭代 mean=+0.0265 std=1.0017 ( 182.5 ms) | 闭式 mean=+0.0140 std=0.
 <hr />
 <h2 id="x_t">🌑 三、终点 x_T：和原图已经没关系了</h2>
 <p>一直加下去，最后剩什么？直接量 $x_0$ 和 $x_t$ 的相关系数：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># x_T 还剩多少「原图的影子」：直接量 x_0 和 x_t 的相关系数</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># x_T 还剩多少「原图的影子」：直接量 x_0 和 x_t 的相关系数</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -548,4 +548,4 @@ t=1000  sqrt(abar_t)=0.0064   corr(x0, x_t) = +0.0031
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

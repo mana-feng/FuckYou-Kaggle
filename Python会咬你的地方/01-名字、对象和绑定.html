@@ -317,7 +317,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="python">🧩 一、Python 里没有「变量」</h2>
 <p>学过 C 的人脑子里有一张图：<strong>变量是一个盒子，赋值就是往盒子里放东西</strong>。这张图在 Python 里是错的，而且错得很贵。</p>
 <p>Python 的图是：<strong>对象漂在堆上，名字是贴上去的标签</strong>。<code>a = b</code> 不是「把 b 盒子里的东西抄进 a 盒子」，是「<strong>把 a 这张标签也贴到 b 指着的那个对象上</strong>」。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 名字绑到对象：赋值从来不复制对象</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 名字绑到对象：赋值从来不复制对象</span>
 <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">a</span>                       <span class="c1"># 不是复制一份，是给同一个列表再贴一个名字</span>
 <span class="n">b</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
@@ -360,7 +360,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_2">🧩 二、传参：既不是传值也不是传引用</h2>
 <p>面试爱问「Python 是传值还是传引用」，正确答案是<strong>两个都不是</strong>，而且这个问法本身就基于那张错误的盒子图。</p>
 <p>真实规则只有一条：<strong>形参是又一个贴到同一个对象上的名字</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 传参既不是传值也不是传引用：形参是又一个贴上去的名字</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 传参既不是传值也不是传引用：形参是又一个贴上去的名字</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">push</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
     <span class="n">lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>         <span class="c1"># 改的是【对象】，外面看得见</span>
 
@@ -399,7 +399,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="0">⚠️ 三、可变默认参数：<code>全站命中 0</code> 的一号杀手</h2>
 <p>默认值是在<strong>执行 <code>def</code> 那一刻</strong>求值一次的，之后所有调用<strong>共用同一个对象</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 可变默认参数：默认值在【定义函数那一刻】只创建一次</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 可变默认参数：默认值在【定义函数那一刻】只创建一次</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">collect</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="p">[]):</span>
     <span class="n">bucket</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">bucket</span>
@@ -447,7 +447,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="copy-deepcopy">🧯 四、<code>copy</code> 和 <code>deepcopy</code>：浅拷贝只复制最外面一层</h2>
 <p>「不想共享」的正规做法是拷贝。但拷贝有两种，<strong>它们的差别只在嵌套结构上显现</strong>，而配置字典、超参数、嵌套的模型对象<strong>恰好全都是嵌套结构</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># copy 与 deepcopy：浅拷贝只复制最外面那一层</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># copy 与 deepcopy：浅拷贝只复制最外面那一层</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 
 <span class="n">cfg</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;run1&quot;</span><span class="p">,</span> <span class="s2">&quot;layers&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">]}</span>
@@ -497,12 +497,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="dqn-target-deepcopy">💀 五、站内那一行：DQN 的 target 网络为什么必须 <code>deepcopy</code></h2>
 <p><code>强化学习基础</code> 第 8 章 DQN 里有这么一行：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`net` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`net` 来自你自己的代码，这一段只看写法</span>
 <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_target</span> <span class="o">=</span> <span class="n">net</span><span class="p">,</span> <span class="nb">__import__</span><span class="p">(</span><span class="s1">&#39;copy&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">net</span><span class="p">)</span>
 </code></pre></div>
 
 <p>⭐ <strong>这一行的正确性完全依赖本章。</strong> 把 <code>deepcopy(net)</code> 写成 <code>net</code>，代码照跑，但 DQN 的<strong>核心机制当场失效</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 为什么 DQN 的 target 网络必须 deepcopy</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 为什么 DQN 的 target 网络必须 deepcopy</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">TinyNet</span><span class="p">:</span>
@@ -564,7 +564,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_3">📋 六、类属性被所有实例共享</h2>
 <p>同一个坑的第三副面孔。写在 <code>class</code> 体里的赋值属于<strong>类</strong>，不属于实例。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 类属性被所有实例共享</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 类属性被所有实例共享</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Runner</span><span class="p">:</span>
     <span class="n">history</span> <span class="o">=</span> <span class="p">[]</span>                 <span class="c1"># 类属性：一个列表，全体实例共用</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
@@ -597,7 +597,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="is">🚦 七、<code>is</code> 为什么在小数字上「碰巧对」</h2>
 <p>这是本章最坑的一节 —— 因为<strong>错误的写法大部分时候能给出正确结果</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># is 在小数字上会碰巧对</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># is 在小数字上会碰巧对</span>
 <span class="n">a</span> <span class="o">=</span> <span class="mi">257</span>
 <span class="n">b</span> <span class="o">=</span> <span class="mi">257</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;同一段代码里的字面量 257 :&quot;</span><span class="p">,</span> <span class="n">a</span> <span class="ow">is</span> <span class="n">b</span><span class="p">)</span>
@@ -815,4 +815,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

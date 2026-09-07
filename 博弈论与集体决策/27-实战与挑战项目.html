@@ -347,7 +347,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li class="reading-task" data-reading-task="5"><label class="reading-task-title"><input type="checkbox" data-task-key="5"><span>任务 T5</span></label><div class="reading-task-body"> ⭐ 把 3 人 3 候选的 <strong>Condorcet 悖论</strong>喂进去：<code>condorcet()</code> 返回 <code>None</code>，而三个锦标赛解仍有输出</div></li>
 <li class="reading-task" data-reading-task="6"><label class="reading-task-title"><input type="checkbox" data-task-key="6"><span>任务 T6</span></label><div class="reading-task-body"> ⭐ <strong>IIA 复现</strong>：用<a href="26-%E4%B8%8D%E5%8F%AF%E8%83%BD%E5%AE%9A%E7%90%86.html">第 26 章</a>那个 5 人 3 候选的 Borda 例子，只改 <code>c</code> 的位置，看社会对 <code>a</code>、<code>b</code> 的排序翻转</div></li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
 
 <span class="c1"># 第 24 章那份 14 人选票：每个元素是一位选民「从最爱到最恨」的排序</span>
 <span class="n">PROFILE</span> <span class="o">=</span> <span class="p">([</span><span class="nb">list</span><span class="p">(</span><span class="s2">&quot;acbde&quot;</span><span class="p">)]</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">+</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="s2">&quot;ebcda&quot;</span><span class="p">)]</span> <span class="o">*</span> <span class="mi">4</span>
@@ -439,7 +439,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li class="reading-task" data-reading-task="11"><label class="reading-task-title"><input type="checkbox" data-task-key="11"><span>任务 T5</span></label><div class="reading-task-body"> <strong>maximin</strong>（每行取最小、再取最大）+ 鞍点判定（行最小的最大 == 列最大的最小）</div></li>
 <li class="reading-task" data-reading-task="12"><label class="reading-task-title"><input type="checkbox" data-task-key="12"><span>任务 T6</span></label><div class="reading-task-body"> ⭐ 验证<a href="13-%E9%9B%B6%E5%92%8C%E4%B8%8E%E6%9E%81%E5%A4%A7%E6%9E%81%E5%B0%8F.html">第 13 章</a>的推论：<strong>零和里两人各自的 maximin 策略凑一起恰好是 NE</strong>；换成性别之争就不成立</div></li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">pure_ne</span><span class="p">(</span><span class="n">U1</span><span class="p">,</span> <span class="n">U2</span><span class="p">):</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">pure_ne</span><span class="p">(</span><span class="n">U1</span><span class="p">,</span> <span class="n">U2</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;U1[i][j]、U2[i][j] 是行/列玩家在第 i 行第 j 列的收益。返回全部纯策略 NE。&quot;&quot;&quot;</span>
     <span class="n">nR</span><span class="p">,</span> <span class="n">nC</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">U1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">U1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
@@ -503,7 +503,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li class="reading-task" data-reading-task="17"><label class="reading-task-title"><input type="checkbox" data-task-key="17"><span>任务 T5</span></label><div class="reading-task-body"> ⭐ <strong>暴力搜索验证 Roth 1982</strong>：枚举 $n=3$ 的全部实例，对每个人、每种谎报查有没有人能变好</div></li>
 <li class="reading-task" data-reading-task="18"><label class="reading-task-title"><input type="checkbox" data-task-key="18"><span>任务 T6</span></label><div class="reading-task-body"> 加分：<strong>TTC</strong>（人指房、房指主人、找环、删环）；多对一（把一所招 $b_c$ 人的学校拆成 $b_c$ 个座位）</div></li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">da</span><span class="p">(</span><span class="n">proposers</span><span class="p">,</span> <span class="n">receivers</span><span class="p">):</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">da</span><span class="p">(</span><span class="n">proposers</span><span class="p">,</span> <span class="n">receivers</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;一对一延迟接受。两个参数都是 dict：名字 -&gt; 偏好列表（从最想要开始）。&quot;&quot;&quot;</span>
     <span class="n">held</span><span class="p">,</span> <span class="n">free</span><span class="p">,</span> <span class="n">nxt</span> <span class="o">=</span> <span class="p">{},</span> <span class="nb">list</span><span class="p">(</span><span class="n">proposers</span><span class="p">),</span> <span class="p">{</span><span class="n">s</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">proposers</span><span class="p">}</span>
     <span class="k">while</span> <span class="n">free</span><span class="p">:</span>
@@ -673,7 +673,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li class="reading-task" data-reading-task="36"><label class="reading-task-title"><input type="checkbox" data-task-key="36"><span>任务 T5</span></label><div class="reading-task-body"> ⭐ <strong>Braess</strong>：算改造前后的均衡耗时和 Price of Anarchy</div></li>
 <li class="reading-task" data-reading-task="37"><label class="reading-task-title"><input type="checkbox" data-task-key="37"><span>任务 T6</span></label><div class="reading-task-body"> ⭐ <strong>打破前提看它塌</strong>：改成加权拥塞博弈（成本依赖总权重而不是人数），最佳响应动态会绕圈不收敛</div></li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">phi</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">counts</span><span class="p">):</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">phi</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">counts</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Rosenthal 势函数。⚠️ 它不是总成本，是「每加一个人记一次当时的价」。&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">cost</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">counts</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">counts</span><span class="p">)</span>
 
@@ -781,7 +781,7 @@ Borda 6 / 64；⚠️ <strong>Plurality 反而是 12 / 64 = 18.8%，比全域的
 ⭐ <strong>T6 的单峰实验做出来了，能解释「为什么这不叫推翻定理」</strong>。</p>
 <hr>
 <h2 id="_9">📝 报告模板</h2>
-<div class="codehilite"><pre><span></span><code><span class="gh"># 实验：____</span>
+<div class="codehilite" data-code-language="markdown"><pre><span></span><code><span class="gh"># 实验：____</span>
 <span class="gu">## 设定（玩家/候选项/物品的规模，偏好或估值从哪来）</span>
 <span class="gu">## ⚠️ 打破平局的规则            ← 这个板块特有的一节，必须写 </span>
 <span class="gu">## 和书上例子的对账表            ← 每个数字都要有出处（第几章第几节）</span>
@@ -885,4 +885,4 @@ Borda 6 / 64；⚠️ <strong>Plurality 反而是 12 / 64 = 18.8%，比全域的
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

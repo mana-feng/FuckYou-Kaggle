@@ -398,7 +398,7 @@ ZeRO 的想法简单到几乎是显然的：<strong>别存 N 份，切开，每�
 <h3 id="_3">⭐ 预取：让通信藏起来</h3>
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">朴素做法：算第 L 层时才去 AllGather 第 L 层</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">GPU 干等 💀</span></div><div class="vb-flow-row"><span class="vb-flow-step">✅ 预取（prefetch）：</span></div><div class="vb-flow-row"><span class="vb-flow-step">算第 L 层的【同时】，后台 AllGather 第 L+1 层的参数</span></div><div class="vb-flow-row"><span class="vb-flow-step">通信和计算重叠</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 这是 FSDP 性能好坏的关键。配置没调好，可能比 DDP 还慢。</span></div></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`model` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`model` 来自你自己的代码，这一段只看写法</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.distributed.fsdp</span><span class="w"> </span><span class="kn">import</span> <span class="n">FullyShardedDataParallel</span> <span class="k">as</span> <span class="n">FSDP</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.distributed.fsdp</span><span class="w"> </span><span class="kn">import</span> <span class="n">ShardingStrategy</span><span class="p">,</span> <span class="n">MixedPrecision</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.distributed.fsdp.wrap</span><span class="w"> </span><span class="kn">import</span> <span class="n">transformer_auto_wrap_policy</span>
@@ -510,7 +510,7 @@ ZeRO 的想法简单到几乎是显然的：<strong>别存 N 份，切开，每�
 </tr>
 </tbody>
 </table></div>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`model` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`model` 来自你自己的代码，这一段只看写法</span>
 <span class="c1"># ⭐ 分片保存：每卡只存自己那片，不需要凑齐</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.distributed.checkpoint.state_dict</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_state_dict</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.distributed.checkpoint</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">dcp</span>
@@ -636,4 +636,4 @@ ZeRO 的想法简单到几乎是显然的：<strong>别存 N 份，切开，每�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

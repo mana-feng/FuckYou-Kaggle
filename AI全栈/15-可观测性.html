@@ -392,7 +392,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">contextvars</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">logging</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">contextvars</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">logging</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 
 <span class="n">request_id</span> <span class="o">=</span> <span class="n">contextvars</span><span class="o">.</span><span class="n">ContextVar</span><span class="p">(</span><span class="s2">&quot;request_id&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>   <span class="c1"># ⭐ 每个请求一份，不用手动往下传</span>
 
@@ -444,7 +444,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="id">🧵 三、请求追踪：一个 id 串起整条链路</h2>
 <p>形状是：<strong>入口处接住或生成一个 id，之后所有日志自动带上它，出错时也把它返回给用户</strong>（第 3 章那个 <code>trace_id</code> 就是它）。</p>
 <p>⭐ <strong>关键词是「自动」</strong>。靠每个函数多传一个参数，传到第三层一定有人忘，而且检索、缓存、记账这些被复用的函数会被迫改签名。Python 里干这件事的东西叫 <code>contextvars</code>：它是<strong>「跟着当前这条执行流走」的变量</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span><span class="o">,</span><span class="w"> </span><span class="nn">concurrent.futures</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cf</span><span class="o">,</span><span class="w"> </span><span class="nn">contextvars</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span><span class="o">,</span><span class="w"> </span><span class="nn">concurrent.futures</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cf</span><span class="o">,</span><span class="w"> </span><span class="nn">contextvars</span>
 
 <span class="n">request_id</span> <span class="o">=</span> <span class="n">contextvars</span><span class="o">.</span><span class="n">ContextVar</span><span class="p">(</span><span class="s2">&quot;request_id&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
 
@@ -527,7 +527,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>TTFT 和总时长必须分开看。</strong> 一次回答很长导致总时长 30 秒是<strong>正常</strong>的；TTFT 从 300 毫秒涨到 3 秒是故障。只盯总时长的话，这个故障会被长回答的正常波动完全盖住。</p>
 <p>⭐ <strong>错误率必须分类型</strong>，因为五种错的处置动作完全不同：上游 429 要退避和限流（第 12 章）、上游超时要调超时和重试、输出校验失败要改 prompt 或换模型、自己的 5xx 要去看代码。合成一个数，等于把五个不同的病合并成「体温有点高」。</p>
 <h3 id="_4">⚠️ 平均值会骗你</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">math</span><span class="o">,</span><span class="w"> </span><span class="nn">random</span><span class="o">,</span><span class="w"> </span><span class="nn">statistics</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">math</span><span class="o">,</span><span class="w"> </span><span class="nn">random</span><span class="o">,</span><span class="w"> </span><span class="nn">statistics</span>
 
 <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
 <span class="c1"># ⚠️ 这是【构造的】分布，不是实测数据：90% 正常、9% 慢、1% 卡到超时。它只用来说明算术。</span>
@@ -582,7 +582,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><strong>合规</strong> —— 日志的<strong>留存期通常更长、访问权限通常更松</strong>；用户要求删除数据时，你多半会忘了日志里还有一份副本。</li>
 </ul>
 <p>⭐ <strong>默认该记的是指纹，不是内容</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span><span class="o">,</span><span class="w"> </span><span class="nn">re</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span><span class="o">,</span><span class="w"> </span><span class="nn">re</span>
 
 <span class="n">EMAIL</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[\w.+-]+@[\w-]+\.[\w.]+&quot;</span><span class="p">)</span>
 <span class="n">PHONE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(?&lt;!\d)1[3-9]\d</span><span class="si">{9}</span><span class="s2">(?!\d)&quot;</span><span class="p">)</span>
@@ -774,4 +774,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

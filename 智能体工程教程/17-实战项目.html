@@ -340,7 +340,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li class="reading-task" data-reading-task="6"><label class="reading-task-title"><input type="checkbox" data-task-key="6"><span>任务 T6</span></label><p class="reading-task-time">参考用时 · 30 分钟</p><div class="reading-task-body"> 加护栏：<code>max_steps</code> + token 计数器，每次任务结束打印成本</div></li>
 </ul>
 <h3 id="_3">🔨 关键代码片段</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">search_web</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_results</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;5&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">search_web</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_results</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;5&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;搜索网页。返回标题、摘要和链接，不返回正文。</span>
 <span class="sd">    需要正文时用 read_page(url)。&quot;&quot;&quot;</span>
     <span class="n">results</span> <span class="o">=</span> <span class="n">do_search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_results</span><span class="p">))</span>
@@ -391,7 +391,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li class="reading-task" data-reading-task="12"><label class="reading-task-title"><input type="checkbox" data-task-key="12"><span>任务 T6</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> ⭐ 故意给一个<strong>测试本身就错</strong>的靶场，看 Agent 会不会盲目迎合错误测试</div></li>
 </ul>
 <h3 id="run_tests">🔨 关键：<code>run_tests</code> 的返回设计</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_tests</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_tests</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;运行测试套件，返回失败摘要。&quot;&quot;&quot;</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;pytest&quot;</span><span class="p">,</span> <span class="s2">&quot;-q&quot;</span><span class="p">,</span> <span class="s2">&quot;--tb=short&quot;</span><span class="p">],</span>
                        <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
@@ -456,7 +456,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li class="reading-task" data-reading-task="19"><label class="reading-task-title"><input type="checkbox" data-task-key="19"><span>任务 T7</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> ⭐ <strong>等预算对照实验</strong>（第 13 章）：把多 Agent 花掉的总 token 全给单 Agent，让它多轮迭代，比较质量</div></li>
 </ul>
 <h3 id="_10">🔨 关键：结构化委派</h3>
-<div class="codehilite"><pre><span></span><code><span class="n">subtasks</span> <span class="o">=</span> <span class="p">[</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="n">subtasks</span> <span class="o">=</span> <span class="p">[</span>
   <span class="p">{</span><span class="s2">&quot;goal&quot;</span><span class="p">:</span> <span class="s2">&quot;找出 2026 年 Q2 三家主要竞品的定价变化&quot;</span><span class="p">,</span>
    <span class="s2">&quot;output_format&quot;</span><span class="p">:</span> <span class="s2">&quot;每家一段，含具体价格和变化时间，300字以内&quot;</span><span class="p">,</span>
    <span class="s2">&quot;tools&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;search_web&quot;</span><span class="p">,</span> <span class="s2">&quot;read_page&quot;</span><span class="p">],</span>
@@ -466,7 +466,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <h3 id="rubric">🔨 关键：审查 rubric</h3>
-<div class="codehilite"><pre><span></span><code><span class="n">REVIEW_RUBRIC</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;按四个维度审查报告，每项 0-25 分：</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="n">REVIEW_RUBRIC</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;按四个维度审查报告，每项 0-25 分：</span>
 <span class="s2">- 引用完整：每个事实结论都有来源吗？</span>
 <span class="s2">- 引用有效：来源真的支持该结论吗？（抽查 3 条）</span>
 <span class="s2">- 覆盖完整：子问题都被回答了吗？</span>
@@ -485,7 +485,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 <hr>
 <h2 id="readme">📝 项目 README 模板（作品集用）</h2>
-<div class="codehilite"><pre><span></span><code><span class="gh"># 项目名</span>
+<div class="codehilite" data-code-language="markdown"><pre><span></span><code><span class="gh"># 项目名</span>
 <span class="gu">## 它做什么（一句话 + 一张架构图）</span>
 <span class="gu">## 关键设计决策</span>
 <span class="k">-</span><span class="w"> </span>为什么这里用工作流不用自主 Agent（附降级测试数据）
@@ -585,4 +585,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

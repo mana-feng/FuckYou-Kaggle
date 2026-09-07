@@ -420,7 +420,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <figcaption>示意图，不是实测结果。实线是验证损失，虚线是训练损失。训练仍在改善而验证持续变差，是过拟合的线索；实际要允许波动。最低点用于保存最佳权重，停止通常发生在随后连续若干轮无改善时，不是看见一次上升就立刻停。</figcaption>
 </figure>
 
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`train_one_epoch` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`train_one_epoch` 来自你自己的代码，这一段只看写法</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="n">best</span><span class="p">,</span> <span class="n">patience</span><span class="p">,</span> <span class="n">wait</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">),</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span>
 <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">200</span><span class="p">):</span>
@@ -464,7 +464,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⚠️ <strong>两个必须知道的细节</strong>：</p>
 <section class="visual-block visual-block-flow" aria-label="流程图"><p class="visual-block-title">流程图</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 偏置和 LayerNorm/BatchNorm 的参数【不加】衰减</span></div><div class="vb-flow-row"><span class="vb-flow-step">衰减它们没意义（不影响模型复杂度）还有害（LN 的 γ 被拉向 0 会破坏归一化）</span></div><div class="vb-flow-row"><span class="vb-flow-step">② Adam + L2 ≠ AdamW ⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">Adam 里把 L2 加进梯度</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">会被自适应学习率缩放</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">大梯度参数被罚得少</span></div><div class="vb-flow-row"><span class="vb-flow-step">AdamW 把衰减【直接作用在权重上】，绕开自适应缩放</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">这才是对的</span></div></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`model` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`model` 来自你自己的代码，这一段只看写法</span>
 <span class="c1"># ⭐ 正确的分组写法（几乎所有大模型训练脚本都这么写）</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="n">decay</span><span class="p">,</span> <span class="n">no_decay</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
@@ -786,4 +786,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

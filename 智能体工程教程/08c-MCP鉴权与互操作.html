@@ -310,7 +310,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><strong>工具能返回结果，只证明成功路径连通；不同协议、身份和失败输入也有明确结果，才算接入完成。</strong> 这一页使用同一个知识助手，实测 HTTP、stdio、新旧协议和授权拒绝。</p>
 <p>先准备<a href="17b-企业知识助手交付项目.html">共同项目的环境与文件</a>。完整代码在<a href="../examples/knowledge-assistant/mcp_server.py">Server</a>、<a href="../examples/knowledge-assistant/mcp_client.py">Client</a>和<a href="../examples/knowledge-assistant/test_protocol.py">协议测试</a>。下面命令均在仓库根目录、已安装项目依赖的 Python 环境运行。</p>
 <h2 id="_2">🔬 先看到四条连接都工作</h2>
-<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w"> </span>discover<span class="w"> </span>-s<span class="w"> </span>examples/knowledge-assistant<span class="w"> </span>-p<span class="w"> </span>test_protocol.py<span class="w"> </span>-v
+<div class="codehilite" data-code-language="bash"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w"> </span>discover<span class="w"> </span>-s<span class="w"> </span>examples/knowledge-assistant<span class="w"> </span>-p<span class="w"> </span>test_protocol.py<span class="w"> </span>-v
 </code></pre></div>
 
 <p>测试会在本机临时端口启动服务，结束后关闭；不会访问外部账户。它分别验证 <strong>HTTP 新协议、HTTP 旧协议、stdio 新协议、stdio 旧协议</strong>，并验证无凭证、过期、撤权和 scope 不足都不能进入业务工具。</p>
@@ -408,19 +408,19 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <h2 id="http-stdio">🔌 三、手动走一遍 HTTP 与 stdio</h2>
 <p>一个终端启动本机服务：</p>
-<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>examples/knowledge-assistant/lab.py<span class="w"> </span>init
+<div class="codehilite" data-code-language="bash"><pre><span></span><code>python<span class="w"> </span>examples/knowledge-assistant/lab.py<span class="w"> </span>init
 python<span class="w"> </span>examples/knowledge-assistant/mcp_server.py<span class="w"> </span>--db<span class="w"> </span>examples/knowledge-assistant/.runtime/lab.db<span class="w"> </span>--port<span class="w"> </span><span class="m">8932</span>
 </code></pre></div>
 
 <p>另一个 PowerShell 终端取得本地短期凭证并调用：</p>
-<div class="codehilite"><pre><span></span><code><span class="nv">$env:LAB_TOKEN</span> <span class="p">=</span> <span class="n">python</span> <span class="n">examples</span><span class="p">/</span><span class="n">knowledge-assistant</span><span class="p">/</span><span class="n">lab</span><span class="p">.</span><span class="n">py</span> <span class="n">token</span> <span class="p">-</span><span class="n">-port</span> <span class="n">8932</span>
+<div class="codehilite" data-code-language="powershell"><pre><span></span><code><span class="nv">$env:LAB_TOKEN</span> <span class="p">=</span> <span class="n">python</span> <span class="n">examples</span><span class="p">/</span><span class="n">knowledge-assistant</span><span class="p">/</span><span class="n">lab</span><span class="p">.</span><span class="n">py</span> <span class="n">token</span> <span class="p">-</span><span class="n">-port</span> <span class="n">8932</span>
 <span class="n">python</span> <span class="n">examples</span><span class="p">/</span><span class="n">knowledge-assistant</span><span class="p">/</span><span class="n">mcp_client</span><span class="p">.</span><span class="n">py</span>
 <span class="n">python</span> <span class="n">examples</span><span class="p">/</span><span class="n">knowledge-assistant</span><span class="p">/</span><span class="n">mcp_client</span><span class="p">.</span><span class="n">py</span> <span class="p">-</span><span class="n">-legacy</span>
 </code></pre></div>
 
 <p>凭证只存在本地演练环境；不要放进 prompt、工具参数、截图或仓库。真实产品由认证流程提供它，不能开放本项目的本地 <code>token</code> 命令给远端用户。</p>
 <p>不经过 HTTP 时，用显式单用户的 stdio 模式：</p>
-<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>examples/knowledge-assistant/mcp_client.py<span class="w"> </span>--stdio-db<span class="w"> </span>examples/knowledge-assistant/.runtime/lab.db
+<div class="codehilite" data-code-language="bash"><pre><span></span><code>python<span class="w"> </span>examples/knowledge-assistant/mcp_client.py<span class="w"> </span>--stdio-db<span class="w"> </span>examples/knowledge-assistant/.runtime/lab.db
 </code></pre></div>
 
 <p>该模式从服务进程配置取得 Alice 身份。HTTP token verifier <strong>不会保护 stdio 或内存直连测试</strong>。限制子进程的 cwd、环境变量和文件权限；不能让模型通过参数选择它要扮演谁。</p>
@@ -527,4 +527,4 @@ python<span class="w"> </span>examples/knowledge-assistant/mcp_server.py<span cl
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

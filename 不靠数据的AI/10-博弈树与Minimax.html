@@ -433,7 +433,7 @@ $[3, 12, 8]$、$[2, 4, 6]$、$[14, 5, 2]$。</p>
 因为那一步归对手选，他当然选 2 不选 14。<strong>「树里有个大数」和「你能拿到这个大数」是两回事</strong>，
 这是初学者最常犯的错。</p>
 <h3 id="_7">🔨 十几行跑一遍</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 讲义那棵树：根是 MAX 层，三个 MIN 孩子，共 9 个叶子</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 讲义那棵树：根是 MAX 层，三个 MIN 孩子，共 9 个叶子</span>
 <span class="n">TREE</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
 <span class="n">leaves</span> <span class="o">=</span> <span class="p">[]</span>                                    <span class="c1"># 记录「看过哪些叶子」</span>
 
@@ -458,7 +458,7 @@ $[3, 12, 8]$、$[2, 4, 6]$、$[14, 5, 2]$。</p>
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>三个 MIN 节点的值 = [3, 2, 2]
+<div class="codehilite" data-code-language="text"><pre><span></span><code>三个 MIN 节点的值 = [3, 2, 2]
 根（MAX）的值 = 3
 看过的叶子 9 个：[3, 12, 8, 2, 4, 6, 14, 5, 2]
 </code></pre></div>
@@ -509,7 +509,7 @@ $[3, 12, 8]$、$[2, 4, 6]$、$[14, 5, 2]$。</p>
 <p>上面的写法里 MAX 和 MIN 是两段几乎一样的代码 —— 这是 bug 的温床。</p>
 <p>⭐ 讲义给的化简：<strong>不要固定从白方视角评估，改成从「轮到走棋的那一方」视角评估</strong>。
 这样每一层都是 MAX 层，只要在递归返回时<strong>取个负号</strong>：</p>
-<div class="codehilite"><pre><span></span><code>function negamax(node, depth)
+<div class="codehilite" data-code-language="text"><pre><span></span><code>function negamax(node, depth)
     if node is terminal or depth = 0
         return heuristic value of node   // 从当前该走棋一方的视角
     α = −∞
@@ -687,4 +687,4 @@ $[3, 12, 8]$、$[2, 4, 6]$、$[14, 5, 2]$。</p>
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

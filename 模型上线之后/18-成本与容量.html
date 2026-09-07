@@ -473,7 +473,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_5">📈 四、容量规划</h2>
 <section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>要回答三个问题：</li><li>现在的峰值 QPS 是多少？（不是平均值 ⭐）</li><li>单机能扛多少 QPS？（压测，不是估算）</li><li>留多少余量？</li><li>⭐ 经验：按【峰值的 1.5–2 倍】准备容量</li><li>因为大促、突发热点、上游重试都会放大流量</li></ol></section>
 <p><strong>实例数不用拍脑袋，一个公式就能算</strong>（利特尔法则）：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">plan_capacity</span><span class="p">(</span><span class="n">qps_peak</span><span class="p">,</span> <span class="n">avg_latency_ms</span><span class="p">,</span> <span class="n">concurrency_per_pod</span><span class="p">,</span> <span class="n">headroom</span><span class="o">=</span><span class="mf">1.8</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;利特尔法则：系统内同时在处理的请求数 = 到达率 × 停留时间</span>
@@ -841,4 +841,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -346,7 +346,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p><strong>改进：ε 衰减</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="n">eps_start</span><span class="p">,</span> <span class="n">eps_min</span><span class="p">,</span> <span class="n">decay</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.995</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="n">eps_start</span><span class="p">,</span> <span class="n">eps_min</span><span class="p">,</span> <span class="n">decay</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.995</span>
 
 <span class="k">for</span> <span class="n">episode</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">):</span>
     <span class="n">eps</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">eps_min</span><span class="p">,</span> <span class="n">eps_start</span> <span class="o">*</span> <span class="p">(</span><span class="n">decay</span> <span class="o">**</span> <span class="n">episode</span><span class="p">))</span>   <span class="c1"># 或 eps = 1/t</span>
@@ -384,7 +384,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><strong>伯努利奖励下用 Beta 分布</strong>（数学上最漂亮的部分）：</p>
 <section class="visual-block visual-block-flow" aria-label="流程图"><p class="visual-block-title">流程图</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">臂 a 的先验：Beta(1, 1) ← 均匀分布，什么都不知道</span></div><div class="vb-flow-row"><span class="vb-flow-step">每次拉臂后更新：</span></div><div class="vb-flow-row"><span class="vb-flow-step">中奖</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">Beta(α+1, β)</span></div><div class="vb-flow-row"><span class="vb-flow-step">没中</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">Beta(α, β+1)</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 就是数一下赢了几次、输了几次，这叫【共轭先验】</span></div></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">ThompsonSampling</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
@@ -613,4 +613,4 @@ RLHF 罚的是<strong>反向 KL</strong>：$\text{KL}(\pi_\theta\,\|\,\pi_{SFT})
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

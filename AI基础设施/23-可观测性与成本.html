@@ -376,7 +376,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 它只表示"有 kernel 在跑"，<strong>一个只用 5% 算力的 kernel 也显示 100%</strong>。
 <strong>它几乎没有诊断价值。</strong></p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`loss` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`loss` 来自你自己的代码，这一段只看写法</span>
 <span class="c1"># ⭐ 训练时该记的最小指标集</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span>
@@ -396,7 +396,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_4">💰 三、成本模型：钱花在哪</h2>
 <section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">训练总成本 = GPU 小时数 × 单价</span></div><div class="vb-flow-row"><span class="vb-flow-step">= (6 × N × D) / (卡数 × 峰值FLOPS × MFU) / 3600 × 卡数 × 单价</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 简化后：训练成本 ∝ 1 / MFU</span></div><div class="vb-flow-row"><span class="vb-flow-step">MFU 从 25% 提到 50%，成本【直接减半】</span></div></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">training_cost</span><span class="p">(</span><span class="n">params_B</span><span class="p">,</span> <span class="n">tokens_T</span><span class="p">,</span> <span class="n">n_gpus</span><span class="p">,</span> <span class="n">mfu</span><span class="p">,</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">training_cost</span><span class="p">(</span><span class="n">params_B</span><span class="p">,</span> <span class="n">tokens_T</span><span class="p">,</span> <span class="n">n_gpus</span><span class="p">,</span> <span class="n">mfu</span><span class="p">,</span>
                   <span class="n">peak_tflops</span><span class="o">=</span><span class="mi">312</span><span class="p">,</span> <span class="n">hourly</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
     <span class="n">flops</span> <span class="o">=</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">params_B</span> <span class="o">*</span> <span class="mf">1e9</span> <span class="o">*</span> <span class="n">tokens_T</span> <span class="o">*</span> <span class="mf">1e12</span>
     <span class="n">seconds</span> <span class="o">=</span> <span class="n">flops</span> <span class="o">/</span> <span class="p">(</span><span class="n">n_gpus</span> <span class="o">*</span> <span class="n">peak_tflops</span> <span class="o">*</span> <span class="mf">1e12</span> <span class="o">*</span> <span class="n">mfu</span><span class="p">)</span>
@@ -448,13 +448,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ⭐ Nsight Systems：看多卡的通信和计算是否重叠</span>
+<div class="codehilite" data-code-language="bash"><pre><span></span><code><span class="c1"># ⭐ Nsight Systems：看多卡的通信和计算是否重叠</span>
 nsys<span class="w"> </span>profile<span class="w"> </span>-t<span class="w"> </span>cuda,nvtx,nccl<span class="w"> </span>-o<span class="w"> </span>report<span class="w"> </span>python<span class="w"> </span>train.py
 
 <span class="c1"># 给代码段打标记，在时间线上能看到</span>
 </code></pre></div>
 
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch.cuda.nvtx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nvtx</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch.cuda.nvtx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nvtx</span>
 <span class="k">with</span> <span class="n">nvtx</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="s2">&quot;forward&quot;</span><span class="p">):</span>   <span class="n">out</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="k">with</span> <span class="n">nvtx</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="s2">&quot;backward&quot;</span><span class="p">):</span>  <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
 <span class="k">with</span> <span class="n">nvtx</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="s2">&quot;optimizer&quot;</span><span class="p">):</span> <span class="n">opt</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
@@ -629,4 +629,4 @@ PyTorch Profiler 能看到 nccl kernel 的耗时，
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

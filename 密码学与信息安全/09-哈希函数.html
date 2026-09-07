@@ -469,7 +469,7 @@ $q = 23$ 时是 <strong>253 对</strong> —— 这就接近 365 了。</p>
 <h3 id="1">❌ 危险用法 ① 直接哈希存密码</h3>
 <section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>❌ 存 SHA256(password)</span></li><li><span>为什么不行：</span></li><li><span>哈希【太快】了 —— GPU 每秒能算几十亿次</span></li><li><span>彩虹表：常见密码的哈希早就被算好了</span></li><li><span>相同密码 → 相同哈希，一眼看出哪些用户密码相同 ⭐</span></li></ul></section>
 
-<div class="codehilite"><pre><span></span><code><span class="c1"># ✅ 正确：用专门的密码哈希函数（慢 + 加盐 + 抗 GPU）</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># ✅ 正确：用专门的密码哈希函数（慢 + 加盐 + 抗 GPU）</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">argon2</span>
 <span class="n">ph</span> <span class="o">=</span> <span class="n">argon2</span><span class="o">.</span><span class="n">PasswordHasher</span><span class="p">()</span>          <span class="c1"># ⭐ 首选</span>
 <span class="n">hashed</span> <span class="o">=</span> <span class="n">ph</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="s2">&quot;user_password&quot;</span><span class="p">)</span>     <span class="c1"># 自动加随机 salt</span>
@@ -503,7 +503,7 @@ $q = 23$ 时是 <strong>253 对</strong> —— 这就接近 365 了。</p>
 <h3 id="2">❌ 危险用法 ② 用哈希做认证</h3>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>❌ tag = H(secret ‖ message) ← 长度扩展攻击！</p><p>⭐ 这是第 10 章的主题，也是一个打穿过很多 API 的真实漏洞</p></div></section>
 <h3 id="3">❌ 危险用法 ③ 用普通哈希比对时不用恒定时间</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ❌ 有时间侧信道</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># ❌ 有时间侧信道</span>
 <span class="k">if</span> <span class="n">computed_hash</span> <span class="o">==</span> <span class="n">provided_hash</span><span class="p">:</span> <span class="o">...</span>
 
 <span class="c1"># ✅</span>
@@ -617,4 +617,4 @@ $q = 23$ 时是 <strong>253 对</strong> —— 这就接近 365 了。</p>
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -378,7 +378,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="2-uncoalesced-access">坑 ② 非合并访存（uncoalesced access）</h3>
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">✅ 合并访存：warp 里 32 个线程访问【连续】的地址</span></div><div class="vb-flow-row"><span class="vb-flow-step">硬件合并成 1 次内存事务</span></div><div class="vb-flow-row"><span class="vb-flow-step">❌ 非合并：访问跳跃的地址（比如按列访问行主序矩阵）</span></div><div class="vb-flow-row"><span class="vb-flow-step">可能变成 32 次独立事务</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">有效带宽掉到 1/32 💀</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 这就是为什么【张量的内存布局（contiguous）很重要】</span></div></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="c1"># PyTorch 里的真实影响</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># PyTorch 里的真实影响</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4096</span><span class="p">,</span> <span class="mi">4096</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cuda&#39;</span><span class="p">)</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">t</span><span class="p">()</span>                      <span class="c1"># 转置只改 stride，没搬数据</span>
@@ -453,7 +453,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 先确认瓶颈真的在某个算子上（<a href="04-Roofline与MFU.html">第 4 章</a>教你怎么测），
 再考虑用 <strong>Triton</strong>（Python 语法，门槛低得多）—— <a href="07-算子融合与编译.html">第 7 章</a>。</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 三个你一定会用到的命令</span>
+<div class="codehilite" data-code-language="bash"><pre><span></span><code><span class="c1"># 三个你一定会用到的命令</span>
 nvidia-smi<span class="w">                    </span><span class="c1"># 看显存占用、利用率、温度、功耗</span>
 nvidia-smi<span class="w"> </span>topo<span class="w"> </span>-m<span class="w">            </span><span class="c1"># ⭐ 看卡间互联拓扑（NVLink 还是 PCIe）</span>
 nvidia-smi<span class="w"> </span>dmon<span class="w"> </span>-s<span class="w"> </span>pucm<span class="w">       </span><span class="c1"># 持续监控</span>
@@ -554,4 +554,4 @@ nvidia-smi<span class="w"> </span>dmon<span class="w"> </span>-s<span class="w">
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
