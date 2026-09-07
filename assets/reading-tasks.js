@@ -22,6 +22,8 @@
       update();
     }));
     update();
+    // Curated cross-board pages already have a single stage-aware reading route.
+    if (document.querySelector('.cross-layout')) return;
     const headings = [...document.querySelectorAll('main h2,main h3')].filter(h => /阶段|[ABC] 组/.test(h.textContent) && h.id);
     if (headings.length > 1) {
       const nav = document.createElement('nav');

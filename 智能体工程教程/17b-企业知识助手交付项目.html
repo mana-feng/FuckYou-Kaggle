@@ -280,7 +280,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
 <script defer src="../assets/vendor/katex/katex.min.js"></script>
 <script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
- onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script><link rel="stylesheet" href="../assets/guided-lessons.css"><link rel="stylesheet" href="../assets/cross-reading.css"><script defer src="../assets/cross-reading.js"></script></head><body class="guided-reading cross-reading">
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
@@ -305,13 +305,21 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 </div>
 </details>
-<h1 id="17b">17b · 一个能拿去解释故障与取舍的知识助手</h1>
+<div class="lesson-layout cross-layout" data-reading-profile="delivery" data-reading-mode="project">
+<div class="lesson-content">
+<header class="cross-hero"><p class="lesson-eyebrow">智能体工程教程 · 按需阅读</p><h1>把知识助手做成一组能核对的交付物。</h1><p class="lesson-lead">先跑通基线，再按阶段保留真实结果。勾选表示你已自查，不代表网站替你跑过测试。</p></header>
+<section class="cross-result"><h2>这一次要留下什么</h2><p>一份可复现的项目，加上解析、检索、权限、审批恢复和运维证据；没有实跑的部分继续标为待验收。</p></section>
+<nav class="cross-choices" aria-label="按当前目标开始"><a href="#read-start"><strong>还没启动项目</strong><span>先运行标准库基线</span></a><a href="#read-data"><strong>按交付阶段推进</strong><span>从数据事实到运维证据</span></a><a href="#read-deliverables"><strong>已经做完，准备交付</strong><span>核对最终交付包与边界</span></a></nav>
+<div class="cross-body" id="reading-body"><section class="cross-preface" aria-label="原文导语与阅读条件"><h2 id="17b" class="lesson-original-title">17b · 一个能拿去解释故障与取舍的知识助手</h2>
+<!-- reading-pilot: delivery -->
+
 <p>⏱ <strong>按交付物推进</strong> ｜ 应用工程、RAG 与 Agent 岗位的共同实践</p>
-<h2 id="_1">🎯 一句话</h2>
+<h3 id="_1">🎯 一句话</h3>
 <p><strong>把数据、检索、工具、审批和评测放进同一个项目，面试时才能沿一条真实请求解释全流程。</strong> 这里提供可运行基线与分阶段任务；完成基线之后，用自己的脱敏资料与保留集形成个人证据。</p>
 <p>🔗 <a href="../examples/knowledge-assistant.zip">下载项目压缩包</a> ｜ <a href="../examples/knowledge-assistant/README.md">项目说明与代码入口</a> ｜ <a href="17c-%E5%B2%97%E4%BD%8D%E4%B8%93%E9%A1%B9%E4%B8%8E%E8%BF%9B%E9%98%B6%E5%AE%9E%E9%AA%8C.html">岗位分支</a> ｜ <a href="%E9%99%84%E5%BD%95C-%E5%85%A8%E9%93%BE%E8%B7%AF%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5%E6%89%8B%E5%86%8C.html">故障速查</a></p>
-<p>这不是一个已经接好所有生产服务的成品。当前基线使用 SQLite、虚构设备与制度文档、可选真实 embedding/重排、真实 MCP 本地传输和 LangGraph 持久化；外部工单、身份签发与人工操作使用明确的本地夹具。真实生成模型、复杂 OCR、外部 OAuth 登录、云端发布与生产压测需单独验收。</p>
-<h2 id="_2">🔬 先运行，再挑路线</h2>
+<p>这不是一个已经接好所有生产服务的成品。当前基线使用 SQLite、虚构设备与制度文档、可选真实 embedding/重排、真实 MCP 本地传输和 LangGraph 持久化；外部工单、身份签发与人工操作使用明确的本地夹具。</p>
+<p>真实生成模型、复杂 OCR、外部 OAuth 登录、云端发布与生产压测需单独验收。</p>
+</section><section class="cross-unit" id="read-start" aria-labelledby="read-start-title"><h2 id="read-start-title">先运行，再选择自己的岗位路线</h2><p class="cross-cue">安装条件、命令与真实服务边界都保留在此。</p><h3 id="_2">🔬 先运行，再挑路线</h3>
 <p>有仓库时，以下命令在仓库根目录运行；只有压缩包时，解压后进入 <code>knowledge-assistant</code> 文件夹，按包内 README 的短路径命令运行。使用 Python 3.12。</p>
 <div class="codehilite"><pre><span></span><code>python<span class="w"> </span>examples/knowledge-assistant/lab.py<span class="w"> </span>demo
 python<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w"> </span>discover<span class="w"> </span>-s<span class="w"> </span>examples/knowledge-assistant<span class="w"> </span>-p<span class="w"> </span>test_core.py<span class="w"> </span>-v
@@ -356,7 +364,7 @@ python<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w">
 </tr>
 </tbody>
 </table></div>
-<h2 id="_3">阶段一：把数据事实固定下来</h2>
+</section><section class="cross-unit" id="read-data" aria-labelledby="read-data-title"><h2 id="read-data-title">阶段一 · 数据事实</h2><p class="cross-cue">本阶段可停：能把任意 chunk 追溯到当前版本。下次从检索基线继续。</p><h3 id="_3">阶段一：把数据事实固定下来</h3>
 <p>目标是能解释每个答案来源，以及变更后何时生效。先用内置虚构语料跑通，再换成有使用权限的脱敏资料。项目中的题集公开可见，不能当作自己的独立保留集成绩。</p>
 <ul class="reading-task-list">
 <li class="reading-task" data-reading-task="1"><label class="reading-task-title"><input type="checkbox" data-task-key="1"><span>核对文档身份</span></label><div class="reading-task-body"> 核对 manifest 的文档身份、版本、readers 与租户；写出为什么身份字段不能由模型填写。</div></li>
@@ -365,7 +373,7 @@ python<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w">
 <li class="reading-task" data-reading-task="4"><label class="reading-task-title"><input type="checkbox" data-task-key="4"><span>建立独立题集</span></label><div class="reading-task-body"> 为自己的文档建立按来源或时间隔离的开发集与保留集，包含无答案和权限负例。</div></li>
 </ul>
 <p>阶段验收：任意 chunk 都能回到当前源版本；未经授权的块不能进入候选；失败发布不破坏旧版。具体操作见 <a href="11b-%E6%96%87%E6%A1%A3%E5%85%A5%E5%BA%93%E4%B8%8E%E6%95%B0%E6%8D%AE%E6%B2%BB%E7%90%86.html">11b</a>。</p>
-<h2 id="_4">阶段二：让调优留下可比较的结果</h2>
+</section><section class="cross-unit" id="read-retrieval" aria-labelledby="read-retrieval-title"><h2 id="read-retrieval-title">阶段二 · 可比较的检索结果</h2><p class="cross-cue">本阶段可停：配置与逐题结果能复跑。下次从工具授权继续。</p><h3 id="_4">阶段二：让调优留下可比较的结果</h3>
 <ul class="reading-task-list">
 <li class="reading-task" data-reading-task="5"><label class="reading-task-title"><input type="checkbox" data-task-key="5"><span>导出检索基线</span></label><div class="reading-task-body"> 导出 BM25 基线报告，能区分 Hit、Recall、MRR 与 NDCG。</div></li>
 <li class="reading-task" data-reading-task="6"><label class="reading-task-title"><input type="checkbox" data-task-key="6"><span>比较各检索路线</span></label><div class="reading-task-body"> 比较同题集上的中文向量、RRF 与重排，列出至少三条改善或退化的具体问题。</div></li>
@@ -373,7 +381,7 @@ python<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w">
 <li class="reading-task" data-reading-task="8"><label class="reading-task-title"><input type="checkbox" data-task-key="8"><span>分开四层质量</span></label><div class="reading-task-body"> 分开报告检索效果、引用有效性、答案支持度与无答案拒答，不用一个总分代替。</div></li>
 </ul>
 <p>阶段验收：保留语料/代码/模型哈希、题目级结果、硬件与用量条件，能复跑同一配置。不要把 16 道有答案开发题的指标包装成生产准确率。方法见 <a href="11c-%E6%A3%80%E7%B4%A2%E8%AF%84%E6%B5%8B%E4%B8%8E%E8%B0%83%E4%BC%98%E5%AE%9E%E9%AA%8C.html">11c</a> 与 <a href="11d-%E7%94%9F%E6%88%90%E5%BC%95%E7%94%A8%E4%B8%8E%E6%9F%A5%E8%AF%A2%E8%AF%8A%E6%96%AD.html">11d</a>。</p>
-<h2 id="_5">阶段三：工具能连通，也能正确拒绝</h2>
+</section><section class="cross-unit" id="read-tools" aria-labelledby="read-tools-title"><h2 id="read-tools-title">阶段三 · 工具连通与正确拒绝</h2><p class="cross-cue">本阶段可停：成功和拒绝都有证据。下次从审批与恢复继续。</p><h3 id="_5">阶段三：工具能连通，也能正确拒绝</h3>
 <ul class="reading-task-list">
 <li class="reading-task" data-reading-task="9"><label class="reading-task-title"><input type="checkbox" data-task-key="9"><span>跑通协议矩阵</span></label><div class="reading-task-body"> 跑通 HTTP/stdio 与新旧协议组合，查看真实 <code>structuredContent</code>。</div></li>
 <li class="reading-task" data-reading-task="10"><label class="reading-task-title"><input type="checkbox" data-task-key="10"><span>验证授权拒绝</span></label><div class="reading-task-body"> 验证缺 token、过期、撤销、audience 错误、scope 不足、跨租户查询与未知工具。</div></li>
@@ -381,7 +389,7 @@ python<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w">
 <li class="reading-task" data-reading-task="12"><label class="reading-task-title"><input type="checkbox" data-task-key="12"><span>接入真实身份平台</span></label><div class="reading-task-body"> 把真实身份平台接入列成单独验收项：登录、授权同意、回调、刷新、撤权与资源范围。</div></li>
 </ul>
 <p>阶段验收：工具描述、输入 schema、输出 schema、错误与权限边界对得上；本地 token 夹具不能被称作完整 OAuth 上线。步骤见 <a href="08c-MCP%E9%89%B4%E6%9D%83%E4%B8%8E%E4%BA%92%E6%93%8D%E4%BD%9C.html">08c</a>。</p>
-<h2 id="_6">阶段四：恢复过程不制造第二次动作</h2>
+</section><section class="cross-unit" id="read-recovery" aria-labelledby="read-recovery-title"><h2 id="read-recovery-title">阶段四 · 恢复不重复执行</h2><p class="cross-cue">本阶段可停：响应丢失后业务对象仍只有一个。下次从部署条件继续。</p><h3 id="_6">阶段四：恢复过程不制造第二次动作</h3>
 <ul class="reading-task-list">
 <li class="reading-task" data-reading-task="13"><label class="reading-task-title"><input type="checkbox" data-task-key="13"><span>注入审批负例</span></label><div class="reading-task-body"> 用故障注入证明未审批、改参数、审批过期、取消都阻止新执行。</div></li>
 <li class="reading-task" data-reading-task="14"><label class="reading-task-title"><input type="checkbox" data-task-key="14"><span>恢复丢失响应</span></label><div class="reading-task-body"> 演示下游成功但响应丢失，恢复后业务对象总数仍为一。</div></li>
@@ -389,15 +397,17 @@ python<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w">
 <li class="reading-task" data-reading-task="16"><label class="reading-task-title"><input type="checkbox" data-task-key="16"><span>确认下游契约</span></label><div class="reading-task-body"> 接真实下游前确认幂等键保存期限、结果查询一致性与取消语义，补响应未知时的人工处理入口。</div></li>
 </ul>
 <p>阶段验收：能按操作号查清状态，有可审计的请求人与审批人，模型不能授予自己执行权限。见 <a href="12b-%E6%8C%81%E4%B9%85%E5%8C%96%E5%AE%A1%E6%89%B9%E4%B8%8E%E6%95%85%E9%9A%9C%E6%81%A2%E5%A4%8D.html">12b</a> 与 <a href="16d-LangGraph%E5%AE%9E%E4%BD%9C%E4%B8%8E%E8%BF%90%E8%A1%8C%E8%BE%B9%E7%95%8C.html">16d</a>。</p>
-<h2 id="_7">阶段五：按交付环境完成运维</h2>
+</section><section class="cross-unit" id="read-operations" aria-labelledby="read-operations-title"><h2 id="read-operations-title">阶段五 · 目标环境验收</h2><p class="cross-cue">本地测试不能代替真实负载、备份恢复与受控发布。</p><h3 id="_7">阶段五：按交付环境完成运维</h3>
 <ul class="reading-task-list">
 <li class="reading-task" data-reading-task="17"><label class="reading-task-title"><input type="checkbox" data-task-key="17"><span>复现干净环境</span></label><div class="reading-task-body"> 在干净环境安装依赖并跑测试，记录 Python/SDK/模型版本和下载条件。</div></li>
 <li class="reading-task" data-reading-task="18"><label class="reading-task-title"><input type="checkbox" data-task-key="18"><span>定义验收目标</span></label><div class="reading-task-body"> 定义质量、错误率、p95/p99、首 token、成本与新鲜度目标，按真实业务预期设置阈值。</div></li>
 <li class="reading-task" data-reading-task="19"><label class="reading-task-title"><input type="checkbox" data-task-key="19"><span>测量目标负载</span></label><div class="reading-task-body"> 测单并发与目标并发、冷启动与热请求、限流、超时和断流；报告负载形状与样本数。</div></li>
 <li class="reading-task" data-reading-task="20"><label class="reading-task-title"><input type="checkbox" data-task-key="20"><span>演练备份与回滚</span></label><div class="reading-task-body"> 演练备份恢复、索引切换与回滚，并在恢复后复测删除和撤权。</div></li>
 </ul>
-<p>本地 SQLite 不是横向扩容方案；复制数据库文件也不是 WAL 模式下完整的备份流程。生产使用数据库提供的备份/快照机制，保存 schema 与索引版本，恢复到隔离环境验证业务状态与权限。上线前接密钥管理、日志脱敏、错误告警和受控发布；这些验收结果需要真实环境证据。</p>
-<h2 id="_8">六、最终交付包与面试讲法</h2>
+<p>本地 SQLite 不是横向扩容方案；复制数据库文件也不是 WAL 模式下完整的备份流程。</p>
+<p>生产使用数据库提供的备份/快照机制，保存 schema 与索引版本，恢复到隔离环境验证业务状态与权限。</p>
+<p>上线前接密钥管理、日志脱敏、错误告警和受控发布；这些验收结果需要真实环境证据。</p>
+</section><section class="cross-unit" id="read-deliverables" aria-labelledby="read-deliverables-title"><h2 id="read-deliverables-title">整理交付包，明确做过与没做过</h2><p class="cross-cue">先核对证据，再填写简历；不要把教程样例成绩当作个人成果。</p><h3 id="_8">六、最终交付包与面试讲法</h3>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -436,7 +446,7 @@ python<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w">
 <blockquote>
 <p>🛑 <strong>现在可以停</strong>：每个阶段至少拿到一份可核对的交付物，再按岗位补专项。没有任何有限教程能穷尽线上所有事故，但你已经有新增故障时定位与回归的方法。</p>
 </blockquote>
-<h2 id="_9">✅ 检查点</h2>
+<h3 id="_9">✅ 检查点</h3>
 <ol>
 <li>哪些数字可以写成“实测”，哪些只能写“待验收”？</li>
 <li>只有成功演示视频，还缺哪类求职证据？</li>
@@ -450,8 +460,11 @@ python<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w">
 </details>
 <div class="reading-recap"><strong>⚡ 走神救援</strong><p>同一项目串起五个阶段；阶段任务有从属关系；交付真实结果与失败证据；岗位差异再走专项。</p></div>
 
-<h2 id="_10">🔗 接下来去哪</h2>
-<p>➡️ 下一站：<a href="17c-%E5%B2%97%E4%BD%8D%E4%B8%93%E9%A1%B9%E4%B8%8E%E8%BF%9B%E9%98%B6%E5%AE%9E%E9%AA%8C.html">17c · 岗位专项与进阶实验</a>。</p>
+<h3 id="_10">🔗 接下来去哪</h3>
+<p>➡️ 下一站：<a href="17c-%E5%B2%97%E4%BD%8D%E4%B8%93%E9%A1%B9%E4%B8%8E%E8%BF%9B%E9%98%B6%E5%AE%9E%E9%AA%8C.html">17c · 岗位专项与进阶实验</a>。</p></section></div></div>
+<aside class="lesson-rail cross-rail" aria-label="本页阅读路线"><button type="button" class="lesson-route-toggle" aria-expanded="true" aria-controls="cross-route">本页阅读路线 <span aria-hidden="true">⌄</span></button>
+<div id="cross-route"><p class="lesson-position">路线可跳读，不表示已掌握</p><nav class="lesson-route-links" aria-label="正文分组"><a href="#read-start">先运行，再选择自己的岗位路线</a><a href="#read-data">阶段一 · 数据事实</a><a href="#read-retrieval">阶段二 · 可比较的检索结果</a><a href="#read-tools">阶段三 · 工具连通与正确拒绝</a><a href="#read-recovery">阶段四 · 恢复不重复执行</a><a href="#read-operations">阶段五 · 目标环境验收</a><a href="#read-deliverables">整理交付包，明确做过与没做过</a></nav>
+<p class="cross-route-note">一次只处理眼前这一组。正文、图解、代码与答案都保留在页面里。</p><button class="lesson-save" type="button">记住当前位置</button><p class="lesson-save-status" role="status"></p></div></aside></div>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="17-实战项目.html"><div class="dir">← 上一节</div>🔨 17 · 实战项目</a><a class="next" href="17c-岗位专项与进阶实验.html"><div class="dir">下一节 →</div>🎯 17c · 岗位专项</a></nav>
