@@ -185,9 +185,9 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -562,7 +562,7 @@ th,td{min-width:5.2em}
 <h2 id="_13">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>生成式推荐 = 推荐的 GPT 时刻，首次出现 Scaling Law。三个核心概念：① Semantic ID（RQ-VAE 把物品编成有层次的码字，解决冷启动+缩小词表）② 生成式召回（TIGER：直接生成 ID，不用 ANN）③ HSTU（Meta，行为统一成 token 序列，线上+12.4%，1.5万亿参数）。工业落地：快手 OneRec 把整个漏斗塌缩成一个模型，成本降到 1/10。LLM 四种用法，主流是「借架构不借权重」。小公司别跟，先把第 6/8/12 节吃透。<!--RECAP-EXT-->⚠️ <b>Semantic ID 不是免费午餐</b>，四个真实的坑：码字冲突（两个物品编到同一串，要加去重后缀）、<b>语义 ≠ 行为</b>（《甄嬛传》和《延禧攻略》内容很像，受众可能完全不同）、码本坍塌（大量码字从不被使用），以及最要命的一条——<b>tokenizer 训不好，上面所有东西全垮</b>。⭐ OneRec 真正激进的地方不只是「一个模型吃掉漏斗」，而是 <b>session-wise 生成</b>：一次生成整个会话列表而不是逐个物品，等于把第 11 节「列表整体最优」的难题在架构层面直接解掉了；再配上 Encoder-Decoder + 稀疏 MoE 扩容量、DPO 做偏好对齐。⚠️ 看到 Scaling Law 别上头：<b>它的前提是数据也一起 scale</b>，日志量撑不起来的话，堆参数只会烧钱。⭐ 但有两件事你今天就能做：① 用 <b>LLM 当特征工厂</b>（不改架构、对冷启动立竿见影，第 18 节专题六有可直接抄的流程）；② 在笔记本上小规模复现 <b>RQ-VAE + Semantic ID + 受约束生成</b>（挑战项目 C 手把手带你造 TIGER-mini）。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>生成式推荐尝试直接生成物品标识或列表，而不只逐个候选打分。</li><li>Semantic ID、码本与受约束生成要一起检查，标识质量会影响上层模型。</li><li>先用小规模实验验证价值，再评估数据量、计算量和现有链路的迁移成本。</li></ul></section>
 </blockquote>
 <p><strong>下一节</strong> 👉 <a href="15-工程落地.html">15-工程落地.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
@@ -591,5 +591,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
 </body></html>

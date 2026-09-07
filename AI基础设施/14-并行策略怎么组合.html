@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -483,7 +483,7 @@ Ring Attention 的思路和 <a href="08-FlashAttention.html">FlashAttention</a> 
 <h2 id="_7">🔬 七、怎么验证你的配置是对的</h2>
 <section class="visual-block visual-block-flow" aria-label="流程图"><p class="visual-block-title">流程图</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 算 MFU（第 4 章）—— 低于 35% 说明配置有问题</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 分别测：</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 只开 DP 的单步时间</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 加上 TP 后的单步时间</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">差值就是 TP 的通信开销</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 加上 PP 后的单步时间</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">差值就是气泡 + PP 通信</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 用 profiler 看 nccl kernel 的占比</span></div><div class="vb-flow-row"><span class="vb-flow-step">④ ⭐ 做一次【扫描实验】：固定总卡数，试几组 (TP, PP, DP)</span></div></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`total_gpus` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`total_gpus` 来自你自己的代码，这一段只看写法</span>
 <span class="c1"># ⭐ 一个实用的扫描脚本骨架</span>
 <span class="k">for</span> <span class="n">tp</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">]:</span>
     <span class="k">for</span> <span class="n">pp</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">]:</span>
@@ -567,9 +567,8 @@ Ring Attention 的思路和 <a href="08-FlashAttention.html">FlashAttention</a> 
 <hr />
 <h2 id="_10">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>⭐<strong>三种并行不是三选一，是三个维度</strong>，排列顺序由带宽唯一决定。⭐<strong>黄金法则：TP 放机内 NVLink、PP 跨机、DP 最外层</strong>——记忆方法是<strong>「通信最凶的贴着最快的线」</strong>；64 卡典型配置 <strong>TP=8 × PP=4 × DP=2</strong>。<strong>决策流程</strong>：①装得进一张卡 → <strong>纯 DP + ZeRO-2</strong> ②ZeRO-3/FSDP 能装下 → <strong>FSDP（多机 HYBRID_SHARD）</strong> ③<strong>单层装不下 → 必须加 TP（≤8，机内）</strong> ④还不够 → 加 PP（注意 M≥4P）⑤MoE → 加 EP ⑥超长序列 → 上下文并行。⭐<strong>最重要的一条：能用 FSDP 就别上 3D 并行</strong>（工程复杂度是数量级差别）。<strong>定维度</strong>：TP 取"让单层装下"的最小值（单层参数+激活 &lt; 单卡显存 60%）；<strong>PP 定完必须检查 M≥4P，不满足说明 PP 太大要回调</strong>；DP 拿剩下的。⭐<strong>常被忽略的约束：全局 batch = micro_batch × M × DP</strong>，太大收敛差、太小气泡大 → <strong>实践是先定合理的全局 batch 再反推</strong>。<strong>MoE 的专家并行</strong>用 <strong>All2All</strong>（不是 AllReduce），⭐<strong>最头疼的是负载不均衡</strong>（90% token 路由到同一专家 → <strong>整个集群被一张卡拖垮</strong>），解法是辅助损失和容量因子。<strong>上下文并行</strong>（Ring Attention）切序列维度，<strong>和 FlashAttention 同源——都是"分块+增量累积 softmax"</strong>，一个片上一个跨卡。<strong>真实配置</strong>：⭐<strong>7B 微调 8 卡就用 FSDP+梯度检查点，不要 TP/PP</strong>；7B 预训练 64 卡用 DP+ZeRO-2；70B/512 卡才是 TP=8,PP=8,DP=8——<strong>3D 并行是千卡以上的事，别过度设计</strong>。⭐<strong>验证靠实测扫描</strong>（固定总卡数试几组 TP/PP/DP），<strong>30 分钟的扫描能省几周的低效训练；理论只用来缩小搜索范围</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>数据、张量和流水线并行可以组合，但复杂度和通信成本也会叠加。</li><li>通信频繁的工作优先靠近高速互联，先尝试能装得下的较简单方案。</li><li>固定总卡数和训练条件，联合检查显存、全局 batch、气泡与实际吞吐。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="15-推理和训练是两回事.html">15-推理和训练是两回事.md</a> ⭐</p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -597,5 +596,4 @@ Ring Attention 的思路和 <a href="08-FlashAttention.html">FlashAttention</a> 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

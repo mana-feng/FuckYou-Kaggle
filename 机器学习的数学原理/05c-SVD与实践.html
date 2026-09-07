@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -352,7 +352,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h4 id="1">理由 ① 数值稳定（最硬的一条）</h4>
 <p><strong>算 $X_c^\top X_c$ 这一步会把条件数平方</strong>：$\kappa(X^\top X) = \kappa(X)^2$。
 条件数平方，意味着<strong>你的有效精度直接砍掉一半</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">Q</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
@@ -483,7 +483,7 @@ SVD 只会给出 99 个非零奇异值，干干净净。</p>
 </blockquote>
 <h3 id="2">② ⭐ 必须先标准化（除非所有特征本来就同量纲）</h3>
 <p>⭐ <strong>一句话结论</strong>：<strong>同一批数据，把收入的单位从"元"换成"万元"，第一主成分就从收入变成了年龄。</strong></p>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">年收入（元）标准差 ≈ 50000 → 方差 2.5 × 10⁹</span></div><div class="vb-tree-row"><span class="vb-tree-node">年龄（岁） 标准差 ≈ 10 → 方差 100</span></div><div class="vb-tree-row"><span class="vb-tree-node">→ 差 2500 万倍，第一主成分基本就是&quot;年收入&quot;本身</span></div><div class="vb-tree-row"><span class="vb-tree-node">→ 把收入换成【万元】（方差 25），现在年龄反而占主导</span></div><div class="vb-tree-row"><span class="vb-tree-node">为什么：PCA 追的是【方差】，而方差的量纲是&quot;单位的平方&quot;</span></div><div class="vb-tree-row"><span class="vb-tree-node">⭐ 判据不是&quot;要不要标准化&quot;，而是&quot;这些特征的方差可不可比&quot;</span></div><div class="vb-tree-row"><span class="vb-tree-node">收入(元) + 年龄(岁) + 点击数(次) → 必须标准化</span></div><div class="vb-tree-row"><span class="vb-tree-node">同一张图的 784 个像素（都是 0~255）→ 不标准化反而对</span></div><div class="vb-tree-row"><span class="vb-tree-node">（方差差异此时是【真信息】：边缘像素方差小，本来就该被降权）</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>年收入（元）标准差 ≈ 50000 → 方差 2.5 × 10⁹</span></li><li><span>年龄（岁） 标准差 ≈ 10 → 方差 100</span></li><li><span>→ 差 2500 万倍，第一主成分基本就是"年收入"本身</span></li><li><span>→ 把收入换成【万元】（方差 25），现在年龄反而占主导</span></li><li><span>为什么：PCA 追的是【方差】，而方差的量纲是"单位的平方"</span></li><li><span>⭐ 判据不是"要不要标准化"，而是"这些特征的方差可不可比"</span></li><li><span>收入(元) + 年龄(岁) + 点击数(次) → 必须标准化</span></li><li><span>同一张图的 784 个像素（都是 0~255）→ 不标准化反而对</span></li><li><span>（方差差异此时是【真信息】：边缘像素方差小，本来就该被降权）</span></li></ul></section>
 <h3 id="3">③ 💀 方差 ≠ 信息（最容易忽略的一条）</h3>
 <p><strong>PCA 是无监督的，它压根不看 y。</strong></p>
 <section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">💀 一个真实会发生的事故形态：</span></div><div class="vb-flow-row"><span class="vb-flow-step">二分类任务，特征里有一个方差极小、但和标签几乎完美相关的变量</span></div><div class="vb-flow-row"><span class="vb-flow-step">（比如某个传感器的微小读数偏移，量级 0.001，却正好区分两类）</span></div><div class="vb-flow-row"><span class="vb-flow-step">PCA 保留 95% 方差</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">这个方向排在最后，被当成噪声丢掉</span></div><div class="vb-flow-row"><span class="vb-flow-step">降维后模型 AUC 从 0.94 掉到 0.71</span></div><div class="vb-flow-row"><span class="vb-flow-step">排查时看不出来：解释方差比 95%，&quot;信息只丢了 5%&quot;，报表上一切正常 ⚠️</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 症结：那被丢掉的 5% 方差里，装着 100% 的判别信息</span></div></div></section>
@@ -616,5 +616,4 @@ SVD 只会给出 99 个非零奇异值，干干净净。</p>
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

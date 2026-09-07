@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -542,13 +542,13 @@ LFSR 的<strong>统计随机性完美，密码学价值为零</strong>。
 </blockquote>
 <hr />
 <h2 id="_5">🧭 四、现代该用什么</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">❌ 不要用：RC4（有统计偏差，已被禁用）、A5/1、E0、任何自制的 LFSR 方案</span></div><div class="vb-tree-row"><span class="vb-tree-node">✅ 用这些：</span></div><div class="vb-tree-row"><span class="vb-tree-node">ChaCha20</span><span class="vb-tree-note">软件实现快，无需硬件加速，移动端首选</span></div><div class="vb-tree-row"><span class="vb-tree-node">AES-CTR</span><span class="vb-tree-note">有 AES-NI 硬件指令时最快</span></div><div class="vb-tree-row"><span class="vb-tree-node">⭐ 但实际上你应该用【认证加密】：</span></div><div class="vb-tree-row"><span class="vb-tree-node">ChaCha20-Poly1305 / AES-GCM</span></div><div class="vb-tree-row"><span class="vb-tree-node">（见第 11 章 —— 光加密不够，必须带认证）</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>❌ 不要用：RC4（有统计偏差，已被禁用）、A5/1、E0、任何自制的 LFSR 方案</span></li><li><span>✅ 用这些：</span></li><li><span>ChaCha20</span> <span>软件实现快，无需硬件加速，移动端首选</span></li><li><span>AES-CTR</span> <span>有 AES-NI 硬件指令时最快</span></li><li><span>⭐ 但实际上你应该用【认证加密】：</span></li><li><span>ChaCha20-Poly1305 / AES-GCM</span></li><li><span>（见第 11 章 —— 光加密不够，必须带认证）</span></li></ul></section>
 <blockquote>
 <p>🔑 <strong>本章最实用的一条建议</strong>：
 <strong>不要单独用流密码。</strong> 直接用 AEAD（认证加密），
 它把"加密 + 认证 + nonce 管理"打包成一个不容易用错的接口。</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ✅ 现代的正确做法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># ✅ 现代的正确做法</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cryptography.hazmat.primitives.ciphers.aead</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChaCha20Poly1305</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
@@ -628,9 +628,8 @@ LFSR 的<strong>统计随机性完美，密码学价值为零</strong>。
 <hr />
 <h2 id="_8">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>流密码=<strong>用 PRG 模拟 OTP</strong>：密钥流=PRG(K,nonce,counter)，C=M⊕密钥流。优点：不用填充、加解密同一套代码、可流式、<strong>支持随机访问</strong>。⭐<strong>Nonce 铁律：同一密钥下 nonce 绝不能重复</strong>——重复则密钥流相同 = 密钥复用的 OTP，C₁⊕C₂=M₁⊕M₂。<strong>nonce 只需唯一不需随机，可以公开</strong>。三种做法：计数器（⚠️虚拟机快照回滚会重复）、随机（<strong>96-bit 只能用约 2³² 次，生日碰撞</strong>）、⭐<strong>XChaCha20 的 192-bit nonce 最省心</strong>。💥血债：<strong>WEP</strong>（IV仅24bit，几小时就重复）、<strong>PS3</strong>（k值写死成常数→私钥被算出，主机越狱）、MS-CHAPv2、⭐<strong>KRACK</strong>（不攻击算法，<strong>重放握手包诱导系统自己把 nonce 重置</strong>——防重复不只是生成时的事，还要防回滚）。<strong>LFSR 是反面教材</strong>：硬件便宜、周期达 2ⁿ−1、<strong>统计性质完美</strong>，但<strong>它是线性的</strong>——⭐<strong>Berlekamp–Massey 只要 2L 个输出位就能 O(L²) 重建整个 LFSR</strong>（L=128 时看 <strong>32 字节</strong>就破）。修补也没救：Geffe 生成器倒于<strong>相关攻击</strong>（输出与某个 LFSR 统计相关就能单独恢复它，<strong>联合搜索 2^ΣL 变成 Σ2^L</strong>），A5/1 几分钟破解 GSM。✅现代：ChaCha20 / AES-CTR，但⭐<strong>不要单独用流密码，直接用 AEAD</strong>（ChaCha20-Poly1305、AES-GCM），它把加密+认证+nonce管理打包成不易用错的接口。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>流密码把消息与密钥流异或，加解密依赖同一条密钥流。</li><li>同一密钥下重复 nonce 会重复密钥流；重启、回滚与并发也要防重。</li><li>单独的流加密不提供认证，实际接口还要处理完整性验证。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="06-分组密码.html">06-分组密码.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -658,5 +657,4 @@ LFSR 的<strong>统计随机性完美，密码学价值为零</strong>。
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

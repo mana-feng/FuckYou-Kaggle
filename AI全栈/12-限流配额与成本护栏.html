@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -353,7 +353,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_3">🧩 二、限流：令牌桶</h2>
 <p>令牌桶的形状是：<strong>一个桶按固定速率往里滴令牌，桶有容量上限；来一个请求就拿走一个，没得拿就拒绝。</strong>
 两个参数分别对应两件事：<strong>滴速 = 长期允许的速率</strong>，桶容量 = 允许多大的突发。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">TokenBucket</span><span class="p">:</span>
@@ -420,7 +420,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_5">🧩 三、配额与全局熔断</h2>
 <p>这两件事的形状是一样的：<strong>一个账本 + 一条带条件的扣减语句</strong>。关键是<strong>判断和扣减必须在同一条语句里</strong> —— 「先 <code>SELECT</code> 看看够不够、再 <code>UPDATE</code> 扣掉」中间那道缝，会让两个并发请求都看到「还够」。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE quota(user TEXT PRIMARY KEY, used INTEGER, cap INTEGER)&quot;</span><span class="p">)</span>
@@ -495,7 +495,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <h3 id="_7">⭐ 中间件这一层怎么接线</h3>
 <p><a href="03-后端骨架.html">第 3 章第四节</a>埋了两个空壳依赖，其中 <strong><code>quota</code> 就是留给这一章的挂载点</strong>（另一个 <code>current_user</code> 留给第 8 章）。现在把它填上：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Header</span><span class="p">,</span> <span class="n">HTTPException</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
@@ -593,7 +593,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>每次调用至少记三个维度：谁（<code>user_id</code>）、哪个功能（<code>feature</code>）、哪个模型（<code>model</code>）。少记一列，就有一个维度永远查不出来。</strong>月底账单涨了 40%，没有这三列你只能猜；有了，一条 <code>GROUP BY</code> 就知道是谁。</p>
 <p>⭐ <strong>这张表不是新的</strong>：它就是<a href="04-调用层.html">第 4 章第四节</a> <code>record()</code> 那个最小字段集<strong>落进库的样子</strong>。那一章的原话是「有了这张表，12 章的配额扣减、15 章的成本看板都只是拿它做聚合」—— 本节就是那个聚合的第一个用处，<a href="15-可观测性.html">第 15 章</a>的成本看板是第二个。所以下面这张表的列和那边一一对应，不要在项目里建第二张。</p>
 <p>⚠️ <strong>单价表也全项目只该有一份</strong>（第 4 章那个 <code>cost_of</code> 就是它）。这里为了让金额能当场心算，示例价换成了「<strong>分 / 千 token</strong>」，而第 4 章那张写的是「元 / 百万 token」—— ⭐ 两边单位不一样这件事本身就是个坑：真项目里挑一个单位钉死在一处，混用会让你的账和厂商账单差一个数量级，而且极难查。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">PRICE</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;big&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.30</span><span class="p">,</span> <span class="mf">1.50</span><span class="p">),</span> <span class="s2">&quot;small&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">)}</span>  <span class="c1"># 🗓️ 示例价：分/千token，会变</span>
 <span class="n">CACHE_RATE</span> <span class="o">=</span> <span class="mf">0.1</span>        <span class="c1"># 🗓️ 示例：命中缓存的输入按几折算，各家不同</span>
@@ -803,5 +803,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

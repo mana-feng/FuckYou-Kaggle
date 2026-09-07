@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -433,7 +433,7 @@ $[3, 12, 8]$、$[2, 4, 6]$、$[14, 5, 2]$。</p>
 因为那一步归对手选，他当然选 2 不选 14。<strong>「树里有个大数」和「你能拿到这个大数」是两回事</strong>，
 这是初学者最常犯的错。</p>
 <h3 id="_7">🔨 十几行跑一遍</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 讲义那棵树：根是 MAX 层，三个 MIN 孩子，共 9 个叶子</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 讲义那棵树：根是 MAX 层，三个 MIN 孩子，共 9 个叶子</span>
 <span class="n">TREE</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
 <span class="n">leaves</span> <span class="o">=</span> <span class="p">[]</span>                                    <span class="c1"># 记录「看过哪些叶子」</span>
 
@@ -458,7 +458,7 @@ $[3, 12, 8]$、$[2, 4, 6]$、$[14, 5, 2]$。</p>
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>三个 MIN 节点的值 = [3, 2, 2]
+<div class="codehilite" data-code-language="text"><pre><span></span><code>三个 MIN 节点的值 = [3, 2, 2]
 根（MAX）的值 = 3
 看过的叶子 9 个：[3, 12, 8, 2, 4, 6, 14, 5, 2]
 </code></pre></div>
@@ -509,7 +509,7 @@ $[3, 12, 8]$、$[2, 4, 6]$、$[14, 5, 2]$。</p>
 <p>上面的写法里 MAX 和 MIN 是两段几乎一样的代码 —— 这是 bug 的温床。</p>
 <p>⭐ 讲义给的化简：<strong>不要固定从白方视角评估，改成从「轮到走棋的那一方」视角评估</strong>。
 这样每一层都是 MAX 层，只要在递归返回时<strong>取个负号</strong>：</p>
-<div class="codehilite"><pre><span></span><code>function negamax(node, depth)
+<div class="codehilite" data-code-language="text"><pre><span></span><code>function negamax(node, depth)
     if node is terminal or depth = 0
         return heuristic value of node   // 从当前该走棋一方的视角
     α = −∞
@@ -687,5 +687,4 @@ $[3, 12, 8]$、$[2, 4, 6]$、$[14, 5, 2]$。</p>
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -185,9 +185,9 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -535,7 +535,7 @@ IPS 类方法在评估（Off-Policy Evaluation）里比在训练里更常用。<
 <h2 id="_14">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>五个进阶专题：LightGCN（图视角，多跳协同信号，只做邻居平均）、Swing（用户对重合度打折，鲁棒 i2i）、蒸馏（学教师的连续打分=暗知识，listwise 蒸馏最适合粗排）、去偏（IPS 逆倾向加权，弱点方差爆炸，要截断）、RL（优化长期价值，只能离线 RL，YouTube Top-K REINFORCE 是标杆）+ 彩蛋 LLM 特征工厂（离线打标签，治冷启动，性价比之王）。<!--RECAP-EXT-->⭐ <b>每个专题一句话定位，记这个就够</b>：LightGCN —— 学术界最强 CF baseline，工业界只当<b>召回的其中一路</b>，<b>数据极稀疏或有社交关系才值得上</b>；行为丰富时 SASRec/双塔更划算，物品天天大换血就别碰（图要频繁重建）。Swing —— 「买了又买 / 看了又看」的主力 i2i，⚠️ 复杂度 O(物品对 × 用户对) 全量算不动，工业实现必须<b>对用户采样 + 分布式</b>。蒸馏 —— 教师的连续打分带的是<b>暗知识</b>（「这个负样本其实有点像正的」），真实标签只有 0/1；粗排用 listwise 蒸馏对齐精排的<b>序</b>，比对齐分数更管用。IPS —— <b>评估（Off-Policy Evaluation）里比训练里更常用</b>；中小团队优先做位置偏差建模，收益大成本低。RL —— <b>效果上限最高、落地难度也最高</b>，⚠️ 三座大山是不能在线试错（只能离线 RL）、动作空间天文数字、奖励稀疏且延迟；务实解法是用「会话深度、次日回访」这类<b>中期代理指标</b>当奖励。⚠️ LLM 特征工厂有三个实操细节别漏：让 LLM <b>在给定候选词表里选标签</b>（不然标签发散到没法当特征）、抽 1% 人工审核（LLM 有系统性偏差，比如什么都标「高性价比」）、Embedding 先 PCA/SVD 降到 64 维再入模型。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>图方法、蒸馏、去偏和强化学习各自修复不同问题，不是一条必须叠加的升级链。</li><li>先用已有基线找出瓶颈，再选择对应专题做独立实验。</li><li>复杂方法仍受数据偏差、计算成本与反馈质量限制，不能跳过评测。</li><li>使用模型生成特征时限定输出范围，并抽查错误和系统性偏差。</li></ul></section>
 </blockquote>
 <p><strong>下一步</strong> 👉 挑战项目：<a href="19-挑战项目A-新闻推荐-时效性生死时速.html">19-挑战项目A-新闻推荐-时效性生死时速.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
@@ -564,5 +564,5 @@ IPS 类方法在评估（Off-Policy Evaluation）里比在训练里更常用。<
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
 </body></html>

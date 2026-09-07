@@ -180,9 +180,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -889,8 +889,7 @@ th,td{min-width:5.2em}
 <hr />
 <h2 id="recap">🛑 可以停在这里</h2>
 <blockquote>
-<p>⚡ <strong>走神救援</strong><br />
-⭐<strong>召回决定了整条链路的上限</strong>——排序只能在召回给的候选里选，<strong>正确答案没进候选池，后面做得再好也是零</strong>，所以先把 Recall@K 做上去再优化排序。⭐<strong>竞赛里几乎总是多路召回</strong>：ItemCF 捞相似的、热门捞大家都看的、向量召回捞语义相似的、图召回捞多跳可达的——<strong>单路一定有系统性盲区，加一路新召回常比调排序模型收益大得多</strong>。<strong>协同过滤 vs 向量召回是互补不是替代</strong>：前者靠行为共现（热门和高活用户友好、不需内容特征），后者靠内容语义（<strong>冷启动和长尾友好、能扫全库</strong>）。⚠️<strong>评召回看 Recall@K 不看 AUC</strong>——召回关心「有没有捞到」不是「排得对不对」，用 AUC 会优化错方向。⚠️⭐<strong>召回的负样本必须全库随机采，不能用「曝光未点击」</strong>（那是精排的分布）——<strong>训练分布要和线上面对的分布一致</strong>。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>排序只能选择已经召回的候选，所以先检查目标是否进入候选池。</li><li>多路召回利用不同信号，比较每一路带来的新增覆盖。</li><li>召回评测和负采样要对应真实候选分布，不能直接套用精排口径。</li></ul></section>
 </blockquote>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -918,5 +917,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
 </body></html>

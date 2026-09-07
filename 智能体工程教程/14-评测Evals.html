@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -387,11 +387,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">⭐ 每次试验从【干净状态】开始</span></div><div class="vb-flow-row"><span class="vb-flow-step">共享状态的危害：残留文件、缓存、资源耗尽</span></div><div class="vb-flow-row"><span class="vb-flow-step">造成与 Agent 表现【无关】的相关性失败</span></div><div class="vb-flow-row"><span class="vb-flow-step">你会以为是模型的问题，其实是上一个测试没清理干净</span></div><div class="vb-flow-row"><span class="vb-flow-step">还要防作弊：别让 Agent 翻 git 历史找答案</span></div></div></section>
 <h3 id="5">第 5 步：设计好评分器</h3>
 <blockquote>
-<p><strong>最重要的一条：评产出，不评路径。</strong></p>
+<p><strong>最重要的一条：评产出，不强制唯一解题路径。</strong></p>
 <p>「不要检查 Agent 是否按特定顺序调用了一串工具……
 <strong>评它产出了什么，不评它走了哪条路。</strong>」</p>
 </blockquote>
-<p>为什么：Agent 可能发现了一条你没想到但更好的路径。检查路径 = <strong>惩罚创造性</strong>。</p>
+<p>为什么：Agent 可能发现了一条你没想到但更好的路径。强制复刻唯一工具顺序会<strong>惩罚创造性</strong>。但权限、审批、预算、敏感数据流向和副作用次数是必须检查的过程约束；答案正确不能抵消越权或重复写入。</p>
 <p>其他要点：</p>
 <div class="tw"><table>
 <thead>
@@ -569,7 +569,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <ul>
 <li><strong>τ-bench 的 <code>pass^k</code></strong> —— 面向客户的 Agent 必须看它（第四节）</li>
 <li><strong>WebArena / OSWorld 的状态校验</strong> —— 不看 Agent 说了什么，只看<strong>世界被改成了什么样</strong>。
-  这正是第 5 步「<strong>评产出，不评路径</strong>」最干净的实现方式</li>
+  这正是第 5 步「<strong>评产出，不强制唯一解题路径</strong>」最干净的实现方式</li>
 <li><strong>GAIA 的唯一短答案</strong> —— 把开放问题改造成能被精确匹配的形式，代码评分器就能接管</li>
 </ul>
 <blockquote>
@@ -638,7 +638,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <tr>
 <td><strong>评分器检查工具调用顺序</strong> ⭐</td>
 <td>惩罚 Agent 发现的更优路径</td>
-<td>只评产出</td>
+<td>同时验收产出和必要过程约束，不强制无关的工具顺序</td>
 </tr>
 <tr>
 <td><strong>只测正例</strong></td>
@@ -706,7 +706,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>没有评测的团队会陷入什么循环？为什么评测越晚建越难？</li>
 <li>三类评分器各是什么？最常见的组合是什么？</li>
 <li>0% 通过率通常说明什么？</li>
-<li>为什么「评产出不评路径」？检查路径会导致什么后果？</li>
+<li>为什么「评产出，不强制唯一解题路径」？检查路径会导致什么后果？</li>
 <li>读转录时该问哪五个问题？</li>
 <li>pass@k 和 pass^k 的区别？75% 单次成功率下 pass^3 是多少？</li>
 <li>基础设施噪声能造成多大差距？实用结论是什么？</li>
@@ -720,13 +720,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>反应式循环：投诉→复现→改→「感觉好了」→别处退化。越晚越难是因为早期产品需求能自然转成测试用例，系统复杂后你已经说不清"正确行为"该是什么。</li>
 <li>代码评分器（快便宜客观但脆弱）、模型评分器（灵活但需校准）、人工（金标准，用来校准模型评分器）。最常见组合：<strong>单元测试管正确性 + LLM rubric 管质量</strong>。</li>
 <li><strong>任务写坏了</strong>，而不是 Agent 不行。</li>
-<li>Agent 可能发现你没想到但更好的路径。检查路径等于<strong>惩罚创造性</strong>，还会让评测在模型升级后失效。</li>
+<li>Agent 可能发现你没想到但更好的路径。要求唯一解题路径会惩罚有效的新方法；必要审批先于写入、权限边界和预算等约束仍必须检查。</li>
 <li>①评分器判对了吗 ②失败在哪步、是理解错还是执行错 ③有没有蒙对 ④有没有绕远路但做对（说明评分器该更宽容）⑤同类错误是否反复（系统性问题优先修）。</li>
 <li>pass@k 是至少成功一次（随 k 上升），pass^k 是全部成功（随 k 下降）。75% 时 pass^3 = 0.75³ ≈ <strong>42.2%</strong>。</li>
 <li>约 <strong>6 个百分点</strong>，常大于模型之间的真实差距。结论：对未说明配置的、3 个点以内的差距保持怀疑。</li>
 <li>自动评估全绿但行为有系统性偏好问题——如持续偏好 SEO 内容农场而非权威来源。这类"结果对但来源差"的问题只有人看转录才发现。</li>
 <li><strong>τ-bench</strong>：客服场景多轮对话，用户由另一个模型扮演，看 Agent 守不守规则、有没有把数据库改成正确的最终状态（<code>pass^k</code> 就是它推起来的）。GAIA：现实助理问题，分三级难度，要浏览+读文件+多步推理，答案是唯一短字符串。WebArena / OSWorld：前者在自建可复现网站里做浏览器任务，后者在真实操作系统里跨应用操作，都用程序校验最终状态。共同测不到的：你的业务规则和你的用户——任务分布是别人的、环境做过简化、公开越久越可能被污染，而且只给一个总分，不告诉你哪类用户会踩坑。</li>
-<li>两个用途：<strong>粗筛模型代际</strong>（且 3 个点以内又没说明配置的差距一律当噪声）和 抄它的判分手法（分数会过期，手法不会）。三个可以搬的手法：τ-bench 的 <code>pass^k</code>、WebArena/OSWorld 的状态校验（只看世界被改成什么样，是「评产出不评路径」最干净的实现）、GAIA 的唯一短答案（把开放问题改造成可精确匹配的形式，代码评分器就能接管）。</li>
+<li>两个用途：<strong>粗筛模型代际</strong>（且 3 个点以内又没说明配置的差距一律当噪声）和 抄它的判分手法（分数会过期，手法不会）。三个可以搬的手法：τ-bench 的 <code>pass^k</code>、WebArena/OSWorld 的状态校验（只看世界被改成什么样，是「评产出，不强制唯一解题路径」最干净的实现）、GAIA 的唯一短答案（把开放问题改造成可精确匹配的形式，代码评分器就能接管）。</li>
 </ol>
 </details>
 <hr />
@@ -735,7 +735,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <blockquote>
 <p>⭐ <strong>没有评测的 Agent 优化就是玄学</strong>——没有它就陷进反应式循环：投诉、复现、改提示词、「感觉好了」、上线、别处退化了没人知道。⚠️ <strong>评测越晚建越难建</strong>：早期需求能自然转成用例，系统复杂之后你已经说不清「正确行为」是什么。</p>
 <p>三种评分器各就各位：代码管正确性、模型 rubric 管质量、⭐ <strong>人工是金标准，用途是校准模型评分器</strong>。</p>
-<p>八步里最该记的四条：⭐ <strong>二三十个真实失败任务就够</strong>（早期效应量大）；⭐ <strong>正反要平衡——只测正例，模型会学成「什么都搜」</strong>；⭐ <strong>评产出不评路径</strong>，查工具调用顺序等于惩罚创造性；⭐ <strong>读转录</strong>，尤其要分出「蒙对的」和「绕远路但做对的」。⚠️ 还有两个反直觉的：<strong>接近 0 的通过率往往说明任务坏了，不是 Agent 不行</strong>；<strong>只剩难题时，很大的能力提升也只表现为很小的分数增长</strong>。</p>
+<p>八步里最该记的四条：⭐ <strong>二三十个真实失败任务就够</strong>（早期效应量大）；⭐ <strong>正反要平衡——只测正例，模型会学成「什么都搜」</strong>；⭐ <strong>评产出，不强制唯一解题路径</strong>，避免强制唯一顺序，同时检查权限、审批和副作用次数；⭐ <strong>读转录</strong>，尤其要分出「蒙对的」和「绕远路但做对的」。⚠️ 还有两个反直觉的：<strong>接近 0 的通过率往往说明任务坏了，不是 Agent 不行</strong>；<strong>只剩难题时，很大的能力提升也只表现为很小的分数增长</strong>。</p>
 <p>⭐⭐ <strong>pass@k 和 pass^k 是两个方向相反的指标</strong>：同一个单次成功率，重试口径看着很漂亮，而<strong>「每次都得对」的口径会掉到一半以下</strong>。<strong>面向客户必须看后者，选错指标等于优化错方向。</strong></p>
 <p>⚠️ 评测本身还失真：<strong>光是资源配置差异就能造出好几个百分点的分差</strong>（⭐ <strong>几个点以内的差距别信</strong>）；💀 <strong>有些问题只有人读转录才发现</strong>——自动评估全绿，人却看到 Agent 一直在偏好内容农场。</p>
 <p>公开基准的四个共同盲区：<strong>任务分布是别人的、环境做过简化、公开越久越可能被污染、只给一个总分</strong>。⭐ <strong>所以它只有两个正当用途</strong>：粗筛模型代际，以及<strong>抄它的判分手法</strong>——<strong>分数会过期，手法不会</strong>（严格重试口径、校验最终状态、把开放问题改造成能被代码精确匹配的唯一短答案）。</p>
@@ -768,5 +768,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

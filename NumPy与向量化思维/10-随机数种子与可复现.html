@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -346,7 +346,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><a href="../Kaggle竞赛方法论/04_超参数调优与工程实践.html">Kaggle 竞赛方法论 · 04 · 超参数调优与工程实践</a> 里那句「设置 Python、NumPy、PyTorch 的随机种子确保实验可复现」是<strong>那个板块唯一一次提到 NumPy</strong> —— ⭐ <strong>给了指令没给机制</strong>，本章补的正是机制那一半。</p>
 <hr />
 <h2 id="api">🧩 二、两代 API：同一个种子，给的数不一样</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span> <span class="n">a2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
@@ -366,7 +366,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_3">🧩 三、💀 全局状态：任何人都能动它</h2>
 <p>上一节看到的还只是「不一致」，真正的问题是<strong>遗留 API 的状态是全局的</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 <span class="n">c1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
@@ -388,7 +388,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><strong>这就是「把状态从全局搬进对象」的全部理由</strong>——和面向对象那些大道理无关，纯粹是因为全局状态没法保证独占。</p>
 <hr />
 <h2 id="worker">🧩 四、💀💀 招牌坑：四个 worker，同一个种子</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">multiprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pool</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">worker_fixed_seed</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>            <span class="c1"># 每个 worker 各自写死同一个种子</span>
@@ -463,7 +463,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="seedsequence-spawn">🧩 五、<code>SeedSequence</code> 和 <code>spawn</code>：既独立又可复现</h2>
 <p><code>SeedSequence</code> 做的事只有一件：<strong>把一颗种子按一棵树展开成任意多颗互相独立的子种子</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">parent</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 <span class="n">kids</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">spawn</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>                       <span class="c1"># ⭐ Generator 自己就有 spawn</span>
@@ -507,7 +507,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⚠️ <strong>PyTorch 的 <code>DataLoader</code> 有它自己的一套 worker 种子机制</strong>（<code>worker_init_fn</code>、每个 worker 拿到独立的 base_seed）。⭐ 那套机制解决的是同一个问题，但<strong>参数怎么调是 <a href="../AI基础设施/22-数据管线与存储.html">AI 基础设施 · 22 · 数据管线与存储</a> 的题</strong>，本章只讲 NumPy 这一侧。</p>
 <hr />
 <h2 id="generator-api">🧩 六、<code>Generator</code> 的 API：改了名字的和改了行为的</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;integers (右端默认不含)&quot;</span><span class="p">,</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
@@ -520,7 +520,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="n">rng</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">a</span><span class="p">);</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;shuffle (原地改)       &quot;</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
 </code></pre></div>
 
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>integers (右端默认不含) [0 7 6 4 4]</p><p>integers endpoint=True [9 0 7 2 1]</p><p>random [0,1) [0.9756 0.7611 0.7861]</p><p>normal [-0.0168 -0.853 0.8794]</p><p>choice 无放回 [1 6 8 7]</p><p>permutation (返回新的) [1 0 5 4 3 6 7 2]</p><p>shuffle (原地改) [6 1 2 7 3 5 0 4]</p></div></section>
+<section class="comparison-repair" id="comparison-repair-21"><div class="tw"><table><caption>同一生成器，不同采样接口</caption><thead><tr><th scope="col">调用与约定</th><th scope="col">本次输出</th></tr></thead><tbody><tr><th scope="row">integers (右端默认不含)</th><td>[0 7 6 4 4]</td></tr><tr><th scope="row">integers endpoint=True</th><td>[9 0 7 2 1]</td></tr><tr><th scope="row">random [0,1)</th><td>[0.9756 0.7611 0.7861]</td></tr><tr><th scope="row">normal</th><td>[-0.0168 -0.853 0.8794]</td></tr><tr><th scope="row">choice 无放回</th><td>[1 6 8 7]</td></tr><tr><th scope="row">permutation (返回新的)</th><td>[1 0 5 4 3 6 7 2]</td></tr><tr><th scope="row">shuffle (原地改)</th><td>[6 1 2 7 3 5 0 4]</td></tr></tbody></table></div></section>
 <p><strong>名字对照表</strong>（遇到老代码照这个改）：</p>
 <div class="tw"><table>
 <thead>
@@ -564,7 +564,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p>⭐ <strong><code>permutation</code> / <code>shuffle</code> / <code>permuted</code> 三兄弟，二维上才分得清</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;原始</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
@@ -611,7 +611,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>💀 <strong>打乱样本和标签时，只能用 <code>permutation</code> 拿下标再一起索引</strong>，绝不能对 <code>X</code> 和 <code>y</code> 各 <code>shuffle</code> 一次——那样两边的顺序不一样，标签就和样本对不上了，<strong>而且不报错</strong>。</p>
 <hr />
 <h2 id="_4">🧩 七、存档读档：把「随机到哪儿了」存下来</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">g</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>                                  <span class="c1"># 先烧掉一些</span>
@@ -769,5 +769,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

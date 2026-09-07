@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -365,7 +365,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table></div>
 <p>⭐ <code>FROM</code> 里的表子查询顺便解决了 <a href="01-一条查询是怎么跑的.html">01 章</a>第二节那个 ①「<code>WHERE</code> 里用 <code>SELECT</code> 的别名」：按逻辑顺序 <code>WHERE</code> 排在 <code>SELECT</code> 之前，别名那时还不存在（SQLite 宽容地放行了，换个库就报错）。但 <code>WHERE</code> 永远看得见一张已经算完的表 —— 把带别名的那一层塞进 <code>FROM</code>，外层再去 <code>WHERE</code> 那个别名，顺序问题就消失了。这就是「包一层子查询」这个套路的全部原理。</p>
 <p>三种一起跑一遍（<code>conv</code> 是一张会话表：7 行，其中 4 行的 <code>updated_at</code> 都是 100）：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE conv (id INTEGER PRIMARY KEY, uid INT, updated_at INT)&quot;</span><span class="p">)</span>
@@ -392,7 +392,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><strong>相关（correlated）</strong>：子查询里<strong>引用了外层的列</strong>。它依赖外层当前这一行，概念上每行跑一次。</li>
 </ul>
 <p>⭐ <strong>判据不用去数括号，一句话就够：把子查询单独复制出来能不能跑。</strong> 能跑就是非相关，报「no such column」就是相关。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE conv (id INTEGER PRIMARY KEY, uid INT, updated_at INT)&quot;</span><span class="p">)</span>
@@ -441,16 +441,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_3">🎚️ 三、⭐ 行值：整行一起比，不是逐列比</h2>
 <p>《AI 全栈》<a href="../AI全栈/06b-列表接口与分页.html">06b 列表接口与分页</a>里有一行 SQL，很多人抄过但没想过它凭什么成立：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">WHERE</span><span class="w"> </span><span class="p">(</span><span class="n">updated_at</span><span class="p">,</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="p">(</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="o">?</span><span class="p">)</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="k">WHERE</span><span class="w"> </span><span class="p">(</span><span class="n">updated_at</span><span class="p">,</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="p">(</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="o">?</span><span class="p">)</span>
 </code></pre></div>
 
 <p>⭐ <code>(updated_at, id)</code> 是一个「行值（row value）」：把几个列打包成一整行，然后整行和整行比大小。</p>
 <p>它的定义就一句话：字典序（电话簿序）。 先比第一列，分出胜负就结束；打平了才轮到第二列。手工展开等价于：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">WHERE</span><span class="w"> </span><span class="n">updated_at</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">?</span><span class="w">  </span><span class="k">OR</span><span class="w">  </span><span class="p">(</span><span class="n">updated_at</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">?</span><span class="w">  </span><span class="k">AND</span><span class="w">  </span><span class="n">id</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">?</span><span class="p">)</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="k">WHERE</span><span class="w"> </span><span class="n">updated_at</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">?</span><span class="w">  </span><span class="k">OR</span><span class="w">  </span><span class="p">(</span><span class="n">updated_at</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">?</span><span class="w">  </span><span class="k">AND</span><span class="w">  </span><span class="n">id</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">?</span><span class="p">)</span>
 </code></pre></div>
 
 <p>⚠️⚠️ <strong>它绝不等于 <code>updated_at &lt; ? AND id &lt; ?</code>。</strong> 这是最常见的误读，而且错得非常安静：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE conv (id INTEGER PRIMARY KEY, uid INT, updated_at INT)&quot;</span><span class="p">)</span>
@@ -505,7 +505,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 ⚠️ <code>(100,3) &lt; (99,999)</code> 算出 0 就是证据：第一列 100 &gt; 99 已经分出胜负，第二列那个巨大的 999 一眼都没看。</p>
 <p>⚠️ 行值里出现 <code>NULL</code> 也遵守同一条规则：<code>(1,NULL) &lt; (1,5)</code> 是 <code>None</code>（第一列打平，胜负交给第二列，而第二列有 <code>NULL</code>）；但 <code>(1,NULL) &lt; (2,5)</code> 是 1（第一列就分出了胜负，第二列根本没参与）。</p>
 <p>行值不只能比大小，也能配 <code>=</code> 和 <code>IN</code>。 一个立刻能用上的例子 —— 「每个用户最新的一条会话」：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE conv (id INTEGER PRIMARY KEY, uid INT, updated_at INT)&quot;</span><span class="p">)</span>
@@ -540,7 +540,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="in-exists-join">🚦 四、<code>IN</code> / <code>EXISTS</code> / <code>JOIN</code>：同一个问题，三种写法</h2>
 <p>问题：哪些会话里出现过 <code>assistant</code> 消息？</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE conv (id INTEGER PRIMARY KEY, uid INT, updated_at INT)&quot;</span><span class="p">)</span>
@@ -628,7 +628,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="not-in">💀 五、三选一里唯一写死的一格：「不在里面」不用 <code>NOT IN</code></h2>
 <p>⚠️ 先划界。 <a href="04-NULL与三值逻辑.html">04 章</a> owns 这个坑的全部机理 —— 三值逻辑的真值表、<code>UNKNOWN</code> 在 <code>AND</code> / <code>OR</code> 下怎么传播、以及四种反连接写法语义上的分叉（它实测出「<code>NOT IN</code> + 内层过滤」那种会比 <code>NOT EXISTS</code> 少一行，那是业务口径不同，不是 bug）。
 <strong>本节只 owns 一件事：为什么上面那张三选一表里，「不在里面」那一格是写死的、没有权衡余地。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE conv (id INTEGER PRIMARY KEY, uid INT, updated_at INT)&quot;</span><span class="p">)</span>
@@ -657,8 +657,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>实测输出：</p>
 <section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">问：哪些 uid 不在黑名单里？（正确答案是 7）</span></div><div class="vb-flow-row"><span class="vb-flow-step">NOT IN -&gt; []</span></div><div class="vb-flow-row"><span class="vb-flow-step">NOT EXISTS -&gt; [(7,)]</span></div><div class="vb-flow-row"><span class="vb-flow-step">LEFT JOIN · IS NULL -&gt; [(7,)]</span></div><div class="vb-flow-row"><span class="vb-flow-step">NOT IN + 先滤掉 NULL -&gt; [(7,)]</span></div><div class="vb-flow-row"><span class="vb-flow-step">7 NOT IN (8) -&gt; 1</span></div><div class="vb-flow-row"><span class="vb-flow-step">7 NOT IN (8, NULL) -&gt; None</span></div><div class="vb-flow-row"><span class="vb-flow-step">8 NOT IN (8, NULL) -&gt; 0</span></div><div class="vb-flow-row"><span class="vb-flow-step">7 &lt;&gt; NULL -&gt; None</span></div></div></section>
 <p>💀 <strong><code>NOT IN</code> 返回了空集，一行都没有，而且不报错。</strong> 黑名单表里多了一行 <code>NULL</code>（谁都想不到要去防的一行），整条业务规则就静默失效了。</p>
-<p>为什么：<code>x NOT IN (a, b)</code> 展开就是 <code>x &lt;&gt; a AND x &lt;&gt; b</code>。而 <code>7 &lt;&gt; NULL</code> 不是真也不是假，是 UNKNOWN（上面实测的 <code>None</code>）。<code>真 AND UNKNOWN</code> = UNKNOWN，<code>WHERE</code> 只放行确定为真的行 —— 于是所有没被匹配上的行全被 UNKNOWN 吃掉了。
-⚠️ 注意 <code>8 NOT IN (8, NULL)</code> 算出的是确定的 <strong>0</strong>（因为 <code>8 &lt;&gt; 8</code> 是确定的假，<code>假 AND 任何</code> 都是假）。⭐ <strong>所以 <code>NOT IN</code> 只在「确实匹配上」时给确定答案，「没匹配上」时给 UNKNOWN —— 恰好把你想要的那些行全部丢掉。</strong></p>
+<p>为什么：<code>x NOT IN (a, b)</code> 展开就是 <code>x &lt;&gt; a AND x &lt;&gt; b</code>。而 <code>7 &lt;&gt; NULL</code> 不是真也不是假，是 UNKNOWN（上面实测的 <code>None</code>）。<code>真 AND UNKNOWN</code> = UNKNOWN，<code>WHERE</code> 只放行确定为真的行 —— 于是所有没被匹配上的行全被 UNKNOWN 吃掉了。</p>
+<p>⚠️ 注意 <code>8 NOT IN (8, NULL)</code> 算出的是确定的 <strong>0</strong>（因为 <code>8 &lt;&gt; 8</code> 是确定的假，<code>假 AND 任何</code> 都是假）。</p>
+<p>⭐ <strong>所以 <code>NOT IN</code> 只在「确实匹配上」时给确定答案，「没匹配上」时给 UNKNOWN —— 恰好把你想要的那些行全部丢掉。</strong></p>
 <p>⚠️ <code>UNKNOWN</code> 在 <code>AND</code> / <code>OR</code> 下的完整传播规则、<code>IS NULL</code> 为什么不能写成 <code>= NULL</code>、以及上面后三行为什么各不相同，全在 <a href="04-NULL与三值逻辑.html">04 章</a>第二节。本节只借它这一个结论。</p>
 <p>回到子查询的视角，这个坑真正的意义是：它把「三选一」变成了「二选一」。<code>IN</code> 和 <code>EXISTS</code> 在肯定方向上确实可以随便挑（上一节实测两者都是 3 行 <code>[1, 5, 7]</code>），但一加上 <code>NOT</code>，<code>IN</code> 那一支就带上了一个不报错的失效模式，而 <code>EXISTS</code> 那一支没有 —— 因为 <code>EXISTS</code> 问的是「有没有配上的行」，<code>b.uid = c.uid</code> 判成 <code>UNKNOWN</code> 就是没配上，是个明确的否，不往外传染。</p>
 <blockquote>
@@ -677,7 +678,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_4">🧯 六、剩下三个容易踩的</h2>
 <h3 id="1-sqlite">① 标量位置塞进多行子查询，SQLite <strong>不报错</strong></h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE conv (id INTEGER PRIMARY KEY, uid INT, updated_at INT)&quot;</span><span class="p">)</span>
@@ -696,14 +697,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <p>实测输出：</p>
 <section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>多【行】的子查询塞进标量位置 : (1,) ← 只取了第一行</p><p>多【列】的子查询塞进标量位置 : OperationalError - sub-select returns 2 columns - expected 1</p><p>FROM 子查询不给别名 : (7,)</p></div></section>
-<p>💀 <strong>列数不对会报错，行数不对不会。</strong> SQLite 悄悄取第一行 —— 而「第一行」在没有 <code>ORDER BY</code> 时是不做承诺的（<a href="01-一条查询是怎么跑的.html">01 章</a>讲过这件事）。
-⭐ <strong>所以：写在标量位置的子查询，得由你自己保证它最多一行</strong> —— 要么是聚合（<code>MAX</code> / <code>COUNT</code>），要么带明确的 <code>ORDER BY</code> + <code>LIMIT 1</code>。
-🗓️ 未实跑：Postgres 在这种情况下会直接报「more than one row returned by a subquery」，MySQL 报 <code>Subquery returns more than 1 row</code> —— 换库时同一条 SQL 会从「悄悄错」变成「直接崩」。</p>
+<p>💀 <strong>列数不对会报错，行数不对不会。</strong> SQLite 悄悄取第一行 —— 而「第一行」在没有 <code>ORDER BY</code> 时是不做承诺的（<a href="01-一条查询是怎么跑的.html">01 章</a>讲过这件事）。</p>
+<p>⭐ <strong>所以：写在标量位置的子查询，得由你自己保证它最多一行</strong> —— 要么是聚合（<code>MAX</code> / <code>COUNT</code>），要么带明确的 <code>ORDER BY</code> + <code>LIMIT 1</code>。</p>
+<p>🗓️ 未实跑：Postgres 在这种情况下会直接报「more than one row returned by a subquery」，MySQL 报 <code>Subquery returns more than 1 row</code> —— 换库时同一条 SQL 会从「悄悄错」变成「直接崩」。</p>
 <h3 id="2-from">② <code>FROM</code> 子查询的别名</h3>
 <p>SQLite 不要求（上面 <code>FROM (SELECT id FROM conv)</code> 跑通了），🗓️ 但 Postgres 和 MySQL 要求（未实跑）。⭐ 一律加别名 <code>AS t</code>，零成本，还让外层引用它的列时有名字可用。</p>
 <h3 id="3-exists-select">③ <code>EXISTS</code> 的 <code>SELECT</code> 列表<strong>根本不求值</strong></h3>
 <p><code>SELECT 1</code> 还是 <code>SELECT *</code>，很多人纠结过。实测：连一个单独跑必定报错的表达式塞进去都没事。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE msg (conv_id INT, role TEXT)&quot;</span><span class="p">)</span>
@@ -836,5 +837,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

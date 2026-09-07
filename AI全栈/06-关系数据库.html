@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -367,7 +367,7 @@ Postgres 还是 MySQL 五分钟能定；漏掉一列 token 数，三个月后你
 <hr />
 <h2 id="json">🧩 二、对话为什么是两张表，不是一张 JSON</h2>
 <p>最省事的做法是把消息塞进一个 JSON 列。<strong>能跑，但三件事会打脸</strong>：⚠️ 追加一条要<strong>整读、改、整写回</strong>，两个请求同时追加时后写的会整段覆盖先写的；算不了账（这个用户这月花了多少，没法直接 <code>SUM</code>）；查不了单条（「所有重试失败的 assistant 消息」在两张表里是一句 <code>WHERE</code>）。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">-- 整段可以直接喂给 sqlite3（已实跑）；Postgres 只需把类型换成 uuid / timestamptz</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="c1">-- 整段可以直接喂给 sqlite3（已实跑）；Postgres 只需把类型换成 uuid / timestamptz</span>
 <span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">conversations</span><span class="w"> </span><span class="p">(</span>
 <span class="w">  </span><span class="n">id</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span><span class="w"> </span><span class="n">user_id</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
 <span class="w">  </span><span class="n">created_at</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
@@ -423,7 +423,7 @@ Postgres 还是 MySQL 五分钟能定；漏掉一列 token 数，三个月后你
 <hr />
 <h2 id="schema">🧩 四、Schema 演进：迁移不是可选项</h2>
 <p>AI 产品的字段是<strong>天天加</strong>的：今天加 <code>reasoning_tokens</code>，明天加 <code>cache_read_tokens</code>。所以第一天就得回答：<strong>线上那个库怎么知道自己该长什么样？</strong> 答案是把每次结构变更写成一个带名字的脚本，把「跑过哪些」记在数据库自己里：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 <span class="n">MIGRATIONS</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;001_init&quot;</span><span class="p">,</span> <span class="s2">&quot;CREATE TABLE m (id INTEGER PRIMARY KEY, body TEXT)&quot;</span><span class="p">),</span>
               <span class="p">(</span><span class="s2">&quot;002_add_cost&quot;</span><span class="p">,</span> <span class="s2">&quot;ALTER TABLE m ADD COLUMN cost_usd REAL&quot;</span><span class="p">)]</span>  <span class="c1"># ⭐ 只往末尾追加</span>
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
@@ -478,13 +478,21 @@ Postgres 还是 MySQL 五分钟能定；漏掉一列 token 数，三个月后你
 <p>⭐ <strong>通用规则</strong>：<strong>迁移和发布要能各自单独回滚</strong>，做法就是让每一步都同时兼容新旧两版代码——这是五步法存在的全部理由。</p>
 <hr />
 <h2 id="_5">🧩 五、连接池：并发一上来就崩的那个配置</h2>
-<p>Postgres 每个连接是一个<strong>进程</strong>，几百个就能把内存吃光，所以应用侧要复用固定数量的连接。以 SQLAlchemy 异步引擎为例（🗓️ 未实跑，需要 Postgres + asyncpg），五个旋钮值得认识：<code>pool_size</code> 常驻连接数；<code>max_overflow</code> 峰值临时再开几个；⭐ <code>pool_timeout</code> 等不到就报错（<strong>无限等 = 请求全挂住，比报错难查得多</strong>）；<code>pool_recycle</code> 定期回收，躲开中间层的空闲断连；⭐ <code>pool_pre_ping</code> 借出前 ping 一下，别拿到已经死掉的连接。</p>
+<p>Postgres 每个连接是一个<strong>进程</strong>，几百个就能把内存吃光，所以应用侧要复用固定数量的连接。</p>
+<p>以 SQLAlchemy 异步引擎为例（🗓️ 未实跑，需要 Postgres + asyncpg），五个旋钮值得认识：</p>
+<ul>
+<li><code>pool_size</code>：常驻连接数。</li>
+<li><code>max_overflow</code>：峰值临时再开几个。</li>
+<li>⭐ <code>pool_timeout</code>：等不到就报错。<strong>无限等 = 请求全挂住，比报错难查得多。</strong></li>
+<li><code>pool_recycle</code>：定期回收，躲开中间层的空闲断连。</li>
+<li>⭐ <code>pool_pre_ping</code>：借出前 ping 一下，别拿到已经死掉的连接。</li>
+</ul>
 <p>⭐ <strong><code>pool_size</code> 是一道除法，不是拍脑袋</strong>：数据库能承受的连接总数（比如 100）÷ 应用进程数（4 worker × 2 台 = 8）÷ 还有谁在连同一个库（后台任务、定时脚本、你的 psql）→ 每进程 ~10 个。</p>
 <p>⚠️ <strong>两个真实翻车点</strong>：<strong>忘了乘进程数</strong>（单机测试 <code>pool_size=20</code> 很舒服，上线开 8 个 worker 就是 160 个连接，数据库直接拒连）；以及 ⭐ 池小不是错，池小 + 占着不放才是错——真正的容量瓶颈几乎总是持有时长。</p>
 <hr />
 <h2 id="llm">🧩 六、事务边界：⚠️ 别把 LLM 调用包在事务里</h2>
 <p><strong>这是 AI 应用最常见也最贵的数据库错误。</strong> 写法非常自然：开事务 → 写用户消息 → 调 LLM → 写回复 → 提交，「要么都成功要么都失败，多干净」。问题是<strong>中间那步要三秒到三十秒</strong>，这整段时间里一个连接被占着什么也没干：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 <span class="n">POOL</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">LLM</span><span class="p">,</span> <span class="n">DB</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.005</span>     <span class="c1"># 真实世界一次 LLM 调用常是 3–30 秒</span>
 
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">bad</span><span class="p">(</span><span class="n">sem</span><span class="p">):</span>
@@ -660,5 +668,4 @@ Postgres 还是 MySQL 五分钟能定；漏掉一列 token 数，三个月后你
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

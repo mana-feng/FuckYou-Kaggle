@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -312,7 +312,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="jwt">🧾 一、JWT 的三段</h2>
 <p>第 8 章说过 ⚠️ <strong>「payload 只是 base64、不是加密」</strong>。这一节把它变成你能亲手验证的东西 —— JWT 就是 <code>头部.载荷.签名</code>，三段都是 base64url，用点号连起来：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 手工拆开一个 JWT —— 不需要密钥，也不需要任何第三方库</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 手工拆开一个 JWT —— 不需要密钥，也不需要任何第三方库</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">base64</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span>
 
 <span class="n">TOKEN</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9&quot;</span>
@@ -343,7 +343,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 头部里的 <code>alg</code>、<code>kid</code> 都是<strong>攻击者可以随便写的字段</strong>，验证逻辑一照着它们走，就等于让嫌疑人自己出具证词。</p>
 </blockquote>
 <p>下面这段能直接跑，同时演示前两种绕过。⚠️ 里面那个用纯整数运算写的玩具 RSA <strong>只为让这段不依赖第三方库</strong>，别照抄 —— <a href="../密码学与信息安全/14-RSA.html">《密码学》第 14 章</a>的教训正是<strong>数学写对了，实现照样能漏</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 💀 两种经典绕过：alg:none 与 算法混淆（RS256 当 HS256 用）</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 💀 两种经典绕过：alg:none 与 算法混淆（RS256 当 HS256 用）</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">base64</span><span class="o">,</span><span class="w"> </span><span class="nn">hashlib</span><span class="o">,</span><span class="w"> </span><span class="nn">hmac</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span>
 
 <span class="c1"># ⚠️ 教科书 RSA，只为让这段能用纯标准库跑起来；真实项目绝不自己实现签名</span>
@@ -398,7 +398,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 查不到就直接拒，不要「回退到默认密钥」。</p>
 </blockquote>
 <p><strong>④ 不校验 <code>exp</code> / <code>aud</code> / <code>iss</code></strong> —— 验签通过 ≠ 这张票能用。三个字段各挡一件事，<strong>其中 <code>aud</code> 最容易漏</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ✅ 验签之外该查的三件事；顺带看看「不查 aud」会漏成什么样</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># ✅ 验签之外该查的三件事；顺带看看「不查 aud」会漏成什么样</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">base64</span><span class="o">,</span><span class="w"> </span><span class="nn">hashlib</span><span class="o">,</span><span class="w"> </span><span class="nn">hmac</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 
 <span class="n">SECRET</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;idp-signing-key&quot;</span>          <span class="c1"># 同一个签发方，一把密钥，签给好几个服务</span>
@@ -655,9 +655,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_6">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>上一章换回的那张票，这一章讲它本身。<strong>JWT = <code>头部.载荷.签名</code>，三段都是 base64url</strong> —— 实跑那段<strong>没有密钥</strong>就把载荷打印出来了：载荷只是被<strong>编码</strong>，签名保证「没被改」不保证「没被看见」；⚠️ 别放手机号、身份证、别家租户 id，也别塞整份权限清单（每个请求都要带）。⭐ <strong>四种绕过共一个根因：让 token 自己决定该怎么验它自己</strong> —— <code>alg</code>、<code>kid</code> 都是攻击者随便写的字段。① <strong><code>alg: none</code></strong>：头部改成 <code>none</code>、<strong>签名段留空</strong>；② <strong>算法混淆</strong>：RS256 改 HS256，<strong>拿 JWKS 上公开的公钥当 HMAC 密钥</strong>重签，服务端只有一份密钥材料又没钉死算法，当然对得上 —— 实跑里 ①② 都把 <code>role</code> 变成了 <code>admin</code>，<strong>全程没有私钥</strong>；⭐ 根因是「非对称里验证材料是公开的、对称里必须保密」。③ <strong><code>kid</code> 注入</strong>：⭐ 它只能当<strong>查表的键</strong>，绝不进路径或 SQL 拼接，查不到就拒、不回退默认密钥。④ <strong>不查 <code>exp</code>/<code>iss</code>/<code>aud</code></strong>：<code>exp</code> 挡旧票、<code>iss</code> 挡别家签的票、⭐ <code>aud</code> 挡<strong>同一家签给别人的票</strong> —— 实跑里 <code>api://analytics</code> 的票不查 <code>aud</code> 就进了 <code>api://chat</code>；⚠️ 顺序也是判据：<strong>验签通过才读载荷</strong>。⭐ 结论两句：<strong>用成熟库</strong>（Bleichenbacher'06 影响过多个 JOSE/JWT 库）、<strong>显式传算法白名单、密钥从配置来</strong> —— 关掉前三种，第四种得你自己把 <code>aud</code>/<code>iss</code> 传进去。<strong>吊销三解法</strong>：短 <code>exp</code> + 刷新令牌 / 黑名单 / 版本号，⭐ <strong>先问「你需要多快吊销」</strong>，要立刻失效就得每请求查库，那不如退回第 8 章的查表式会话。刷新令牌<strong>轮换 + ⭐ 重放检测</strong>（作废的票又被用＝链上有两份拷贝，整个家族全作废）。存哪：⭐ <strong>刷新令牌进 <code>Path</code> 限死的 <code>HttpOnly</code> Cookie、访问令牌只放内存</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>JWT 的签名用于防篡改，载荷并不因此保密。</li><li>算法和可信密钥由服务端配置，不能让未经验证的 token 决定验证规则。</li><li>验签之外还要核对有效期、发行者和受众；这些检查解决不同的问题。</li><li>先明确需要多快吊销，再选择短期凭证、轮换与服务端状态方案。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="09-最小可用前端.html">09-最小可用前端.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -685,5 +684,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

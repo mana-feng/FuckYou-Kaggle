@@ -181,17 +181,21 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style></head><body>
+</style><link rel="stylesheet" href="../assets/guided-lessons.css"><link rel="stylesheet" href="../assets/cross-reading.css"><script defer src="../assets/cross-reading.js"></script></head><body class="guided-reading cross-reading">
 <div id="scrollbar"></div>
 <header class="site"><div class="inner"><a href="../index.html">🏠 总目录</a>
 <a href="index.html">📚 资料库</a><span class="title">上下文工程</span>
 <button id="themeToggle" title="切换深浅色">🌗</button></div></header>
-<main>
-<h1>Effective Context Engineering for AI Agents（AI Agent 的有效上下文工程）</h1>
+<main><div class="lesson-layout cross-layout" data-reading-profile="context-notes" data-reading-mode="notes">
+<div class="lesson-content">
+<header class="cross-hero"><p class="lesson-eyebrow">Claude博客资料库 · 按需阅读</p><h1>每一步给模型看什么，比一次塞多少更重要。</h1><p class="lesson-lead">这是官方文章的中文整理笔记。先抓决策，再按问题找机制；出处、日期与原文链接完整保留。</p></header>
+<section class="cross-result"><h2>用一个动作理解</h2><p>任务回来时，先读当前目标和未解决问题，再按需找证据；不必把所有旧工具输出重新塞进上下文。</p></section>
+<nav class="cross-choices" aria-label="按当前目标开始"><a href="#read-why"><strong>先分清概念</strong><span>上下文不只是提示词</span></a><a href="#read-compose"><strong>不知道该放哪些材料</strong><span>指令、工具、示例与按需读取</span></a><a href="#read-long-task"><strong>长任务总是丢进度</strong><span>比较压缩、笔记和子任务隔离</span></a></nav>
+<div class="cross-body" id="reading-body"><section class="cross-preface" aria-label="原文导语与阅读条件"><h2 class="lesson-original-title">Effective Context Engineering for AI Agents（AI Agent 的有效上下文工程）</h2>
 <div class="srcbox"><span class="tag">📄 来自 Claude 官方博客</span><dl><dt>原文标题</dt><dd>Effective Context Engineering for AI Agents（AI Agent 的有效上下文工程）</dd><dt>原文链接</dt><dd><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" rel="noopener">https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents</a></dd><dt>作者</dt><dd>Anthropic Applied AI 团队（Prithvi Rajasekaran、Ethan Dixon、Carly Ryan、Jeremy Hadfield）</dd><dt>发布日期</dt><dd>2025-09-29</dd></dl><div class="warn">⚠️ 本页是原文的<b>中文结构化整理笔记</b>（保留架构、数据、案例、结论），并非逐字翻译。具体参数与功能名更新很快，落地前请点击上方链接核对原文。</div></div>
 <div class="adhd-head">
 <p class="meta">⏱ <strong>14 分钟</strong> ｜ ⭐⭐ <strong>理解后面一切的钥匙</strong></p>
-<h2 id="tldr">🎯 一句话</h2>
+<h3 id="tldr">🎯 一句话</h3>
 <p class="tl">上下文工程 = <strong>决定在每一步给模型看什么</strong>。⭐ 它比提示词工程更根本，因为<strong>提示词只是上下文的一部分</strong>，而真正影响长任务表现的是整个上下文窗口里都装了什么、以什么顺序装的。</p>
 </div>
 
@@ -211,34 +215,31 @@ th,td{min-width:5.2em}
 </div>
 </details>
 <p>随着模型能力增强、Agent 交互周期变长，AI 工程的重心正从「提示词优化」转向「整个上下文窗口的战略管理」。上下文是有限资源，工程师必须精心筛选哪些 token 进入模型的「注意力预算」。</p>
-<h2 id="vs">上下文工程 vs 提示词工程</h2>
+</section><section class="cross-unit" id="read-why" aria-labelledby="read-why-title"><h2 id="read-why-title">先区分问题：不是只改提示词</h2><p class="cross-cue">窗口能装下，不代表模型能有效利用所有内容。</p><h3 id="vs">上下文工程 vs 提示词工程</h3>
 <ul>
 <li><strong>提示词工程</strong>：为单次任务撰写指令</li>
 <li><strong>上下文工程</strong>：管理多轮交互中的完整状态——系统指令、工具、外部数据、消息历史的策划与维护</li>
 </ul>
-<h2 id="context-rot">为什么重要：上下文腐烂（Context Rot）</h2>
+<h3 id="context-rot">为什么重要：上下文腐烂（Context Rot）</h3>
 <ul>
 <li>大海捞针类基准研究表明：上下文窗口中 token 越多，模型准确召回信息的能力越差</li>
 <li>架构原因：Transformer 需要计算 n 个 token 之间 n² 的两两关系；训练数据中长序列更少；位置编码插值带来性能梯度式下降</li>
 <li>类比人类有限的工作记忆：LLM 有一个随 token 增加而消耗的「注意力预算」</li>
 </ul>
-<h2 id="_1">有效上下文的构成</h2>
-<h3 id="_2">系统提示词的校准</h3>
-<p>在两个极端之间找「刚好」的区间：
-- 过度规定式的硬编码逻辑 → 脆弱、维护成本高
-- 过于含糊的指导 → 缺乏具体行为信号
-- 最佳实践：用 XML 标签或 Markdown 标题分节；追求「完整刻画预期行为的最少信息」；先在强模型上用最小提示词测试，再针对失败模式补充指令</p>
-<h3 id="_3">工具设计</h3>
+</section><section class="cross-unit" id="read-compose" aria-labelledby="read-compose-title"><h2 id="read-compose-title">当前这一步，放什么进去</h2><p class="cross-cue">系统提示词、工具和示例分别回答不同问题；即时检索提供后续证据。</p><h3 id="_1">有效上下文的构成</h3>
+<h4 id="_2">系统提示词的校准</h4>
+<p>在两个极端之间找「刚好」的区间：</p><ul><li>过度规定式的硬编码逻辑 → 脆弱、维护成本高</li><li>过于含糊的指导 → 缺乏具体行为信号</li><li>最佳实践：用 XML 标签或 Markdown 标题分节；追求「完整刻画预期行为的最少信息」。<p>先在强模型上用最小提示词测试，再针对失败模式补充指令。</p></li></ul>
+<h4 id="_3">工具设计</h4>
 <ul>
 <li>自包含、抗错误、用途明确、无功能重叠、返回信息省 token</li>
 <li>常见失败：臃肿的工具集覆盖太多功能，造成决策点模糊</li>
 </ul>
-<h3 id="few-shot">Few-shot 示例</h3>
+<h4 id="few-shot">Few-shot 示例</h4>
 <ul>
 <li>不要穷举边界情况，而是策划一组多样化、有代表性的典型示例</li>
 <li>「对 LLM 来说，示例就是『一图胜千言』里的图」</li>
 </ul>
-<h2 id="just-in-time">检索策略：即时（Just-in-Time）上下文</h2>
+<h3 id="just-in-time">检索策略：即时（Just-in-Time）上下文</h3>
 <ul>
 <li>从「预处理所有数据」转向「维护轻量级标识符（文件路径、查询、URL），运行时按需加载」</li>
 <li>Claude Code 的例子：写针对性查询、存储结果、用 head/tail 分析大数据而不把完整数据对象载入上下文</li>
@@ -246,33 +247,33 @@ th,td{min-width:5.2em}
 <li><strong>渐进式披露</strong>：Agent 通过探索逐步发现相关上下文</li>
 <li>混合策略：CLAUDE.md 预加载 + glob/grep 即时检索</li>
 </ul>
-<h2 id="_4">长周期任务的三种技术</h2>
-<h3 id="1-compaction">1. 压缩（Compaction）</h3>
+</section><section class="cross-unit" id="read-long-task" aria-labelledby="read-long-task-title"><h2 id="read-long-task-title">长任务的三种选择，不是一条必做流程</h2><p class="cross-cue">压缩保留关键历史，笔记跨轮次保存，子 Agent 隔离独立探索。</p><h3 id="_4">长周期任务的三种技术</h3>
+<h4 id="1-compaction">1. 压缩（Compaction）</h4>
 <ul>
 <li>接近上下文上限时总结对话内容，用压缩摘要重新开始</li>
 <li>Claude Code 的实现：保留架构决策、未解决的 bug、实现细节，丢弃冗余的工具输出</li>
 <li>平衡点：过度压缩会丢失后期才显现重要性的细节；先追求最大召回，再改进精度</li>
 <li>最安全的轻量压缩：清除旧的工具结果（tool result clearing）</li>
 </ul>
-<h3 id="2-structured-note-taking">2. 结构化笔记（Structured Note-Taking）</h3>
+<h4 id="2-structured-note-taking">2. 结构化笔记（Structured Note-Taking）</h4>
 <ul>
 <li>Agent 定期把笔记写到上下文之外持久化，之后再取回</li>
 <li>例子：Claude 玩宝可梦时跨数千步游戏维护精确计数，上下文重置后读笔记继续多小时的连续任务</li>
 <li>平台支持：memory 工具（公测）</li>
 </ul>
-<h3 id="3-agent-sub-agent-architectures">3. 子 Agent 架构（Sub-Agent Architectures）</h3>
+<h4 id="3-agent-sub-agent-architectures">3. 子 Agent 架构（Sub-Agent Architectures）</h4>
 <ul>
 <li>专门化子 Agent 用干净的上下文处理聚焦任务，主 Agent 负责协调综合</li>
 <li>子 Agent 探索时可能消耗数万 token，但只返回 1,000–2,000 token 的浓缩摘要</li>
 <li>实现关注点分离：详细的搜索上下文隔离在子 Agent 内</li>
 </ul>
-<h3 id="_5">技术选型</h3>
+<h4 id="_5">技术选型</h4>
 <ul>
 <li>压缩：适合需要大量来回对话的场景</li>
 <li>笔记：适合有清晰里程碑的迭代式开发</li>
 <li>多 Agent：适合复杂研究和可并行探索的分析</li>
 </ul>
-<h2 id="_6">关键概念速查</h2>
+</section><section class="cross-unit" id="read-review" aria-labelledby="read-review-title"><h2 id="read-review-title">带着概念回到原文与检查点</h2><p class="cross-cue">这份笔记是阅读入口，不替代原文的条件与更新。</p><h3 id="_6">关键概念速查</h3>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -307,10 +308,10 @@ th,td{min-width:5.2em}
 </tr>
 </tbody>
 </table></div>
-<h2 id="_7">结论</h2>
+<h3 id="_7">结论</h3>
 <p>指导原则：<strong>「找到能最大化预期结果概率的最小高信号 token 集合」</strong>。模型越智能，所需的规定性工程越少、自主性越高；但把上下文当作宝贵有限资源来对待，将始终是构建可靠 Agent 的核心。实践建议：「做能起作用的最简单的事」。</p>
-<hr />
-<div class="ckpt"><h2 id="ckpt">✅ 检查点</h2>
+<hr>
+<div class="ckpt"><h3 id="ckpt">✅ 检查点</h3>
 <ol>
 <li>上下文工程和提示词工程的区别是什么？</li>
 <li>什么是「上下文腐烂」（context rot）？</li>
@@ -327,12 +328,14 @@ th,td{min-width:5.2em}
 </ol>
 </details>
 </div>
-<div class="recap"><h2 id="recap">🛑 可以停在这里</h2>
-<p>⚡ <strong>走神救援</strong><br />
-⭐⭐<strong>上下文工程 = 决定在每一步给模型看什么</strong>，比提示词工程更根本——提示词只是上下文的子集，还有工具定义、历史消息、检索结果、工具返回值，加起来远超提示词本身。<br class="prose-beat">⭐<strong>上下文腐烂：上下文越长，模型对其中任一部分的注意力越稀释、越容易忽略中间信息</strong>。<br class="prose-beat">窗口大 ≠ 该装满，三个理由：注意力稀释、成本和延迟上升、无关信息会主动干扰决策（模型看到不相关的工具有概率去用）。<br class="prose-beat">五种管理手段：压缩摘要、外置记忆（写文件需要时读回）、按需加载（Skills 渐进式披露/工具搜索）、结构化排布（稳定内容放前面利用缓存，关键约束放靠近末尾）、子 Agent 隔离（子任务在自己上下文里跑完，只回传结论）。</p></div>
-<nav class="pagenav"><a href="index.html"><div class="dir">← 返回</div>📚 资料库目录</a>
-<a class="next" href="../智能体工程教程/index.html"><div class="dir">系统学习 →</div>🎓 智能体工程教程</a></nav>
-</main><script>(function(){
+<div class="recap"><h3 id="recap">🛑 可以停在这里</h3>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>上下文包括指令、工具、历史与检索材料，不只是提示词。</li><li>只放当前决策需要的信息，窗口更大也不意味着应该装满。</li><li>通过摘要、外置记录和按需加载控制体积，并检查任务能否继续。</li></ul></section></div>
+</section><nav class="pagenav"><a href="index.html"><div class="dir">← 返回</div>📚 资料库目录</a>
+<a class="next" href="../%E6%99%BA%E8%83%BD%E4%BD%93%E5%B7%A5%E7%A8%8B%E6%95%99%E7%A8%8B/index.html"><div class="dir">系统学习 →</div>🎓 智能体工程教程</a></nav>
+</div></div>
+<aside class="lesson-rail cross-rail" aria-label="本页阅读路线"><button type="button" class="lesson-route-toggle" aria-expanded="true" aria-controls="cross-route">本页阅读路线 <span aria-hidden="true">⌄</span></button>
+<div id="cross-route"><p class="lesson-position">路线可跳读，不表示已掌握</p><nav class="lesson-route-links" aria-label="正文分组"><a href="#read-why">先区分问题：不是只改提示词</a><a href="#read-compose">当前这一步，放什么进去</a><a href="#read-long-task">长任务的三种选择，不是一条必做流程</a><a href="#read-review">带着概念回到原文与检查点</a></nav>
+<p class="cross-route-note">一次只处理眼前这一组。正文、图解、代码与答案都保留在页面里。</p><button class="lesson-save" type="button">记住当前位置</button><p class="lesson-save-status" role="status"></p></div></aside></div></main><script>(function(){
   var tt=document.getElementById('themeToggle');
   if(tt)tt.addEventListener('click',function(){
     var cur=document.documentElement.getAttribute('data-theme');
@@ -343,5 +346,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
+<script src="../assets/diagram-reader.js"></script></body></html>

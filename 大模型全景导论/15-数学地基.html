@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -460,11 +460,11 @@ L=100,000 时是 <strong>100 亿个</strong>。这就是<a href="06-推理优化
 <p>💡 <strong>实用建议</strong>：
 需要稳定/可复现 → <code>T=0</code>；需要多样性 → <code>T=0.7~1.0</code> <strong>配合 <code>top_p=0.9</code></strong>。
 <strong>单独调大 T 而不限 top_p，是输出崩坏最常见的原因。</strong></p>
-<p>🔗 <strong>这一节讲的是 softmax 那个公式；落到 API 参数上的后果在 <a href="06b-解码策略.html">06b · 解码策略</a>。</strong>
-⭐ 去那里能补上这三行表格没说的：<strong>T、top_k、top_p 同时开时谁先生效</strong>（顺序不同结果不同），
+<p>🔗 <strong>这一节讲的是 softmax 那个公式；落到 API 参数上的后果在 <a href="06b-解码策略.html">06b · 解码策略</a>。</strong></p>
+<p>⭐ 去那里能补上这三行表格没说的：<strong>T、top_k、top_p 同时开时谁先生效</strong>（顺序不同结果不同），
 <strong><code>T=0</code> 严格说不是把 T 代进公式（会除零），而是直接退化成 argmax</strong>，
-以及三个 penalty（<code>repetition</code> / <code>frequency</code> / <code>presence</code>）算法上的区别，还有一条能直接省你半天的：
-⚠️ <strong>代码 / JSON / 工具调用场景这三个参数一律留 0</strong>——<code>{ } " :</code> 和 <code>for</code> <code>return</code> 本来就该反复出现，惩罚会<strong>间歇性</strong>打坏输出，最难查。</p>
+以及三个 penalty（<code>repetition</code> / <code>frequency</code> / <code>presence</code>）算法上的区别，还有一条能直接省你半天的：</p>
+<p>⚠️ <strong>代码 / JSON / 工具调用场景这三个参数一律留 0</strong>——<code>{ } " :</code> 和 <code>for</code> <code>return</code> 本来就该反复出现，惩罚会<strong>间歇性</strong>打坏输出，最难查。</p>
 </blockquote>
 <h3 id="4">④ 交叉熵 —— 模型训练的损失函数</h3>
 <p>$$\mathcal{L} = -\sum_i y_i \log(\hat{p}_i)$$</p>
@@ -589,9 +589,8 @@ L=100,000 时是 <strong>100 亿个</strong>。这就是<a href="06-推理优化
 <hr />
 <h2 id="_8">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>需要的数学比劝退帖少得多。可彻底不学：积分/矩阵求导推导/凸优化/测度论/手推反传。<strong>核心工具箱五件</strong>：①向量点积(已会)——⚠️<strong>检索要用余弦相似度不是裸点积，因为点积会被向量长度带偏；有些 embedding 没归一化，先 normalize</strong> ②矩阵乘法(只需会推形状)——⭐<strong>记住 B/L/D 三个记号，注意力矩阵是 (B,L,L)，两个 L 相乘 → L翻倍矩阵变4倍 → 这就是长上下文为什么贵</strong> ③softmax(=temperature；<strong>单独调大T不限top_p 是输出崩坏最常见的原因</strong>) ④交叉熵(狠罚自信错误) ⑤梯度下降(蒙眼下山，三个诊断)。<strong>实用价值最高的RAG和推理优化数学要求几乎为零</strong>；只有图像生成和可解释性要求高。姿势：<strong>别先补三个月(90%的人死在这一步)，卡住了再查10分钟</strong>。想深一层：损失函数为什么是交叉熵→《数学原理》第1章；<strong>高维检索的反直觉→《数学原理》第5章维度灾难(做RAG不知道这个会撞墙)</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>先能读懂向量、矩阵形状、概率与损失的作用，不必先学完所有推导。</li><li>遇到具体问题再补对应数学，并用小例子检查维度和结果。</li><li>检索相似度、注意力开销与训练更新各有不同工具，不要混用概念。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="16-你该挖哪一块.html">16-你该挖哪一块.md</a> ⭐ <strong>决策章</strong></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -619,5 +618,4 @@ L=100,000 时是 <strong>100 亿个</strong>。这就是<a href="06-推理优化
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

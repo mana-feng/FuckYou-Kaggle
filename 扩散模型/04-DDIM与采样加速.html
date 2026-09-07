@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -387,7 +387,7 @@ $t'$ 想取 $t-20$ 就取 $t-20$。<strong>这就是能跳步的全部原因。<
 <hr />
 <h2 id="1000-50">🔢 五、动手：把 1000 步的表抽成 50 步</h2>
 <p>不需要模型、不需要 GPU，几毫秒跑完：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 把 1000 步的 DDPM 调度表，按 DDIM 的方式抽成 50 步</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 把 1000 步的 DDPM 调度表，按 DDIM 的方式抽成 50 步</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">T</span> <span class="o">=</span> <span class="mi">1000</span>
@@ -406,7 +406,7 @@ $t'$ 想取 $t-20$ 就取 $t-20$。<strong>这就是能跳步的全部原因。<
 </code></pre></div>
 
 <p>真实输出：</p>
-<div class="codehilite"><pre><span></span><code>原始 1000 步 -&gt; 抽成 50 步，步距 20
+<div class="codehilite" data-code-language="text"><pre><span></span><code>原始 1000 步 -&gt; 抽成 50 步，步距 20
 前 6 个时间步： [0, 20, 40, 60, 80, 100]
 后 6 个时间步： [880, 900, 920, 940, 960, 980]
 
@@ -591,9 +591,8 @@ DPM-Solver、DPM-Solver++、UniPC 干的就是这件事，常见说法是十几�
 <p><strong>出现这些情况时再回来</strong>：出图不可复现（第六节那几个「同样」）；
 少步数下图发灰或糊（第四节的 η、第八节的调度表）；换个采样器就变成另一张图（第八节最后一条）。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>DDPM 采样慢的根源是<strong>步多</strong>不是图大：1000 步全串行，每步一次完整前向。它一步都不能跳，因为反向过程是马尔可夫链 —— 式子末尾的 $\sigma_t z$ 让每步成了一次抽样，而整套推导建立在「t 和 t−1 相邻」上。<strong>DDIM 换掉了这个前提</strong>：它构造了一族非马尔可夫的前向过程，边缘分布 $q(x_t\mid x_0)$ 和 DDPM 一模一样 —— ⭐ 而训练目标只用得到这个边缘分布，<strong>所以 DDIM 不用重训，只是换个采样器</strong>。它的每一步拆成两个动作：先用当前 $\epsilon$ 猜出一张干净图 $\hat x_0$，再按下一个噪声水平重新加噪回去；第二个动作只关心目标噪声水平 $\bar\alpha_{t'}$，从没要求 $t'=t-1$，<strong>这就是能跳步的全部原因</strong>。η 是随机性总开关：0 是确定性 DDIM，1 退回 DDPM，越大越吃亏于少步数。确定性带来三个副产品：<strong>种子能复现</strong>（$x_T\mapsto x_0$ 成了一个函数，但模型、步数、调度、提示词要全同，连浮点归约顺序都得一样）、<strong>图生图</strong>（从中间某个 t 出发，strength 就是「加到多深」）、<strong>插值</strong>（必须走球面 —— 潜空间 16384 维，噪声都落在半径 128 的球壳上，线性中点范数只有 90.51，掉到 0.7071 倍就出了分布）。⚠️ <strong>步数不是越多越好</strong>：拿解析解当网络实测，50 步离地板差 0.0099，100 步差 0.0026，200 步差 0.0029，100 步之后完全饱和。均匀跳步还很浪费：t 从 980 到 560 信号系数只从 0.0077 涨到 0.2022，全是看不出区别的雪花段 —— 所以有了二次间隔、Karras 调度，以及把它当 ODE 解的 DPM-Solver++、UniPC。⚠️ 最后记住：<strong>采样器和调度表也是复现的一部分</strong>，分享参数要和种子一起给。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>采样开销取决于需要执行多少次去噪网络，换采样器可以减少步数。</li><li>DDIM 利用预测的干净样本与目标噪声水平构造更新，允许选择较稀疏的时间步。</li><li>随机性参数、步数和调度都会影响结果，复现实验不能只保存种子。</li><li>用质量与耗时一起选择步数，不能假设步数翻倍就一定更好。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="05-Latent-Diffusion.html">05-Latent-Diffusion.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -621,5 +620,4 @@ DPM-Solver、DPM-Solver++、UniPC 干的就是这件事，常见说法是十几�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

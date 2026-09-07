@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -314,7 +314,8 @@ Git 里的硬编码密钥、永不轮换的凭据、日志里的明文 token —
 <strong>这才是密码系统真实的死因。</strong></p>
 <hr />
 <h2 id="_2">🗝️ 一、密钥的分层</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">根密钥 / 主密钥（KEK）</span><span class="vb-tree-note">存在 HSM / KMS 里，【永不导出】⭐</span></div><div class="vb-tree-row"><span class="vb-tree-node">加密</span></div><div class="vb-tree-row"><span class="vb-tree-node">数据加密密钥（DEK）</span><span class="vb-tree-note">加密实际数据，可以有很多个</span></div><div class="vb-tree-row"><span class="vb-tree-node">派生</span></div><div class="vb-tree-row"><span class="vb-tree-node">会话密钥</span><span class="vb-tree-note">每次连接新生成，用完就删</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-cryptomd-19-1" style="--diagram-width:720px"><svg viewBox="0 0 720 465" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="上方箭头表示加密保护关系：KEK 保护 DEK，DEK 保护数据。下方是独立的通信用途，不表示从 DEK 派生会话密钥。"><title>上方箭头表示加密保护关系：KEK 保护 DEK，DEK 保护数据。下方是独立的通信用途，不表示从 DEK 派生会话密钥。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">信封加密与会话密钥：两种用途分开看</text><rect x="95" y="65" width="530" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="360.0" y="93" font-size="18" text-anchor="middle" fill="var(--fg)">主密钥 KEK：加密保护 DEK</text><line x1="360" y1="113" x2="360" y2="158" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="360.0,158.0 355.0,149.0 365.0,149.0"/><rect x="95" y="158" width="530" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="360.0" y="186" font-size="18" text-anchor="middle" fill="var(--fg)">数据密钥 DEK：加密业务数据</text><line x1="360" y1="206" x2="360" y2="251" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="360.0,251.0 355.0,242.0 365.0,242.0"/><rect x="95" y="251" width="530" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="360.0" y="279" font-size="18" text-anchor="middle" fill="var(--fg)">实际数据</text><rect x="95" y="355" width="530" height="72" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="360.0" y="383" font-size="18" text-anchor="middle" fill="var(--fg)">会话密钥：按连接生成和销毁</text><text x="360.0" y="407" font-size="18" text-anchor="middle" fill="var(--fg)">生成或派生方式由通信协议决定</text></svg><figcaption>上方箭头表示加密保护关系：KEK 保护 DEK，DEK 保护数据。下方是独立的通信用途，不表示从 DEK 派生会话密钥。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>根密钥 / 主密钥（KEK）</span> <span>存在 HSM / KMS 里，【永不导出】⭐</span></li><li><span>数据加密密钥（DEK）</span> <span>加密实际数据，可以有很多个</span></li><li><span>会话密钥</span> <span>每次连接新生成，用完就删</span></li></ul></section>
 <blockquote>
 <p>🔑 <strong>这个分层叫「信封加密」，是云上的标准做法</strong>：
 <strong>数据用 DEK 加密，DEK 用 KEK 加密后和数据存在一起。</strong></p>
@@ -329,7 +330,7 @@ Git 里的硬编码密钥、永不轮换的凭据、日志里的明文 token —
 <h2 id="_3">🌱 二、密钥派生：一个主密钥生出很多个</h2>
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">❌ 错误：多个用途共用同一个密钥</span></div><div class="vb-flow-row"><span class="vb-flow-step">一处泄露全线崩溃</span></div><div class="vb-flow-row"><span class="vb-flow-step">某些组合还会互相打穿（第 17 章的密钥复用）</span></div><div class="vb-flow-row"><span class="vb-flow-step">✅ 正确：用 KDF 从主密钥派生</span></div></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cryptography.hazmat.primitives.kdf.hkdf</span><span class="w"> </span><span class="kn">import</span> <span class="n">HKDF</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cryptography.hazmat.primitives</span><span class="w"> </span><span class="kn">import</span> <span class="n">hashes</span>
 
@@ -356,7 +357,7 @@ Git 里的硬编码密钥、永不轮换的凭据、日志里的明文 token —
 </blockquote>
 <hr />
 <h2 id="_4">🔄 三、轮换与生命周期</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">生成 → 分发 → 使用 → 轮换 → 归档 → 销毁</span></div><div class="vb-tree-row"></div><div class="vb-tree-row"><span class="vb-tree-node">这一步最常被跳过 ⭐</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>生成 → 分发 → 使用 → 轮换 → 归档 → 销毁</span></li><li><span>这一步最常被跳过 ⭐</span></li></ul></section>
 <p><strong>为什么必须轮换</strong>：</p>
 <div class="tw"><table>
 <thead>
@@ -432,9 +433,9 @@ Git 里的硬编码密钥、永不轮换的凭据、日志里的明文 token —
 </blockquote>
 <hr />
 <h2 id="hsm-kms">🏦 五、HSM 与 KMS</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">HSM（硬件安全模块）：</span></div><div class="vb-tree-row"><span class="vb-tree-node">密钥在专用硬件里生成，【永不以明文离开】⭐</span></div><div class="vb-tree-row"><span class="vb-tree-node">你只能发&quot;用这把密钥签这个&quot;的请求，拿到结果</span></div><div class="vb-tree-row"><span class="vb-tree-node">物理防拆（拆开就自毁）</span></div><div class="vb-tree-row"><span class="vb-tree-node">用于：根 CA、支付系统、证书签发</span></div><div class="vb-tree-row"><span class="vb-tree-node">KMS（云密钥管理服务）：</span></div><div class="vb-tree-row"><span class="vb-tree-node">AWS KMS / GCP KMS / Azure Key Vault</span></div><div class="vb-tree-row"><span class="vb-tree-node">提供 生成/存储/轮换/审计/访问控制</span></div><div class="vb-tree-row"><span class="vb-tree-node">⚠️ 代价：你必须【信任云厂商】</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>HSM（硬件安全模块）：</span></li><li><span>密钥在专用硬件里生成，【永不以明文离开】⭐</span></li><li><span>你只能发"用这把密钥签这个"的请求，拿到结果</span></li><li><span>物理防拆（拆开就自毁）</span></li><li><span>用于：根 CA、支付系统、证书签发</span></li><li><span>KMS（云密钥管理服务）：</span></li><li><span>AWS KMS / GCP KMS / Azure Key Vault</span></li><li><span>提供 生成/存储/轮换/审计/访问控制</span></li><li><span>⚠️ 代价：你必须【信任云厂商】</span></li></ul></section>
 <p><strong>云 KMS 的信任边界问题</strong>：</p>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">⭐ 你把密钥交给云，就是把&quot;最终解密能力&quot;交给了云</span></div><div class="vb-tree-row"><span class="vb-tree-node">缓解方案：</span></div><div class="vb-tree-row"><span class="vb-tree-node">BYOK（自带密钥）：你生成密钥再导入</span></div><div class="vb-tree-row"><span class="vb-tree-node">HYOK（自持密钥）：密钥留在你自己的 HSM 里，云只调用</span></div><div class="vb-tree-row"><span class="vb-tree-node">客户端加密：数据【上传前】就在你这边加密，云只存密文 ⭐</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>⭐ 你把密钥交给云，就是把"最终解密能力"交给了云</span></li><li><span>缓解方案：</span></li><li><span>BYOK（自带密钥）：你生成密钥再导入</span></li><li><span>HYOK（自持密钥）：密钥留在你自己的 HSM 里，云只调用</span></li><li><span>客户端加密：数据【上传前】就在你这边加密，云只存密文 ⭐</span></li></ul></section>
 <hr />
 <h2 id="_6">🤝 六、多方持有一个密钥</h2>
 <div class="tw"><table>
@@ -595,5 +596,4 @@ Git 里的硬编码密钥、永不轮换的凭据、日志里的明文 token —
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

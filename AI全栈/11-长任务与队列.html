@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -382,7 +382,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <h3 id="1-backgroundtasks">① <code>BackgroundTasks</code></h3>
 <p>形状是：<strong>先把 job 记下来、立刻返回一个 id，真正的活挂在响应之后跑</strong>。FastAPI 里这东西叫 <code>BackgroundTasks</code>。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">BackgroundTasks</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
 
@@ -420,7 +420,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>把「谁在干这个 job」<strong>落到磁盘</strong>，上面三个毛病一起没了。</p>
 <p>核心只有一件事：<strong>认领必须原子</strong> ——「先 <code>SELECT</code> 一个 queued 的、再 <code>UPDATE</code> 成 running」中间那道缝，就是两个 worker 抢到同一行的原因。</p>
 <p>⚠️⚠️ <strong>但「写成一条语句」只是必要条件，不是充分条件。</strong> 下面这条在 Postgres 上就<strong>不安全</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">-- 🗓️ 未实跑 —— 需要 Postgres。⚠️ 这是【错误示范】，别抄</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="c1">-- 🗓️ 未实跑 —— 需要 Postgres。⚠️ 这是【错误示范】，别抄</span>
 <span class="k">UPDATE</span><span class="w"> </span><span class="n">jobs</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">status</span><span class="o">=</span><span class="s1">&#39;running&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">worker</span><span class="o">=</span><span class="err">$</span><span class="mi">1</span>
 <span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">jobs</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">status</span><span class="o">=</span><span class="s1">&#39;queued&#39;</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">run_after</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
 <span class="w"> </span><span class="n">RETURNING</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">kind</span><span class="p">,</span><span class="w"> </span><span class="n">payload</span><span class="p">;</span>
@@ -428,7 +428,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <p>两个并发事务的子查询会选中<strong>同一行</strong>：第二个先<strong>卡在行锁上排队等</strong>（吞吐直接塌掉），等前一个提交之后，外层 <code>WHERE</code> 只比对 <code>id</code>、不再检查 <code>status='queued'</code> —— 于是这次认领要么把同一个 job 认领第二次，要么空转一次什么也没拿到。⚠️ 具体落到哪一种取决于隔离级别和 <code>WHERE</code> 被重新求值的细节，但两种都是 bug。</p>
 <p>⭐ <strong>正确写法是把锁的语义写进子查询</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">-- 🗓️ 未实跑 —— 需要 Postgres</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="c1">-- 🗓️ 未实跑 —— 需要 Postgres</span>
 <span class="k">UPDATE</span><span class="w"> </span><span class="n">jobs</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">status</span><span class="o">=</span><span class="s1">&#39;running&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">attempts</span><span class="o">=</span><span class="n">attempts</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">worker</span><span class="o">=</span><span class="err">$</span><span class="mi">1</span>
 <span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">jobs</span>
 <span class="w">               </span><span class="k">WHERE</span><span class="w"> </span><span class="n">status</span><span class="o">=</span><span class="s1">&#39;queued&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">run_after</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">now</span><span class="p">()</span>
@@ -440,7 +440,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <p><code>FOR UPDATE</code> 让子查询<strong>当场把选中的行锁住</strong>，<code>SKIP LOCKED</code> 让别的 worker <strong>跳过</strong>这些行去拿下一条 —— 既不重复也不排队。⚠️ 事务边界也是这条语句的一部分：它要在一个事务里跑，提交之后这个 job 才算真归你；没走到提交就崩（进程被 kill），事务回滚、行锁释放，这一行自动回到可认领状态。</p>
 <p>下面用 SQLite 演示这套形状里<strong>能当场跑的那一半</strong>。⚠️ <strong>SQLite 没有 <code>FOR UPDATE SKIP LOCKED</code></strong>，它靠的是整库一把写锁（同一时刻只有一个写事务），所以下面这条语句在 SQLite 上确实是安全的 —— 但它安全的理由和 Postgres 完全不是一回事，别把这段 SQL 原样搬过去：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span><span class="o">,</span><span class="w"> </span><span class="nn">uuid</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span><span class="o">,</span><span class="w"> </span><span class="nn">uuid</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;CREATE TABLE jobs(</span>
@@ -524,7 +524,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⚠️ 不是「可能」，是「一定」：客户端超时后重试、worker 干完活但改状态前崩了、清扫脚本把一个其实还活着的 job 放回队列。</p>
 <p>⭐ <strong>代价很具体</strong>：用户被扣两次钱、同一段文本在向量库里存两份（检索时占掉两个 top-k 名额）、同一封邮件发两遍。</p>
 <p>做法只有一个形状：<strong>给这件事算一个由输入决定的键，写进带唯一约束的表，写不进去就说明做过了。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">hashlib</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span><span class="o">,</span><span class="w"> </span><span class="nn">hashlib</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE billing(user TEXT, cents INTEGER)&quot;</span><span class="p">)</span>
@@ -552,7 +552,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_6">🧩 五、重试、死信、毒药消息</h2>
 <p>⚠️ <strong>毒药消息</strong>：一个永远会失败的任务（payload 少了字段、文档编码坏了）。没有上限，它会被无限取出、无限失败、无限放回 —— <strong>堵死队列，顺便刷爆日志</strong>。三件事一起做：上限、退避、死信。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
 
 <span class="n">MAX_ATTEMPTS</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -729,5 +729,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

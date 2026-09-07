@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -316,7 +316,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>给一条序列，预测它的一个数值性质</strong>（稳定性、活性、溶解度都是这个形状）。</p>
 <p>我们造一批长度 30 的序列，性质由两件事决定：<strong>平均疏水性</strong>，
 加上一个「位置 4 是酸性 且 位置 21 是碱性」时出现的加成 —— 后者是个<strong>成对相互作用</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">AA</span> <span class="o">=</span> <span class="s2">&quot;ACDEFGHIKLMNPQRSTVWY&quot;</span>          <span class="c1"># 20 种氨基酸</span>
 <span class="n">L</span> <span class="o">=</span> <span class="mi">30</span>                                <span class="c1"># 序列长度</span>
@@ -499,9 +499,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⚠️ <strong>什么时候看下一页</strong>：你想知道序列这种数据到底该怎么表示 ——
 上面用的 one-hot 是最笨的一种，而它有几个具体的毛病。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>科学问题里「你知道什么」和「你有多少数据」可以互换，而兑换率能量出来。</strong> 实测：预测一条长 30 的序列的数值性质，<strong>450 条</strong>数据时纯 one-hot 的测试 R² 是 <strong>0.319</strong>，只加一列「平均疏水性」（查表查出来的先验，不是学的）跳到 <strong>0.515</strong>；而纯 one-hot 要<strong>翻倍到 900 条</strong>才有 <strong>0.535</strong> —— ⭐ <strong>一列先验知识 ≈ 一倍数据</strong>，在湿实验里那可能是几个月和一笔钱。⭐⭐ 但<strong>数据一多那一列就白给了</strong>：1800 条时两者都是 <strong>0.705</strong>，完全一样 —— <strong>不是特征失效，是模型自己从 one-hot 学会了同一件事</strong>（疏水性本来就是每个氨基酸一个数，线性模型有能力拟合，只要样本够）。<strong>领域知识买的是速度，不是上限。</strong> ⚠️ 第三条：R² 涨到 <strong>0.748</strong> 就不动了，<strong>这不是数据不够，是模型形式错了</strong> —— 真实性质里有位置 4 和 21 的<strong>成对相互作用</strong>，而线性模型对每个位置独立打分，结构上表达不了「两个位置一起才生效」，再给十倍数据也一样。⭐ 于是有了<strong>分诊表</strong>：加特征立刻涨 = 先验还有空间（最便宜）；加特征没反应、加数据还涨 = 先验饱和，去搞数据或用预训练表示；加数据也不涨 = <strong>换模型结构</strong>。💀 <strong>最贵的陷阱是搞错格子</strong> —— 明明卡在第三格却一直加特征堆数据，而这两件事<strong>都会有一点点效果</strong>，于是你会一直做下去。判据就是同时往两个方向各推一步，看哪个动了。最后三条前提：<strong>你的数据比你以为的少</strong>（大量同源，一万条可能只有几百独立，最先坑到的是评估）、<strong>数据是有人做实验做出来的</strong>（所以你也能去生产新数据）、<strong>有些先验只能内建进结构</strong>（比如旋转不变）。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>领域知识可能在小数据阶段提供有效特征，但收益需要通过对照测量。</li><li>分别尝试改特征、加数据和换模型，判断限制来自哪个环节。</li><li>保留独立的评估条件，不把同源样本数量当成独立信息数量。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="02-序列不是文本.html">02-序列不是文本.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -529,5 +528,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

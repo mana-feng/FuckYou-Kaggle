@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -339,7 +339,7 @@ AI4S 不是。它是一个环，而且<strong>环上每一步都要花真钱</st
 <h2 id="_4">🧪 三、把差别跑出来</h2>
 <p>一个一维的目标函数，<strong>右边有个高的全局最优，左边有个诱人的局部最优</strong>。
 两种策略从<strong>完全相同</strong>的三个初始点出发，各跑 25 轮：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -526,9 +526,8 @@ UCB (kappa=2)           5  7  8  7  9  7  8  5
 <p>⚠️ <strong>什么时候回来</strong>：真正开始转飞轮的时候。第五节那条「分布已经变了」
 在纸上看很显然，⭐ <strong>在项目第三轮时几乎所有人都会忘</strong>。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>AI4S 和普通 ML 最大的不同：数据不是给定的，是你决定去生产的。</strong> 流程是个环 —— <strong>训模型 → 挑候选 → 做实验 → 新数据 → 再训模型</strong>，⭐⭐ 而这个环改变了「好模型」的定义：<strong>R² 0.9 但只推荐你做过的东西的模型价值是零</strong>。<strong>判据：别问模型多准，问它让你少做了多少次实验。</strong> ⭐ <strong>题眼是「不能挑预测分最高的」</strong>：模型对熟悉区域给分高、对没探过的区域没把握给不出高分 → 你永远不去 → 它永远学不会 → <strong>循环自己锁死</strong>。解法是给不确定性明确付钱：<strong>采集分数 = 预测值 + κ × 不确定性</strong>（就是 UCB，和强化学习的探索与利用是同一件事）。<strong>实测</strong>：一维多峰函数、相同的三个初始点各跑 25 轮 —— <strong>贪心 8 次只成功 2 次</strong>（而且那 2 次是初始点碰巧撞上，第 2 轮就中），<strong>其余 6 次 25 轮全部耗光</strong>，一直在左边局部最优上反复采样；<strong>UCB 8 次全中</strong>，平均第 7 轮。⚠️ <strong>别被「贪心平均 2.0 轮」骗了</strong> —— 那只统计了成功的两次，<strong>把失败算进去它的期望代价是无穷</strong>。💀 这正是真实项目最贵的失败模式：<strong>指标缓慢改善，而你一直在错的区域里。</strong> <strong>批量选择</strong>：直接取 top-96 会挤在同一小区域、彼此几乎一样，96 次实验只买到 1 条信息 —— 要么挑一个就用预测值假装拿到结果再挑下一个，要么加多样性下限。💀 <strong>最容易忘的一条：实验回来后你的数据分布已经变了</strong> —— 你专门挑了模型觉得好的去做，新数据不是随机抽的，于是<strong>混合评估失真、每轮指标不可比</strong>（涨了可能只因为后来的候选更好预测）。⭐ 对策是留一个<strong>从原分布随机抽、从不参与挑选</strong>的固定测试集。<strong>什么时候停</strong>：预算用完（最诚实）、连续几轮没改善（⭐ 也可能是 κ 太小根本没在探索）、模型说没有更好的了（💀 <strong>不可信</strong> —— 它只覆盖你定义的搜索空间，而「找不到」和「不在空间里」在数据上无法区分）。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>模型参与选择下一批实验，数据和策略会随反馈不断变化。</li><li>只挑预测最高分容易反复停在熟悉区域，要明确考虑不确定性与批次多样性。</li><li>保留不参与候选挑选的评估数据，区分模型改进与采样分布改变。</li><li>用实验成本和实际发现衡量价值，并预先说明预算与停止条件。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="附录A-速查.html">附录A-速查.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -556,5 +555,4 @@ UCB (kappa=2)           5  7  8  7  9  7  8  5
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

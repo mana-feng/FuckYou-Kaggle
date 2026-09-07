@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,16 +271,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
- onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script><link rel="stylesheet" href="../assets/guided-lessons.css"><link rel="stylesheet" href="../assets/cross-reading.css"><script defer src="../assets/cross-reading.js"></script></head><body class="guided-reading cross-reading">
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
@@ -308,36 +308,43 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 </div>
 </details>
-<h1 id="04">04 · 视图还是拷贝</h1>
+<div class="lesson-layout cross-layout" data-reading-profile="numpy-copy" data-reading-mode="experiment">
+<div class="lesson-content">
+<header class="cross-hero"><p class="lesson-eyebrow">NumPy与向量化思维 · 按需阅读</p><h1>只改了一个数组，另一个为什么也变了？</h1><p class="lesson-lead">先看两段几乎一样的代码跑出什么，再追查它们是否共享内存。</p></header>
+<section class="cross-result"><h2>从本章实验看差别</h2><p>c = b[::2] 后改 c，b 变了；c = b[[0, 2]] 后改 c，b 没变。注意：直接给 b 的下标赋值是另一件事。</p></section>
+<nav class="cross-choices" aria-label="按当前目标开始"><a href="#read-observe"><strong>先跑最小实验</strong><span>代码、输出和解释在同一组</span></a><a href="#read-incidents"><strong>原数组被意外改了</strong><span>看 K-means 与数值梯度事故</span></a><a href="#read-boundary"><strong>现在要选拷贝写法</strong><span>看 .copy() 与函数边界约定</span></a></nav>
+<div class="cross-body" id="reading-body"><section class="cross-preface" aria-label="原文导语与阅读条件"><h2 id="04" class="lesson-original-title">04 · 视图还是拷贝</h2>
+<!-- reading-pilot: numpy-copy -->
+
 <p>⏱ <strong>106 分钟</strong> ｜ ⭐ <strong>两行只差一对方括号的代码，一行把原数组改了，一行没有 —— 而 NumPy 两次都没吭声</strong></p>
-<hr />
-<h2 id="_1">🎯 一句话</h2>
+<hr>
+<h3 id="_1">🎯 一句话</h3>
 <p><strong>NumPy 的很多操作返回的不是新数据，是「同一块内存的另一种读法」。改了它，原数组跟着变 —— 不报错、不警告，唯一可靠的判据是 <code>np.shares_memory(a, b)</code>。</strong></p>
-<p><a href="03-广播的三条规则.html">上一章</a>那类错误至少还留了点痕迹：要么 <code>ValueError</code>，要么结果形状变成一张莫名其妙的方阵。
+<p><a href="03-%E5%B9%BF%E6%92%AD%E7%9A%84%E4%B8%89%E6%9D%A1%E8%A7%84%E5%88%99.html">上一章</a>那类错误至少还留了点痕迹：要么 <code>ValueError</code>，要么结果形状变成一张莫名其妙的方阵。
 这一章是<strong>完全没有信号的那一类</strong>：程序跑通了、形状对、数字看着也合理，
 只是<strong>你的输入数据在中途被人改掉了</strong>。</p>
-<hr />
-<h2 id="_2">🧩 一、两行只差一对方括号</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<hr>
+</section><section class="cross-unit" id="read-observe" aria-labelledby="read-observe-title"><h2 id="read-observe-title">先观察：两种读取，两种结果</h2><p class="cross-cue">先预测 b 会不会变，再运行第一段代码核对。</p><h3 id="_2">🧩 一、两行只差一对方括号</h3>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">b</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>          <span class="c1"># 基础切片</span>
 <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;c = b[::2];   c += 1   -&gt;  b =&quot;</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"c = b[::2];   c += 1   -&gt;  b ="</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">b</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>       <span class="c1"># 花式索引（整数数组）</span>
 <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;c = b[[0,2]]; c += 1   -&gt;  b =&quot;</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"c = b[[0,2]]; c += 1   -&gt;  b ="</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;np.shares_memory(b, b[::2])   =&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shares_memory</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">b</span><span class="p">[::</span><span class="mi">2</span><span class="p">]))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;np.shares_memory(b, b[[0,2]]) =&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shares_memory</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">b</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"np.shares_memory(b, b[::2])   ="</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shares_memory</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">b</span><span class="p">[::</span><span class="mi">2</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"np.shares_memory(b, b[[0,2]]) ="</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shares_memory</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">b</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]))</span>
 </code></pre></div>
 
 <p>实跑输出：</p>
-<section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">c = b[::2]; c += 1 -&gt; b = [1 1 3 3 5 5]</span></div><div class="vb-flow-row"><span class="vb-flow-step">c = b[[0,2]]; c += 1 -&gt; b = [0 1 2 3 4 5]</span></div><div class="vb-flow-row"><span class="vb-flow-step">np.shares_memory(b, b[::2]) = True</span></div><div class="vb-flow-row"><span class="vb-flow-step">np.shares_memory(b, b[[0,2]]) = False</span></div></div></section>
+<div class="table-scroll"><div class="tw"><table class="experiment-results"><caption>实验结果：逐项核对，不是执行步骤</caption><thead><tr><th scope="col">观察项</th><th scope="col">原样结果与说明</th></tr></thead><tbody><tr><th scope="row">切片后改 c</th><td>c = b[::2]; c += 1 -&gt; b = [1 1 3 3 5 5]</td></tr><tr><th scope="row">花式索引后改 c</th><td>c = b[[0,2]]; c += 1 -&gt; b = [0 1 2 3 4 5]</td></tr><tr><th scope="row">切片是否共享</th><td>np.shares_memory(b, b[::2]) = True</td></tr><tr><th scope="row">花式索引是否共享</th><td>np.shares_memory(b, b[[0,2]]) = False</td></tr></tbody></table></div></div>
 <p>⭐ <strong>两行代码长得几乎一样，一行动了 <code>b</code>，一行没动。</strong></p>
 <ul>
 <li><code>b[::2]</code> 给的是<strong>视图</strong> —— <code>c</code> 和 <code>b</code> 是两个不同的 Python 对象，但指着<strong>同一块内存</strong>。
@@ -348,36 +355,36 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 只在「返回的东西背后是不是同一块内存」。</p>
 <p>⚠️⚠️ <strong>先别急着总结成「花式索引不会改原数组」</strong> —— 第四节会给你一个反例，
 那是本章最容易记反的一条。这里成立的只有一句话：<strong><code>b[[0,2]]</code> 这次【读】回来的东西是拷贝。</strong></p>
-<hr />
-<h2 id="npshares_memory-base">🔍 二、判据：<code>np.shares_memory</code>，不是 <code>.base</code></h2>
+<hr>
+</section><section class="cross-unit" id="read-decide" aria-labelledby="read-decide-title"><h2 id="read-decide-title">怎么判断是否共享内存</h2><p class="cross-cue">判据说明和完整写法表放在一起；.base 回答的不是同一个问题。</p><h3 id="npshares_memory-base">🔍 二、判据：<code>np.shares_memory</code>，不是 <code>.base</code></h3>
 <p>结论先放这儿，这一行你会用一辈子：⭐ <strong><code>np.shares_memory(a, b)</code></strong> —— 唯一在所有情况下都对的判据。</p>
 <p><code>.base</code> 看起来更直观 —— 视图有 <code>base</code>、拷贝没有 —— 而且在最简单的情形下它确实对：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># 情形一：源数组自己就是内存的持有者</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">b</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;b 自己持有内存吗  b.base is None :&quot;</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">base</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;c.base is b                     :&quot;</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">base</span> <span class="ow">is</span> <span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"b 自己持有内存吗  b.base is None :"</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">base</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"c.base is b                     :"</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">base</span> <span class="ow">is</span> <span class="n">b</span><span class="p">)</span>
 
 <span class="c1"># 情形二：源数组本身也是个视图</span>
 <span class="n">base</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a.base is base                  :&quot;</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">base</span> <span class="ow">is</span> <span class="n">base</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a.T.base is a                   :&quot;</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">base</span> <span class="ow">is</span> <span class="n">a</span><span class="p">,</span> <span class="s2">&quot;  &lt;- 直觉会以为 True&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a.T.base is base                :&quot;</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">base</span> <span class="ow">is</span> <span class="n">base</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;np.shares_memory(a, a.T)        :&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shares_memory</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"a.base is base                  :"</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">base</span> <span class="ow">is</span> <span class="n">base</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"a.T.base is a                   :"</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">base</span> <span class="ow">is</span> <span class="n">a</span><span class="p">,</span> <span class="s2">"  &lt;- 直觉会以为 True"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"a.T.base is base                :"</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">base</span> <span class="ow">is</span> <span class="n">base</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"np.shares_memory(a, a.T)        :"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shares_memory</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
 
 <span class="c1"># 拷贝的 .base</span>
 <span class="nb">print</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a[[0, 2]].base                  :&quot;</span><span class="p">,</span> <span class="n">a</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span><span class="o">.</span><span class="n">base</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a.copy().base                   :&quot;</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">base</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;np.shares_memory(a, a.copy())   :&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shares_memory</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">copy</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"a[[0, 2]].base                  :"</span><span class="p">,</span> <span class="n">a</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span><span class="o">.</span><span class="n">base</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"a.copy().base                   :"</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">base</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"np.shares_memory(a, a.copy())   :"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shares_memory</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">copy</span><span class="p">()))</span>
 </code></pre></div>
 
 <p>实跑输出：</p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>b 自己持有内存吗 b.base is None : True</p><p>c.base is b : True</p><p>a.base is base : True</p><p>a.T.base is a : False &lt;- 直觉会以为 True</p><p>a.T.base is base : True</p><p>np.shares_memory(a, a.T) : True</p><p>a[[0, 2]].base : None</p><p>a.copy().base : None</p><p>np.shares_memory(a, a.copy()) : False</p></div></section>
+<div class="table-scroll"><div class="tw"><table class="experiment-results"><caption>实验结果：逐项核对，不是执行步骤</caption><thead><tr><th scope="col">观察项</th><th scope="col">原样结果与说明</th></tr></thead><tbody><tr><th scope="row">源数组持有内存</th><td>b 自己持有内存吗 b.base is None : True</td></tr><tr><th scope="row">直接视图的 base</th><td>c.base is b : True</td></tr><tr><th scope="row">reshape 的 base</th><td>a.base is base : True</td></tr><tr><th scope="row">转置的上一层</th><td>a.T.base is a : False &lt;- 直觉会以为 True</td></tr><tr><th scope="row">转置的持有者</th><td>a.T.base is base : True</td></tr><tr><th scope="row">转置共享内存</th><td>np.shares_memory(a, a.T) : True</td></tr><tr><th scope="row">花式索引的 base</th><td>a[[0, 2]].base : None</td></tr><tr><th scope="row">copy 的 base</th><td>a.copy().base : None</td></tr><tr><th scope="row">copy 不共享</th><td>np.shares_memory(a, a.copy()) : False</td></tr></tbody></table></div></div>
 <p>⭐ <strong><code>c.base is b</code> 那一行是对的，但它有前提</strong>：<code>b = np.arange(6)</code> 自己就是那块内存的持有者
 （<code>b.base is None</code>）。<strong>一旦源数组本身也是个视图，这个写法就开始骗你。</strong></p>
 <p>⚠️ <strong>两个方向都会错，所以 <code>.base</code> 不能当判据：</strong></p>
@@ -406,51 +413,167 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 它们的 <code>.base</code> <strong>不是 <code>None</code></strong>，但 <code>np.shares_memory(a, ...)</code> 是 <code>False</code>。
 所以 <code>if x.base is not None:  # 那它是个视图</code> 这个写法<strong>会在两个方向上都出错</strong>。</p>
 <blockquote>
-<p>⭐ <strong>第一条的完整机制在 <a href="05-内存布局与stride.html">05 章第三节</a></strong>，那里把「视图的视图」这一层讲透了。
+<p>⭐ <strong>第一条的完整机制在 <a href="05-%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80%E4%B8%8Estride.html">05 章第三节</a></strong>，那里把「视图的视图」这一层讲透了。
 这一章只要你记住结论：<strong>判共享内存，一律写 <code>np.shares_memory</code>。</strong>
 ⚠️ 它在超大数组上可能偏慢，替代品和取舍也在 05 章第三节。</p>
 </blockquote>
-<hr />
-<h2 id="_3">📋 三、一张判据表</h2>
+<hr>
+<h3 id="_3">📋 三、一张判据表</h3>
 <p>把常见写法一次跑完，别猜：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<details class="cross-code"><summary>展开完整代码（34 行，原样保留）</summary><div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>      <span class="c1"># ⭐ 让 a 自己持有内存，a.base is None</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a.base is None =&quot;</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">base</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"a.base is None ="</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">base</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="n">cases</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s2">&quot;a[1:3]              基础切片&quot;</span><span class="p">,</span>        <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]),</span>
-    <span class="p">(</span><span class="s2">&quot;a[::2]              带步长切片&quot;</span><span class="p">,</span>      <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="p">[::</span><span class="mi">2</span><span class="p">]),</span>
-    <span class="p">(</span><span class="s2">&quot;a[1]                整数下标&quot;</span><span class="p">,</span>        <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-    <span class="p">(</span><span class="s2">&quot;a[:, None]          加一根轴&quot;</span><span class="p">,</span>        <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]),</span>
-    <span class="p">(</span><span class="s2">&quot;a.T                 转置&quot;</span><span class="p">,</span>            <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">T</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;a.reshape(4, 3)     reshape（连续）&quot;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s2">&quot;a.T.reshape(12)     reshape（不连续）&quot;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">12</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s2">&quot;a.ravel()           ravel&quot;</span><span class="p">,</span>           <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span>
-    <span class="p">(</span><span class="s2">&quot;a.T.ravel()         ravel（不连续）&quot;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span>
-    <span class="p">(</span><span class="s2">&quot;a.flatten()         flatten&quot;</span><span class="p">,</span>         <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">flatten</span><span class="p">()),</span>
-    <span class="p">(</span><span class="s2">&quot;a.view(np.int32)    改 dtype 解释&quot;</span><span class="p">,</span>   <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s2">&quot;a.astype(a.dtype)   astype（同类型）&quot;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s2">&quot;a[[0, 2]]           花式索引&quot;</span><span class="p">,</span>        <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]),</span>
-    <span class="p">(</span><span class="s2">&quot;a[a &gt; 5]            布尔索引&quot;</span><span class="p">,</span>        <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">]),</span>
-    <span class="p">(</span><span class="s2">&quot;a[1:3, [0, 2]]      切片 + 花式&quot;</span><span class="p">,</span>     <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]),</span>
-    <span class="p">(</span><span class="s2">&quot;np.broadcast_to(a, (2,3,4))&quot;</span><span class="p">,</span>         <span class="k">lambda</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))),</span>
-    <span class="p">(</span><span class="s2">&quot;a + 0               任何算术&quot;</span><span class="p">,</span>        <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">0</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;np.sort(a)          非原地排序&quot;</span><span class="p">,</span>      <span class="k">lambda</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">a</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s2">&quot;a.copy()            copy&quot;</span><span class="p">,</span>            <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">copy</span><span class="p">()),</span>
-    <span class="p">(</span><span class="s2">&quot;np.asarray(a)       asarray&quot;</span><span class="p">,</span>         <span class="k">lambda</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">a</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s2">&quot;np.array(a)         array&quot;</span><span class="p">,</span>           <span class="k">lambda</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"a[1:3]              基础切片"</span><span class="p">,</span>        <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]),</span>
+    <span class="p">(</span><span class="s2">"a[::2]              带步长切片"</span><span class="p">,</span>      <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="p">[::</span><span class="mi">2</span><span class="p">]),</span>
+    <span class="p">(</span><span class="s2">"a[1]                整数下标"</span><span class="p">,</span>        <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+    <span class="p">(</span><span class="s2">"a[:, None]          加一根轴"</span><span class="p">,</span>        <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]),</span>
+    <span class="p">(</span><span class="s2">"a.T                 转置"</span><span class="p">,</span>            <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">T</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"a.reshape(4, 3)     reshape（连续）"</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"a.T.reshape(12)     reshape（不连续）"</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">12</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"a.ravel()           ravel"</span><span class="p">,</span>           <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span>
+    <span class="p">(</span><span class="s2">"a.T.ravel()         ravel（不连续）"</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span>
+    <span class="p">(</span><span class="s2">"a.flatten()         flatten"</span><span class="p">,</span>         <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">flatten</span><span class="p">()),</span>
+    <span class="p">(</span><span class="s2">"a.view(np.int32)    改 dtype 解释"</span><span class="p">,</span>   <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"a.astype(a.dtype)   astype（同类型）"</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"a[[0, 2]]           花式索引"</span><span class="p">,</span>        <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]),</span>
+    <span class="p">(</span><span class="s2">"a[a &gt; 5]            布尔索引"</span><span class="p">,</span>        <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">]),</span>
+    <span class="p">(</span><span class="s2">"a[1:3, [0, 2]]      切片 + 花式"</span><span class="p">,</span>     <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]),</span>
+    <span class="p">(</span><span class="s2">"np.broadcast_to(a, (2,3,4))"</span><span class="p">,</span>         <span class="k">lambda</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))),</span>
+    <span class="p">(</span><span class="s2">"a + 0               任何算术"</span><span class="p">,</span>        <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"np.sort(a)          非原地排序"</span><span class="p">,</span>      <span class="k">lambda</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">a</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"a.copy()            copy"</span><span class="p">,</span>            <span class="k">lambda</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">copy</span><span class="p">()),</span>
+    <span class="p">(</span><span class="s2">"np.asarray(a)       asarray"</span><span class="p">,</span>         <span class="k">lambda</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">a</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"np.array(a)         array"</span><span class="p">,</span>           <span class="k">lambda</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">)),</span>
 <span class="p">]</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;写法&#39;</span><span class="si">:</span><span class="s2">&lt;36</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;shares_memory&#39;</span><span class="si">:</span><span class="s2">&lt;14</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;.base is None&#39;</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">66</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'写法'</span><span class="si">:</span><span class="s2">&lt;36</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">'shares_memory'</span><span class="si">:</span><span class="s2">&lt;14</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">'.base is None'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">66</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">cases</span><span class="p">:</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">f</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">&lt;36</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shares_memory</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">))</span><span class="si">:</span><span class="s2">&lt;14</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">base</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">&lt;36</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shares_memory</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">))</span><span class="si">:</span><span class="s2">&lt;14</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">base</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div>
 
-<p>实跑输出（numpy 2.4.6）：</p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>a.base is None = True</p><p>写法 shares_memory .base is None</p><p>------------------------------------------------------------------</p><p>a[1:3] 基础切片 True False</p><p>a[::2] 带步长切片 True False</p><p>a[1] 整数下标 True False</p><p>a[:, None] 加一根轴 True False</p><p>a.T 转置 True False</p><p>a.reshape(4, 3) reshape（连续） True False</p><p>a.T.reshape(12) reshape（不连续） False False</p><p>a.ravel() ravel True False</p><p>a.T.ravel() ravel（不连续） False True</p><p>a.flatten() flatten False True</p><p>a.view(np.int32) 改 dtype 解释 True False</p><p>a.astype(a.dtype) astype（同类型） False True</p><p>a[[0, 2]] 花式索引 False True</p><p>a[a &gt; 5] 布尔索引 False True</p><p>a[1:3, [0, 2]] 切片 + 花式 False False</p><p>np.broadcast_to(a, (2,3,4)) True False</p><p>a + 0 任何算术 False True</p><p>np.sort(a) 非原地排序 False True</p><p>a.copy() copy False True</p><p>np.asarray(a) asarray True True</p><p>np.array(a) array False True</p></div></section>
+</details><p>实跑输出（numpy 2.4.6）：</p>
+<p>本次输入的 <code>a.base is None</code> 为 <code>True</code>。下面两列分别检查「是否与 a 共享内存」和「结果的 base 是否为空」，不要把它们当成同一问题。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>写法</th>
+<th>shares_memory</th>
+<th>.base is None</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>a[1:3]</code> 基础切片</td>
+<td>True</td>
+<td>False</td>
+</tr>
+<tr>
+<td><code>a[::2]</code> 带步长切片</td>
+<td>True</td>
+<td>False</td>
+</tr>
+<tr>
+<td><code>a[1]</code> 整数下标</td>
+<td>True</td>
+<td>False</td>
+</tr>
+<tr>
+<td><code>a[:, None]</code> 加一根轴</td>
+<td>True</td>
+<td>False</td>
+</tr>
+<tr>
+<td><code>a.T</code> 转置</td>
+<td>True</td>
+<td>False</td>
+</tr>
+<tr>
+<td><code>a.reshape(4, 3)</code> reshape（连续）</td>
+<td>True</td>
+<td>False</td>
+</tr>
+<tr>
+<td><code>a.T.reshape(12)</code> reshape（不连续）</td>
+<td>False</td>
+<td>False</td>
+</tr>
+<tr>
+<td><code>a.ravel()</code> ravel</td>
+<td>True</td>
+<td>False</td>
+</tr>
+<tr>
+<td><code>a.T.ravel()</code> ravel（不连续）</td>
+<td>False</td>
+<td>True</td>
+</tr>
+<tr>
+<td><code>a.flatten()</code> flatten</td>
+<td>False</td>
+<td>True</td>
+</tr>
+<tr>
+<td><code>a.view(np.int32)</code> 改 dtype 解释</td>
+<td>True</td>
+<td>False</td>
+</tr>
+<tr>
+<td><code>a.astype(a.dtype)</code> astype（同类型）</td>
+<td>False</td>
+<td>True</td>
+</tr>
+<tr>
+<td><code>a[[0, 2]]</code> 花式索引</td>
+<td>False</td>
+<td>True</td>
+</tr>
+<tr>
+<td><code>a[a &gt; 5]</code> 布尔索引</td>
+<td>False</td>
+<td>True</td>
+</tr>
+<tr>
+<td><code>a[1:3, [0, 2]]</code> 切片 + 花式</td>
+<td>False</td>
+<td>False</td>
+</tr>
+<tr>
+<td><code>np.broadcast_to(a, (2,3,4))</code></td>
+<td>True</td>
+<td>False</td>
+</tr>
+<tr>
+<td><code>a + 0</code> 任何算术</td>
+<td>False</td>
+<td>True</td>
+</tr>
+<tr>
+<td><code>np.sort(a)</code> 非原地排序</td>
+<td>False</td>
+<td>True</td>
+</tr>
+<tr>
+<td><code>a.copy()</code> copy</td>
+<td>False</td>
+<td>True</td>
+</tr>
+<tr>
+<td><code>np.asarray(a)</code> asarray</td>
+<td>True</td>
+<td>True</td>
+</tr>
+<tr>
+<td><code>np.array(a)</code> array</td>
+<td>False</td>
+<td>True</td>
+</tr>
+</tbody>
+</table></div>
 <p>⭐ <strong>一条能概括全表的话</strong>：
 <strong>只改「怎么读这块内存」的，是视图；需要重新挑元素、或者算出新数值的，是拷贝。</strong></p>
 <div class="tw"><table>
@@ -490,44 +613,44 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <code>ravel()</code> 尽量给视图，<code>flatten()</code> 一定给拷贝。<strong>想要「保证不共享」就写 <code>flatten()</code>，别写 <code>ravel()</code>。</strong></p>
 <blockquote>
 <p><strong>为什么这条线画在这里</strong>（哪些操作能用一份 shape + strides 说明书表达）是
-<a href="05-内存布局与stride.html">05 章</a>的正题；
-<strong>索引那四种形态各自为什么落在这一边</strong>在 <a href="06-索引的四种形态.html">06 章</a>。
+<a href="05-%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80%E4%B8%8Estride.html">05 章</a>的正题；
+<strong>索引那四种形态各自为什么落在这一边</strong>在 <a href="06-%E7%B4%A2%E5%BC%95%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%BD%A2%E6%80%81.html">06 章</a>。
 这一章只回答「改了会不会串」。</p>
 </blockquote>
-<hr />
-<h2 id="b02-1">💀 四、最容易记反的一条：<code>b[[0,2]] += 1</code> 会改原数组</h2>
+<hr>
+</section><section class="cross-unit" id="read-write" aria-labelledby="read-write-title"><h2 id="read-write-title">读取结果是拷贝，不等于不能写回原数组</h2><p class="cross-cue">把“先取出来再改”和“直接给下标赋值”分清。</p><h3 id="b02-1">💀 四、最容易记反的一条：<code>b[[0,2]] += 1</code> 会改原数组</h3>
 <p>第一节说「花式索引给的是拷贝」。<strong>很多人由此推出「所以花式索引改不了原数组」—— 这是错的。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># ① 先取出来，再改那个取出来的东西 —— 花式索引给的是拷贝，原数组不动</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">b</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
 <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;① c = b[[0,2]]; c += 1     -&gt;  b =&quot;</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="s2">&quot; c =&quot;</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"① c = b[[0,2]]; c += 1     -&gt;  b ="</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="s2">" c ="</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
 
 <span class="c1"># ② 直接对下标做增量赋值 —— 走的是 __setitem__，写回去了</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="n">b</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;② b[[0,2]] += 1            -&gt;  b =&quot;</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"② b[[0,2]] += 1            -&gt;  b ="</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 
 <span class="c1"># ③ 显式赋值，当然也写回去</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="n">b</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">99</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;③ b[[0,2]] = 99            -&gt;  b =&quot;</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"③ b[[0,2]] = 99            -&gt;  b ="</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 
 <span class="c1"># ④ 布尔索引一模一样</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="n">d</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">b</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
 <span class="n">d</span> <span class="o">+=</span> <span class="mi">100</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">④ d = b[b%2==0]; d += 100  -&gt;  b =&quot;</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="s2">&quot; d =&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">④ d = b[b%2==0]; d += 100  -&gt;  b ="</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="s2">" d ="</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
 
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="n">b</span><span class="p">[</span><span class="n">b</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">100</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;⑤ b[b%2==0] += 100         -&gt;  b =&quot;</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"⑤ b[b%2==0] += 100         -&gt;  b ="</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 </code></pre></div>
 
 <p>实跑输出：</p>
-<section class="visual-block visual-block-calc" aria-label="算一算"><p class="visual-block-title">算一算</p><div class="vb-calc"><p>① c = b[[0,2]]; c += 1 -&gt; b = [0 1 2 3 4 5] c = [1 3]</p><p>② b[[0,2]] += 1 -&gt; b = [1 1 3 3 4 5]</p><p>③ b[[0,2]] = 99 -&gt; b = [99 1 99 3 4 5]</p><p>④ d = b[b%2==0]; d += 100 -&gt; b = [0 1 2 3 4 5] d = [100 102 104]</p><p>⑤ b[b%2==0] += 100 -&gt; b = [100 1 102 3 104 5]</p></div></section>
+<div class="table-scroll"><div class="tw"><table class="experiment-results"><caption>实验结果：逐项核对，不是执行步骤</caption><thead><tr><th scope="col">观察项</th><th scope="col">原样结果与说明</th></tr></thead><tbody><tr><th scope="row">先读拷贝再改</th><td>① c = b[[0,2]]; c += 1 -&gt; b = [0 1 2 3 4 5] c = [1 3]</td></tr><tr><th scope="row">直接增量写回</th><td>② b[[0,2]] += 1 -&gt; b = [1 1 3 3 4 5]</td></tr><tr><th scope="row">直接赋值</th><td>③ b[[0,2]] = 99 -&gt; b = [99 1 99 3 4 5]</td></tr><tr><th scope="row">先读布尔结果再改</th><td>④ d = b[b%2==0]; d += 100 -&gt; b = [0 1 2 3 4 5] d = [100 102 104]</td></tr><tr><th scope="row">直接布尔下标写回</th><td>⑤ b[b%2==0] += 100 -&gt; b = [100 1 102 3 104 5]</td></tr></tbody></table></div></div>
 <p>⭐ <strong>判据是「那个下标在不在等号左边」</strong>，和视图还是拷贝是<strong>两件独立的事</strong>：</p>
 <div class="tw"><table>
 <thead>
@@ -556,43 +679,43 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p>⚠️ <strong>还有第三种，最阴</strong>：下标<strong>不在</strong>等号左边、但看起来像在：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># ① 链式下标 + 基础切片：中间那步是视图，写得进去</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;① a[0][1] = 99        -&gt; a[0] =&quot;</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot; ✅ 写进去了&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"① a[0][1] = 99        -&gt; a[0] ="</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">" ✅ 写进去了"</span><span class="p">)</span>
 
 <span class="c1"># ② 链式下标 + 花式索引：中间那步是【拷贝】，写完就被丢掉</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <span class="n">a</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;② a[[0,1]][0] = 99    -&gt; a[0] =&quot;</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot; ❌ 一声不吭，什么也没发生&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"② a[[0,1]][0] = 99    -&gt; a[0] ="</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">" ❌ 一声不吭，什么也没发生"</span><span class="p">)</span>
 
 <span class="c1"># ③ 布尔索引同理</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;③ a[a&gt;5][0] = 99      -&gt; a.ravel()[6] =&quot;</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="mi">6</span><span class="p">],</span> <span class="s2">&quot; ❌ 同样没发生&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"③ a[a&gt;5][0] = 99      -&gt; a.ravel()[6] ="</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="mi">6</span><span class="p">],</span> <span class="s2">" ❌ 同样没发生"</span><span class="p">)</span>
 
 <span class="c1"># ④ 正确写法：一次写完，别分两步</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <span class="n">a</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;④ a[[0,1], 0] = 99    -&gt; a[:, 0] =&quot;</span><span class="p">,</span> <span class="n">a</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="s2">&quot; ✅&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"④ a[[0,1], 0] = 99    -&gt; a[:, 0] ="</span><span class="p">,</span> <span class="n">a</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="s2">" ✅"</span><span class="p">)</span>
 
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <span class="n">a</span><span class="p">[</span><span class="n">a</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">99</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;⑤ a[a&gt;5] = 99         -&gt; a.ravel()[6] =&quot;</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="mi">6</span><span class="p">],</span> <span class="s2">&quot; ✅&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"⑤ a[a&gt;5] = 99         -&gt; a.ravel()[6] ="</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="mi">6</span><span class="p">],</span> <span class="s2">" ✅"</span><span class="p">)</span>
 </code></pre></div>
 
 <p>实跑输出：</p>
-<section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① a[0][1] = 99 -&gt; a[0] = [ 0 99 2 3] ✅ 写进去了</span></div><div class="vb-flow-row"><span class="vb-flow-step">② a[[0,1]][0] = 99 -&gt; a[0] = [0 1 2 3] ❌ 一声不吭，什么也没发生</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ a[a&gt;5][0] = 99 -&gt; a.ravel()[6] = 6 ❌ 同样没发生</span></div><div class="vb-flow-row"><span class="vb-flow-step">④ a[[0,1], 0] = 99 -&gt; a[:, 0] = [99 99 8] ✅</span></div><div class="vb-flow-row"><span class="vb-flow-step">⑤ a[a&gt;5] = 99 -&gt; a.ravel()[6] = 99 ✅</span></div></div></section>
+<div class="table-scroll"><div class="tw"><table class="experiment-results"><caption>实验结果：逐项核对，不是执行步骤</caption><thead><tr><th scope="col">观察项</th><th scope="col">原样结果与说明</th></tr></thead><tbody><tr><th scope="row">链式基础切片</th><td>① a[0][1] = 99 -&gt; a[0] = [ 0 99 2 3] ✅ 写进去了</td></tr><tr><th scope="row">链式花式索引</th><td>② a[[0,1]][0] = 99 -&gt; a[0] = [0 1 2 3] ❌ 一声不吭，什么也没发生</td></tr><tr><th scope="row">链式布尔索引</th><td>③ a[a&gt;5][0] = 99 -&gt; a.ravel()[6] = 6 ❌ 同样没发生</td></tr><tr><th scope="row">合并整数下标</th><td>④ a[[0,1], 0] = 99 -&gt; a[:, 0] = [99 99 8] ✅</td></tr><tr><th scope="row">合并布尔下标</th><td>⑤ a[a&gt;5] = 99 -&gt; a.ravel()[6] = 99 ✅</td></tr></tbody></table></div></div>
 <p>💀 <strong><code>a[[0,1]][0] = 99</code> 是本章最坏的一种失败</strong>：它既不报错、也不生效。
 <code>a[[0,1]]</code> 先当作 <code>__getitem__</code> 跑完，造出一份<strong>临时拷贝</strong>，<code>[0] = 99</code> 写进那份拷贝，
 然后临时拷贝当场被回收。你写的那一行，效果等于什么都没写。</p>
 <p>⭐ <strong>一句话记法：只有【紧挨着等号左边】的那个下标才是写；它左边的每一步都是读。</strong>
 <code>a[0][1] = 99</code> 之所以生效，是因为读那一步 <code>a[0]</code> 恰好给的是视图。<strong>语法一样，结果取决于读的那一步。</strong></p>
 <p>⚠️ 同一个机制还有一个后果：<code>b[[0,0,0]] += 1</code> <strong>只加一次</strong>，不是三次。
-那一条以及 <code>np.add.at</code> 的用法在 <a href="06-索引的四种形态.html">06 章第五节</a>。</p>
-<hr />
+那一条以及 <code>np.add.at</code> 的用法在 <a href="06-%E7%B4%A2%E5%BC%95%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%BD%A2%E6%80%81.html">06 章第五节</a>。</p>
+<hr>
 <!--MIDSTOP-->
 <blockquote>
 <p>🛑 <strong>读到这里可以停</strong> —— 前半章讲完了，那是<strong>「怎么判断」</strong>的一半（大约一半篇幅）。
@@ -602,16 +725,20 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <code>a += b</code> 和 <code>a = a + b</code> 的完整版 · 想切断时该写哪一个 · 函数边界的三条约定 · 一页速记。
 回来的时候不用重读，直接从下一节接着看就行。</p>
 </blockquote>
-<hr />
-<h2 id="k-means">💀 五、事故：拿切片当 K-means 的初始中心</h2>
+<hr>
+</section><section class="cross-unit" id="read-incidents" aria-labelledby="read-incidents-title"><h2 id="read-incidents-title">两场事故：结果正常，却改坏了输入</h2><p class="cross-cue">K-means 看原数据变化；梯度检查先看两个扰动是否独立。</p><h3 id="k-means">💀 五、事故：拿切片当 K-means 的初始中心</h3>
 <p>判据讲完了，看它在真代码里长什么样。下面这段 K-means 除了初始中心的取法之外，两版<strong>一个字符都不差</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<p class="cr-reading-cue">先看这个关系：<code>X[:3]</code> 与原数组共享内存，<code>X[[0, 1, 2]]</code> 得到独立拷贝。展开实验后，重点找初始化与 <code>C[j] = …</code> 的就地更新；结果与事故解释保留在代码下方。</p>
+
+<details class="cr-fold">
+<summary>查看 K-means 完整实验 · 数据生成、两种初始化与结果比较</summary>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">kmeans</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">iters</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;标准 K-means。C 是调用者传进来的初始中心，函数会就地更新它&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""标准 K-means。C 是调用者传进来的初始中心，函数会就地更新它"""</span>
     <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iters</span><span class="p">):</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">((</span><span class="n">X</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">C</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>   <span class="c1"># (n, k)，第 03 章那个模式</span>
         <span class="n">lab</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -629,31 +756,32 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="c1"># ❌ 用基础切片挑初始中心 —— C 是 X 的视图</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">X0</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">init</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;X[:3]     和 X 共享内存吗:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shares_memory</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">init</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"X[:3]     和 X 共享内存吗:"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shares_memory</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">init</span><span class="p">))</span>
 <span class="n">C_bad</span><span class="p">,</span> <span class="n">lab_bad</span> <span class="o">=</span> <span class="n">kmeans</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">init</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;跑完之后 X 被改掉了&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span> <span class="o">!=</span> <span class="n">X0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="s2">&quot;行 / 共&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="s2">&quot;行&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  第 1 行  原本&quot;</span><span class="p">,</span> <span class="n">X0</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot; 现在&quot;</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot; &lt;- 从第一簇被搬到第二簇的位置上了&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"跑完之后 X 被改掉了"</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span> <span class="o">!=</span> <span class="n">X0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="s2">"行 / 共"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="s2">"行"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  第 1 行  原本"</span><span class="p">,</span> <span class="n">X0</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">" 现在"</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">" &lt;- 从第一簇被搬到第二簇的位置上了"</span><span class="p">)</span>
 
 <span class="c1"># ✅ 用花式索引挑 —— 天然就是拷贝</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">X0</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">init</span> <span class="o">=</span> <span class="n">X</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">X[[0,1,2]] 和 X 共享内存吗:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shares_memory</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">init</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">X[[0,1,2]] 和 X 共享内存吗:"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shares_memory</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">init</span><span class="p">))</span>
 <span class="n">C_ok</span><span class="p">,</span> <span class="n">lab_ok</span> <span class="o">=</span> <span class="n">kmeans</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">init</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;跑完之后 X 被改掉了&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span> <span class="o">!=</span> <span class="n">X0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="s2">&quot;行&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"跑完之后 X 被改掉了"</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span> <span class="o">!=</span> <span class="n">X0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="s2">"行"</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">inertia</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">lab</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">C</span><span class="p">[</span><span class="n">lab</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">拿【原始数据】评两版的簇内平方和:&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  错版 inertia = </span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">inertia</span><span class="p">(</span><span class="n">X0</span><span class="p">,</span> <span class="n">C_bad</span><span class="p">,</span> <span class="n">lab_bad</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  对版 inertia = </span><span class="si">%.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">inertia</span><span class="p">(</span><span class="n">X0</span><span class="p">,</span> <span class="n">C_ok</span><span class="p">,</span> <span class="n">lab_ok</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  两版标签一致的样本 =&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">lab_bad</span> <span class="o">==</span> <span class="n">lab_ok</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">拿【原始数据】评两版的簇内平方和:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  错版 inertia = </span><span class="si">%.3f</span><span class="s2">"</span> <span class="o">%</span> <span class="n">inertia</span><span class="p">(</span><span class="n">X0</span><span class="p">,</span> <span class="n">C_bad</span><span class="p">,</span> <span class="n">lab_bad</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  对版 inertia = </span><span class="si">%.3f</span><span class="s2">"</span> <span class="o">%</span> <span class="n">inertia</span><span class="p">(</span><span class="n">X0</span><span class="p">,</span> <span class="n">C_ok</span><span class="p">,</span> <span class="n">lab_ok</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  两版标签一致的样本 ="</span><span class="p">,</span> <span class="p">(</span><span class="n">lab_bad</span> <span class="o">==</span> <span class="n">lab_ok</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="s2">"/"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X0</span><span class="p">))</span>
 </code></pre></div>
 
+</details>
 <p>实跑输出：</p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>X[:3] 和 X 共享内存吗: True</p><p>跑完之后 X 被改掉了 3 行 / 共 180 行</p><p>第 1 行 原本 [0.32 0.052] 现在 [4.86 0.014] &lt;- 从第一簇被搬到第二簇的位置上了</p><p>X[[0,1,2]] 和 X 共享内存吗: False</p><p>跑完之后 X 被改掉了 0 行</p><p>拿【原始数据】评两版的簇内平方和:</p><p>错版 inertia = 133.080</p><p>对版 inertia = 89.828</p><p>两版标签一致的样本 = 178 / 180</p></div></section>
+<div class="table-scroll"><div class="tw"><table class="experiment-results"><caption>实验结果：逐项核对，不是执行步骤</caption><thead><tr><th scope="col">观察项</th><th scope="col">原样结果与说明</th></tr></thead><tbody><tr><th scope="row">错误初始化的共享</th><td>X[:3] 和 X 共享内存吗: True</td></tr><tr><th scope="row">原数据被改的行数</th><td>跑完之后 X 被改掉了 3 行 / 共 180 行</td></tr><tr><th scope="row">第 1 行前后对比</th><td>第 1 行 原本 [0.32 0.052] 现在 [4.86 0.014] &lt;- 从第一簇被搬到第二簇的位置上了</td></tr><tr><th scope="row">正确初始化的共享</th><td>X[[0,1,2]] 和 X 共享内存吗: False</td></tr><tr><th scope="row">正确版改动行数</th><td>跑完之后 X 被改掉了 0 行</td></tr><tr><th scope="row">评估使用哪份数据</th><td>拿【原始数据】评两版的簇内平方和:</td></tr><tr><th scope="row">错误版误差</th><td>错版 inertia = 133.080</td></tr><tr><th scope="row">正确版误差</th><td>对版 inertia = 89.828</td></tr><tr><th scope="row">相同标签的数量</th><td>两版标签一致的样本 = 178 / 180</td></tr></tbody></table></div></div>
 <p>💀 <strong>事故报告</strong>：</p>
 <div class="tw"><table>
 <thead>
@@ -681,25 +809,25 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<p>⭐ 站内 <a href="../机器学习与深度学习基础/附录C-手撕代码速查.html">ML 基础 · 附录 C</a> 第 396 行的 K-means 写的是
+<p>⭐ 站内 <a href="../%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/%E9%99%84%E5%BD%95C-%E6%89%8B%E6%92%95%E4%BB%A3%E7%A0%81%E9%80%9F%E6%9F%A5.html">ML 基础 · 附录 C</a> 第 396 行的 K-means 写的是
 <code>C = X[rng.choice(len(X), k, replace=False)].copy()</code> —— 花式索引本来就给拷贝，那个 <code>.copy()</code> 其实<strong>是多余的</strong>。
 ⭐ <strong>但多余的 <code>.copy()</code> 只花钱，漏掉的 <code>.copy()</code> 出上面这种事。</strong> 在这个位置上，多写一个是划算的。</p>
-<hr />
-<h2 id="a-b-a-a-b">🧯 六、<code>a += b</code> 和 <code>a = a + b</code>（兑现上一章的预告）</h2>
-<p><a href="03-广播的三条规则.html">03 章第六节</a>末尾留了一句「这两个是两件不同的事」，这里是完整版：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<hr>
+<h3 id="a-b-a-a-b">🧯 六、<code>a += b</code> 和 <code>a = a + b</code>（兑现上一章的预告）</h3>
+<p><a href="03-%E5%B9%BF%E6%92%AD%E7%9A%84%E4%B8%89%E6%9D%A1%E8%A7%84%E5%88%99.html">03 章第六节</a>末尾留了一句「这两个是两件不同的事」，这里是完整版：</p>
+<details class="cross-code"><summary>展开完整代码（48 行，原样保留）</summary><div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># ---- 同一个数组，两种写法 ----</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">v</span> <span class="o">=</span> <span class="n">a</span><span class="p">[:]</span>                      <span class="c1"># 一个视图，代表「别人手里的引用」</span>
 <span class="n">a</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a += 1     之后  v =&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="s2">&quot;  &lt;- 视图跟着变了&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"a += 1     之后  v ="</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="s2">"  &lt;- 视图跟着变了"</span><span class="p">)</span>
 
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">v</span> <span class="o">=</span> <span class="n">a</span><span class="p">[:]</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">1</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a = a + 1  之后  v =&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="s2">&quot;  &lt;- 视图没变，a 换了个新数组&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;            现在  np.shares_memory(a, v) =&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shares_memory</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"a = a + 1  之后  v ="</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="s2">"  &lt;- 视图没变，a 换了个新数组"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"            现在  np.shares_memory(a, v) ="</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shares_memory</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
 
 <span class="c1"># ---- 同一件事发生在函数参数上 ----</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">center_inplace</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -712,11 +840,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">])</span>
 <span class="n">center_inplace</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">center_inplace 之后 调用者的 d =&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="s2">&quot; &lt;- 被改了&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">center_inplace 之后 调用者的 d ="</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="s2">" &lt;- 被改了"</span><span class="p">)</span>
 
 <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">])</span>
 <span class="n">center_pure</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;center_pure    之后 调用者的 d =&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="s2">&quot; &lt;- 没被改&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"center_pure    之后 调用者的 d ="</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="s2">" &lt;- 没被改"</span><span class="p">)</span>
 
 <span class="c1"># ---- 数值梯度检查：站内那两行 .copy() 是承重的 ----</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">loss</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
@@ -727,18 +855,18 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <span class="n">Wp</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">copy</span><span class="p">();</span> <span class="n">Wp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">eps</span>          <span class="c1"># ✅ 站内 ml_md/08:207-208 的写法</span>
 <span class="n">Wm</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">copy</span><span class="p">();</span> <span class="n">Wm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="n">eps</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">带 .copy()  数值梯度 =&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">loss</span><span class="p">(</span><span class="n">Wp</span><span class="p">)</span> <span class="o">-</span> <span class="n">loss</span><span class="p">(</span><span class="n">Wm</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">eps</span><span class="p">),</span> <span class="s2">&quot; 解析值 = 6.0&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">带 .copy()  数值梯度 ="</span><span class="p">,</span> <span class="p">(</span><span class="n">loss</span><span class="p">(</span><span class="n">Wp</span><span class="p">)</span> <span class="o">-</span> <span class="n">loss</span><span class="p">(</span><span class="n">Wm</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">eps</span><span class="p">),</span> <span class="s2">" 解析值 = 6.0"</span><span class="p">)</span>
 
 <span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">])</span>
 <span class="n">Wp</span> <span class="o">=</span> <span class="n">W</span><span class="p">;</span> <span class="n">Wp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">eps</span>                 <span class="c1"># ❌ 少写了 .copy()</span>
 <span class="n">Wm</span> <span class="o">=</span> <span class="n">W</span><span class="p">;</span> <span class="n">Wm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="n">eps</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;少 .copy()  数值梯度 =&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">loss</span><span class="p">(</span><span class="n">Wp</span><span class="p">)</span> <span class="o">-</span> <span class="n">loss</span><span class="p">(</span><span class="n">Wm</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">eps</span><span class="p">),</span> <span class="s2">&quot; &lt;- 恒等于 0，不报错&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;            Wp is W:&quot;</span><span class="p">,</span> <span class="n">Wp</span> <span class="ow">is</span> <span class="n">W</span><span class="p">,</span> <span class="s2">&quot;  Wm is W:&quot;</span><span class="p">,</span> <span class="n">Wm</span> <span class="ow">is</span> <span class="n">W</span><span class="p">,</span> <span class="s2">&quot;  三个名字同一个数组&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;            事后 W[0] == 3.0 ?&quot;</span><span class="p">,</span> <span class="n">W</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s2">&quot; &lt;- 加完又减完，连现场都没留下&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"少 .copy()  数值梯度 ="</span><span class="p">,</span> <span class="p">(</span><span class="n">loss</span><span class="p">(</span><span class="n">Wp</span><span class="p">)</span> <span class="o">-</span> <span class="n">loss</span><span class="p">(</span><span class="n">Wm</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">eps</span><span class="p">),</span> <span class="s2">" &lt;- 恒等于 0，不报错"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"            Wp is W:"</span><span class="p">,</span> <span class="n">Wp</span> <span class="ow">is</span> <span class="n">W</span><span class="p">,</span> <span class="s2">"  Wm is W:"</span><span class="p">,</span> <span class="n">Wm</span> <span class="ow">is</span> <span class="n">W</span><span class="p">,</span> <span class="s2">"  三个名字同一个数组"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"            事后 W[0] == 3.0 ?"</span><span class="p">,</span> <span class="n">W</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s2">" &lt;- 加完又减完，连现场都没留下"</span><span class="p">)</span>
 </code></pre></div>
 
-<p>实跑输出：</p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>a += 1 之后 v = [1 2 3] &lt;- 视图跟着变了</p><p>a = a + 1 之后 v = [0 1 2] &lt;- 视图没变，a 换了个新数组</p><p>现在 np.shares_memory(a, v) = False</p><p>center_inplace 之后 调用者的 d = [-1. 0. 1.] &lt;- 被改了</p><p>center_pure 之后 调用者的 d = [1. 2. 3.] &lt;- 没被改</p><p>带 .copy() 数值梯度 = 6.000000000128124 解析值 = 6.0</p><p>少 .copy() 数值梯度 = 0.0 &lt;- 恒等于 0，不报错</p><p>Wp is W: True Wm is W: True 三个名字同一个数组</p><p>事后 W[0] == 3.0 ? True &lt;- 加完又减完，连现场都没留下</p></div></section>
+</details><p>实跑输出：</p>
+<div class="table-scroll"><div class="tw"><table class="experiment-results"><caption>实验结果：逐项核对，不是执行步骤</caption><thead><tr><th scope="col">观察项</th><th scope="col">原样结果与说明</th></tr></thead><tbody><tr><th scope="row">原地加法</th><td>a += 1 之后 v = [1 2 3] &lt;- 视图跟着变了</td></tr><tr><th scope="row">新数组加法</th><td>a = a + 1 之后 v = [0 1 2] &lt;- 视图没变，a 换了个新数组</td></tr><tr><th scope="row">新数组与旧视图</th><td>现在 np.shares_memory(a, v) = False</td></tr><tr><th scope="row">原地中心化</th><td>center_inplace 之后 调用者的 d = [-1. 0. 1.] &lt;- 被改了</td></tr><tr><th scope="row">独立中心化</th><td>center_pure 之后 调用者的 d = [1. 2. 3.] &lt;- 没被改</td></tr><tr><th scope="row">独立扰动的梯度</th><td>带 .copy() 数值梯度 = 6.000000000128124 解析值 = 6.0</td></tr><tr><th scope="row">共享扰动的梯度</th><td>少 .copy() 数值梯度 = 0.0 &lt;- 恒等于 0，不报错</td></tr><tr><th scope="row">三个名字的关系</th><td>Wp is W: True Wm is W: True 三个名字同一个数组</td></tr><tr><th scope="row">实验后的原值</th><td>事后 W[0] == 3.0 ? True &lt;- 加完又减完，连现场都没留下</td></tr></tbody></table></div></div>
 <p>⭐ <strong>区别只有一句话</strong>：</p>
 <div class="tw"><table>
 <thead>
@@ -769,60 +897,60 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 - 你会以为是「解析梯度写错了」，于是去逐行核对反向传播的公式 —— 而那边根本没问题
 - ⭐ <strong>事后连现场都没有</strong>：<code>+eps</code> 和 <code>-eps</code> 正好抵消，实测 <code>W[0] == 3.0</code> 是 <code>True</code>，
   你就算事后打印 <code>W</code> 也看不出它被动过</p>
-<p>⭐ 站内两处数值梯度检查（<a href="../机器学习与深度学习基础/08-反向传播.html">ML 基础 08</a> 第 216–217 行、
-<a href="../机器学习与深度学习基础/附录C-手撕代码速查.html">附录 C</a> 第 71–72 行）都老老实实写了
+<p>⭐ 站内两处数值梯度检查（<a href="../%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/08-%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD.html">ML 基础 08</a> 第 216–217 行、
+<a href="../%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/%E9%99%84%E5%BD%95C-%E6%89%8B%E6%92%95%E4%BB%A3%E7%A0%81%E9%80%9F%E6%9F%A5.html">附录 C</a> 第 71–72 行）都老老实实写了
 <code>zp = z.copy(); zp[i, j] += eps</code>。<strong>那两个 <code>.copy()</code> 是承重的，不是风格。</strong></p>
 <blockquote>
 <p>⚠️ <strong>划一条界</strong>：<code>a = a + b</code> 之后 <code>a</code> 换了个对象但名字还叫 <code>a</code> ——
 「<strong>名字重新绑到另一个对象</strong>」是 Python 语言层的事，归
-<a href="../Python会咬你的地方/01-名字、对象和绑定.html">《Python 会咬你的地方》01</a>。
+<a href="../Python%E4%BC%9A%E5%92%AC%E4%BD%A0%E7%9A%84%E5%9C%B0%E6%96%B9/01-%E5%90%8D%E5%AD%97%E3%80%81%E5%AF%B9%E8%B1%A1%E5%92%8C%E7%BB%91%E5%AE%9A.html">《Python 会咬你的地方》01</a>。
 本章只管<strong>内存缓冲区</strong>这一层：<code>b = a</code> 之后 <code>a is b</code> 为真是那边的题，
 <code>y = x[:2]</code> 之后是<strong>两个对象指同一块内存</strong>才是这边的题。</p>
 </blockquote>
-<hr />
+<hr>
 <!--MIDSTOP2-->
 <blockquote>
 <p>🛑 <strong>第二个休息点</strong> —— 中段讲完了（约 22 分钟）。
 <strong>最后一段还有</strong>：想切断的时候，写哪一个 · 函数边界上的三条约定 · 一页速记
 这一章确实长，分三次读完全没问题 —— 回来直接从下一节接着看。</p>
 </blockquote>
-<hr />
-<h2 id="_4">✂️ 七、想切断的时候，写哪一个</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<hr>
+</section><section class="cross-unit" id="read-boundary" aria-labelledby="read-boundary-title"><h2 id="read-boundary-title">需要独立数据时，在哪一处切断</h2><p class="cross-cue">写法、成本和函数边界约定一起保留。</p><h3 id="_4">✂️ 七、想切断的时候，写哪一个</h3>
+<details class="cross-code"><summary>展开完整代码（31 行，原样保留）</summary><div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="n">v</span> <span class="o">=</span> <span class="n">a</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>                          <span class="c1"># 一个视图</span>
 
 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s2">&quot;v.copy()&quot;</span><span class="p">,</span>          <span class="n">v</span><span class="o">.</span><span class="n">copy</span><span class="p">()),</span>
-    <span class="p">(</span><span class="s2">&quot;np.copy(v)&quot;</span><span class="p">,</span>        <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">v</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s2">&quot;np.array(v)&quot;</span><span class="p">,</span>       <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">v</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s2">&quot;v.astype(v.dtype)&quot;</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">dtype</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s2">&quot;v + 0&quot;</span><span class="p">,</span>             <span class="n">v</span> <span class="o">+</span> <span class="mi">0</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;np.asarray(v)&quot;</span><span class="p">,</span>     <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">v</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s2">&quot;v[:]&quot;</span><span class="p">,</span>              <span class="n">v</span><span class="p">[:]),</span>
+    <span class="p">(</span><span class="s2">"v.copy()"</span><span class="p">,</span>          <span class="n">v</span><span class="o">.</span><span class="n">copy</span><span class="p">()),</span>
+    <span class="p">(</span><span class="s2">"np.copy(v)"</span><span class="p">,</span>        <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">v</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"np.array(v)"</span><span class="p">,</span>       <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">v</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"v.astype(v.dtype)"</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">dtype</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"v + 0"</span><span class="p">,</span>             <span class="n">v</span> <span class="o">+</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"np.asarray(v)"</span><span class="p">,</span>     <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">v</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s2">"v[:]"</span><span class="p">,</span>              <span class="n">v</span><span class="p">[:]),</span>
 <span class="p">]:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">&lt;20</span><span class="si">}</span><span class="s2"> 还和 a 共享吗 -&gt; </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">shares_memory</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">&lt;20</span><span class="si">}</span><span class="s2"> 还和 a 共享吗 -&gt; </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">shares_memory</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 <span class="c1"># ⚠️ NumPy 2.x 改了 np.array(..., copy=False) 的语义：</span>
 <span class="c1">#    不是「能不拷就不拷」，是「必须不拷，做不到就报错」</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">np.array(v, copy=False) 共享吗 -&gt;&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shares_memory</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">np.array(v, copy=False) 共享吗 -&gt;"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shares_memory</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)))</span>
 <span class="k">try</span><span class="p">:</span>
     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>     <span class="c1"># 换 dtype 必然要拷</span>
 <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;np.array(v, dtype=float64, copy=False) -&gt; ValueError:&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"np.array(v, dtype=float64, copy=False) -&gt; ValueError:"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
 
 <span class="c1"># ⚠️ .copy() 拷的是那块【数字缓冲区】。dtype=object 的数组里装的是 Python 对象，它拷不动</span>
 <span class="n">o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
 <span class="n">o</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">o</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
 <span class="n">p</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">o 和 p 共享内存吗:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shares_memory</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">o 和 p 共享内存吗:"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">shares_memory</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span>
 <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">999</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;往 p[0] 那个 list 里 append 之后  o[0] =&quot;</span><span class="p">,</span> <span class="n">o</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot; &lt;- 是同一个 list 对象&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"往 p[0] 那个 list 里 append 之后  o[0] ="</span><span class="p">,</span> <span class="n">o</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">" &lt;- 是同一个 list 对象"</span><span class="p">)</span>
 </code></pre></div>
 
-<p>实跑输出：</p>
-<section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">v.copy() 还和 a 共享吗 -&gt; False</span></div><div class="vb-flow-row"><span class="vb-flow-step">np.copy(v) 还和 a 共享吗 -&gt; False</span></div><div class="vb-flow-row"><span class="vb-flow-step">np.array(v) 还和 a 共享吗 -&gt; False</span></div><div class="vb-flow-row"><span class="vb-flow-step">v.astype(v.dtype) 还和 a 共享吗 -&gt; False</span></div><div class="vb-flow-row"><span class="vb-flow-step">v + 0 还和 a 共享吗 -&gt; False</span></div><div class="vb-flow-row"><span class="vb-flow-step">np.asarray(v) 还和 a 共享吗 -&gt; True</span></div><div class="vb-flow-row"><span class="vb-flow-step">v[:] 还和 a 共享吗 -&gt; True</span></div><div class="vb-flow-row"><span class="vb-flow-step">np.array(v, copy=False) 共享吗 -&gt; True</span></div><div class="vb-flow-row"><span class="vb-flow-step">np.array(v, dtype=float64, copy=False) -&gt; ValueError: Unable to avoid copy while creating an array as requested.</span></div><div class="vb-flow-row"><span class="vb-flow-step">o 和 p 共享内存吗: False</span></div><div class="vb-flow-row"><span class="vb-flow-step">往 p[0] 那个 list 里 append 之后 o[0] = [1, 2, 999] &lt;- 是同一个 list 对象</span></div></div></section>
+</details><p>实跑输出：</p>
+<div class="table-scroll"><div class="tw"><table class="experiment-results"><caption>实验结果：逐项核对，不是执行步骤</caption><thead><tr><th scope="col">观察项</th><th scope="col">原样结果与说明</th></tr></thead><tbody><tr><th scope="row">显式 copy</th><td>v.copy() 还和 a 共享吗 -&gt; False</td></tr><tr><th scope="row">np.copy</th><td>np.copy(v) 还和 a 共享吗 -&gt; False</td></tr><tr><th scope="row">np.array</th><td>np.array(v) 还和 a 共享吗 -&gt; False</td></tr><tr><th scope="row">astype</th><td>v.astype(v.dtype) 还和 a 共享吗 -&gt; False</td></tr><tr><th scope="row">新算术结果</th><td>v + 0 还和 a 共享吗 -&gt; False</td></tr><tr><th scope="row">asarray</th><td>np.asarray(v) 还和 a 共享吗 -&gt; True</td></tr><tr><th scope="row">基础切片</th><td>v[:] 还和 a 共享吗 -&gt; True</td></tr><tr><th scope="row">禁止复制</th><td>np.array(v, copy=False) 共享吗 -&gt; True</td></tr><tr><th scope="row">禁止复制但需要换类型</th><td>np.array(v, dtype=float64, copy=False) -&gt; ValueError: Unable to avoid copy while creating an array as requested.</td></tr><tr><th scope="row">对象数组的缓冲区</th><td>o 和 p 共享内存吗: False</td></tr><tr><th scope="row">对象数组中的同一列表</th><td>往 p[0] 那个 list 里 append 之后 o[0] = [1, 2, 999] &lt;- 是同一个 list 对象</td></tr></tbody></table></div></div>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -866,19 +994,19 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⚠️ <strong><code>.copy()</code> 对 <code>dtype=object</code> 的数组是浅的。</strong> 它拷的是那块存指针的缓冲区，
 里面装的 Python 对象还是同一批：实测往 <code>p[0]</code> 那个 list 里 <code>append</code>，<code>o[0]</code> 跟着变成 <code>[1, 2, 999]</code>。
 ⭐ <strong>那一层要用 <code>copy.deepcopy</code>，机制归
-<a href="../Python会咬你的地方/01-名字、对象和绑定.html">《Python 会咬你的地方》01</a></strong> —— 那已经不是内存缓冲区的问题了。</p>
+<a href="../Python%E4%BC%9A%E5%92%AC%E4%BD%A0%E7%9A%84%E5%9C%B0%E6%96%B9/01-%E5%90%8D%E5%AD%97%E3%80%81%E5%AF%B9%E8%B1%A1%E5%92%8C%E7%BB%91%E5%AE%9A.html">《Python 会咬你的地方》01</a></strong> —— 那已经不是内存缓冲区的问题了。</p>
 <p>⭐ <strong>这一刀多少钱</strong>：一个 122 MB 的 <code>(4000, 4000)</code> 数组，<code>big[::2, ::2]</code> 取视图实测 0.0001 ms，
 后面加个 <code>.copy()</code> 是 10.1 ms（重跑两次 10.109 / 10.182），差了约 9 万倍。
 ⚠️ 倍数看量级不看单点，但结论很硬：<strong>防御性的 <code>.copy()</code> 撒在函数入口撒一次就够，别在循环里每行撒一个。</strong></p>
-<hr />
+<hr>
 <!--MIDSTOP-->
 <blockquote>
 <p>🛑 <strong>读到这里可以停</strong> —— 已经读了约 71 分钟。
 <strong>最后一段还有</strong>（约 31 分钟）：函数边界上的三条约定 · 一页速记 · 检查点与走神救援
 回来的时候不用重读，直接从下一节接着看就行。</p>
 </blockquote>
-<hr />
-<h2 id="_5">🚦 八、函数边界上的三条约定</h2>
+<hr>
+<h3 id="_5">🚦 八、函数边界上的三条约定</h3>
 <p>上面两场事故都发生在<strong>函数边界</strong>上 —— 一个函数改了调用者的数组，而调用者不知道。
 三条约定能挡住绝大部分：</p>
 <div class="tw"><table>
@@ -907,10 +1035,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<p>⚠️ 约定 ③ 那个只读的招数你已经见过：<a href="03-广播的三条规则.html">03 章第三节</a>里
+<p>⚠️ 约定 ③ 那个只读的招数你已经见过：<a href="03-%E5%B9%BF%E6%92%AD%E7%9A%84%E4%B8%89%E6%9D%A1%E8%A7%84%E5%88%99.html">03 章第三节</a>里
 <code>np.broadcast_to</code> 返回的东西 <code>writeable</code> 是 <code>False</code>，就是 NumPy 自己在用这一手。</p>
-<hr />
-<h2 id="_6">📋 九、一页速记</h2>
+<hr>
+</section><section class="cross-unit" id="read-review" aria-labelledby="read-review-title"><h2 id="read-review-title">带着眼前的问题回来查</h2><p class="cross-cue">速记、相关章节、检查点与答案都在这里。</p><h3 id="_6">📋 九、一页速记</h3>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -949,7 +1077,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 <tr>
 <td>想要「不能零拷贝就报错给我看」</td>
-<td>换 dtype 时 <code>np.array(x, dtype=..., copy=False)</code>；改形状的写法在 <a href="05-内存布局与stride.html">05 章</a></td>
+<td>换 dtype 时 <code>np.array(x, dtype=..., copy=False)</code>；改形状的写法在 <a href="05-%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80%E4%B8%8Estride.html">05 章</a></td>
 </tr>
 <tr>
 <td>传给别人的函数，怕被改</td>
@@ -961,18 +1089,19 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 <tr>
 <td>想知道<strong>为什么</strong>某个操作能白拿视图</td>
-<td><a href="05-内存布局与stride.html">05 章</a></td>
+<td><a href="05-%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80%E4%B8%8Estride.html">05 章</a></td>
 </tr>
 <tr>
 <td>想知道<strong>哪种索引语法</strong>给视图</td>
-<td><a href="06-索引的四种形态.html">06 章</a></td>
+<td><a href="06-%E7%B4%A2%E5%BC%95%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%BD%A2%E6%80%81.html">06 章</a></td>
 </tr>
 </tbody>
 </table></div>
 <p>⚠️ <strong>一条容易漏的</strong>：<code>reshape</code> 是这张表里唯一「同一行代码、两种行为」的 ——
-输入连续就给视图，不连续就一声不吭地拷一份。<strong>写库的时候别依赖它的返回值会不会串。</strong></p>
-<hr />
-<h2 id="_7">🔗 这一章连到哪里</h2>
+是否能给视图取决于目标形状能否由当前 strides 表达；不连续不等于必然拷贝。<strong>写库的时候别依赖它的返回值会不会串。</strong></p>
+<p>上面的具体实验结果照常成立；不要把它概括成“不连续必然拷贝”。机制可对照 <a href="https://numpy.org/doc/stable/user/basics.copies.html">NumPy 的拷贝与视图说明</a>。</p>
+<hr>
+<h3 id="_7">🔗 这一章连到哪里</h3>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -982,61 +1111,61 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </thead>
 <tbody>
 <tr>
-<td><a href="03-广播的三条规则.html">03 · 广播的三条规则</a></td>
+<td><a href="03-%E5%B9%BF%E6%92%AD%E7%9A%84%E4%B8%89%E6%9D%A1%E8%A7%84%E5%88%99.html">03 · 广播的三条规则</a></td>
 <td>⭐ 那一章第六节留了一句「<code>a += b</code> 和 <code>a = a + b</code> 是两件事」，<strong>本章第六节是它的完整版</strong>；那里 <code>broadcast_to</code> 的结果只读，也是本章第八节约定 ③ 的现成范例</td>
 </tr>
 <tr>
-<td><a href="05-内存布局与stride.html">05 · 内存布局与 stride</a></td>
+<td><a href="05-%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80%E4%B8%8Estride.html">05 · 内存布局与 stride</a></td>
 <td>⭐ <strong>本章给判据，那一章给机制</strong>：为什么转置能白拿视图、<code>reshape</code> 什么时候掏钱、<code>.contiguous()</code> 在修什么。⚠️ 本章第二节 <code>.base</code> 那个坑的完整版在它第三节</td>
 </tr>
 <tr>
-<td><a href="06-索引的四种形态.html">06 · 索引的四种形态</a></td>
+<td><a href="06-%E7%B4%A2%E5%BC%95%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%BD%A2%E6%80%81.html">06 · 索引的四种形态</a></td>
 <td>⭐ 本章说「哪些操作会串」，那一章说<strong>索引这一族里哪种语法会串</strong>、以及 <code>b[[0,0,0]] += 1</code> 为什么只加一次</td>
 </tr>
 <tr>
-<td><a href="07-把循环改写成数组运算.html">07 · 把循环改写成数组运算</a></td>
+<td><a href="07-%E6%8A%8A%E5%BE%AA%E7%8E%AF%E6%94%B9%E5%86%99%E6%88%90%E6%95%B0%E7%BB%84%E8%BF%90%E7%AE%97.html">07 · 把循环改写成数组运算</a></td>
 <td>那一章的 <code>sliding_window_view</code> 展开成 <code>(199951, 50)</code> 却和原数组共享内存 —— ⭐ <strong>视图不是麻烦，是那一章省下 76 MiB 的全部原因</strong></td>
 </tr>
 <tr>
-<td><a href="11-从NumPy到PyTorch.html">11 · 从 NumPy 到 PyTorch</a></td>
+<td><a href="11-%E4%BB%8ENumPy%E5%88%B0PyTorch.html">11 · 从 NumPy 到 PyTorch</a></td>
 <td>⭐ <code>torch.from_numpy</code> 让<strong>两个库</strong>共享同一块内存，判据一模一样，只是「另一边」换了个库</td>
 </tr>
 <tr>
-<td><a href="../机器学习与深度学习基础/08-反向传播.html">ML 基础 08 · 反向传播</a></td>
+<td><a href="../%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/08-%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD.html">ML 基础 08 · 反向传播</a></td>
 <td>⭐ 第 216–217 行 <code>W1p = W1.copy(); W1p[0,0] += eps</code> —— <strong>那两个 <code>.copy()</code> 是承重的</strong>，本章第六节实测了漏掉之后数值梯度会恒等于 <code>0.0</code></td>
 </tr>
 <tr>
-<td><a href="../机器学习与深度学习基础/附录C-手撕代码速查.html">ML 基础 · 附录 C 手撕代码速查</a></td>
+<td><a href="../%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/%E9%99%84%E5%BD%95C-%E6%89%8B%E6%92%95%E4%BB%A3%E7%A0%81%E9%80%9F%E6%9F%A5.html">ML 基础 · 附录 C 手撕代码速查</a></td>
 <td>第 396 行 K-means 的初始中心用花式索引 + <code>.copy()</code>，第 71–72 行梯度校验也是 <code>z.copy()</code>。⭐ <strong>本章第五节演示了把那一行换成基础切片会发生什么</strong></td>
 </tr>
 <tr>
-<td><a href="../模型上线之后/09-特征重要性的三种谎言.html">模型上线之后 09 · 特征重要性的三种谎言</a></td>
+<td><a href="../%E6%A8%A1%E5%9E%8B%E4%B8%8A%E7%BA%BF%E4%B9%8B%E5%90%8E/09-%E7%89%B9%E5%BE%81%E9%87%8D%E8%A6%81%E6%80%A7%E7%9A%84%E4%B8%89%E7%A7%8D%E8%B0%8E%E8%A8%80.html">模型上线之后 09 · 特征重要性的三种谎言</a></td>
 <td>置换重要性每一轮先写 <code>Xp = X.copy()</code> 再打乱那几列（那边是 DataFrame，道理一模一样）—— <strong>同一类承重的拷贝</strong></td>
 </tr>
 <tr>
-<td><a href="../数据这一关/05-缺失不是一种东西.html">数据这一关 05 · 缺失不是一种东西</a></td>
+<td><a href="../%E6%95%B0%E6%8D%AE%E8%BF%99%E4%B8%80%E5%85%B3/05-%E7%BC%BA%E5%A4%B1%E4%B8%8D%E6%98%AF%E4%B8%80%E7%A7%8D%E4%B8%9C%E8%A5%BF.html">数据这一关 05 · 缺失不是一种东西</a></td>
 <td>四种填补方式各写一句 <code>x1.copy()</code> 再往缺失位置写，⭐ <strong>少一个就会让后一种填补建在前一种的结果上</strong></td>
 </tr>
 <tr>
-<td><a href="../PyTorch这个框架本身/01-张量到底是什么.html">PyTorch 这个框架本身 01 · 张量到底是什么</a></td>
+<td><a href="../PyTorch%E8%BF%99%E4%B8%AA%E6%A1%86%E6%9E%B6%E6%9C%AC%E8%BA%AB/01-%E5%BC%A0%E9%87%8F%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88.html">PyTorch 这个框架本身 01 · 张量到底是什么</a></td>
 <td>⭐ torch 的规则和这一章一致：<code>view()</code> 一定不拷贝（做不到就报错），<code>reshape()</code> 给不了视图就悄悄拷</td>
 </tr>
 <tr>
-<td><a href="../PyTorch这个框架本身/03-三种就地操作报错.html">PyTorch 03 · 三种就地操作报错</a></td>
+<td><a href="../PyTorch%E8%BF%99%E4%B8%AA%E6%A1%86%E6%9E%B6%E6%9C%AC%E8%BA%AB/03-%E4%B8%89%E7%A7%8D%E5%B0%B1%E5%9C%B0%E6%93%8D%E4%BD%9C%E6%8A%A5%E9%94%99.html">PyTorch 03 · 三种就地操作报错</a></td>
 <td>⭐ 同一件事在 autograd 底下的后果：<code>x[0] = 1.0</code> 底层是「先取视图、再往视图里写」，所以报的是<strong>视图</strong>那句错</td>
 </tr>
 <tr>
-<td><a href="../框架底下是C++/02-值语义与所有权.html">框架底下是 C++ 02 · 值语义与所有权</a></td>
+<td><a href="../%E6%A1%86%E6%9E%B6%E5%BA%95%E4%B8%8B%E6%98%AFC++/02-%E5%80%BC%E8%AF%AD%E4%B9%89%E4%B8%8E%E6%89%80%E6%9C%89%E6%9D%83.html">框架底下是 C++ 02 · 值语义与所有权</a></td>
 <td>⭐ 三方分工的第二块就是本章：「<strong>缓冲区被共享</strong>」。第一块（名字绑到对象）归 Python 那边，第三块（谁负责释放）归它</td>
 </tr>
 <tr>
-<td><a href="../Python会咬你的地方/01-名字、对象和绑定.html">《Python 会咬你的地方》01 · 名字、对象和绑定</a></td>
+<td><a href="../Python%E4%BC%9A%E5%92%AC%E4%BD%A0%E7%9A%84%E5%9C%B0%E6%96%B9/01-%E5%90%8D%E5%AD%97%E3%80%81%E5%AF%B9%E8%B1%A1%E5%92%8C%E7%BB%91%E5%AE%9A.html">《Python 会咬你的地方》01 · 名字、对象和绑定</a></td>
 <td>⚠️ <strong>同名不同物</strong>：那边的「共享」是<strong>两个名字指同一个对象</strong>，这边是两个对象指同一块内存。<code>dtype=object</code> 数组要深拷贝时才需要那边的 <code>copy.deepcopy</code></td>
 </tr>
 </tbody>
 </table></div>
-<hr />
-<h2 id="_8">✅ 检查点</h2>
+<hr>
+<h3 id="_8">✅ 检查点</h3>
 <ol>
 <li><code>c = b[::2]; c += 1</code> 和 <code>c = b[[0,2]]; c += 1</code>，实跑之后 <code>b</code> 分别变成什么？差别的根源是什么？</li>
 <li>判断两个数组共不共享内存，该写哪一行？为什么 <code>.base</code> 不行 —— 说出<strong>两个</strong>方向的失败。</li>
@@ -1052,30 +1181,64 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <details>
 <summary>👀 答案</summary>
 <ol>
-<li>切片版 <code>b = [1 1 3 3 5 5]</code>（<strong>原数组变了</strong>），花式索引版 <code>b = [0 1 2 3 4 5]</code>（没变）。根源是 <code>np.shares_memory(b, b[::2])</code> 是 <code>True</code>、<code>np.shares_memory(b, b[[0,2]])</code> 是 <code>False</code> —— 切片给视图（同一块内存的另一种读法），花式索引给拷贝。⚠️ 两行都不报错、都返回一个正常数组，差别只在背后是不是同一块内存。</li>
-<li><strong><code>np.shares_memory(a, b)</code></strong>。<code>.base</code> 两个方向都会错：① 共享却判成不共享 —— <code>.base</code> 不指向上一层而是最终持有内存的那个，所以 <code>a.T.base is a</code> 是 <code>False</code>；② 不共享却判成共享 —— <code>a.T.reshape(12)</code> 和 <code>a[1:3, [0,2]]</code> 的 <code>.base</code> 都不是 <code>None</code>（指向过程中造出的临时拷贝），而 <code>shares_memory</code> 是 <code>False</code>。所以 <code>if x.base is not None</code> 这个写法不能用。</li>
-<li><code>a.T.base is a</code> 是 <strong><code>False</code></strong>（直觉会以为 <code>True</code>），<code>a.T.base is base</code> 是 <code>True</code>。只有当源数组自己就是内存持有者（<code>b.base is None</code>）时，<code>c.base is b</code> 那种写法才成立 —— 完整机制在 05 章第三节。</li>
-<li><strong><code>reshape</code></strong>（还有 <code>ravel</code>）：<code>a.reshape(4,3)</code> 共享内存，<code>a.T.reshape(12)</code> 不共享 —— 输入连续就给视图，不连续就一声不吭地拷一份。想保证不共享写 <code>flatten()</code>，它一定拷贝；<code>ravel()</code> 会尽量给视图。</li>
-<li>因为<strong>判据是「那个下标在不在等号左边」，和视图/拷贝是两件独立的事</strong>。<code>c = b[[0,2]]</code> 走 <code>__getitem__</code>，抄一份给你；<code>b[[0,2]] += 1</code> 走 <code>__setitem__</code>，按下标直接往 <code>b</code> 里写，压根没有中间数组。实跑 <code>b[[0,2]] += 1</code> 之后 <code>b = [1 1 3 3 4 5]</code>。一句话：只有紧挨着等号左边的那个下标才是写，它左边的每一步都是读。</li>
-<li>💀 <strong>既不报错、也不生效</strong>：<code>a[[0,1]]</code> 先当 <code>__getitem__</code> 跑完造出一份临时拷贝，<code>[0] = 99</code> 写进那份拷贝，然后拷贝被回收 —— 实跑 <code>a[0]</code> 还是 <code>[0 1 2 3]</code>。比报错糟，是因为它连一行错误信息都不给你。正确写法是合并成一次下标：<code>a[[0,1], 0] = 99</code>（实跑 <code>a[:, 0] = [99 99 8]</code>）。⚠️ <code>a[0][1] = 99</code> 反而生效，因为 <code>a[0]</code> 恰好是视图 —— 语法一样，结果取决于读那一步给的是什么。</li>
-<li><code>X</code> <strong>被改掉 3 行</strong>（180 行里的前 3 行，被覆盖成了聚类中心；第 1 行从 <code>[0.32, 0.052]</code> 被搬到 <code>[4.86, 0.014]</code>，跨了一个簇）。错版 inertia 133.080，对版 89.828。⚠️ 重点是「178/180 个标签一样」：结果看起来只像「这次收敛得不太好」，没有报错、没有 <code>nan</code>、没有形状异常，所以没人会去怀疑那一行 <code>X[:3]</code> —— 而被污染的是数据本身，后面每个用到 <code>X</code> 的模型都在用它。</li>
-<li><strong>恒等于 <code>0.0</code></strong>。因为 <code>Wp is W</code> 和 <code>Wm is W</code> 都是 <code>True</code>，三个名字是同一个数组：<code>+eps</code> 之后紧接着 <code>-eps</code>，两次前向算的是同一个点。事后看不出来是因为加完又减完正好抵消，实测 <code>W[0] == 3.0</code> 是 <code>True</code> —— 连现场都没留下。⚠️ 典型的排查路径是去逐行核对反向传播公式，而那边根本没错。站内 <code>ml_md/08:207-208</code> 和 <code>附录C:71-72</code> 都老实写了 <code>.copy()</code>，那是承重的。</li>
-<li><strong>切断的</strong>：<code>a.copy()</code> （默认选它，意图最清楚）、<code>np.copy(a)</code>、<code>np.array(a)</code>（<code>copy</code> 默认 <code>True</code>）、<code>a.astype(dt)</code>。不切断的：⚠️ <code>np.asarray(a)</code>（职责是「保证是 ndarray」，不保证独立）、💀 <code>a[:]</code>（那是 Python list 的习惯，对 ndarray 给的是视图）。NumPy 2.x 里 <code>np.array(x, copy=False)</code> 从「能不拷就不拷」变成了「不许拷，做不到就抛 <code>ValueError: Unable to avoid copy while creating an array as requested.</code>」；想要老语义写 <code>np.asarray(x)</code>。</li>
-<li><strong>①</strong> 把「会改参数」写进函数名或第一行文档（NumPy 自己就是：<code>np.sort(a)</code> 返回新的、<code>a.sort()</code> 改自己）；② 要改就在函数第一行拷一份 <code>x = np.array(x, dtype=float)</code>（⚠️ 别写 <code>np.asarray</code>，它不拷）；③ 别把内部数组的视图当返回值交出去 —— 要么 <code>.copy()</code>，要么 <code>r.flags.writeable = False</code> 设成只读（<code>np.broadcast_to</code> 就是这么干的）。拷贝不免费：122 MB 的数组取视图 0.0001 ms、<code>.copy()</code> 10.1 ms，约 9 万倍，所以入口撒一次就够，别在循环里每行撒。</li>
+<li>
+<p>切片版 <code>b = [1 1 3 3 5 5]</code>（<strong>原数组变了</strong>），花式索引版 <code>b = [0 1 2 3 4 5]</code>（没变）。</p>
+<p>根源是 <code>np.shares_memory(b, b[::2])</code> 是 <code>True</code>、<code>np.shares_memory(b, b[[0,2]])</code> 是 <code>False</code> —— 切片给视图（同一块内存的另一种读法），花式索引给拷贝。</p>
+<p>⚠️ 两行都不报错、都返回一个正常数组，差别只在背后是不是同一块内存。</p>
+</li>
+<li>
+<p><strong><code>np.shares_memory(a, b)</code></strong>。<code>.base</code> 两个方向都会错：</p>
+<p>① 共享却判成不共享 —— <code>.base</code> 不指向上一层而是最终持有内存的那个，所以 <code>a.T.base is a</code> 是 <code>False</code>；</p>
+<p>② 不共享却判成共享 —— <code>a.T.reshape(12)</code> 和 <code>a[1:3, [0,2]]</code> 的 <code>.base</code> 都不是 <code>None</code>（指向过程中造出的临时拷贝），而 <code>shares_memory</code> 是 <code>False</code>。</p>
+<p>所以 <code>if x.base is not None</code> 这个写法不能用。</p>
+</li>
+<li>
+<p><code>a.T.base is a</code> 是 <strong><code>False</code></strong>（直觉会以为 <code>True</code>），<code>a.T.base is base</code> 是 <code>True</code>。只有当源数组自己就是内存持有者（<code>b.base is None</code>）时，<code>c.base is b</code> 那种写法才成立 —— 完整机制在 05 章第三节。</p>
+</li>
+<li>
+<p><strong><code>reshape</code></strong>（还有 <code>ravel</code>）：<code>a.reshape(4,3)</code> 共享内存，<code>a.T.reshape(12)</code> 不共享 —— 是否能给视图取决于目标形状能否由当前 strides 表达；不连续不等于必然拷贝。想保证不共享写 <code>flatten()</code>，它一定拷贝；<code>ravel()</code> 会尽量给视图。</p>
+</li>
+<li>
+<p>因为<strong>判据是「那个下标在不在等号左边」，和视图/拷贝是两件独立的事</strong>。</p>
+<p><code>c = b[[0,2]]</code> 走 <code>__getitem__</code>，抄一份给你；<code>b[[0,2]] += 1</code> 走 <code>__setitem__</code>，按下标直接往 <code>b</code> 里写：先读取、计算，再写回；读取过程中仍可能产生临时数组。</p>
+<p>实跑 <code>b[[0,2]] += 1</code> 之后 <code>b = [1 1 3 3 4 5]</code>。一句话：只有紧挨着等号左边的那个下标才是写，它左边的每一步都是读。</p>
+</li>
+<li>
+<p>💀 <strong>既不报错、也不生效</strong>：<code>a[[0,1]]</code> 先当 <code>__getitem__</code> 跑完造出一份临时拷贝，<code>[0] = 99</code> 写进那份拷贝，然后拷贝被回收 —— 实跑 <code>a[0]</code> 还是 <code>[0 1 2 3]</code>。比报错糟，是因为它连一行错误信息都不给你。</p>
+<p>正确写法是合并成一次下标：<code>a[[0,1], 0] = 99</code>（实跑 <code>a[:, 0] = [99 99 8]</code>）。</p>
+<p>⚠️ <code>a[0][1] = 99</code> 反而生效，因为 <code>a[0]</code> 恰好是视图 —— 语法一样，结果取决于读那一步给的是什么。</p>
+</li>
+<li>
+<p><code>X</code> <strong>被改掉 3 行</strong>（180 行里的前 3 行，被覆盖成了聚类中心；第 1 行从 <code>[0.32, 0.052]</code> 被搬到 <code>[4.86, 0.014]</code>，跨了一个簇）。错版 inertia 133.080，对版 89.828。</p>
+<p>⚠️ 重点是「178/180 个标签一样」：结果看起来只像「这次收敛得不太好」，没有报错、没有 <code>nan</code>、没有形状异常，所以没人会去怀疑那一行 <code>X[:3]</code> —— 而被污染的是数据本身，后面每个用到 <code>X</code> 的模型都在用它。</p>
+</li>
+<li>
+<p><strong>恒等于 <code>0.0</code></strong>。因为 <code>Wp is W</code> 和 <code>Wm is W</code> 都是 <code>True</code>，三个名字是同一个数组：<code>+eps</code> 之后紧接着 <code>-eps</code>，两次前向算的是同一个点。</p>
+<p>事后看不出来是因为加完又减完正好抵消，实测 <code>W[0] == 3.0</code> 是 <code>True</code> —— 连现场都没留下。</p>
+<p>⚠️ 典型的排查路径是去逐行核对反向传播公式，而那边根本没错。站内 <code>ml_md/08:207-208</code> 和 <code>附录C:71-72</code> 都老实写了 <code>.copy()</code>，那是承重的。</p>
+</li>
+<li>
+<p><strong>切断的</strong>：<code>a.copy()</code> （默认选它，意图最清楚）、<code>np.copy(a)</code>、<code>np.array(a)</code>（<code>copy</code> 默认 <code>True</code>）、<code>a.astype(dt)</code>。</p>
+<p>不切断的：⚠️ <code>np.asarray(a)</code>（职责是「保证是 ndarray」，不保证独立）、💀 <code>a[:]</code>（那是 Python list 的习惯，对 ndarray 给的是视图）。</p>
+<p>NumPy 2.x 里 <code>np.array(x, copy=False)</code> 从「能不拷就不拷」变成了「不许拷，做不到就抛 <code>ValueError: Unable to avoid copy while creating an array as requested.</code>」；想要老语义写 <code>np.asarray(x)</code>。</p>
+</li>
+<li>
+<p><strong>①</strong> 把「会改参数」写进函数名或第一行文档（NumPy 自己就是：<code>np.sort(a)</code> 返回新的、<code>a.sort()</code> 改自己）；</p>
+<p>② 要改就在函数第一行拷一份 <code>x = np.array(x, dtype=float)</code>（⚠️ 别写 <code>np.asarray</code>，它不拷）；</p>
+<p>③ 别把内部数组的视图当返回值交出去 —— 要么 <code>.copy()</code>，要么 <code>r.flags.writeable = False</code> 设成只读（<code>np.broadcast_to</code> 就是这么干的）。</p>
+<p>拷贝不免费：122 MB 的数组取视图 0.0001 ms、<code>.copy()</code> 10.1 ms，约 9 万倍，所以入口撒一次就够，别在循环里每行撒。</p>
+</li>
 </ol>
 </details>
-<hr />
-<h2 id="_9">🛑 可以停在这里</h2>
+<hr>
+<h3 id="_9">🛑 可以停在这里</h3>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>⭐ <strong>NumPy 的很多操作返回的不是新数据，是「同一块内存的另一种读法」。</strong> 改切片会改到原数组，改花式索引的结果不会——<strong>两行代码只差一对方括号，都不报错</strong>。</p>
-<p>⭐ <strong>判据一律写 <code>np.shares_memory</code>，不要用 <code>.base</code></strong>——它<strong>两个方向都会骗你</strong>：<code>a.T.base is a</code> 是 <code>False</code>（<code>.base</code> 指向最终持有内存的那个，不是上一层），而某些明明是拷贝的结果 <code>.base</code> 却不是 <code>None</code>（它挂在求值过程中的临时数组上）。</p>
-<p>⭐ 能概括全表的一句话：<strong>只改「怎么读」的是视图</strong>（切片、整数下标、加轴、转置、<code>view</code>、<code>broadcast_to</code>），<strong>需要重新挑元素或算出新数值的是拷贝</strong>（花式索引、布尔索引、一切算术、排序、<code>astype</code>）。⚠️ <strong><code>reshape</code> 和 <code>ravel</code> 是唯一「同一行代码两种行为」的</strong>——连续就给视图、不连续就<strong>一声不吭地拷一份</strong>，所以「压平且保证不共享」要写 <code>flatten()</code>。</p>
-<p>⚠️⚠️ <strong>最容易记反的一条</strong>：「花式索引给拷贝」<strong>不等于</strong>「花式索引改不了原数组」——<code>b[[0,2]] += 1</code> 确实改了，因为它走的是 <code>__setitem__</code>。⭐ <strong>判据是「那个下标在不在紧挨着等号左边」：只有它是写，它左边的每一步都是读。</strong></p>
-<p>💀 由此推出本章最坏的一种失败：<code>a[[0,1]][0] = 99</code> <strong>既不报错也不生效</strong>（先造出临时拷贝、写进去、拷贝被回收）。正确写法是<strong>合并成一次下标</strong>。</p>
-<p>💀 两场实测事故都属于「结果看起来只是差一点」：拿切片当 K-means 的初始中心，跑完<strong>原数据里有三行被覆盖成了聚类中心</strong>，而绝大多数标签仍然正确，读起来只像「这次收敛得不太好」；数值梯度检查少写两个 <code>.copy()</code>，<code>+eps</code> 和 <code>-eps</code> 算的是同一个点，<strong>梯度恒等于 0</strong>。</p>
-</blockquote>
-<p><strong>下一节</strong> 👉 <a href="05-内存布局与stride.html">05-内存布局与stride.md</a></p>
+<section class="reading-recap" aria-label="走神救援"><ul><li>判断两个 ndarray 的数据缓冲区是否共享，用 np.shares_memory(a, b)，不要用 .base 代替。</li><li>花式索引读出的结果是拷贝；直接向原数组下标赋值仍会写回。链式索引可能只改到临时拷贝。</li><li>K-means 实验只污染 3 行，却有 178/180 个标签相同；梯度检查少了独立拷贝，差分会变成 0。</li><li>需要独立数值缓冲区时用 .copy()；dtype=object 里的对象另需深拷贝。函数边界上的约定见第八节。</li></ul></section>
+
+<p><strong>下一节</strong> 👉 <a href="05-%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80%E4%B8%8Estride.html">05-内存布局与stride.md</a></p></section></div></div>
+<aside class="lesson-rail cross-rail" aria-label="本页阅读路线"><button type="button" class="lesson-route-toggle" aria-expanded="true" aria-controls="cross-route">本页阅读路线 <span aria-hidden="true">⌄</span></button>
+<div id="cross-route"><p class="lesson-position">路线可跳读，不表示已掌握</p><nav class="lesson-route-links" aria-label="正文分组"><a href="#read-observe">先观察：两种读取，两种结果</a><a href="#read-decide">怎么判断是否共享内存</a><a href="#read-write">读取结果是拷贝，不等于不能写回原数组</a><a href="#read-incidents">两场事故：结果正常，却改坏了输入</a><a href="#read-boundary">需要独立数据时，在哪一处切断</a><a href="#read-review">带着眼前的问题回来查</a></nav>
+<p class="cross-route-note">一次只处理眼前这一组。正文、图解、代码与答案都保留在页面里。</p><button class="lesson-save" type="button">记住当前位置</button><p class="lesson-save-status" role="status"></p></div></aside></div>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="03-广播的三条规则.html"><div class="dir">← 上一节</div>📡 03 · 广播的三条规则</a><a class="next" href="05-内存布局与stride.html"><div class="dir">下一节 →</div>🧱 05 · 内存布局与 stride</a></nav>
@@ -1102,5 +1265,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

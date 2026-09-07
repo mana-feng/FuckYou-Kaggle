@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -332,7 +332,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>接近上限时，把历史对话<strong>总结成摘要</strong>，用摘要 + 最近几轮重新开始。</p>
 <section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">[90K token 的对话历史]</span></div><div class="vb-flow-row"><span class="vb-flow-step">总结</span></div><div class="vb-flow-row"><span class="vb-flow-step">[2K 摘要] + [最近 3 轮原文]</span></div><div class="vb-flow-row"></div><div class="vb-flow-row"><span class="vb-flow-step">继续工作，注意力恢复清爽</span></div></div></section>
 <p><strong>⚠️ 压缩最容易做砸的地方</strong>：摘要提示词写得太笼统，导致丢关键细节。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ❌ 会丢东西的写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># ❌ 会丢东西的写法</span>
 <span class="s2">&quot;总结上面的对话&quot;</span>
 
 <span class="c1"># ✅ 必须显式列出要保留什么</span>
@@ -366,7 +366,8 @@ Markdown 太"软"，模型编辑时容易顺手重写整个文件。<strong>格�
 </blockquote>
 <h3 id="agent">武器三：子 Agent（上下文隔离）</h3>
 <p>把「大量阅读、少量结论」的任务派给一个<strong>独立上下文</strong>的子 Agent：</p>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">主 Agent（上下文珍贵）</span></div><div class="vb-tree-row"><span class="vb-tree-node">&quot;去调查这个报错的根因&quot;</span></div><div class="vb-tree-row"><span class="vb-tree-node">子 Agent：翻 50 个文件、读 8000 行日志</span></div><div class="vb-tree-row"><span class="vb-tree-node">（脏活在【自己的】上下文里干）</span></div><div class="vb-tree-row"><span class="vb-tree-node">只返回 200 字结论</span></div><div class="vb-tree-row"><span class="vb-tree-node">主 Agent 继续，完全没被污染 ✅</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-agentmd-04-1" style="--diagram-width:720px"><svg viewBox="0 0 720 485" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="方框表示不同角色或分支，箭头表示信息去向；图下保留各项的详细说明。"><title>方框表示不同角色或分支，箭头表示信息去向；图下保留各项的详细说明。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">调查过程留在独立上下文</text><rect x="230" y="60" width="260" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="360.0" y="88" font-size="18" text-anchor="middle" fill="var(--fg)">主 Agent：提出子问题</text><rect x="20.0" y="190" width="650.0" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="345.0" y="218" font-size="18" text-anchor="middle" fill="var(--fg)">子 Agent：翻阅资料</text><line x1="360" y1="108" x2="345.0" y2="190" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="345.0,190.0 341.7,180.2 351.5,182.0"/><line x1="345.0" y1="238" x2="360" y2="365" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="360.0,365.0 354.0,356.6 363.9,355.5"/><rect x="195" y="365" width="330" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="360.0" y="393" font-size="18" text-anchor="middle" fill="var(--fg)">主 Agent：接收结论后继续</text></svg><figcaption>方框表示不同角色或分支，箭头表示信息去向；图下保留各项的详细说明。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>主 Agent（上下文珍贵）</span></li><li><span>"去调查这个报错的根因"</span></li><li><span>子 Agent：翻 50 个文件、读 8000 行日志</span></li><li><span>（脏活在【自己的】上下文里干）</span></li><li><span>只返回 200 字结论</span></li><li><span>主 Agent 继续，完全没被污染 ✅</span></li></ul></section>
 <p><strong>什么任务适合派给子 Agent</strong>：</p>
 <div class="tw"><table>
 <thead>
@@ -581,9 +582,8 @@ Markdown 太"软"，模型编辑时容易顺手重写整个文件。<strong>格�
 <hr />
 <h2 id="_11">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>上下文=<strong>有限注意力预算</strong>不是硬盘，核心命题只有一句：<strong>找到能达成目标的最小高信号 token 集合</strong>。<strong>腐烂</strong>三因：注意力n²稀释份额（<strong>是分配问题不是容量问题</strong>）、长序列训练少、位置编码外推；⚠️<strong>它不是到上限才出问题，是从很早就开始的渐进式劣化</strong>。⚠️大海捞针只测检索不测推理，所以「窗口 200K 就能塞 200K」是错的。<strong>四武器</strong>：①压缩（90K 历史→<strong>2K 摘要 + 最近 3 轮原文</strong>；摘要提示词必须<strong>显式列出要保留什么</strong>——做过什么、卡在哪、下一步，以及文件路径、决策理由、报错原文、数字，否则会重复犯错；⭐检验方法是压缩后问它「<strong>我们刚才为什么放弃了方案 A</strong>」，答不上来它就会重新去试 A）②外置笔记（progress/decisions/todo 三件套，<strong>用JSON不用MD</strong>，格式刚性防改坏，MD 太软容易被整体重写）③子Agent隔离（大输入小输出的任务派出去：翻 50 个文件、读 8000 行日志都在它自己的上下文里干，<strong>只返回 200 字结论</strong>）④<strong>渐进式披露</strong>（最重要，贯穿Skills/ToolSearch/检索——Skills 只让 <strong>100 token 的元数据</strong>常驻、正文按需；<strong>把"可能有用"变成"可以取到"，而不是"已经在这"</strong>）。<strong>Claude5新规则：少即是多</strong>——系统提示词<strong>砍掉 80%</strong>，删掉给旧模型打的补丁，定期问"我可以停止做什么"。省钱两招：<strong>Prefix Caching（命中前提是前缀逐字节相同，所以动态内容必须放最后</strong>，💀<strong>时间戳放前面会毁掉全部缓存，100% 失效、成本翻好几倍</strong>）、控制工具返回体积（read_logs 的 5000 行会永久占着上下文，search_logs 只占 20 行）。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>上下文是有限的注意力预算，优先提供当前任务需要的高信号信息。</li><li>压缩时保留决定、理由、已做工作、错误与下一步，避免重新走失败的路。</li><li>大资料按需读取，长工具结果先检索过滤；把可取到与已放入上下文分开。</li><li>压缩后检查能否继续任务，而不只检查字数是否变少。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="04b-Agent记忆.html">04b-Agent记忆.md</a></p>
 <blockquote>
 <p>🧭 <strong>为什么紧接着是记忆</strong>：这一章讲的「压缩、外置笔记、子 Agent 隔离」全是在管<strong>当前这一轮</strong>的上下文。
@@ -616,5 +616,4 @@ Markdown 太"软"，模型编辑时容易顺手重写整个文件。<strong>格�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

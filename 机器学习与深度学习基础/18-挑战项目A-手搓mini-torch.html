@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,16 +271,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
- onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script><link rel="stylesheet" href="../assets/guided-lessons.css"><link rel="stylesheet" href="../assets/guided-batch1.css"><script defer src="../assets/guided-batch1.js"></script><link rel="stylesheet" href="../assets/guided-batch2.css"><script defer src="../assets/guided-batch2.js"></script><script defer src="../assets/guided-lessons.js"></script></head><body class="guided-reading">
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
@@ -305,14 +305,26 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 </div>
 </details>
-<h1 id="a-mini-torch">挑战项目 A · 手搓一个 mini-torch</h1>
+<div class="lesson-layout" data-lesson="ml-18" data-batch="ml-rest" data-reading-mode="project">
+<div class="lesson-content"><section class="lesson-hero" id="lesson-start" data-route="先知道这页解决什么">
+<div><p class="lesson-eyebrow">18 / 一次完成一个小任务</p><h1>先让一个数求对梯度，<br>再造一个小框架。</h1><p class="lesson-lead">mini-torch 的第一站是一个能检查答案的计算图，不是完整复刻训练框架。</p></div>
+<aside class="lesson-advice"><strong>一次只处理一个问题</strong><p>可以从入口直接跳到需要的部分。正文、图解、代码和检查点都在下方。</p><a href="#first-pause">先看懂这一点就可以停 →</a></aside></section>
+<div class="lesson-overview-grid">
+<section class="lesson-card" id="first-example" data-route="先看一个具体结果"><p class="lesson-kicker">先抓住一个具体结果</p><h2>从一个可验算的结果开始</h2><p>令 x=3，y=x×x，那么 y=9，dy/dx=6。先让你的反向传播得到 6，再加入更多运算，并与数值差分核对。</p></section>
+<section class="lesson-card lesson-task-entry" id="reading-choices" data-route="按需要选择下一步"><p class="lesson-kicker">接下来，按需要选一项</p><h2>你现在想看什么？</h2><nav aria-label="本页阅读入口"><a href="#adhd">选第一个小任务 <span aria-hidden="true">→</span></a><a href="#_3">从起步代码开始 <span aria-hidden="true">→</span></a><a href="#_6">逐项核对结果 <span aria-hidden="true">→</span></a></nav><p class="lesson-note">这些入口是选择，不是必须按顺序完成的任务。</p></section>
+<section class="lesson-card lesson-pause lesson-wide" id="first-pause" data-route="可以停在这里"><h2>可以停在这里</h2><p>mini-torch 的第一站是一个能检查答案的计算图，不是完整复刻训练框架。</p><a href="#full-lesson">需要更多细节时，继续看完整正文 →</a></section></div>
+<section class="lesson-full" id="full-lesson" aria-label="完整正文">
+<div class="lesson-divider"><span>继续探索</span><p>原有正文、图解和例子都在下方。按需跳转，不必一次读完。</p></div>
+<h2 id="a-mini-torch" class="lesson-original-title">挑战项目 A · 手搓一个 mini-torch</h2>
+<!-- guided-lesson: ml-18 -->
+
 <p>⏱ <strong>5–7 天</strong> ｜ 难度 ★★★★☆ ｜ 前置：第 7–11、15 章</p>
 <hr />
 <h2 id="_1">🎯 为什么选这个项目</h2>
 <p>第 8 章你手写了<strong>一个固定网络</strong>的反向传播。这个项目更进一步：
 <strong>造一个通用的自动微分引擎</strong>——任意搭网络，它自动求导。</p>
 <p>做完你会得到的东西：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">minitorch</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mt</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">minitorch</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mt</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
     <span class="n">mt</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span> <span class="n">mt</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
@@ -332,38 +344,179 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><strong>这是理解深度学习框架的分水岭。</strong> 之后你用任何框架，都知道皮下是什么。</p>
 <hr />
 <h2 id="_2">🏗️ 目标架构</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">minitorch/</span></div><div class="vb-tree-row"><span class="vb-tree-node">Tensor</span><span class="vb-tree-note">核心：数据 + 梯度 + 计算图节点</span></div><div class="vb-tree-row"><span class="vb-tree-node">.data numpy 数组</span></div><div class="vb-tree-row"><span class="vb-tree-node">.grad 梯度</span></div><div class="vb-tree-row"><span class="vb-tree-node">._backward 这个节点怎么把梯度传给父节点</span></div><div class="vb-tree-row"><span class="vb-tree-node">._prev 父节点集合</span></div><div class="vb-tree-row"><span class="vb-tree-node">运算符重载 __add__ __mul__ __matmul__ ·</span></div><div class="vb-tree-row"><span class="vb-tree-node">每个运算都：① 算结果 ② 记录怎么反传</span></div><div class="vb-tree-row"><span class="vb-tree-node">backward() 拓扑排序 + 从后往前调用 _backward</span></div><div class="vb-tree-row"><span class="vb-tree-node">nn.Module Linear / ReLU / Sequential / Dropout</span></div><div class="vb-tree-row"><span class="vb-tree-node">损失函数 MSE / BCEWithLogits / CrossEntropy</span></div><div class="vb-tree-row"><span class="vb-tree-node">optim SGD / Momentum / Adam</span></div></div></section>
+<p>先看关系：<strong>Tensor 是共同的核心；网络层、损失函数和优化器都围绕它工作。</strong> 下面不是执行顺序，也不是目录清单。</p>
+<div class="mini-architecture">
+<figure class="dia mini-architecture-diagram" id="mini-torch-architecture">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 430" role="img" aria-labelledby="mini-arch-title mini-arch-desc">
+<title id="mini-arch-title">mini-torch：Tensor 核心与三个模块的关系</title>
+<desc id="mini-arch-desc">Tensor 内含 data、grad、prev 和 backward 回调。网络层用 Tensor 计算输出，损失函数用 Tensor 计算损失，优化器读取 Tensor 的梯度并更新数据。三个模块并列，都依赖 Tensor。</desc>
+<text x="230" y="28" text-anchor="middle" font-size="20" font-weight="700" fill="var(--fg)">minitorch</text>
+<rect x="22" y="50" width="416" height="225" rx="14" fill="var(--quote-bg)" stroke="var(--accent)"/>
+<text x="230" y="83" text-anchor="middle" font-size="24" font-weight="700" fill="var(--fg)">Tensor · 共同核心</text>
+<text x="46" y="124" font-size="19" fill="var(--fg)">.data　数值（numpy 数组）</text>
+<text x="46" y="161" font-size="19" fill="var(--fg)">.grad　累积的梯度</text>
+<text x="46" y="198" font-size="19" fill="var(--fg)">._prev　父节点集合</text>
+<text x="46" y="235" font-size="19" fill="var(--fg)">._backward　这个节点的反传规则</text>
+<path d="M80 351 V305 H380 V351 M230 351 V275 M224 283 L230 275 L236 283" fill="none" stroke="var(--accent)" stroke-width="2"/>
+<rect x="17" y="352" width="126" height="62" rx="10" fill="var(--card)" stroke="var(--border)"/>
+<rect x="167" y="352" width="126" height="62" rx="10" fill="var(--card)" stroke="var(--border)"/>
+<rect x="317" y="352" width="126" height="62" rx="10" fill="var(--card)" stroke="var(--border)"/>
+<text x="80" y="390" text-anchor="middle" font-size="21" font-weight="700" fill="var(--fg)">网络层</text>
+<text x="230" y="390" text-anchor="middle" font-size="21" font-weight="700" fill="var(--fg)">损失函数</text>
+<text x="380" y="390" text-anchor="middle" font-size="21" font-weight="700" fill="var(--fg)">优化器</text>
+</svg>
+<figcaption>看连线：三个模块共用 Tensor，不是依次经过三个步骤。</figcaption>
+</figure>
+<div class="mini-architecture-notes">
+<p><strong>一次运算，做两件事</strong></p>
+<p><code>__add__</code>、<code>__mul__</code>、<code>__matmul__</code>：先算出结果，再记录这个结果如何把梯度传回父节点。</p>
+<p><strong>两个 backward，职责不同</strong></p>
+<ul>
+<li><code>._backward</code>：只负责当前节点怎么反传。</li>
+<li><code>backward()</code>：先拓扑排序整张图，再从输出往输入调用各节点的 <code>._backward</code>。</li>
+</ul>
+<p><strong>三个模块，各管一件事</strong></p>
+<ul>
+<li>网络层 <code>nn.Module</code>：Linear / ReLU / Sequential / Dropout，负责搭网络、算输出。</li>
+<li>损失函数：MSE / BCEWithLogits / CrossEntropy，负责衡量预测误差。</li>
+<li>优化器 <code>optim</code>：SGD / Momentum / Adam，负责用梯度更新参数。</li>
+</ul>
+</div>
+</div>
 <hr />
 <h2 id="adhd">🧠 ADHD 任务切分</h2>
-<h3 id="day-12">第一阶段：自动微分内核（Day 1–2）⭐ 最难也最关键</h3>
-<ul>
-<li>[ ] <strong>T1 (90min)</strong> <code>Tensor</code> 类：包 numpy 数组，加 <code>grad</code> / <code>_backward</code> / <code>_prev</code> 三个字段</li>
-<li>[ ] <strong>T2 (120min)</strong> 实现 <code>+</code> <code>*</code> <code>@</code> 三个运算的前向和反向。⭐ <strong>难点：广播的反向</strong>（形状不匹配时梯度要 sum 回去）</li>
-<li>[ ] <strong>T3 (90min)</strong> <code>backward()</code>：拓扑排序整张图，从输出往输入依次调 <code>_backward</code></li>
-<li>[ ] <strong>T4 (60min)</strong> ⭐ <strong>梯度检验</strong>：对每个运算做数值 vs 解析对比，误差 &lt; 1e-6 才算过</li>
-</ul>
-<h3 id="day-3">第二阶段：网络层与损失（Day 3）</h3>
-<ul>
-<li>[ ] <strong>T5 (60min)</strong> <code>Linear</code>（含参数初始化：Xavier / He）</li>
-<li>[ ] <strong>T6 (45min)</strong> 激活：<code>ReLU</code> / <code>Tanh</code> / <code>Sigmoid</code></li>
-<li>[ ] <strong>T7 (60min)</strong> 损失：<code>MSELoss</code> / <code>BCEWithLogitsLoss</code>（⭐ 注意数值稳定：用 logsumexp 技巧）</li>
-<li>[ ] <strong>T8 (45min)</strong> <code>Sequential</code> + <code>parameters()</code> 递归收集参数</li>
-</ul>
-<h3 id="day-4">第三阶段：优化器与训练（Day 4）</h3>
-<ul>
-<li>[ ] <strong>T9 (60min)</strong> <code>SGD</code>（含 momentum）和 <code>Adam</code></li>
-<li>[ ] <strong>T10 (45min)</strong> <code>zero_grad()</code> —— ⭐ 实现它的时候你就懂了「为什么梯度默认累加」</li>
-<li>[ ] <strong>T11 (60min)</strong> 用你的框架训练异或 + <code>load_digits</code> 手写数字</li>
-</ul>
-<h3 id="day-57">第四阶段：对拍与报告（Day 5–7）</h3>
-<ul>
-<li>[ ] <strong>T12 (90min)</strong> ⭐ <strong>和 PyTorch 对拍</strong>：同样的网络、同样的初始权重、同样的输入，两边的 loss 和梯度必须逐元素一致（误差 &lt; 1e-5）</li>
-<li>[ ] <strong>T13 (60min)</strong> 加 <code>Dropout</code>、<code>no_grad()</code> 上下文管理器</li>
-<li>[ ] <strong>T14 (90min)</strong> README：架构图、计算图可视化、对拍结果、「我从造轮子里理解了什么」</li>
-</ul>
+<p>一次只选一项。时间是参考，不是倒计时；较长的任务可以分几次完成。勾选表示你已核对该项结果，不代表页面替你运行了测试。</p>
+<nav class="mini-stage-nav" aria-label="四阶段任务跳转">
+<a href="#mini-stage-1">1 · 自动微分内核</a>
+<a href="#mini-stage-2">2 · 网络层与损失</a>
+<a href="#mini-stage-3">3 · 优化器与训练</a>
+<a href="#mini-stage-4">4 · 对拍与报告</a>
+</nav>
+<p id="mini-task-progress" class="mini-task-progress" role="status">共 14 项任务，可逐项勾选。</p>
+
+<div class="mini-project-stages">
+<section aria-labelledby="mini-stage-heading-1" class="mini-stage" id="mini-stage-1">
+<h3 id="mini-stage-heading-1">第一阶段 · 自动微分内核</h3>
+<p class="mini-stage-meta">Day 1–2 · T1–T4</p>
+<p>这一阶段最关键：先让一个小计算图求对梯度，再扩展网络。</p>
+<div class="mini-task-grid">
+<article class="mini-task">
+<p><label class="mini-task-title"><input type="checkbox" id="mini-task-t1" data-mini-task="t1"><span>T1 · 建立 Tensor</span></label></p>
+<p class="mini-task-time">参考用时 · 90 分钟</p>
+<p>用 <code>Tensor</code> 包住 numpy 数组，加入 <code>grad</code>、<code>_backward</code>、<code>_prev</code> 三个字段。</p>
+<p><strong>完成标志</strong>：一个对象里能找到数值、梯度和计算图信息。</p>
+</article>
+<article class="mini-task">
+<p><label class="mini-task-title"><input type="checkbox" id="mini-task-t2" data-mini-task="t2"><span>T2 · 实现三个运算</span></label></p>
+<p class="mini-task-time">参考用时 · 120 分钟，可按算子拆开做</p>
+<p>实现 <code>+</code>、<code>*</code>、<code>@</code> 的前向计算和反向传播。</p>
+<p><strong>完成标志</strong>：三个算子既能给出结果，也能把梯度传回输入。</p>
+<p class="mini-task-note">难点：广播的反向。形状不匹配时，梯度要 sum 回原来的形状。</p>
+</article>
+<article class="mini-task">
+<p><label class="mini-task-title"><input type="checkbox" id="mini-task-t3" data-mini-task="t3"><span>T3 · 串起整张图的反传</span></label></p>
+<p class="mini-task-time">参考用时 · 90 分钟</p>
+<p>实现 <code>backward()</code>：拓扑排序整张图，从输出往输入依次调用 <code>_backward</code>。</p>
+<p><strong>完成标志</strong>：共享节点等所有下游贡献累加齐，再向前传梯度。</p>
+</article>
+<article class="mini-task">
+<p><label class="mini-task-title"><input type="checkbox" id="mini-task-t4" data-mini-task="t4"><span>T4 · 检验每个算子的梯度</span></label></p>
+<p class="mini-task-time">参考用时 · 60 分钟</p>
+<p>逐个算子对比数值梯度与解析梯度。</p>
+<p><strong>完成标志</strong>：相对误差小于 1e-6；不能只凭网络能训练就跳过。</p>
+</article>
+</div>
+<p class="mini-stage-exit">停靠点：T1–T4 通过后，你已经有了一个可检验的自动微分内核。</p>
+</section>
+<section aria-labelledby="mini-stage-heading-2" class="mini-stage" id="mini-stage-2">
+<h3 id="mini-stage-heading-2">第二阶段 · 网络层与损失</h3>
+<p class="mini-stage-meta">Day 3 · T5–T8</p>
+<p>把已验证的算子组合起来，让搭网络不再需要手写每条连接。</p>
+<div class="mini-task-grid">
+<article class="mini-task">
+<p><label class="mini-task-title"><input type="checkbox" id="mini-task-t5" data-mini-task="t5"><span>T5 · 实现 Linear</span></label></p>
+<p class="mini-task-time">参考用时 · 60 分钟</p>
+<p>实现线性层，并加入 Xavier / He 参数初始化。</p>
+<p><strong>完成标志</strong>：线性层能产生正确形状的输出，参数参与计算图。</p>
+</article>
+<article class="mini-task">
+<p><label class="mini-task-title"><input type="checkbox" id="mini-task-t6" data-mini-task="t6"><span>T6 · 加入激活函数</span></label></p>
+<p class="mini-task-time">参考用时 · 45 分钟</p>
+<p>实现 ReLU、Tanh、Sigmoid。</p>
+<p><strong>完成标志</strong>：三种激活都能前向计算，并传回梯度。</p>
+</article>
+<article class="mini-task">
+<p><label class="mini-task-title"><input type="checkbox" id="mini-task-t7" data-mini-task="t7"><span>T7 · 实现损失函数</span></label></p>
+<p class="mini-task-time">参考用时 · 60 分钟</p>
+<p>实现 <code>MSELoss</code> 和 <code>BCEWithLogitsLoss</code>。</p>
+<p><strong>完成标志</strong>：能算出损失，并反传到预测值。</p>
+<p class="mini-task-note">注意数值稳定：BCEWithLogitsLoss 使用 logsumexp 技巧。</p>
+</article>
+<article class="mini-task">
+<p><label class="mini-task-title"><input type="checkbox" id="mini-task-t8" data-mini-task="t8"><span>T8 · 把层组合成网络</span></label></p>
+<p class="mini-task-time">参考用时 · 45 分钟</p>
+<p>实现 <code>Sequential</code> 和递归收集参数的 <code>parameters()</code>。</p>
+<p><strong>完成标志</strong>：多层能顺序运行，内部可训练参数都能被收集到。</p>
+</article>
+</div>
+<p class="mini-stage-exit">停靠点：现在能搭网络、算损失；下一阶段才加入参数更新。</p>
+</section>
+<section aria-labelledby="mini-stage-heading-3" class="mini-stage" id="mini-stage-3">
+<h3 id="mini-stage-heading-3">第三阶段 · 优化器与训练</h3>
+<p class="mini-stage-meta">Day 4 · T9–T11</p>
+<p>让参数真正更新，观察你的框架能不能学会一个小任务。</p>
+<div class="mini-task-grid">
+<article class="mini-task">
+<p><label class="mini-task-title"><input type="checkbox" id="mini-task-t9" data-mini-task="t9"><span>T9 · 实现优化器</span></label></p>
+<p class="mini-task-time">参考用时 · 60 分钟</p>
+<p>实现 SGD（含 momentum）和 Adam。</p>
+<p><strong>完成标志</strong>：调用更新方法后，参数按照对应规则改变。</p>
+</article>
+<article class="mini-task">
+<p><label class="mini-task-title"><input type="checkbox" id="mini-task-t10" data-mini-task="t10"><span>T10 · 显式清零梯度</span></label></p>
+<p class="mini-task-time">参考用时 · 45 分钟</p>
+<p>实现 <code>zero_grad()</code>，观察连续反传时梯度为什么默认累加。</p>
+<p><strong>完成标志</strong>：你能分别演示“累加梯度”和“清零后重新计算”。</p>
+</article>
+<article class="mini-task">
+<p><label class="mini-task-title"><input type="checkbox" id="mini-task-t11" data-mini-task="t11"><span>T11 · 跑通两次小训练</span></label></p>
+<p class="mini-task-time">参考用时 · 60 分钟</p>
+<p>用自己的框架训练异或，再训练 <code>load_digits</code> 手写数字。</p>
+<p><strong>完成标志</strong>：留下两次训练的损失记录；手写数字的最终验收见下方通关标准。</p>
+</article>
+</div>
+<p class="mini-stage-exit">停靠点：能训练是进展，但还不能替代与参考框架的逐项比较。</p>
+</section>
+<section aria-labelledby="mini-stage-heading-4" class="mini-stage" id="mini-stage-4">
+<h3 id="mini-stage-heading-4">第四阶段 · 对拍与报告</h3>
+<p class="mini-stage-meta">Day 5–7 · T12–T14</p>
+<p>对拍就是给两个框架相同条件，比较结果，而不只是看最后的准确率。</p>
+<div class="mini-task-grid">
+<article class="mini-task">
+<p><label class="mini-task-title"><input type="checkbox" id="mini-task-t12" data-mini-task="t12"><span>T12 · 与 PyTorch 对拍</span></label></p>
+<p class="mini-task-time">参考用时 · 90 分钟</p>
+<p>使用同样的网络、初始权重和输入，逐元素比较 loss 与梯度。</p>
+<p><strong>完成标志</strong>：误差小于 1e-5，并核对通关标准要求的前 10 步。</p>
+</article>
+<article class="mini-task">
+<p><label class="mini-task-title"><input type="checkbox" id="mini-task-t13" data-mini-task="t13"><span>T13 · 补上训练控制</span></label></p>
+<p class="mini-task-time">参考用时 · 60 分钟</p>
+<p>加入 <code>Dropout</code> 和 <code>no_grad()</code> 上下文管理器。</p>
+<p><strong>完成标志</strong>：检查 Dropout 的训练与推理行为，以及 no_grad 下不记录求导图的行为。</p>
+</article>
+<article class="mini-task">
+<p><label class="mini-task-title"><input type="checkbox" id="mini-task-t14" data-mini-task="t14"><span>T14 · 写下你理解的框架</span></label></p>
+<p class="mini-task-time">参考用时 · 90 分钟</p>
+<p>README 包含架构图、计算图可视化、对拍结果，以及“我从造轮子里理解了什么”。</p>
+<p><strong>完成标志</strong>：别人能顺着报告了解结构、复现比较，并看懂你的结论。</p>
+</article>
+</div>
+<p class="mini-stage-exit">停靠点：保留对拍记录和报告，再逐项核对下方通关标准。</p>
+</section>
+</div>
 <hr />
 <h2 id="_3">🔨 核心骨架（起步代码）</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Tensor</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">_prev</span><span class="o">=</span><span class="p">(),</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -522,11 +675,28 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </details>
 <hr />
 <h2 id="_9">🛑 可以停在这里</h2>
-<p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>造 mini-torch（<strong>5–7 天，前置第 7–11、15 章</strong>）：⭐<strong><code>Tensor</code> = 数据 + 梯度 + 计算图节点（<code>_prev</code> 前驱、<code>_backward</code> 怎么把梯度传给父节点）</strong>，<strong>每个运算都做两件事：①算结果 ②记录怎么反传</strong>；<code>backward()</code> 是<strong>先对整张图拓扑排序，再从输出往输入依次调 <code>_backward</code></strong>，⚠️<strong>不排序就会在某个节点梯度还没累加齐时往上传，得到错的结果</strong>。<strong>四阶段</strong>：<strong>内核</strong>（Tensor → 三个运算的前向反向 → 拓扑排序 → ⭐<strong>逐算子梯度检验，误差 &lt;1e-6 才算过</strong>）→ <strong>层与损失</strong>（BCE <strong>用 logsumexp 保数值稳定</strong>）→ <strong>优化器</strong>（⭐<strong>实现 <code>zero_grad()</code> 那一刻你就懂了"梯度为什么默认累加"——因为梯度累积需要这个行为，清零是你的责任，忘了训练就废</strong>）→ <strong>和 PyTorch 对拍</strong>。⚠️<strong>专属坑</strong>：⭐<strong>广播的反向最常错</strong>——<code>(32,64)+(64,)</code> 的反向必须把梯度 <strong>sum 回 <code>(64,)</code></strong>，不处理会形状报错或<strong>更糟：静默算错</strong>；<strong>梯度必须用 <code>+=</code> 而不是 <code>=</code></strong>（一个节点可能被多条路径用到，<strong>这就是 PyTorch 梯度累加的由来</strong>）；⚠️<strong>只测网络不测算子</strong>：能训不代表每个算子都对；💀<strong>原地改 numpy 数组会破坏计算图，调试到怀疑人生</strong>。<strong>两个硬标准</strong>：⭐<strong>①逐算子梯度检验 &lt;1e-6 ②和 PyTorch 对拍，前 10 步的 loss 和梯度逐元素一致 &lt;1e-5</strong>；⚠️<strong>不能互相替代</strong>——<strong>对拍只说"整体对不对"，不说"哪个算子错了"，而且两个算子的错可能互相抵消</strong>。做完之后，<strong>框架从黑箱变成"我写的这些东西的工程化版本"</strong>。</p>
-</blockquote>
+<section aria-label="走神救援" class="mini-rescue">
+<p><strong>走神救援 · 只记这四点</strong></p>
+<ul>
+<li>Tensor 保存数值、梯度和计算图信息；每次运算既算结果，也记录反传规则。</li>
+<li><code>backward()</code> 排好顺序再反传；共享节点的梯度要先累加齐。</li>
+<li>广播的梯度要收回原形状；梯度是否清零，由你显式控制。</li>
+<li>两道检验都要过：逐算子梯度检验，以及与 PyTorch 对拍。能训练不等于算对了。</li>
+</ul>
+</section>
+<p>今天可以停下。下次回到四阶段任务区，从尚未完成的一项继续。</p>
 <p><strong>下一个挑战</strong> 👉 <a href="19-挑战项目B-四种解法对决.html">19-挑战项目B-四种解法对决.md</a></p>
+</section></div>
+<aside class="lesson-rail" aria-label="本节学习路线">
+<button type="button" class="lesson-route-toggle" aria-expanded="true" aria-controls="lesson-route">本节学习路线 <span aria-hidden="true">⌄</span></button>
+<div id="lesson-route">
+<p class="lesson-position" aria-live="polite">从第一站开始</p>
+<div class="lesson-track" aria-hidden="true"><span></span></div>
+<nav class="lesson-route-links" aria-label="章节跳转"></nav>
+<div class="lesson-rail-note"><strong>一次只读一张卡片</strong><p>先找到眼前的问题。长代码可以展开阅读，正文和图解不会被省略。</p></div>
+<button type="button" class="lesson-save">记住当前位置</button>
+<p class="lesson-save-status" role="status"></p>
+</div></aside></div>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="17-实战项目.html"><div class="dir">← 上一节</div>🔨 17 · 实战项目</a><a class="next" href="19-挑战项目B-四种解法对决.html"><div class="dir">下一节 →</div>🥊 挑战B · 四种解法对决</a></nav>
@@ -553,5 +723,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

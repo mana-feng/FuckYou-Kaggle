@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -517,7 +517,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><strong>实践含义</strong>：偏差-方差是<strong>回归任务的精确工具、分类任务的有用直觉</strong>。</p>
 <h3 id="2_1">② 双下降现象</h3>
 <p>深度学习里出现了「双下降」，打破了经典的 U 型曲线：</p>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">误差</span></div><div class="vb-tree-row"><span class="vb-tree-node">___</span><span class="vb-tree-note">参数量超过样本数后，误差【再次下降】</span></div><div class="vb-tree-row"><span class="vb-tree-node">__ ___</span></div><div class="vb-tree-row"><span class="vb-tree-node">模型复杂度</span></div><div class="vb-tree-row"><span class="vb-tree-node">↑经典U型 ↑插值阈值</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="double-descent-restored" style="--diagram-width:480px"><svg viewBox="0 0 480 390" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="示意测试误差可能先呈 U 型，在插值阈值附近升高，之后再次下降。不是所有数据与模型都会出现此走势，也不是一次实测结果。"><title>示意测试误差可能先呈 U 型，在插值阈值附近升高，之后再次下降。不是所有数据与模型都会出现此走势，也不是一次实测结果。</title><line x1="55" y1="310" x2="445" y2="310" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="445.0,310.0 436.0,315.0 436.0,305.0"/><line x1="55" y1="310" x2="55" y2="40" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="55.0,40.0 60.0,49.0 50.0,49.0"/><text x="17" y="30" font-size="18" text-anchor="start" fill="var(--fg)">误差</text><text x="290" y="354" font-size="18" text-anchor="start" fill="var(--fg)">模型复杂度</text><path d="M70 72 C100 180 128 263 166 248 C207 239 226 78 250 48 C274 90 278 220 327 250 C364 271 395 272 428 274" fill="none" stroke="var(--accent)" stroke-width="4"/><line x1="250" y1="52" x2="250" y2="310" stroke="var(--muted)" stroke-width="2" stroke-dasharray="5 5"/><text x="251" y="335" font-size="17" text-anchor="middle" fill="var(--fg)">插值阈值</text><text x="95" y="115" font-size="17" text-anchor="start" fill="var(--fg)">经典 U 型区域</text><text x="297" y="174" font-size="17" text-anchor="start" fill="var(--fg)">越过峰值后</text><text x="316" y="201" font-size="17" text-anchor="start" fill="var(--fg)">再次下降</text></svg><figcaption>示意测试误差可能先呈 U 型，在插值阈值附近升高，之后再次下降。不是所有数据与模型都会出现此走势，也不是一次实测结果。</figcaption></figure>
 <p>💡 <strong>怎么理解</strong>：
 - 偏差-方差分解仍然正确（它是数学恒等式，不可能错）
 - 但「复杂度增加 ⇒ 方差增加」这个经验规律在超参数化区间不成立
@@ -528,7 +528,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_8">🔬 六、怎么实际估计偏差和方差</h2>
 <p>理论上要"所有可能的训练集"，实践中用 <strong>bootstrap 近似</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">estimate_bias_variance</span><span class="p">(</span><span class="n">model_fn</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">n_rounds</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
     <span class="n">preds</span> <span class="o">=</span> <span class="p">[]</span>
@@ -611,9 +611,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_11">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>⭐<strong>偏差方差不是比喻，是个能推导出来的等式</strong>：期望测试误差 = <strong>偏差² + 方差 + σ²</strong>（偏差＝弹着点中心离靶心多远，方差＝散多开）。⚠️<strong>期望是对"所有可能的训练集"取的</strong>——你只有一个训练集，所以<strong>方差看不见，但它真实存在且决定泛化</strong>。四个推论：①⭐<strong>σ² 是天花板</strong>，误差不可能低于它；分数卡住时先估 σ²，接近了就<strong>该改数据质量、加特征、降标注噪声，而不是换模型</strong>；②复杂度只是<strong>在偏差和方差之间搬运</strong>，两者之和的最小点＝最优复杂度；③⭐<strong>加数据只降方差、不降偏差</strong>（n→∞ 方差→0，偏差由模型假设决定）→ <strong>欠拟合时加再多数据也没用</strong>，学习曲线平了＝方差到底了＝该改模型；④<strong>"无偏"不一定好</strong>——<strong>正则化故意引入偏差换方差大降</strong>，总误差反而更小，这是岭回归比最小二乘泛化好的原因。⭐<strong>这个等式直接解释了集成为什么有效</strong>：M 个模型取平均，若完全独立则 <strong><code>Var(f̄) = Var(f)/M</code>、偏差一点不动</strong>（100 棵树方差降到 1/100）→ Bagging 该配<strong>高方差低偏差的深树</strong>。但"完全独立"做不到，真实是 <strong><code>Var(f̄) = ρσ² + (1−ρ)σ²/M</code></strong>：⚠️<strong>M→∞ 时第二项趋于 0，第一项 ρσ² 却不随 M 减小</strong>，方差卡在 ρσ² → <strong>降低相关性 ρ 和增加 M 同样重要</strong>，这就是<strong>随机森林"随机选特征"的数学理由</strong>（都看全部特征就都先用最强特征分裂，树长得像、ρ 高、平均也没用）。<strong>Boosting 拟合残差、降的是偏差</strong> → 配<strong>浅树（深度 3–8）</strong>，树越多方差上升、<strong>必须早停</strong>。两个补充：⚠️0-1 损失<strong>没有干净的加法分解</strong>（方差有时甚至有益），所以它是<strong>回归的精确工具、分类的有用直觉</strong>；<strong>双下降</strong>里分解<strong>仍然正确</strong>（数学恒等式），失效的是"复杂度增加⇒方差增加"这条经验规律。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>平方损失下，期望预测误差可以分为偏差、方差与不可约噪声。</li><li>方差描述训练集变化带来的预测变化，不是单次训练曲线的抖动。</li><li>集成的收益与模型相关性有关；增加模型数量不等于无限降低误差。</li><li>双下降不推翻分解本身，而是提醒我们复杂度与误差的经验走势并非总是 U 型。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="09-PAC学习.html">09-PAC学习.md</a> ⭐</p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -641,5 +640,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

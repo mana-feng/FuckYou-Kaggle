@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,16 +271,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
- onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script><link rel="stylesheet" href="../assets/guided-lessons.css"><script defer src="../assets/guided-lessons.js"></script></head><body class="guided-reading">
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
@@ -293,303 +293,205 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
 <ul>
 <li><a href="#_1">🎯 一句话</a></li>
-<li><a href="#if-else">🌲 一、决策树：一堆 if-else</a></li>
-<li><a href="#id3-c45-cart">🪓 二、分裂准则的演进：ID3 → C4.5 → CART</a></li>
-<li><a href="#_5">🔗 和站内其他章的关系</a></li>
+<li><a href="#_2">🌲 一、先看树在做什么</a></li>
+<li><a href="#id3-cart">🪓 二、进阶：为什么判据从 ID3 走到 CART</a></li>
+<li><a href="#_5">🔗 接下来去哪</a></li>
 <li><a href="#_6">✅ 检查点</a></li>
 <li><a href="#_7">🛑 可以停在这里</a></li>
 </ul>
 </div>
 </details>
-<h1 id="04">04 · 决策树：怎么切一刀</h1>
-<p>⏱ <strong>26 分钟</strong> ｜ ⭐ <strong>判据换过三代，主线是同一个毛病：偏好取值多的特征</strong></p>
+<div class="lesson-layout" data-lesson="tree">
+<div class="lesson-content"><section class="lesson-hero" id="lesson-start" data-route="目标与直觉">
+<div><p class="lesson-eyebrow">04 / 决策树 · 一次只看一刀</p><h1>先看懂树怎么问，<br>再看懂哪一刀更好。</h1><p class="lesson-lead">每次提一个问题，把混在一起的样本分成更容易判断的小群。</p></div>
+<aside class="lesson-advice"><strong>先看结果，再看符号</strong><p>不必一次读完三个判据。遇到不认识的函数，点公式里的蓝色下划线。</p><a href="#first-pause">直接去停靠点 →</a></aside>
+</section>
+<section class="lesson-mission"><div><p class="lesson-kicker">你先带走这句就够了</p><h2>切得更纯，<br>也要能判断新样本。</h2><p>训练集上每个人都能被单独记住，但这样的规则不一定有用。</p></div><ol class="lesson-steps"><li><span>1</span><strong>提出候选问题</strong><p>例如“这个值是否小于某个阈值”。</p></li><li><span>2</span><strong>比较切前切后</strong><p>子节点里，类别是不是更一致了？</p></li><li><span>3</span><strong>给树加刹车</strong><p>限制深度与叶子样本数，再用验证集检验。</p></li></ol></section>
+<div class="lesson-overview-grid">
+<section class="lesson-card" id="tree-example" data-route="看一刀的结果"><p class="lesson-kicker">01 / 从结果理解纯度</p><h2>20 个样本：10 正、10 负</h2><p>如果一刀切成下面两群，我们就更容易判断每一群了。</p><div class="lesson-split-example"><div><strong>左边</strong><p>9 正 / 1 负</p></div><div><strong>右边</strong><p>1 正 / 9 负</p></div></div><p class="lesson-note">两边都以一种类别为主。这比两边仍然各有一半正、一半负更有信息。</p></section>
+<section class="lesson-card" id="tree-formula" data-route="点开公式看含义"><p class="lesson-kicker">02 / 纯度怎样变成数字</p><h2>先认识基尼系数</h2><div class="formula-box" data-formula-name="基尼系数">$$\text{Gini}(D)=1-\sum_{k=1}^{K}p_k^2$$</div><p>p 是某类在这一群里的占比。<strong>基尼越小，类别越集中。</strong></p><div class="lesson-totals"><p><strong>切前：0.50</strong><small>正、负各占 50%</small></p><p><strong>切后：0.18</strong><small>每群里一类占 90%</small></p></div><p class="lesson-note">点击 Gini、求和符号或 p，查看每一部分的解释。</p></section>
+<section class="lesson-card lesson-pause lesson-wide" id="first-pause" data-route="可以停在这里"><p class="lesson-kicker">一个小停靠点</p><h2>可以停在这里</h2><p>你已经知道树在比较什么：让子节点更一致，同时防止把训练集背下来。</p><a href="#full-lesson">继续看树的图解与三个判据 →</a></section>
+</div>
+
+<section class="lesson-full" id="full-lesson" aria-label="完整正文">
+<div class="lesson-divider"><span>继续探索</span><p>完整推导与细节都在下方。一次读一张卡片，随时可以停。</p></div>
+<h2 id="04" class="lesson-original-title">04 · 决策树：怎么切一刀</h2>
+<!-- guided-lesson: tree -->
+
+<p>⏱ <strong>核心 12 分钟</strong> ｜ 判据进阶约 10 分钟 ｜ ⭐ <strong>树不断提问，选让下一群样本更一致的那一问</strong></p>
 <hr />
 <h2 id="_1">🎯 一句话</h2>
-<p><strong>决策树就是在特征空间里切方块</strong>：贪心试遍所有切分点，选让子节点最「纯」的那一刀。
-⭐ 而「纯」怎么量，历史上换过三代（ID3 → C4.5 → CART）——
-<strong>这条演进线不是考点，是因为 GBDT / XGBoost / LightGBM 的每一棵树都长在第三代上面。</strong></p>
+<p><strong>决策树就是一连串“是／否”问题：每次挑一刀，把混在一起的样本分成更容易判断的小群。</strong>
+先理解“为什么这一刀好”，就能读懂树为什么不需要标准化、为什么容易过拟合，以及为什么后面的 GBDT 都使用 CART。</p>
 <figure class="dia" data-fig="decision_tree"><svg viewBox="0 0 660 308" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="决策树的轴对齐切分与对应树结构"><defs><marker id="a5__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker><marker id="a5l__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--link)"/></marker><marker id="a5g__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--done)"/></marker></defs><rect x="50" y="60" width="190" height="190" fill="none" stroke="var(--border)" stroke-width="1.5"/><line x1="137.4" y1="60" x2="137.4" y2="250" stroke="var(--accent)" stroke-width="2.4"/><line x1="137.4" y1="139.8" x2="240" y2="139.8" stroke="var(--accent)" stroke-width="2.4"/><circle cx="136.0" cy="143.6" r="4" fill="var(--muted)"/><circle cx="138.5" cy="153.5" r="4" fill="var(--link)"/><circle cx="85.1" cy="152.7" r="4" fill="var(--link)"/><circle cx="200.7" cy="232.1" r="4" fill="var(--link)"/><circle cx="67.2" cy="96.2" r="4" fill="var(--link)"/><circle cx="58.0" cy="63.4" r="4" fill="var(--muted)"/><circle cx="174.2" cy="133.0" r="4" fill="var(--muted)"/><circle cx="52.9" cy="149.6" r="4" fill="var(--link)"/><circle cx="86.1" cy="204.0" r="4" fill="var(--link)"/><circle cx="138.1" cy="166.3" r="4" fill="var(--muted)"/><circle cx="148.6" cy="128.3" r="4" fill="var(--muted)"/><circle cx="175.9" cy="163.1" r="4" fill="var(--link)"/><circle cx="239.6" cy="60.8" r="4" fill="var(--link)"/><circle cx="184.5" cy="190.1" r="4" fill="var(--link)"/><circle cx="104.9" cy="236.7" r="4" fill="var(--link)"/><circle cx="126.1" cy="89.1" r="4" fill="var(--link)"/><circle cx="232.0" cy="89.0" r="4" fill="var(--muted)"/><circle cx="89.8" cy="77.0" r="4" fill="var(--link)"/><circle cx="236.3" cy="174.5" r="4" fill="var(--link)"/><circle cx="169.6" cy="102.1" r="4" fill="var(--muted)"/><circle cx="66.6" cy="186.8" r="4" fill="var(--muted)"/><circle cx="194.0" cy="227.6" r="4" fill="var(--link)"/><circle cx="69.2" cy="238.6" r="4" fill="var(--link)"/><circle cx="83.8" cy="143.7" r="4" fill="var(--link)"/><circle cx="86.2" cy="110.9" r="4" fill="var(--link)"/><circle cx="172.3" cy="227.9" r="4" fill="var(--link)"/><circle cx="90.4" cy="198.7" r="4" fill="var(--muted)"/><circle cx="202.6" cy="192.2" r="4" fill="var(--muted)"/><circle cx="90.0" cy="175.1" r="4" fill="var(--muted)"/><circle cx="171.9" cy="230.9" r="4" fill="var(--muted)"/><circle cx="90.5" cy="200.9" r="4" fill="var(--link)"/><circle cx="112.5" cy="193.7" r="4" fill="var(--link)"/><circle cx="67.1" cy="139.3" r="4" fill="var(--link)"/><circle cx="164.2" cy="179.4" r="4" fill="var(--link)"/><circle cx="232.2" cy="158.1" r="4" fill="var(--link)"/><circle cx="214.6" cy="215.3" r="4" fill="var(--link)"/><circle cx="222.6" cy="94.6" r="4" fill="var(--muted)"/><circle cx="86.1" cy="109.5" r="4" fill="var(--muted)"/><circle cx="87.4" cy="69.5" r="4" fill="var(--muted)"/><circle cx="164.7" cy="169.9" r="4" fill="var(--link)"/><circle cx="57.4" cy="67.1" r="4" fill="var(--link)"/><circle cx="183.9" cy="201.2" r="4" fill="var(--muted)"/><circle cx="163.3" cy="194.2" r="4" fill="var(--link)"/><circle cx="186.9" cy="236.9" r="4" fill="var(--link)"/><circle cx="156.3" cy="88.0" r="4" fill="var(--muted)"/><circle cx="103.2" cy="75.7" r="4" fill="var(--link)"/><text class="dia-t" x="145.0" y="272" font-size="12" text-anchor="middle" fill="var(--muted)" font-weight="600">特征平面</text><text class="dia-t" x="129.4" y="52" font-size="11" text-anchor="end" fill="var(--accent)" font-weight="700">第①刀</text><text class="dia-t" x="244" y="133.8" font-size="11" text-anchor="end" fill="var(--accent)" font-weight="700">第②刀</text><rect x="344" y="60" width="112" height="36" rx="8" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><text class="dia-t" x="400" y="83" font-size="11.5" text-anchor="middle" fill="var(--fg)" font-weight="600">x₁ &lt; 3.5 ?</text><rect x="300" y="146" width="60" height="32" rx="7" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/><text class="dia-t" x="330" y="167" font-size="12" text-anchor="middle" fill="var(--fg)" font-weight="700">是 → A</text><rect x="434" y="144" width="112" height="36" rx="8" fill="var(--card)" stroke="var(--accent)" stroke-width="1.8"/><text class="dia-t" x="490" y="167" font-size="11.5" text-anchor="middle" fill="var(--fg)" font-weight="600">x₂ &lt; 7 ?</text><rect x="400" y="224" width="60" height="32" rx="7" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/><text class="dia-t" x="430" y="245" font-size="12" text-anchor="middle" fill="var(--fg)" font-weight="700">是 → B</text><rect x="530" y="224" width="60" height="32" rx="7" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/><text class="dia-t" x="560" y="245" font-size="12" text-anchor="middle" fill="var(--fg)" font-weight="700">否 → A</text><line x1="400" y1="96" x2="330" y2="146" stroke="var(--border)" stroke-width="1.6"/><line x1="400" y1="96" x2="490" y2="144" stroke="var(--border)" stroke-width="1.6"/><line x1="490" y1="180" x2="430" y2="224" stroke="var(--border)" stroke-width="1.6"/><line x1="490" y1="180" x2="560" y2="224" stroke="var(--border)" stroke-width="1.6"/><text class="dia-t" x="340" y="30" font-size="13" text-anchor="middle" fill="var(--fg)" font-weight="700">一棵树 = 一串「切一刀」——而且每刀都必须平行于坐标轴</text><text class="dia-t" x="340" y="292" font-size="12.5" text-anchor="middle" fill="var(--accent)" font-weight="700">⭐ 所以斜的决策边界，树要用很多刀去逼近成阶梯 —— 这就是它的归纳偏置</text></svg><figcaption>左边是被切开的特征平面，右边是对应的树 —— 一一对应。⭐ 注意每刀都<b>必须平行于坐标轴</b>：所以斜的决策边界，树只能用很多刀逼近成阶梯。这就是树的归纳偏置。</figcaption></figure>
 
+<hr />
+<h2 id="_2">🌲 一、先看树在做什么</h2>
+<figure class="dia"><svg viewBox="0 0 760 390" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="两层决策树根据肿瘤特征依次判断良性或恶性"><defs><marker id="tree-arrow__f2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 Z" fill="var(--accent)"/></marker></defs><rect x="245" y="24" width="270" height="58" rx="14" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><text class="dia-t" x="380" y="59" text-anchor="middle" font-size="17" font-weight="700" fill="var(--fg)">最差周长 ≤ 106？</text><path d="M335 82 V112 H175 V142" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#tree-arrow__f2)"/><path d="M425 82 V112 H585 V142" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#tree-arrow__f2)"/><text class="dia-t" x="250" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent)">是</text><text class="dia-t" x="510" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent)">否</text><rect x="52" y="152" width="246" height="58" rx="14" fill="var(--card)" stroke="var(--border)" stroke-width="2"/><text class="dia-t" x="175" y="187" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">最差凹点 ≤ 0.14？</text><rect x="472" y="152" width="226" height="58" rx="14" fill="var(--quote-bg)" stroke="var(--danger)" stroke-width="2"/><text class="dia-t" x="585" y="179" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">恶性</text><path d="M130 210 V248 H88 V278" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#tree-arrow__f2)"/><path d="M220 210 V248 H270 V278" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#tree-arrow__f2)"/><rect x="28" y="288" width="180" height="62" rx="14" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><text class="dia-t" x="118" y="325" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">良性</text><rect x="238" y="288" width="180" height="62" rx="14" fill="var(--quote-bg)" stroke="var(--danger)" stroke-width="2"/><text class="dia-t" x="328" y="325" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">恶性</text><text class="dia-t" x="585" y="334" text-anchor="middle" font-size="14" fill="var(--muted)">每经过一个问题，样本就被分进更小的一群</text></svg><figcaption>先用一个特征粗分，再用下一个特征细分；一片叶子里的样本越像，最后的预测越有把握。</figcaption></figure>
+
+<h3 id="_3">哪一刀值得切</h3>
+<p>树会试遍候选特征与切分点，选让子节点更“纯”的那一个。这里的“纯”不必先背公式：<strong>切前混在一起，切后每一边大多是同一类，这一刀就好。</strong></p>
+<div class="panels">
+<div class="panel"><div class="ph">不需要标准化</div><ul class="pl"><li>只问大小关系，例如“周长是否小于 106”</li><li>厘米换成毫米，问题的顺序不变</li></ul><div class="pt">和线性模型不同，尺度不影响切分顺序</div></div>
+<div class="panel"><div class="ph">能处理非线性与交互</div><ul class="pl"><li>问题可以一层套一层</li><li>不同分支可问不同特征</li></ul><div class="pt">if-else 的嵌套，本身就是特征交互</div></div>
+<div class="panel"><div class="ph">但极易背答案</div><ul class="pl"><li>一直切到每片叶子只剩一个训练样本</li><li>训练集全对，新样本却答不好</li></ul><div class="pt">这就是树最常见的过拟合</div></div>
+</div>
+
+<h3 id="_4">四个刹车，先记用途</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>旋钮</th>
+<th>它阻止什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>max_depth</code></td>
+<td>问题问得太深、规则过细</td>
+</tr>
+<tr>
+<td><code>min_samples_leaf</code></td>
+<td>叶子只剩极少样本</td>
+</tr>
+<tr>
+<td><code>min_samples_split</code></td>
+<td>很小的一群还继续被切开</td>
+</tr>
+<tr>
+<td><code>max_leaf_nodes</code></td>
+<td>整棵树长出过多叶子</td>
+</tr>
+</tbody>
+</table></div>
 <blockquote>
-<p>📍 <strong>这一章讲一棵树。</strong> 把几百棵组合起来才是表格数据的王者，那是
-<a href="04a-集成学习与GBDT.html">04a · 集成学习与 GBDT</a>；
-再往下「下一棵树该怎么长」的闭式解在 <a href="04b-XGBoost的推导.html">04b · XGBoost 的推导</a>。</p>
+<p>🔑 最常先调的是 <code>max_depth</code>。它们共同的目标不是“让树变弱”，而是让规则有机会在新样本上也成立。</p>
+<p>🛑 <strong>可以停在这里。</strong> 你已经理解一棵树如何工作、为什么它强、以及为什么它需要刹车。
+想立刻进入集成学习，去 <a href="04a-集成学习与GBDT.html">04a · 集成学习与 GBDT</a>；想知道“纯度”判据的历史与高基数陷阱，再继续。</p>
 </blockquote>
 <hr />
-<h2 id="if-else">🌲 一、决策树：一堆 if-else</h2>
-<figure class="dia"><svg viewBox="0 0 760 390" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="一个两层决策树根据肿瘤特征依次判断良性或恶性"><defs><marker id="tree-arrow__f2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 Z" fill="var(--accent)"/></marker></defs><rect x="245" y="24" width="270" height="58" rx="14" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><text class="dia-t" x="380" y="59" text-anchor="middle" font-size="17" font-weight="700" fill="var(--fg)">最差周长 ≤ 106？</text><path d="M335 82 V112 H175 V142" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#tree-arrow__f2)"/><path d="M425 82 V112 H585 V142" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#tree-arrow__f2)"/><text class="dia-t" x="250" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent)">是</text><text class="dia-t" x="510" y="105" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent)">否</text><rect x="52" y="152" width="246" height="58" rx="14" fill="var(--card)" stroke="var(--border)" stroke-width="2"/><text class="dia-t" x="175" y="187" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">最差凹点 ≤ 0.14？</text><rect x="472" y="152" width="226" height="58" rx="14" fill="var(--quote-bg)" stroke="var(--danger)" stroke-width="2"/><text class="dia-t" x="585" y="179" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">恶性</text><text class="dia-t" x="585" y="200" text-anchor="middle" font-size="14" fill="var(--muted)">把握 95%</text><path d="M130 210 V248 H88 V278" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#tree-arrow__f2)"/><path d="M220 210 V248 H270 V278" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#tree-arrow__f2)"/><text class="dia-t" x="110" y="241" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent)">是</text><text class="dia-t" x="246" y="241" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent)">否</text><rect x="28" y="288" width="180" height="62" rx="14" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><text class="dia-t" x="118" y="315" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">良性</text><text class="dia-t" x="118" y="338" text-anchor="middle" font-size="14" fill="var(--muted)">把握 98%</text><rect x="238" y="288" width="180" height="62" rx="14" fill="var(--quote-bg)" stroke="var(--danger)" stroke-width="2"/><text class="dia-t" x="328" y="315" text-anchor="middle" font-size="16" font-weight="700" fill="var(--fg)">恶性</text><text class="dia-t" x="328" y="338" text-anchor="middle" font-size="14" fill="var(--muted)">把握 80%</text><text class="dia-t" x="585" y="334" text-anchor="middle" font-size="14" fill="var(--muted)">每经过一个问题，</text><text class="dia-t" x="585" y="356" text-anchor="middle" font-size="14" fill="var(--muted)">样本就被分进更小的一群</text></svg><figcaption>决策树就是一连串可解释的“是／否”问题：先用一个特征粗分，再用下一个特征细分，最后抵达预测结果。</figcaption></figure>
-<p>💡 <strong>它就是在特征空间里切方块</strong>：每次沿着某个特征切一刀，把数据分成两半。</p>
-<h3 id="_2">怎么决定「切哪个特征、切在哪」</h3>
-<p>贪心：试遍所有特征的所有切分点，选<strong>让子节点最"纯"</strong>的那个。</p>
-<p>「纯度」的两种度量：</p>
-<div class="tw"><table>
-<thead>
-<tr>
-<th>指标</th>
-<th>公式</th>
-<th>直觉</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>基尼不纯度</strong></td>
-<td>$1-\sum p_k^2$</td>
-<td>随机抽两个样本，类别不同的概率。<strong>CART 默认</strong></td>
-</tr>
-<tr>
-<td><strong>信息熵</strong></td>
-<td>$-\sum p_k\log p_k$</td>
-<td>不确定性。信息增益 = 熵减少了多少</td>
-</tr>
-</tbody>
-</table></div>
-<p>💡 <strong>人话</strong>：</p>
-<blockquote>
-<p>切一刀之前左右混在一起（不纯），切完之后左边基本都是良性、右边基本都是恶性（纯）。
-<strong>纯度提升最多的那一刀，就是最好的切法。</strong>
-两个指标实践中差别很小，用默认的基尼就行。</p>
-</blockquote>
-<h3 id="_3">关键特性</h3>
-<div class="tw"><table>
-<thead>
-<tr>
-<th>特性</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>✅ <strong>不需要标准化</strong></td>
-<td>只看特征的相对大小，尺度无关（对比第 3 章线性模型）</td>
-</tr>
-<tr>
-<td>✅ <strong>天然处理非线性和特征交互</strong></td>
-<td>if-else 嵌套自带交叉</td>
-</tr>
-<tr>
-<td>✅ <strong>可解释</strong></td>
-<td>能画出来给业务看</td>
-</tr>
-<tr>
-<td>❌ <strong>极易过拟合</strong></td>
-<td>不限制的话，每个叶子一个样本 = 完全背答案（第 1 章的 100%）</td>
-</tr>
-<tr>
-<td>❌ <strong>不稳定</strong></td>
-<td>数据变一点，树的结构可能全变</td>
-</tr>
-</tbody>
-</table></div>
-<p>控制过拟合的四个旋钮：<code>max_depth</code>（最常用）、<code>min_samples_leaf</code>、<code>min_samples_split</code>、<code>max_leaf_nodes</code></p>
-<hr />
-<h2 id="id3-c45-cart">🪓 二、分裂准则的演进：ID3 → C4.5 → CART</h2>
-<p>上一节说「选让子节点最纯的那一刀」。但「纯」到底怎么量，历史上换过三代。这条演进线不只是考点——GBDT / XGBoost / LightGBM 家族的每一棵树都长在第三代（CART）上面，不搞清楚它，后面几节会变成背结论。</p>
-<h3 id="1-id3">① ID3：信息增益</h3>
-<p>$$\text{Gain}(D,a) = H(D) - \sum_{v} \frac{|D^v|}{|D|}\, H(D^v)$$</p>
-<p>💡 人话：熵 $H$ 是「你还有多不确定」。切一刀，不确定性掉了多少；掉得最多的那一刀就选它。</p>
-<p>⚠️ <strong>但它有一个致命偏好：一个特征的取值越多，信息增益天然越大。</strong></p>
-<p>举个能算的例子。20 个样本，10 正 10 负，所以 $H(D)=1$ bit：</p>
-<div class="tw"><table>
-<thead>
-<tr>
-<th>候选特征</th>
-<th>切完之后</th>
-<th>信息增益</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>A：一个真有用的二值特征</strong></td>
-<td>左（9 正 1 负）、右（1 正 9 负），加权熵 0.469</td>
-<td>$1-0.469=\mathbf{0.531}$</td>
-</tr>
-<tr>
-<td><strong>B：用户 ID</strong>（20 个取值，一人一个）</td>
-<td>20 个叶子各 1 个样本，熵全是 0</td>
-<td>$1-0=\mathbf{1.000}$ ← 赢了</td>
-</tr>
-</tbody>
-</table></div>
-<p><strong>ID3 会毫不犹豫地选用户 ID</strong>，而这棵树在新用户身上一个都答不出来——它把这 20 个样本<strong>背下来</strong>了。</p>
-<h3 id="2-c45">② C4.5：信息增益率——除以「这个特征自己有多碎」</h3>
-<p>C4.5 的补丁很直接：<strong>给切得太碎的特征加罚分</strong>。</p>
+<h2 id="id3-cart">🪓 二、进阶：为什么判据从 ID3 走到 CART</h2>
+<p>三代判据都在奖励“切完更一致”，但都要防止模型把训练样本切得太碎。</p>
+<h3 id="id3">ID3：奖励不确定性的下降</h3>
+<p>$$\text{Gain}(D,a)=H(D)-\sum_v \frac{|D^v|}{|D|}H(D^v)$$</p>
+<p><strong>坑在于取值太多的特征。</strong> 20 个样本、10 正 10 负时，真正有用的二值特征切完后的信息增益可为 0.531；“每人一个值”的用户 ID 能把每个样本单独分开，拿到 1.000，却是在背答案。</p>
+<h3 id="c45">C4.5：给“切得太碎”加成本</h3>
 <p>$$\text{GainRatio}(D,a)=\frac{\text{Gain}(D,a)}{IV(a)}$$</p>
-<p>$$IV(a)=-\sum_v \frac{|D^v|}{|D|}\log_2\frac{|D^v|}{|D|}$$</p>
-<p>💡 IV（固有值 / intrinsic value）到底是什么：把「样本落进了哪个分支」本身当成一个随机变量，算它的熵。⭐ 注意 IV 和标签 $y$ 一点关系都没有，它纯粹度量「这一刀切得多碎、多均匀」。切成越多份、越均匀，IV 越大。</p>
-<p>接着上面的数算：</p>
-<div class="tw"><table>
-<thead>
-<tr>
-<th>特征</th>
-<th>信息增益</th>
-<th>IV</th>
-<th><strong>增益率</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A（二值）</td>
-<td>0.531</td>
-<td>$\log_2 2=1.000$</td>
-<td><strong>0.531</strong> ✅ 反超</td>
-</tr>
-<tr>
-<td>B（用户 ID，20 个取值）</td>
-<td>1.000</td>
-<td>$\log_2 20=4.322$</td>
-<td><strong>0.231</strong></td>
-</tr>
-</tbody>
-</table></div>
-<p>换了判据，A 就赢了。 这就是「为什么要除以固有值」的全部答案：分子奖励「分得准」，分母惩罚「分得碎」。</p>
-<p>⚠️ <strong>但增益率又矫枉过正了</strong>——它反过来偏爱取值少的特征。</p>
-<details>
-<summary>🔍 C4.5 怎么收拾这个矫枉过正，以及它还多做了什么（第一次读可以跳过）</summary>
-<p>C4.5 实际用的是<strong>两步启发式</strong>：先筛出信息增益高于平均水平的候选，再在这一批里挑增益率最高的。
-（面试能说出「C4.5 不是单纯用增益率」是加分项。）</p>
-<p>它相比 ID3 还多做了三件事：</p>
-<ul>
-<li><strong>连续特征</strong>：排序后取相邻取值的中点当候选切分点</li>
-<li><strong>缺失值</strong>：按各分支的样本比例，把缺失样本带权重分到每一支</li>
-<li><strong>后剪枝</strong></li>
-</ul>
-</details>
-<h3 id="3-cart-log">③ CART：基尼系数——把 log 换成乘法</h3>
-<p>$$\text{Gini}(D)=1-\sum_k p_k^2$$</p>
-<p>为什么更快：熵要算 $\log$，基尼只要乘法和减法。一棵树训练时要算几十万次纯度，这个常数差是实打实的。</p>
-<p>为什么可以这么换：⭐ <strong>基尼就是熵的一阶近似</strong>，两条曲线形状几乎重合，所以<strong>实践中选哪个对结果几乎没影响</strong>——用默认的基尼就行。</p>
-<details>
-<summary>🔍 「基尼是熵的一阶近似」这句话怎么来的（想看推导再点开）</summary>
-<p>把 $-\ln p$ 在 $p=1$ 处做一阶泰勒展开，得到 $-\ln p \approx 1-p$；
-代回熵的定义就成了 $\sum_k p_k(1-p_k)=1-\sum_k p_k^2$，正是基尼。</p>
-<p>⭐ 两者的最大值也在同一点：二分类下 $p=0.5$ 时，熵取最大值 1 bit、基尼取最大值 0.5。</p>
-</details>
-<p>⚠️ <strong>很多人搞错的一点：基尼并没有解决「偏好多值特征」。</strong> 还是上面那组数——A 的基尼下降是 <strong>0.32</strong>，用户 ID 的基尼下降是 0.50，基尼照样选用户 ID。这个毛病是所有「增益类判据」共有的，不是熵独有的。</p>
-<p><strong>CART 的解法不是换判据，是换结构</strong>：</p>
-<ul>
-<li>⭐ <strong>CART 永远只长二叉树。</strong> 哪怕特征有 20 个取值，一次也只能切成「属于某个子集 / 不属于」两支，<strong>不允许一刀切成 20 份</strong>——「切得太碎」这条路被结构堵死了。</li>
-<li>再配 <code>min_samples_leaf</code> 和代价复杂度剪枝，把剩下的风险压住。</li>
-</ul>
+<p>这里 $IV$ 只衡量样本被分到多少分支、分得有多均匀；它和标签无关。用户 ID 的分母更大，所以增益率会降下来。</p>
 <blockquote>
-<p>⚠️ <strong>这就是本章后面那个「特征重要性偏向高基数特征」的坑的根</strong>：
-CART 只是把病<strong>压住</strong>了，没治好。取值多的特征仍然有更多候选切分点可以试，仍然更容易被选中。</p>
+<p><strong>带走</strong>：分子奖励“分得准”，分母惩罚“分得碎”。它不是完美规则，也会偏爱取值很少的特征。</p>
 </blockquote>
-<h3 id="_4">三代对比</h3>
+<h3 id="cart">CART：今天真正会遇到的版本</h3>
+<p>$$\text{Gini}(D)=1-\sum_{k=1}^{K}p_k^2$$</p>
+<p>CART 只长二叉树，也能做回归，所以提升树家族用的是 <strong>CART 回归树</strong>。基尼和熵都是混杂度指标；实践中常得到相近的切分，默认使用基尼即可。不要把“基尼是熵的一阶近似”当成必须记住的结论。</p>
+<blockquote>
+<p>⚠️ 二叉树只能<strong>缓解</strong>高基数偏好，不能消灭它：取值多的特征仍有更多候选切分点。实际还要用每叶最少样本、剪枝与验证集来防过拟合。</p>
+</blockquote>
+<details>
+<summary>🔍 三代算法的完整对照（需要时再打开）</summary>
 <div class="tw"><table>
 <thead>
 <tr>
 <th></th>
-<th><strong>ID3</strong></th>
-<th><strong>C4.5</strong></th>
-<th><strong>CART</strong> ⭐</th>
+<th>ID3</th>
+<th>C4.5</th>
+<th>CART</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>判据</strong></td>
+<td>判据</td>
 <td>信息增益</td>
-<td>信息增益率（两步启发式）</td>
-<td>基尼（分类）/ <strong>平方误差（回归）</strong></td>
+<td>增益率</td>
+<td>基尼（分类）／回归误差</td>
 </tr>
 <tr>
-<td><strong>树形</strong></td>
+<td>树形</td>
 <td>多叉</td>
 <td>多叉</td>
-<td><strong>只能二叉</strong></td>
+<td>二叉</td>
 </tr>
 <tr>
-<td><strong>连续特征</strong></td>
-<td>❌</td>
-<td>✅ 中点候选</td>
-<td>✅</td>
+<td>连续特征</td>
+<td>原始版本不支持</td>
+<td>支持</td>
+<td>支持</td>
 </tr>
 <tr>
-<td><strong>缺失值</strong></td>
-<td>❌</td>
-<td>✅ 按权重分到各支</td>
-<td>✅ 代理切分</td>
-</tr>
-<tr>
-<td><strong>能不能做回归</strong></td>
-<td>❌</td>
-<td>❌</td>
-<td>✅ ⭐</td>
-</tr>
-<tr>
-<td><strong>剪枝</strong></td>
-<td>无</td>
-<td>悲观后剪枝</td>
-<td>代价复杂度剪枝（CCP）</td>
+<td>回归</td>
+<td>不支持</td>
+<td>不支持</td>
+<td>支持</td>
 </tr>
 </tbody>
 </table></div>
-<blockquote>
-<p>🔑 <strong>最后一行是本节通向后面所有内容的接口</strong>：
-⭐ <strong>Boosting 家族里的每一棵树都是 CART 回归树。</strong>
-因为每棵新树要拟合的是「负梯度」——那是一串<strong>连续实数</strong>，不是类别标签。
-<strong>ID3 和 C4.5 只会分类，从一开始就没有资格进这个家族</strong>；sklearn 里也只实现了 CART。</p>
-</blockquote>
+</details>
 <hr />
-<hr />
-<h2 id="_5">🔗 和站内其他章的关系</h2>
+<h2 id="_5">🔗 接下来去哪</h2>
 <div class="tw"><table>
 <thead>
 <tr>
 <th>去哪</th>
-<th>为什么要去那里</th>
+<th>为何现在去</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>⭐ <a href="04a-集成学习与GBDT.html">04a · 集成学习与 GBDT</a></td>
-<td><strong>单棵树很弱</strong>（实测 91.8%）。把几百棵按 Bagging / Boosting 组合起来才是表格数据的最强模型 —— 而它们每一棵都是这一章的 CART</td>
+<td>单棵树不稳定；下一步看很多棵树怎样互相补错</td>
 </tr>
 <tr>
-<td><a href="16-特征工程基础.html">第 16 章 · 特征工程基础</a></td>
-<td>⭐ 第二节那个「偏好取值多的特征」在实践里最常见的形态就是<strong>高基数类别特征</strong>，那里的 <strong>OOF 目标编码</strong>是标准解</td>
+<td><a href="05-评估与过拟合.html">05 · 评估与过拟合</a></td>
+<td>想判断“背答案”有没有真的发生</td>
 </tr>
 <tr>
-<td><a href="05-评估与过拟合.html">第 5 章 · 评估与过拟合</a></td>
-<td>这一章说树「极易过拟合，不限制就每叶一个样本」——<strong>过拟合的判断标准在那一章</strong></td>
-</tr>
-<tr>
-<td><a href="03-线性模型.html">第 3 章 · 线性模型</a></td>
-<td>对照着看：线性模型要标准化、要手工造交叉项，树两样都不用</td>
+<td><a href="16-特征工程基础.html">16 · 特征工程基础</a></td>
+<td>想处理高基数类别特征与目标编码</td>
 </tr>
 <tr>
 <td><a href="../机器学习的数学原理/01b-KL散度.html">机器学习的数学原理 01b · KL 散度</a></td>
-<td>信息增益里那个熵 $H$ 的严格来历</td>
+<td>想严格理解熵的来源</td>
 </tr>
 </tbody>
 </table></div>
 <hr />
 <h2 id="_6">✅ 检查点</h2>
 <ol>
-<li>决策树怎么决定在哪里切分？两种纯度指标是什么？</li>
-<li>ID3 的信息增益有什么致命偏好？C4.5 除以「固有值」是在惩罚什么？</li>
-<li>基尼比熵快在哪？它解决「偏向多值特征」了吗？CART 靠什么压住？</li>
-<li>为什么 Boosting 家族的树只能是 CART，不能是 ID3 / C4.5？</li>
-<li>控制树过拟合的四个旋钮是什么？最常用的是哪个？</li>
+<li>决策树每次切分，真正想让什么变好？</li>
+<li>为什么用户 ID 这类高基数特征会诱骗树？</li>
+<li><code>max_depth</code> 与 <code>min_samples_leaf</code> 各在防什么？</li>
+<li>为什么 GBDT／XGBoost 里的树是 CART 回归树？</li>
 </ol>
 <details>
 <summary>👀 答案</summary>
 <ol>
-<li>贪心试遍所有特征的所有切分点，选让子节点最纯的那一刀。指标：基尼不纯度（默认）、信息熵。</li>
-<li><strong>取值越多，信息增益天然越大</strong>——20 个样本时「用户 ID」拿满分 1.000，真正有用的二值特征只有 0.531，ID3 会选 ID，等于把样本背下来。固有值 $IV$ 惩罚的是「这一刀切得多碎」，和标签无关：ID 的 IV $=\log_2 20=4.322$，增益率掉到 0.231，二值特征的 0.531 反超。</li>
-<li>快在<strong>不用算 log</strong>（基尼是 $-\ln p\approx 1-p$ 的一阶泰勒近似，和熵曲线几乎重合）。⚠️ 没解决——同一组数里 A 的基尼下降 0.32、用户 ID 是 0.50，照样选 ID。CART 靠只长二叉树（20 个取值也只能切两支）+ <code>min_samples_leaf</code> + 剪枝压住，但没治好。</li>
-<li>因为每棵新树拟合的是<strong>负梯度</strong>——连续实数，不是类别标签，只有 CART 能做回归。sklearn 里也只实现了 CART。</li>
-<li><code>max_depth</code>（最常用）、<code>min_samples_leaf</code>、<code>min_samples_split</code>、<code>max_leaf_nodes</code>。</li>
+<li>让每个子节点里的样本更一致，最终预测更有把握。</li>
+<li>它能把训练样本切成很多极小分支，训练纯度很高，却没有学到可泛化的规律。</li>
+<li>前者限制问题的层数，后者禁止只有极少样本的叶子；两者都在防背答案。</li>
+<li>每棵新树拟合的是连续的修正量，而 CART 可以做回归。</li>
 </ol>
 </details>
 <hr />
 <h2 id="_7">🛑 可以停在这里</h2>
-<p>读到这里<strong>一棵树你已经完整了</strong>：怎么切、判据换过哪三代、以及那个贯穿三代的毛病。</p>
-<p>⚠️ <strong>什么时候看下一页</strong>：你想知道为什么「几百棵弱树」比一棵强树好用得多。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>决策树就是<strong>切方块</strong>：<strong>贪心试遍所有切分点，选让子节点最纯的那一刀</strong>。不用标准化、自带特征交互、能画给业务看；⚠️ 缺点是<strong>极易过拟合</strong>（不限制就长成每叶一个样本）和<strong>不稳定</strong>（数据变一点结构可能全变）。四个旋钮压过拟合：<code>max_depth</code>（最常用）、<code>min_samples_leaf</code>、<code>min_samples_split</code>、<code>max_leaf_nodes</code>。⭐⭐ <strong>判据换过三代，而主线是同一个毛病：偏好取值多的特征。</strong> 💀 <strong>ID3 的信息增益</strong>下，20 个样本 10 正 10 负时「用户 ID」这种一人一个值的特征能拿<strong>满分 1.000</strong>，而真正有用的二值特征只有 <strong>0.531</strong> —— ID3 会毫不犹豫选 ID，<strong>那棵树在新用户身上一个都答不出来</strong>，它把样本背下来了。<strong>C4.5 的增益率</strong>除以<strong>固有值 IV</strong>来矫正：IV 把「样本落进哪个分支」当随机变量算熵，<strong>和标签一点关系都没有</strong>，纯粹度量「这一刀切得多碎」——用户 ID 的 IV 是 $\log_2 20=4.322$，增益率掉到 <strong>0.231</strong>，二值特征的 <strong>0.531</strong> 反超。⚠️ 但增益率又<strong>矫枉过正、反过来偏爱取值少的特征</strong>。<strong>CART 的基尼</strong>快在<strong>不用算对数</strong>（它是 $-\ln p \approx 1-p$ 的一阶泰勒近似，两条曲线几乎重合）；⚠️⭐ <strong>但基尼并没有解决多值偏好</strong> —— 同一组数里 A 的基尼下降 <strong>0.32</strong>、用户 ID 是 <strong>0.50</strong>，照样选 ID。<strong>CART 的解法不是换判据，是换结构：它永远只长二叉树</strong>，哪怕特征有 20 个取值也只能切成「属于某子集 / 不属于」两支，「切得太碎」这条路被结构堵死。⭐ 这就是后面「特征重要性偏向高基数特征」那个坑的根 —— <strong>只是压住了，没治好</strong>。⭐⭐ 最后一条通向后面所有内容：<strong>Boosting 家族里每一棵树都是 CART 回归树</strong>，因为新树要拟合的是<strong>负梯度</strong>（一串连续实数），<strong>ID3 和 C4.5 只会分类，从一开始就没资格进这个家族</strong>。</p>
-</blockquote>
+<ul>
+<li>树就是连续问问题；每一刀都想让下一群样本更一致。</li>
+<li>它不用标准化、能表达非线性，但很容易一直切到背答案；用深度与叶子样本数刹车。</li>
+<li>ID3 会偏爱取值多的特征；C4.5 给“切得太碎”加成本；CART 用二叉结构缓解风险并支持回归。</li>
+<li>下一页的提升树，正是让许多棵 CART 回归树轮流补错。</li>
+</ul>
 <p><strong>下一节</strong> 👉 <a href="04a-集成学习与GBDT.html">04a-集成学习与GBDT.md</a></p>
+</section></div>
+<aside class="lesson-rail" aria-label="本节学习路线">
+<button type="button" class="lesson-route-toggle" aria-expanded="true" aria-controls="lesson-route">本节学习路线 <span aria-hidden="true">⌄</span></button>
+<div id="lesson-route">
+<p class="lesson-position" aria-live="polite">从第一站开始</p>
+<div class="lesson-track" aria-hidden="true"><span></span></div>
+<nav class="lesson-route-links" aria-label="章节跳转"></nav>
+<div class="lesson-rail-note"><strong>一次只读一张卡片</strong><p>蓝色下划线可以点开解释。关掉窗口，接着原来的位置读。</p></div>
+<button type="button" class="lesson-save">记住当前位置</button>
+<p class="lesson-save-status" role="status"></p>
+</div></aside></div>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="03-线性模型.html"><div class="dir">← 上一节</div>📐 03 · 线性模型</a><a class="next" href="04a-集成学习与GBDT.html"><div class="dir">下一节 →</div>🌳 04a · 集成学习与 GBDT</a></nav>
@@ -616,5 +518,4 @@ CART 只是把病<strong>压住</strong>了，没治好。取值多的特征仍�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

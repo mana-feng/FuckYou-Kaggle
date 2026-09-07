@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -314,7 +314,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_2">🧩 一、先把那一百倍跑出来</h2>
 <p>⭐ <strong>这一节的所有数字都是实跑的</strong>，机器是一台普通 Windows 笔记本，<code>g++ 15.1.0 (MinGW-w64)</code> + CPython 3.13.14。⚠️ <strong>你的绝对值一定不同，要看的是倍数。</strong></p>
 <p>C++ 这边写一个最普通的求和，编译成动态库：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// c01_kernel.cpp</span>
+<div class="codehilite" data-code-language="cpp"><pre><span></span><code><span class="c1">// c01_kernel.cpp</span>
 <span class="c1">// Linux/macOS: g++ -O2 -std=c++17 -shared -fPIC c01_kernel.cpp -o libkernel.so</span>
 <span class="c1">// Windows(MinGW): g++ -O2 -std=c++17 -shared -static c01_kernel.cpp -o kernel.dll</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstdint&gt;</span>
@@ -337,7 +337,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>Python 这边用标准库的 <code>ctypes</code> 调它 —— <strong>不需要装任何东西</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># c01_bench.py</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># c01_bench.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">ctypes</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">platform</span>
 
 <span class="n">N</span> <span class="o">=</span> <span class="mi">20_000_000</span>
@@ -411,7 +411,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>不是「Python 慢」这种废话，是<strong>三笔具体的开销</strong>，每一笔都能看见。</p>
 <h3 id="_4">🚦 第一笔：每一步都要过一遍解释器</h3>
 <p><code>s += i</code> 这一行编译成什么，标准库直接能看：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># c01_box.py 的一部分</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># c01_box.py 的一部分</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">dis</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
@@ -425,7 +425,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>RESUME 0</p><p>LOAD_FAST_LOAD_FAST 1 (s, i)</p><p>BINARY_OP 13 (+=)</p><p>STORE_FAST 0 (s)</p><p>LOAD_FAST 0 (s)</p><p>RETURN_VALUE</p></div></section>
 <p>⭐ <strong>这几条指令，每循环一次都要重新走一遍</strong> —— 取指、分派、执行。C++ 那边这一整段被编译成几条机器指令，而且循环外面什么都不用做。</p>
 <h3 id="_5">🚦 第二笔：每个数都是一个对象</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">array</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">array</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>          <span class="c1"># 28</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getsizeof</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>          <span class="c1"># 28</span>
@@ -547,7 +547,7 @@ Python 在 PyTorch 里的角色是编排：决定调用哪个算子、按什么�
 <li><code>ctypes.CDLL</code> —— 调用期间<strong>放开</strong>锁</li>
 <li><code>ctypes.PyDLL</code> —— 调用期间<strong>一直握着</strong>锁</li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="c1"># c01_gil.py</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># c01_gil.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">ctypes</span><span class="o">,</span><span class="w"> </span><span class="nn">threading</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">platform</span>
 
 <span class="n">lib_name</span> <span class="o">=</span> <span class="s2">&quot;kernel.dll&quot;</span> <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Windows&quot;</span> <span class="k">else</span> <span class="s2">&quot;./libkernel.so&quot;</span>
@@ -637,7 +637,7 @@ Python 在 PyTorch 里的角色是编排：决定调用哪个算子、按什么�
 <p><code>ctypes</code> 的好处是不用装东西，坏处是<strong>你得自己声明每个签名</strong>，而且只能传标量和指针。真正做扩展时用的是 <strong>pybind11</strong>：一个只有头文件的库，把 Python C API 那一大堆样板压成几行。</p>
 <p>🗓️ <strong>未实跑 —— 本机没装 pybind11，而且是 MinGW g++ 配 MSVC 编译的 CPython，编不出能导入的扩展模块。</strong>
 ⚠️ 下面这段代码来自 pybind11 的标准用法，<strong>作者没有在本机跑过</strong>，请以官方文档为准。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// mymod.cpp   🗓️ 未实跑 —— 本机无编译环境</span>
+<div class="codehilite" data-code-language="cpp"><pre><span></span><code><span class="c1">// mymod.cpp   🗓️ 未实跑 —— 本机无编译环境</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;pybind11/pybind11.h&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cstdint&gt;</span>
 <span class="k">namespace</span><span class="w"> </span><span class="nn">py</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nn">pybind11</span><span class="p">;</span>
@@ -656,7 +656,7 @@ Python 在 PyTorch 里的角色是编排：决定调用哪个算子、按什么�
 
 <p>对照第四节：<code>py::call_guard&lt;py::gil_scoped_release&gt;()</code> 做的就是 <code>ctypes.CDLL</code> 默认做的那件事 —— <strong>进这个函数之前放开锁，出来之前拿回来</strong>。它是一个 RAII 对象（<a href="02-值语义与所有权.html">02 章</a>会讲这个词），所以哪怕函数中途抛异常，锁也一定会被还回去。</p>
 <p>如果只想放开其中一段，手动开一个作用域：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// 🗓️ 未实跑</span>
+<div class="codehilite" data-code-language="cpp"><pre><span></span><code><span class="c1">// 🗓️ 未实跑</span>
 <span class="n">py</span><span class="o">::</span><span class="n">array_t</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">process</span><span class="p">(</span><span class="n">py</span><span class="o">::</span><span class="n">array_t</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">arr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">buf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">arr</span><span class="p">.</span><span class="n">request</span><span class="p">();</span>
 <span class="w">    </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">buf</span><span class="p">.</span><span class="n">ptr</span><span class="p">);</span><span class="w">   </span><span class="c1">// ⭐ 先把裸指针拿到手</span>
@@ -799,5 +799,4 @@ Python 在 PyTorch 里的角色是编排：决定调用哪个算子、按什么�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

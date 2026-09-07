@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -382,7 +382,7 @@ $$</p>
 换 Prewitt（把 2 都改成 1）得 24 / 24 / 24 / 12，结论一样只差尺度 ——
 所以这类算子从不争「谁更准」，<strong>差别只在噪声鲁棒性</strong>。</p>
 <p>复现只要四行（纯标准库，本机跑过）：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">conv</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>                                 <span class="c1"># 3×3 卷积</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">conv</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>                                 <span class="c1"># 3×3 卷积</span>
     <span class="k">return</span> <span class="p">[[</span><span class="nb">sum</span><span class="p">(</span><span class="n">img</span><span class="p">[</span><span class="n">y</span><span class="o">+</span><span class="n">dy</span><span class="p">][</span><span class="n">x</span><span class="o">+</span><span class="n">dx</span><span class="p">]</span> <span class="o">*</span> <span class="n">k</span><span class="p">[</span><span class="n">dy</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="n">dx</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># ⭐ 核与窗口逐格相乘再求和</span>
                  <span class="k">for</span> <span class="n">dy</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">dx</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
              <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">img</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">img</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
@@ -565,9 +565,8 @@ $$</p>
 <hr />
 <h2 id="_10">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>💀 原罪：<strong>透视投影多对一、图像不可逆</strong>，⚠️ 神经网络也没解决，只是用统计先验压住。视觉分<strong>两阶段</strong>：图像处理 → 场景分析（出符号描述如 <code>((C B A FLOOR))</code>）。⭐<strong>平滑</strong>＝滑窗取均值，4×4 上只有 <strong>4 个</strong>合法位置，四窗和 63/45/45/33 → <strong>7 / 5 / 5 / 4</strong>，一刀切被抹成 <strong>9→7→5→4→3 的斜坡</strong>，这就是<strong>平滑与边缘天然打架</strong>。⭐<strong>边缘</strong>＝求梯度：Sobel 在左上窗口给 $G_x = G_y = -18$，四个位置强度 <strong>36 / 36 / 36 / 12</strong>、方向全 <strong>−135°</strong>；Prewitt 是 <strong>24 / 24 / 24 / 12</strong>，同一个东西只差尺度。<strong>分裂-合并</strong>找区域，<strong>没有参数要训</strong>。三面体世界线条只有 <strong>→ 遮挡 / + 凸 / − 凹</strong>，⭐ <strong>208</strong> 种结点组合只有 <strong>18</strong> 种物理可实现 —— 「看懂线画」是个<strong>纯约束满足问题</strong>。<strong>模型驱动视觉</strong>⚠️ <strong>不是识别是配准</strong>（广义圆柱每个 <strong>9 参数</strong>）。<strong>立体视觉</strong> $Z = fb/d$：$f=800$、$b=12$ cm 时视差 20 → <strong>4.8 m</strong>、4 → <strong>24 m</strong>，⚠️ 误差按 $Z^2$ 放大（0.5 像素精度在 2.4 m 错 <strong>3 cm</strong>、24 m 错 <strong>3 m</strong>）；⭐ 打散斑是<strong>人为造纹理</strong>，好让对应问题有解。⭐ 全章核心：<strong>经典边缘算子和 CNN 第一层运算完全一样，差别只在那九个数是人写死还是学出来</strong> —— <strong>CNN 是把「设计特征」换成「学特征」</strong>，赢在<strong>第二层往后</strong>（规则写到第三层就写不动了）。💀 <strong>ALVINN</strong>（1989，<strong>5 个</strong>隐层单元、<strong>5 分钟</strong>驾驶数据）司机开得太好，网络学成永远直行。⭐ 选型：<strong>要「这是什么」用学的，要「它在哪、差多少」用几何算的</strong>；另有<strong>无数据、要可解释、算力受限、要确定性保证</strong>四种场景仍首选经典。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>图像处理提取边缘和区域，场景分析再利用这些线索解释空间关系。</li><li>平滑能抑制噪声，也会模糊边缘；观察处理前后的取舍。</li><li>几何方法估计位置和距离，学习方法利用数据识别模式；两者可以配合。</li><li>立体视觉先解决对应，再由视差估计深度；远处的小视差更容易放大误差。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="19-经典NLP.html">19-经典NLP.md</a></p>
 <blockquote>
 <p>去那里的理由：视觉这边的结论是「<strong>手写的核输给了学出来的核</strong>」。语言那边有一套更精致的手写系统 ——
@@ -600,5 +599,4 @@ $$</p>
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

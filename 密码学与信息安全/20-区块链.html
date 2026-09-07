@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -530,9 +530,8 @@ PoW 里在两条分叉上同时挖要分摊算力（有代价）；
 <hr />
 <h2 id="_8">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>⭐<strong>区块链没发明任何新密码学原语</strong>，只是组装了四块：<strong>哈希链 + Merkle 树 + 数字签名 + PoW</strong>。⭐<strong>核心难题是双花，而它不是密码学问题</strong>——两笔交易都有合法签名，密码学能证明"都是我签的"却<strong>无法判断谁在先</strong>，这是<strong>顺序共识</strong>问题。①<strong>哈希链</strong>靠<a href="09-哈希函数.html">第 9 章</a><strong>抗第二原像</strong>：改一个历史块 → 后面每块 prev 都对不上 → 必须重算之后所有块。②<strong>Merkle 树</strong>（<a href="12-Merkle树.html">第 12 章</a>）让轻节点只用 <strong>log₂(n) 个哈希</strong>验证包含性（1000 笔交易只要 10 个哈希 ≈320 字节）。③<strong>签名</strong>：secp256k1 上的 ECDSA，💀 <strong>Android 钱包 k 重复导致私钥被算出</strong>。④<strong>PoW</strong> 的关键是<strong>找到难、验证快</strong>的不对称性；⭐<strong>它真正的作用不是防篡改，而是给"改写历史"标价</strong>（重写 k 块要重做全部工作量并追上诚实网络 → 需 &gt;50% 算力）。🔑 <strong>所以区块链是经济安全模型，不是密码学安全模型</strong>——"经济上不划算"而非"数学上不可能"，这和前面所有章节都不同。比特币用 <strong>SHA-256 两次</strong>是防长度扩展的保守设计（<a href="10-哈希构造与长度扩展攻击.html">第 10 章</a>）。⚠️<strong>攻击面大多在密码学之外</strong>：51%/自私挖矿（经济博弈）、日蚀（网络）、<strong>DAO 重入（合约 bug）</strong>、交易延展性（<a href="17-数字签名.html">第 17 章</a> SUF-CMA）。🔑 <strong>区块链上的实际损失几乎都不是密码学被破解</strong>——是合约 bug、私钥管理、交易所被黑、诈骗，再次印证<strong>密码学很少是最弱的一环</strong>。<strong>PoS</strong> 能耗降 99.9%，但有 ⭐<strong>"无利害关系"问题</strong>（同时在两条链投票几乎不花钱），靠<strong>罚没 slashing</strong> 用经济惩罚补上物理成本。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>哈希链、Merkle 树和签名分别提供不同的验证能力。</li><li>双花涉及顺序与共识，不是检查签名有效就能解决。</li><li>系统安全还依赖经济激励、网络、合约与私钥管理，不只依赖密码算法。</li></ul><p class="reading-recap-links">相关章节：<a href="09-哈希函数.html">第 9 章</a> · <a href="12-Merkle树.html">第 12 章</a> · <a href="10-哈希构造与长度扩展攻击.html">第 10 章</a> · <a href="17-数字签名.html">第 17 章</a></p></section>
+
 <p><strong>下一节</strong> 👉 <a href="21-零知识证明.html">21-零知识证明.md</a> ⭐</p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -560,5 +559,4 @@ PoW 里在两条分叉上同时挖要分摊算力（有代价）；
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

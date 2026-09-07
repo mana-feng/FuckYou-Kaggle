@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -450,7 +450,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="pkce">🔐 三、PKCE：公开客户端存不住秘密</h2>
 <p>第 7 步说「拿客户端凭证去换」，但有一类客户端<strong>根本没法保管凭证</strong>：纯前端应用（代码在浏览器里，打开 DevTools 就能看见）、手机 app（二进制装在用户手机上，反编译就能翻出来）。这和<a href="13-配置与密钥.html">第 13 章</a>那条「⚠️ 密钥绝不放前端，<strong>加密也不行，因为解密的代码也在前端</strong>」是同一条判据。</p>
 <p>这类客户端叫<strong>公开客户端</strong>。它们的处境是：<code>code</code> 一旦被截获（移动端最典型的路径是恶意 app 抢注了同一个自定义 URL scheme），攻击者就能直接换出 token。<strong>PKCE 的做法是让客户端每次登录临时造一个只有自己知道的秘密，把 code 和自己绑死。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># PKCE：verifier 留在本机，出门的只有它的哈希</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># PKCE：verifier 留在本机，出门的只有它的哈希</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">base64</span><span class="o">,</span><span class="w"> </span><span class="nn">hashlib</span><span class="o">,</span><span class="w"> </span><span class="nn">secrets</span>
 
 
@@ -640,9 +640,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_7">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>第 8 章劝你「走 OAuth 或托管服务」却只给了一个表格单元格，这一章是那一格的展开。<strong>外包掉登录页、密码存储、改密忘密、验证码；留给你四样</strong>：回调端点、账号绑定关系、<strong>你自己的会话</strong>、⭐ <strong>全部授权逻辑</strong>（能外包的只有进门那一次）。<strong>授权码九步</strong>，⭐ 第 2 步和第 7 步都在<strong>你的后端</strong>：<code>state</code> 和 PKCE 的 <code>code_verifier</code> 存进服务端会话 → 302 跳走 → 用户同意（密码只输在那一页）→ 带着 <code>code</code> 回来 → <strong>先比对 <code>state</code></strong> → 后端到后端 POST 换 token → ⭐ <strong>第 9 步用 <code>id_token</code> 里的 <code>sub</code> 签发你自己的会话</strong>；⚠️ 最容易漏的就是第 9 步，把第三方 token 直接当会话用（有效期由别人定、受众不是你的接口）。⭐ <strong>为什么先拿 code 再换 token</strong>：302 的参数只能挂 URL 上，而 URL 会被<strong>服务端日志、代理日志、浏览器历史、Referer</strong> 各抄一份，注定泄露 —— 所以让泄露的东西不值钱：code <strong>一次性、短命（🗓️ 分钟量级）、绑定客户端和 <code>redirect_uri</code>、换 token 还要另一样东西</strong>，真 token 在 POST 响应体里回来。<code>state</code> 防「攻击者的 code 被绑到你账号上」：<strong>随机 + 存服务端会话比对</strong>；⚠️ <code>redirect_uri</code> 精确匹配，<strong>且自己域名下不能留开放重定向</strong> —— 这条防线是两截的。<strong>PKCE</strong> 给存不住凭证的公开客户端用：<code>verifier</code> 不出本机，出门的只有 <code>challenge = SHA-256(verifier)</code>，⚠️ 用 <code>S256</code> 不用 <code>plain</code>。⭐ <strong>OAuth2 是授权、OIDC 是在它上面加认证，<code>id_token</code> 就是这个增量</strong>；<code>access_token</code> 是张<strong>没写名字的门票</strong>，⚠️ 别用 email 当主键，用 <strong><code>(iss, sub)</code></strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>OAuth 负责授权，OIDC 在它上面补充身份认证；第三方登录不替你完成业务授权。</li><li>回调先核对 state，再由后端换取凭证；PKCE 把授权请求与换码者绑定。</li><li>登录完成后仍须签发你自己的会话；不要直接把第三方 token 当成本服务的会话。</li><li>核对回调地址、发行者和用户标识，不把长期凭证放在 URL 中。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="08e-JWT.html">08e-JWT.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -670,5 +669,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

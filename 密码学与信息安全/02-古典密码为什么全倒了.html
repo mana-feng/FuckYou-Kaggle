@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -490,9 +490,8 @@ AES 的 SubBytes 提供混淆、ShiftRows + MixColumns 提供扩散，
 <hr />
 <h2 id="_10">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>几千年的古典密码倒在<strong>同一个原因：明文的统计规律透过密文漏了出来</strong>。<strong>凯撒</strong>（+k mod 26）→ 密钥空间 25，穷举即破 → 第一课：<strong>空间太小=没有安全性</strong>（现代≥2¹²⁸）。<strong>单表代换</strong>空间 26!≈<strong>2⁸⁸ 却被几百个字符破掉</strong>——⭐<strong>频率分析</strong>：代换只换名字不改频率，密文最多的字母几乎一定是 E → 第二课：<strong>密钥空间大≠安全，攻击者有统计规律这条捷径</strong>。<strong>维吉尼亚</strong>用密钥词轮流移位打平了单字母频率，被称为"不可破译"几百年，倒于 ⭐<strong>Kasiski 检验</strong>：同一个词对齐同一段密钥会产生<strong>相同的密文片段，两次距离是密钥长度的倍数</strong>（取 gcd），拿到长度 m 后<strong>按位置分成 m 组，每组退化成凯撒</strong> → 第三课：<strong>把问题拆成独立小块是密码分析最通用的武器</strong>（后面破 LFSR、分解大数同一思路）。<strong>Shannon 的诊断</strong>：缺<strong>混淆</strong>（密钥与密文关系要复杂）和<strong>扩散</strong>（改1bit明文应影响一半密文 = 雪崩效应）——AES 就是围绕这两个词设计的。💥<strong>恩尼格玛</strong>（10²³ 空间）倒于<strong>"一个字母永不加密成自己"的结构缺陷 + 固定报文格式提供已知明文 + 操作员复用密钥</strong> → 第四课：<strong>真实系统死在使用方式上，不是算法</strong>（今天依然如此：nonce重用、密钥硬编码、随机数不随机）。⭐<strong>正确的提问不是"我能不能破它"，而是"有没有某种结构能让攻击者绕过穷举"</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>大密钥空间不等于安全，统计规律和结构缺陷可能绕过穷举。</li><li>古典密码的失败帮助理解混淆与扩散要解决什么问题。</li><li>算法之外的密钥复用和操作失误，也能使整个系统失效。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="03-一次一密与完美保密.html">03-一次一密与完美保密.md</a> ⭐</p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -520,5 +519,4 @@ AES 的 SubBytes 提供混淆、ShiftRows + MixColumns 提供扩散，
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

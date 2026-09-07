@@ -185,9 +185,9 @@ figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-ser
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -216,7 +216,7 @@ th,td{min-width:5.2em}
 </details>
 <h1 id="c-2026">挑战项目 C · 迷你生成式推荐：在笔记本上复现 2026 前沿</h1>
 <p>⏱ <strong>7–10 天</strong> ｜ 难度 ★★★★★ ｜ 前置：第 5、9、14 节吃透 + 项目二 + 会 PyTorch</p>
-<hr />
+<hr>
 <h2 id="_1">🎯 为什么选这个项目（它的「特点」）</h2>
 <p>第 14 节讲的生成式推荐（Semantic ID + 生成式召回）听起来遥不可及——万亿参数、千卡 GPU。
 但它的<strong>核心机制完全可以在笔记本上复现</strong>。这个项目就是造一个「TIGER-mini」：</p>
@@ -239,40 +239,40 @@ th,td{min-width:5.2em}
 </code></pre></div>
 
 <p><strong>做完它你会得到什么</strong>：对 2026 年最热方向的<strong>肌肉记忆级理解</strong>。读 HSTU/OneRec/TIGER 论文时，别人看到的是名词，你看到的是自己调过的超参。这个项目放在简历上，是「跟进前沿」最硬的证据。</p>
-<hr />
+<hr>
 <h2 id="_2">🗺️ 全景架构</h2>
 <figure class="dia"><svg viewBox="0 0 700 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="迷你生成式推荐的三阶段架构：造语义 ID、训生成模型、受约束生成"><rect x="14" y="24" width="672" height="132" rx="10" fill="var(--card)" stroke="var(--border)" stroke-width="1.4"/><text class="dia-t" x="30" y="48" font-size="13" text-anchor="start" fill="var(--accent)" font-weight="700">① 离线阶段：造语义 ID</text><rect x="30" y="70" width="140" height="66" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.4"/><text class="dia-t" x="100" y="92" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="600">电影元数据</text><text class="dia-t" x="100" y="110" font-size="11" text-anchor="middle" fill="var(--muted)">标题 + 类型 + 标签</text><text class="dia-t" x="100" y="128" font-size="11" text-anchor="middle" fill="var(--muted)">n_items 部电影</text><line x1="170" y1="103" x2="185" y2="103" stroke="var(--accent)" stroke-width="1.7"/><polygon points="192.0,103.0 183.0,108.2 183.0,97.8" fill="var(--accent)"/><rect x="194" y="70" width="140" height="66" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.4"/><text class="dia-t" x="264" y="92" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="600">内容向量</text><text class="dia-t" x="264" y="110" font-size="11" text-anchor="middle" fill="var(--muted)">TF-IDF 或句向量</text><text class="dia-t" x="264" y="128" font-size="11" text-anchor="middle" fill="var(--muted)">(n_items, 384)</text><line x1="334" y1="103" x2="349" y2="103" stroke="var(--accent)" stroke-width="1.7"/><polygon points="356.0,103.0 347.0,108.2 347.0,97.8" fill="var(--accent)"/><rect x="358" y="70" width="140" height="66" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.4"/><text class="dia-t" x="428" y="92" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="600">RQ-VAE</text><text class="dia-t" x="428" y="110" font-size="11" text-anchor="middle" fill="var(--muted)">3 层码本</text><text class="dia-t" x="428" y="128" font-size="11" text-anchor="middle" fill="var(--muted)">每层 256 码字</text><line x1="498" y1="103" x2="513" y2="103" stroke="var(--accent)" stroke-width="1.7"/><polygon points="520.0,103.0 511.0,108.2 511.0,97.8" fill="var(--accent)"/><rect x="522" y="70" width="140" height="66" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.4"/><text class="dia-t" x="592" y="92" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="600">每部电影 →</text><text class="dia-t" x="592" y="110" font-size="11" text-anchor="middle" fill="var(--muted)">(c₁, c₂, c₃)</text><text class="dia-t" x="592" y="128" font-size="11" text-anchor="middle" fill="var(--muted)">+ 冲突去重位 c₄</text><line x1="592" y1="158" x2="592" y2="173.5" stroke="var(--accent)" stroke-width="1.8"/><polygon points="592.0,182.0 586.8,173.0 597.2,173.0" fill="var(--accent)"/><text class="dia-t" x="602" y="173" font-size="11" text-anchor="start" fill="var(--accent)">语义 ID 词表</text><rect x="14" y="184" width="672" height="132" rx="10" fill="var(--card)" stroke="var(--border)" stroke-width="1.4"/><text class="dia-t" x="30" y="208" font-size="13" text-anchor="start" fill="var(--accent)" font-weight="700">② 离线阶段：训生成模型</text><rect x="30" y="230" width="140" height="66" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.4"/><text class="dia-t" x="100" y="252" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="600">用户观影序列</text><text class="dia-t" x="100" y="270" font-size="11" text-anchor="middle" fill="var(--muted)">[电影A, 电影B, …]</text><line x1="170" y1="263" x2="185" y2="263" stroke="var(--accent)" stroke-width="1.7"/><polygon points="192.0,263.0 183.0,268.2 183.0,257.8" fill="var(--accent)"/><rect x="194" y="230" width="140" height="66" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.4"/><text class="dia-t" x="264" y="252" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="600">翻译成 token</text><text class="dia-t" x="264" y="270" font-size="11" text-anchor="middle" fill="var(--muted)">[a₁a₂a₃ | b₁b₂b₃]</text><line x1="334" y1="263" x2="349" y2="263" stroke="var(--accent)" stroke-width="1.7"/><polygon points="356.0,263.0 347.0,268.2 347.0,257.8" fill="var(--accent)"/><rect x="358" y="230" width="140" height="66" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.4"/><text class="dia-t" x="428" y="252" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="600">小型 GPT</text><text class="dia-t" x="428" y="270" font-size="11" text-anchor="middle" fill="var(--muted)">2层 / 4头 / d=128</text><text class="dia-t" x="428" y="288" font-size="11" text-anchor="middle" fill="var(--muted)">next-token 训练</text><line x1="498" y1="263" x2="513" y2="263" stroke="var(--accent)" stroke-width="1.7"/><polygon points="520.0,263.0 511.0,268.2 511.0,257.8" fill="var(--accent)"/><rect x="522" y="230" width="140" height="66" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.4"/><text class="dia-t" x="592" y="252" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="600">预测下一部电影</text><text class="dia-t" x="592" y="270" font-size="11" text-anchor="middle" fill="var(--muted)">(d₁, d₂, d₃)</text><line x1="592" y1="318" x2="592" y2="333.5" stroke="var(--accent)" stroke-width="1.8"/><polygon points="592.0,342.0 586.8,333.0 597.2,333.0" fill="var(--accent)"/><text class="dia-t" x="602" y="333" font-size="11" text-anchor="start" fill="var(--accent)">训练好的模型</text><rect x="14" y="346" width="672" height="110" rx="10" fill="var(--card)" stroke="var(--border)" stroke-width="1.4"/><text class="dia-t" x="30" y="370" font-size="13" text-anchor="start" fill="var(--accent)" font-weight="700">③ 在线阶段：受约束生成</text><rect x="30" y="386" width="194" height="54" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.4"/><text class="dia-t" x="127" y="408" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="600">Beam Search</text><text class="dia-t" x="127" y="428" font-size="11" text-anchor="middle" fill="var(--muted)">每步只走 Trie 上存在的分支</text><line x1="224" y1="413" x2="240" y2="413" stroke="var(--accent)" stroke-width="1.7"/><polygon points="247.0,413.0 238.0,418.2 238.0,407.8" fill="var(--accent)"/><rect x="249" y="386" width="194" height="54" rx="8" fill="var(--card)" stroke="var(--border)" stroke-width="1.4"/><text class="dia-t" x="346" y="408" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="600">top-10 合法语义 ID</text><text class="dia-t" x="346" y="428" font-size="11" text-anchor="middle" fill="var(--muted)">全部真实存在，不会幻觉</text><line x1="443" y1="413" x2="459" y2="413" stroke="var(--accent)" stroke-width="1.7"/><polygon points="466.0,413.0 457.0,418.2 457.0,407.8" fill="var(--accent)"/><rect x="468" y="386" width="194" height="54" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.4"/><text class="dia-t" x="565" y="408" font-size="12.5" text-anchor="middle" fill="var(--fg)" font-weight="600">反查电影 → 推荐列表</text><text class="dia-t" x="565" y="428" font-size="11" text-anchor="middle" fill="var(--muted)">返回给用户的 Top-10</text><text class="dia-t" x="350" y="478" font-size="11.5" text-anchor="middle" fill="var(--muted)">⭐ 语义 ID 让「从没被点过的新电影」也能被生成出来 —— 冷启动优势就在这里</text></svg><figcaption>整条路的枢纽是语义 ID：阶段 1 把电影翻译成几个码字，阶段 2 学着预测下一串码字，阶段 3 用 Trie 约束只让它生成真实存在的组合。</figcaption></figure>
 
-<hr />
+<hr>
 <h2 id="adhd">🧠 ADHD 任务切分</h2>
 <h3 id="day-12">第一阶段：内容向量 + 基线（Day 1–2）</h3>
-<ul>
-<li>[ ] <strong>T1 (60min)</strong> MovieLens-1M：解析 <code>movies.dat</code>（标题+年份+类型），构建每部电影的文本描述</li>
-<li>[ ] <strong>T2 (60min)</strong> 内容向量：TF-IDF → TruncatedSVD 到 128 维（想上难度就用 <code>sentence-transformers</code>，384 维）</li>
-<li>[ ] <strong>T3 (90min)</strong> 先训一个 <strong>SASRec 基线</strong>（第 9 节代码直接搬），Leave-One-Out 评估 Recall@10 / NDCG@10。<strong>这是你的靶子，后面一切和它比</strong></li>
-<li>[ ] <strong>T4 (30min)</strong> 准备冷启动赛道：随机抽 5% 电影，从训练序列里整体删除（它们只出现在测试目标里）</li>
+<ul class="reading-task-list reading-task-list reading-task-list reading-task-list">
+<li class="reading-task" data-reading-task="1"><label class="reading-task-title"><input type="checkbox" data-task-key="1"><span>任务 T1</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> MovieLens-1M：解析 <code>movies.dat</code>（标题+年份+类型），构建每部电影的文本描述</div></li>
+<li class="reading-task" data-reading-task="2"><label class="reading-task-title"><input type="checkbox" data-task-key="2"><span>任务 T2</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 内容向量：TF-IDF → TruncatedSVD 到 128 维（想上难度就用 <code>sentence-transformers</code>，384 维）</div></li>
+<li class="reading-task" data-reading-task="3"><label class="reading-task-title"><input type="checkbox" data-task-key="3"><span>任务 T3</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> 先训一个 <strong>SASRec 基线</strong>（第 9 节代码直接搬），Leave-One-Out 评估 Recall@10 / NDCG@10。<strong>这是你的靶子，后面一切和它比</strong></div></li>
+<li class="reading-task" data-reading-task="4"><label class="reading-task-title"><input type="checkbox" data-task-key="4"><span>任务 T4</span></label><p class="reading-task-time">参考用时 · 30 分钟</p><div class="reading-task-body"> 准备冷启动赛道：随机抽 5% 电影，从训练序列里整体删除（它们只出现在测试目标里）</div></li>
 </ul>
 <h3 id="rq-vae-day-35">第二阶段：RQ-VAE —— 项目最难的部分（Day 3–5）</h3>
-<ul>
-<li>[ ] <strong>T5 (120min)</strong> 实现 RQ-VAE（下面有完整骨架）：编码器 → 3 层残差量化 → 解码器重建</li>
-<li>[ ] <strong>T6 (90min)</strong> 训练并debug。<strong>必查三件事</strong>：重建损失下降；码字使用率（每层多少码字被用到）；同一码字下的电影是否语义相近（抽查打印！）</li>
-<li>[ ] <strong>T7 (60min)</strong> 治「码本坍塌」：如果某层 80% 电影挤在 20 个码字里 → 上 EMA 更新 + 死码字重启（骨架里已给）</li>
-<li>[ ] <strong>T8 (45min)</strong> 生成语义 ID 表：<code>movie_id → (c₁,c₂,c₃,dedup)</code>。统计冲突率（多少电影共享前 3 层码字），加第 4 位去重</li>
+<ul class="reading-task-list reading-task-list reading-task-list reading-task-list">
+<li class="reading-task" data-reading-task="5"><label class="reading-task-title"><input type="checkbox" data-task-key="5"><span>任务 T5</span></label><p class="reading-task-time">参考用时 · 120 分钟</p><div class="reading-task-body"> 实现 RQ-VAE（下面有完整骨架）：编码器 → 3 层残差量化 → 解码器重建</div></li>
+<li class="reading-task" data-reading-task="6"><label class="reading-task-title"><input type="checkbox" data-task-key="6"><span>任务 T6</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> 训练并debug。<strong>必查三件事</strong>：重建损失下降；码字使用率（每层多少码字被用到）；同一码字下的电影是否语义相近（抽查打印！）</div></li>
+<li class="reading-task" data-reading-task="7"><label class="reading-task-title"><input type="checkbox" data-task-key="7"><span>任务 T7</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 治「码本坍塌」：如果某层 80% 电影挤在 20 个码字里 → 上 EMA 更新 + 死码字重启（骨架里已给）</div></li>
+<li class="reading-task" data-reading-task="8"><label class="reading-task-title"><input type="checkbox" data-task-key="8"><span>任务 T8</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> 生成语义 ID 表：<code>movie_id → (c₁,c₂,c₃,dedup)</code>。统计冲突率（多少电影共享前 3 层码字），加第 4 位去重</div></li>
 </ul>
 <h3 id="day-67">第三阶段：生成模型（Day 6–7）</h3>
-<ul>
-<li>[ ] <strong>T9 (60min)</strong> 把用户序列翻译成 token 流。⭐ 词表设计：每层码本独立编号（层1: 0-255, 层2: 256-511, 层3: 512-767, 去重位: 768+），外加 PAD/BOS</li>
-<li>[ ] <strong>T10 (90min)</strong> 训小型 GPT（就是第 9 节 SASRec 的骨架，只是序列换成语义 token，预测目标是 next-token）</li>
-<li>[ ] <strong>T11 (90min)</strong> 实现 <strong>Trie + 受约束 Beam Search</strong>（下面有骨架）</li>
-<li>[ ] <strong>T12 (60min)</strong> 端到端评估：生成 top-10 → Recall@10 / NDCG@10，和 T3 的 SASRec 对比</li>
+<ul class="reading-task-list reading-task-list reading-task-list reading-task-list">
+<li class="reading-task" data-reading-task="9"><label class="reading-task-title"><input type="checkbox" data-task-key="9"><span>任务 T9</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 把用户序列翻译成 token 流。⭐ 词表设计：每层码本独立编号（层1: 0-255, 层2: 256-511, 层3: 512-767, 去重位: 768+），外加 PAD/BOS</div></li>
+<li class="reading-task" data-reading-task="10"><label class="reading-task-title"><input type="checkbox" data-task-key="10"><span>任务 T10</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> 训小型 GPT（就是第 9 节 SASRec 的骨架，只是序列换成语义 token，预测目标是 next-token）</div></li>
+<li class="reading-task" data-reading-task="11"><label class="reading-task-title"><input type="checkbox" data-task-key="11"><span>任务 T11</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> 实现 <strong>Trie + 受约束 Beam Search</strong>（下面有骨架）</div></li>
+<li class="reading-task" data-reading-task="12"><label class="reading-task-title"><input type="checkbox" data-task-key="12"><span>任务 T12</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 端到端评估：生成 top-10 → Recall@10 / NDCG@10，和 T3 的 SASRec 对比</div></li>
 </ul>
 <h3 id="day-810">第四阶段：决战冷启动 + 报告（Day 8–10）</h3>
-<ul>
-<li>[ ] <strong>T13 (60min)</strong> 冷启动赛道评估：那 5% 被藏起来的电影，SASRec 的 Recall 是多少？（剧透：≈0，它们的 ID Embedding 没训过）你的生成式模型呢？（新电影一编码就有语义 ID，<strong>理论上能被生成出来</strong>）</li>
-<li>[ ] <strong>T14 (45min)</strong> 消融：把语义 ID 换成<strong>随机 ID</strong>（打乱电影→码字的映射）重训，看指标掉多少 → 证明「语义」本身在起作用，这是整个项目最有说服力的实验</li>
-<li>[ ] <strong>T15 (90min)</strong> README：架构图、三组对比（SASRec vs 生成式 vs 随机ID消融）、冷启动对决、码本可视化（每个 c₁ 码字下的电影类型分布）</li>
+<ul class="reading-task-list reading-task-list reading-task-list">
+<li class="reading-task" data-reading-task="13"><label class="reading-task-title"><input type="checkbox" data-task-key="13"><span>任务 T13</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 冷启动赛道评估：那 5% 被藏起来的电影，SASRec 的 Recall 是多少？（剧透：≈0，它们的 ID Embedding 没训过）你的生成式模型呢？（新电影一编码就有语义 ID，<strong>理论上能被生成出来</strong>）</div></li>
+<li class="reading-task" data-reading-task="14"><label class="reading-task-title"><input type="checkbox" data-task-key="14"><span>任务 T14</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> 消融：把语义 ID 换成<strong>随机 ID</strong>（打乱电影→码字的映射）重训，看指标掉多少 → 证明「语义」本身在起作用，这是整个项目最有说服力的实验</div></li>
+<li class="reading-task" data-reading-task="15"><label class="reading-task-title"><input type="checkbox" data-task-key="15"><span>任务 T15</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> README：架构图、三组对比（SASRec vs 生成式 vs 随机ID消融）、冷启动对决、码本可视化（每个 c₁ 码字下的电影类型分布）</div></li>
 </ul>
-<hr />
+<hr>
 <h2 id="_3">🔨 核心代码骨架</h2>
 <h3 id="rq-vae-ema">RQ-VAE（带 EMA 更新和死码字重启）</h3>
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span><span class="o">,</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span><span class="o">,</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
@@ -374,7 +374,7 @@ th,td{min-width:5.2em}
     <span class="k">return</span> <span class="p">[</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[:</span><span class="n">topk</span><span class="p">]]</span>
 </code></pre></div>
 
-<hr />
+<hr>
 <h2 id="_4">🕳️ 这个项目专属的坑</h2>
 <div class="tw"><table>
 <thead>
@@ -422,7 +422,7 @@ th,td{min-width:5.2em}
 成功标准是：① 三个组件都真的工作 ② 冷启动赛道显著胜出 ③ 随机 ID 消融证明语义在起作用。
 <strong>能把「为什么小数据上打不过」讲清楚，恰恰证明你懂了第 14 节。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="definition-of-done">✅ 通关标准（Definition of Done）</h2>
 <ol>
 <li>RQ-VAE 码字使用率各层 &gt; 50%，抽查同码字电影语义确实相近（放 3 个例子进 README）</li>
@@ -438,23 +438,20 @@ th,td{min-width:5.2em}
 <li>实现层级分析：只用 c₁ 生成（粗粒度）vs 用满 3 层，观察召回率-多样性的变化</li>
 <li>读 <a href="https://arxiv.org/abs/2305.05065">TIGER 论文</a> 和 <a href="https://arxiv.org/abs/2402.17152">HSTU 论文</a>，在 README 里写一段「我的迷你版和原版的差距在哪」</li>
 </ul>
-<hr />
-<p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>我在造 TIGER-mini：① RQ-VAE 把电影内容向量量化成 3 层码字（EMA+死码字重启防坍塌）② 小 GPT 在语义 token 流上做 next-token 训练（每层码字独立编号区间！）③ Trie 约束 beam search 保证零幻觉。评估两个赛道：总体（打平 SASRec 七成就算赢）+ 冷启动（必须显著赢，这是生成式的招牌）。随机 ID 消融证明语义在起作用。</p>
-</blockquote>
-<hr />
+<hr>
+
+<hr>
 <h2 id="_6">🎓 三个挑战项目做完之后</h2>
 <p>你已经覆盖了推荐系统的三大核心矛盾：
 - A（新闻）：内容 vs 行为 —— 极端冷启动下内容理解的价值
 - <strong>B（模拟器）</strong>：短期 vs 长期 —— 反馈循环、茧房、探索的动态本质
 - <strong>C（生成式）</strong>：检索 vs 生成 —— 2026 范式转变的第一手体感</p>
 <p><strong>这三个项目 + 第 16 节的三个基础项目，就是一份完整的作品集。</strong>
-回到 <a href="17-面试与求职.html">17-面试与求职</a> 把它们包装成故事，或者回 <a href="index.html">README</a> 看看还有什么没打勾。</p>
-<hr />
+回到 <a href="17-%E9%9D%A2%E8%AF%95%E4%B8%8E%E6%B1%82%E8%81%8C.html">17-面试与求职</a> 把它们包装成故事，或者回 <a href="index.html">README</a> 看看还有什么没打勾。</p>
+<hr>
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../大模型全景导论/02-Transformer原理.html">全景导论 02</a></td><td>这个项目要手搓的 Decoder，那一章有注意力和位置编码的完整拆解</td></tr><tr><td><a href="../大模型全景导论/03-Tokenizer与上下文.html">全景导论 03</a></td><td>Semantic ID 就是推荐场景的 tokenizer；码本坍塌和词表设计是同一类问题</td></tr><tr><td><a href="../强化学习基础/13-DPO与免RL对齐.html">强化学习 13</a></td><td>想给生成结果加偏好对齐时，DPO 比 RLHF 更适合单机复现</td></tr></tbody></table></div>
-<hr />
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%85%A8%E6%99%AF%E5%AF%BC%E8%AE%BA/02-Transformer%E5%8E%9F%E7%90%86.html">全景导论 02</a></td><td>这个项目要手搓的 Decoder，那一章有注意力和位置编码的完整拆解</td></tr><tr><td><a href="../%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%85%A8%E6%99%AF%E5%AF%BC%E8%AE%BA/03-Tokenizer%E4%B8%8E%E4%B8%8A%E4%B8%8B%E6%96%87.html">全景导论 03</a></td><td>Semantic ID 就是推荐场景的 tokenizer；码本坍塌和词表设计是同一类问题</td></tr><tr><td><a href="../%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/13-DPO%E4%B8%8E%E5%85%8DRL%E5%AF%B9%E9%BD%90.html">强化学习 13</a></td><td>想给生成结果加偏好对齐时，DPO 比 RLHF 更适合单机复现</td></tr></tbody></table></div>
+<hr>
 <h2 id="ckpt">✅ 检查点</h2>
 <ol>
 <li>「TIGER-mini」要亲手实现的三个前沿组件是什么？</li>
@@ -477,15 +474,12 @@ th,td{min-width:5.2em}
 <li><strong>别人看到的是名词，你看到的是自己调过的超参。</strong>论文里的每个组件你都实现过、踩过它的坑、知道它在什么规模下才开始有用。</li>
 </ol>
 </details>
-<hr />
+<hr>
 <h2 id="recap">🛑 可以停在这里</h2>
-<blockquote>
-<p>⚡ <strong>走神救援</strong><br />
-⭐<strong>在笔记本上复现 2026 前沿</strong>：造一个 TIGER-mini，三个组件——①<strong>RQ-VAE</strong>：把内容向量量化成多层语义码字（《星际穿越》→⟨12,47,201⟩），<strong>前两层相同 = 模型认为它们粗粒度语义同类，相似物品天然共享前缀</strong>②<strong>生成式召回</strong>：小型 GPT 逐 token 写出下一部电影的语义 ID③⚠️<strong>Trie 约束解码</strong>——必须有，否则模型会「幻觉」出不存在的电影（逐 token 生成完全可能拼出合法但无对应物品的组合）。两场考试：<strong>和自己训的 SASRec 打 Recall@10</strong>；⭐<strong>冷启动挑战赛（随机藏起 5% 电影不参与训练）——这是生成式的招牌优势</strong>，因为<strong>新物品的语义 ID 由内容算出、不需要行为数据，且与相似老物品共享前缀，模型学到的规律会自动泛化过去</strong>。⭐ 做完之后读 HSTU/OneRec/TIGER 论文，<strong>别人看到的是名词，你看到的是自己调过的超参</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>先把内容向量量化为语义码，再训练预测这些码的序列模型。</li><li>检查码字使用情况与各层编号，避免坍塌或编号混淆。</li><li>用合法候选约束解码，再分别评估总体与冷启动表现。</li><li>加入随机 ID 消融和基线对照，判断收益是否真的来自语义。</li></ul></section>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
-<nav class="pagenav"><a href="20-挑战项目B-信息流模拟器-亲手养出信息茧房.html"><div class="dir">← 上一节</div>🌀 挑战B · 信息流模拟器</a><a class="next" href="附录A-术语速查卡.html"><div class="dir">下一节 →</div>📖 附录A · 术语速查</a></nav>
+<nav class="pagenav"><a href="20-%E6%8C%91%E6%88%98%E9%A1%B9%E7%9B%AEB-%E4%BF%A1%E6%81%AF%E6%B5%81%E6%A8%A1%E6%8B%9F%E5%99%A8-%E4%BA%B2%E6%89%8B%E5%85%BB%E5%87%BA%E4%BF%A1%E6%81%AF%E8%8C%A7%E6%88%BF.html"><div class="dir">← 上一节</div>🌀 挑战B · 信息流模拟器</a><a class="next" href="%E9%99%84%E5%BD%95A-%E6%9C%AF%E8%AF%AD%E9%80%9F%E6%9F%A5%E5%8D%A1.html"><div class="dir">下一节 →</div>📖 附录A · 术语速查</a></nav>
 </main>
 <script>(function(){
   var KEY="recsys-progress", FILE="21-\u6311\u6218\u9879\u76eeC-\u8ff7\u4f60\u751f\u6210\u5f0f\u63a8\u8350-\u590d\u73b0\u524d\u6cbf.md";
@@ -509,5 +503,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
 </body></html>

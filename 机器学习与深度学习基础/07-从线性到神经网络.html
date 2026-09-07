@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,16 +271,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
- onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script><link rel="stylesheet" href="../assets/guided-lessons.css"><link rel="stylesheet" href="../assets/guided-batch1.css"><script defer src="../assets/guided-batch1.js"></script><link rel="stylesheet" href="../assets/guided-batch2.css"><script defer src="../assets/guided-batch2.js"></script><script defer src="../assets/guided-lessons.js"></script></head><body class="guided-reading">
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
@@ -304,7 +304,19 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 </div>
 </details>
-<h1 id="07">07 · 从线性到神经网络</h1>
+<div class="lesson-layout" data-lesson="ml-07" data-batch="ml-rest" data-reading-mode="concept">
+<div class="lesson-content"><section class="lesson-hero" id="lesson-start" data-route="先知道这页解决什么">
+<div><p class="lesson-eyebrow">07 / 先看直觉，再看细节</p><h1>先看直线分不开什么，<br>再给模型加一层变化。</h1><p class="lesson-lead">非线性激活让多层网络不再等价于一个线性变换。先理解这一点，再记层数和形状。</p></div>
+<aside class="lesson-advice"><strong>一次只处理一个问题</strong><p>可以从入口直接跳到需要的部分。正文、图解、代码和检查点都在下方。</p><a href="#first-pause">先看懂这一点就可以停 →</a></aside></section>
+<div class="lesson-overview-grid">
+<section class="lesson-card" id="first-example" data-route="先看一个具体结果"><p class="lesson-kicker">先抓住一个具体结果</p><h2>异或：对角线上的点属于同类</h2><p>(0,0)、(1,1) 是一类，(0,1)、(1,0) 是另一类。单条直线无法把四个点全部分对；加入非线性隐藏层，才有机会表示这种边界。</p><h3>一层网络的计算</h3><div class="formula-box" data-formula-name="一层网络的计算">$$\mathbf{a}^{(l)}=f\left(W^{(l)}\mathbf{a}^{(l-1)}+\mathbf{b}^{(l)}\right)$$</div></section>
+<section class="lesson-card lesson-task-entry" id="reading-choices" data-route="按需要选择下一步"><p class="lesson-kicker">接下来，按需要选一项</p><h2>你现在想看什么？</h2><nav aria-label="本页阅读入口"><a href="#_2">先看直线的限制 <span aria-hidden="true">→</span></a><a href="#_4">看一层怎样计算 <span aria-hidden="true">→</span></a><a href="#mlp">查看完整网络 <span aria-hidden="true">→</span></a></nav><p class="lesson-note">这些入口是选择，不是必须按顺序完成的任务。</p></section>
+<section class="lesson-card lesson-pause lesson-wide" id="first-pause" data-route="可以停在这里"><h2>可以停在这里</h2><p>非线性激活让多层网络不再等价于一个线性变换。先理解这一点，再记层数和形状。</p><a href="#full-lesson">需要更多细节时，继续看完整正文 →</a></section></div>
+<section class="lesson-full" id="full-lesson" aria-label="完整正文">
+<div class="lesson-divider"><span>继续探索</span><p>原有正文、图解和例子都在下方。按需跳转，不必一次读完。</p></div>
+<h2 id="07" class="lesson-original-title">07 · 从线性到神经网络</h2>
+<!-- guided-lesson: ml-07 -->
+
 <p>⏱ <strong>28 分钟</strong> ｜ ⭐ <strong>核心</strong> ｜ 🔨 有代码</p>
 <hr />
 <h2 id="_1">🎯 一句话</h2>
@@ -314,9 +326,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <hr />
 <h2 id="_2">💥 一、先看线性模型的死穴：异或问题</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">XOR（异或）：两个输入不同时输出 1</span></div><div class="vb-tree-row"><span class="vb-tree-node">x2</span></div><div class="vb-tree-row"><span class="vb-tree-node">1 ●(0,1)=1 ○(1,1)=0</span></div><div class="vb-tree-row"><span class="vb-tree-node">0 ○(0,0)=0 ●(1,0)=1</span></div><div class="vb-tree-row"><span class="vb-tree-node">x1</span></div><div class="vb-tree-row"><span class="vb-tree-node">0 1</span></div><div class="vb-tree-row"><span class="vb-tree-node">⚠️ 你画不出一条直线，把 ● 和 ○ 分开。</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="xor-coordinates-restored" style="--diagram-width:480px"><svg viewBox="0 0 480 414" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="XOR 在两个输入不同时输出 1。同类点处于对角位置，无法用一条直线把实心点与空心点完全分开。虚线用于显示对角关系，不是分类边界。"><title>XOR 在两个输入不同时输出 1。同类点处于对角位置，无法用一条直线把实心点与空心点完全分开。虚线用于显示对角关系，不是分类边界。</title><line x1="75" y1="325" x2="425" y2="325" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="425.0,325.0 416.0,330.0 416.0,320.0"/><line x1="75" y1="325" x2="75" y2="40" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="75.0,40.0 80.0,49.0 70.0,49.0"/><text x="430" y="346" font-size="18" text-anchor="start" fill="var(--fg)">x₁</text><text x="45" y="45" font-size="18" text-anchor="start" fill="var(--fg)">x₂</text><circle cx="125" cy="265" r="12" fill="var(--card)" stroke="var(--accent)" stroke-width="3"/><text x="125" y="305" font-size="18" text-anchor="middle" fill="var(--fg)">(0,0) → 0</text><circle cx="350" cy="265" r="12" fill="var(--accent)" stroke="var(--accent)" stroke-width="3"/><text x="350" y="305" font-size="18" text-anchor="middle" fill="var(--fg)">(1,0) → 1</text><circle cx="125" cy="100" r="12" fill="var(--accent)" stroke="var(--accent)" stroke-width="3"/><text x="125" y="140" font-size="18" text-anchor="middle" fill="var(--fg)">(0,1) → 1</text><circle cx="350" cy="100" r="12" fill="var(--card)" stroke="var(--accent)" stroke-width="3"/><text x="350" y="140" font-size="18" text-anchor="middle" fill="var(--fg)">(1,1) → 0</text><line x1="140" y1="100" x2="350" y2="265" stroke="var(--muted)" stroke-width="2" stroke-dasharray="5 5"/><line x1="125" y1="265" x2="350" y2="100" stroke="var(--muted)" stroke-width="2" stroke-dasharray="5 5"/><text x="240" y="386" font-size="18" text-anchor="middle" fill="var(--fg)">实心是 1，空心是 0；同类占据对角</text></svg><figcaption>XOR 在两个输入不同时输出 1。同类点处于对角位置，无法用一条直线把实心点与空心点完全分开。虚线用于显示对角关系，不是分类边界。</figcaption></figure>
 <h3 id="_3">🔨 实测（三行代码，结论惊人）</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.neural_network</span><span class="w"> </span><span class="kn">import</span> <span class="n">MLPClassifier</span>
 
@@ -330,7 +342,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
                                           <span class="n">max_iter</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">))</span>
 </code></pre></div>
 
-<section class="visual-block visual-block-calc" aria-label="算一算"><p class="visual-block-title">算一算</p><div class="vb-calc"><p>逻辑回归(线性) 50% ← 永远做不对</p><p>MLP(隐层4,tanh) 100% ← 加了隐层 + 非线性，解决了</p><p>MLP但激活=identity 50% ← ⭐ 有隐层但没非线性 → 照样不行！</p></div></section>
+<section class="visual-block visual-block-calc" aria-label="算一算"><p class="visual-block-title">算一算</p><div class="vb-calc"><p>逻辑回归：本例可能得到约 50%，关键是单条直线无法全部分对</p><p>MLP（隐层 4，tanh）：有能力分对全部四点，能否训练到取决于优化过程</p><p>MLP（identity 激活）：仍是线性模型，增加隐藏层不能解决非线性可分问题</p></div></section>
 <blockquote>
 <p>🔑 <strong>第三行是本章的灵魂</strong>：
 <strong>有隐层不等于有能力。真正带来能力的是「非线性激活」。</strong>
@@ -368,7 +380,7 @@ Transformer 只是在这基础上加了注意力机制。</p>
 <section class="visual-block visual-block-flow" aria-label="流程图"><p class="visual-block-title">流程图</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">每一层做两件事：</span></div><div class="vb-flow-row"><span class="vb-flow-step">① 线性变换 Wx+b</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">【旋转 + 拉伸 + 平移】空间</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 非线性激活</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">【折叠 / 弯曲】空间</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 多层堆叠 = 反复&quot;拉伸 + 折叠&quot;，</span></div><div class="vb-flow-row"><span class="vb-flow-step">把原本【纠缠在一起】的两类数据，掰成【一条直线就能分开】的形状</span></div></div></section>
 <p>💡 换个说法：</p>
 <blockquote>
-<p><strong>最后一层永远是个线性分类器</strong>（就是第 3 章的逻辑回归）。
+<p><strong>本节的分类 MLP 最后一层是线性输出层</strong>，再配合相应的分类损失。其他任务的输出头可以不同，不能推广成所有神经网络都如此。
 前面所有层的工作，都是把数据变换成"线性可分"的样子。</p>
 <p>⭐ <strong>所以"深度学习"本质上是"自动的特征工程"</strong> ——
 你在<a href="16-特征工程基础.html">第 16 章</a>手工造的那些交叉特征，
@@ -418,10 +430,10 @@ Transformer 只是在这基础上加了注意力机制。</p>
 <blockquote>
 <p>🔑 <strong>ReLU 为什么是深度学习的转折点</strong>：
 Sigmoid 两端梯度接近 0，反向传播时层层相乘会指数级衰减 → <strong>深层网络根本训不动</strong>。
-ReLU 正区间梯度恒为 1，梯度能一路传到底。<strong>这一个改动让"深"变成了可能。</strong></p>
+ReLU 正区间导数为 1，不会在这一段像 Sigmoid 那样继续缩小梯度。<strong>但完整梯度还要经过权重矩阵等运算，ReLU 不保证没有梯度消失或爆炸。</strong></p>
 </blockquote>
 <p>算一下差距有多大：</p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>Sigmoid 的导数最大值 = 0.25（在 z=0 处，两端更小）</p><p>10 层：0.25¹⁰ ≈ 0.00000095 ← 梯度只剩百万分之一 💀</p><p>30 层：0.25³⁰ ≈ 10⁻¹⁸ ← 完全归零</p><p>ReLU 正区间导数 = 1</p><p>10 层：1¹⁰ = 1 ← 原样传回 ✅</p></div></section>
+<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>只比较激活导数的连乘，暂时忽略权重矩阵</p><p>Sigmoid 导数最大为 0.25：10 个相乘约为 9.5×10⁻⁷</p><p>30 个相乘约为 8.7×10⁻¹⁹：很小，但不是数学上的零</p><p>ReLU 在正区间导数为 1：这些局部导数连乘仍是 1</p><p>完整网络的梯度还受权重、路径和激活区间影响</p></div></section>
 <h3 id="relu_1">⚠️ ReLU 的代价：神经元死亡</h3>
 <section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">ReLU 负区间的导数 = 0</span></div><div class="vb-flow-row"><span class="vb-flow-step">如果某个神经元的输入【一直是负的】</span></div><div class="vb-flow-row"><span class="vb-flow-step">它的梯度永远是 0</span></div><div class="vb-flow-row"><span class="vb-flow-step">权重永远不更新</span></div><div class="vb-flow-row"><span class="vb-flow-step">这个神经元【彻底死了】💀</span></div><div class="vb-flow-row"><span class="vb-flow-step">常见诱因：学习率太大，一次大更新把权重推到&quot;永远输出负数&quot;的区域</span></div></div></section>
 <p><strong>三个解法</strong>：</p>
@@ -449,7 +461,7 @@ ReLU 正区间梯度恒为 1，梯度能一路传到底。<strong>这一个改�
 </table></div>
 <blockquote>
 <p>💡 <strong>自检方法</strong>：训练后统计 <code>(activation == 0).float().mean()</code>。
-<strong>如果某层超过 50% 的神经元恒为 0，多半有大量死亡神经元。</strong></p>
+<strong>单个批次中一半激活为 0 并不能判定死亡。</strong> 要逐个神经元观察多个代表性批次、多个训练步骤，确认是否一直不激活，再检查学习率、输入分布与梯度。</p>
 </blockquote>
 <h3 id="_6">🔧 初始化：一个容易被跳过但很关键的细节</h3>
 <section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">初始化太小</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">信号层层衰减</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">深层几乎收不到信息</span></div><div class="vb-flow-row"><span class="vb-flow-step">初始化太大</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">信号层层放大</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">激活值爆炸</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 好的初始化让【每一层的激活值方差保持一致】</span></div><div class="vb-flow-row"><span class="vb-flow-step">Xavier/Glorot：为 tanh/sigmoid 设计，方差 ∝ 1/(fan_in + fan_out)</span></div><div class="vb-flow-row"><span class="vb-flow-step">He/Kaiming ⭐：为 ReLU 设计，方差 ∝ 2/fan_in</span></div><div class="vb-flow-row"><span class="vb-flow-step">（因为 ReLU 砍掉了一半，所以要乘 2 补回来）</span></div></div></section>
@@ -492,7 +504,7 @@ ReLU 正区间梯度恒为 1，梯度能一路传到底。<strong>这一个改�
 因为每一层都在前一层的特征上做组合，是<strong>层级抽象</strong>（第 12 章 CNN 会看得很清楚）。</p>
 <hr />
 <h2 id="mlp">🏗️ 五、一个完整 MLP 的样子</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
     <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span>   <span class="c1"># 输入 30 个特征 → 64 个神经元</span>
@@ -581,9 +593,9 @@ ReLU 正区间梯度恒为 1，梯度能一路传到底。<strong>这一个改�
 <ol>
 <li>identity 激活 = 没有非线性，线性套线性还是线性（W₂W₁x 等价于单层），所以退化成逻辑回归，画不出异或的分界。</li>
 <li>①线性变换 z=Wx+b ②非线性激活 a=f(z)。式子：a⁽ˡ⁾ = f(W⁽ˡ⁾a⁽ˡ⁻¹⁾ + b⁽ˡ⁾)。</li>
-<li><strong>线性层旋转拉伸空间，激活函数折叠空间</strong>——反复拉伸折叠，把纠缠的两类掰成一条直线能分开的形状。最后一层永远是线性分类器，前面所有层都在把数据变换成"线性可分"的样子——所以它是自动的特征工程。</li>
-<li>Sigmoid 两端梯度趋近 0，反传层层相乘指数衰减，深层训不动。<strong>10 层后 0.25¹⁰ ≈ 百万分之一，30 层后 10⁻¹⁸</strong>。ReLU 正区间梯度恒为 1，原样传回。</li>
-<li><strong>神经元死亡</strong>——输入一直为负则梯度永远是 0，权重再也不更新。解法：①降学习率（最常见根因）②Leaky ReLU/GELU ③He 初始化。自检：统计 <code>(activation == 0).float().mean()</code>，某层超 50% 恒为 0 就有问题。</li>
+<li>线性变换与非线性激活逐层学习表示。本节分类 MLP 的末端用线性层输出分类分数；这是常见结构，不是所有网络的固定形式。</li>
+<li>单看激活导数，10 个 Sigmoid 导数的乘积最多约为 9.5×10⁻⁷；正区间的 ReLU 导数连乘为 1。完整梯度还包括权重等因素，不能把这两个数当成任意网络的最终梯度。</li>
+<li>神经元持续处在 ReLU 负区间时，该路径局部导数为 0。检查学习率、初始化，或尝试有负区间响应的激活。要跨多个批次和步骤追踪单个神经元；单批次零激活比例超过 50% 不是死亡判据。</li>
 <li>太小→信号层层衰减深层收不到信息；太大→激活值爆炸。好的初始化让<strong>每层激活值方差保持一致</strong>。He 乘 2 是因为 ReLU 砍掉了一半（负区间归零），要补回来。</li>
 <li>只说存在不说怎么找到、一层需要<strong>指数级宽</strong>、能拟合不代表能泛化。实践上深比宽更高效。</li>
 <li>用 <code>BCEWithLogitsLoss</code>，它内部合并了 Sigmoid 和交叉熵，<strong>数值上更稳定</strong>（避免 log(0)）。</li>
@@ -592,10 +604,24 @@ ReLU 正区间梯度恒为 1，梯度能一路传到底。<strong>这一个改�
 <hr />
 <h2 id="_10">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>神经网络=线性层+<strong>非线性激活</strong>堆叠。异或实验三行结论：线性50%、MLP+tanh 100%、<strong>MLP但identity激活还是50%</strong>——证明带来能力的是非线性不是隐层（线性套线性还是线性）。一层=Wx+b后过激活。⭐<strong>几何直觉：线性层旋转拉伸空间，激活折叠空间；最后一层永远是线性分类器，前面所有层都在把数据掰成"线性可分"的形状——所以深度学习本质是自动的特征工程</strong>。激活选<strong>ReLU</strong>（正区间梯度恒为1；<strong>Sigmoid 10层后只剩百万分之一，30层后10⁻¹⁸</strong>，这就是ReLU成为转折点的原因）。⚠️ <strong>ReLU的代价是神经元死亡</strong>（输入恒负→梯度永远0→彻底死掉），根因多半是<strong>学习率太大</strong>；自检：某层超50%激活恒为0就有问题。<strong>初始化要让每层激活方差一致，He初始化乘2是因为ReLU砍掉了一半</strong>。万能近似定理有误导性：只说存在不说怎么找到，实践上<strong>深比宽高效</strong>。表格数据上NN常输给GBDT。</p>
-</blockquote>
+<ul>
+<li><strong>线性层后加非线性</strong>，才有机会表示异或这类单条直线分不开的问题。</li>
+<li><strong>一层的动作</strong>：加权求和、加偏置、过激活；矩阵只是把多个单元一起算。</li>
+<li><strong>ReLU 不保证梯度畅通</strong>；检查初始化，并跨批次观察是否有持续不激活的单元。</li>
+<li><strong>能表示不等于能学会，更不等于能泛化</strong>。表格任务仍应和树模型基线比较。</li>
+</ul>
 <p><strong>下一节</strong> 👉 <a href="08-反向传播.html">08-反向传播.md</a></p>
+</section></div>
+<aside class="lesson-rail" aria-label="本节学习路线">
+<button type="button" class="lesson-route-toggle" aria-expanded="true" aria-controls="lesson-route">本节学习路线 <span aria-hidden="true">⌄</span></button>
+<div id="lesson-route">
+<p class="lesson-position" aria-live="polite">从第一站开始</p>
+<div class="lesson-track" aria-hidden="true"><span></span></div>
+<nav class="lesson-route-links" aria-label="章节跳转"></nav>
+<div class="lesson-rail-note"><strong>一次只读一张卡片</strong><p>蓝色下划线可以点开解释。关掉窗口，接着原来的位置读。</p></div>
+<button type="button" class="lesson-save">记住当前位置</button>
+<p class="lesson-save-status" role="status"></p>
+</div></aside></div>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="06-无监督-聚类与降维.html"><div class="dir">← 上一节</div>🔮 06 · 无监督：聚类降维</a><a class="next" href="08-反向传播.html"><div class="dir">下一节 →</div>⛓️ 08 · 反向传播</a></nav>
@@ -622,5 +648,4 @@ ReLU 正区间梯度恒为 1，梯度能一路传到底。<strong>这一个改�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -505,7 +505,7 @@ PyTorch 的 <code>loss.backward()</code> 就是通用的反向模式 AD——
 <hr />
 <h2 id="_9">🔬 五、梯度检验（自己实现时必做）</h2>
 <p>$$\frac{\partial J}{\partial \theta_i} \approx \frac{J(\theta + \varepsilon e_i) - J(\theta-\varepsilon e_i)}{2\varepsilon}$$</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">grad_check</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">analytic_grad</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;f: 参数 → 标量损失；analytic_grad: 你的反向传播算出的梯度&quot;&quot;&quot;</span>
     <span class="n">num_grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
@@ -523,7 +523,7 @@ PyTorch 的 <code>loss.backward()</code> 就是通用的反向模式 AD——
     <span class="k">return</span> <span class="n">rel</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 </code></pre></div>
 
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>相对误差判定：</p><p>&lt; 1e-7 ✅ 正确</p><p>1e-7~1e-4 ⚠️ 可疑（可能是 ReLU 折点，可接受）</p><p>&gt; 1e-4 ❌ 有 bug</p></div></section>
+<section class="comparison-repair" id="comparison-repair-37"><div class="tw"><table><caption>梯度检查的判读范围</caption><thead><tr><th scope="col">相对误差</th><th scope="col">原文判断</th></tr></thead><tbody><tr><th scope="row">&lt; 1e-7</th><td>✅ 正确</td></tr><tr><th scope="row">1e-7 ~ 1e-4</th><td>⚠️ 可疑（可能是 ReLU 折点，可接受）</td></tr><tr><th scope="row">&gt; 1e-4</th><td>❌ 有 bug</td></tr></tbody></table></div></section>
 <p><strong>四个必知的坑</strong> ⚠️：</p>
 <div class="tw"><table>
 <thead>
@@ -628,9 +628,8 @@ PyTorch 的 <code>loss.backward()</code> 就是通用的反向模式 AD——
 <hr />
 <h2 id="_12">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>核心量 <strong>δˡ = ∂J/∂zˡ = 第 l 层要担的责任</strong>（定义在 z 上是因为 W、b 直接产生 z——<strong>"找那个定义在它上面最省事的中间量"是通用推导技巧</strong>）。四方程：输出层 δ = 损失敏感度×激活斜率；<strong>递推 δˡ = (Wˡ⁺¹)ᵀδˡ⁺¹ ⊙ f'(zˡ)</strong>（求和是因为一个神经元影响下层全部）；权重梯度 = δ×上层输出；偏置梯度 = δ。<strong>建议手算一遍那个 1-1-1 的例子</strong>。四洞察：①展开是 <strong>W·f' 的连乘 → 梯度消失的精确来源</strong>（sigmoid <strong>10层后 10⁻⁶</strong>，ReLU 正区间恒为 1）②残差 <strong>+I</strong>，展开后有条恒等路径永远是 1 ③softmax+交叉熵约掉后 <strong>δ = 预测−真实</strong>，<strong>不饱和——sigmoid+MSE 错得最离谱时反而学不动</strong> ④方程3需要前向激活 → <strong>必须缓存 → 训练比推理吃显存多，梯度检查点用时间换空间</strong>。复杂度 O(P)→O(1) 次前向，本质是<strong>反向模式自动微分</strong>（输入多输出少时完胜）。梯度检验：<strong>中心差分</strong>，ε≈1e-5，<strong>先关 Dropout/BN</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>反向传播沿计算依赖反向应用链式法则，把输出损失传到每层参数。</li><li>先明确 δ 对哪个中间量求导，再核对权重、激活和梯度的形状。</li><li>前向缓存服务于反向计算；用小例子的中心差分检验解析梯度。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="13-EM与高斯混合.html">13-EM与高斯混合.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -658,5 +657,4 @@ PyTorch 的 <code>loss.backward()</code> 就是通用的反向模式 AD——
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -315,7 +315,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <hr />
 <h2 id="_2">🧠 一、问题：线性不可分怎么办</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">一维数据，线性不可分：</span></div><div class="vb-tree-row"><span class="vb-tree-node">○ ○ ○ ● ● ● ○ ○ ○</span><span class="vb-tree-note">一刀切不开（中间是●，两边是○）</span></div><div class="vb-tree-row"><span class="vb-tree-node">x</span></div><div class="vb-tree-row"><span class="vb-tree-node">把它映射到二维：φ(x) = (x, x²)</span></div><div class="vb-tree-row"><span class="vb-tree-node">●●●</span></div><div class="vb-tree-row"><span class="vb-tree-node">x² ○ ○</span><span class="vb-tree-note">现在一条直线能切开了！✅</span></div><div class="vb-tree-row"><span class="vb-tree-node">○ ○</span></div><div class="vb-tree-row"><span class="vb-tree-node">● ● ●</span></div><div class="vb-tree-row"><span class="vb-tree-node">x</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-theorymd-06-1" style="--diagram-width:720px"><svg viewBox="0 0 720 555" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="实心点在原坐标中间，空心点在两侧；一维的一刀不能分开它们。加入 x² 后，同类点按高度分开，水平直线就能作为分类边界。"><title>实心点在原坐标中间，空心点在两侧；一维的一刀不能分开它们。加入 x² 后，同类点按高度分开，水平直线就能作为分类边界。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">映射前一维不可分，映射后可用横线分开</text><line x1="70" y1="110" x2="655" y2="110" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="655.0,110.0 646.0,115.0 646.0,105.0"/><text x="610" y="145" font-size="18" text-anchor="start" fill="var(--fg)">x</text><circle cx="150" cy="110" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="220" cy="110" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="290" cy="110" r="8" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/><circle cx="360" cy="110" r="8" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/><circle cx="430" cy="110" r="8" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/><circle cx="500" cy="110" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="570" cy="110" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><line x1="360" y1="165" x2="360" y2="205" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="360.0,205.0 355.0,196.0 365.0,196.0"/><text x="390" y="185" font-size="18" text-anchor="start" fill="var(--fg)">φ(x) = (x, x²)</text><line x1="70" y1="500" x2="655" y2="500" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="655.0,500.0 646.0,505.0 646.0,495.0"/><line x1="360" y1="500" x2="360" y2="230" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="360.0,230.0 365.0,239.0 355.0,239.0"/><text x="620" y="528" font-size="18" text-anchor="start" fill="var(--fg)">x</text><text x="379" y="240" font-size="18" text-anchor="start" fill="var(--fg)">x²</text><circle cx="150" cy="264" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="220" cy="384" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="290" cy="456" r="8" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/><circle cx="360" cy="480" r="8" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/><circle cx="430" cy="456" r="8" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"/><circle cx="500" cy="384" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="570" cy="264" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><line x1="110" y1="420" x2="620" y2="420" stroke="var(--muted)" stroke-width="2" stroke-dasharray="5 5"/><text x="465" y="406" font-size="18" text-anchor="start" fill="var(--fg)">新的线性边界</text></svg><figcaption>实心点在原坐标中间，空心点在两侧；一维的一刀不能分开它们。加入 x² 后，同类点按高度分开，水平直线就能作为分类边界。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>一维数据，线性不可分：</span></li><li><span>○ ○ ○ ● ● ● ○ ○ ○</span> <span>一刀切不开（中间是●，两边是○）</span></li><li><span>把它映射到二维：φ(x) = (x, x²)</span></li><li><span>x² ○ ○</span> <span>现在一条直线能切开了！✅</span></li></ul></section>
 <p>💡 <strong>核心思想</strong>：<strong>在低维分不开的数据，映射到高维往往就分得开了。</strong></p>
 <p><strong>这不是巧合</strong>——维度越高，"能把点分开的方式"就越多。
 极端情况下，<strong>n 个点映射到 n−1 维后总是线性可分的</strong>。</p>
@@ -356,7 +357,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <p>$$K(a,b) = (a^\top b)^2 = \varphi(a)^\top\varphi(b)$$</p>
 <p><strong>这个函数 K 就叫「核函数」。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 自己验证一下（10 秒）</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 自己验证一下（10 秒）</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">3.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">])</span>
 
@@ -507,9 +508,8 @@ Transformer 赢在能并行、能 scale。
 <hr />
 <h2 id="_9">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>核技巧 = <strong>不去那个高维空间，却拿到在那里计算的结果</strong>。低维分不开的数据映射到高维往往就分得开（<strong>n 个点映射到 n−1 维后总是线性可分</strong>），但高维算不动、存不下。⭐<strong>关键观察</strong>：SVM、PCA、岭回归、感知机<strong>只用到样本间的内积，不需要单个样本本身</strong>——只要能直接算出高维内积，就不必去那个空间。例子：φ(x) = (x₁², √2·x₁x₂, x₂²) 时 φ(a)·φ(b) 恰好是个<strong>完全平方式</strong>，等于 <strong>(a·b)²</strong>——<strong>在原空间算个内积、平方一下，就白拿到三维内积，全程没构造过任何三维向量</strong>。威力：多项式核 (a·b + c)^d 在 d=5、n=100 时对应<strong>近亿维</strong>映射，你只需算一次点积、加常数、取 5 次方；<strong>RBF 核 exp(−γ‖a−b‖²) 更是对应无穷维</strong>（泰勒展开 = 无穷多个多项式核叠加），<strong>你永远算不出 φ(x)，但 K(a,b) 一行算完</strong>。⭐<strong>你在一个自己永远无法写下来的空间里做线性分类，而计算成本只和原始维度有关</strong>。<strong>RBF 是默认首选</strong>。<strong>γ 是偏差-方差旋钮</strong>：γ 小则每点影响一大片、边界平滑 → <strong>欠拟合</strong>；γ 大则只影响身边一点 → <strong>过拟合</strong>（极端时退化成「只和自己相似」= 记住训练集）。💡<strong>RBF 核就是第 4 章 kNN 的高斯加权</strong>，γ 和带宽 h 是同一个东西。合法性看 <strong>Mercer 条件：核矩阵必须半正定</strong>；<strong>核的和、正数倍、乘积仍是核</strong>，多模态可放心写 <code>K_文本 + K_图像</code>。⚠️<strong>代价：核矩阵是 n×n 的</strong>——n=1 万约 800 MB，n=10 万就是 80 GB，存不下；训练复杂度 O(n²)~O(n³)。⭐<strong>复杂度取决于样本数 n 而不是维度 d，正好和直觉相反</strong>；这也是<strong>核方法输给深度学习的根本原因——优雅但无法 scale，可扩展性胜过精巧的结构设计</strong>。缓解：Nyström 近似、随机傅里叶特征。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>核函数直接计算映射空间的内积，不必显式展开高维特征。</li><li>核必须满足相应的正定性要求，不能把任意相似度都当合法核。</li><li>核参数控制拟合形状，而核矩阵随样本数增长；同时检查泛化与计算成本。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="07-SVM.html">07-SVM.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -537,5 +537,4 @@ Transformer 赢在能并行、能 scale。
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

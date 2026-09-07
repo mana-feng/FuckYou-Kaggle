@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -307,51 +307,52 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </details>
 <h1 id="b-agent">挑战项目 B · 评测驱动开发一个 Agent</h1>
 <p>⏱ <strong>5–7 天</strong> ｜ 难度 ★★★★☆ ｜ 前置：第 14 节吃透 + 第 17 节至少做过一个</p>
-<hr />
+<hr>
 <h2 id="_1">🎯 为什么选这个项目（它的「特点」）</h2>
 <p>99% 的人做 Agent 的顺序是「先写，再凭感觉调」。这个项目<strong>强制你反过来</strong>：先建评测，再写 Agent，让每一次改动都有数字说话。</p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>你会亲身经历这条真理：</p><p>💀 &quot;我觉得这个 prompt 更好&quot; —— 跑评测，其实掉了 8 分</p><p>💊 &quot;这个改动没感觉&quot; —— 跑评测，稳定涨了 12 分</p><p>🔬 &quot;改了之后总分没变&quot; —— 分维度一看，简单题涨了、难题崩了</p><p>没有评测，Agent 优化就是玄学。</p><p>这个项目让你戒掉玄学，一辈子受用。</p></div></section>
+<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>你会亲身经历这条真理：</p><p>💀 "我觉得这个 prompt 更好" —— 跑评测，其实掉了 8 分</p><p>💊 "这个改动没感觉" —— 跑评测，稳定涨了 12 分</p><p>🔬 "改了之后总分没变" —— 分维度一看，简单题涨了、难题崩了</p><p>没有评测，Agent 优化就是玄学。</p><p>这个项目让你戒掉玄学，一辈子受用。</p></div></section>
 <p><strong>它教的是元技能</strong>：不是「怎么做一个 Agent」，而是「怎么知道你的 Agent 到底行不行」。这是初级和高级 Agent 工程师最大的分水岭（对应第 14 节全章）。</p>
-<hr />
+<hr>
 <h2 id="agent">🎯 被测对象：一个「自然语言转结构化查询」Agent</h2>
 <p>选这个任务是因为它<strong>既有客观对错、又有主观质量</strong>，能练到三类评分器：</p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>输入：&quot;上个月华东区销售额超过10万的订单，按金额降序&quot;</p><p>输出：结构化查询 JSON</p><p>{&quot;region&quot;:&quot;华东&quot;, &quot;metric&quot;:&quot;销售额&quot;, &quot;op&quot;:&quot;&gt;&quot;, &quot;value&quot;:100000,</p><p>&quot;time&quot;:&quot;上月&quot;, &quot;sort&quot;:{&quot;field&quot;:&quot;金额&quot;,&quot;order&quot;:&quot;desc&quot;}}</p></div></section>
+<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>输入："上个月华东区销售额超过10万的订单，按金额降序"</p><p>输出：结构化查询 JSON</p><p>{"region":"华东", "metric":"销售额", "op":"&gt;", "value":100000,</p><p>"time":"上月", "sort":{"field":"金额","order":"desc"}}</p></div></section>
 <ul>
 <li><strong>代码评分器</strong>能判：JSON 合法吗？字段齐吗？数值对吗？</li>
 <li><strong>模型评分器</strong>能判：意图理解对吗？边界情况处理合理吗？</li>
 <li>有明确的<strong>正反两面</strong>：该拒绝的模糊查询有没有拒绝？</li>
 </ul>
-<hr />
+<hr>
 <h2 id="adhd">🧠 ADHD 任务切分</h2>
 <h3 id="agent-day-12">第一阶段：先建评测，一行 Agent 代码都不许写（Day 1–2）</h3>
-<ul>
-<li>[ ] <strong>T1 (90min)</strong> 从「真实失败」出发造 <strong>25 个任务</strong>（第 14 节第 0 步）：15 个正常查询、5 个模糊该拒绝的、5 个边界（多条件/否定/相对时间）。每个配参考解</li>
-<li>[ ] <strong>T2 (45min)</strong> 质量关（第 14 节第 2 步）：每个任务问自己「两个人看了会得出同样的对错判断吗？」不能的重写</li>
-<li>[ ] <strong>T3 (90min)</strong> 代码评分器：JSON 可解析 + 必填字段 + 数值/操作符精确匹配。<strong>支持部分给分</strong>（意图对但漏一个字段 ≠ 完全错）</li>
-<li>[ ] <strong>T4 (90min)</strong> 模型评分器：给一个结构化 rubric（意图准确/字段完整/边界处理/该拒绝的拒绝了吗），分维度打分。⭐ 用 3-5 个参考解<strong>校准</strong>它——让它给参考解打分，分数应该都高</li>
-<li>[ ] <strong>T5 (45min)</strong> 干净 harness（第 14 节第 4 步）：每个任务独立跑，不共享状态；防作弊（别让 Agent 看到参考解）</li>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="1"><label class="reading-task-title"><input type="checkbox" data-task-key="1"><span>任务 T1</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> 从「真实失败」出发造 <strong>25 个任务</strong>（第 14 节第 0 步）：15 个正常查询、5 个模糊该拒绝的、5 个边界（多条件/否定/相对时间）。每个配参考解</div></li>
+<li class="reading-task" data-reading-task="2"><label class="reading-task-title"><input type="checkbox" data-task-key="2"><span>任务 T2</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> 质量关（第 14 节第 2 步）：每个任务问自己「两个人看了会得出同样的对错判断吗？」不能的重写</div></li>
+<li class="reading-task" data-reading-task="3"><label class="reading-task-title"><input type="checkbox" data-task-key="3"><span>任务 T3</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> 代码评分器：JSON 可解析 + 必填字段 + 数值/操作符精确匹配。<strong>支持部分给分</strong>（意图对但漏一个字段 ≠ 完全错）</div></li>
+<li class="reading-task" data-reading-task="4"><label class="reading-task-title"><input type="checkbox" data-task-key="4"><span>任务 T4</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> 模型评分器：给一个结构化 rubric（意图准确/字段完整/边界处理/该拒绝的拒绝了吗），分维度打分。⭐ 用 3-5 个参考解<strong>校准</strong>它——让它给参考解打分，分数应该都高</div></li>
+<li class="reading-task" data-reading-task="5"><label class="reading-task-title"><input type="checkbox" data-task-key="5"><span>任务 T5</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> 干净 harness（第 14 节第 4 步）：每个任务独立跑，不共享状态；防作弊（别让 Agent 看到参考解）</div></li>
 </ul>
 <h3 id="agentday-3">第二阶段：现在才开始写 Agent（Day 3）</h3>
-<ul>
-<li>[ ] <strong>T6 (60min)</strong> V0 基线：最朴素的单 prompt。<strong>立刻跑评测存基线分</strong></li>
-<li>[ ] <strong>T7 (30min)</strong> ⭐ 读转录（第 14 节第 6 步）：不看分数，读 5 个失败案例的完整过程，写下你的假设「它为什么错」</li>
-<li>[ ] <strong>T8 (60min)</strong> V1：针对假设改 prompt（加示例？加字段说明？）→ 跑评测 → <strong>和基线比</strong>。涨了留下，跌了回滚</li>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="6"><label class="reading-task-title"><input type="checkbox" data-task-key="6"><span>任务 T6</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> V0 基线：最朴素的单 prompt。<strong>立刻跑评测存基线分</strong></div></li>
+<li class="reading-task" data-reading-task="7"><label class="reading-task-title"><input type="checkbox" data-task-key="7"><span>任务 T7</span></label><p class="reading-task-time">参考用时 · 30 分钟</p><div class="reading-task-body"> ⭐ 读转录（第 14 节第 6 步）：不看分数，读 5 个失败案例的完整过程，写下你的假设「它为什么错」</div></li>
+<li class="reading-task" data-reading-task="8"><label class="reading-task-title"><input type="checkbox" data-task-key="8"><span>任务 T8</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> V1：针对假设改 prompt（加示例？加字段说明？）→ 跑评测 → <strong>和基线比</strong>。涨了留下，跌了回滚</div></li>
 </ul>
 <h3 id="day-45">第三阶段：迭代循环 + 抓评测本身的问题（Day 4–5）</h3>
-<ul>
-<li>[ ] <strong>T9 (90min)</strong> 迭代 V2/V3/V4：每版一个改动，每版跑评测，画<strong>分数演进折线</strong>。规则：一次只改一个变量，否则不知道是谁的功劳</li>
-<li>[ ] <strong>T10 (60min)</strong> ⭐ 分维度看（第 14 节第 5 步）：不要只看总分。是不是简单题涨了、难题崩了？正例好了、反例（该拒绝的）崩了？—— 单向优化是常见陷阱</li>
-<li>[ ] <strong>T11 (60min)</strong> 抓<strong>评分器自己的 bug</strong>：人工核对 10 个「评分器判对/判错」的案例。你几乎一定会发现评分器误判——修它。「不读转录，你不知道评分器在不在工作」</li>
-<li>[ ] <strong>T12 (45min)</strong> 加 <strong>pass^k</strong>（第 14 节）：同一任务跑 5 次，看一致性。发现「平均分不错但方差大」的任务——这是面向用户 Agent 的隐患</li>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="9"><label class="reading-task-title"><input type="checkbox" data-task-key="9"><span>任务 T9</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> 迭代 V2/V3/V4：每版一个改动，每版跑评测，画<strong>分数演进折线</strong>。规则：一次只改一个变量，否则不知道是谁的功劳</div></li>
+<li class="reading-task" data-reading-task="10"><label class="reading-task-title"><input type="checkbox" data-task-key="10"><span>任务 T10</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> ⭐ 分维度看（第 14 节第 5 步）：不要只看总分。是不是简单题涨了、难题崩了？正例好了、反例（该拒绝的）崩了？—— 单向优化是常见陷阱</div></li>
+<li class="reading-task" data-reading-task="11"><label class="reading-task-title"><input type="checkbox" data-task-key="11"><span>任务 T11</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 抓<strong>评分器自己的 bug</strong>：人工核对 10 个「评分器判对/判错」的案例。你几乎一定会发现评分器误判——修它。「不读转录，你不知道评分器在不在工作」</div></li>
+<li class="reading-task" data-reading-task="12"><label class="reading-task-title"><input type="checkbox" data-task-key="12"><span>任务 T12</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> 加 <strong>pass^k</strong>（第 14 节）：同一任务跑 5 次，看一致性。发现「平均分不错但方差大」的任务——这是面向用户 Agent 的隐患</div></li>
 </ul>
 <h3 id="day-67">第四阶段：报告（Day 6–7）</h3>
-<ul>
-<li>[ ] <strong>T13 (90min)</strong> 报告：V0→V4 分数演进表、分维度雷达图、「我修过的一个评分器 bug」、「一个我以为有用其实有害的改动」</li>
-<li>[ ] <strong>T14 (45min)</strong> 元反思：哪些改动<strong>离线涨了但你怀疑线上未必</strong>？为什么？（第 14 节的失真）</li>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="13"><label class="reading-task-title"><input type="checkbox" data-task-key="13"><span>任务 T13</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> 报告：V0→V4 分数演进表、分维度雷达图、「我修过的一个评分器 bug」、「一个我以为有用其实有害的改动」</div></li>
+<li class="reading-task" data-reading-task="14"><label class="reading-task-title"><input type="checkbox" data-task-key="14"><span>任务 T14</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> 元反思：哪些改动<strong>离线涨了但你怀疑线上未必</strong>？为什么？（第 14 节的失真）</div></li>
 </ul>
-<hr />
+<hr>
 <h2 id="_2">🔨 关键骨架</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<p>此处的函数供你自己的 Agent 与 judge 调用。评分器已检查嵌套 <code>sort</code>；测试时故意删掉排序、改成升序、返回数组，确认不会满分。历史版本漏查排序，错误答案也得满分，这正适合用来练习“评分器也要用反例测试”。澄清分支只检查动作，不检查理由质量；完整项目还需补业务执行结果、日期解释和过程约束。</p>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
 <span class="c1"># ============ 评测任务 ============</span>
 <span class="n">TASKS</span> <span class="o">=</span> <span class="p">[</span>
@@ -371,10 +372,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
         <span class="n">out</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
         <span class="k">return</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;JSON 不合法&quot;</span>
-    <span class="k">if</span> <span class="n">ref</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;clarify&quot;</span><span class="p">:</span>            <span class="c1"># 反例：本该拒绝</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;顶层必须是对象&quot;</span>
+    <span class="k">if</span> <span class="n">ref</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;clarify&quot;</span><span class="p">:</span>            <span class="c1"># 模糊任务应澄清</span>
         <span class="k">return</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;正确拒绝&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">out</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;clarify&quot;</span> \
                <span class="k">else</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;该拒绝却硬答了&quot;</span><span class="p">)</span>
-    <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;region&quot;</span><span class="p">,</span> <span class="s2">&quot;metric&quot;</span><span class="p">,</span> <span class="s2">&quot;op&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">set</span><span class="p">(</span><span class="n">ref</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;字段缺失或包含未允许的字段&quot;</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;region&quot;</span><span class="p">,</span> <span class="s2">&quot;metric&quot;</span><span class="p">,</span> <span class="s2">&quot;op&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="s2">&quot;sort&quot;</span><span class="p">]</span>
     <span class="n">hit</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fields</span> <span class="k">if</span> <span class="n">out</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">==</span> <span class="n">ref</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">hit</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">fields</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hit</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span><span class="si">}</span><span class="s2"> 字段正确&quot;</span>
 
@@ -413,7 +418,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
     <span class="c1"># 你会看到 normal 涨的时候 should_reject 可能在跌——这就是单向优化陷阱</span>
 </code></pre></div>
 
-<hr />
+<hr>
 <h2 id="_3">🕳️ 专属坑</h2>
 <div class="tw"><table>
 <thead>
@@ -453,7 +458,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<hr />
+<hr>
 <!--XREF-->
 <h2 id="_4">🔗 这一章连到哪里</h2>
 <div class="tw"><table>
@@ -465,20 +470,20 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </thead>
 <tbody>
 <tr>
-<td><a href="../大模型全景导论/11-评测体系.html">全景导论 11</a></td>
+<td><a href="../%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%85%A8%E6%99%AF%E5%AF%BC%E8%AE%BA/11-%E8%AF%84%E6%B5%8B%E4%BD%93%E7%B3%BB.html">全景导论 11</a></td>
 <td>评测的全景版：有哪些榜、各测什么、为什么榜单会失真</td>
 </tr>
 <tr>
-<td><a href="../模型上线之后/12-AB实验你以为你懂了.html">上线之后 12</a></td>
+<td><a href="../%E6%A8%A1%E5%9E%8B%E4%B8%8A%E7%BA%BF%E4%B9%8B%E5%90%8E/12-AB%E5%AE%9E%E9%AA%8C%E4%BD%A0%E4%BB%A5%E4%B8%BA%E4%BD%A0%E6%87%82%E4%BA%86.html">上线之后 12</a></td>
 <td>⭐「反复看结果」在统计上叫 peeking，会把假阳性推到 30%</td>
 </tr>
 <tr>
-<td><a href="../Kaggle竞赛方法论/22_竞赛元策略.html">Kaggle 22</a></td>
+<td><a href="../Kaggle%E7%AB%9E%E8%B5%9B%E6%96%B9%E6%B3%95%E8%AE%BA/22_%E7%AB%9E%E8%B5%9B%E5%85%83%E7%AD%96%E7%95%A5.html">Kaggle 22</a></td>
 <td>⚠️ 盯着同一个评测集迭代 = 对它过拟合，这就是打榜里的 shake-up</td>
 </tr>
 </tbody>
 </table></div>
-<hr />
+<hr>
 <h2 id="_5">🏁 通关标准</h2>
 <ol>
 <li>25 个任务有正反两面 + 边界，每个有参考解，且通过「两人同判」质量关</li>
@@ -493,7 +498,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>加 <strong>AI 抗性</strong>测试（第 14 节 5.5）：造几个「训练数据里不太可能有」的刁钻查询，看分数掉多少</li>
 <li>做<strong>基础设施噪声</strong>小实验：同一版本 Agent 连跑 3 次，看纯随机波动有多大——这是你判断「涨了 2 分算不算真涨」的底噪基准</li>
 </ul>
-<hr />
+<hr>
 <h2 id="_7">✅ 检查点</h2>
 <ol>
 <li>「评测驱动」和普通开发的顺序有什么不同？为什么这个顺序重要？</li>
@@ -512,17 +517,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><strong>代码评分器</strong>（客观、可重复）+ 模型 rubric 评分器（处理主观项，必须先校准）。代码评分器支持部分分是因为二元的对错太粗——"格式对了但少一个字段"和"完全跑偏"应该得到不同的分数，否则你看不到渐进的改善。</li>
 <li><strong>总分持平，但某个维度涨了、另一个跌了</strong>——你以为没变化，其实发生了一次真实的权衡。防法：分维度报告，永远不只看总分。</li>
 <li><strong>先怀疑任务本身坏了</strong>（评分器写错、参考答案错、任务描述有歧义），而不是 Agent 太差。0% 这种极端值几乎总是基础设施问题。</li>
-<li>得到<strong>基础设施噪声的底噪基准</strong>。有了它你才能判断"这次涨了 2 分"是真提升还是随机波动。🔗 和<a href="../机器学习与深度学习基础/05-评估与过拟合.html">《机器学习基础》第 5 章</a>的「别信单次切分：用 5 折交叉验证报均值 ± 标准差」是同一条纪律——那一章实测同一个模型只换切分种子，10 次的极差就有 3.5 个百分点。</li>
+<li>得到<strong>基础设施噪声的底噪基准</strong>。有了它你才能判断"这次涨了 2 分"是真提升还是随机波动。🔗 和<a href="../%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/05-%E8%AF%84%E4%BC%B0%E4%B8%8E%E8%BF%87%E6%8B%9F%E5%90%88.html">《机器学习基础》第 5 章</a>的「别信单次切分：用 5 折交叉验证报均值 ± 标准差」是同一条纪律——那一章实测同一个模型只换切分种子，10 次的极差就有 3.5 个百分点。</li>
 <li><strong>在报告里显式标注</strong>：哪些改动是"针对评测集调的"（可能过拟合了评测），哪些是"原理上应该普遍有效的"。诚实标出不确定性，比给一个漂亮但可疑的数字有价值得多。</li>
 </ol>
 </details>
-<hr />
+<hr>
 <h2 id="_8">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>评测驱动开发：<strong>先建25个带参考解的任务(正/反/边界)+双轨评分器(代码支持部分分+模型rubric校准过)，才准写Agent</strong>——因为<strong>没有评测时你所有的"改进"都是感觉</strong>（你会记住有效的那次、忘掉无效的那次）。任务不能全是难题，否则分数全趴在低位没有区分度；<strong>代码评分器要支持部分分</strong>，因为二元对错太粗看不到渐进改善。V0基线→读转录→一版一改动→画分数曲线。铁律：<strong>分维度看(防"总分持平但某维涨某维跌"骗人)</strong>、人工核对评分器(它自己会错)、<strong>0%通过率先怀疑任务坏了而不是Agent差</strong>。⭐<strong>同一版本连跑3次得到噪声底噪</strong>，才能判断"涨2分"是真的还是波动。报告里<strong>诚实标出"哪些是针对评测集调的"</strong>。元技能=知道Agent到底行不行。</p>
-</blockquote>
-<p><strong>下一个挑战</strong> 👉 <a href="20-挑战项目C-提示注入攻防.html">20-挑战项目C-提示注入攻防.md</a></p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>先建立含正常、反例和边界情况的任务集与评分器，再开始改 Agent。</li><li>保存基线转录，每版只改一项；分维度看结果，不只看总分。</li><li>人工核对评分器，用重复运行估计波动，避免把偶然涨分当成进步。</li><li>报告诚实区分针对评测集的调优与能推广的改进。</li></ul></section>
+
+<p><strong>下一个挑战</strong> 👉 <a href="20-%E6%8C%91%E6%88%98%E9%A1%B9%E7%9B%AEC-%E6%8F%90%E7%A4%BA%E6%B3%A8%E5%85%A5%E6%94%BB%E9%98%B2.html">20-挑战项目C-提示注入攻防.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="18-挑战项目A-手搓Agent框架.html"><div class="dir">← 上一节</div>⚙️ 挑战A · 手搓框架</a><a class="next" href="20-挑战项目C-提示注入攻防.html"><div class="dir">下一节 →</div>🥷 挑战C · 攻防演练</a></nav>
@@ -549,5 +553,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,16 +271,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
- onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script><link rel="stylesheet" href="../assets/guided-lessons.css"><link rel="stylesheet" href="../assets/guided-batch1.css"><script defer src="../assets/guided-batch1.js"></script><link rel="stylesheet" href="../assets/guided-batch2.css"><script defer src="../assets/guided-batch2.js"></script><script defer src="../assets/guided-lessons.js"></script></head><body class="guided-reading">
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
@@ -308,7 +308,19 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 </div>
 </details>
-<h1 id="c">附录 C · 手撕代码速查</h1>
+<div class="lesson-layout" data-lesson="ml-c" data-batch="ml-rest" data-reading-mode="lookup">
+<div class="lesson-content"><section class="lesson-hero" id="lesson-start" data-route="先知道这页解决什么">
+<div><p class="lesson-eyebrow">C / 按问题查，不必顺读</p><h1>一次只手写一个运算，<br>先核对结果，再核对梯度。</h1><p class="lesson-lead">这里用于理解算法如何实现；附录 B 用于快速查库的调用方式。两份速查解决不同问题。</p></div>
+<aside class="lesson-advice"><strong>一次只处理一个问题</strong><p>可以从入口直接跳到需要的部分。正文、图解、代码和检查点都在下方。</p><a href="#first-pause">先看懂这一点就可以停 →</a></aside></section>
+<div class="lesson-overview-grid">
+<section class="lesson-card" id="first-example" data-route="先看一个具体结果"><p class="lesson-kicker">先抓住一个具体结果</p><h2>先做一个小输入的对照</h2><p>写 Softmax 时，先检查每行之和是否约等于 1；再用大数输入检查数值稳定性。形状对了不等于数值对了，每题的检查点都要保留。</p></section>
+<section class="lesson-card lesson-task-entry" id="reading-choices" data-route="按需要选择下一步"><p class="lesson-kicker">接下来，按需要选一项</p><h2>你现在想看什么？</h2><nav aria-label="本页阅读入口"><a href="#1-softmax">从损失与梯度开始 <span aria-hidden="true">→</span></a><a href="#2">查注意力实现 <span aria-hidden="true">→</span></a><a href="#_3">直接定位算法 <span aria-hidden="true">→</span></a></nav><p class="lesson-note">这些入口是选择，不是必须按顺序完成的任务。</p></section>
+<section class="lesson-card lesson-pause lesson-wide" id="first-pause" data-route="可以停在这里"><h2>可以停在这里</h2><p>这里用于理解算法如何实现；附录 B 用于快速查库的调用方式。两份速查解决不同问题。</p><a href="#full-lesson">需要更多细节时，继续看完整正文 →</a></section><section class="lesson-card lesson-wide lesson-search" id="section-lookup" data-route="搜索代码主题"><label for="section-search">按主题或代码关键词找片段</label><div class="lesson-search-controls"><input id="section-search" type="search" placeholder="例如：Pipeline、Dropout、梯度" aria-controls="full-lesson" autocomplete="off"><button type="button" id="section-search-clear">清除筛选</button></div><p id="section-search-status" role="status">输入关键词后，只显示匹配的正文卡片；清除可恢复全部内容。</p></section></div>
+<section class="lesson-full" id="full-lesson" aria-label="完整正文">
+<div class="lesson-divider"><span>继续探索</span><p>原有正文、图解和例子都在下方。按需跳转，不必一次读完。</p></div>
+<h2 id="c" class="lesson-original-title">附录 C · 手撕代码速查</h2>
+<!-- guided-lesson: ml-c -->
+
 <blockquote>
 <p>📌 面试官说「来，白板写一个 XXX」的时候用。<strong>不要通读</strong>，<code>Ctrl+F</code> 搜你要的那一个。</p>
 </blockquote>
@@ -380,7 +392,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="1-softmax">1️⃣ Softmax + 交叉熵：前向和反向</h2>
 <p>这段在干什么：把一排任意实数（logits）变成和为 1 的概率，再算「真实那一类的概率有多低」当损失；反向那三行是<strong>整个深度学习里最该背下来的一个梯度</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">softmax</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>                                   <span class="c1"># z: (N, C)</span>
     <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">-</span> <span class="n">z</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>          <span class="c1"># ⭐ 减最大值，防 exp 溢出</span>
@@ -423,7 +435,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="2">2️⃣ 缩放点积注意力（含因果掩码）</h2>
 <p>这段在干什么：拿 Q 去和每个 K 算相关度 → 除以 $\sqrt{d_k}$ → softmax 成权重 → 按权重把 V 加权求和。<strong>一次可微分的、软的查表。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">attention</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">causal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>             <span class="c1"># q,k,v: (B, H, L, d)</span>
@@ -458,7 +470,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="3-mha">3️⃣ 多头注意力 MHA ⭐ 最高频的一道</h2>
 <p>这段在干什么：把 $d_{model}$ 劈成 $h$ 份，每份独立做一次上面那个注意力（各抓一种模式），最后拼回来再过一个输出投影混合。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">MultiHeadAttention</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
@@ -501,7 +513,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="4-layernorm">4️⃣ LayerNorm</h2>
 <p>这段在干什么：对<strong>一个样本自己的所有特征</strong>做归一化（横着算），再用两个可学参数把尺度放回来。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">LayerNorm</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
@@ -538,7 +550,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="5-batchnorm-train-eval-running-stats">5️⃣ BatchNorm（含 train / eval 分支和 running stats）</h2>
 <p><strong>这段在干什么</strong>：对<strong>一个 batch 内的同一个特征</strong>做归一化（竖着算）。⭐ 难点全在「训练和推理用的统计量不是同一个」这件事上。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">BatchNorm1d</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
@@ -588,7 +600,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="6-dropout">6️⃣ Dropout（训练 / 推理的差异在哪）</h2>
 <p><strong>这段在干什么</strong>：训练时按概率 $p$ 随机把一部分激活置零，逼网络别依赖某个特定神经元。⭐ <strong>考点从来不是「随机置零」，是「置零之后期望变了，怎么补回来」。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">dropout</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">training</span> <span class="ow">or</span> <span class="n">p</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -620,7 +632,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="7-conv2d">7️⃣ 卷积前向 Conv2d</h2>
 <p><strong>这段在干什么</strong>：一个小窗口在图上滑，每停一次做一次「逐元素相乘再求和」。⭐ <strong>写对这段的关键是记住：核在空间上滑动，但在通道上是「一次吃掉全部」。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">conv2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="n">N</span><span class="p">,</span> <span class="n">Cin</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">W</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span>                          <span class="c1"># x: (N, Cin, H, W)</span>
@@ -661,7 +673,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="8-k-means">8️⃣ K-means</h2>
 <p>这段在干什么：① 归到最近的中心 ② 中心移到自己那群点的重心 ③ 重复到不动。<strong>两步交替，就这么简单。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">kmeans</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">iters</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
@@ -698,7 +710,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="9-auc-on-log-n">9️⃣ AUC 的秩和实现（O(n log n)）</h2>
 <p><strong>这段在干什么</strong>：AUC 的定义是「<strong>随机取一个正样本一个负样本，正的排在前面的概率</strong>」。⭐ 这个定义本身就是一个算法——不用画 ROC 曲线，排个序数秩就行。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">auc</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">score</span><span class="p">):</span>
     <span class="n">y</span><span class="p">,</span> <span class="n">score</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
@@ -739,7 +751,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="numpy">🔟 逻辑回归 + 梯度下降（纯 numpy）</h2>
 <p>这段在干什么：把第 3 章那句「<strong>交叉熵配 Sigmoid，梯度正好是（预测 − 真实）</strong>」写成代码，闭环。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">fit_logreg</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">l2</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
     <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
@@ -891,6 +903,17 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table></div>
 <hr />
 <p>👉 <a href="index.html">回到首页</a></p>
+</section></div>
+<aside class="lesson-rail" aria-label="本页分类跳转">
+<button type="button" class="lesson-route-toggle" aria-expanded="true" aria-controls="lesson-route">本页分类跳转 <span aria-hidden="true">⌄</span></button>
+<div id="lesson-route">
+<p class="lesson-position" aria-live="polite">从第一站开始</p>
+<div class="lesson-track" aria-hidden="true"><span></span></div>
+<nav class="lesson-route-links" aria-label="章节跳转"></nav>
+<div class="lesson-rail-note"><strong>一次只读一张卡片</strong><p>先找到眼前的问题。长代码可以展开阅读，正文和图解不会被省略。</p></div>
+<button type="button" class="lesson-save">记住当前位置</button>
+<p class="lesson-save-status" role="status"></p>
+</div></aside></div>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="附录B-代码速查.html"><div class="dir">← 上一节</div>💻 附录B · 代码速查</a><a class="next" href="index.html"><div class="dir">完成 →</div>🏠 回首页看进度</a></nav>
@@ -917,5 +940,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -381,8 +381,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_4">🧩 三、后端：先说形状，再看代码</h2>
 <p><strong>① 密钥必须从环境变量读。</strong> 不只是安全洁癖——<strong>部署平台给你的注入口只有环境变量这一个</strong>。写进代码意味着每换一次 Key 都要重新提交、重新部署，而且这份代码从此不能公开。</p>
 <p><strong>② 需要一个「能分批往外写、且连接保持打开」的返回方式。</strong> 浏览器要边收边显示，就不能等模型生成完再 <code>return</code>。FastAPI 里这东西叫 <code>StreamingResponse</code>，喂它一个<strong>生成器</strong>，<code>yield</code> 一次它就往连接里写一次。</p>
-<p><strong>③ 往外写的东西要分帧。</strong> 你迟早要往回送「不是正文」的东西——错误、用量、工具状态。<strong>先分帧，以后加东西不用重写前端</strong>。用 SSE：每帧一行 <code>data: {JSON}</code>，帧间空一行，帧的类型放在 JSON 负载的 <code>type</code> 字段里（<code>delta</code> / <code>usage</code> / <code>error</code> / <code>done</code>）。⭐ 类型不放进 SSE 的 <code>event:</code> 行，是因为前端用 <code>fetch</code> 手动解析（第四节说了为什么不用 <code>EventSource</code>），而 <code>event:</code> 行只对 <code>EventSource</code> 有意义——放进负载，一行 <code>JSON.parse</code> 就拿到全部信息。⭐ 全板块统一这个格式，<a href="05-流式输出.html">05</a> / <a href="10-把流式接到界面上.html">10</a> 都照它来。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># app.py —— 一个能上线的最小 AI 后端</span>
+<p><strong>③ 往外写的东西要分帧。</strong> 你迟早要往回送「不是正文」的东西——错误、用量、工具状态。<strong>先分帧，以后加东西不用重写前端</strong>。</p>
+<p>用 SSE：每帧一行 <code>data: {JSON}</code>，帧间空一行，帧的类型放在 JSON 负载的 <code>type</code> 字段里（<code>delta</code> / <code>usage</code> / <code>error</code> / <code>done</code>）。</p>
+<p>⭐ 类型不放进 SSE 的 <code>event:</code> 行，是因为前端用 <code>fetch</code> 手动解析（第四节说了为什么不用 <code>EventSource</code>），而 <code>event:</code> 行只对 <code>EventSource</code> 有意义——放进负载，一行 <code>JSON.parse</code> 就拿到全部信息。</p>
+<p>⭐ 全板块统一这个格式，<a href="05-流式输出.html">05</a> / <a href="10-把流式接到界面上.html">10</a> 都照它来。</p>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># app.py —— 一个能上线的最小 AI 后端</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Request</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.responses</span><span class="w"> </span><span class="kn">import</span> <span class="n">StreamingResponse</span><span class="p">,</span> <span class="n">FileResponse</span><span class="p">,</span> <span class="n">JSONResponse</span>
@@ -433,7 +436,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_5">🧩 四、前端：核心就是「读流 + 拼帧」</h2>
 <p>⚠️ <strong>别用 <code>EventSource</code>。</strong> 它只能发 GET，问题就得塞进 URL——长文本超限、换行要转义、还进浏览器历史。用 <code>fetch</code> 拿到 <code>response.body</code> 自己读，也就多五行。</p>
-<div class="codehilite"><pre><span></span><code><span class="cp">&lt;!doctype html&gt;</span>
+<div class="codehilite" data-code-language="html"><pre><span></span><code><span class="cp">&lt;!doctype html&gt;</span>
 <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;utf-8&quot;</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">textarea</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;q&quot;</span> <span class="na">rows</span><span class="o">=</span><span class="s">&quot;3&quot;</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;width:100%&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">textarea</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;go&quot;</span><span class="p">&gt;</span>发送<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
@@ -471,7 +474,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>那两行 <code>⭐</code> 各堵一个必然发生的 bug</strong>：少了 <code>{stream: true}</code>，网络分片会把一个 UTF-8 汉字（<strong>3 字节</strong>）切成两半，屏幕上蹦出 <code>�</code>——英文是单字节，怎么切都不坏，所以英文测试全绿。少了 <code>frames.pop()</code>，一次 <code>read()</code> 拿到 <code>data: {"te</code> 就 <code>JSON.parse</code> 必崩——最后一段永远留在缓冲区等下一批。</p>
 <hr />
 <h2 id="_6">🧩 五、跑起来</h2>
-<div class="codehilite"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>fastapi<span class="w"> </span>uvicorn
+<div class="codehilite" data-code-language="bash"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>fastapi<span class="w"> </span>uvicorn
 uvicorn<span class="w"> </span>app:app<span class="w"> </span>--reload<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
 </code></pre></div>
 
@@ -607,10 +610,10 @@ uvicorn<span class="w"> </span>app:app<span class="w"> </span>--reload<span clas
 <blockquote>
 <p>⭐ <strong>别急着回头补，但要知道顺序。</strong> 排序的判据是<strong>「不补的代价多快、多不可逆」</strong>：
 前几行都是<strong>你会在事后才发现、而且没法撤销</strong>的（钱已经烧了、key 已经泄了、别人的页面已经替你的用户发过请求了、现场已经没了），
-后面几行是<strong>当场就能看见、也能补救</strong>的（用户看到 500、刷新丢了对话、界面丑）。
-⭐ 所以<strong>没有日志（第 4 行）比没有登录（第 10 行）先要命</strong>——出了事你连发生了什么都不知道，
-而「分不清谁的对话」至少是个你自己看得见的问题。
-⭐ <strong>第 7 行「接口只有一条 <code>POST /chat</code>」值得单独说</strong>：它当场不疼，但<strong>不可逆性最高</strong> ——
+后面几行是<strong>当场就能看见、也能补救</strong>的（用户看到 500、刷新丢了对话、界面丑）。</p>
+<p>⭐ 所以<strong>没有日志（第 4 行）比没有登录（第 10 行）先要命</strong>——出了事你连发生了什么都不知道，
+而「分不清谁的对话」至少是个你自己看得见的问题。</p>
+<p>⭐ <strong>第 7 行「接口只有一条 <code>POST /chat</code>」值得单独说</strong>：它当场不疼，但<strong>不可逆性最高</strong> ——
 数据库改了可以迁移、界面丑了可以重写，<strong>而接口一旦有别人在用，改它就要别人配合</strong>。</p>
 </blockquote>
 <p>💡 <strong>带字母后缀的行（03b / 03c / 06b / 07b / 08b / 08c / 15b）补的是「这个零件本来的规矩」</strong>，
@@ -740,5 +743,4 @@ uvicorn<span class="w"> </span>app:app<span class="w"> </span>--reload<span clas
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

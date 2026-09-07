@@ -186,9 +186,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -531,7 +531,7 @@ th,td{min-width:5.2em}
 <hr />
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>四层漏斗：召回(1亿→1万,多路并行,重召回率) → 粗排(→500,精排蒸馏,重一致性) → 精排(→50,多目标 MMoE,重 AUC) → 重排(→10,多样性+业务规则)。总时延 200ms 内。核心权衡：越往后模型越贵候选越少。三个坑：链路不一致、离线涨线上不涨、超时要降级。<!--RECAP-EXT-->⭐ <b>每一层的正确指标是不一样的</b>：召回只看 Recall（别漏），粗排看的不是 AUC 而是<b>「粗排 Top-K 与精排 Top-K 的重合度」</b>——它唯一的职责是别把精排会喜欢的东西砍掉；精排才看 AUC。⭐ 精排真正复杂的地方是<b>多目标</b>：pCTR / pFinish / pLike / pShare 各预估一个，再乘起来融合成最终分，而那几个权重 <code>w</code> 是<b>业务旋钮，不是学出来的</b>——它就是算法和产品吵架的主战场。架构上 Shared-Bottom 会有跷跷板效应，MMoE 用门控让每个任务自己挑专家，PLE 再拆出「共享专家 + 任务专属专家」，ESMM 则用 pCTCVR = pCTR × pCVR 解决「只有点击了才有转化标签」的样本选择偏差。⚠️ 各层的收益会随系统成熟度迁移：早期加召回路最赚，成熟期靠精排模型和特征，超大规模系统反而是重排和多样性成为增长点。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>漏斗越往后候选越少，才能使用更细致、更昂贵的模型。</li><li>各层职责不同，分别检查漏召回、排序一致性、质量与列表约束。</li><li>多目标、链路一致性和超时降级都是架构的一部分。</li></ul></section>
 </blockquote>
 <p><strong>下一节</strong> 👉 <a href="07-特征工程.html">07-特征工程.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
@@ -560,5 +560,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
 </body></html>

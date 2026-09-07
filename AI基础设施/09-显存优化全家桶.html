@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -315,7 +315,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <hr />
 <h2 id="oom">🩺 一、先诊断：你的 OOM 属于哪一类</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">reset_peak_memory_stats</span><span class="p">()</span>
 <span class="n">train_step</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;峰值 </span><span class="si">{</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">max_memory_allocated</span><span class="p">()</span><span class="o">/</span><span class="mf">1e9</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> GB  &quot;</span>
@@ -338,7 +338,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="1">① 梯度检查点 —— 最常用</h3>
 <section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">正常：前向时保存【每一层】的激活，反向时用</span></div><div class="vb-flow-row"><span class="vb-flow-step">检查点：只保存【少数几个】节点的激活</span></div><div class="vb-flow-row"><span class="vb-flow-step">反向时从最近的节点【重新前向计算】出中间激活</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 显存：O(L)</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">O(√L)</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 时间：+20~35%（多一次前向）</span></div></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`model` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`model` 来自你自己的代码，这一段只看写法</span>
 <span class="c1"># 整个模型</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.checkpoint</span><span class="w"> </span><span class="kn">import</span> <span class="n">checkpoint_sequential</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">checkpoint_sequential</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">,</span> <span class="n">segments</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="nb">input</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
@@ -397,7 +397,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">bitsandbytes</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bnb</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">bitsandbytes</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">bnb</span>
 <span class="n">opt</span> <span class="o">=</span> <span class="n">bnb</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">AdamW8bit</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">3e-4</span><span class="p">)</span>   <span class="c1"># ⭐ 一行换掉</span>
 </code></pre></div>
 
@@ -412,7 +412,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="7-batch">⑦ 减小 batch + 梯度累积</h3>
 <section class="visual-block visual-block-flow" aria-label="流程图"><p class="visual-block-title">流程图</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">micro_batch=1，累积 32 步</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">等效 batch=32</span></div><div class="vb-flow-row"><span class="vb-flow-step">⚠️ 但要知道代价：</span></div><div class="vb-flow-row"><span class="vb-flow-step">· micro batch 太小</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">GPU 利用率下降（第 2 章：warp 不够）</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 通信次数不变但计算变少</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">通信占比上升</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 所以这是【最后手段】，不是第一手段</span></div></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`loader` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`loader` 来自你自己的代码，这一段只看写法</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">batch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">loader</span><span class="p">):</span>
     <span class="n">loss</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span> <span class="o">/</span> <span class="n">accum_steps</span>        <span class="c1"># ⭐ 别忘了除</span>
     <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
@@ -422,12 +422,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <hr />
 <h2 id="_3">🧭 三、决策树（照着走）</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">OOM 了</span></div><div class="vb-tree-row"><span class="vb-tree-node">batch=1 还 OOM？</span></div><div class="vb-tree-row"><span class="vb-tree-node">是 → 参数/优化器的问题</span></div><div class="vb-tree-row"><span class="vb-tree-node">① 是微调吗？→ 【LoRA / QLoRA】⭐ 最省事</span></div><div class="vb-tree-row"><span class="vb-tree-node">② 换 8-bit Adam / Adafactor</span></div><div class="vb-tree-row"><span class="vb-tree-node">③ 上 ZeRO-2 → ZeRO-3（第 11 章）</span></div><div class="vb-tree-row"><span class="vb-tree-node">④ 还不行 → 张量并行 / 流水线并行（第 12-13 章）</span></div><div class="vb-tree-row"><span class="vb-tree-node">⑤ 最后 → CPU offload（慢）</span></div><div class="vb-tree-row"><span class="vb-tree-node">否 → 激活的问题</span></div><div class="vb-tree-row"><span class="vb-tree-node">① 【梯度检查点】⭐ 先试这个</span></div><div class="vb-tree-row"><span class="vb-tree-node">② FlashAttention（第 8 章，把 O(n²) 降到 O(n)）</span></div><div class="vb-tree-row"><span class="vb-tree-node">③ 序列长度能不能减？能不能 packing？</span></div><div class="vb-tree-row"><span class="vb-tree-node">④ 序列并行（超长序列时）</span></div><div class="vb-tree-row"><span class="vb-tree-node">⑤ 减小 micro batch + 梯度累积</span></div><div class="vb-tree-row"><span class="vb-tree-node">时好时坏 / 显存够但报 OOM？ → 【碎片】，见下</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-aimd-09-1" style="--diagram-width:720px"><svg viewBox="0 0 720 403" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="从上往下读问题；满足条件走右边，不满足再往下。右侧是选择入口，具体限制与原有说明保留在图下。"><title>从上往下读问题；满足条件走右边，不满足再往下。右侧是选择入口，具体限制与原有说明保留在图下。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">按问题逐步判断</text><rect x="20" y="65" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="170.0" y="93" font-size="18" text-anchor="middle" fill="var(--fg)">batch = 1 仍然 OOM？</text><rect x="395" y="65" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="545.0" y="93" font-size="18" text-anchor="middle" fill="var(--fg)">先查参数与优化器状态</text><line x1="320" y1="101" x2="395" y2="101" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="395.0,101.0 386.0,106.0 386.0,96.0"/><text x="356" y="87" font-size="16" text-anchor="middle" fill="var(--fg)">是</text><line x1="170" y1="113" x2="170" y2="195" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="170.0,195.0 165.0,186.0 175.0,186.0"/><text x="187" y="138" font-size="16" text-anchor="start" fill="var(--fg)">否</text><rect x="20" y="195" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="170.0" y="223" font-size="18" text-anchor="middle" fill="var(--fg)">时好时坏，容量看似够？</text><rect x="395" y="195" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="545.0" y="223" font-size="18" text-anchor="middle" fill="var(--fg)">检查碎片与分配</text><line x1="320" y1="231" x2="395" y2="231" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="395.0,231.0 386.0,236.0 386.0,226.0"/><text x="356" y="217" font-size="16" text-anchor="middle" fill="var(--fg)">是</text><line x1="170" y1="243" x2="170" y2="325" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="170.0,325.0 165.0,316.0 175.0,316.0"/><text x="187" y="289" font-size="16" text-anchor="start" fill="var(--fg)">否</text><rect x="20" y="325" width="675" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="357.5" y="353" font-size="18" text-anchor="middle" fill="var(--fg)">否则重点核对激活、序列长度与 micro-batch</text></svg><figcaption>从上往下读问题；满足条件走右边，不满足再往下。右侧是选择入口，具体限制与原有说明保留在图下。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>OOM 了</span></li><li><span>batch=1 还 OOM？</span></li><li><span>是 → 参数/优化器的问题</span></li><li><span>① 是微调吗？→ 【LoRA / QLoRA】⭐ 最省事</span></li><li><span>② 换 8-bit Adam / Adafactor</span></li><li><span>③ 上 ZeRO-2 → ZeRO-3（第 11 章）</span></li><li><span>④ 还不行 → 张量并行 / 流水线并行（第 12-13 章）</span></li><li><span>⑤ 最后 → CPU offload（慢）</span></li><li><span>否 → 激活的问题</span></li><li><span>① 【梯度检查点】⭐ 先试这个</span></li><li><span>② FlashAttention（第 8 章，把 O(n²) 降到 O(n)）</span></li><li><span>③ 序列长度能不能减？能不能 packing？</span></li><li><span>④ 序列并行（超长序列时）</span></li><li><span>⑤ 减小 micro batch + 梯度累积</span></li><li><span>时好时坏 / 显存够但报 OOM？ → 【碎片】，见下</span></li></ul></section>
 <hr />
 <h2 id="oom_1">🧩 四、显存碎片：那个"明明还有显存却 OOM"</h2>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>症状：</p><p>· 报错说&quot;tried to allocate 2GB，free 8GB&quot;但还是失败</p><p>· 训练跑了几小时后突然 OOM</p><p>· reserved 比 allocated 大很多（&gt;20%）</p><p>原因：PyTorch 的缓存分配器把显存切成了很多小块，</p><p>没有【连续】的大块可用</p></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="c1"># ⭐ 三个常用手段</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># ⭐ 三个常用手段</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;PYTORCH_CUDA_ALLOC_CONF&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;expandable_segments:True&quot;</span>
@@ -620,5 +621,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

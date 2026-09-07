@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -315,7 +315,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>密钥 K：和消息【一样长】的随机比特串</p><p>加密： C = M ⊕ K</p><p>解密： M = C ⊕ K</p><p>（⊕ 是异或：相同为 0，不同为 1）</p></div></section>
 <p><strong>为什么解密能work</strong>：</p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>C ⊕ K = (M ⊕ K) ⊕ K = M ⊕ (K ⊕ K) = M ⊕ 0 = M ✅</p><p>↑ 任何数异或自己 = 0</p></div></section>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>例：</p><p>M = 1 0 1 1 0 0 1 0</p><p>K = 0 1 1 0 1 0 1 1</p><p>⊕</p><p>C = 1 1 0 1 1 0 0 1</p><p>解密：C ⊕ K</p><p>C = 1 1 0 1 1 0 0 1</p><p>K = 0 1 1 0 1 0 1 1</p><p>⊕</p><p>1 0 1 1 0 0 1 0 = M ✅</p></div></section>
+<section class="comparison-repair" id="comparison-repair-4"><div class="tw"><table><caption>逐位异或：明文与密钥得到密文</caption><thead><tr><th scope="col">加密 / 位</th><th scope="col">0</th><th scope="col">1</th><th scope="col">2</th><th scope="col">3</th><th scope="col">4</th><th scope="col">5</th><th scope="col">6</th><th scope="col">7</th></tr></thead><tbody><tr><th scope="row">M</th><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr><tr><th scope="row">K</th><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td></tr><tr><th scope="row">C = M ⊕ K</th><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr></tbody></table></div><div class="tw"><table><caption>用同一密钥再异或一次，还原明文</caption><thead><tr><th scope="col">解密 / 位</th><th scope="col">0</th><th scope="col">1</th><th scope="col">2</th><th scope="col">3</th><th scope="col">4</th><th scope="col">5</th><th scope="col">6</th><th scope="col">7</th></tr></thead><tbody><tr><th scope="row">C</th><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><th scope="row">K</th><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td></tr><tr><th scope="row">M = C ⊕ K ✅</th><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr></tbody></table></div></section>
 <hr />
 <h2 id="_3">🏆 二、完美保密：它到底"完美"在哪</h2>
 <blockquote>
@@ -328,7 +328,7 @@ $$\Pr[M = m \mid C = c] = \Pr[M = m]$$</p>
 密文没有提供<strong>任何</strong>信息。</p>
 </blockquote>
 <h3 id="_4">💡 一个能立刻感受到的例子</h3>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">假设消息是 2 bit，攻击者截获了密文 C = 11</span></div><div class="vb-tree-row"><span class="vb-tree-node">他能推出什么？</span></div><div class="vb-tree-row"><span class="vb-tree-node">如果 M = 00，那 K 必须是 11</span><span class="vb-tree-note">可能，K 是随机的</span></div><div class="vb-tree-row"><span class="vb-tree-node">如果 M = 01，那 K 必须是 10</span><span class="vb-tree-note">也可能</span></div><div class="vb-tree-row"><span class="vb-tree-node">如果 M = 10，那 K 必须是 01</span><span class="vb-tree-note">也可能</span></div><div class="vb-tree-row"><span class="vb-tree-node">如果 M = 11，那 K 必须是 00</span><span class="vb-tree-note">也可能</span></div><div class="vb-tree-row"><span class="vb-tree-node">⭐ 每一种明文都【恰好对应一个】同样可能的密钥</span></div><div class="vb-tree-row"><span class="vb-tree-node">→ 四种明文的可能性完全相等</span></div><div class="vb-tree-row"><span class="vb-tree-node">→ 密文什么也没告诉他</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>假设消息是 2 bit，攻击者截获了密文 C = 11</span></li><li><span>他能推出什么？</span></li><li><span>如果 M = 00，那 K 必须是 11</span> <span>可能，K 是随机的</span></li><li><span>如果 M = 01，那 K 必须是 10</span> <span>也可能</span></li><li><span>如果 M = 10，那 K 必须是 01</span> <span>也可能</span></li><li><span>如果 M = 11，那 K 必须是 00</span> <span>也可能</span></li><li><span>⭐ 每一种明文都【恰好对应一个】同样可能的密钥</span></li><li><span>→ 四种明文的可能性完全相等</span></li><li><span>→ 密文什么也没告诉他</span></li></ul></section>
 <details>
 <summary>📐 <b>严格证明（三行，想看再点）</b></summary>
 <p>对任意 m、c，满足 $C = M \oplus K$ 的密钥<strong>唯一</strong>：$k = m \oplus c$。</p>
@@ -360,7 +360,7 @@ $$\Pr[M = m \mid C = c] = \Pr[M = m]$$</p>
 <p><strong>这是本章最重要的一条，也是整个密码学里最常被违反的规则。</strong></p>
 <section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">如果用同一个 K 加密两条消息：</span></div><div class="vb-flow-row"><span class="vb-flow-step">C₁ = M₁ ⊕ K</span></div><div class="vb-flow-row"><span class="vb-flow-step">C₂ = M₂ ⊕ K</span></div><div class="vb-flow-row"></div><div class="vb-flow-row"><span class="vb-flow-step">C₁ ⊕ C₂ = M₁ ⊕ M₂ ⊕ K ⊕ K = M₁ ⊕ M₂ ⭐ 密钥被消掉了！</span></div><div class="vb-flow-row"><span class="vb-flow-step">攻击者【不需要密钥】就拿到了两条明文的异或</span></div></div></section>
 <p><strong>拿到 M₁ ⊕ M₂ 能干什么 —— crib dragging</strong>：</p>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">自然语言有巨大冗余。攻击者猜一段常见文字（crib），</span></div><div class="vb-tree-row"><span class="vb-tree-node">比如 &quot; the &quot;，把它在 M₁⊕M₂ 上逐位置滑动：</span></div><div class="vb-tree-row"><span class="vb-tree-node">在每个位置 i 计算： (M₁⊕M₂)[i:] ⊕ &quot; the &quot;</span></div><div class="vb-tree-row"><span class="vb-tree-node">如果猜错 → 得到一串乱码</span></div><div class="vb-tree-row"><span class="vb-tree-node">如果猜对 → 得到【另一条消息在那个位置的真实文字】⭐</span></div><div class="vb-tree-row"><span class="vb-tree-node">比如冒出 &quot;ing t&quot;</span></div><div class="vb-tree-row"><span class="vb-tree-node">→ 然后用新得到的片段当作新的 crib，继续滑</span></div><div class="vb-tree-row"><span class="vb-tree-node">→ 像填字游戏一样，两条消息【互相解开对方】</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>自然语言有巨大冗余。攻击者猜一段常见文字（crib），</span></li><li><span>比如 " the "，把它在 M₁⊕M₂ 上逐位置滑动：</span></li><li><span>在每个位置 i 计算： (M₁⊕M₂)[i:] ⊕ " the "</span></li><li><span>如果猜错 → 得到一串乱码</span></li><li><span>如果猜对 → 得到【另一条消息在那个位置的真实文字】⭐</span></li><li><span>比如冒出 "ing t"</span></li><li><span>→ 然后用新得到的片段当作新的 crib，继续滑</span></li><li><span>→ 像填字游戏一样，两条消息【互相解开对方】</span></li></ul></section>
 <blockquote>
 <p>💥 <strong>真实事故</strong>：
 - <strong>苏联 VENONA 计划</strong>（1940s）：苏联情报机构复用了一次性密码本，
@@ -500,9 +500,8 @@ Shannon 的定理只覆盖机密性。</p>
 <hr />
 <h2 id="_9">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>OTP：C = M ⊕ K</strong>，K 是和消息<strong>等长的真随机串</strong>。⭐<strong>完美保密</strong>（Shannon）：Pr[M=m|C=c]=Pr[M=m]——<strong>看到密文后对明文的了解和看之前一模一样</strong>，证明核心是<strong>每个(m,c)对恰好对应唯一一个等概率密钥</strong>。这个保证<strong>不依赖任何计算假设</strong>：信息根本不在密文里，量子计算机也没用。<strong>三个致命限制</strong>：①<strong>密钥必须和消息等长</strong>（Shannon 定理是数学下界）→ 根本困境：<strong>要安全传1GB得先安全传1GB密钥，那为什么不直接传数据</strong> ②⭐<strong>密钥只能用一次</strong>——复用则 <strong>C₁⊕C₂ = M₁⊕M₂，密钥被消掉</strong>，攻击者用 <strong>crib dragging</strong>（猜常见词滑动，猜对就冒出另一条消息的真实文字，再当新crib继续）让<strong>两条消息互相解开对方</strong>；💥真实事故：<strong>苏联 VENONA</strong>（复用密码本，美国破译数千电报）、<strong>WEP</strong>、MS-CHAPv2 ③<strong>不提供完整性</strong>（仍可比特翻转）→ ⭐<strong>"完美保密"≠"完美安全"</strong>。<strong>破局 = 整个现代密码学的起点</strong>：放弃对抗无限算力，只要求对抗<strong>多项式时间</strong>攻击者 → 用 <strong>PRG 把短种子拉长</strong>成伪随机流代替真随机密钥 → 信息论安全换成<strong>计算安全</strong>，密钥从 1GB 降到 128 bit。OTP 今天仅用于：外交专线、<strong>QKD 下游</strong>、需要抗"先收集后解密"的极敏感数据。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>一次一密要求等长、真随机、独立且只用一次的密钥。</li><li>复用密钥会泄露两条明文之间的关系，破坏原有保密保证。</li><li>完美保密不等于完整性；现代方案用计算安全换取可管理的密钥长度。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="04-伪随机.html">04-伪随机.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -530,5 +529,4 @@ Shannon 的定理只覆盖机密性。</p>
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,16 +271,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
- onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script><link rel="stylesheet" href="../assets/guided-lessons.css"><link rel="stylesheet" href="../assets/guided-batch1.css"><script defer src="../assets/guided-batch1.js"></script><script defer src="../assets/guided-lessons.js"></script></head><body class="guided-reading">
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
@@ -296,7 +296,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><a href="#numpy">🧱 一、张量：会自动求导的 numpy</a></li>
 <li><a href="#_2">🏗️ 二、定义模型：两种写法</a></li>
 <li><a href="#_3">📦 三、数据加载</a></li>
-<li><a href="#_4">🔁 四、完整训练模板（实测可跑，直接抄）</a></li>
+<li><a href="#_4">🔁 四、完整训练模板（包含数据与模型准备）</a></li>
 <li><a href="#bug">🚨 五、六个高频 Bug</a></li>
 <li><a href="#_5">⚡ 六、提速三件套</a></li>
 <li><a href="#_6">🔗 这一章连到哪里</a></li>
@@ -305,15 +305,29 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 </div>
 </details>
-<h1 id="15-pytorch">15 · PyTorch 实战手册</h1>
+<div class="lesson-layout" data-lesson="pytorch">
+<div class="lesson-content"><section class="lesson-hero" id="lesson-start" data-route="先选当前任务"><div><p class="lesson-eyebrow">15 / PyTorch 实战 · 边做边查</p><h1>先跑通一次训练，<br>再按需要查写法。</h1><p class="lesson-lead">这是一份实战手册，不是需要顺序背诵的 API 列表。先确认输入、输出和你要检查的结果。</p></div><aside class="lesson-advice"><strong>第一次只做小任务</strong><p>先看张量和自动求导的小例子；准备好环境，再运行完整训练模板。</p><a href="#pytorch-choose">选一个入口 →</a></aside></section>
+<section class="lesson-mission"><div><p class="lesson-kicker">训练循环只记三件事</p><h2>预测与算损失，<br>反传与更新，独立验证。</h2><p>每一步都有可观察的结果；不靠“没有报错”判断训练成功。</p></div><ol class="lesson-steps"><li><span>1</span><strong>看输入与输出</strong><p>维度、类型、设备一致；损失是有限数。</p></li><li><span>2</span><strong>检查是否在学习</strong><p>先用极小训练集检查，再正式训练。</p></li><li><span>3</span><strong>用验证集做选择</strong><p>保留最佳权重，最后才报告测试结果。</p></li></ol></section>
+<div class="lesson-overview-grid" id="pytorch-choose" data-route="找到要用的写法">
+<section class="lesson-card"><p class="lesson-kicker">第一次接触</p><h2>我想先看一个能跑的小例子</h2><p>从张量形状与一次自动求导开始。只需要 PyTorch，不需要 GPU。</p><a data-heading-jump="一、张量" href="#full-lesson">去张量与求导示例 →</a></section>
+<section class="lesson-card"><p class="lesson-kicker">已经会基本写法</p><h2>我需要完整训练模板</h2><p>乳腺癌二分类示例：数据划分、标准化、模型、训练和最佳权重恢复。依赖 NumPy、scikit-learn 和 PyTorch。</p><a data-heading-jump="四、完整训练" href="#full-lesson">去模板与运行说明 →</a></section>
+<section class="lesson-card"><p class="lesson-kicker">正在排查问题</p><h2>我的训练结果不对</h2><p>先看损失配对与六类常见问题。训练模式、梯度记录和梯度清零是不同的事。</p><a data-heading-jump="五、六个" href="#full-lesson">去问题对照表 →</a></section>
+<section class="lesson-card lesson-pause" id="first-pause" data-route="这次做到哪里就停"><h2>可以停在这里</h2><p>能解释一次训练迭代每步在做什么，就有了继续用模板的基础。提速技巧等跑通后再看。</p><a href="#full-lesson">打开正文，从当前需要的部分读起 →</a></section>
+</div>
+
+<section class="lesson-full" id="full-lesson" aria-label="完整正文">
+<div class="lesson-divider"><span>继续探索</span><p>原有正文、图解和例子都在下方。按需跳转，不必一次读完。</p></div>
+<h2 id="15-pytorch" class="lesson-original-title">15 · PyTorch 实战手册</h2>
+<!-- guided-lesson: pytorch -->
+
 <p>⏱ <strong>34 分钟</strong> ｜ ⭐ <strong>可直接抄的模板</strong> ｜ 🔨 有完整代码</p>
 <hr />
 <h2 id="_1">🎯 一句话</h2>
 <p>PyTorch 只需要理解四个东西：<strong>张量、模块、数据加载器、训练循环</strong>。
-这一章给你一份<strong>验证过能跑的完整模板</strong>，以后所有项目从它开始改。</p>
+这一章给你小例子、配对表和一份<strong>带数据与模型准备的二分类训练模板</strong>。先跑适用的例子，再按自己的任务修改，不必背完所有写法。</p>
 <hr />
 <h2 id="numpy">🧱 一、张量：会自动求导的 numpy</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">]])</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>          <span class="c1"># torch.Size([2,2]) torch.float32 cpu</span>
@@ -321,7 +335,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="c1"># 和 numpy 几乎一样</span>
 <span class="n">x</span> <span class="o">@</span> <span class="n">x</span><span class="o">.</span><span class="n">T</span>          <span class="c1"># 矩阵乘</span>
 <span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>     <span class="c1"># 沿维度求和</span>
-<span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>       <span class="c1"># reshape（view 要求内存连续，不确定就用 reshape）</span>
+<span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>       <span class="c1"># view 要求尺寸/步幅兼容；reshape 必要时会复制</span>
 
 <span class="c1"># 三个高频操作</span>
 <span class="n">x</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>   <span class="c1"># 加一个维度 (2,2) → (2,1,2)</span>
@@ -330,7 +344,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>自动求导（第 8 章的框架版）：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="n">w</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">2.0</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">loss</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">-</span> <span class="mi">6</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
 <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>          <span class="c1"># 自动算梯度</span>
@@ -338,12 +352,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>⚠️ <strong>三个坑</strong>：
-- <code>.item()</code> 取标量值（<strong>会切断梯度</strong>，只在记录日志时用）
+- <code>.item()</code> 返回不可求导的 Python 标量，但不会销毁原张量的计算图
 - <code>.detach()</code> 显式切断梯度（想阻断反传时用）
-- 梯度默认累加 → 每步必须 <code>optimizer.zero_grad()</code></p>
+- 梯度默认累加 → 独立更新前清零；有意做梯度累积时则按累积周期清零</p>
 <hr />
 <h2 id="_2">🏗️ 二、定义模型：两种写法</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 <span class="c1"># 写法1：Sequential —— 简单直筒结构</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
@@ -364,6 +378,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p><strong>损失函数配对表</strong>（⭐ 最高频的错误来源）：</p>
+<p>接口依据：<a href="https://docs.pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html">CrossEntropyLoss 官方说明</a>；求导与模式区别见 <a href="https://docs.pytorch.org/docs/main/notes/autograd.html">Autograd 官方说明</a>。</p>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -384,7 +399,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>多分类</td>
 <td><code>CrossEntropyLoss</code></td>
 <td>C 个数，<strong>不加 Softmax</strong></td>
-<td>内部含 log_softmax；标签是整数不是 one-hot</td>
+<td>内部含 log_softmax；常规标签用整数索引，也支持与输出同形的浮点概率分布</td>
 </tr>
 <tr>
 <td>回归</td>
@@ -396,12 +411,18 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table></div>
 <hr />
 <h2 id="_3">📦 三、数据加载</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">TensorDataset</span><span class="p">,</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">Dataset</span>
+<p>先用小张量演示内存数据。自定义 Dataset 的例子采用 NumPy 文件，每个文件存一条样本；使用时传入自己的文件路径。</p>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">TensorDataset</span><span class="p">,</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">Dataset</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># 简单情况：数据已在内存</span>
+<span class="n">X_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">],</span> <span class="p">[</span><span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span> <span class="p">[</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">]])</span>
+<span class="n">y_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">]])</span>
 <span class="n">ds</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">X_tensor</span><span class="p">,</span> <span class="n">y_tensor</span><span class="p">)</span>
 <span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                    <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">pin_memory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>   <span class="c1"># ⭐ 加速关键</span>
+                    <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>   <span class="c1"># 先跑通，再按瓶颈调整</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">loader</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>    <span class="c1"># torch.Size([4, 2])</span>
 
 <span class="c1"># 自定义 Dataset：数据要现读现处理时</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">MyDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
@@ -410,19 +431,41 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
     <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">load_and_process</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>       <span class="c1"># 读一条</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">paths</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">:</span> <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 </code></pre></div>
 
 <blockquote>
-<p>💡 <strong>第 11 章说的「GPU 利用率忽高忽低」</strong> 就是这里没配好：
-加 <code>num_workers</code>（一般 4–8）、<code>pin_memory=True</code>，重活提前预处理。</p>
+<p>💡 GPU 利用率忽高忽低，<strong>可能</strong>来自加载瓶颈，也可能来自同步或小模型。先定位，再比较 <code>num_workers=0/2/4</code>。
+CPU 到 CUDA 传输可测试 <code>pin_memory=True</code>。Windows 多进程加载要正确使用主入口保护；小数据增加进程反而可能更慢。</p>
 </blockquote>
 <hr />
-<h2 id="_4">🔁 四、完整训练模板（实测可跑，直接抄）</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">torch</span><span class="o">,</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<h2 id="_4">🔁 四、完整训练模板（包含数据与模型准备）</h2>
+<p><strong>运行条件：</strong>已安装 NumPy、scikit-learn 与 PyTorch；使用库自带数据，无需下载数据、无需 GPU。先划分训练/验证/测试，再只用训练集拟合标准化器。</p>
+<p><strong>本次校验范围：</strong>已做语法检查；当前预览环境没有 PyTorch 和 scikit-learn，未重跑此训练。下方历史日志不作为补全后模板逐项一致的承诺。</p>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">torch</span><span class="o">,</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">TensorDataset</span><span class="p">,</span> <span class="n">DataLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_breast_cancer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_breast_cancer</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_val</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_val</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">Xtr</span><span class="p">,</span> <span class="n">Xva</span><span class="p">,</span> <span class="n">Xte</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+                 <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_val</span><span class="p">,</span> <span class="n">X_test</span><span class="p">)]</span>
+<span class="n">ytr</span><span class="p">,</span> <span class="n">yva</span><span class="p">,</span> <span class="n">yte</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                 <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_val</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)]</span>
+<span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">TensorDataset</span><span class="p">(</span><span class="n">Xtr</span><span class="p">,</span> <span class="n">ytr</span><span class="p">),</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+                    <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">make_model</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+                         <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">set_seed</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="mi">42</span><span class="p">):</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
@@ -444,7 +487,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
     <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">tx</span><span class="p">),</span> <span class="n">ty</span><span class="p">)</span>
     <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">();</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;10样本过拟合检查: loss=</span><span class="si">{</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2"> &quot;</span>
-      <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;✅通过&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="o">&lt;</span><span class="mf">0.01</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;❌有bug，先别往下走&#39;</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+      <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;小样本拟合通过&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="o">&lt;</span><span class="mf">0.01</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;待排查：容量、学习率、标签与训练步数&#39;</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="c1"># ========== 正式训练 + 早停 ==========</span>
 <span class="n">set_seed</span><span class="p">();</span> <span class="n">model</span> <span class="o">=</span> <span class="n">make_model</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
@@ -481,12 +524,22 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
     <span class="k">else</span><span class="p">:</span>
         <span class="n">wait</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">wait</span> <span class="o">&gt;=</span> <span class="n">patience</span><span class="p">:</span>
-            <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">best_state</span><span class="p">)</span>      <span class="c1"># ⭐ 回滚最佳</span>
+            <span class="c1"># 跳出循环后统一恢复最佳权重</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;早停于 ep </span><span class="si">{</span><span class="n">ep</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">);</span> <span class="k">break</span>
+
+<span class="c1"># 早停或跑满轮数，都恢复验证损失最小的一份权重</span>
+<span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">best_state</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">test_logits</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">Xte</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
+    <span class="n">test_acc</span> <span class="o">=</span> <span class="p">((</span><span class="n">test_logits</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="n">yte</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;恢复最佳权重后的测试准确率：</span><span class="si">{</span><span class="n">test_acc</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<p><strong>实测输出</strong>（乳腺癌数据集）：</p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>10样本过拟合检查: loss=0.00000 ✅通过</p><p>ep 0 train 0.6616 | val 0.5970 | acc 84.8% | lr 9.99e-04 | grad 0.47</p><p>ep 10 train 0.0677 | val 0.0814 | acc 96.5% | lr 9.19e-04 | grad 0.38</p><p>ep 30 train 0.0340 | val 0.0684 | acc 96.5% | lr 4.74e-04 | grad 1.11</p><p>ep 50 train 0.0324 | val 0.0674 | acc 96.5% | lr 5.45e-05 | grad 0.03</p><p>早停于 ep 51，回滚到最佳权重</p><p>最终测试准确率：96.5%</p></div></section>
+<p><strong>原文保留的历史日志</strong>（乳腺癌；原记录未完整保留模型与划分配置，不要求上面的模板输出相同数字）：</p>
+<p>历史小样本检查：10 个样本，loss=0.00000，记录为通过。这里只保留原文观察值。</p>
+<div class="table-scroll"><div class="tw"><table><caption>历史训练日志：比较训练和验证趋势</caption><thead><tr><th>轮数</th><th>训练损失</th><th>验证损失</th><th>验证准确率</th><th>学习率</th><th>末批梯度范数</th></tr></thead><tbody><tr><td>0</td><td>0.6616</td><td>0.5970</td><td>84.8%</td><td>9.99e-04</td><td>0.47</td></tr><tr><td>10</td><td>0.0677</td><td>0.0814</td><td>96.5%</td><td>9.19e-04</td><td>0.38</td></tr><tr><td>30</td><td>0.0340</td><td>0.0684</td><td>96.5%</td><td>4.74e-04</td><td>1.11</td></tr><tr><td>50</td><td>0.0324</td><td>0.0674</td><td>96.5%</td><td>5.45e-05</td><td>0.03</td></tr></tbody></table></div></div>
+<p>原记录早停于第 51 轮、恢复最佳权重；最终测试准确率 96.5%。这不是补全后模板的新实测结果。</p>
 <blockquote>
 <p>💡 注意 <code>train</code> 一直在降而 <code>val</code> 在 ep 40 后基本不动 —— 早停正是在这时候起作用。</p>
 </blockquote>
@@ -502,19 +555,19 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </thead>
 <tbody>
 <tr>
-<td>忘了 <code>optimizer.zero_grad()</code></td>
-<td>训练完全不收敛</td>
-<td>加上</td>
+<td>无意中漏掉 <code>optimizer.zero_grad()</code></td>
+<td>梯度跨步累加，更新偏离预期</td>
+<td>独立更新前清零；有意累积则按周期清零</td>
 </tr>
 <tr>
 <td>忘了 <code>model.eval()</code></td>
-<td>验证/测试结果每次不同、偏低</td>
-<td>加上</td>
+<td>Dropout 仍随机丢弃，BN 可能使用/更新批统计</td>
+<td>验证前切换 eval；它不自动关闭梯度记录</td>
 </tr>
 <tr>
-<td>忘了 <code>torch.no_grad()</code></td>
-<td>验证时显存暴涨甚至 OOM</td>
-<td>加上</td>
+<td>验证时仍记录梯度</td>
+<td>可能增加内存占用和开销</td>
+<td>按需使用 no_grad 或 inference mode</td>
 </tr>
 <tr>
 <td>输出层多加了 Sigmoid/Softmax</td>
@@ -527,15 +580,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>模型和数据都要 to</td>
 </tr>
 <tr>
-<td><code>CrossEntropyLoss</code> 传了 one-hot</td>
-<td>报错或结果错</td>
-<td>传<strong>整数类别索引</strong></td>
+<td><code>CrossEntropyLoss</code> 标签类型/形状不匹配</td>
+<td>可能报错或算错任务</td>
+<td>常规用整数索引；概率标签须为同形浮点分布，各类和为 1</td>
 </tr>
 </tbody>
 </table></div>
 <hr />
 <h2 id="_5">⚡ 六、提速三件套</h2>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 1. 混合精度（显存减半、速度快 1.5-3 倍，需要 GPU）</span>
+<p>下面是接入已有训练循环的写法片段，不是独立训练脚本。先定位瓶颈，再比较速度、显存与稳定性。梯度累积还需处理最后不足一个周期的批次，不能丢掉它们的梯度。</p>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 1. CUDA 混合精度：收益取决于硬件和算子，不保证显存减半</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="n">scaler</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">amp</span><span class="o">.</span><span class="n">GradScaler</span><span class="p">()</span>
 <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">amp</span><span class="o">.</span><span class="n">autocast</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span><span class="p">):</span>
@@ -590,20 +644,37 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <details>
 <summary>👀 答案</summary>
 <ol>
-<li><code>.item()</code> 取出 Python 标量（切断梯度，日志用）；<code>.detach()</code> 返回张量但切断梯度图。梯度默认累加，不清零会把上一步的梯度混进来。</li>
+<li><code>.item()</code> 返回不可求导的 Python 标量，原张量的图仍在；<code>.detach()</code> 返回脱离求导历史的张量。独立更新前清零，有意累积时按周期清零。</li>
 <li><strong>不加</strong>。用 <code>BCEWithLogitsLoss</code>，它内部合并了 sigmoid + 交叉熵，数值更稳定（避免 log(0)）。</li>
 <li>Dropout（train 时随机丢，eval 时全保留）和 BatchNorm（train 用当前 batch 统计，eval 用累积的 running 统计）。</li>
-<li>不构建计算图 → 省显存、加速。验证/推理时必用。</li>
-<li>数据加载是瓶颈。加 <code>num_workers=4~8</code>、<code>pin_memory=True</code>，把重的预处理提前做好。</li>
+<li>no_grad 关闭区域内的反向梯度记录，常用于验证推理以降低开销；不等于 eval，需要输入梯度的任务不能盲目关闭求导。</li>
+<li>先判断是否是数据加载瓶颈，再比较进程数、预处理与传输设置；利用率低并不总靠增加 workers 解决。</li>
 </ol>
 </details>
 <hr />
 <h2 id="_8">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>PyTorch 只需理解四件事：<strong>张量、模块、数据加载器、训练循环</strong>。<strong>张量＝会自动求导的 numpy</strong>，⚠️三个坑：<code>.item()</code> <strong>会切断梯度</strong>（记日志才用）、<code>.detach()</code> 显式切断、⭐<strong>梯度默认累加，每步必须清零</strong>。⭐<strong>损失配对表是最高频的错误来源</strong>：<strong>二分类用 <code>BCEWithLogitsLoss</code>，不加 Sigmoid</strong>；<strong>多分类用 <code>CrossEntropyLoss</code>，不加 Softmax，标签传整数而不是 one-hot</strong>。💡<strong>"GPU 利用率忽高忽低"就是数据加载没配好</strong>——<code>num_workers</code> 4–8、开 <code>pin_memory</code>。<strong>训练模板五要素</strong>：⭐<strong>第 0 步先证明能过拟合 10 个样本</strong>（跑 301 步，loss 要降到 0.01 以下，否则就是有 bug、先别往下走）、每步清梯度、<strong>训练用 train / 验证用 eval 模式</strong>、验证包在 <code>no_grad()</code> 里、<strong>早停并回滚最佳权重</strong>。<strong>实测（乳腺癌）</strong>：10 样本检查 loss=0.00000 通过 → 第 10 轮 val 0.0814、准确率 <strong>96.5%</strong> → <strong>早停于第 51 轮、回滚最佳权重，最终测试 96.5%</strong>；💡<strong>train 一直在降而 val 从第 40 轮后不动</strong>，早停正是这时起作用。⚠️<strong>六个高频 bug</strong>：忘清梯度→<strong>完全不收敛</strong>；忘 eval→<strong>验证每次不同且偏低</strong>；忘 <code>no_grad()</code>→<strong>显存暴涨甚至 OOM</strong>；<strong>输出层多加 Sigmoid/Softmax</strong>→loss 降得异常慢；忘 <code>.to(device)</code>→张量不在同一设备；交叉熵传 one-hot→报错。<strong>提速三件套</strong>：混合精度（<strong>显存减半、快 1.5–3 倍</strong>）、梯度累积、<code>torch.compile</code>。</p>
+<p>张量承载数据，模块定义运算，DataLoader 提供批次，训练循环负责更新。</p>
+<ul>
+<li>二分类用 BCEWithLogitsLoss 时，输出层不要另加 Sigmoid；多分类 CrossEntropyLoss 直接接原始分数。</li>
+<li>先用少量样本检查能否拟合；拟合不佳是排查线索，不是单凭 loss 阈值证明有 bug。</li>
+<li>独立更新前清梯度，训练/验证切换模式，普通验证不记录梯度。</li>
+<li>用验证集选最佳权重，再报告测试成绩；六类问题与三种提速写法都在上方，按需回查。</li>
+</ul>
 </blockquote>
 <p><strong>下一节</strong> 👉 <a href="16-特征工程基础.html">16-特征工程基础.md</a></p>
+</section></div>
+<aside class="lesson-rail" aria-label="本节学习路线">
+<button type="button" class="lesson-route-toggle" aria-expanded="true" aria-controls="lesson-route">本节学习路线 <span aria-hidden="true">⌄</span></button>
+<div id="lesson-route">
+<p class="lesson-position" aria-live="polite">从第一站开始</p>
+<div class="lesson-track" aria-hidden="true"><span></span></div>
+<nav class="lesson-route-links" aria-label="章节跳转"></nav>
+<div class="lesson-rail-note"><strong>一次只读一张卡片</strong><p>先找到眼前的问题。完整示例和对照表都保留着，需要时再细读。</p></div>
+<button type="button" class="lesson-save">记住当前位置</button>
+<p class="lesson-save-status" role="status"></p>
+</div></aside></div>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="14-通往Transformer.html"><div class="dir">← 上一节</div>🚪 14 · 通往 Transformer</a><a class="next" href="16-特征工程基础.html"><div class="dir">下一节 →</div>🧹 16 · 特征工程基础</a></nav>
@@ -630,5 +701,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -346,7 +346,7 @@ ControlNet 补形状，风格 LoRA 补风格。⭐ <strong>它们和提示词三
 <li>副本每一级的输出，各经一个<strong>零初始化的 1×1 卷积</strong>，加进冻结主干<strong>解码器</strong>同级。</li>
 </ol>
 <p>第 4 步那个「零初始化」是整个设计的支点：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 零初始化卷积：训练前输出恒为 0，梯度却不为 0 —— 所以它接得进去，也学得起来</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 零初始化卷积：训练前输出恒为 0，梯度却不为 0 —— 所以它接得进去，也学得起来</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
@@ -496,9 +496,8 @@ ControlNet 补形状，风格 LoRA 补风格。⭐ <strong>它们和提示词三
 <p>读到这里你已经能看懂一份出图工作流：哪部分是提示词、哪部分是 ControlNet 的条件图、挂了几个 LoRA、那几个 0.x 在调什么。⭐ 更重要的是<strong>出了问题知道该动哪一个</strong>。</p>
 <p><strong>什么时候回来</strong>：加了 LoRA 之后<strong>构图被锁死</strong>时回看第五节 ④；显存或耗时突然翻倍时回看第五节 ①。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>提示词说得清「画什么」，说不清「画成什么形状」（每加一条空间约束，全部命中的概率就掉一截），也解决不了「用什么风格画」（底座根本没见过你那个角色）。<strong>ControlNet 补形状、风格 LoRA 补风格，三者互不替代。</strong> ControlNet 四步：冻结原主干 → <strong>编码器那一半复制一份</strong>当可训练支路 → 条件图（线稿 / 深度图 / 姿态骨架）经小编码器进副本 → 副本每级输出经<strong>零初始化的 1×1 卷积</strong>加进冻结主干的解码器同级。⭐ 零初始化是支点：实测第 0 步接回后和原主干<strong>逐位相同</strong>（<code>0.0</code>），而权重梯度 <strong>2501.0 不是 0</strong>，所以它照样从第一步开始学；默认初始化则在第 0 步就把主干改动 <strong>2.217</strong>。这就是它只用几万张图训得起来的原因。<strong>风格 LoRA 就是语言模型那个低秩适配</strong>：<code>W</code> 冻结、旁边挂 <code>B(A·x)</code>，中间宽度叫 rank；768→320 那层原有 245760 个参数，<code>r=4</code> 只占 <strong>1.77%</strong>、<code>r=64</code> 到 <strong>28.33%</strong>，常见 4~64。⚠️ 代价：ControlNet 多跑一份副本、还<strong>和 CFG 相乘</strong>；多个 LoRA 加进同一个 <code>W</code>、<strong>互相不知道对方存在</strong>，得逐个调系数。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>ControlNet 用额外空间条件控制结构，LoRA 用低秩更新适配风格等需求。</li><li>零初始化连接让 ControlNet 起步时保持底座输出，同时仍能学习。</li><li>多个控制或适配器会叠加计算与相互影响，逐项加入并分别调整强度。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="09-怎么评估.html">09-怎么评估.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -526,5 +525,4 @@ ControlNet 补形状，风格 LoRA 补风格。⭐ <strong>它们和提示词三
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -1,0 +1,56 @@
+/* Shared task presentation; theme colors remain owned by each existing page. */
+main .reading-task-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; list-style:none; padding:0; margin:24px 0; }
+main li.reading-task { min-width:0; margin:0; padding:20px; border:1px solid var(--border); border-radius:12px; background:var(--card); line-height:1.85; overflow-wrap:anywhere; }
+main .reading-task-title { display:flex; align-items:center; gap:12px; min-height:44px; margin:0 0 14px; font-size:18px; font-weight:650; cursor:pointer; }
+main .reading-task-title input { width:20px; height:20px; flex:0 0 20px; margin:0; accent-color:var(--accent); cursor:pointer; }
+main .reading-task-title input:focus-visible { outline:3px solid var(--accent); outline-offset:4px; }
+main .reading-task-time { margin:0 0 18px 32px; color:var(--muted); font-size:14px; }
+main .reading-task-body { font-size:16px; }
+main .reading-task-body > p { margin:0 0 16px; line-height:1.85; }
+main .reading-task-body > :last-child { margin-bottom:0; }
+main .reading-task-body ul { margin:16px 0; padding-left:24px; }
+main .reading-task-body li { margin:10px 0; }
+main .reading-task-cue { display:block; margin-top:16px; }
+main .reading-task:has(input:checked) { border-color:var(--done,var(--accent)); }
+.reading-task-status { color:var(--muted); font-size:14px; margin:16px 0; }
+.reading-stage-note { margin:12px 0 20px; color:var(--muted); font-size:16px; line-height:1.85; }
+.lesson-subsection { margin-top:28px; padding-top:24px; border-top:1px solid var(--border); scroll-margin-top:95px; }
+.visual-block-tree .vb-tree-node:only-child { grid-column:1 / -1; }
+.reading-stage-nav { display:flex; flex-wrap:wrap; gap:10px; margin:18px 0; }
+.reading-stage-nav a { padding:10px 14px; border:1px solid var(--border); border-radius:9px; min-height:44px; background:var(--bg); }
+.reading-recap { margin:24px 0; padding:22px; border:1px solid var(--border); border-left:4px solid var(--accent); border-radius:12px; background:var(--card); }
+.reading-recap > p { font-weight:650; margin:0 0 16px; }
+.reading-recap li { margin:14px 0; line-height:1.85; }
+.reading-recap ul { padding-left:22px; }
+.reading-information { margin:26px 0; padding:22px; border:1px solid var(--border); border-left:4px solid var(--accent); border-radius:12px; background:var(--card); }
+.reading-information-title { margin:0 0 18px; font-weight:650; }
+.reading-information ul { margin:0; padding-left:24px; }
+.reading-information li { margin:16px 0; line-height:1.85; overflow-wrap:anywhere; }
+.reading-information li:first-child { margin-top:0; }
+.reading-information li:last-child { margin-bottom:0; }
+/* Text containers may wrap long identifiers; executable code and true tables
+   keep their own scrolling. Do not conceal overflow at the document root. */
+main .visual-block, main .vb-flow, main .vb-flow-row, main .vb-flow-step,
+main .vb-tree-flow, main .vb-tree-row, main .vb-compare, main .vb-calc { min-width:0; max-width:100%; overflow-wrap:anywhere; }
+main :not(pre) > code { overflow-wrap:anywhere; white-space:normal; }
+main pre code { overflow-wrap:normal; white-space:pre; }
+main .reader-rescue, main .reading-recap { overflow-wrap:anywhere; }
+main .pagenav a { min-width:0; overflow-wrap:anywhere; }
+main .diagram-expand svg { width:18px!important; min-width:18px!important; max-width:18px!important; height:18px!important; }
+main .reading-checklist .reading-task-list { grid-template-columns:minmax(0,1fr); }
+/* KaTeX's screen-reader MathML is absolutely positioned. Keep that hidden
+   layer anchored to its formula so it cannot escape a scrolling table. */
+main .katex { position:relative; }
+main .table-scroll { position:relative; min-width:0; }
+main .table-scroll-hint { margin:18px 0 8px; color:var(--muted); font-size:14px; line-height:1.7; }
+main .table-scroll-hint[hidden] { display:none!important; }
+main .table-scroll:focus-visible { outline:3px solid var(--accent); outline-offset:3px; }
+main figure.repair-diagram { overflow-x:auto; padding:16px 0; }
+main figure.repair-diagram > svg { width:var(--diagram-width,480px); min-width:var(--diagram-width,480px); max-width:var(--diagram-width,480px); height:auto; }
+main figure.repair-diagram figcaption { text-align:left; padding:0 16px; }
+.reading-diagram { margin:26px 0; padding:18px; border:1px solid var(--border); border-radius:12px; background:var(--card); }
+.reading-diagram svg { display:block; width:100%; max-width:480px; height:auto; margin:auto; }
+.reading-diagram figcaption { margin:20px 0 0; color:var(--muted); font-size:16px; line-height:1.85; }
+.reading-ablation { margin:24px 0; padding:22px; border:1px solid var(--border); border-radius:12px; }
+@media(max-width:480px) { .reading-diagram { padding:8px; } .reading-diagram figcaption { font-size:15px; } }
+@media(max-width:760px) { main .reading-task-list { grid-template-columns:minmax(0,1fr); } main li.reading-task { padding:18px 16px; } }

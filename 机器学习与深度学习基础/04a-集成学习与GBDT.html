@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,16 +271,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
- onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script><link rel="stylesheet" href="../assets/guided-lessons.css"><link rel="stylesheet" href="../assets/guided-batch1.css"><script defer src="../assets/guided-batch1.js"></script><link rel="stylesheet" href="../assets/guided-batch2.css"><script defer src="../assets/guided-batch2.js"></script><script defer src="../assets/guided-lessons.js"></script></head><body class="guided-reading">
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
@@ -304,7 +304,21 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 </div>
 </details>
-<h1 id="04a-gbdt">04a · 集成学习与 GBDT</h1>
+<div class="lesson-layout" data-lesson="ml-04a" data-batch="ml-rest" data-reading-mode="concept">
+<div class="lesson-content"><section class="lesson-hero" id="lesson-start" data-route="先知道这页解决什么">
+<div><p class="lesson-eyebrow">04A / 先看直觉，再看细节</p><h1>一棵树不够，<br>可以一起投票，也可以接着纠错。</h1><p class="lesson-lead">随机森林让多棵树并行投票；GBDT 按顺序添加新树，改进当前预测。</p></div>
+<aside class="lesson-advice"><strong>一次只处理一个问题</strong><p>可以从入口直接跳到需要的部分。正文、图解、代码和检查点都在下方。</p><a href="#first-pause">先看懂这一点就可以停 →</a></aside></section>
+<div class="lesson-overview-grid">
+<section class="lesson-card" id="first-example" data-route="先看一个具体结果"><p class="lesson-kicker">先抓住一个具体结果</p><h2>新树只补一点</h2><p>某个样本原预测为 3，新树建议加 1，学习率为 0.1，那么更新后是 3.1。新树的输出不是最终答案；一般损失下它学习的是负梯度方向。</p><h3>GBDT 的加法更新</h3><div class="formula-box" data-formula-name="GBDT 的加法更新">$$F_t(x)=F_{t-1}(x)+\eta f_t(x)$$</div></section>
+<section class="lesson-card lesson-task-entry" id="reading-choices" data-route="按需要选择下一步"><p class="lesson-kicker">接下来，按需要选一项</p><h2>你现在想看什么？</h2><nav aria-label="本页阅读入口"><a href="#_2">区分三种组合方式 <span aria-hidden="true">→</span></a><a href="#gbdtboosting">看新树怎样纠错 <span aria-hidden="true">→</span></a><a href="#_6">运行对比实验 <span aria-hidden="true">→</span></a></nav><p class="lesson-note">这些入口是选择，不是必须按顺序完成的任务。</p></section>
+<section class="lesson-card lesson-pause lesson-wide" id="first-pause" data-route="可以停在这里"><h2>可以停在这里</h2><p>随机森林让多棵树并行投票；GBDT 按顺序添加新树，改进当前预测。</p><a href="#full-lesson">需要更多细节时，继续看完整正文 →</a></section></div>
+<section class="lesson-full" id="full-lesson" aria-label="完整正文">
+<div class="lesson-divider"><span>继续探索</span><p>原有正文、图解和例子都在下方。按需跳转，不必一次读完。</p></div>
+<h2 id="04a-gbdt" class="lesson-original-title">04a · 集成学习与 GBDT</h2>
+<figure class="dia" data-fig="bagging_boosting"><svg viewBox="0 0 700 312" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bagging 与 Boosting 的结构差异"><defs><marker id="a5__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker><marker id="a5l__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--link)"/></marker><marker id="a5g__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--done)"/></marker></defs><text class="dia-t" x="60" y="74" font-size="13.5" text-anchor="start" fill="var(--link)" font-weight="700">Bagging</text><text class="dia-t" x="60" y="92" font-size="11" text-anchor="start" fill="var(--muted)" font-weight="normal">并行 · 各train各的</text><rect x="228" y="62" width="52" height="34" rx="6" fill="var(--link)" opacity="0.5" stroke="var(--link)" stroke-width="1.4"/><text class="dia-t" x="254.0" y="83.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树1</text><line x1="212" y1="79" x2="224" y2="79" stroke="var(--muted)" stroke-width="1.2" opacity=".5"/><rect x="296" y="62" width="52" height="34" rx="6" fill="var(--link)" opacity="0.5" stroke="var(--link)" stroke-width="1.4"/><text class="dia-t" x="322.0" y="83.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树2</text><line x1="212" y1="79" x2="292" y2="79" stroke="var(--muted)" stroke-width="1.2" opacity=".5"/><rect x="364" y="62" width="52" height="34" rx="6" fill="var(--link)" opacity="0.5" stroke="var(--link)" stroke-width="1.4"/><text class="dia-t" x="390.0" y="83.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树3</text><line x1="212" y1="79" x2="360" y2="79" stroke="var(--muted)" stroke-width="1.2" opacity=".5"/><rect x="432" y="62" width="52" height="34" rx="6" fill="var(--link)" opacity="0.5" stroke="var(--link)" stroke-width="1.4"/><text class="dia-t" x="458.0" y="83.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树4</text><line x1="212" y1="79" x2="428" y2="79" stroke="var(--muted)" stroke-width="1.2" opacity=".5"/><rect x="192" y="60" width="16" height="38" rx="4" fill="var(--muted)" opacity=".4"/><text class="dia-t" x="200" y="116" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">数据</text><text class="dia-t" x="516" y="82" font-size="12" text-anchor="start" fill="var(--link)" font-weight="600">→ 投票/平均</text><text class="dia-t" x="516" y="100" font-size="12" text-anchor="start" fill="var(--link)" font-weight="700">降【方差】</text><text class="dia-t" x="60" y="190" font-size="13.5" text-anchor="start" fill="var(--accent)" font-weight="700">Boosting</text><text class="dia-t" x="60" y="208" font-size="11" text-anchor="start" fill="var(--muted)" font-weight="normal">串行 · 补前一个的错</text><rect x="228" y="178" width="52" height="34" rx="6" fill="var(--accent)" opacity="0.32" stroke="var(--accent)" stroke-width="1.4"/><text class="dia-t" x="254.0" y="199.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树1</text><text class="dia-t" x="254" y="228" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="normal"></text><rect x="296" y="178" width="52" height="34" rx="6" fill="var(--accent)" opacity="0.48" stroke="var(--accent)" stroke-width="1.4"/><text class="dia-t" x="322.0" y="199.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树2</text><line x1="276" y1="195" x2="292" y2="195" stroke="var(--accent)" stroke-width="2" marker-end="url(#a5__f1)"/><text class="dia-t" x="322" y="228" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="normal">补错</text><rect x="364" y="178" width="52" height="34" rx="6" fill="var(--accent)" opacity="0.64" stroke="var(--accent)" stroke-width="1.4"/><text class="dia-t" x="390.0" y="199.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树3</text><line x1="344" y1="195" x2="360" y2="195" stroke="var(--accent)" stroke-width="2" marker-end="url(#a5__f1)"/><text class="dia-t" x="390" y="228" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="normal">再补</text><rect x="432" y="178" width="52" height="34" rx="6" fill="var(--accent)" opacity="0.8" stroke="var(--accent)" stroke-width="1.4"/><text class="dia-t" x="458.0" y="199.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树4</text><line x1="412" y1="195" x2="428" y2="195" stroke="var(--accent)" stroke-width="2" marker-end="url(#a5__f1)"/><text class="dia-t" x="458" y="228" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="normal">再补</text><text class="dia-t" x="516" y="198" font-size="12" text-anchor="start" fill="var(--accent)" font-weight="600">→ 加权求和</text><text class="dia-t" x="516" y="216" font-size="12" text-anchor="start" fill="var(--accent)" font-weight="700">降【偏差】</text><text class="dia-t" x="340" y="30" font-size="13.5" text-anchor="middle" fill="var(--fg)" font-weight="700">都是「很多棵树」，但组织方式和治的病完全不同</text><text class="dia-t" x="340" y="274" font-size="12" text-anchor="middle" fill="var(--accent)" font-weight="700">⭐ Bagging 的树可以并行训、深一点无所谓；Boosting 必须串行、每棵要浅（否则第一棵就过拟合了）</text><text class="dia-t" x="340" y="296" font-size="11.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">所以随机森林调「树多少棵」，GBDT 调「学习率 + 树深」</text></svg><figcaption>都是「很多棵树」，但组织方式和治的病完全不同：<b>Bagging 并行降方差，Boosting 串行降偏差</b>。⭐ 所以随机森林主要调「多少棵」，GBDT 主要调「学习率 + 树深」。</figcaption></figure>
+
+<!-- guided-lesson: ml-04a -->
+
 <p>⏱ <strong>34 分钟</strong> ｜ ⭐ <strong>集成的收益全部来自成员之间的「差异」</strong></p>
 <hr />
 <h2 id="_1">🎯 一句话</h2>
@@ -317,8 +331,6 @@ Stacking（分层）。⭐ 而它们组合的每一棵树，都是<a href="04-�
 </blockquote>
 <hr />
 <h2 id="_2">🌳 三、集成学习：三种组合方式</h2>
-<figure class="dia" data-fig="bagging_boosting"><svg viewBox="0 0 700 312" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bagging 与 Boosting 的结构差异"><defs><marker id="a5__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker><marker id="a5l__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--link)"/></marker><marker id="a5g__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--done)"/></marker></defs><text class="dia-t" x="60" y="74" font-size="13.5" text-anchor="start" fill="var(--link)" font-weight="700">Bagging</text><text class="dia-t" x="60" y="92" font-size="11" text-anchor="start" fill="var(--muted)" font-weight="normal">并行 · 各train各的</text><rect x="228" y="62" width="52" height="34" rx="6" fill="var(--link)" opacity="0.5" stroke="var(--link)" stroke-width="1.4"/><text class="dia-t" x="254.0" y="83.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树1</text><line x1="212" y1="79" x2="224" y2="79" stroke="var(--muted)" stroke-width="1.2" opacity=".5"/><rect x="296" y="62" width="52" height="34" rx="6" fill="var(--link)" opacity="0.5" stroke="var(--link)" stroke-width="1.4"/><text class="dia-t" x="322.0" y="83.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树2</text><line x1="212" y1="79" x2="292" y2="79" stroke="var(--muted)" stroke-width="1.2" opacity=".5"/><rect x="364" y="62" width="52" height="34" rx="6" fill="var(--link)" opacity="0.5" stroke="var(--link)" stroke-width="1.4"/><text class="dia-t" x="390.0" y="83.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树3</text><line x1="212" y1="79" x2="360" y2="79" stroke="var(--muted)" stroke-width="1.2" opacity=".5"/><rect x="432" y="62" width="52" height="34" rx="6" fill="var(--link)" opacity="0.5" stroke="var(--link)" stroke-width="1.4"/><text class="dia-t" x="458.0" y="83.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树4</text><line x1="212" y1="79" x2="428" y2="79" stroke="var(--muted)" stroke-width="1.2" opacity=".5"/><rect x="192" y="60" width="16" height="38" rx="4" fill="var(--muted)" opacity=".4"/><text class="dia-t" x="200" y="116" font-size="11" text-anchor="middle" fill="var(--muted)" font-weight="normal">数据</text><text class="dia-t" x="516" y="82" font-size="12" text-anchor="start" fill="var(--link)" font-weight="600">→ 投票/平均</text><text class="dia-t" x="516" y="100" font-size="12" text-anchor="start" fill="var(--link)" font-weight="700">降【方差】</text><text class="dia-t" x="60" y="190" font-size="13.5" text-anchor="start" fill="var(--accent)" font-weight="700">Boosting</text><text class="dia-t" x="60" y="208" font-size="11" text-anchor="start" fill="var(--muted)" font-weight="normal">串行 · 补前一个的错</text><rect x="228" y="178" width="52" height="34" rx="6" fill="var(--accent)" opacity="0.32" stroke="var(--accent)" stroke-width="1.4"/><text class="dia-t" x="254.0" y="199.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树1</text><text class="dia-t" x="254" y="228" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="normal"></text><rect x="296" y="178" width="52" height="34" rx="6" fill="var(--accent)" opacity="0.48" stroke="var(--accent)" stroke-width="1.4"/><text class="dia-t" x="322.0" y="199.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树2</text><line x1="276" y1="195" x2="292" y2="195" stroke="var(--accent)" stroke-width="2" marker-end="url(#a5__f1)"/><text class="dia-t" x="322" y="228" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="normal">补错</text><rect x="364" y="178" width="52" height="34" rx="6" fill="var(--accent)" opacity="0.64" stroke="var(--accent)" stroke-width="1.4"/><text class="dia-t" x="390.0" y="199.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树3</text><line x1="344" y1="195" x2="360" y2="195" stroke="var(--accent)" stroke-width="2" marker-end="url(#a5__f1)"/><text class="dia-t" x="390" y="228" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="normal">再补</text><rect x="432" y="178" width="52" height="34" rx="6" fill="var(--accent)" opacity="0.8" stroke="var(--accent)" stroke-width="1.4"/><text class="dia-t" x="458.0" y="199.0" font-size="11" text-anchor="middle" fill="var(--fg)" font-weight="600">树4</text><line x1="412" y1="195" x2="428" y2="195" stroke="var(--accent)" stroke-width="2" marker-end="url(#a5__f1)"/><text class="dia-t" x="458" y="228" font-size="11" text-anchor="middle" fill="var(--accent)" font-weight="normal">再补</text><text class="dia-t" x="516" y="198" font-size="12" text-anchor="start" fill="var(--accent)" font-weight="600">→ 加权求和</text><text class="dia-t" x="516" y="216" font-size="12" text-anchor="start" fill="var(--accent)" font-weight="700">降【偏差】</text><text class="dia-t" x="340" y="30" font-size="13.5" text-anchor="middle" fill="var(--fg)" font-weight="700">都是「很多棵树」，但组织方式和治的病完全不同</text><text class="dia-t" x="340" y="274" font-size="12" text-anchor="middle" fill="var(--accent)" font-weight="700">⭐ Bagging 的树可以并行训、深一点无所谓；Boosting 必须串行、每棵要浅（否则第一棵就过拟合了）</text><text class="dia-t" x="340" y="296" font-size="11.5" text-anchor="middle" fill="var(--muted)" font-weight="normal">所以随机森林调「树多少棵」，GBDT 调「学习率 + 树深」</text></svg><figcaption>都是「很多棵树」，但组织方式和治的病完全不同：<b>Bagging 并行降方差，Boosting 串行降偏差</b>。⭐ 所以随机森林主要调「多少棵」，GBDT 主要调「学习率 + 树深」。</figcaption></figure>
-
 <p>单棵树不稳定又易过拟合。把很多棵组合起来——但怎么组合，分成三条完全不同的路线：</p>
 <div class="panels">
 <div class="panel">
@@ -411,7 +423,7 @@ Stacking（分层）。⭐ 而它们组合的每一棵树，都是<a href="04-�
 </blockquote>
 <hr />
 <h2 id="_6">🔨 动手：亲眼看集成的威力</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_breast_cancer</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_breast_cancer</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">RandomForestClassifier</span><span class="p">,</span>
@@ -604,10 +616,20 @@ CART 靠「只能二叉」把病压住了，但取值多 = 候选切分点多 = 
 <p>⚠️ <strong>什么时候看下一页</strong>：你想知道「每棵新树拟合负梯度」后面那半句 ——
 负梯度只给方向不给步长，而 XGBoost 怎么把它变成一个有闭式解的问题。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>一棵树很弱（<strong>91.8%</strong>），几百棵按正确方式组合起来就是表格数据的王者。⭐⭐ <strong>集成的收益全部来自成员之间的「差异」—— 全都一样的树，平均一百次还是那棵树。</strong> 三条路线：<strong>Bagging 并行、降方差</strong>（同一份数据有放回抽样，各训一棵，投票／平均；代表是随机森林）；<strong>Boosting 串行、降偏差</strong>（树1 → 找出错在哪 → 树2 专门补 → 再补；代表是 GBDT / XGBoost / LightGBM / CatBoost）；<strong>Stacking 分层</strong>（各模型的预测再喂给一个模型学怎么融合，Kaggle 冲榜常用、工程复杂）。⭐ <strong>随机森林做两次随机</strong>：Bootstrap 抽样让每棵树看到的数据不同，<strong>候选特征抽样</strong>让每次分裂只能从随机 k 个特征里挑 —— ⚠️ <strong>只做前者不够</strong>，否则每棵树都先用最强特征分裂、长得都一样。它几乎不用调参、不易过拟合、能给特征重要性、可并行，代价是精度通常略输 Boosting、模型体积大。<strong>GBDT</strong> 的人话是：<strong>每棵新树不预测答案本身，而是预测「前面所有树加起来还差多少」</strong>，像考试订正错题；数学上拟合的是损失的负梯度，MSE 损失时负梯度恰好就是残差。三个旋钮：<code>n_estimators</code>（100–2000，配早停）、⭐ <code>learning_rate</code>（0.01–0.1）、<code>max_depth</code>（<strong>3–8，比随机森林浅得多</strong>）。⭐ <strong>lr 和树数是一对：学习率减半，树数大致翻倍</strong> —— 先固定 lr=0.1 调别的，最后再降 lr 加树换那点精度。<strong>树浅是故意的</strong>：每棵只需纠正一点点，深了就一步跨太大而过拟合。💡 实测里所有集成的训练集都是 100%，⚠️ <strong>但训练集 100% 不等于过拟合</strong> —— 单棵树 100.0% / <strong>91.8%</strong>，三种集成 100.0% / <strong>94.2%</strong>，测试集反而涨了 <strong>2.4 个点</strong>，关键看测试集有没有跟着掉。⚠️ <strong>特征重要性三个坑</strong>：偏向高基数特征（根在上一章第二节，三代判据全都偏爱取值多的特征）、相关特征分摊重要性、只反映训练集不代表因果 —— 用 Permutation Importance 或 SHAP 更可靠。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>Bagging 让模型并行学习后汇总；Boosting 让后面的模型继续修正前面的不足。</li><li>GBDT 沿损失的负梯度方向拟合新树；平方损失下可理解为拟合残差。</li><li>学习率控制每棵新树的贡献，树的数量与复杂度需要一起验证。</li><li>先用验证集检查收益，再决定是否增加模型；模型更多并不自动更好。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="04b-XGBoost的推导.html">04b-XGBoost的推导.md</a></p>
+</section></div>
+<aside class="lesson-rail" aria-label="本节学习路线">
+<button type="button" class="lesson-route-toggle" aria-expanded="true" aria-controls="lesson-route">本节学习路线 <span aria-hidden="true">⌄</span></button>
+<div id="lesson-route">
+<p class="lesson-position" aria-live="polite">从第一站开始</p>
+<div class="lesson-track" aria-hidden="true"><span></span></div>
+<nav class="lesson-route-links" aria-label="章节跳转"></nav>
+<div class="lesson-rail-note"><strong>一次只读一张卡片</strong><p>蓝色下划线可以点开解释。关掉窗口，接着原来的位置读。</p></div>
+<button type="button" class="lesson-save">记住当前位置</button>
+<p class="lesson-save-status" role="status"></p>
+</div></aside></div>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="04-决策树与集成学习.html"><div class="dir">← 上一节</div>🌲 04 · 决策树：怎么切一刀</a><a class="next" href="04b-XGBoost的推导.html"><div class="dir">下一节 →</div>🧮 04b · XGBoost 的推导</a></nav>
@@ -634,5 +656,4 @@ CART 靠「只能二叉」把病压住了，但取值多 = 候选切分点多 = 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

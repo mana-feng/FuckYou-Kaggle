@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -432,7 +432,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>各家对象存储的签名算法不一样（🗓️ 而且会随版本变，动手前查你那家的文档），
 ⭐ <strong>但它们是同一个形状</strong>：<strong>把一组约束序列化 → 用只有服务端知道的密钥签名 → 存储端验签之后照着这组约束执行</strong>。</p>
 <p>下面这段用 <code>hmac</code> 把这个形状<strong>当场跑出来</strong>，它不是任何一家的真实协议，但<strong>验签、过期、体积上限、类型限制这四件事的逻辑就是这样</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">base64</span><span class="o">,</span><span class="w"> </span><span class="nn">hashlib</span><span class="o">,</span><span class="w"> </span><span class="nn">hmac</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">base64</span><span class="o">,</span><span class="w"> </span><span class="nn">hashlib</span><span class="o">,</span><span class="w"> </span><span class="nn">hmac</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 
 <span class="n">SECRET</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;only-the-server-has-this&quot;</span>      <span class="c1"># ⭐ 只存在于服务端（第 13 章）</span>
 
@@ -515,7 +515,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p>⭐ <strong>所以两条都不是「知道」，都要配一个兜底。</strong> 兜底就是 <code>uploads</code> 表那一列状态：</p>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">pending /complete 或事件通知 → ready 入队 → processing → indexed</span></div><div class="vb-tree-row"><span class="vb-tree-node">超过 N 分钟没动静 → 后台扫一遍：去存储 HEAD 一下</span></div><div class="vb-tree-row"><span class="vb-tree-node">在 → ready ｜ 不在 → expired</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-stackmd-07b-1" style="--diagram-width:720px"><svg viewBox="0 0 720 403" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="从上往下读问题；满足条件走右边，不满足再往下。右侧是选择入口，具体限制与原有说明保留在图下。"><title>从上往下读问题；满足条件走右边，不满足再往下。右侧是选择入口，具体限制与原有说明保留在图下。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">按问题逐步判断</text><rect x="20" y="65" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="170.0" y="93" font-size="18" text-anchor="middle" fill="var(--fg)">收到 /complete 或完成事件？</text><rect x="395" y="65" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="545.0" y="93" font-size="18" text-anchor="middle" fill="var(--fg)">ready → processing → indexed</text><line x1="320" y1="101" x2="395" y2="101" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="395.0,101.0 386.0,106.0 386.0,96.0"/><text x="356" y="87" font-size="16" text-anchor="middle" fill="var(--fg)">是</text><line x1="170" y1="113" x2="170" y2="195" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="170.0,195.0 165.0,186.0 175.0,186.0"/><text x="187" y="138" font-size="16" text-anchor="start" fill="var(--fg)">否</text><rect x="20" y="195" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="170.0" y="223" font-size="18" text-anchor="middle" fill="var(--fg)">超时后 HEAD 确认对象存在？</text><rect x="395" y="195" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="545.0" y="223" font-size="18" text-anchor="middle" fill="var(--fg)">恢复为 ready</text><line x1="320" y1="231" x2="395" y2="231" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="395.0,231.0 386.0,236.0 386.0,226.0"/><text x="356" y="217" font-size="16" text-anchor="middle" fill="var(--fg)">是</text><line x1="170" y1="243" x2="170" y2="325" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="170.0,325.0 165.0,316.0 175.0,316.0"/><text x="187" y="289" font-size="16" text-anchor="start" fill="var(--fg)">否</text><rect x="20" y="325" width="675" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="357.5" y="353" font-size="18" text-anchor="middle" fill="var(--fg)">对象不存在：标记 expired</text></svg><figcaption>从上往下读问题；满足条件走右边，不满足再往下。右侧是选择入口，具体限制与原有说明保留在图下。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>pending /complete 或事件通知 → ready 入队 → processing → indexed</span></li><li><span>超过 N 分钟没动静 → 后台扫一遍：去存储 HEAD 一下</span></li><li><span>在 → ready ｜ 不在 → expired</span></li></ul></section>
 <p>⭐ <strong>这个「扫一遍卡住的行」和第 11 章那条「把卡在 <code>running</code> 超过 N 分钟的 job 改回 <code>queued</code>」是同一个形状</strong> ——
 凡是状态机的一步依赖外部世界告诉你，就一定要有一个不依赖它的兜底。</p>
 <p>⚠️⚠️ <strong>不管走哪条路，服务端都必须自己去存储核实一次</strong>（<code>HEAD</code> 拿真实的大小、类型、etag）：
@@ -584,7 +585,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="1">① ⚠️ 客户端说的类型和扩展名，是<strong>用户输入</strong>，不是事实</h3>
 <p><code>Content-Type</code> 是请求头里的一个字符串，扩展名是文件名里的几个字符 —— <strong>两个都由对方随手写</strong>。
 要判类型，得去读文件开头那几个字节（<strong>magic bytes</strong>）：</p>
-<div class="codehilite"><pre><span></span><code><span class="n">MAGIC</span> <span class="o">=</span> <span class="p">[</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="n">MAGIC</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">(</span><span class="sa">b</span><span class="s2">&quot;%PDF-&quot;</span><span class="p">,</span>             <span class="s2">&quot;application/pdf&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x89</span><span class="s2">PNG</span><span class="se">\r\n\x1a\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;image/png&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\xff\xd8\xff</span><span class="s2">&quot;</span><span class="p">,</span>      <span class="s2">&quot;image/jpeg&quot;</span><span class="p">),</span>
@@ -634,7 +635,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 ⭐ <strong>所以判据是「白名单 + 头字节复核」，不是「查杀」。</strong></p>
 <h3 id="2">② ⭐ 用户给的文件名，<strong>根本不该被当成路径</strong></h3>
 <p>经典的路径穿越是 <code>../../etc/passwd</code>。很多人的第一反应是「那我把它洗干净」：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">re</span><span class="o">,</span><span class="w"> </span><span class="nn">unicodedata</span><span class="o">,</span><span class="w"> </span><span class="nn">uuid</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">re</span><span class="o">,</span><span class="w"> </span><span class="nn">unicodedata</span><span class="o">,</span><span class="w"> </span><span class="nn">uuid</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">safe_display_name</span><span class="p">(</span><span class="n">raw</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fallback</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;file&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -936,5 +937,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

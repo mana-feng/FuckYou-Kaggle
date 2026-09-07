@@ -180,9 +180,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -210,7 +210,7 @@ th,td{min-width:5.2em}
 </details>
 <h1 id="a">挑战项目 A · 新闻推荐：时效性生死时速</h1>
 <p>⏱ <strong>5–7 天</strong> ｜ 难度 ★★★★☆ ｜ 前置：第 1–13 节 + 项目一、二</p>
-<hr />
+<hr>
 <h2 id="_1">🎯 为什么选这个项目（它的「特点」）</h2>
 <p>推荐系统里最极端的场景之一：<strong>新闻的生命周期只有几个小时</strong>。</p>
 <div class="codehilite"><pre><span></span><code>   电影推荐：《肖申克的救赎》三十年后还在被推荐
@@ -227,7 +227,7 @@ th,td{min-width:5.2em}
 </code></pre></div>
 
 <p><strong>做完这个项目，你会真正理解</strong>：为什么第 13 节说物品冷启动最难，以及内容特征为什么是解药。这是拿其他任何数据集都练不到的。</p>
-<hr />
+<hr>
 <h2 id="mind">📦 数据集：MIND（微软新闻数据集）</h2>
 <p><strong>为什么它特别适合</strong>：MIND 提供了<strong>真实的曝光日志（impression logs）</strong>——每条记录都是「给用户展示了哪几条新闻、TA 点了哪条、没点哪条」。</p>
 <div class="codehilite"><pre><span></span><code>   这解决了教程里反复强调的一个问题：
@@ -247,36 +247,36 @@ behaviors.tsv:  曝光ID, 用户ID, 时间, 点击历史, 曝光列表
                      &quot;N4531-1 N7098-0 N2134-0&quot; = 展示了3条，点了第1条
 </code></pre></div>
 
-<hr />
+<hr>
 <h2 id="adhd-2">🧠 ADHD 任务切分（每块 ≤ 2 小时，按顺序打勾）</h2>
 <h3 id="day-12">第一阶段：先跑通最烂版本（Day 1–2）</h3>
-<ul>
-<li>[ ] <strong>T1 (60min)</strong> 下载 MIND-small，解析 <code>news.tsv</code> 和 <code>behaviors.tsv</code>，统计：新闻数、平均生命周期（首次曝光到最后曝光的时长）、每条曝光列表的平均长度</li>
-<li>[ ] <strong>T2 (45min)</strong> 建立评估框架：对每条 impression，给列表里的新闻打分排序，算 <strong>AUC / MRR / NDCG@5 / NDCG@10</strong>（MIND 官方指标）</li>
-<li>[ ] <strong>T3 (60min)</strong> Baseline 1：<strong>全局热度</strong>（近 1 小时被点次数）。⚠️ 只能用「该 impression 时间点之前」的点击数——<strong>这是本项目第一个时间陷阱</strong></li>
-<li>[ ] <strong>T4 (90min)</strong> Baseline 2：<strong>类目匹配</strong>——用户历史点击的类目分布 · 候选新闻类目的匹配分</li>
-<li>[ ] <strong>T5 (30min)</strong> 记录两个 baseline 的指标。<strong>从现在起每个改动都和它们比。</strong></li>
+<ul class="reading-task-list reading-task-list reading-task-list reading-task-list reading-task-list">
+<li class="reading-task" data-reading-task="1"><label class="reading-task-title"><input type="checkbox" data-task-key="1"><span>任务 T1</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 下载 MIND-small，解析 <code>news.tsv</code> 和 <code>behaviors.tsv</code>，统计：新闻数、平均生命周期（首次曝光到最后曝光的时长）、每条曝光列表的平均长度</div></li>
+<li class="reading-task" data-reading-task="2"><label class="reading-task-title"><input type="checkbox" data-task-key="2"><span>任务 T2</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> 建立评估框架：对每条 impression，给列表里的新闻打分排序，算 <strong>AUC / MRR / NDCG@5 / NDCG@10</strong>（MIND 官方指标）</div></li>
+<li class="reading-task" data-reading-task="3"><label class="reading-task-title"><input type="checkbox" data-task-key="3"><span>任务 T3</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> Baseline 1：<strong>全局热度</strong>（近 1 小时被点次数）。⚠️ 只能用「该 impression 时间点之前」的点击数——<strong>这是本项目第一个时间陷阱</strong></div></li>
+<li class="reading-task" data-reading-task="4"><label class="reading-task-title"><input type="checkbox" data-task-key="4"><span>任务 T4</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> Baseline 2：<strong>类目匹配</strong>——用户历史点击的类目分布 · 候选新闻类目的匹配分</div></li>
+<li class="reading-task" data-reading-task="5"><label class="reading-task-title"><input type="checkbox" data-task-key="5"><span>任务 T5</span></label><p class="reading-task-time">参考用时 · 30 分钟</p><div class="reading-task-body"> 记录两个 baseline 的指标。<strong>从现在起每个改动都和它们比。</strong></div></li>
 </ul>
 <h3 id="day-34">第二阶段：内容编码器（Day 3–4）</h3>
-<ul>
-<li>[ ] <strong>T6 (90min)</strong> 新闻编码器 v1：标题 TF-IDF → SVD 降到 64 维。用户向量 = 点击历史新闻向量的平均。余弦打分</li>
-<li>[ ] <strong>T7 (60min)</strong> 对比 T6 和 baseline —— 内容特征应该已经明显赢了热度</li>
-<li>[ ] <strong>T8 (120min)</strong> 新闻编码器 v2（NRMS 风格）：词 Embedding → 自注意力 → 注意力池化，得到新闻向量</li>
-<li>[ ] <strong>T9 (90min)</strong> 用户编码器：对点击历史的新闻向量再做一层自注意力 + 注意力池化（而不是简单平均）——<strong>这就是第 8 节 DIN 思想在新闻场景的变体</strong></li>
+<ul class="reading-task-list reading-task-list reading-task-list reading-task-list">
+<li class="reading-task" data-reading-task="6"><label class="reading-task-title"><input type="checkbox" data-task-key="6"><span>任务 T6</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> 新闻编码器 v1：标题 TF-IDF → SVD 降到 64 维。用户向量 = 点击历史新闻向量的平均。余弦打分</div></li>
+<li class="reading-task" data-reading-task="7"><label class="reading-task-title"><input type="checkbox" data-task-key="7"><span>任务 T7</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 对比 T6 和 baseline —— 内容特征应该已经明显赢了热度</div></li>
+<li class="reading-task" data-reading-task="8"><label class="reading-task-title"><input type="checkbox" data-task-key="8"><span>任务 T8</span></label><p class="reading-task-time">参考用时 · 120 分钟</p><div class="reading-task-body"> 新闻编码器 v2（NRMS 风格）：词 Embedding → 自注意力 → 注意力池化，得到新闻向量</div></li>
+<li class="reading-task" data-reading-task="9"><label class="reading-task-title"><input type="checkbox" data-task-key="9"><span>任务 T9</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> 用户编码器：对点击历史的新闻向量再做一层自注意力 + 注意力池化（而不是简单平均）——<strong>这就是第 8 节 DIN 思想在新闻场景的变体</strong></div></li>
 </ul>
-<h3 id="day-5">第三阶段：时间建模（Day 5）—— 本项目的灵魂</h3>
-<ul>
-<li>[ ] <strong>T10 (60min)</strong> 加<strong>新闻年龄特征</strong>：<code>log1p(曝光时刻 - 发布时刻)</code>，分桶后 Embedding（回忆第 8 节 YouTube 的 Example Age）</li>
-<li>[ ] <strong>T11 (60min)</strong> 加<strong>热度衰减</strong>：用指数衰减的点击计数 <code>pop = Σ exp(-λ·Δt)</code> 替代原始计数，λ 调到半衰期 ≈ 2–6 小时</li>
-<li>[ ] <strong>T12 (60min)</strong> 消融实验：去掉时间特征，指标掉多少？<strong>把这个数字写进 README——它是这个项目的核心发现</strong></li>
+<h3 id="day-5">第三阶段：时间建模（Day 5）</h3>
+<p class="reading-stage-note">本项目的灵魂</p><ul class="reading-task-list reading-task-list reading-task-list">
+<li class="reading-task" data-reading-task="10"><label class="reading-task-title"><input type="checkbox" data-task-key="10"><span>任务 T10</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 加<strong>新闻年龄特征</strong>：<code>log1p(曝光时刻 - 发布时刻)</code>，分桶后 Embedding（回忆第 8 节 YouTube 的 Example Age）</div></li>
+<li class="reading-task" data-reading-task="11"><label class="reading-task-title"><input type="checkbox" data-task-key="11"><span>任务 T11</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 加<strong>热度衰减</strong>：用指数衰减的点击计数 <code>pop = Σ exp(-λ·Δt)</code> 替代原始计数，λ 调到半衰期 ≈ 2–6 小时</div></li>
+<li class="reading-task" data-reading-task="12"><label class="reading-task-title"><input type="checkbox" data-task-key="12"><span>任务 T12</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 消融实验：去掉时间特征，指标掉多少？<strong>把这个数字写进 README——它是这个项目的核心发现</strong></div></li>
 </ul>
 <h3 id="day-67">第四阶段：完整模型 + 报告（Day 6–7）</h3>
-<ul>
-<li>[ ] <strong>T13 (120min)</strong> 端到端训练：impression 内做 softmax（点了的 vs 没点的，天然的 listwise 训练），这比逐条 BCE 更贴合排序目标</li>
-<li>[ ] <strong>T14 (60min)</strong> 冷启动专项评估：<strong>只看「训练集里从未出现过的新闻」的 AUC</strong> ——这是本项目区别于普通推荐项目的招牌指标</li>
-<li>[ ] <strong>T15 (90min)</strong> 写 README：指标演进表、时间特征消融、冷启动对比、踩坑记录</li>
+<ul class="reading-task-list reading-task-list reading-task-list">
+<li class="reading-task" data-reading-task="13"><label class="reading-task-title"><input type="checkbox" data-task-key="13"><span>任务 T13</span></label><p class="reading-task-time">参考用时 · 120 分钟</p><div class="reading-task-body"> 端到端训练：impression 内做 softmax（点了的 vs 没点的，天然的 listwise 训练），这比逐条 BCE 更贴合排序目标</div></li>
+<li class="reading-task" data-reading-task="14"><label class="reading-task-title"><input type="checkbox" data-task-key="14"><span>任务 T14</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 冷启动专项评估：<strong>只看「训练集里从未出现过的新闻」的 AUC</strong> ——这是本项目区别于普通推荐项目的招牌指标</div></li>
+<li class="reading-task" data-reading-task="15"><label class="reading-task-title"><input type="checkbox" data-task-key="15"><span>任务 T15</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> 写 README：指标演进表、时间特征消融、冷启动对比、踩坑记录</div></li>
 </ul>
-<hr />
+<hr>
 <h2 id="_2">🔨 关键代码骨架</h2>
 <h3 id="impression-mind">Impression 级评估（MIND 官方口径）</h3>
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -368,7 +368,7 @@ behaviors.tsv:  曝光ID, 用户ID, 时间, 点击历史, 曝光列表
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="p">[</span><span class="n">news_id</span><span class="p">]</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">lam</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 </code></pre></div>
 
-<hr />
+<hr>
 <h2 id="_4">🕳️ 这个项目专属的坑（提前剧透）</h2>
 <div class="tw"><table>
 <thead>
@@ -411,7 +411,7 @@ behaviors.tsv:  曝光ID, 用户ID, 时间, 点击历史, 曝光列表
 </tr>
 </tbody>
 </table></div>
-<hr />
+<hr>
 <h2 id="definition-of-done">✅ 通关标准（Definition of Done）</h2>
 <ol>
 <li>NRMS 风格模型的 AUC <strong>&gt; 0.66</strong>（MIND-small 上的合理水平；热度 baseline 约 0.60）</li>
@@ -425,16 +425,13 @@ behaviors.tsv:  曝光ID, 用户ID, 时间, 点击历史, 曝光列表
 <li>实现<strong>两阶段</strong>：衰减热度+类目做召回（每次 impression 从全库召 200），NRMS 做精排——观察召回漏斗损失</li>
 <li>分析<strong>茧房效应</strong>：统计用户点击类目熵随时间的变化，模型是不是在让用户越看越窄？（呼应第 11 节）</li>
 </ul>
-<hr />
-<p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>我在做新闻推荐（MIND 数据集）：新闻生命周期只有几小时 → ID Embedding 无用 → 内容编码器（NRMS：词注意力→新闻向量→历史注意力→用户向量）是主战场 + 时间衰减热度（流式算，防穿越）。招牌指标：冷新闻 AUC。训练用 impression 内 softmax。</p>
-</blockquote>
-<p><strong>下一个挑战</strong> 👉 <a href="20-挑战项目B-信息流模拟器-亲手养出信息茧房.html">20-挑战项目B-信息流模拟器-亲手养出信息茧房.md</a></p>
-<hr />
+<hr>
+
+<p><strong>下一个挑战</strong> 👉 <a href="20-%E6%8C%91%E6%88%98%E9%A1%B9%E7%9B%AEB-%E4%BF%A1%E6%81%AF%E6%B5%81%E6%A8%A1%E6%8B%9F%E5%99%A8-%E4%BA%B2%E6%89%8B%E5%85%BB%E5%87%BA%E4%BF%A1%E6%81%AF%E8%8C%A7%E6%88%BF.html">20-挑战项目B-信息流模拟器-亲手养出信息茧房.md</a></p>
+<hr>
 <h2 id="xref">🔗 这一章连到哪里</h2>
-<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../模型上线之后/06-数据漂移与概念漂移.html">上线之后 06</a></td><td>新闻的「时效性」本质就是概念漂移的极端形态——别人几个月漂一次，你几小时漂一次</td></tr><tr><td><a href="../模型上线之后/16-重训练.html">上线之后 16</a></td><td>这个项目绕不开的问题：多久重训一次、增量还是全量、怎么判断该训了</td></tr><tr><td><a href="../强化学习基础/07-探索与利用.html">强化学习 07</a></td><td>新稿件没有任何行为数据就要决定给不给量——这是纯粹的冷启动探索问题</td></tr></tbody></table></div>
-<hr />
+<div class="tw"><table class="xref"><thead><tr><th>去哪</th><th>为什么</th></tr></thead><tbody><tr><td><a href="../%E6%A8%A1%E5%9E%8B%E4%B8%8A%E7%BA%BF%E4%B9%8B%E5%90%8E/06-%E6%95%B0%E6%8D%AE%E6%BC%82%E7%A7%BB%E4%B8%8E%E6%A6%82%E5%BF%B5%E6%BC%82%E7%A7%BB.html">上线之后 06</a></td><td>新闻的「时效性」本质就是概念漂移的极端形态——别人几个月漂一次，你几小时漂一次</td></tr><tr><td><a href="../%E6%A8%A1%E5%9E%8B%E4%B8%8A%E7%BA%BF%E4%B9%8B%E5%90%8E/16-%E9%87%8D%E8%AE%AD%E7%BB%83.html">上线之后 16</a></td><td>这个项目绕不开的问题：多久重训一次、增量还是全量、怎么判断该训了</td></tr><tr><td><a href="../%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/07-%E6%8E%A2%E7%B4%A2%E4%B8%8E%E5%88%A9%E7%94%A8.html">强化学习 07</a></td><td>新稿件没有任何行为数据就要决定给不给量——这是纯粹的冷启动探索问题</td></tr></tbody></table></div>
+<hr>
 <h2 id="ckpt">✅ 检查点</h2>
 <ol>
 <li>新闻推荐和电影/商品推荐最根本的区别是什么？它导致了哪四个后果？</li>
@@ -457,15 +454,12 @@ behaviors.tsv:  曝光ID, 用户ID, 时间, 点击历史, 曝光列表
 <li>因为 impression 天然就是一个<strong>候选列表</strong>（点了的 vs 没点的），在列表内做 softmax 是 <strong>listwise 训练，直接对齐排序目标</strong>；逐条 BCE 是 pointwise，优化的是绝对概率而不是相对顺序。</li>
 </ol>
 </details>
-<hr />
+<hr>
 <h2 id="recap">🛑 可以停在这里</h2>
-<blockquote>
-<p>⚡ <strong>走神救援</strong><br />
-新闻推荐的极端点：<strong>物品生命周期只有几小时</strong> → ①<strong>物品冷启动是每时每刻的常态</strong>②<strong>ID Embedding 几乎没用</strong>（等你学好它已经过期）③内容理解成主战场 ④时间衰减必须显式建模。用 <strong>MIND 数据集</strong>（有真实曝光日志 → 真实的「曝光未点击」负样本 + 评估无需负采样）。四阶段：①先跑通最烂版本（热度 + 类目匹配两个 baseline）——⚠️<strong>第一个时间陷阱：算热度只能用该 impression 之前的点击数</strong>②内容编码器（TF-IDF+SVD → NRMS 风格自注意力；用户编码器对历史再做一层注意力池化 = DIN 思想的新闻版）③⭐<strong>时间建模是灵魂</strong>：<strong>新闻年龄</strong>（log1p 分桶 Embedding）+ <strong>热度指数衰减</strong>（半衰期 2–6 小时）；<strong>做消融实验，去掉时间特征掉多少分就是这个项目的核心发现</strong>④端到端训练用 <strong>impression 内 softmax（listwise，直接对齐排序目标）</strong>；⭐招牌指标是<strong>只看训练集里从未出现过的新闻的 AUC</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>目标是处理时效性与新新闻冷启动，而不只追求总体分数。</li><li>利用曝光日志构造训练与评估数据；热度特征只能使用当时已发生的信息。</li><li>内容编码与时间特征逐项加入，记录各自的贡献。</li><li>单独报告冷新闻的表现，保留基线、划分方式与实验条件。</li></ul></section>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
-<nav class="pagenav"><a href="17-面试与求职.html"><div class="dir">← 上一节</div>🎤 17 · 面试与求职</a><a class="next" href="20-挑战项目B-信息流模拟器-亲手养出信息茧房.html"><div class="dir">下一节 →</div>🌀 挑战B · 信息流模拟器</a></nav>
+<nav class="pagenav"><a href="17-%E9%9D%A2%E8%AF%95%E4%B8%8E%E6%B1%82%E8%81%8C.html"><div class="dir">← 上一节</div>🎤 17 · 面试与求职</a><a class="next" href="20-%E6%8C%91%E6%88%98%E9%A1%B9%E7%9B%AEB-%E4%BF%A1%E6%81%AF%E6%B5%81%E6%A8%A1%E6%8B%9F%E5%99%A8-%E4%BA%B2%E6%89%8B%E5%85%BB%E5%87%BA%E4%BF%A1%E6%81%AF%E8%8C%A7%E6%88%BF.html"><div class="dir">下一节 →</div>🌀 挑战B · 信息流模拟器</a></nav>
 </main>
 <script>(function(){
   var KEY="recsys-progress", FILE="19-\u6311\u6218\u9879\u76eeA-\u65b0\u95fb\u63a8\u8350-\u65f6\u6548\u6027\u751f\u6b7b\u65f6\u901f.md";
@@ -489,5 +483,5 @@ behaviors.tsv:  曝光ID, 用户ID, 时间, 点击历史, 曝光列表
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
 </body></html>

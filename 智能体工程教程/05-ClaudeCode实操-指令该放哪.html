@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -515,7 +515,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>🔑 <strong>一句话记忆：把 CLAUDE.md 当索引，不是垃圾桶。</strong></p>
 </blockquote>
 <h3 id="_10">📐 一张决策图（卡住时照着走）</h3>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">你有一条想让 Claude 遵守的规矩</span></div><div class="vb-tree-row"><span class="vb-tree-node">它必须【每次都发生、零例外】吗？</span></div><div class="vb-tree-row"><span class="vb-tree-node">✅ 是 → 🪝 Hook（确定性，代码级保证）⭐</span></div><div class="vb-tree-row"><span class="vb-tree-node">❌ 否 ↓</span></div><div class="vb-tree-row"><span class="vb-tree-node">它是【一套多步骤的流程】吗（&gt;10 行）？</span></div><div class="vb-tree-row"><span class="vb-tree-node">✅ 是 → 🎯 Skill（按需加载，不占常驻上下文）</span></div><div class="vb-tree-row"><span class="vb-tree-node">❌ 否 ↓</span></div><div class="vb-tree-row"><span class="vb-tree-node">它只跟【某些文件/目录】相关吗？</span></div><div class="vb-tree-row"><span class="vb-tree-node">✅ 是 → 📏 Rule + `paths:` 限定</span></div><div class="vb-tree-row"><span class="vb-tree-node">❌ 否 ↓</span></div><div class="vb-tree-row"><span class="vb-tree-node">它需要【大量翻阅但只要结论】吗？</span></div><div class="vb-tree-row"><span class="vb-tree-node">✅ 是 → 🤖 子 Agent（隔离上下文）</span></div><div class="vb-tree-row"><span class="vb-tree-node">❌ 否 ↓</span></div><div class="vb-tree-row"><span class="vb-tree-node">剩下的、简短的、全局都要知道的</span></div><div class="vb-tree-row"><span class="vb-tree-node">→ 📄 CLAUDE.md（严格控制在 200 行内）</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-agentmd-05-1" style="--diagram-width:720px"><svg viewBox="0 0 720 663" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="从上往下读问题；满足条件走右边，不满足再往下。右侧是选择入口，具体限制与原有说明保留在图下。"><title>从上往下读问题；满足条件走右边，不满足再往下。右侧是选择入口，具体限制与原有说明保留在图下。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">按问题逐步判断</text><rect x="20" y="65" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="170.0" y="93" font-size="18" text-anchor="middle" fill="var(--fg)">必须每次发生、无例外？</text><rect x="395" y="65" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="545.0" y="93" font-size="18" text-anchor="middle" fill="var(--fg)">Hook / 系统约束</text><line x1="320" y1="101" x2="395" y2="101" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="395.0,101.0 386.0,106.0 386.0,96.0"/><text x="356" y="87" font-size="16" text-anchor="middle" fill="var(--fg)">是</text><line x1="170" y1="113" x2="170" y2="195" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="170.0,195.0 165.0,186.0 175.0,186.0"/><text x="187" y="138" font-size="16" text-anchor="start" fill="var(--fg)">否</text><rect x="20" y="195" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="170.0" y="223" font-size="18" text-anchor="middle" fill="var(--fg)">是一套多步骤流程？</text><rect x="395" y="195" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="545.0" y="223" font-size="18" text-anchor="middle" fill="var(--fg)">Skill</text><line x1="320" y1="231" x2="395" y2="231" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="395.0,231.0 386.0,236.0 386.0,226.0"/><text x="356" y="217" font-size="16" text-anchor="middle" fill="var(--fg)">是</text><line x1="170" y1="243" x2="170" y2="325" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="170.0,325.0 165.0,316.0 175.0,316.0"/><text x="187" y="268" font-size="16" text-anchor="start" fill="var(--fg)">否</text><rect x="20" y="325" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="170.0" y="353" font-size="18" text-anchor="middle" fill="var(--fg)">只与某些文件相关？</text><rect x="395" y="325" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="545.0" y="353" font-size="18" text-anchor="middle" fill="var(--fg)">按路径限定的 Rule</text><line x1="320" y1="361" x2="395" y2="361" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="395.0,361.0 386.0,366.0 386.0,356.0"/><text x="356" y="347" font-size="16" text-anchor="middle" fill="var(--fg)">是</text><line x1="170" y1="373" x2="170" y2="455" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="170.0,455.0 165.0,446.0 175.0,446.0"/><text x="187" y="398" font-size="16" text-anchor="start" fill="var(--fg)">否</text><rect x="20" y="455" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="170.0" y="483" font-size="18" text-anchor="middle" fill="var(--fg)">需大量翻阅，只要结论？</text><rect x="395" y="455" width="300" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="545.0" y="483" font-size="18" text-anchor="middle" fill="var(--fg)">隔离的子任务</text><line x1="320" y1="491" x2="395" y2="491" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="395.0,491.0 386.0,496.0 386.0,486.0"/><text x="356" y="477" font-size="16" text-anchor="middle" fill="var(--fg)">是</text><line x1="170" y1="503" x2="170" y2="585" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="170.0,585.0 165.0,576.0 175.0,576.0"/><text x="187" y="549" font-size="16" text-anchor="start" fill="var(--fg)">否</text><rect x="20" y="585" width="675" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="357.5" y="613" font-size="18" text-anchor="middle" fill="var(--fg)">其余简短、全局约定放入 CLAUDE.md</text></svg><figcaption>从上往下读问题；满足条件走右边，不满足再往下。右侧是选择入口，具体限制与原有说明保留在图下。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>你有一条想让 Claude 遵守的规矩</span></li><li><span>它必须【每次都发生、零例外】吗？</span></li><li><span>✅ 是 → 🪝 Hook（确定性，代码级保证）⭐</span></li><li><span>❌ 否 ↓</span></li><li><span>它是【一套多步骤的流程】吗（&gt;10 行）？</span></li><li><span>✅ 是 → 🎯 Skill（按需加载，不占常驻上下文）</span></li><li><span>❌ 否 ↓</span></li><li><span>它只跟【某些文件/目录】相关吗？</span></li><li><span>✅ 是 → 📏 Rule + `paths:` 限定</span></li><li><span>❌ 否 ↓</span></li><li><span>它需要【大量翻阅但只要结论】吗？</span></li><li><span>✅ 是 → 🤖 子 Agent（隔离上下文）</span></li><li><span>❌ 否 ↓</span></li><li><span>剩下的、简短的、全局都要知道的</span></li><li><span>→ 📄 CLAUDE.md（严格控制在 200 行内）</span></li></ul></section>
 <h3 id="_11">💰 为什么「上下文成本」这一列这么重要</h3>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>CLAUDE.md 里的每一行，都在【每一轮对话】里被重新读一遍</p><p>一个 500 行的 CLAUDE.md：</p><p>· 常驻占用几千 token</p><p>· 在 20 轮对话里被读了 20 遍</p><p>· ⚠️ 而且它稀释了真正重要的指令 —— 这才是最大的代价 ⭐</p></div></section>
 <blockquote>
@@ -645,9 +646,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_18">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>核心心法：<strong>给它能自己跑的验证</strong>（四档位：单次提示/跨会话/Stop hook闸门/验证子Agent），并要它出示证据。⭐<strong>好验证四特征：能自动跑、输出二元、快、错误信息可操作</strong>——"你自己看一眼"四条全不满足所以不算验证；⭐<strong>验证的价值不在全面而在多快被跑</strong>（3秒跑完覆盖60%的，比10分钟覆盖95%的有用，因为前者每轮都会跑）；<strong>没测试的项目先加类型检查，性价比最高</strong>。工作流：探索(plan mode)→规划→编码→提交；<strong>大功能先让它面试你产出SPEC.md，再开新会话实现</strong>（干净上下文全用于实现）。七种引导按「<strong>何时加载/如何持久/多严格</strong>」三问选（第三问最关键：<strong>要确定性保证的绝不写进提示词</strong>）：<strong>必须每次发生→hook；多步骤流程→skill；只跟某些目录相关→rule加paths；要大量翻阅但只要结论→子Agent；剩下的短的全局的→CLAUDE.md（限200行）</strong>。⭐<strong>CLAUDE.md 膨胀最大的代价不是钱，是稀释了真正重要的指令</strong>——"写了它还是不听"十有八九是那条被淹没了，先精简再加强。会话管理：⭐<strong>同一问题纠正超两次就 /clear 重来</strong>（上下文已被失败尝试污染，模型每轮都在读错误示范）。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>先定义能运行、能判断结果的验证，再要求实现提供证据。</li><li>按加载范围与执行时机选择指令、规则、技能或 hook，不把所有要求塞进同一文件。</li><li>探索、规划、实施与验收各有产物；交付前同时检查自动化结果与实际使用效果。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="06-工作流还是Agent.html">06-工作流还是Agent.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -675,5 +675,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -364,7 +364,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_5">🧪 四、动手：这笔账自己算一遍</h2>
 <p>不需要模型也不需要 GPU，纯计数，跑多少遍结果都一模一样：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 像素空间 vs 潜空间：同一件事各要花多少算力（纯计数，不测秒）</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 像素空间 vs 潜空间：同一件事各要花多少算力（纯计数，不测秒）</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">conv_flops</span><span class="p">(</span><span class="n">cin</span><span class="p">,</span> <span class="n">cout</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">hw</span><span class="p">):</span>
@@ -395,7 +395,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>真实输出：</p>
-<div class="codehilite"><pre><span></span><code>每步要去噪的量：  786432 个数  vs  16384 个数  → 压缩 48 倍
+<div class="codehilite" data-code-language="text"><pre><span></span><code>每步要去噪的量：  786432 个数  vs  16384 个数  → 压缩 48 倍
 首层 3x3 卷积：      1.81 GFLOPs vs  0.038 GFLOPs → 48 倍
 主干 128→128 卷积： 77.31 GFLOPs vs  1.208 GFLOPs → 64 倍
 注意力矩阵项数：  6.872e+10     vs 1.678e+07    → 4096 倍
@@ -517,9 +517,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>读到这里，你已经能解释 Stable Diffusion 为什么塞得进一张消费级显卡，也知道了「换更好的模型就能写对小字」这个期待错在哪一层。</p>
 <p><strong>出现这些情况时再回来</strong>：出图细节糊、小字或手指崩（第五节，先确认是不是自编码器的下界问题）；想训自己的扩散模型却 OOM（第六节末尾那条链接）；看到别人说「换了 16 通道 VAE」不知道在换什么（第五节最后）。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>直接在像素上扩散算不起：512×512 的 RGB 图是 <strong>786432 个数</strong>，每一步都要在这个规模上跑一遍完整网络，还要走几十上百步。主干里一层普通的 128→128 卷积在 512² 上就是 <strong>77.31 GFLOPs</strong>；真正劝退的是注意力 —— 262144 个 token 的矩阵有 $6.87\times10^{10}$ 项，按 fp16 存要 <strong>137 GB</strong>。⭐ <strong>Latent Diffusion 的解法是三段式</strong>：编码器 $E$ 把图压成 <strong>64×64×4</strong>（16384 个数，<strong>压缩 48 倍</strong>），扩散原封不动搬到这个潜变量上做（公式一个字都不改），解码器 $D$ 再还原成像素。省得动的关键是次数不对等：<strong>E 和 D 各跑一次，扩散跑几十上百次</strong>。三个倍数别混：元素数之比 <strong>48</strong>，主干卷积之比 <strong>64</strong>（通道相同，只剩面积 $8^2$），注意力之比 <strong>4096</strong>（面积的平方）—— ⭐ <strong>越贵的层省得越狠</strong>，所以在潜空间走满 1000 步都比在像素空间走 50 步便宜。⚠️ <strong>代价出在顺序上</strong>：$E$ 在扩散之前跑，全链路的画质上限就是 $D(E(x))$，扩散再准也超不过。一个潜空间格子吃掉原图 <strong>8×8=64 个像素、192 个数压成 4 个数</strong>，而小字笔画只有一两个像素宽 —— 💀 <strong>这就是这类模型画不好小字、远景人脸和手指的第一层原因</strong>，判据是「在 8×8 块尺度上无法从周围推断的高频细节」；对策是别压那么狠、把潜通道从 4 加到 16（SD3、FLUX 这一代）、或直接出更大的图。最后，<strong>KL 项权重极小是故意的</strong> —— 它只防止潜空间散成扩散学不动的样子，并不追求真正的标准正态，因为 LDM 根本不从先验里采样。⭐ 痕迹就是 SD 代码里那个 <code>0.18215</code> 缩放常数：KL 真做到了标准正态的话，它没有存在的理由。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>Latent Diffusion 先压缩图像，在潜空间执行反复去噪，最后解码回像素。</li><li>编码解码只占部分流程，反复运行的主干因此能在更小空间工作。</li><li>压缩也会丢失细节；先看重构质量，再判断问题来自编码器还是去噪模型。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="06-条件控制与CFG.html">06-条件控制与CFG.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -547,5 +546,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

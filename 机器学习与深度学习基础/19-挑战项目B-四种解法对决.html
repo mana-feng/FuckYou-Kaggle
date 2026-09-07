@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,16 +271,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
- onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script><link rel="stylesheet" href="../assets/guided-lessons.css"><link rel="stylesheet" href="../assets/guided-batch1.css"><script defer src="../assets/guided-batch1.js"></script><link rel="stylesheet" href="../assets/guided-batch2.css"><script defer src="../assets/guided-batch2.js"></script><script defer src="../assets/guided-lessons.js"></script></head><body class="guided-reading">
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
@@ -306,25 +306,37 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 </div>
 </details>
-<h1 id="b">挑战项目 B · 四种解法对决</h1>
+<div class="lesson-layout" data-lesson="ml-19" data-batch="ml-rest" data-reading-mode="project">
+<div class="lesson-content"><section class="lesson-hero" id="lesson-start" data-route="先知道这页解决什么">
+<div><p class="lesson-eyebrow">19 / 一次完成一个小任务</p><h1>同一道题公平比较，<br>才知道复杂度值不值得。</h1><p class="lesson-lead">先固定切分、指标和调参预算，再比较四种解法；不要先认定谁应该赢。</p></div>
+<aside class="lesson-advice"><strong>一次只处理一个问题</strong><p>可以从入口直接跳到需要的部分。正文、图解、代码和检查点都在下方。</p><a href="#first-pause">先看懂这一点就可以停 →</a></aside></section>
+<div class="lesson-overview-grid">
+<section class="lesson-card" id="first-example" data-route="先看一个具体结果"><p class="lesson-kicker">先抓住一个具体结果</p><h2>今天只完成第一条基线</h2><p>用同一份训练与验证划分跑通最简单方案，记下分数、耗时和环境。其他方案沿用相同评估约定；最终测试集留到选择完成后。</p></section>
+<section class="lesson-card lesson-task-entry" id="reading-choices" data-route="按需要选择下一步"><p class="lesson-kicker">接下来，按需要选一项</p><h2>你现在想看什么？</h2><nav aria-label="本页阅读入口"><a href="#_3">确定比较规则 <span aria-hidden="true">→</span></a><a href="#adhd">从基线开始 <span aria-hidden="true">→</span></a><a href="#_8">检查证据是否齐全 <span aria-hidden="true">→</span></a></nav><p class="lesson-note">这些入口是选择，不是必须按顺序完成的任务。</p></section>
+<section class="lesson-card lesson-pause lesson-wide" id="first-pause" data-route="可以停在这里"><h2>可以停在这里</h2><p>先固定切分、指标和调参预算，再比较四种解法；不要先认定谁应该赢。</p><a href="#full-lesson">需要更多细节时，继续看完整正文 →</a></section></div>
+<section class="lesson-full" id="full-lesson" aria-label="完整正文">
+<div class="lesson-divider"><span>继续探索</span><p>原有正文、图解和例子都在下方。按需跳转，不必一次读完。</p></div>
+<h2 id="b" class="lesson-original-title">挑战项目 B · 四种解法对决</h2>
+<!-- guided-lesson: ml-19 -->
+
 <p>⏱ <strong>4–6 天</strong> ｜ 难度 ★★★★☆ ｜ 前置：第 2–6、15–16 章</p>
-<hr />
+<hr>
 <h2 id="_1">🎯 为什么选这个项目</h2>
 <p>第 2 章说了「没有免费的午餐」，但那只是一句话。
 <strong>这个项目让你亲手把它变成一张数据表</strong>——从此选型不再靠感觉。</p>
-<section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">同一批数据，四种解法正面对决：</span></div><div class="vb-flow-row"><span class="vb-flow-step">① 线性模型（逻辑回归/岭回归）</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 树模型（LightGBM / GBDT）</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 神经网络（MLP）</span></div><div class="vb-flow-row"><span class="vb-flow-step">④ 预训练模型微调（如果数据是文本/图像）</span></div><div class="vb-flow-row"><span class="vb-flow-step">× 在【三种不同规模的数据量】上各跑一遍</span></div><div class="vb-flow-row"><span class="vb-flow-step">（100 行 / 1000 行 / 全量）</span></div><div class="vb-flow-row"><span class="vb-flow-step">你会得到一张【什么时候该用什么】的决策表</span></div><div class="vb-flow-row"><span class="vb-flow-step">这张表比任何博客的&quot;经验之谈&quot;都可靠，因为是你自己测的</span></div></div></section>
+<section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">同一批数据，四种解法正面对决：</span></div><div class="vb-flow-row"><span class="vb-flow-step">① 线性模型（逻辑回归/岭回归）</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 树模型（LightGBM / GBDT）</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 神经网络（MLP）</span></div><div class="vb-flow-row"><span class="vb-flow-step">④ 预训练模型微调（如果数据是文本/图像）</span></div><div class="vb-flow-row"><span class="vb-flow-step">× 在【三种不同规模的数据量】上各跑一遍</span></div><div class="vb-flow-row"><span class="vb-flow-step">（100 行 / 1000 行 / 全量）</span></div><div class="vb-flow-row"><span class="vb-flow-step">你会得到一张【什么时候该用什么】的决策表</span></div><div class="vb-flow-row"><span class="vb-flow-step">这张表比任何博客的"经验之谈"都可靠，因为是你自己测的</span></div></div></section>
 <p><strong>这个项目训练的是选型判断力</strong> —— 工程师最值钱、也最难自学的能力。</p>
 <blockquote>
 <p>🔑 <strong>它同时是一个理论的实证检验</strong>：
-<a href="../机器学习的数学原理/11-没有免费的午餐.html">数学原理第 11 章 NFL</a> 说
+<a href="../%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86/11-%E6%B2%A1%E6%9C%89%E5%85%8D%E8%B4%B9%E7%9A%84%E5%8D%88%E9%A4%90.html">数学原理第 11 章 NFL</a> 说
 <strong>"算法的专长是守恒的"</strong>——一个模型在某类问题上变强，必然在另一类上变弱。
 <strong>这个项目就是把那句话画成一张交叉的曲线图。</strong></p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_2">🧭 开工前：一个能省你两天的建议</h2>
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">❌ 常见的做法：先跑线性模型，跑完再跑树，跑完再跑NN……</span></div><div class="vb-flow-row"><span class="vb-flow-step">跑到第三天发现实验函数有 bug，前面全白干</span></div><div class="vb-flow-row"><span class="vb-flow-step">✅ 正确的做法：Day 1 只做一件事——</span></div><div class="vb-flow-row"><span class="vb-flow-step">让【4 个模型 × 1 个数据量 × 1 个数据集】跑通，哪怕分数很烂</span></div><div class="vb-flow-row"><span class="vb-flow-step">确认框架没问题，再去填满整个矩阵 ⭐</span></div></div></section>
 <p><strong>这就是"先跑通全流程"在实验项目上的版本。</strong></p>
-<hr />
+<hr>
 <h2 id="_3">📊 实验设计</h2>
 <h3 id="23">数据集（选 2–3 个，覆盖不同类型）</h3>
 <div class="tw"><table>
@@ -376,39 +388,41 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table></div>
 <p class="result-board-takeaway">每个格子记录：CV 分数 ± 标准差、训练时间、调参耗时。</p>
 </section>
-<hr />
+<hr>
 <h2 id="adhd">🧠 ADHD 任务切分</h2>
-<h3 id="day-1">第一阶段：搭实验框架（Day 1）⭐ 先把架子搭好，后面全是填空</h3>
-<ul>
-<li>[ ] <strong>T1 (90min)</strong> 统一的实验函数：输入 <code>(数据集, 模型, 数据量)</code>，输出 <code>(CV分数, 标准差, 训练耗时)</code>。<strong>所有预处理进 Pipeline</strong>（第 5 章）</li>
-<li>[ ] <strong>T2 (45min)</strong> 结果记录：每次实验追加一行到 CSV（模型/数据集/样本量/分数/标准差/耗时/超参）</li>
-<li>[ ] <strong>T3 (30min)</strong> ⭐ <strong>先测噪声底线</strong>：同一配置跑 5 个种子，记下分数的标准差。这个数字决定后面所有比较是否有意义</li>
+<h3 id="day-1">第一阶段：搭实验框架（Day 1）</h3>
+<p class="reading-stage-note">先把架子搭好，后面全是填空</p><ul class="reading-task-list">
+<li class="reading-task" data-reading-task="1"><label class="reading-task-title"><input type="checkbox" data-task-key="1"><span>任务 T1</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> 统一的实验函数：输入 <code>(数据集, 模型, 数据量)</code>，输出 <code>(CV分数, 标准差, 训练耗时)</code>。<strong>所有预处理进 Pipeline</strong>（第 5 章）</div></li>
+<li class="reading-task" data-reading-task="2"><label class="reading-task-title"><input type="checkbox" data-task-key="2"><span>任务 T2</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> 结果记录：每次实验追加一行到 CSV（模型/数据集/样本量/分数/标准差/耗时/超参）</div></li>
+<li class="reading-task" data-reading-task="3"><label class="reading-task-title"><input type="checkbox" data-task-key="3"><span>任务 T3</span></label><p class="reading-task-time">参考用时 · 30 分钟</p><div class="reading-task-body"> ⭐ <strong>先测噪声底线</strong>：同一配置跑 5 个种子，记下分数的标准差。这个数字决定后面所有比较是否有意义</div></li>
 </ul>
 <h3 id="day-23">第二阶段：跑满矩阵（Day 2–3）</h3>
-<ul>
-<li>[ ] <strong>T4 (90min)</strong> 线性模型：记得标准化，调正则强度</li>
-<li>[ ] <strong>T5 (90min)</strong> 树模型：调 <code>max_depth</code> / <code>learning_rate</code> / <code>n_estimators</code>（第 4 章）</li>
-<li>[ ] <strong>T6 (120min)</strong> 神经网络：<strong>用第 11 章的诊断流程</strong>（先过拟合 10 样本），调层数/宽度/dropout/lr</li>
-<li>[ ] <strong>T7 (90min)</strong> 预训练微调（文本/图像数据集上）</li>
-<li>[ ] <strong>T8 (45min)</strong> ⭐ <strong>公平性检查</strong>：每个模型的调参预算是否相当？（给树模型调了 50 组、给 NN 只调了 5 组，那结论无效）</li>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="4"><label class="reading-task-title"><input type="checkbox" data-task-key="4"><span>任务 T4</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> 线性模型：记得标准化，调正则强度</div></li>
+<li class="reading-task" data-reading-task="5"><label class="reading-task-title"><input type="checkbox" data-task-key="5"><span>任务 T5</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> 树模型：调 <code>max_depth</code> / <code>learning_rate</code> / <code>n_estimators</code>（第 4 章）</div></li>
+<li class="reading-task" data-reading-task="6"><label class="reading-task-title"><input type="checkbox" data-task-key="6"><span>任务 T6</span></label><p class="reading-task-time">参考用时 · 120 分钟</p><div class="reading-task-body"> 神经网络：<strong>用第 11 章的诊断流程</strong>（先过拟合 10 样本），调层数/宽度/dropout/lr</div></li>
+<li class="reading-task" data-reading-task="7"><label class="reading-task-title"><input type="checkbox" data-task-key="7"><span>任务 T7</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> 预训练微调（文本/图像数据集上）</div></li>
+<li class="reading-task" data-reading-task="8"><label class="reading-task-title"><input type="checkbox" data-task-key="8"><span>任务 T8</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> ⭐ <strong>公平性检查</strong>：每个模型的调参预算是否相当？（给树模型调了 50 组、给 NN 只调了 5 组，那结论无效）</div></li>
 </ul>
-<h3 id="day-4">第三阶段：深挖差异（Day 4）—— 项目的精华</h3>
-<ul>
-<li>[ ] <strong>T9 (60min)</strong> 画「数据量 vs 分数」曲线，四条线放一张图。<strong>交叉点在哪？</strong></li>
-<li>[ ] <strong>T10 (60min)</strong> 分析<strong>为什么</strong>：</li>
+<h3 id="day-4">第三阶段：深挖差异（Day 4）</h3>
+<p class="reading-stage-note">项目的精华</p><ul class="reading-task-list">
+<li class="reading-task" data-reading-task="9"><label class="reading-task-title"><input type="checkbox" data-task-key="9"><span>任务 T9</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 画「数据量 vs 分数」曲线，四条线放一张图。<strong>交叉点在哪？</strong></div></li>
+<li class="reading-task" data-reading-task="10"><label class="reading-task-title"><input type="checkbox" data-task-key="10"><span>任务 T10</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 分析<strong>为什么</strong>：<ul>
 <li>小数据上谁赢？为什么？（提示：归纳偏置，第 14 章）</li>
 <li>表格 vs 文本，排名有变化吗？为什么？</li>
-<li>[ ] <strong>T11 (45min)</strong> 成本维度：把「训练时间」和「调参耗时」也画出来 —— <strong>有时第二名才是正确选择</strong></li>
-<li>[ ] <strong>T12 (45min)</strong> 融合实验：把最好的 2–3 个模型加权平均，能超过单个最好的吗？（第 4 章 Stacking）</li>
+</ul>
+</div></li>
+<li class="reading-task" data-reading-task="11"><label class="reading-task-title"><input type="checkbox" data-task-key="11"><span>任务 T11</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> 成本维度：把「训练时间」和「调参耗时」也画出来 —— <strong>有时第二名才是正确选择</strong></div></li>
+<li class="reading-task" data-reading-task="12"><label class="reading-task-title"><input type="checkbox" data-task-key="12"><span>任务 T12</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> 融合实验：把最好的 2–3 个模型加权平均，能超过单个最好的吗？（第 4 章 Stacking）</div></li>
 </ul>
 <h3 id="day-56">第四阶段：产出决策表（Day 5–6）</h3>
-<ul>
-<li>[ ] <strong>T13 (90min)</strong> 写出<strong>你自己的选型决策树</strong>（不是抄的）</li>
-<li>[ ] <strong>T14 (60min)</strong> README：实验矩阵表、四条曲线图、决策树、「和我预期不同的三个发现」</li>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="13"><label class="reading-task-title"><input type="checkbox" data-task-key="13"><span>任务 T13</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> 写出<strong>你自己的选型决策树</strong>（不是抄的）</div></li>
+<li class="reading-task" data-reading-task="14"><label class="reading-task-title"><input type="checkbox" data-task-key="14"><span>任务 T14</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> README：实验矩阵表、四条曲线图、决策树、「和我预期不同的三个发现」</div></li>
 </ul>
-<hr />
+<hr>
 <h2 id="_5">🔨 实验框架骨架</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">time</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">time</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">cross_val_score</span><span class="p">,</span> <span class="n">StratifiedKFold</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipeline</span>
 
@@ -434,7 +448,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="c1"># pd.DataFrame(RESULTS).to_csv(&quot;results.csv&quot;, index=False)</span>
 </code></pre></div>
 
-<hr />
+<hr>
 <h2 id="_6">🕳️ 专属坑</h2>
 <div class="tw"><table>
 <thead>
@@ -506,7 +520,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomizedSearchCV</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomizedSearchCV</span>
 <span class="n">BUDGET</span> <span class="o">=</span> <span class="mi">30</span>                                    <span class="c1"># ⭐ 所有模型共用这一个数字</span>
 <span class="n">search</span> <span class="o">=</span> <span class="n">RandomizedSearchCV</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="n">param_dist</span><span class="p">,</span> <span class="n">n_iter</span><span class="o">=</span><span class="n">BUDGET</span><span class="p">,</span>
                             <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;roc_auc&quot;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -517,7 +531,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 它回答了「<strong>开箱即用哪个最强</strong>」——而在真实工作里，
 你常常没有时间给每个模型调 30 组参数。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_8">🏁 通关标准</h2>
 <ol>
 <li><strong>完整的实验矩阵</strong>（4 模型 × 3 数据量 × 至少 2 个数据集），每格带 ± 标准差</li>
@@ -531,9 +545,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <ul>
 <li>加一个维度：<strong>特征数量</strong>（10 / 50 / 全部），看高维时排名怎么变</li>
 <li>测「加噪声标签」的鲁棒性：哪个模型最抗噪？</li>
-<li>把结论和 <a href="../Kaggle竞赛方法论/21_任务决策路径.html">Kaggle 第 21 章任务决策路径</a>对照，<strong>哪里一致、哪里不一致</strong>？不一致的地方去想为什么</li>
+<li>把结论和 <a href="../Kaggle%E7%AB%9E%E8%B5%9B%E6%96%B9%E6%B3%95%E8%AE%BA/21_%E4%BB%BB%E5%8A%A1%E5%86%B3%E7%AD%96%E8%B7%AF%E5%BE%84.html">Kaggle 第 21 章任务决策路径</a>对照，<strong>哪里一致、哪里不一致</strong>？不一致的地方去想为什么</li>
 </ul>
-<hr />
+<hr>
 <h2 id="_10">💡 预期你会发现的（做完再看，别剧透自己）</h2>
 <details>
 <summary>👀 点开有剧透</summary>
@@ -546,7 +560,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>融合能提升，但提升量常常小于噪声</li>
 </ul>
 </details>
-<hr />
+<hr>
 <h2 id="_11">✅ 检查点</h2>
 <ol>
 <li>这个项目和哪条理论直接对应？它把那条理论变成了什么？</li>
@@ -571,13 +585,23 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>说明<strong>不同数据量下的最优模型不同</strong>——小数据上归纳偏置强的模型（线性/树）赢，大数据上偏置弱的（NN）赢。交叉点就是你的选型分界线。</li>
 </ol>
 </details>
-<hr />
+<hr>
 <h2 id="_12">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>四种解法(线性/树/NN/预训练微调) × 三种数据量 × 至少两类数据集，跑满实验矩阵得出<strong>自己的选型决策表</strong>。⭐ <strong>它是 NFL「算法的专长守恒」的实证版——把那句话画成一张交叉曲线图</strong>。<strong>Day1 只做一件事：让 4×1×1 先跑通</strong>（别先跑完一整列再发现框架有bug）。铁律：①统一实验函数保证公平②<strong>先测噪声底线</strong>（没有基准方差就判断不了0.005是不是真的）③<strong>调参预算必须相当</strong>——等次数/等时间/<strong>都用默认参数(这列回答"开箱即用哪个最强"，很有价值)</strong> ④预处理进Pipeline ⑤<strong>小数据要固定抽样种子</strong>，否则各模型抽的不是同一批行 ⑥<strong>成本也是维度</strong>(慢10倍换0.2%不值，第二名常是正确答案) ⑦<strong>必须有非表格数据集</strong>否则只会得出"树模型最强"的片面结论。精华在第三阶段：画数据量vs分数四条曲线找<strong>交叉点——那就是你的选型分界线</strong>。</p>
-</blockquote>
-<p><strong>下一个挑战</strong> 👉 <a href="20-挑战项目C-过拟合实验室.html">20-挑战项目C-过拟合实验室.md</a></p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>目标是一张自己的选型表：比较四种解法、三种数据量及至少两类数据集。</li><li>第一天先让 4×1×1 跑通，不急着跑完整矩阵。</li><li>统一数据划分、预处理和调参预算；重复实验，判断差异是否超过波动。</li><li>比较分数时也记录训练与调参成本，解释曲线和排名随实验条件发生的变化。</li><li>完成本阶段后可以停下；下次从阶段导航回到未完成的任务。</li></ul></section>
+
+<p><strong>下一个挑战</strong> 👉 <a href="20-%E6%8C%91%E6%88%98%E9%A1%B9%E7%9B%AEC-%E8%BF%87%E6%8B%9F%E5%90%88%E5%AE%9E%E9%AA%8C%E5%AE%A4.html">20-挑战项目C-过拟合实验室.md</a></p>
+</section></div>
+<aside class="lesson-rail" aria-label="本节学习路线">
+<button type="button" class="lesson-route-toggle" aria-expanded="true" aria-controls="lesson-route">本节学习路线 <span aria-hidden="true">⌄</span></button>
+<div id="lesson-route">
+<p class="lesson-position" aria-live="polite">从第一站开始</p>
+<div class="lesson-track" aria-hidden="true"><span></span></div>
+<nav class="lesson-route-links" aria-label="章节跳转"></nav>
+<div class="lesson-rail-note"><strong>一次只读一张卡片</strong><p>先找到眼前的问题。长代码可以展开阅读，正文和图解不会被省略。</p></div>
+<button type="button" class="lesson-save">记住当前位置</button>
+<p class="lesson-save-status" role="status"></p>
+</div></aside></div>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="18-挑战项目A-手搓mini-torch.html"><div class="dir">← 上一节</div>⚙️ 挑战A · 手搓 mini-torch</a><a class="next" href="20-挑战项目C-过拟合实验室.html"><div class="dir">下一节 →</div>🔬 挑战C · 过拟合实验室</a></nav>
@@ -604,5 +628,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

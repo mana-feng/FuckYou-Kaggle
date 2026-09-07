@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -303,16 +303,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </details>
 <h1 id="20">20 · 实战与挑战项目</h1>
 <p>⏱ <strong>项目 1–2 天 / 挑战 4–6 天</strong> ｜ ⭐ <strong>这一套必须动手才有用</strong></p>
-<hr />
+<hr>
 <h2 id="_1">🎯 一句话</h2>
 <p><strong>前十九章讲的每一条，都要等你亲手把一份干净数据弄脏、再亲手查出来，才会变成直觉。</strong>
 所以这四个项目的产出不是模型，而是 ——
 <strong>一本你自己写的「我注入了什么」的真值台账，和一份「我查出了几种」的成绩单。</strong></p>
-<hr />
+<hr>
 <h2 id="_2">🧰 开工前：一个能反复弄脏的沙盘</h2>
 <p>和《模型上线之后》那套沙盘的区别在于：<strong>那边注入的是"上线之后发生的事"，这边注入的是"数据本身的毛病"。</strong>
 共同点是同一条纪律 —— <strong>你必须知道真值，否则你没法给自己判卷。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
@@ -352,18 +352,18 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 ⭐ 正确做法：<strong>两边分开写，检测器那份哨兵字典你要自己从头列一遍</strong> ——
 你会立刻发现自己漏了好几个。</p>
 </blockquote>
-<hr />
+<hr>
 <h1 id="12">🥉 项目一：亲手弄脏一份干净数据，再自己查出来（1–2 天）</h1>
-<p>目标：把<a href="04-脏数据的十种形态.html">第 4 章</a>那十种形态一个个注入，再写一个检测器，看能查出几种。</p>
-<ul>
-<li>[ ] <strong>T1 (60min)</strong> 用 <code>make_clean</code> 造干净数据，<strong>先写好真值台账的格式</strong></li>
-<li>[ ] <strong>T2 (3h)</strong> 补全污染器：<strong>十种形态每种一个函数</strong>，每个都往台账里记行号</li>
-<li>[ ] <strong>T3 (3h)</strong> <strong>另开一个文件</strong>写检测器（⚠️ 不许 import 污染器的任何常量）</li>
-<li>[ ] <strong>T4 (60min)</strong> 算每一种的 <strong>召回率 / 精确率</strong>，做成一张表</li>
-<li>[ ] <strong>T5 (60min)</strong> ⭐ 对没查出来的那几种，写清楚<strong>为什么查不到</strong>、要什么信息才能查到</li>
+<p>目标：把<a href="04-%E8%84%8F%E6%95%B0%E6%8D%AE%E7%9A%84%E5%8D%81%E7%A7%8D%E5%BD%A2%E6%80%81.html">第 4 章</a>那十种形态一个个注入，再写一个检测器，看能查出几种。</p>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="1"><label class="reading-task-title"><input type="checkbox" data-task-key="1"><span>任务 T1</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 用 <code>make_clean</code> 造干净数据，<strong>先写好真值台账的格式</strong></div></li>
+<li class="reading-task" data-reading-task="2"><label class="reading-task-title"><input type="checkbox" data-task-key="2"><span>任务 T2</span></label><p class="reading-task-time">参考用时 · 3 小时</p><div class="reading-task-body"> 补全污染器：<strong>十种形态每种一个函数</strong>，每个都往台账里记行号</div></li>
+<li class="reading-task" data-reading-task="3"><label class="reading-task-title"><input type="checkbox" data-task-key="3"><span>任务 T3</span></label><p class="reading-task-time">参考用时 · 3 小时</p><div class="reading-task-body"> <strong>另开一个文件</strong>写检测器（⚠️ 不许 import 污染器的任何常量）</div></li>
+<li class="reading-task" data-reading-task="4"><label class="reading-task-title"><input type="checkbox" data-task-key="4"><span>任务 T4</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 算每一种的 <strong>召回率 / 精确率</strong>，做成一张表</div></li>
+<li class="reading-task" data-reading-task="5"><label class="reading-task-title"><input type="checkbox" data-task-key="5"><span>任务 T5</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> ⭐ 对没查出来的那几种，写清楚<strong>为什么查不到</strong>、要什么信息才能查到</div></li>
 </ul>
 <p><strong>检测器的骨架</strong>（自己往下加）：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">SENTINEL</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;NULL&quot;</span><span class="p">,</span> <span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="s2">&quot;N/A&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;未知&quot;</span><span class="p">,</span> <span class="s2">&quot;无&quot;</span><span class="p">,</span> <span class="s2">&quot;-999&quot;</span><span class="p">,</span> <span class="s2">&quot;0000-00-00&quot;</span><span class="p">}</span>
 
@@ -480,16 +480,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <blockquote>
 <p>⭐ <strong>这个项目最有价值的是 T5，不是 T3。</strong>
 <strong>"单位不一致"永远查不干净</strong>，因为一笔真实的 8,800 元订单和一笔被乘了 100 的 88 元订单，
-<strong>在数值上完全无法区分</strong> —— 你需要的不是更好的统计量，是<strong>契约里的单位字段</strong>（<a href="03-数据契约.html">第 3 章</a>）。
+<strong>在数值上完全无法区分</strong> —— 你需要的不是更好的统计量，是<strong>契约里的单位字段</strong>（<a href="03-%E6%95%B0%E6%8D%AE%E5%A5%91%E7%BA%A6.html">第 3 章</a>）。
 ⭐ <strong>"哪些脏靠看数据查不出来"这份清单，比"我查出了 8 种"这个成绩有用得多。</strong></p>
 </blockquote>
 <h3 id="_5">⚠️ 最容易翻车的地方</h3>
 <section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">💀 「我的检测器召回全是 1.00」</span></div><div class="vb-flow-row"><span class="vb-flow-step">你八成在检测器里 import 了污染器的常量。分开两个文件重写。</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「误报率没测」</span></div><div class="vb-flow-row"><span class="vb-flow-step">只在被污染的数据上评估，等于只算召回不算精确。</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 必须留一份【完全没污染】的对照集，跑一遍看误报。</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「用 describe() 当检测器」</span></div><div class="vb-flow-row"><span class="vb-flow-step">均值/分位数抓得到数值类的脏，抓不到编码错乱、类别漂移、跨列不一致。</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 十种形态需要至少四类不同的检查手段。</span></div></div></section>
-<hr />
+<hr>
 <h1 id="ci12">🥈 项目二：建一套质量门禁接进 CI（1–2 天）</h1>
-<p>目标：把<a href="08-数据质量怎么量.html">第 8 章</a>那六个维度写成断言，跑在<strong>一份真实数据集</strong>上，并且故意让它红一次。</p>
+<p>目标：把<a href="08-%E6%95%B0%E6%8D%AE%E8%B4%A8%E9%87%8F%E6%80%8E%E4%B9%88%E9%87%8F.html">第 8 章</a>那六个维度写成断言，跑在<strong>一份真实数据集</strong>上，并且故意让它红一次。</p>
 <p>六个维度一个都不能少：<strong>完整性 / 唯一性 / 有效性 / 一致性 / 时效性 / 分布稳定性</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">CHECKS</span> <span class="o">=</span> <span class="p">[]</span>                                    <span class="c1"># ⭐ 断言注册表：每条都带维度和等级</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">check</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s2">&quot;hard&quot;</span><span class="p">):</span>
@@ -562,18 +562,18 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 ⭐ <strong>门禁的目标不是"拦住一切"，是"红灯出现时所有人都相信它"。</strong></p>
 </blockquote>
 <h3 id="_7">⚠️ 最容易翻车的地方</h3>
-<section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">💀 「阈值是拍脑袋定的」</span></div><div class="vb-flow-row"><span class="vb-flow-step">必须用历史数据回测：把过去 14 天逐日跑一遍，</span></div><div class="vb-flow-row"><span class="vb-flow-step">看每条断言的取值分布，阈值放在【历史 p99 之外】而不是&quot;感觉&quot;上。</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「门禁只跑在抽样上，线上还是炸了」</span></div><div class="vb-flow-row"><span class="vb-flow-step">唯一性、跨列一致性这两类【不能抽样】——</span></div><div class="vb-flow-row"><span class="vb-flow-step">抽样恰好会把重复和边缘不一致漏掉。 ⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「红了以后没人知道该干嘛」</span></div><div class="vb-flow-row"><span class="vb-flow-step">每条断言必须带三样东西：负责人、样例坏行、修复动作。</span></div><div class="vb-flow-row"><span class="vb-flow-step">只报&quot;完整性检查失败&quot;的门禁等于没有。</span></div></div></section>
-<hr />
+<section class="visual-block visual-block-flow" aria-label="因果链"><p class="visual-block-title">因果链</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">💀 「阈值是拍脑袋定的」</span></div><div class="vb-flow-row"><span class="vb-flow-step">必须用历史数据回测：把过去 14 天逐日跑一遍，</span></div><div class="vb-flow-row"><span class="vb-flow-step">看每条断言的取值分布，阈值放在【历史 p99 之外】而不是"感觉"上。</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「门禁只跑在抽样上，线上还是炸了」</span></div><div class="vb-flow-row"><span class="vb-flow-step">唯一性、跨列一致性这两类【不能抽样】——</span></div><div class="vb-flow-row"><span class="vb-flow-step">抽样恰好会把重复和边缘不一致漏掉。 ⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「红了以后没人知道该干嘛」</span></div><div class="vb-flow-row"><span class="vb-flow-step">每条断言必须带三样东西：负责人、样例坏行、修复动作。</span></div><div class="vb-flow-row"><span class="vb-flow-step">只报"完整性检查失败"的门禁等于没有。</span></div></div></section>
+<hr>
 <h1 id="12_1">🥇 项目三：标注一致性实验（1–2 天）</h1>
-<p>目标：按<a href="09-标注体系怎么设计.html">第 9 章</a>自己写一份标注指南，<strong>标 100 条两遍算 Kappa，改完指南再标一遍，看涨多少</strong>。</p>
-<ul>
-<li>[ ] <strong>T1 (60min)</strong> 选一个三分类任务（比如评论的 正面 / 中性 / 负面），写第一版指南</li>
-<li>[ ] <strong>T2 (90min)</strong> 标 100 条 → <strong>间隔至少 48 小时 + 打乱顺序</strong> → 再标一遍</li>
-<li>[ ] <strong>T3 (30min)</strong> 算 Cohen's Kappa，<strong>同时报 p₀ 和 pₑ</strong></li>
-<li>[ ] <strong>T4 (90min)</strong> ⭐ <strong>只看前 70 条的分歧</strong>修订指南（留 30 条不看，当验证集）</li>
-<li>[ ] <strong>T5 (90min)</strong> 用新指南重标，算新 Kappa，对比</li>
+<p>目标：按<a href="09-%E6%A0%87%E6%B3%A8%E4%BD%93%E7%B3%BB%E6%80%8E%E4%B9%88%E8%AE%BE%E8%AE%A1.html">第 9 章</a>自己写一份标注指南，<strong>标 100 条两遍算 Kappa，改完指南再标一遍，看涨多少</strong>。</p>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="6"><label class="reading-task-title"><input type="checkbox" data-task-key="6"><span>任务 T1</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 选一个三分类任务（比如评论的 正面 / 中性 / 负面），写第一版指南</div></li>
+<li class="reading-task" data-reading-task="7"><label class="reading-task-title"><input type="checkbox" data-task-key="7"><span>任务 T2</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> 标 100 条 → <strong>间隔至少 48 小时 + 打乱顺序</strong> → 再标一遍</div></li>
+<li class="reading-task" data-reading-task="8"><label class="reading-task-title"><input type="checkbox" data-task-key="8"><span>任务 T3</span></label><p class="reading-task-time">参考用时 · 30 分钟</p><div class="reading-task-body"> 算 Cohen's Kappa，<strong>同时报 p₀ 和 pₑ</strong></div></li>
+<li class="reading-task" data-reading-task="9"><label class="reading-task-title"><input type="checkbox" data-task-key="9"><span>任务 T4</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> ⭐ <strong>只看前 70 条的分歧</strong>修订指南（留 30 条不看，当验证集）</div></li>
+<li class="reading-task" data-reading-task="10"><label class="reading-task-title"><input type="checkbox" data-task-key="10"><span>任务 T5</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> 用新指南重标，算新 Kappa，对比</div></li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">kappa</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;M 是混淆矩阵（两遍标注的交叉表）。⭐ p0 和 pe 必须一起报&quot;&quot;&quot;</span>
@@ -661,13 +661,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>只有留出集上也涨，才说明你真的把规则说清楚了。</strong></p>
 </blockquote>
 <h3 id="_10">⚠️ 最容易翻车的地方</h3>
-<section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">💀 「两遍间隔两小时，κ = 0.93」</span></div><div class="vb-flow-row"><span class="vb-flow-step">你在背答案。⭐ 至少隔 48 小时，并且【打乱顺序 + 隐藏第一遍结果】。</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「只报一致率不报 Kappa」</span></div><div class="vb-flow-row"><span class="vb-flow-step">见上面那个 0.94 / 0.368 的例子。</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「指南越写越长，κ 反而掉了」</span></div><div class="vb-flow-row"><span class="vb-flow-step">常见且真实。⭐ 修订的正确方向是【把模糊的定义换成可判定的规则 + 边界样例】，</span></div><div class="vb-flow-row"><span class="vb-flow-step">不是【加更多描述性形容词】。规则要能让人回答&quot;是/否&quot;，而不是&quot;感觉像&quot;。</span></div></div></section>
-<hr />
+<section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">💀 「两遍间隔两小时，κ = 0.93」</span></div><div class="vb-flow-row"><span class="vb-flow-step">你在背答案。⭐ 至少隔 48 小时，并且【打乱顺序 + 隐藏第一遍结果】。</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「只报一致率不报 Kappa」</span></div><div class="vb-flow-row"><span class="vb-flow-step">见上面那个 0.94 / 0.368 的例子。</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「指南越写越长，κ 反而掉了」</span></div><div class="vb-flow-row"><span class="vb-flow-step">常见且真实。⭐ 修订的正确方向是【把模糊的定义换成可判定的规则 + 边界样例】，</span></div><div class="vb-flow-row"><span class="vb-flow-step">不是【加更多描述性形容词】。规则要能让人回答"是/否"，而不是"感觉像"。</span></div></div></section>
+<hr>
 <h1 id="46">🏆 挑战项目：复现一次数据泄漏（4–6 天）</h1>
-<p><strong>难度 ★★★★</strong> ｜ 练<a href="14-数据泄漏的七种来源.html">第 14 章</a></p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>目标：做出一个【离线 AUC 0.99、去掉泄漏后掉到 0.72】的完整例子，</p><p>并把&quot;怎么发现的&quot;写成一份复盘。</p></div></section>
+<p><strong>难度 ★★★★</strong> ｜ 练<a href="14-%E6%95%B0%E6%8D%AE%E6%B3%84%E6%BC%8F%E7%9A%84%E4%B8%83%E7%A7%8D%E6%9D%A5%E6%BA%90.html">第 14 章</a></p>
+<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>目标：做出一个【离线 AUC 0.99、去掉泄漏后掉到 0.72】的完整例子，</p><p>并把"怎么发现的"写成一份复盘。</p></div></section>
 <h3 id="_11">🧰 起步骨架（直接抄）</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">HistGradientBoostingClassifier</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">roc_auc_score</span>
 
@@ -698,22 +698,22 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <h3 id="1">阶段一：造出泄漏（1 天）</h3>
-<ul>
-<li>[ ] <strong>T1</strong> 跑通上面的骨架，确认拿到 <strong>0.99 / 0.72</strong> 这对数字</li>
-<li>[ ] <strong>T2</strong> 再造两种：<strong>按 ID 随机切分导致的同人跨集</strong>、用全量数据算的统计特征</li>
-<li>[ ] <strong>T3</strong> 把这四种泄漏都塞进一个"看起来很正常"的特征工程脚本里</li>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="11"><label class="reading-task-title"><input type="checkbox" data-task-key="11"><span>任务 T1</span></label><div class="reading-task-body"> 跑通上面的骨架，确认拿到 <strong>0.99 / 0.72</strong> 这对数字</div></li>
+<li class="reading-task" data-reading-task="12"><label class="reading-task-title"><input type="checkbox" data-task-key="12"><span>任务 T2</span></label><div class="reading-task-body"> 再造两种：<strong>按 ID 随机切分导致的同人跨集</strong>、用全量数据算的统计特征</div></li>
+<li class="reading-task" data-reading-task="13"><label class="reading-task-title"><input type="checkbox" data-task-key="13"><span>任务 T3</span></label><div class="reading-task-body"> 把这四种泄漏都塞进一个"看起来很正常"的特征工程脚本里</div></li>
 </ul>
 <h3 id="2">阶段二：用四种手段把它找出来（2 天）</h3>
-<ul>
-<li>[ ] <strong>T4 单特征 AUC 扫描</strong> ⭐ 每个特征单独训一个模型</li>
-<li>[ ] <strong>T5 时间切分 vs 随机切分对比</strong></li>
-<li>[ ] <strong>T6 逐特征剔除</strong>：删掉某个特征后 AUC 掉最多的那个，重点审</li>
-<li>[ ] <strong>T7 时点审计</strong> ⭐ 对每个特征问一句：<strong>"在做预测的那一刻，这个值真的已经存在了吗？"</strong></li>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="14"><label class="reading-task-title"><input type="checkbox" data-task-key="14"><span>T4 单特征 AUC 扫描</span></label><div class="reading-task-body"> ⭐ 每个特征单独训一个模型</div></li>
+<li class="reading-task" data-reading-task="15"><label class="reading-task-title"><input type="checkbox" data-task-key="15"><span>T5 时间切分 vs 随机切分对比</span></label><div class="reading-task-body"></div></li>
+<li class="reading-task" data-reading-task="16"><label class="reading-task-title"><input type="checkbox" data-task-key="16"><span>T6 逐特征剔除</span></label><div class="reading-task-body">：删掉某个特征后 AUC 掉最多的那个，重点审</div></li>
+<li class="reading-task" data-reading-task="17"><label class="reading-task-title"><input type="checkbox" data-task-key="17"><span>T7 时点审计</span></label><div class="reading-task-body"> ⭐ 对每个特征问一句：<strong>"在做预测的那一刻，这个值真的已经存在了吗？"</strong></div></li>
 </ul>
 <h3 id="12_2">阶段三：修掉并复盘（1–2 天）</h3>
-<ul>
-<li>[ ] <strong>T8</strong> 修掉全部泄漏（⚠️ 记得连它的<strong>衍生特征</strong>一起删）</li>
-<li>[ ] <strong>T9</strong> 重新报指标，写复盘</li>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="18"><label class="reading-task-title"><input type="checkbox" data-task-key="18"><span>任务 T8</span></label><div class="reading-task-body"> 修掉全部泄漏（⚠️ 记得连它的<strong>衍生特征</strong>一起删）</div></li>
+<li class="reading-task" data-reading-task="19"><label class="reading-task-title"><input type="checkbox" data-task-key="19"><span>任务 T9</span></label><div class="reading-task-body"> 重新报指标，写复盘</div></li>
 </ul>
 <h3 id="_12">✅ 通关判据（带数字）</h3>
 <div class="tw"><table>
@@ -757,10 +757,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>泄漏的本质是"用了预测时刻还不存在的信息"，这是一个时间问题，不是一个数值问题。</strong></p>
 </blockquote>
 <h3 id="_13">⚠️ 最容易翻车的地方</h3>
-<section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">💀 「我只用随机切分，指标一直很漂亮」</span></div><div class="vb-flow-row"><span class="vb-flow-step">时间穿越型泄漏在随机切分下【也是高分】。</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 时间切分是发现它的最低成本手段，也是这个项目的第一道检查。</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「删了泄漏特征，AUC 还是 0.95」</span></div><div class="vb-flow-row"><span class="vb-flow-step">你漏了它的衍生特征（refund 的对数、gap 的分箱、</span></div><div class="vb-flow-row"><span class="vb-flow-step">以及任何用它算出来的交叉特征）。⭐ 按【血缘】删，不是按列名删。</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「用特征重要性找泄漏」</span></div><div class="vb-flow-row"><span class="vb-flow-step">重要性高 ≠ 泄漏，重要性低 ≠ 干净。</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 重要性只能帮你【排查顺序】，判定必须回到&quot;生成时刻&quot;这一条。</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「0.72 太难看了，我想把它调上去」</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 这正是这个项目要治的病。0.72 是真的，0.99 是假的。</span></div><div class="vb-flow-row"><span class="vb-flow-step">一个项目组愿不愿意接受这一点，比任何技术手段都重要。</span></div></div></section>
-<hr />
+<section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">💀 「我只用随机切分，指标一直很漂亮」</span></div><div class="vb-flow-row"><span class="vb-flow-step">时间穿越型泄漏在随机切分下【也是高分】。</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 时间切分是发现它的最低成本手段，也是这个项目的第一道检查。</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「删了泄漏特征，AUC 还是 0.95」</span></div><div class="vb-flow-row"><span class="vb-flow-step">你漏了它的衍生特征（refund 的对数、gap 的分箱、</span></div><div class="vb-flow-row"><span class="vb-flow-step">以及任何用它算出来的交叉特征）。⭐ 按【血缘】删，不是按列名删。</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「用特征重要性找泄漏」</span></div><div class="vb-flow-row"><span class="vb-flow-step">重要性高 ≠ 泄漏，重要性低 ≠ 干净。</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 重要性只能帮你【排查顺序】，判定必须回到"生成时刻"这一条。</span></div><div class="vb-flow-row"><span class="vb-flow-step">💀 「0.72 太难看了，我想把它调上去」</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 这正是这个项目要治的病。0.72 是真的，0.99 是假的。</span></div><div class="vb-flow-row"><span class="vb-flow-step">一个项目组愿不愿意接受这一点，比任何技术手段都重要。</span></div></div></section>
+<hr>
 <h2 id="_14">📝 复盘模板</h2>
-<div class="codehilite"><pre><span></span><code><span class="gh"># 数据事故 / 实验：____</span>
+<div class="codehilite" data-code-language="markdown"><pre><span></span><code><span class="gh"># 数据事故 / 实验：____</span>
 <span class="gu">## 我注入了什么（真值台账）</span>
 <span class="gu">## 第一个发现它的信号是什么，来自哪个检查</span>
 <span class="gu">## 我用了哪几种手段，各花了多久</span>
@@ -769,7 +769,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="gu">## 要加什么，才能让下次在【进模型之前】就被拦住</span>
 </code></pre></div>
 
-<hr />
+<hr>
 <!--XREF-->
 <h2 id="_15">🔗 这一章连到哪里</h2>
 <div class="tw"><table>
@@ -781,24 +781,24 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </thead>
 <tbody>
 <tr>
-<td><a href="../模型上线之后/20-实战与挑战项目.html">模型上线之后 20 实战与挑战项目</a></td>
+<td><a href="../%E6%A8%A1%E5%9E%8B%E4%B8%8A%E7%BA%BF%E4%B9%8B%E5%90%8E/20-%E5%AE%9E%E6%88%98%E4%B8%8E%E6%8C%91%E6%88%98%E9%A1%B9%E7%9B%AE.html">模型上线之后 20 实战与挑战项目</a></td>
 <td>⭐ <strong>和这一章成对</strong>：那边的沙盘注入"上线之后发生的事"（漂移、管道坏、训练推理不一致），这边注入"数据本身的毛病"。两套连起来就是完整的一条链</td>
 </tr>
 <tr>
-<td><a href="../Kaggle竞赛方法论/23_数据泄露与外部数据.html">Kaggle 23 数据泄露与外部数据</a></td>
+<td><a href="../Kaggle%E7%AB%9E%E8%B5%9B%E6%96%B9%E6%B3%95%E8%AE%BA/23_%E6%95%B0%E6%8D%AE%E6%B3%84%E9%9C%B2%E4%B8%8E%E5%A4%96%E9%83%A8%E6%95%B0%E6%8D%AE.html">Kaggle 23 数据泄露与外部数据</a></td>
 <td>挑战项目的竞赛版：那边泄漏是可以"利用"的（榜单奖励它），这边是纯粹的事故</td>
 </tr>
 <tr>
-<td><a href="../智能体工程教程/19-挑战项目B-评测驱动开发.html">智能体 19 挑战项目B 评测驱动开发</a></td>
+<td><a href="../%E6%99%BA%E8%83%BD%E4%BD%93%E5%B7%A5%E7%A8%8B%E6%95%99%E7%A8%8B/19-%E6%8C%91%E6%88%98%E9%A1%B9%E7%9B%AEB-%E8%AF%84%E6%B5%8B%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91.html">智能体 19 挑战项目B 评测驱动开发</a></td>
 <td>⭐ 「先建评测，再写实现」的同一条纪律 —— 项目一的"先写真值台账"就是它的数据版</td>
 </tr>
 <tr>
-<td><a href="../模型上线之后/04-训练推理一致性.html">模型上线之后 04 训练推理一致性</a></td>
+<td><a href="../%E6%A8%A1%E5%9E%8B%E4%B8%8A%E7%BA%BF%E4%B9%8B%E5%90%8E/04-%E8%AE%AD%E7%BB%83%E6%8E%A8%E7%90%86%E4%B8%80%E8%87%B4%E6%80%A7.html">模型上线之后 04 训练推理一致性</a></td>
 <td>项目二的门禁往下游延伸一步：同样的断言要在推理侧再跑一遍</td>
 </tr>
 </tbody>
 </table></div>
-<hr />
+<hr>
 <h2 id="_16">✅ 检查点</h2>
 <ol>
 <li>这四个项目共同的那条纪律是什么？为什么"真值台账"必须先写？</li>
@@ -827,19 +827,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>因为<strong>重要性高 ≠ 泄漏，重要性低 ≠ 干净</strong> —— 重要性只能决定排查顺序。唯一不依赖统计量的判定是 T7 那句时点审计：「在做预测的那一刻，这个值真的已经存在了吗？」 泄漏的本质是"用了预测时刻还不存在的信息"，这是一个时间问题，不是一个数值问题。</li>
 </ol>
 </details>
-<hr />
+<hr>
 <h2 id="_17">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>⭐ <strong>这四个项目共同的那条纪律：你必须知道真值，否则没法给自己判卷。</strong> 真实工作里你永远不知道数据里有几处脏、泄漏藏在哪一列——<strong>自己造问题是唯一能拿到答案的办法</strong>。台账必须先写，事后补记一定会漏，而漏掉的那几处会被算成「检测器没错」。</p>
-<p>💀 开工第一条规矩：<strong>污染器和检测器不能共用任何常量</strong>——检测器一旦 import 了污染器那份字典，测的就不是检测能力而是复制粘贴能力，召回会假性地变成 1.00。</p>
-<p>⭐ 项目一最有价值的不是「我查出了 8 种」，是那份<strong>「哪些脏靠看数据查不出来」的清单</strong>：一笔真实的大额订单和一笔被乘了 100 的小额订单，在数值上完全无法区分——需要的不是更好的统计量，是契约里的单位字段。</p>
-<p>⭐ 项目二最重要的通关判据是「<strong>hard 断言占比 ≤ 1/3</strong>」：全 hard 的门禁看起来最严格，<strong>然后第一次误报之后就会有人在 CI 里加跳过参数，从此再没人删掉它</strong>。门禁的目标不是「拦住一切」，是「红灯出现时所有人都相信它」。💀 另外两类检查不能抽样：唯一性和跨列一致性。</p>
-<p>⭐ 项目三的留出集是<strong>唯一的科学性保证</strong>：盯着分歧样本改指南，一致性一定会涨——那可能只是把这批样本的答案编码进了指南，<strong>只有没看过的那部分也涨才算数</strong>。💀 而且类别不均衡时「我们一致率 94%」这句话没有任何信息量。</p>
-<p>⭐ 挑战项目里性价比最高的探针是<strong>单特征 AUC 扫描</strong>：泄漏特征单列就能到 0.9 以上，而<strong>一个单列就能到 0.9 的特征在真实业务里几乎不存在</strong>——先假设是泄漏，再去证明它不是。唯一不依赖统计量的手段是<strong>时点审计</strong>：在做预测的那一刻，这个值真的已经存在了吗。</p>
-<p>💀 四个翻车点里最要命的是最后一个：「0.72 太难看，想调上去」——⭐ <strong>这正是这个项目要治的病：0.72 是真的，0.99 是假的。</strong></p>
-</blockquote>
-<p><strong>下一节</strong> 👉 <a href="附录A-速查.html">附录A-速查.md</a></p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>先建立问题台账，再运行检测器；污染器与检测器不能共享答案常量。</li><li>数据体检区分能从数值发现的问题，以及必须依赖单位、含义等数据契约的问题。</li><li>质量门禁要能解释告警；标注指南的改进必须用未参与修改的留出样本验证。</li><li>排查泄漏时问：预测发生的那一刻，这个特征真的已经存在了吗？</li><li>最终交付真实的检测结果与限制，不为得到更漂亮的分数修改答案。</li></ul></section>
+
+<p><strong>下一节</strong> 👉 <a href="%E9%99%84%E5%BD%95A-%E9%80%9F%E6%9F%A5.html">附录A-速查.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="19-隐私脱敏与留存.html"><div class="dir">← 上一节</div>🔒 19 · 隐私、脱敏与留存</a><a class="next" href="附录A-速查.html"><div class="dir">下一节 →</div>📇 附录A · 速查</a></nav>
@@ -866,5 +859,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

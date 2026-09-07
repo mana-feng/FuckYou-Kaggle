@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -360,13 +360,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>data: {&quot;type&quot;:&quot;delta&quot;,&quot;text&quot;:&quot;你&quot;}</p><p>data: {&quot;type&quot;:&quot;delta&quot;,&quot;text&quot;:&quot;好&quot;}</p><p>data: {&quot;type&quot;:&quot;usage&quot;,&quot;in&quot;:120,&quot;out&quot;:8}</p><p>data: {&quot;type&quot;:&quot;error&quot;,&quot;message&quot;:&quot;upstream timeout&quot;,&quot;trace_id&quot;:&quot;a1b2c3d4e5f6&quot;}</p><p>data: {&quot;type&quot;:&quot;done&quot;}</p></div></section>
 <p>⚠️ <strong>SSE 协议本身还有一个 <code>event:</code> 行可以给帧起名字，但本板块不用它</strong> —— 这是「跟着消费方走」的选择。第 10 章会讲：浏览器原生的 <code>EventSource</code> <strong>带不了 <code>Authorization</code> header</strong>，所以前端一律用 <code>fetch</code> + <code>ReadableStream</code> 手动解析。而 <code>event:</code> 行只对 <code>EventSource</code> 有意义——手动解析器要么得多写一套状态机记住「上一行的 event 名是什么」，要么干脆把它整行丢掉。</p>
 <blockquote>
-<p>⭐ <strong>把类型放进 JSON 负载，换来的是「一行 <code>JSON.parse</code> 拿到全部信息」</strong>：解析路径只有一条。
-同理结束帧写 <code>{"type":"done"}</code> 而不是 <code>[DONE]</code> —— ⚠️ <strong><code>[DONE]</code> 不是合法 JSON</strong>，会让统一的 <code>JSON.parse</code> 当场抛 <code>SyntaxError</code>，逼前端在解析前先加一次特判。
-⚠️ 错误帧的字段名统一用 <strong><code>message</code></strong>（不是 <code>code</code>）：前端拿它是要<strong>显示给人看</strong>的，需要一句话，不是一个枚举值。
-⭐ <strong>但错误帧必须多带一个 <code>trace_id</code></strong> —— 第 3 章立的原则是「每个错误带 <code>trace_id</code> 并同时写进日志」，⚠️ <strong>流式这条路上最容易把它漏掉</strong>：非流式出错时 <code>trace_id</code> 在那个 500 的 JSON 里，而流式的状态码早已是 200、那个 JSON 根本不会发出来。<strong>漏了的后果很具体</strong>：用户说「刚才回答到一半崩了」，你手上什么都没有 —— 而这恰恰是本板块最常见的一种失败。</p>
+<p>⭐ <strong>把类型放进 JSON 负载，换来的是「一行 <code>JSON.parse</code> 拿到全部信息」</strong>：解析路径只有一条。</p>
+<p>同理结束帧写 <code>{"type":"done"}</code> 而不是 <code>[DONE]</code> —— ⚠️ <strong><code>[DONE]</code> 不是合法 JSON</strong>，会让统一的 <code>JSON.parse</code> 当场抛 <code>SyntaxError</code>，逼前端在解析前先加一次特判。</p>
+<p>⚠️ 错误帧的字段名统一用 <strong><code>message</code></strong>（不是 <code>code</code>）：前端拿它是要<strong>显示给人看</strong>的，需要一句话，不是一个枚举值。</p>
+<p>⭐ <strong>但错误帧必须多带一个 <code>trace_id</code></strong> —— 第 3 章立的原则是「每个错误带 <code>trace_id</code> 并同时写进日志」，⚠️ <strong>流式这条路上最容易把它漏掉</strong>：非流式出错时 <code>trace_id</code> 在那个 500 的 JSON 里，而流式的状态码早已是 200、那个 JSON 根本不会发出来。<strong>漏了的后果很具体</strong>：用户说「刚才回答到一半崩了」，你手上什么都没有 —— 而这恰恰是本板块最常见的一种失败。</p>
 </blockquote>
 <p>⚠️ <strong>注意 <code>message</code> 和 <code>trace_id</code> 的分工，两者缺一不可</strong>：<code>message</code> 是<strong>给人看</strong>的一句人话（⚠️ 别塞异常原文，上游报错常带着密钥前缀、内网 IP、SQL 片段）；<code>trace_id</code> 是给你查的，它在日志里对应着完整细节。一句人话 + 一个能报的号，就是这一对的全部用意。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># sse.py —— SSE 报文自己编一遍。看清楚字节长什么样，坑就少一半</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># sse.py —— SSE 报文自己编一遍。看清楚字节长什么样，坑就少一半</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
 
@@ -426,7 +426,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⚠️ <strong>三个凶手的共同点，才是它们难查的原因</strong>：① <strong>不报错</strong>——没有任何日志说「我缓冲了」；② 本地永远复现不了——本地没有代理、没有 CDN；③ 症状完全一样——三个凶手长得一模一样，光看症状分不出是谁。</p>
 <h3 id="_4">🔍 怎么定位：一个探针 + 从里往外逐层测</h3>
 <p>⭐ <strong>别去读代码找 bug，代码没 bug。</strong> 做法：部署一个<strong>每秒吐一帧</strong>的探针端点，从最里面往外一层层测——直连应用进程 → 容器端口 → 反向代理 → 公网域名，第一处「帧间隔塌成 0」的那层就是凶手。⭐ 判据是帧间隔，不是总时长：被缓冲时总时长完全不变（还是 5 秒），变的是「5 帧在第 5 秒一起到」。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># probe.py —— 流式探针：每秒吐一帧，再自己量【帧间隔】。只用标准库，可直接跑</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># probe.py —— 流式探针：每秒吐一帧，再自己量【帧间隔】。只用标准库，可直接跑</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">http.server</span><span class="o">,</span><span class="w"> </span><span class="nn">socketserver</span><span class="o">,</span><span class="w"> </span><span class="nn">threading</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span><span class="o">,</span><span class="w"> </span><span class="nn">urllib.request</span>
 
 <span class="n">N</span><span class="p">,</span> <span class="n">GAP</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">1.0</span>            <span class="c1"># 吐 5 帧，每帧间隔 1 秒</span>
@@ -506,7 +506,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p>⭐ <strong>由此推出一条设计铁律：所有可能失败的事，必须全部挤在第一个字之前做完。</strong> 鉴权、取历史、检索、输入校验——<strong>一旦开始吐字，你就失去了「假装什么都没发生」的权利</strong>（这也是 04 章那条「首字之后不能静默重试」的来源）。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🗓️ 未实跑 —— 需要 FastAPI 和真实模型。要看的是【三件事的位置】。</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🗓️ 未实跑 —— 需要 FastAPI 和真实模型。要看的是【三件事的位置】。</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">logging</span><span class="o">,</span><span class="w"> </span><span class="nn">uuid</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Request</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.responses</span><span class="w"> </span><span class="kn">import</span> <span class="n">StreamingResponse</span>
@@ -542,7 +542,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_6">🔌 六、断连：用户关了页面，你还在烧钱</h2>
 <p>浏览器标签一关，TCP 连接就断了。⚠️ <strong>但你的后端不一定知道</strong>——「上游那条流」和「发给用户的那条流」是两个独立连接，<strong>上游会一直生成到说完为止，每一段都在计费，而这些字没有任何人看到</strong>。两件事必须做：① 感知——每写一帧顺手检查一次连接还在不在（上面那行 <code>is_disconnected()</code>）；② 收尾——⭐ 在 <code>finally</code> 里关掉上游那条流，因为正常结束、异常、被取消三条路径都会经过它。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># cancel.py —— 客户端断开后，上游那条流会不会跟着停？（可直接跑，对照看得见）</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># cancel.py —— 客户端断开后，上游那条流会不会跟着停？（可直接跑，对照看得见）</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 
 
@@ -709,7 +709,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
 <p>本章只管<strong>后端 → HTTP</strong> 这一半（浏览器那半在第 10 章）。⭐ <strong>SSE 就是分块传输，只多规定了「帧怎么分」</strong>，这点约定换来「以后加错误帧、用量帧、工具状态不用重写前端」。WebSocket 不是「更高级的 SSE」，它多的是上行，而 LLM 的上行一个普通 POST 就够。</p>
-<p>⭐ <strong>本板块统一帧格式：每帧一行 <code>data: {JSON}</code>，帧类型放在负载的 <code>type</code> 字段里</strong>（<code>delta</code> / <code>usage</code> / <code>error</code> / <code>done</code>）。⚠️ 不用 SSE 的 <code>event:</code> 行，因为前端是手动解析；结束帧写 <code>{"type":"done"}</code> 不写 <code>[DONE]</code>——后者不是合法 JSON，会让统一的 <code>JSON.parse</code> 抛错。错误帧必须多带一个 <code>trace_id</code>，⚠️ <strong>流式最容易漏它</strong>：状态码早已是 200，那个装着 trace_id 的 JSON 压根不发，用户只能说「回答到一半崩了」，你查无可查。</p>
+<p>⭐ <strong>本板块统一帧格式：每帧一行 <code>data: {JSON}</code>，帧类型放在负载的 <code>type</code> 字段里</strong>（<code>delta</code> / <code>usage</code> / <code>error</code> / <code>done</code>）。</p>
+</blockquote>
+<p>⚠️ 不用 SSE 的 <code>event:</code> 行，因为前端是手动解析；结束帧写 <code>{"type":"done"}</code> 不写 <code>[DONE]</code>——后者不是合法 JSON，会让统一的 <code>JSON.parse</code> 抛错。</p>
+<p>错误帧必须多带一个 <code>trace_id</code>，⚠️ <strong>流式最容易漏它</strong>：状态码早已是 200，那个装着 trace_id 的 JSON 压根不发，用户只能说「回答到一半崩了」，你查无可查。</p>
+<blockquote>
 <p>⚠️⚠️ <strong>最贵的一节：三个地方会吃掉流式</strong>——反向代理的缓冲、压缩中间件、云平台或 CDN 的响应缓冲。难查的原因是共同的：<strong>不报错、本地永远复现不了、三者症状完全一样</strong>，都是「憋很久然后一次性全出现」，而你的代码一个字都没错。</p>
 <p>⭐ <strong>定位法：部署一个每秒吐一帧的探针端点，从里往外逐层测</strong>（应用进程 → 容器 → 反向代理 → 公网域名），判据是<strong>帧间隔</strong>不是总时长，第一处间隔塌成 0 的那层就是凶手。⚠️ 别信浏览器开发者工具的时序。</p>
 <p>⭐ 由「状态码在第一帧发出的那一刻就定死成 200」推出一条铁律：<strong>所有可能失败的事必须挤在第一个字之前做完。</strong></p>
@@ -742,5 +746,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

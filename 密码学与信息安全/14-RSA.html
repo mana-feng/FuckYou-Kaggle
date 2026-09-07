@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -355,7 +355,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <blockquote>
 <p>🔗 <a href="17-数字签名.html">第 17 章</a>会详细讲签名，包括 FDH 和 PSS 的区别。</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ✅ 正确用法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># ✅ 正确用法</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cryptography.hazmat.primitives.asymmetric</span><span class="w"> </span><span class="kn">import</span> <span class="n">rsa</span><span class="p">,</span> <span class="n">padding</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cryptography.hazmat.primitives</span><span class="w"> </span><span class="kn">import</span> <span class="n">hashes</span>
 
@@ -400,14 +400,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">✅ 防御：</span></div><div class="vb-tree-row"><span class="vb-tree-node">恒定时间实现（不要写自己的 powmod）</span></div><div class="vb-tree-row"><span class="vb-tree-node">【盲化】：算 (C·r^e)^d 再除以 r，让每次运算的输入随机化 ⭐</span></div><div class="vb-tree-row"><span class="vb-tree-node">CRT 后验证签名（防 Bellcore）</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>✅ 防御：</span></li><li><span>恒定时间实现（不要写自己的 powmod）</span></li><li><span>【盲化】：算 (C·r^e)^d 再除以 r，让每次运算的输入随机化 ⭐</span></li><li><span>CRT 后验证签名（防 Bellcore）</span></li></ul></section>
 <blockquote>
 <p>🔑 <strong>这是<a href="01-密码学到底在保护什么.html">第 1 章</a>那条建议的具体理由</strong>：
 <strong>不要自己实现密码算法</strong> —— 数学写对了，实现照样能漏。</p>
 </blockquote>
 <hr />
 <h2 id="rsa_1">📉 五、RSA 今天的地位</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">✅ 仍然广泛存在：TLS 证书、代码签名、SSH、JWT</span></div><div class="vb-tree-row"><span class="vb-tree-node">⚠️ 但新系统正在离开它：</span></div><div class="vb-tree-row"><span class="vb-tree-node">密钥太大（3072 bit vs 椭圆曲线的 256 bit）⭐</span></div><div class="vb-tree-row"><span class="vb-tree-node">签名/密钥生成慢</span></div><div class="vb-tree-row"><span class="vb-tree-node">坑太多（填充、参数、侧信道）</span></div><div class="vb-tree-row"><span class="vb-tree-node">量子威胁：Shor 算法直接摧毁（第 23 章）</span></div><div class="vb-tree-row"><span class="vb-tree-node">✅ 新项目的推荐：</span></div><div class="vb-tree-row"><span class="vb-tree-node">签名 → Ed25519（第 16 章）</span></div><div class="vb-tree-row"><span class="vb-tree-node">密钥交换 → X25519</span></div><div class="vb-tree-row"><span class="vb-tree-node">需要抗量子 → ML-KEM / ML-DSA（第 23 章）</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>✅ 仍然广泛存在：TLS 证书、代码签名、SSH、JWT</span></li><li><span>⚠️ 但新系统正在离开它：</span></li><li><span>密钥太大（3072 bit vs 椭圆曲线的 256 bit）⭐</span></li><li><span>签名/密钥生成慢</span></li><li><span>坑太多（填充、参数、侧信道）</span></li><li><span>量子威胁：Shor 算法直接摧毁（第 23 章）</span></li><li><span>✅ 新项目的推荐：</span></li><li><span>签名 → Ed25519（第 16 章）</span></li><li><span>密钥交换 → X25519</span></li><li><span>需要抗量子 → ML-KEM / ML-DSA（第 23 章）</span></li></ul></section>
 <hr />
 <h2 id="_5">🔗 和站内其他章的关系</h2>
 <div class="tw"><table>
@@ -484,9 +484,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_7">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>RSA</strong>：n=pq，φ(n)=(p−1)(q−1)，选 e 互质于 φ，<strong>d=e⁻¹ mod φ(n)</strong>；C=M^e，M=C^d。正确性靠<strong>欧拉定理</strong>（ed=1+kφ(n) ⟹ <strong>e 和 d 在指数上互为逆元</strong>）。<strong>e=65537=2¹⁶+1</strong>：二进制只两个 1 → <strong>17 次操作</strong>，又够大避免小指数攻击。⭐<strong>教科书 RSA 四宗罪</strong>：①<strong>确定性 ⟹ 违反 IND-CPA</strong>（明文空间小就直接枚举查表）②⭐<strong>乘法同态</strong> Enc(M₁)·Enc(M₂)=Enc(M₁M₂) → <strong>盲化攻击</strong>：让你解密 C·2^e 拿到 2M 再除以 2；<strong>说明绝不能同一密钥既加密又签名</strong> ③<strong>小指数攻击</strong>（e=3 且 M³&lt;n 直接开三次方根；<strong>Håstad 广播攻击</strong>：同消息发给 3 人，CRT 合并即解）④<strong>共模/共因子</strong>（💥2012 年扫全网发现<strong>数万个 RSA 公钥可被 gcd 直接分解</strong>，根因是<strong>嵌入式设备开机熵不足</strong>）。✅<strong>必须填充</strong>：加密用 <strong>OAEP</strong>（随机性→IND-CPA、结构化→破坏同态、ROM下可证IND-CCA），它取代的 PKCS#1 v1.5 有💥<strong>Bleichenbacher 攻击</strong>（填充错误的不同响应=预言机，百万次查询解密任意密文；<strong>2017 ROBOT 发现 20 年后大量网站仍没修好</strong>）；签名用 <strong>PSS</strong>（教科书签名可被 σ₁·σ₂ 伪造，也能先选 σ 反算 M）。<strong>侧信道</strong>：计时/功耗/缓存，⭐<strong>Bellcore 故障攻击——CRT 解密中一次错误就能分解 n</strong>，防御靠<strong>恒定时间实现 + 盲化 + CRT 后验签</strong>。现状：仍广泛存在但新系统在离开（密钥 3072 vs ECC 256、慢、坑多、<strong>Shor 直接摧毁</strong>）→ 新项目用 <strong>Ed25519 / X25519 / ML-KEM</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>RSA 的模幂关系解释了正确性，不等于裸公式已经是安全协议。</li><li>教科书形式的确定性与代数结构会带来攻击，需要配套的编码与用途区分。</li><li>密钥生成、填充处理和侧信道防护都应交给经过审查的实现。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="15-DH与ElGamal.html">15-DH与ElGamal.md</a> ⭐</p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -514,5 +513,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

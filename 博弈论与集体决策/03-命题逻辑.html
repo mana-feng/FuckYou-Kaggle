@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -772,9 +772,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_15">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>命题逻辑 = 把一整句话塞进一个字母，只留真假，再用五个连接词拼起来</strong>。代价是<strong>句子内部结构全没了</strong>（<code>P</code> 里的「苏格拉底」「秃头」看不见），所以它推不出三段论——要等<a href="06-一阶逻辑.html">第 6 章</a>。<strong>五个连接词</strong>：¬ ∧ ∨ → ↔。⚠️ <strong><code>∨</code> 是可兼或</strong>（都真时也真，排斥或要写 <code>(P ∨ Q) ∧ ¬(P ∧ Q)</code>）；⚠️ <strong><code>P → Q</code> 只在「P 真 Q 假」一行为假</strong>，所以 <strong>P 假时它自动为真</strong>（<strong>空真</strong>）——「如果我是外星人那么我会飞」是<strong>真的</strong>；<code>→</code> 表达<strong>承诺</strong>不表达<strong>因果</strong>。<strong>语法用 BNF 递归定义</strong>（「句子」的定义里又出现「句子」），判断合法与否纯机械；<code>A + B</code>、<code>A ¬ B</code> 都不是公式。⭐ <strong>到语法为止公式什么意思都没有</strong>。<strong>语义</strong>：一个<strong>模型</strong>就是一次真值指派，<strong>n 个符号有 2ⁿ 个模型</strong>；手算真值表的技巧是⭐ <strong>每个子公式各占一列、从最内层往外填</strong>。⭐ <strong>本章的杀手例</strong>：「学生不来上课就能通过考试，这是不成立的」有两种读法——<strong>A：<code>¬P → ¬Q</code></strong>、<strong>B：<code>¬(¬P → Q)</code></strong>，真值表 <strong>4 行里有 2 行不同</strong>，而且 <strong>B 只在 P、Q 全假那一行为真，A 在那行也真 → B 严格更强</strong>（这个「更强」到<a href="04-模型集.html">下一章</a>会变成<strong>集合包含</strong>）。形式化的收益就在这：<strong>争论变成指着真值表第 1 行说「你这里是 T、我这里是 F」</strong>。<strong>三类公式</strong>：<strong>恒真</strong>（全 T，如 <code>P ∨ ¬P</code>、<code>(R ∧ S) → (¬R ∨ S)</code>）、<strong>可满足</strong>（至少一个 T）、<strong>不可满足</strong>（全 F，如 <code>P ∧ ¬P</code>），三者是<strong>套着的</strong>不是并列的。⭐ <strong>要背的一条</strong>：<strong>φ 恒真 ⟺ ¬φ 不可满足</strong>——<a href="05-推理与分辨率.html">第 5 章</a>的反证法全靠它。<strong>命题逻辑可判定</strong>，但真值表是 <strong>2ⁿ</strong>：20 个符号 <strong>100 万行</strong>、40 个 <strong>1 万亿</strong>、60 个 <strong>10 亿亿</strong>，而真实 SAT 问题有几万到几百万变量——<strong>理论上行、实践上死</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>命题逻辑先把整句话看成真假变量，再用连接词组合。</li><li>蕴含只有前件真、后件假时为假；不要把它直接理解成因果关系。</li><li>真值表从内层子公式逐列计算，能直接暴露两种读法的差别。</li><li>恒真、可满足与不可满足要按模型区分；变量多时枚举真值表会迅速变贵。</li></ul><p class="reading-recap-links">相关章节：<a href="06-一阶逻辑.html">第 6 章</a> · <a href="04-模型集.html">下一章</a> · <a href="05-推理与分辨率.html">第 5 章</a></p></section>
+
 <p><strong>下一节</strong> 👉 <a href="04-模型集.html">04-模型集.md</a> ⭐</p>
 <blockquote>
 <p>去那里的理由：本章你一直在填真值表的「行」。04 把这些行<strong>收成一个集合</strong>，
@@ -806,5 +805,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

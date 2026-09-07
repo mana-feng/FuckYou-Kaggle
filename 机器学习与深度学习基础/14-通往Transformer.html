@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,16 +271,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
- onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script><link rel="stylesheet" href="../assets/guided-lessons.css"><link rel="stylesheet" href="../assets/guided-batch1.css"><script defer src="../assets/guided-batch1.js"></script><link rel="stylesheet" href="../assets/guided-batch2.css"><script defer src="../assets/guided-batch2.js"></script><script defer src="../assets/guided-lessons.js"></script></head><body class="guided-reading">
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
@@ -304,7 +304,19 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 </div>
 </details>
-<h1 id="14-transformer">14 · 通往 Transformer</h1>
+<div class="lesson-layout" data-lesson="ml-14" data-batch="ml-rest" data-reading-mode="concept">
+<div class="lesson-content"><section class="lesson-hero" id="lesson-start" data-route="先知道这页解决什么">
+<div><p class="lesson-eyebrow">14 / 先看直觉，再看细节</p><h1>先看它向谁取信息，<br>再把熟悉的零件拼起来。</h1><p class="lesson-lead">注意力按相关程度混合不同位置的信息；这页负责把它和前面学过的概念连起来。</p></div>
+<aside class="lesson-advice"><strong>一次只处理一个问题</strong><p>可以从入口直接跳到需要的部分。正文、图解、代码和检查点都在下方。</p><a href="#first-pause">先看懂这一点就可以停 →</a></aside></section>
+<div class="lesson-overview-grid">
+<section class="lesson-card" id="first-example" data-route="先看一个具体结果"><p class="lesson-kicker">先抓住一个具体结果</p><h2>权重决定取回多少</h2><p>若两个位置的注意力权重是 0.8、0.2，内容分别为 10、0，混合结果就是 8。权重来自当前查询与各个键的匹配，不是人工给定的重要性排名。</p><h3>缩放点积注意力（未写掩码）</h3><div class="formula-box" data-formula-name="缩放点积注意力（未写掩码）">$$\operatorname{Attention}(Q,K,V)=\operatorname{softmax}\left(\frac{QK^\top}{\sqrt{d_k}}\right)V$$</div></section>
+<section class="lesson-card lesson-task-entry" id="reading-choices" data-route="按需要选择下一步"><p class="lesson-kicker">接下来，按需要选一项</p><h2>你现在想看什么？</h2><nav aria-label="本页阅读入口"><a href="#transformer">对照熟悉的部件 <span aria-hidden="true">→</span></a><a href="#_3">比较架构取舍 <span aria-hidden="true">→</span></a><a href="#_4">理解顺序信息 <span aria-hidden="true">→</span></a></nav><p class="lesson-note">这些入口是选择，不是必须按顺序完成的任务。</p></section>
+<section class="lesson-card lesson-pause lesson-wide" id="first-pause" data-route="可以停在这里"><h2>可以停在这里</h2><p>注意力按相关程度混合不同位置的信息；这页负责把它和前面学过的概念连起来。</p><a href="#full-lesson">需要更多细节时，继续看完整正文 →</a></section></div>
+<section class="lesson-full" id="full-lesson" aria-label="完整正文">
+<div class="lesson-divider"><span>继续探索</span><p>原有正文、图解和例子都在下方。按需跳转，不必一次读完。</p></div>
+<h2 id="14-transformer" class="lesson-original-title">14 · 通往 Transformer</h2>
+<!-- guided-lesson: ml-14 -->
+
 <p>⏱ <strong>24 分钟</strong> ｜ ⭐ <strong>本教程的收口章</strong></p>
 <hr />
 <h2 id="_1">🎯 一句话</h2>
@@ -389,7 +401,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 其余全部是你已经学过的零件，只是<strong>组合方式变了</strong>。</p>
 </blockquote>
 <h3 id="_2">💡 注意力的一句话直觉</h3>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">Attention(Q,K,V) = softmax(QKᵀ/√d)·V</span></div><div class="vb-tree-row"><span class="vb-tree-node">↑ ↑ ↑</span></div><div class="vb-tree-row"><span class="vb-tree-node">加权求和&quot;取回来的信息&quot;</span></div><div class="vb-tree-row"><span class="vb-tree-node">算&quot;我和每个位置有多相关&quot;</span></div><div class="vb-tree-row"><span class="vb-tree-node">把相关度变成和为 1 的权重</span></div><div class="vb-tree-row"><span class="vb-tree-node">💡 人话：【一次可微分的、软的查表操作】</span></div><div class="vb-tree-row"><span class="vb-tree-node">· Q = 我要查什么</span></div><div class="vb-tree-row"><span class="vb-tree-node">· K = 每个位置的&quot;索引&quot;</span></div><div class="vb-tree-row"><span class="vb-tree-node">· V = 每个位置的&quot;内容&quot;</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="attention-roles-restored" style="--diagram-width:480px"><svg viewBox="0 0 480 550" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="沿箭头读：Q 与 K 决定相关性，softmax 把分数归一化，最后混合 V 中的信息。这里的 d 是键向量的维度；因果掩码和多头拼接未展开。"><title>沿箭头读：Q 与 K 决定相关性，softmax 把分数归一化，最后混合 V 中的信息。这里的 d 是键向量的维度；因果掩码和多头拼接未展开。</title><rect x="35" y="25" width="165" height="50" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="117.5" y="56.0" font-size="18" text-anchor="middle" fill="var(--fg)">Q：我要查什么</text><rect x="265" y="25" width="180" height="50" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="355.0" y="56.0" font-size="18" text-anchor="middle" fill="var(--fg)">K：位置的索引</text><line x1="115" y1="75" x2="185" y2="115" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="185.0,115.0 174.7,114.9 179.7,106.2"/><line x1="355" y1="75" x2="295" y2="115" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="295.0,115.0 299.7,105.8 305.3,114.2"/><rect x="110" y="115" width="260" height="54" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="240.0" y="148.0" font-size="18" text-anchor="middle" fill="var(--fg)">QKᵀ / √d：匹配并缩放</text><line x1="240" y1="169" x2="240" y2="206" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="240.0,206.0 235.0,197.0 245.0,197.0"/><rect x="110" y="206" width="260" height="54" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="240.0" y="239.0" font-size="18" text-anchor="middle" fill="var(--fg)">softmax：转成权重</text><text x="240" y="292" font-size="17" text-anchor="middle" fill="var(--fg)">每个查询对键位置的权重和为 1</text><line x1="240" y1="307" x2="240" y2="382" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="240.0,382.0 235.0,373.0 245.0,373.0"/><rect x="285" y="313" width="170" height="42" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="370.0" y="340.0" font-size="18" text-anchor="middle" fill="var(--fg)">V：取回的内容</text><line x1="370" y1="355" x2="338" y2="382" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="338.0,382.0 341.7,372.4 348.1,380.0"/><rect x="110" y="382" width="260" height="54" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="240.0" y="415.0" font-size="18" text-anchor="middle" fill="var(--fg)">权重 × V：加权求和</text><line x1="240" y1="436" x2="240" y2="474" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="240.0,474.0 235.0,465.0 245.0,465.0"/><rect x="125" y="474" width="230" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="240.0" y="504.0" font-size="18" text-anchor="middle" fill="var(--fg)">Attention 的输出</text></svg><figcaption>沿箭头读：Q 与 K 决定相关性，softmax 把分数归一化，最后混合 V 中的信息。这里的 d 是键向量的维度；因果掩码和多头拼接未展开。</figcaption></figure>
 <blockquote>
 <p>🔗 <strong>和你学过的东西对上号</strong>：
 这和<a href="../推荐算法/index.html">推荐算法</a>的双塔召回<strong>完全同构</strong>——
@@ -728,10 +740,20 @@ RNN 的时序结构是人给的，Transformer 让模型自己学 → 大数据�
 <hr />
 <h2 id="_10">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>Transformer没有一个全新部件：QK点积=线性模型、softmax=逻辑回归、多头=CNN多卷积核、FFN=MLP、残差=ResNet、LayerNorm=正则、因果掩码=序列建模，<strong>只有位置编码是新的</strong>。注意力=<strong>可微的软查表</strong>（Q要查什么/K索引/V内容），<strong>和推荐的双塔召回同构</strong>，区别只是软选vs硬选。<strong>除以√d_k 是因为点积方差=d，不除 softmax 会饱和成 one-hot、梯度趋 0</strong>。核心权衡：<strong>归纳偏置 vs 数据量</strong>——偏置强(CNN/RNN)小数据好大数据成枷锁，偏置弱(Transformer)反之；<strong>ViT vs ResNet 的拐点在 14M 数据附近</strong>。规律："数据算力足够时让模型自己学总赢过人工先验"，⚠️<strong>但书：你的小数据项目大概率不满足这个前提——数据稀缺时归纳偏置是朋友</strong>。位置编码：注意力是<strong>置换等变</strong>的所以必须补位置；<strong>相对位置(RoPE)比绝对位置好，因为语言规律大多是相对的</strong>，也因此能外推撑起长上下文。Transformer 留下两坑：<strong>O(n²)</strong> 和 <strong>KV Cache 显存</strong>——<strong>Mamba 是 RNN 思想的回归</strong>，用可并行扫描补上 RNN 的并行短板。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>Q 与 K 计算匹配分数，缩放和 softmax 得到权重，再用权重混合 V。</li><li>注意力让位置之间直接交换信息；位置编码补充序列的顺序。</li><li>残差、归一化和前馈层共同组成完整模块，不是只靠一条 Attention 公式。</li><li>自回归预测要遮住未来位置；理解单头后再看多头与整层结构。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="15-PyTorch实战手册.html">15-PyTorch实战手册.md</a></p>
+</section></div>
+<aside class="lesson-rail" aria-label="本节学习路线">
+<button type="button" class="lesson-route-toggle" aria-expanded="true" aria-controls="lesson-route">本节学习路线 <span aria-hidden="true">⌄</span></button>
+<div id="lesson-route">
+<p class="lesson-position" aria-live="polite">从第一站开始</p>
+<div class="lesson-track" aria-hidden="true"><span></span></div>
+<nav class="lesson-route-links" aria-label="章节跳转"></nav>
+<div class="lesson-rail-note"><strong>一次只读一张卡片</strong><p>蓝色下划线可以点开解释。关掉窗口，接着原来的位置读。</p></div>
+<button type="button" class="lesson-save">记住当前位置</button>
+<p class="lesson-save-status" role="status"></p>
+</div></aside></div>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="13-RNN与序列建模.html"><div class="dir">← 上一节</div>🔄 13 · RNN 与序列建模</a><a class="next" href="15-PyTorch实战手册.html"><div class="dir">下一节 →</div>🔥 15 · PyTorch 实战手册</a></nav>
@@ -758,5 +780,4 @@ RNN 的时序结构是人给的，Transformer 让模型自己学 → 大数据�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

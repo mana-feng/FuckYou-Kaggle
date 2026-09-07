@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -381,9 +381,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table></div>
 <p><strong>PSI 的公式和阈值</strong>（记住这个就够用）：</p>
 <p>$$\text{PSI} = \sum_i (p_i^{\text{线上}} - p_i^{\text{训练}}) \cdot \ln\frac{p_i^{\text{线上}}}{p_i^{\text{训练}}}$$</p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>把特征分成 10 个桶（按训练集的分位数切）</p><p>算每个桶的占比变化</p><p>PSI &lt; 0.1 稳定 ✅</p><p>0.1 ~ 0.25 有变化 ⚠️ 关注</p><p>PSI &gt; 0.25 显著漂移 🔴 该查了</p></div></section>
+<section class="comparison-repair" id="comparison-repair-23"><section class="reading-information"><p class="reading-information-title">计算前两步</p><ul><li>把特征分成 10 个桶（按训练集的分位数切）</li><li>算每个桶的占比变化</li></ul></section><div class="tw"><table><caption>PSI 的阅读区间（作为排查线索）</caption><thead><tr><th scope="col">PSI 范围</th><th scope="col">原文判断</th></tr></thead><tbody><tr><th scope="row">&lt; 0.1</th><td>稳定 ✅</td></tr><tr><th scope="row">0.1 ~ 0.25</th><td>有变化 ⚠️ 关注</td></tr><tr><th scope="row">&gt; 0.25</th><td>显著漂移 🔴 该查了</td></tr></tbody></table></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">psi</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">live</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;base/live 是同一个特征的两批取值。按 base 的分位数切桶。&quot;&quot;&quot;</span>
@@ -429,13 +429,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>数据漂移：看输入就能发现 ← 不需要标签 ✅</p><p>概念漂移：必须知道【真实答案】才能发现 ← 需要标签 💀</p></div></section>
 <p><strong>这就是它难的根本原因</strong>：标签常常要等很久（<a href="07-没有标签怎么发现退化.html">第 7 章</a>专门讲这个）。</p>
 <h3 id="_5">三种形态</h3>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">① 突变（sudden）</span></div><div class="vb-tree-row"><span class="vb-tree-node">政策变了、竞品上线、疫情开始</span></div><div class="vb-tree-row"><span class="vb-tree-node">表现：某一天指标断崖式下跌</span></div><div class="vb-tree-row"><span class="vb-tree-node">② 渐变（gradual）⭐ 最危险</span></div><div class="vb-tree-row"><span class="vb-tree-node">用户习惯慢慢改变</span></div><div class="vb-tree-row"><span class="vb-tree-node">表现：每天掉一点点，单看哪天都在正常波动内</span></div><div class="vb-tree-row"><span class="vb-tree-node">三个月后回头看，已经掉了 20%</span></div><div class="vb-tree-row"><span class="vb-tree-node">③ 周期性（recurring）</span></div><div class="vb-tree-row"><span class="vb-tree-node">季节、节假日、工作日/周末</span></div><div class="vb-tree-row"><span class="vb-tree-node">不是&quot;坏&quot;，但模型要能处理</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>① 突变（sudden）</span></li><li><span>政策变了、竞品上线、疫情开始</span></li><li><span>表现：某一天指标断崖式下跌</span></li><li><span>② 渐变（gradual）⭐ 最危险</span></li><li><span>用户习惯慢慢改变</span></li><li><span>表现：每天掉一点点，单看哪天都在正常波动内</span></li><li><span>三个月后回头看，已经掉了 20%</span></li><li><span>③ 周期性（recurring）</span></li><li><span>季节、节假日、工作日/周末</span></li><li><span>不是"坏"，但模型要能处理</span></li></ul></section>
 <blockquote>
 <p>⭐ <strong>② 最危险的原因</strong>：<strong>任何单日的告警阈值都不会触发</strong>。
 <strong>对策：除了日环比，一定要看「和 30 天前比」「和 90 天前比」。</strong></p>
 </blockquote>
 <h3 id="auc">一个便宜的检测手段：滑动窗口 AUC</h3>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>把有标签的样本按时间排，算每周的 AUC</p><p>周1 0.82</p><p>周2 0.81</p><p>周3 0.81</p><p>周4 0.79 ← 单看是正常波动</p><p>周5 0.78</p><p>周6 0.76 ← 和周1比已经掉了 0.06 🔴</p><p>⭐ 关键是【和基线比】，不是和上周比</p></div></section>
+<section class="comparison-repair" id="comparison-repair-24"><p>把有标签的样本按时间排，算每周的 AUC</p><div class="tw"><table><caption>按时间排列后与基线比较</caption><thead><tr><th scope="col">周</th><th scope="col">AUC 与观察</th></tr></thead><tbody><tr><th scope="row">周1</th><td>0.82</td></tr><tr><th scope="row">周2</th><td>0.81</td></tr><tr><th scope="row">周3</th><td>0.81</td></tr><tr><th scope="row">周4</th><td>0.79 ← 单看是正常波动</td></tr><tr><th scope="row">周5</th><td>0.78</td></tr><tr><th scope="row">周6</th><td>0.76 ← 和周1比已经掉了 0.06 🔴</td></tr></tbody></table></div><section class="reading-information"><p class="reading-information-title">看哪里</p><ul><li>⭐ 关键是【和基线比】，不是和上周比</li></ul></section></section>
 <hr />
 <h2 id="_6">🛠️ 四、发现了漂移，做什么</h2>
 <p><strong>别急着重训。按这个顺序判断</strong>：</p>
@@ -528,7 +528,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_7">🔬 六、对抗验证：完整可跑版</h2>
 <p>第二节说了思路，这里给能直接抄的实现。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span><span class="o">,</span><span class="w"> </span><span class="nn">lightgbm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">lgb</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span><span class="o">,</span><span class="w"> </span><span class="nn">lightgbm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">lgb</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">cross_val_predict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">roc_auc_score</span>
 
@@ -555,7 +555,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
     <span class="k">return</span> <span class="n">auc</span><span class="p">,</span> <span class="n">imp</span>
 </code></pre></div>
 
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>怎么读结果：</p><p>AUC ≤ 0.55 两批数据基本一致 ✅</p><p>0.55 ~ 0.70 有可察觉的漂移 ⚠️ 看 imp 前几名</p><p>0.70 ~ 0.90 明显漂移 🔴</p><p>&gt; 0.90 💀 几乎可以完美区分</p><p>—— 先怀疑【泄漏了时间类特征】（如 event_date、id 自增）</p></div></section>
+<section class="comparison-repair" id="comparison-repair-25"><div class="tw"><table><caption>时间分类器：如何读区分能力</caption><thead><tr><th scope="col">AUC 范围</th><th scope="col">原文判断</th></tr></thead><tbody><tr><th scope="row">≤ 0.55</th><td>两批数据基本一致 ✅</td></tr><tr><th scope="row">0.55 ~ 0.70</th><td>有可察觉的漂移 ⚠️ 看 imp 前几名</td></tr><tr><th scope="row">0.70 ~ 0.90</th><td>明显漂移 🔴</td></tr><tr><th scope="row">&gt; 0.90</th><td>💀 几乎可以完美区分</td></tr></tbody></table></div><p>—— 先怀疑【泄漏了时间类特征】（如 event_date、id 自增）</p></section>
 <blockquote>
 <p>⚠️ <strong>AUC &gt; 0.9 时的第一反应不该是"漂移好严重"</strong>，而是
 <strong>"我是不是把时间戳、自增 ID 这类特征喂进去了"</strong> ——
@@ -722,5 +722,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -640,7 +640,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>这三种在监控上长得和成功一模一样</strong> —— 就是本章开头那句「最危险的不是没做，是以为做了」。⚠️ <strong>托管数据库不豁免</strong>：托管商按时替你做了快照，但那还是<strong>写</strong>那一半。</p>
 <h3 id="_12">🧯 演练要演到第几步才算数</h3>
 <p>四道关卡，<strong>过不了第 ④ 道就不算演练过</strong>：① 取回文件 → ② 恢复成一个临时库 → ③ 查出数据、确认它停在哪个时间点 → ④ <strong>让应用真的连上去跑通一次读写</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ① 真的下载下来，而不是在界面上看它「成功」，然后 ② 恢复到【临时库】。⚠️ 绝不恢复到生产</span>
+<div class="codehilite" data-code-language="bash"><pre><span></span><code><span class="c1"># ① 真的下载下来，而不是在界面上看它「成功」，然后 ② 恢复到【临时库】。⚠️ 绝不恢复到生产</span>
 aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>s3://your-bucket/backups/db-2026-08-29-0300.dump<span class="w"> </span>./drill.dump
 createdb<span class="w"> </span>restore_drill<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pg_restore<span class="w"> </span>-d<span class="w"> </span>restore_drill<span class="w"> </span>--no-owner<span class="w"> </span>./drill.dump
 
@@ -659,7 +659,9 @@ psql<span class="w"> </span>restore_drill<span class="w"> </span>-c<span class="
 <li><strong>RPO</strong>（Recovery Point Objective）⭐ <strong>你能接受丢多少数据</strong> —— 上一份可用备份到故障时刻，这段窗口里的写入全没了。</li>
 <li><strong>RTO</strong>（Recovery Time Objective）⭐ <strong>你能接受停多久</strong> —— 故障时刻到服务重新可用。</li>
 </ul>
-<p>⭐ <strong>记法：RPO 往前看（丢了多少），RTO 往后看（停了多久）</strong>，它们决定两件完全不同的事。<strong>RPO 决定备份的频率和形式</strong>：每天凌晨 3 点全量一次，RPO 最坏就是 24 小时；想压到分钟级只能开<strong>连续归档 + 时间点恢复</strong>（Postgres 的 WAL 归档、MySQL 的 binlog），⚠️ 那是另一套东西，不是把每天一次改成每天四次。<strong>RTO 决定你得预先准备什么</strong>：恢复一个几百 GB 的库要多久是个物理事实，临场想办法只会更慢 —— 靠的是<strong>脚本已经写好、机器已经在那儿、并且演练时量过真实耗时</strong>。</p>
+<p>⭐ <strong>记法：RPO 往前看（丢了多少），RTO 往后看（停了多久）</strong>，它们决定两件完全不同的事。</p>
+<p><strong>RPO 决定备份的频率和形式</strong>：每天凌晨 3 点全量一次，RPO 最坏就是 24 小时；想压到分钟级只能开<strong>连续归档 + 时间点恢复</strong>（Postgres 的 WAL 归档、MySQL 的 binlog），⚠️ 那是另一套东西，不是把每天一次改成每天四次。</p>
+<p><strong>RTO 决定你得预先准备什么</strong>：恢复一个几百 GB 的库要多久是个物理事实，临场想办法只会更慢 —— 靠的是<strong>脚本已经写好、机器已经在那儿、并且演练时量过真实耗时</strong>。</p>
 <p>⭐ <strong>这两个数是业务判断不是技术判断，要让掏钱的那个人拍板。</strong> 三个可以直接拿去用的起点：</p>
 <div class="tw"><table>
 <thead>
@@ -836,7 +838,13 @@ psql<span class="w"> </span>restore_drill<span class="w"> </span>-c<span class="
 <p>☑️ 这一章是<strong>清单不是讲解</strong>：⭐ <strong>「做了」和「验证过做了」之间隔着一次事故</strong>——所以每条都给一个当场能做的动作，判据是「我看到了什么现象」而不是「我配了什么」。不是「配了限流」，而是「打一百次，从第 N 次开始返回 429 且带 <code>Retry-After</code>」。</p>
 <p>⚠️ <strong>最危险的不是没做，是以为做了</strong>：限流中间件挂在认证之前所以拿不到用户、备份任务两个月前就静默失败、告警发到没人在的频道——<strong>三种都长得和「做了」一模一样</strong>。</p>
 <p>六组里最容易漏的各一条：🔐 ⭐ <strong>用 A 的 token 去拿 B 的资源</strong>（只测「A 能拿自己的」测不出越权）；💸 <strong>三层护栏要一层一层单独验</strong>，而供应商侧的月上限是<strong>唯一一层不依赖你没写错代码</strong>的；🧯 <strong>400/401 一次就进死信</strong>、<code>docker stop</code> 时长流式请求要被做完；🗄️ ⭐ <strong>把备份真的恢复到临时库并查出数据</strong>——<strong>没恢复过的备份等于没有备份</strong>；🔭 <strong>拿 <code>trace_id</code> 要能把入口、调用层、队列任务全搜到</strong>（⚠️ 队列那段最容易断）、⭐ <strong>告警手动触发一次，确认手机真的响了</strong>。</p>
-<p>⭐ <strong>六条里唯一被展开成一整节的是备份</strong>（第九节，也是清单上唯一一条十分钟内做不完的）：「备份任务成功」只证明<strong>写</strong>成功了——空库、文件解不开、备的是一个两个月前就停止同步的副本，三种在面板上都是绿的。⭐ 演练要过四道关：取回、恢复到<strong>临时库</strong>（⚠️ 绝不恢复到生产）、查出数据并确认它停在哪个时间点、⭐ <strong>让应用真的连上去跑通一次读写</strong>（最后这道最多人跳过，过不了它就不算演练过）。⭐ 之前先写下两个数：<strong>RPO＝能接受丢多少数据</strong>（⚠️ <strong>不可能小于备份间隔</strong>——每天凌晨 3 点全量一次，最坏就是 24 小时）、<strong>RTO＝能接受停多久</strong>。记录里最重要的两行是<strong>实测 RTO</strong>（恢复花了多久）和<strong>实测 RPO</strong>（恢复出来最新一条数据是什么时候），⭐ <strong>实测值比目标值重要</strong>。⚠️ 还要<strong>把主库和向量库一起恢复</strong>——已删的文档还搜得到，就是两边时间点错开了。</p>
+<p>⭐ <strong>六条里唯一被展开成一整节的是备份</strong>（第九节，也是清单上唯一一条十分钟内做不完的）：「备份任务成功」只证明<strong>写</strong>成功了——空库、文件解不开、备的是一个两个月前就停止同步的副本，三种在面板上都是绿的。</p>
+</blockquote>
+<p>⭐ 演练要过四道关：取回、恢复到<strong>临时库</strong>（⚠️ 绝不恢复到生产）、查出数据并确认它停在哪个时间点、⭐ <strong>让应用真的连上去跑通一次读写</strong>（最后这道最多人跳过，过不了它就不算演练过）。</p>
+<p>⭐ 之前先写下两个数：<strong>RPO＝能接受丢多少数据</strong>（⚠️ <strong>不可能小于备份间隔</strong>——每天凌晨 3 点全量一次，最坏就是 24 小时）、<strong>RTO＝能接受停多久</strong>。</p>
+<p>记录里最重要的两行是<strong>实测 RTO</strong>（恢复花了多久）和<strong>实测 RPO</strong>（恢复出来最新一条数据是什么时候），⭐ <strong>实测值比目标值重要</strong>。</p>
+<p>⚠️ 还要<strong>把主库和向量库一起恢复</strong>——已删的文档还搜得到，就是两边时间点错开了。</p>
+<blockquote>
 <p>⚠️ 还有一条容易被跳过：<strong>回滚命令要在预发上真执行过</strong>——没执行过的回滚方案，和没恢复过的备份是同一类东西。</p>
 </blockquote>
 <p><strong>下一节</strong> 👉 <a href="17-实战与挑战项目.html">17-实战与挑战项目.md</a></p>
@@ -866,5 +874,4 @@ psql<span class="w"> </span>restore_drill<span class="w"> </span>-c<span class="
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

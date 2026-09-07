@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -403,7 +403,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="ind-cca">🔐 四、IND-CCA：更强的要求</h2>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>IND-CPA 的攻击者：只能【加密】他挑的东西</p><p>IND-CCA 的攻击者：还能【解密】他挑的密文（挑战密文 c* 除外）⭐</p></div></section>
 <p><strong>为什么需要这么强的要求</strong>：</p>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">现实中攻击者常常能间接获得&quot;解密结果&quot;：</span></div><div class="vb-tree-row"><span class="vb-tree-node">服务器解密后返回&quot;格式错误&quot;</span><span class="vb-tree-note">padding oracle（第 7 章）</span></div><div class="vb-tree-row"><span class="vb-tree-node">解密成功和失败的响应时间不同</span></div><div class="vb-tree-row"><span class="vb-tree-node">解密后的内容被显示在页面上</span></div><div class="vb-tree-row"><span class="vb-tree-node">解密失败会写日志，日志能被观察</span></div><div class="vb-tree-row"><span class="vb-tree-node">⭐ 只满足 IND-CPA 的方案在这些场景下会被打穿</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>现实中攻击者常常能间接获得"解密结果"：</span></li><li><span>服务器解密后返回"格式错误"</span> <span>padding oracle（第 7 章）</span></li><li><span>解密成功和失败的响应时间不同</span></li><li><span>解密后的内容被显示在页面上</span></li><li><span>解密失败会写日志，日志能被观察</span></li><li><span>⭐ 只满足 IND-CPA 的方案在这些场景下会被打穿</span></li></ul></section>
 <blockquote>
 <p>🔑 <strong>现代标准：能用 IND-CCA 就别用 IND-CPA。</strong>
 而达到 IND-CCA 的实用方法就是 —— <strong>认证加密（AEAD）</strong>。</p>
@@ -504,9 +504,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_9">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>⭐<strong>全教程的思维转折点</strong>。直觉的"安全"定义全错：①"不能恢复明文"→反例是泄露前一半 ②"不能恢复任何一bit"→反例是泄露奇偶性 ③"不能恢复密钥"→反例是根本不加密。<strong>根本问题：攻击者想要的可能是任何信息，没法穷举</strong>。⭐<strong>思路翻转：不问"他学到什么"，问"他能不能分辨密文对应 m₀ 还是 m₁"</strong>（他自己挑的两条）——<strong>能覆盖"任何信息"是因为：若他能算出任何性质 P，就挑一个满足P、一个不满足P 的消息立刻分辨</strong>。<strong>IND-CPA 游戏</strong>：随意查加密预言机 → 提交等长 m₀,m₁ → 挑战者抛硬币返回 Enc(m_b) → 继续查 → 猜 b'，要求优势 ≤ negl。⭐<strong>三个推论</strong>：①<strong>确定性加密永远不安全</strong>（先问 m₀ 拿 c₀，再比较 c<em>）——</em><em>这一条串起了 ECB不安全/CBC要IV/CTR要nonce/教科书RSA不安全四个规则</em><em> ②密文必然更长 ③</em><em>明文长度无法隐藏</em><em>（定义要求等长是承认而非疏忽；💥 HTTPS 下页面大小暴露你访问了哪页）。</em><em>IND-CCA</em><em> 多了解密预言机——现实形态是 padding oracle、响应时间、日志；⭐</em><em>AEAD 达到 CCA 的办法：验证不通过就根本不解密，把解密预言机变成只会说"无效"的东西</em><em>。</em><em>negl</em><em> 要比任何多项式倒数都小（1/n¹⁰⁰⁰ 不算，因为重复 n¹⁰⁰⁰ 次是可行的）；128-bit 安全 = 2¹²⁸ 次操作，对照</em><em>宇宙年龄约 2⁵⁹ 秒、全球算力一年约 2⁹⁰ 次</em><em>。⭐</em><em>方法论</em><em>：问它①声称什么目标②什么攻击模型③归约到什么假设④假设可信吗——</em><em>"我想不出怎么破"什么都不算</em><em>。⭐</em><em>"可证明安全"不证明方案安全，只证明它归约到某个数学难题</em>*——是把信任从方案转移到被研究几十年的数学问题上。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>安全定义先写明攻击者能做什么，再规定它不应获得什么优势。</li><li>不可区分游戏把模糊的保密直觉变成可讨论的目标。</li><li>安全证明依赖假设与模型，不能替代随机数、密钥和实现检查。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="09-哈希函数.html">09-哈希函数.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -534,5 +533,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

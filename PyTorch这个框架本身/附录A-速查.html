@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,16 +271,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
- onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script><link rel="stylesheet" href="../assets/guided-lessons.css"><link rel="stylesheet" href="../assets/cross-reading.css"><script defer src="../assets/cross-reading.js"></script></head><body class="guided-reading cross-reading">
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
@@ -309,24 +309,29 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 </div>
 </details>
-<h1 id="a">附录A · 速查</h1>
+<div class="lesson-layout cross-layout" data-reading-profile="torch-lookup" data-reading-mode="lookup">
+<div class="lesson-content">
+<header class="cross-hero"><p class="lesson-eyebrow">PyTorch这个框架本身 · 按问题查阅</p><h1>从屏幕上的报错出发，不用从第一页读起。</h1><p class="lesson-lead">先找到稳定的报错片段，再看原因与对应章节。没有报错，也有单独的症状入口。</p></header>
+<section class="cross-result"><h2>先做这一步</h2><p>先看 traceback 最后一行；搜索不含个人变量名的短片段，例如 size mismatch for。</p></section>
+<nav class="cross-choices" aria-label="按当前目标开始"><a href="#read-gradient"><strong>梯度或就地操作报错</strong><span>看图是否断了、哪个输出被改了</span></a><a href="#read-shape"><strong>形状或加载失败</strong><span>核对 dtype、结构与状态字典</span></a><a href="#read-silent"><strong>不报错，但结果不对</strong><span>看静默错误的症状对照</span></a></nav><section class="cross-search" aria-label="报错定位"><label for="reading-query">搜索报错或症状</label><div class="cross-search-row"><input id="reading-query" type="search" placeholder="例如：size mismatch for" autocomplete="off" aria-describedby="reading-search-status"><button type="button" class="cross-search-clear">清空</button></div><p id="reading-search-status" role="status">输入关键词定位条目；正文不会被隐藏。</p><ul class="cross-search-results"></ul></section>
+<div class="cross-body" id="reading-body"><section class="cross-preface" aria-label="原文导语与阅读条件"><h2 id="a" class="lesson-original-title">附录A · 速查</h2>
+<!-- reading-pilot: torch-lookup -->
+
 <p>⏱ <strong>62 分钟</strong> ｜ ⭐ <strong>按「你屏幕上那句话」反查原因 —— 每一条都是本机 torch 2.13.0+cpu 真触发出来、逐字抄的</strong></p>
-<hr />
-<h2 id="_1">🎯 一句话</h2>
+<hr>
+<h3 id="_1">🎯 一句话</h3>
 <p><strong>这一页不讲道理，只回答一个问题：我看到了这句报错，它是什么意思、该去哪一章。</strong></p>
 <p>正文各章负责让你懂，这一页负责让你<strong>快</strong>。</p>
-<hr />
-<h2 id="_2">🚦 怎么用这一页</h2>
+<hr>
+</section><section class="cross-unit" id="read-usage" aria-labelledby="read-usage-title"><h2 id="read-usage-title">先定位，不用通读</h2><p class="cross-cue">所有原始报错、原因和章节链接保留；搜索只提供定位，不隐藏正文。</p><h3 id="_2">🚦 怎么用这一页</h3>
 <p>⭐ <strong>搜索的时候只搜报错里【不含你自己变量名】的那一段。</strong>
 比如你看到的是</p>
-<div class="codehilite"><pre><span></span><code>RuntimeError: Error(s) in loading state_dict for MyBackbone:
-    size mismatch for encoder.layer3.attn.qkv.weight: copying a param with shape torch.Size([2304, 768]) …
-</code></pre></div>
+<div class="source-error" aria-label="报错片段，非执行代码"><p>RuntimeError: Error(s) in loading state_dict for MyBackbone:</p><p>size mismatch for encoder.layer3.attn.qkv.weight: copying a param with shape torch.Size([2304, 768]) …</p></div>
 
 <p>要搜的是 <strong><code>size mismatch for</code></strong>，不是 <code>encoder.layer3.attn.qkv.weight</code>。</p>
 <p>⚠️ <strong>另一条</strong>：PyTorch 的报错<strong>经常在最后一行才说真话</strong>，前面几十行是框架内部的调用栈。先看最后一行，再往上找你自己的文件名。</p>
-<hr />
-<h2 id="autograd">🧨 一、autograd 与梯度</h2>
+<hr>
+</section><section class="cross-unit" id="read-gradient" aria-labelledby="read-gradient-title"><h2 id="read-gradient-title">梯度与就地操作</h2><p class="cross-cue">先找稳定的报错片段，再沿右侧链接回到机制解释。</p><h3 id="autograd">🧨 一、autograd 与梯度</h3>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -339,37 +344,37 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <tr>
 <td><code>Trying to backward through the graph a second time (or directly access saved tensors after they have already been freed).</code></td>
 <td>⭐ <strong>图默认用完就扔</strong>。多半是同一个 <code>loss</code> 调了两次 <code>backward()</code>，或者把上一步的图挂在了这一步上（RNN 的 hidden 忘了 <code>detach()</code>）。真需要就 <code>retain_graph=True</code>，但先想想是不是漏了 <code>detach</code></td>
-<td><a href="02-autograd怎么建图.html">02</a></td>
+<td><a href="02-autograd%E6%80%8E%E4%B9%88%E5%BB%BA%E5%9B%BE.html">02</a></td>
 </tr>
 <tr>
 <td><code>element 0 of tensors does not require grad and does not have a grad_fn</code></td>
 <td>⚠️ <strong>成因至少四种</strong>：①忘了 <code>requires_grad=True</code> ②在 <code>no_grad()</code> 里算的 ③中途绕出框架（numpy / <code>.item()</code> / 外部库）④自定义 <code>Function</code> 的 <code>backward</code> 里忘了 <code>with torch.enable_grad():</code></td>
-<td><a href="02-autograd怎么建图.html">02</a> · <a href="04-detach与no_grad.html">04</a> · <a href="09-自定义算子.html">09</a></td>
+<td><a href="02-autograd%E6%80%8E%E4%B9%88%E5%BB%BA%E5%9B%BE.html">02</a> · <a href="04-detach%E4%B8%8Eno_grad.html">04</a> · <a href="09-%E8%87%AA%E5%AE%9A%E4%B9%89%E7%AE%97%E5%AD%90.html">09</a></td>
 </tr>
 <tr>
 <td><code>grad can be implicitly created only for scalar outputs</code></td>
 <td>对一个<strong>非标量</strong>调了 <code>backward()</code>。要么 <code>.sum()</code> / <code>.mean()</code> 成标量，要么显式传 <code>backward(torch.ones_like(y))</code></td>
-<td><a href="02-autograd怎么建图.html">02</a></td>
+<td><a href="02-autograd%E6%80%8E%E4%B9%88%E5%BB%BA%E5%9B%BE.html">02</a></td>
 </tr>
 <tr>
 <td><code>Can't call numpy() on Tensor that requires grad. Use tensor.detach().numpy() instead.</code></td>
 <td>⭐ 报错自带修法。注意 <code>.detach()</code> 之后<strong>还是共享内存的</strong></td>
-<td><a href="01-张量到底是什么.html">01</a> · <a href="04-detach与no_grad.html">04</a></td>
+<td><a href="01-%E5%BC%A0%E9%87%8F%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88.html">01</a> · <a href="04-detach%E4%B8%8Eno_grad.html">04</a></td>
 </tr>
 <tr>
 <td><code>UserWarning: The .grad attribute of a Tensor that is not a leaf Tensor is being accessed.</code></td>
 <td>⚠️ <strong>这是 warning 不是报错</strong>，你会拿到 <code>None</code>。中间结果默认不留梯度，要留就 <code>y.retain_grad()</code></td>
-<td><a href="02-autograd怎么建图.html">02</a></td>
+<td><a href="02-autograd%E6%80%8E%E4%B9%88%E5%BB%BA%E5%9B%BE.html">02</a></td>
 </tr>
 <tr>
 <td><code>Inference tensors cannot be saved for backward.</code></td>
 <td>在 <code>torch.inference_mode()</code> 里造的张量流进了要求导的计算。报错自带两个修法：<code>.clone()</code> 一份，或者改用 <code>torch.no_grad()</code></td>
-<td><a href="04-detach与no_grad.html">04</a></td>
+<td><a href="04-detach%E4%B8%8Eno_grad.html">04</a></td>
 </tr>
 </tbody>
 </table></div>
-<hr />
-<h2 id="_3">🔧 二、就地操作</h2>
+<hr>
+<h3 id="_3">🔧 二、就地操作</h3>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -382,27 +387,27 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <tr>
 <td><code>a leaf Variable that requires grad is being used in an in-place operation.</code></td>
 <td>⭐ 直接改参数/叶子张量（<code>w += 1</code>、<code>w.mul_(0.9)</code>）。要改就包在 <code>with torch.no_grad():</code> 里，或者改 <code>w.data</code>（不推荐）</td>
-<td><a href="03-三种就地操作报错.html">03</a></td>
+<td><a href="03-%E4%B8%89%E7%A7%8D%E5%B0%B1%E5%9C%B0%E6%93%8D%E4%BD%9C%E6%8A%A5%E9%94%99.html">03</a></td>
 </tr>
 <tr>
 <td><code>a view of a leaf Variable that requires grad is being used in an in-place operation.</code></td>
 <td>同上，只是隔了一层 <code>view</code> / 切片（<code>x.view(2,2).add_(1)</code>、<code>x[0] = 1</code>）</td>
-<td><a href="03-三种就地操作报错.html">03</a></td>
+<td><a href="03-%E4%B8%89%E7%A7%8D%E5%B0%B1%E5%9C%B0%E6%93%8D%E4%BD%9C%E6%8A%A5%E9%94%99.html">03</a></td>
 </tr>
 <tr>
 <td><code>one of the variables needed for gradient computation has been modified by an inplace operation: […], which is output 0 of Sigmoid, is at version 1; expected version 0 instead.</code></td>
 <td>⭐ <strong>前向存下来给反向用的中间结果被改了</strong>。<code>which is output 0 of Xxx</code> 直接点名了是哪个算子的输出，从那里往后找 <code>_</code> 结尾的调用或 <code>inplace=True</code></td>
-<td><a href="03-三种就地操作报错.html">03</a> · <a href="09-自定义算子.html">09</a></td>
+<td><a href="03-%E4%B8%89%E7%A7%8D%E5%B0%B1%E5%9C%B0%E6%93%8D%E4%BD%9C%E6%8A%A5%E9%94%99.html">03</a> · <a href="09-%E8%87%AA%E5%AE%9A%E4%B9%89%E7%AE%97%E5%AD%90.html">09</a></td>
 </tr>
 <tr>
 <td>上面那条后面跟着 <code>Hint: enable anomaly detection …set_detect_anomaly(True, check_nan=False)</code></td>
 <td>照做。开了之后 Hint 会变成 <code>the backtrace further above shows the operation that failed…</code>，<strong>上方多出的那段栈才是真凶所在</strong></td>
-<td><a href="03-三种就地操作报错.html">03</a></td>
+<td><a href="03-%E4%B8%89%E7%A7%8D%E5%B0%B1%E5%9C%B0%E6%93%8D%E4%BD%9C%E6%8A%A5%E9%94%99.html">03</a></td>
 </tr>
 </tbody>
 </table></div>
-<hr />
-<h2 id="dtype">📏 三、形状与 dtype</h2>
+<hr>
+</section><section class="cross-unit" id="read-shape" aria-labelledby="read-shape-title"><h2 id="read-shape-title">形状、类型与模型状态</h2><p class="cross-cue">不要只让报错消失，还要核对输入与模型原来的约定。</p><h3 id="dtype">📏 三、形状与 dtype</h3>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -415,57 +420,57 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <tr>
 <td><code>mat1 and mat2 shapes cannot be multiplied (3x4 and 5x2)</code></td>
 <td>矩阵乘的内维对不上。⭐ <strong>括号里两个形状按顺序就是左右操作数</strong>，<code>4 != 5</code> 一眼可见</td>
-<td><a href="01-张量到底是什么.html">01</a></td>
+<td><a href="01-%E5%BC%A0%E9%87%8F%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88.html">01</a></td>
 </tr>
 <tr>
 <td><code>mat1 and mat2 must have the same dtype, but got Double and Float</code></td>
 <td>⚠️ 十有八九是<strong>数据是 <code>float64</code>、模型是 <code>float32</code></strong>。源头常在 <code>DataLoader</code>：<code>__getitem__</code> 返回了 python <code>float</code></td>
-<td><a href="01-张量到底是什么.html">01</a> · <a href="08-DataLoader与多进程.html">08</a></td>
+<td><a href="01-%E5%BC%A0%E9%87%8F%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88.html">01</a> · <a href="08-DataLoader%E4%B8%8E%E5%A4%9A%E8%BF%9B%E7%A8%8B.html">08</a></td>
 </tr>
 <tr>
 <td><code>The size of tensor a (3) must match the size of tensor b (4) at non-singleton dimension 0</code></td>
 <td>广播对不齐。从<strong>右往左</strong>逐维看，只有相等或其中一个是 1 才行</td>
-<td><a href="01-张量到底是什么.html">01</a></td>
+<td><a href="01-%E5%BC%A0%E9%87%8F%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88.html">01</a></td>
 </tr>
 <tr>
 <td><code>view size is not compatible with input tensor's size and stride (at least one dimension spans across two contiguous subspaces). Use .reshape(...) instead.</code></td>
 <td>⭐ 转置/切片之后内存不连续了。报错自带修法（<code>.reshape</code>），想要真连续用 <code>.contiguous()</code></td>
-<td><a href="01-张量到底是什么.html">01</a></td>
+<td><a href="01-%E5%BC%A0%E9%87%8F%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88.html">01</a></td>
 </tr>
 <tr>
 <td><code>Boolean value of Tensor with more than one value is ambiguous</code></td>
 <td>把一个多元素张量当成了 <code>if</code> 的条件。想问「有没有」用 <code>.any()</code>，「是不是全都」用 <code>.all()</code></td>
-<td><a href="01-张量到底是什么.html">01</a></td>
+<td><a href="01-%E5%BC%A0%E9%87%8F%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88.html">01</a></td>
 </tr>
 <tr>
 <td><code>a Tensor with 2 elements cannot be converted to Scalar</code></td>
 <td><code>.item()</code> / <code>float()</code> 只能用在单元素张量上</td>
-<td><a href="01-张量到底是什么.html">01</a></td>
+<td><a href="01-%E5%BC%A0%E9%87%8F%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88.html">01</a></td>
 </tr>
 <tr>
 <td><code>Expected more than 1 value per channel when training, got input size torch.Size([1, 2])</code></td>
 <td>⭐ <strong>BatchNorm 在 <code>train()</code> 模式下拿到了只有 1 条样本的 batch</strong>。最常见的成因是 <code>drop_last=False</code> 时最后一个 batch 只剩 1 条。修法：<code>drop_last=True</code>，或者推理时记得 <code>.eval()</code></td>
-<td><a href="07-train和eval改了什么.html">07</a> · <a href="08-DataLoader与多进程.html">08</a></td>
+<td><a href="07-train%E5%92%8Ceval%E6%94%B9%E4%BA%86%E4%BB%80%E4%B9%88.html">07</a> · <a href="08-DataLoader%E4%B8%8E%E5%A4%9A%E8%BF%9B%E7%A8%8B.html">08</a></td>
 </tr>
 <tr>
 <td><code>IndexError: Target 5 is out of bounds.</code></td>
 <td><code>cross_entropy</code> 的标签超出了 <code>num_classes</code>。⚠️ 类别从 <strong>0</strong> 开始编号</td>
-<td><a href="01-张量到底是什么.html">01</a></td>
+<td><a href="01-%E5%BC%A0%E9%87%8F%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88.html">01</a></td>
 </tr>
 <tr>
 <td><code>expected target dtype to be Long or Byte, but got Float</code></td>
 <td>分类标签必须是整型（<code>.long()</code>），别喂 one-hot 也别喂 float</td>
-<td><a href="01-张量到底是什么.html">01</a></td>
+<td><a href="01-%E5%BC%A0%E9%87%8F%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88.html">01</a></td>
 </tr>
 <tr>
 <td><code>Expected input batch_size (4) to match target batch_size (2).</code></td>
 <td>输入和标签的第 0 维不一样长。常见于忘了 <code>squeeze</code> / 多算了一次切分</td>
-<td><a href="01-张量到底是什么.html">01</a></td>
+<td><a href="01-%E5%BC%A0%E9%87%8F%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88.html">01</a></td>
 </tr>
 </tbody>
 </table></div>
-<hr />
-<h2 id="nnmodule-state_dict">🧱 四、<code>nn.Module</code> 与 <code>state_dict</code></h2>
+<hr>
+<h3 id="nnmodule-state_dict">🧱 四、<code>nn.Module</code> 与 <code>state_dict</code></h3>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -478,42 +483,42 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <tr>
 <td><code>cannot assign module before Module.__init__() call</code></td>
 <td>⭐ <code>__init__</code> 里忘了写 <code>super().__init__()</code>，而这一行正是让 <code>nn.Module</code> 的注册机制活起来的那一行</td>
-<td><a href="05-nnModule内部.html">05</a></td>
+<td><a href="05-nnModule%E5%86%85%E9%83%A8.html">05</a></td>
 </tr>
 <tr>
 <td><code>cannot assign 'torch.FloatTensor' as parameter 'w' (torch.nn.Parameter or None expected)</code></td>
 <td>想给一个已经是 <code>Parameter</code> 的属性赋一个普通张量。要改值用 <code>w.data.copy_(...)</code> 或 <code>with torch.no_grad(): w.copy_(...)</code></td>
-<td><a href="05-nnModule内部.html">05</a></td>
+<td><a href="05-nnModule%E5%86%85%E9%83%A8.html">05</a></td>
 </tr>
 <tr>
 <td><code>ValueError: optimizer got an empty parameter list</code></td>
 <td>⭐ <strong>参数没被注册</strong>。最常见的是把子模块装进了 python <code>list</code>（要用 <code>nn.ModuleList</code>）或 <code>dict</code>（要用 <code>nn.ModuleDict</code>）</td>
-<td><a href="05-nnModule内部.html">05</a></td>
+<td><a href="05-nnModule%E5%86%85%E9%83%A8.html">05</a></td>
 </tr>
 <tr>
 <td><code>AttributeError: 'Linear' object has no attribute 'fc3'</code></td>
 <td>名字写错，或者那个子模块在另一个分支里才创建</td>
-<td><a href="05-nnModule内部.html">05</a></td>
+<td><a href="05-nnModule%E5%86%85%E9%83%A8.html">05</a></td>
 </tr>
 <tr>
 <td><code>Error(s) in loading state_dict for X: size mismatch for 0.weight: copying a param with shape torch.Size([8, 4]) from checkpoint, the shape in current model is torch.Size([16, 4]).</code></td>
 <td>⭐ <strong>结构超参对不上</strong>（隐层宽度、类别数、词表大小）。⚠️ 光有权重不够，构造超参必须一起交付</td>
-<td><a href="06-state_dict与存取.html">06</a> · <a href="10-把模型交出去.html">10</a></td>
+<td><a href="06-state_dict%E4%B8%8E%E5%AD%98%E5%8F%96.html">06</a> · <a href="10-%E6%8A%8A%E6%A8%A1%E5%9E%8B%E4%BA%A4%E5%87%BA%E5%8E%BB.html">10</a></td>
 </tr>
 <tr>
 <td><code>Missing key(s) in state_dict: "1.weight", "1.bias".</code></td>
 <td>模型比 checkpoint 多了层。<code>strict=False</code> 能放过，但<strong>放过的就是没被加载的</strong></td>
-<td><a href="06-state_dict与存取.html">06</a></td>
+<td><a href="06-state_dict%E4%B8%8E%E5%AD%98%E5%8F%96.html">06</a></td>
 </tr>
 <tr>
 <td><code>Unexpected key(s) in state_dict: "_orig_mod.fc1.weight", …</code></td>
 <td>⭐ <strong>所有 key 都多了同一个前缀</strong> = 你存的是包装过的模型。<code>_orig_mod.</code> 来自 <code>torch.compile</code>，<code>module.</code> 来自 <code>DataParallel</code> / <code>DDP</code>。✅ 存 <code>model._orig_mod.state_dict()</code> / <code>model.module.state_dict()</code></td>
-<td><a href="06-state_dict与存取.html">06</a> · <a href="10-把模型交出去.html">10</a></td>
+<td><a href="06-state_dict%E4%B8%8E%E5%AD%98%E5%8F%96.html">06</a> · <a href="10-%E6%8A%8A%E6%A8%A1%E5%9E%8B%E4%BA%A4%E5%87%BA%E5%8E%BB.html">10</a></td>
 </tr>
 </tbody>
 </table></div>
-<hr />
-<h2 id="dataloader">🚚 五、<code>DataLoader</code> 与多进程</h2>
+<hr>
+</section><section class="cross-unit" id="read-loader" aria-labelledby="read-loader-title"><h2 id="read-loader-title">数据加载与自定义算子</h2><p class="cross-cue">先分清外层错误和内部真正出错的位置。</p><h3 id="dataloader">🚚 五、<code>DataLoader</code> 与多进程</h3>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -526,27 +531,27 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <tr>
 <td><code>An attempt has been made to start a new process before the current process has finished its bootstrapping phase.</code></td>
 <td>⭐ <strong>Windows / spawn 下忘了 <code>if __name__ == "__main__":</code></strong>。把建 <code>DataLoader</code> 和跑循环的代码放进去</td>
-<td><a href="08-DataLoader与多进程.html">08</a></td>
+<td><a href="08-DataLoader%E4%B8%8E%E5%A4%9A%E8%BF%9B%E7%A8%8B.html">08</a></td>
 </tr>
 <tr>
 <td><code>Caught RuntimeError in DataLoader worker process 0.</code> + <code>Original Traceback (most recent call last):</code></td>
 <td>⚠️ <strong>这不是错误本身，是一个信封。</strong> 真正的报错在下面那段 <code>Original Traceback</code> 的最后一行。💡 排查时先把 <code>num_workers=0</code>，栈就干净了</td>
-<td><a href="08-DataLoader与多进程.html">08</a></td>
+<td><a href="08-DataLoader%E4%B8%8E%E5%A4%9A%E8%BF%9B%E7%A8%8B.html">08</a></td>
 </tr>
 <tr>
 <td><code>stack expects each tensor to be equal size, but got [3] at entry 0 and [4] at entry 1</code></td>
 <td>⭐ 样本变长（文本 / 音频 / 点云）。自己写 <code>collate_fn</code> 用 <code>pad_sequence</code> 补齐，<strong>并且一定要把真实长度也返回</strong>，否则下游造不出 mask</td>
-<td><a href="08-DataLoader与多进程.html">08</a></td>
+<td><a href="08-DataLoader%E4%B8%8E%E5%A4%9A%E8%BF%9B%E7%A8%8B.html">08</a></td>
 </tr>
 <tr>
 <td><code>default_collate: batch must contain tensors, numpy arrays, numbers, dicts or lists; found &lt;class '…'&gt;</code></td>
 <td><code>__getitem__</code> 返回了自定义对象（<code>PIL.Image</code>、<code>dataclass</code>、spaCy 的 <code>Doc</code>）。在 <code>__getitem__</code> 里就转成张量，或者自己写 collate</td>
-<td><a href="08-DataLoader与多进程.html">08</a></td>
+<td><a href="08-DataLoader%E4%B8%8E%E5%A4%9A%E8%BF%9B%E7%A8%8B.html">08</a></td>
 </tr>
 </tbody>
 </table></div>
-<hr />
-<h2 id="_4">🛠️ 六、自定义算子</h2>
+<hr>
+<h3 id="_4">🛠️ 六、自定义算子</h3>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -559,27 +564,27 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <tr>
 <td><code>Legacy autograd function with non-static forward method is deprecated. Please use new-style autograd function with static forward method.</code></td>
 <td>💀 <strong>报错指错了方向</strong>：你的 <code>forward</code> 很可能已经写了 <code>@staticmethod</code>，真正的原因是你<strong>实例化了</strong>（<code>Square()(x)</code>）。正确写法是 <code>Square.apply(x)</code></td>
-<td><a href="09-自定义算子.html">09</a></td>
+<td><a href="09-%E8%87%AA%E5%AE%9A%E4%B9%89%E7%AE%97%E5%AD%90.html">09</a></td>
 </tr>
 <tr>
 <td><code>function XxxBackward returned an incorrect number of gradients (expected 2, got 1)</code></td>
 <td>⭐ <code>backward</code> 返回值的个数必须等于 <code>forward</code> 的入参个数。非张量入参返回 <code>None</code> 占位</td>
-<td><a href="09-自定义算子.html">09</a></td>
+<td><a href="09-%E8%87%AA%E5%AE%9A%E4%B9%89%E7%AE%97%E5%AD%90.html">09</a></td>
 </tr>
 <tr>
 <td><code>GradcheckError: Jacobian mismatch for output 0 with respect to input 0,</code> 后面跟着 <code>numerical:</code> / <code>analytical:</code> 两个矩阵</td>
 <td><code>numerical</code> 可信、<code>analytical</code> 是你写的。⭐ <strong>先看两者的比值</strong>：差常数倍是系数写错，差符号是正负反了。⚠️ 但<strong>第一件事是确认输入是不是 <code>torch.double</code></strong> —— <code>float32</code> 下正确的实现也会失败</td>
-<td><a href="09-自定义算子.html">09</a></td>
+<td><a href="09-%E8%87%AA%E5%AE%9A%E4%B9%89%E7%AE%97%E5%AD%90.html">09</a></td>
 </tr>
 <tr>
 <td><code>UserWarning: Input #0 requires gradient and is not a double precision floating point or complex.</code></td>
 <td>就是上一条那个 dtype 问题的提醒，很容易被淹没在输出里</td>
-<td><a href="09-自定义算子.html">09</a></td>
+<td><a href="09-%E8%87%AA%E5%AE%9A%E4%B9%89%E7%AE%97%E5%AD%90.html">09</a></td>
 </tr>
 </tbody>
 </table></div>
-<hr />
-<h2 id="_5">📦 七、保存、导出、编译</h2>
+<hr>
+</section><section class="cross-unit" id="read-export" aria-labelledby="read-export-title"><h2 id="read-export-title">保存、导出与编译</h2><p class="cross-cue">把成功导出与交付后行为一致分开验收。</p><h3 id="_5">📦 七、保存、导出、编译</h3>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -592,47 +597,47 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <tr>
 <td><code>ModuleNotFoundError: No module named 'xxx'</code>（发生在 <code>torch.load</code> 里）</td>
 <td>💀 这个 checkpoint 是 <code>torch.save(model)</code> 存的，文件里写着<strong>你的模块路径</strong>。改过目录结构 / 改过类名 / 对方没有你的代码，都会撞上。✅ 只存 <code>state_dict</code></td>
-<td><a href="10-把模型交出去.html">10</a></td>
+<td><a href="10-%E6%8A%8A%E6%A8%A1%E5%9E%8B%E4%BA%A4%E5%87%BA%E5%8E%BB.html">10</a></td>
 </tr>
 <tr>
 <td><code>UnpicklingError: Weights only load failed.</code> + <code>WeightsUnpickler error: Unsupported global: GLOBAL xxx was not an allowed global by default.</code></td>
 <td>⭐ <strong>PyTorch 2.6 起 <code>torch.load</code> 默认 <code>weights_only=True</code></strong>。⚠️ 最容易中招的是 checkpoint 里塞了 <strong>numpy 数组</strong>（<code>GLOBAL numpy._core.multiarray._reconstruct</code>）或配置对象（<code>GLOBAL argparse.Namespace</code>）。修法优先级：别塞对象 → <code>torch.serialization.safe_globals([...])</code> → <code>weights_only=False</code>（仅限文件是自己产的）</td>
-<td><a href="10-把模型交出去.html">10</a></td>
+<td><a href="10-%E6%8A%8A%E6%A8%A1%E5%9E%8B%E4%BA%A4%E5%87%BA%E5%8E%BB.html">10</a></td>
 </tr>
 <tr>
 <td><code>TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect.</code></td>
 <td>💀💀 <strong>这是 warning，但它意味着你的导出模型是错的</strong>：<code>torch.jit.trace</code> 把数据相关的 <code>if</code> 写死成了常量。✅ 改用 <code>torch.jit.script</code> 或 <code>torch.export</code></td>
-<td><a href="10-把模型交出去.html">10</a></td>
+<td><a href="10-%E6%8A%8A%E6%A8%A1%E5%9E%8B%E4%BA%A4%E5%87%BA%E5%8E%BB.html">10</a></td>
 </tr>
 <tr>
 <td><code>TracerWarning: torch.from_numpy results are registered as constants in the trace.</code></td>
 <td>💀💀💀 更狠的一种：<code>forward</code> 里绕出去用 numpy 算了，整段计算被折成一个常量。<strong>实测导出的 ONNX 图会没有输入、永远返回同一个值</strong></td>
-<td><a href="09-自定义算子.html">09</a> · <a href="10-把模型交出去.html">10</a></td>
+<td><a href="09-%E8%87%AA%E5%AE%9A%E4%B9%89%E7%AE%97%E5%AD%90.html">09</a> · <a href="10-%E6%8A%8A%E6%A8%A1%E5%9E%8B%E4%BA%A4%E5%87%BA%E5%8E%BB.html">10</a></td>
 </tr>
 <tr>
 <td><code>ModuleNotFoundError: No module named 'onnxscript'</code>（发生在 <code>torch.onnx.export</code> 里）</td>
 <td>PyTorch 2.9 起 ONNX 导出默认走新的 <code>torch.export</code> 导出器。装 <code>onnxscript</code>，或者 <code>dynamo=False</code> 退回老路（会收到一条 <code>legacy TorchScript-based ONNX export</code> 的 DeprecationWarning）</td>
-<td><a href="10-把模型交出去.html">10</a></td>
+<td><a href="10-%E6%8A%8A%E6%A8%A1%E5%9E%8B%E4%BA%A4%E5%87%BA%E5%8E%BB.html">10</a></td>
 </tr>
 <tr>
 <td><code>GuardOnDataDependentSymNode: Could not guard on data-dependent expression …</code></td>
 <td>⭐ <code>torch.export</code> 遇到了数据相关的分支。<strong>这是好事</strong> —— trace 会悄悄给你一个错模型，它选择报错</td>
-<td><a href="10-把模型交出去.html">10</a></td>
+<td><a href="10-%E6%8A%8A%E6%A8%A1%E5%9E%8B%E4%BA%A4%E5%87%BA%E5%8E%BB.html">10</a></td>
 </tr>
 <tr>
 <td><code>AssertionError: Guard failed: x.size()[0] == 2</code></td>
 <td><code>torch.export</code> 默认把形状写死了。用 <code>torch.export.Dim("batch")</code> 声明动态维。⚠️ 样例输入的 batch <strong>别用 1</strong>（0/1 会被特化，会报 <code>Constraints violated</code>）</td>
-<td><a href="10-把模型交出去.html">10</a></td>
+<td><a href="10-%E6%8A%8A%E6%A8%A1%E5%9E%8B%E4%BA%A4%E5%87%BA%E5%8E%BB.html">10</a></td>
 </tr>
 <tr>
 <td><code>InductorError: InvalidCxxCompiler: Compiler: cl is not found.</code></td>
 <td><code>torch.compile</code> 的 CPU 后端要<strong>生成 C++ 再编译</strong>，Windows 上需要 MSVC 的 <code>cl.exe</code>（GPU 上则需要 Triton）。它不是纯 Python 的东西</td>
-<td><a href="10-把模型交出去.html">10</a></td>
+<td><a href="10-%E6%8A%8A%E6%A8%A1%E5%9E%8B%E4%BA%A4%E5%87%BA%E5%8E%BB.html">10</a></td>
 </tr>
 </tbody>
 </table></div>
-<hr />
-<h2 id="_6">💀 八、不报错、但是错的（最贵的一类）</h2>
+<hr>
+</section><section class="cross-unit" id="read-silent" aria-labelledby="read-silent-title"><h2 id="read-silent-title">不报错，却算错了</h2><p class="cross-cue">这里没有错误字符串可搜：按症状找下一步检查。</p><h3 id="_6">💀 八、不报错、但是错的（最贵的一类）</h3>
 <p>⭐ <strong>这一节没有报错原文可搜 —— 正因为如此，它比上面所有条目加起来都值钱。</strong></p>
 <div class="tw"><table>
 <thead>
@@ -646,37 +651,37 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <tr>
 <td>loss 下降得比预期慢，或者收敛到一个稍差的点</td>
 <td>⭐ 忘了 <code>optimizer.zero_grad()</code>。<strong>梯度是累加的</strong>：实测同一个 <code>w</code> 连做三次 <code>backward()</code>，<code>w.grad</code> 从 2 变成 <strong>6</strong></td>
-<td><a href="02-autograd怎么建图.html">02</a></td>
+<td><a href="02-autograd%E6%80%8E%E4%B9%88%E5%BB%BA%E5%9B%BE.html">02</a></td>
 </tr>
 <tr>
 <td>验证集精度莫名其妙比训练时差</td>
 <td>忘了 <code>model.eval()</code>（Dropout 还在丢、BN 还在更新 running 统计量）</td>
-<td><a href="07-train和eval改了什么.html">07</a></td>
+<td><a href="07-train%E5%92%8Ceval%E6%94%B9%E4%BA%86%E4%BB%80%E4%B9%88.html">07</a></td>
 </tr>
 <tr>
 <td>训练正常，但 GPU 上「开了混合精度却没提速」</td>
 <td>⚠️ <code>__getitem__</code> 返回了 python <code>float</code>，默认 collate 把它变成 <strong><code>float64</code></strong>，整条 loss 链路被静默提升成双精度</td>
-<td><a href="08-DataLoader与多进程.html">08</a></td>
+<td><a href="08-DataLoader%E4%B8%8E%E5%A4%9A%E8%BF%9B%E7%A8%8B.html">08</a></td>
 </tr>
 <tr>
 <td>数据增强「看起来是随机的」，但训练效果就是差一点</td>
 <td>💀 把随机数发生器存进了 <code>self</code>，每个 worker 拿到同一份副本。实测 <code>num_workers=2</code> 时 8 条样本去重后只剩 <strong>4</strong> 条</td>
-<td><a href="08-DataLoader与多进程.html">08</a></td>
+<td><a href="08-DataLoader%E4%B8%8E%E5%A4%9A%E8%BF%9B%E7%A8%8B.html">08</a></td>
 </tr>
 <tr>
 <td>一个 epoch 变长了，每条数据被重复训练</td>
 <td><code>IterableDataset</code> 在多 worker 下没分片：实测 6 条的数据集在 <code>num_workers=3</code> 下吐出 <strong>18 条</strong></td>
-<td><a href="08-DataLoader与多进程.html">08</a></td>
+<td><a href="08-DataLoader%E4%B8%8E%E5%A4%9A%E8%BF%9B%E7%A8%8B.html">08</a></td>
 </tr>
 <tr>
 <td>自定义算子的梯度<strong>大了一个整数倍</strong></td>
 <td>💀 用 <code>ctx.x = x</code> 而不是 <code>ctx.save_for_backward(x)</code>：前者只存引用、<strong>没有版本检查</strong>，实测前向存的张量被就地改之后梯度从 <code>[2,4,6]</code> 变成 <code>[20,40,60]</code> 且<strong>不报错</strong></td>
-<td><a href="09-自定义算子.html">09</a></td>
+<td><a href="09-%E8%87%AA%E5%AE%9A%E4%B9%89%E7%AE%97%E5%AD%90.html">09</a></td>
 </tr>
 <tr>
 <td>导出的模型在你测的那条样例上完全正确，上线之后胡说八道</td>
 <td>💀💀 <code>trace</code> / 老 ONNX 导出器把数据相关的分支写死了。实测负样例 PyTorch 给 <code>[1.0, 2.0]</code>、导出模型给 <code>[-2.0, -4.0]</code></td>
-<td><a href="10-把模型交出去.html">10</a></td>
+<td><a href="10-%E6%8A%8A%E6%A8%A1%E5%9E%8B%E4%BA%A4%E5%87%BA%E5%8E%BB.html">10</a></td>
 </tr>
 </tbody>
 </table></div>
@@ -684,8 +689,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <blockquote>
 <p><strong>导出/交付之后，拿一批（不是一条）真实数据，逐条比对原模型和交付物的输出。</strong></p>
 </blockquote>
-<hr />
-<h2 id="_7">🗓️ 九、本页没有实跑的部分</h2>
+<hr>
+</section><section class="cross-unit" id="read-review" aria-labelledby="read-review-title"><h2 id="read-review-title">覆盖边界与检查点</h2><p class="cross-cue">本页的环境限制、跨章导航和答案保持可见或可展开。</p><h3 id="_7">🗓️ 九、本页没有实跑的部分</h3>
 <p>⚠️ 本页所有报错原文都来自 <strong>torch 2.13.0+cpu</strong>，而本机 <strong>CUDA 不可用</strong>。
 所以下面这几类故意没有收录，免得抄错一个字反而误导你：</p>
 <div class="tw"><table>
@@ -702,7 +707,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 <tr>
 <td>NCCL / 分布式训练的超时与卡死</td>
-<td>同上，且属于 <a href="../AI基础设施/index.html">《AI基础设施》</a> 的范围</td>
+<td>同上，且属于 <a href="../AI%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD/index.html">《AI基础设施》</a> 的范围</td>
 </tr>
 <tr>
 <td><code>torch.compile</code> 编译成功之后的行为（重编译、graph break 日志）</td>
@@ -710,8 +715,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<hr />
-<h2 id="_8">🔗 这一章连到哪里</h2>
+<hr>
+<h3 id="_8">🔗 这一章连到哪里</h3>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -721,33 +726,33 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </thead>
 <tbody>
 <tr>
-<td><a href="00-怎么用这份教程.html">00 · 怎么用这份教程</a></td>
+<td><a href="00-%E6%80%8E%E4%B9%88%E7%94%A8%E8%BF%99%E4%BB%BD%E6%95%99%E7%A8%8B.html">00 · 怎么用这份教程</a></td>
 <td>章节地图和几条读法路线</td>
 </tr>
 <tr>
-<td><a href="../机器学习与深度学习基础/15-PyTorch实战手册.html">《机器学习与深度学习基础》15 · PyTorch 实战手册</a></td>
+<td><a href="../%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/15-PyTorch%E5%AE%9E%E6%88%98%E6%89%8B%E5%86%8C.html">《机器学习与深度学习基础》15 · PyTorch 实战手册</a></td>
 <td>⭐ 「十分钟跑通一个训练循环」和六个高频 Bug 在那里 —— <strong>本板块刻意不重复那一层</strong></td>
 </tr>
 <tr>
-<td><a href="../机器学习与深度学习基础/附录C-手撕代码速查.html">《机器学习与深度学习基础》附录C · 手撕代码速查</a></td>
+<td><a href="../%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/%E9%99%84%E5%BD%95C-%E6%89%8B%E6%92%95%E4%BB%A3%E7%A0%81%E9%80%9F%E6%9F%A5.html">《机器学习与深度学习基础》附录C · 手撕代码速查</a></td>
 <td>面试要手写的那批实现（含 <code>.contiguous()</code> 的急救写法）</td>
 </tr>
 <tr>
-<td><a href="../AI基础设施/附录A-速查.html">《AI基础设施》附录A · 速查</a></td>
+<td><a href="../AI%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD/%E9%99%84%E5%BD%95A-%E9%80%9F%E6%9F%A5.html">《AI基础设施》附录A · 速查</a></td>
 <td>显存账、并行策略、推理优化那一侧的速查</td>
 </tr>
 <tr>
-<td><a href="../Python会咬你的地方/index.html">《Python 会咬你的地方》</a></td>
+<td><a href="../Python%E4%BC%9A%E5%92%AC%E4%BD%A0%E7%9A%84%E5%9C%B0%E6%96%B9/index.html">《Python 会咬你的地方》</a></td>
 <td>进程模型、GIL、pickle 代价 —— DataLoader 那几条报错的下一层</td>
 </tr>
 <tr>
-<td><a href="../框架底下是C++/index.html">《框架底下是 C++》</a></td>
+<td><a href="../%E6%A1%86%E6%9E%B6%E5%BA%95%E4%B8%8B%E6%98%AFC++/index.html">《框架底下是 C++》</a></td>
 <td>报错栈掉进 C++ 之后怎么读、算子在那一侧怎么注册</td>
 </tr>
 </tbody>
 </table></div>
-<hr />
-<h2 id="_9">✅ 检查点</h2>
+<hr>
+<h3 id="_9">✅ 检查点</h3>
 <ol>
 <li>搜报错的时候，该搜哪一段、不该搜哪一段？为什么说「先看最后一行」？</li>
 <li><code>element 0 of tensors does not require grad and does not have a grad_fn</code> 至少有哪四种成因？</li>
@@ -775,20 +780,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>因为本页所有报错都来自 <strong>torch 2.13.0+cpu</strong>，本机 CUDA 不可用，而这类报错的文本里带具体显存数字和设备编号 —— 🗓️ 抄错一个字反而误导。分布式那一侧属于《AI基础设施》。</li>
 </ol>
 </details>
-<hr />
-<h2 id="_10">🛑 可以停在这里</h2>
+<hr>
+<h3 id="_10">🛑 可以停在这里</h3>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>⭐ <strong>这一页是查的不是读的</strong>，但有几条值得直接记住。</p>
-<p><strong>怎么搜报错</strong>：⭐ <strong>只搜不含你变量名的那一段，而且先看最后一行</strong>——前面几十行都是框架内部栈。</p>
-<p><strong>autograd</strong> 两条：「第二次反向穿过同一张图」是因为图用完就扔，⚠️ <strong>先想想是不是漏了 <code>detach</code>，别急着开 <code>retain_graph</code></strong>；「没有 grad_fn」有四种成因（忘了开梯度、在无梯度上下文里算的、绕出了框架、自定义反向里忘了开）。
-⭐ 就地操作那条报错里<strong>最有用的信息是它点名了「是谁的输出被改了」</strong>。</p>
-<p><strong>形状与 dtype</strong>：乘法报错的括号里就是左右操作数；⭐ <strong>精度不匹配十有八九源头在数据加载那一侧</strong>；「每个通道要多于一个值」是归一化层拿到了只剩一条样本的最后一个 batch。</p>
-<p><strong>权重加载</strong>：形状对不上说明结构超参不一致——⭐ <strong>光有权重不够，超参必须一起交付</strong>；⭐ <strong>所有 key 都多了同一个前缀时，看前缀就知道是编译包装还是分布式包装加的。</strong></p>
-<p><strong>数据加载</strong>：worker 里的报错只是个信封，⭐ <strong>真话在下面那段「原始 traceback」的最后一行</strong>；排查先把工作进程数调成 0。</p>
-<p>💀💀 ⭐ <strong>最贵的是「不报错但是错的」那一节</strong>：梯度没清零、忘了切换到评估模式、整理函数悄悄改了 dtype、生成器被存进对象导致样本被吃掉、可迭代数据集没分片而重复吐出、把张量直接挂在 ctx 上导致梯度算错——<strong>这些全都不会给你任何报错。</strong></p>
-</blockquote>
-<p><strong>下一节</strong> 👉 <a href="index.html">回到板块索引</a></p>
+<section class="reading-recap" aria-label="走神救援"><ul><li>先看 traceback 最后一行，搜索不含个人变量名的报错片段。</li><li>梯度异常先查图是否断了；就地操作报错里，算子的输出名称能帮助定位。</li><li>state_dict 的形状与前缀要和模型结构、包装方式一起核对；DataLoader 的 worker 报错还要看内部原始栈。</li><li>没有报错不等于行为正确；按第八节症状排查，并对照原模型与交付物的批量输出。</li></ul></section>
+
+<p><strong>下一节</strong> 👉 <a href="index.html">回到板块索引</a></p></section></div></div>
+<aside class="lesson-rail cross-rail" aria-label="本页阅读路线"><button type="button" class="lesson-route-toggle" aria-expanded="true" aria-controls="cross-route">本页分类跳转 <span aria-hidden="true">⌄</span></button>
+<div id="cross-route"><p class="lesson-position">按问题选择，不需要顺读</p><nav class="lesson-route-links" aria-label="正文分组"><a href="#read-usage">先定位，不用通读</a><a href="#read-gradient">梯度与就地操作</a><a href="#read-shape">形状、类型与模型状态</a><a href="#read-loader">数据加载与自定义算子</a><a href="#read-export">保存、导出与编译</a><a href="#read-silent">不报错，却算错了</a><a href="#read-review">覆盖边界与检查点</a></nav>
+<p class="cross-route-note">一次只处理眼前这一组。正文、图解、代码与答案都保留在页面里。</p><button class="lesson-save" type="button">记住当前位置</button><p class="lesson-save-status" role="status"></p></div></aside></div>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="10-把模型交出去.html"><div class="dir">← 上一节</div>📤 10 · 把模型交出去</a><a class="next" href="index.html"><div class="dir">完成 →</div>🏠 回首页看进度</a></nav>
@@ -815,5 +815,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

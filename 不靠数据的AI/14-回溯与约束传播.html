@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -555,7 +555,7 @@ AC-3 一个值都删不掉，队列空了还报告「一切正常」。</p>
 经验：约束稠密、值域小、死局藏得深（数独、排班）→ 传播赚翻；约束稀疏（这张地图才 9 条边）→ 开销可能比省下的搜索还多。
 ⭐ 工业求解器通常默认开前向检查，把完整 AC-3 留成可调选项。</p>
 <h3 id="_9">一份能跑的求解器（回溯 + 前向检查）</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 
 <span class="n">AU</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;WA&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;NT&quot;</span><span class="p">,</span> <span class="s2">&quot;SA&quot;</span><span class="p">],</span> <span class="s2">&quot;NT&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;WA&quot;</span><span class="p">,</span> <span class="s2">&quot;SA&quot;</span><span class="p">,</span> <span class="s2">&quot;Q&quot;</span><span class="p">],</span> <span class="s2">&quot;SA&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;WA&quot;</span><span class="p">,</span> <span class="s2">&quot;NT&quot;</span><span class="p">,</span> <span class="s2">&quot;Q&quot;</span><span class="p">,</span> <span class="s2">&quot;NSW&quot;</span><span class="p">,</span> <span class="s2">&quot;V&quot;</span><span class="p">],</span>
       <span class="s2">&quot;Q&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;NT&quot;</span><span class="p">,</span> <span class="s2">&quot;SA&quot;</span><span class="p">,</span> <span class="s2">&quot;NSW&quot;</span><span class="p">],</span> <span class="s2">&quot;NSW&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Q&quot;</span><span class="p">,</span> <span class="s2">&quot;SA&quot;</span><span class="p">,</span> <span class="s2">&quot;V&quot;</span><span class="p">],</span> <span class="s2">&quot;V&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;SA&quot;</span><span class="p">,</span> <span class="s2">&quot;NSW&quot;</span><span class="p">],</span> <span class="s2">&quot;T&quot;</span><span class="p">:</span> <span class="p">[]}</span>
@@ -660,17 +660,8 @@ AC-3 一个值都删不掉，队列空了还报告「一切正常」。</p>
 <hr />
 <h2 id="_12">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>回溯搜索</strong>就是「每层固定一个变量」的深度优先。⭐ <strong>因为赋值可交换，叶子数从「排列 × 取值」压回「只有取值」那一项</strong>——几个数量级。</p>
-<p>⚠️⚠️ <strong>手算主线最该带走的一句：死局在第四步就注定了，而回溯要到第五步才发现——它只在撞墙时才拿到信息。</strong></p>
-<p><strong>前向检查</strong>把失败提前：赋值后立刻从每个未赋值邻居的值域里删掉冲突值，⭐ <strong>任一值域被删空就地回溯</strong>。实测试值次数掉一个量级。
-⚠️ <strong>但它有盲区：只从已赋值的那一端往外推一步，从不看两个都还没赋值的变量之间。</strong> 于是会出现「每个值域都非空、它报正常，可那两个相邻变量只剩同一个颜色」。</p>
-<p>⭐ <strong>弧相容补上这个洞</strong>：一条弧相容，是指起点的每个值都能在终点找到支持，找不到就删。⚠️ <strong>弧是有向的，一条边算两条弧。</strong> AC-3 的关键一步是⭐ <strong>删过值之后，要把所有指向它的弧重新入队——这就是「传播」。</strong></p>
-<p>⭐⭐ 同一个局面用 AC-3 手跑，<strong>全程一个新值都没赋，就把某个变量的值域删空、判定无解</strong>。</p>
-<p>⭐ <strong>核心洞察：前向检查只看一步，AC-3 把删值的后果一路传下去</strong>——很多标着「简单」的数独，在传播结束时就已经填满，<strong>一次分支都没有</strong>。</p>
-<p>⚠️ 但<strong>弧相容不完备</strong>：三个变量两两不等却只有两种颜色，显然无解，<strong>而每一条弧都是相容的</strong>——⭐ <strong>传播不能取代搜索，只能减负。</strong>
-⚠️ 代价也真实：稠密问题上传播赚翻，<strong>稀疏问题上开销可能超过收益</strong>——所以工业求解器默认只开前向检查。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>回溯逐个给变量赋值，遇到冲突就退回去试别的值。</li><li>前向检查提前删去邻居的冲突值；任一值域为空就能及时发现失败。</li><li>AC-3 会继续传播删值的后果，但弧相容不能保证整个问题有解。</li><li>传播帮助搜索减负；下一章再看变量和值的选择顺序怎样减少回溯。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="15-CSP的启发式.html">15-CSP的启发式.md</a></p>
 <blockquote>
 <p>去那里的理由：本章的变量顺序是<strong>写死的</strong> —— 而正是那个顺序亲手制造了第 ⑤ 步的死局。
@@ -704,5 +695,4 @@ AC-3 一个值都删不掉，队列空了还报告「一切正常」。</p>
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

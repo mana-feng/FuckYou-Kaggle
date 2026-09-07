@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -367,8 +367,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <td>完全通用</td>
 </tr>
 <tr>
-<td>评产出不评路径</td>
-<td>同样适用</td>
+<td>不强制唯一解题路径</td>
+<td>同时验证权限、审批、预算与业务副作用约束</td>
 </tr>
 <tr>
 <td>pass@k vs pass^k</td>
@@ -497,9 +497,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>读到这里，你已经有一条能今天下午就走完的路：<strong>捞 20–50 条真实失败案例 → 分维度打标签 → 定评分方式 → 拿它去选模型</strong>。
 <strong>什么时候回来看后面</strong>：当这套题开始要长期维护（换模型、加维度、防它自己饱和），或者你发现评分器和人的判断对不上时——去<a href="../智能体工程教程/14-评测Evals.html">智能体工程 14</a> 的八步。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>别人的榜单回答"谁通用能力强"，<strong>你的私有评测回答"谁适合我"，后者才是你要的</strong>。正确的选型流程是五步：benchmark <strong>粗筛</strong> → 拿自己的 <strong>20–50 个真实任务</strong>做私有评测（⭐ 这一步才是决定性的）→ 看和场景匹配的专项（做代码看代码、做中文看中文）→ 实测成本和延迟（分数不代表能用）→ 小流量 A/B。<strong>私有评测集一个下午就能建好</strong>：① 翻线上日志和用户反馈，捞出<strong>真实失败的 20–50 个案例</strong>——⚠️ <strong>不要自己编题，编的题总是太规整，测不出真实问题</strong>；② 每条记下输入、期望的输出特征、当时为什么错；③ <strong>分维度打标签</strong>（意图理解 / 格式 / 事实准确 / 语气……）；④ 定评分方式：<strong>能写代码判的一律优先用代码评分器</strong>，判不了但有标准的用 <strong>LLM-as-Judge（必须先对照人类校准）</strong>，真正主观的才人工抽样。⭐ 20–50 条就够开始，别等"建完整套"才用。<strong>三个常见错误</strong>：只放难题（分数全在 20% 上下，<strong>没有区分度</strong>）／只放当前模型答错的（换模型后失去代表性）／⭐ <strong>不分维度只看总分</strong>（总分持平，其实是格式变好了、事实变差了，你看不见）。⚠️ 记住这套题的用途是<strong>挡住明显退步</strong>，不是排名——上一页算过 100 题的置信区间已经有 ±7.8%。真要长期维护，去<strong>《智能体工程教程》第 14 章的八步 + 挑战项目 B</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>从真实输入和失败案例建立一个小而可维护的私有评测集。</li><li>写清期望行为并分维度评分，自动判定不了的部分再引入经过校准的裁判。</li><li>小样本适合发现明显退步，不适合把细小分差解释成确定排名。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="12-对齐与AI安全.html">12-对齐与AI安全.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -527,5 +526,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

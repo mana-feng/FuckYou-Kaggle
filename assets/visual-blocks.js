@@ -259,12 +259,42 @@
   }
 
   function wrapTables(root) {
-    Array.prototype.forEach.call(root.querySelectorAll("table"), function (table) {
-      if (table.parentElement && table.parentElement.classList.contains("table-scroll")) return;
-      var wrap = document.createElement("div");
-      wrap.className = "table-scroll";
-      table.parentNode.insertBefore(wrap, table);
-      wrap.appendChild(table);
+    Array.prototype.forEach.call(root.querySelectorAll("table"), function (table, index) {
+      var wrap = table.parentElement;
+      if (!wrap || !wrap.classList.contains("table-scroll")) {
+        wrap = document.createElement("div");
+        wrap.className = "table-scroll";
+        table.parentNode.insertBefore(wrap, table);
+        wrap.appendChild(table);
+      }
+      if (wrap.dataset.readingScrollHint) return;
+      var hint = document.createElement("p");
+      hint.id = "reading-table-scroll-hint-" + index;
+      hint.className = "table-scroll-hint";
+      hint.textContent = "表格较宽，可左右滑动查看完整内容。";
+      hint.hidden = true;
+      wrap.before(hint);
+      wrap.dataset.readingScrollHint = hint.id;
+      function updateHint() {
+        var wide = wrap.scrollWidth > wrap.clientWidth + 1;
+        hint.hidden = !wide;
+        wrap.tabIndex = wide ? 0 : -1;
+        if (wide) {
+          wrap.setAttribute("role", "region");
+          wrap.setAttribute("aria-label", "可横向滚动的表格");
+          wrap.setAttribute("aria-describedby", hint.id);
+        } else {
+          wrap.removeAttribute("role");
+          wrap.removeAttribute("aria-label");
+          wrap.removeAttribute("aria-describedby");
+        }
+      }
+      if (typeof ResizeObserver === "function") {
+        var observer = new ResizeObserver(updateHint);
+        observer.observe(wrap); observer.observe(table);
+      } else window.addEventListener("resize", updateHint);
+      if (document.fonts) document.fonts.ready.then(updateHint);
+      updateHint();
     });
   }
 

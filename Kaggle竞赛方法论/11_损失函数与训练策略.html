@@ -180,9 +180,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -1047,8 +1047,7 @@ th,td{min-width:5.2em}
 <hr />
 <h2 id="recap">🛑 可以停在这里</h2>
 <blockquote>
-<p>⚡ <strong>走神救援</strong><br />
-⭐<strong>损失函数定义「优化方向」，调参只决定「走多快」——方向错了走越快越远</strong>。核心原则：<strong>让损失尽量贴近赛题的评价指标</strong>。<strong>Focal Loss 按「难度」加权（降低已分对的容易样本的权重），类别权重按「类别」加权</strong>——不均衡且难样本集中时 Focal 更对症。<strong>分割用 Dice + 交叉熵组合</strong>：交叉熵逐像素独立（前景占比小时会被背景主导，「全预测背景」也能低 loss），<strong>Dice 直接优化区域重叠度和指标一致</strong>；组合是因为<strong>交叉熵给稳定的逐像素梯度、Dice 给和指标一致的区域信号</strong>。⭐<strong>指标不可微时</strong>：用可微代理损失训练 + <strong>在验证集上用真实指标搜后处理参数</strong>+ 用真实指标做早停选模型——<strong>很多赛题里后处理阈值搜索的提升比换损失更大</strong>。⚠️<strong>Label Smoothing 三个不该用的场景</strong>：需要精确概率、蒸馏的教师模型、标签已很干净时。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>损失给出优化方向，真实评价指标决定怎样比较模型。</li><li>类别权重、难例加权和区域重叠损失针对不同问题。</li><li>训练使用可微目标，阈值、早停与后处理仍要用真实指标验证。</li></ul></section>
 </blockquote>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -1076,5 +1075,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
 </body></html>

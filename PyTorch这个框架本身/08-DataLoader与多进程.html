@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -310,13 +310,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_1">🎯 一句话</h2>
 <p><strong><code>num_workers &gt; 0</code> 的那一刻，你的 <code>Dataset</code> 就不再只有一份了 —— 每个 worker 进程拿到的是一份【副本】。</strong>
-副本上改的东西主进程看不见，副本里的随机数发生器也是复制过去的（这一条会直接让你的数据增强失效）。
-⚠️ 至于「六个参数怎么调才能喂饱 GPU」，<a href="../AI基础设施/22-数据管线与存储.html">《AI基础设施》22 · 数据管线与存储</a>已经讲透了，这一章一个字都不重复；
-「进程为什么要复制、fork 和 spawn 差在哪、Windows 上为什么必须写 <code>if __name__</code>」是<a href="../Python会咬你的地方/index.html">《Python 会咬你的地方》</a>并发那一章的正题。
-<strong>这一章只讲一件事：数据集被复制之后，语义上发生了什么。</strong></p>
+副本上改的东西主进程看不见，副本里的随机数发生器也是复制过去的（这一条会直接让你的数据增强失效）。</p>
+<p>⚠️ 至于「六个参数怎么调才能喂饱 GPU」，<a href="../AI基础设施/22-数据管线与存储.html">《AI基础设施》22 · 数据管线与存储</a>已经讲透了，这一章一个字都不重复；
+「进程为什么要复制、fork 和 spawn 差在哪、Windows 上为什么必须写 <code>if __name__</code>」是<a href="../Python会咬你的地方/index.html">《Python 会咬你的地方》</a>并发那一章的正题。</p>
+<p><strong>这一章只讲一件事：数据集被复制之后，语义上发生了什么。</strong></p>
 <hr />
 <h2 id="_2">🧬 一、⭐ 副本：实测</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span>
 
@@ -378,7 +378,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_3">🎲 二、随机数：先破一条过期的传言</h2>
 <p>网上流传很广的一条是「<strong>多个 worker 会生成完全相同的随机增强，因为 numpy 的种子没被重设</strong>」。
 这条在老版本上成立，<strong>在 torch 2.13 上已经不成立了</strong>。实测：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span>
@@ -410,7 +410,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>num_workers=0</p><p>torch : 去重后 8/8</p><p>numpy : 去重后 8/8</p><p>random : 去重后 8/8</p><p>num_workers=2</p><p>torch : 去重后 8/8</p><p>numpy : 去重后 8/8</p><p>random : 去重后 8/8</p></div></section>
 <p>⭐ <strong>三套全局发生器（<code>torch</code> / <code>np.random</code> / <code>random</code>）都被 PyTorch 逐 worker 重新播种了。</strong>
 种子怎么来的，也能直接看：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">get_worker_info</span>
 
@@ -440,7 +440,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_4">💀 三、但这个坑只是换了个形态</h2>
 <p>上面破掉的是「<strong>全局</strong>发生器」那一版。把发生器<strong>存进 <code>self</code></strong>，它就跟着副本一起被复制了 —— 这才是今天真正会咬到你的形态，而且 <code>np.random.default_rng()</code> 正是 numpy 现在推荐的写法。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">get_worker_info</span>
 
@@ -515,7 +515,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="iterabledataset-worker">🌊 四、<code>IterableDataset</code> 在多 worker 下会把数据重复一遍</h2>
 <p><code>Dataset</code>（映射式）由主进程分配下标，所以 worker 之间天然不重叠。
 但 <code>IterableDataset</code> 是<strong>数据集自己吐数据</strong>的 —— 没人告诉它「你只该吐第几批」，于是每个 worker 都把<strong>整个流</strong>跑了一遍。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">IterableDataset</span><span class="p">,</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">get_worker_info</span>
 
 
@@ -553,7 +553,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="collate_fn">📦 五、默认 <code>collate_fn</code> 悄悄做了什么</h2>
 <p><code>DataLoader</code> 从 <code>__getitem__</code> 拿回来的是<strong>一个 list 的单条样本</strong>，把它们变成一个 batch 的那一步叫 collate。默认实现的规则可以直接看：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data.dataloader</span><span class="w"> </span><span class="kn">import</span> <span class="n">default_collate</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;① 三个 (2,) 张量 →&quot;</span><span class="p">,</span> <span class="n">default_collate</span><span class="p">([</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -568,7 +568,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-flow" aria-label="流程图"><p class="visual-block-title">流程图</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 三个 (2,) 张量</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">torch.Size([3, 2])</span></div><div class="vb-flow-row"><span class="vb-flow-step">② python int</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">tensor([1, 2, 3]) torch.int64</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ python float</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">torch.float64</span></div><div class="vb-flow-row"><span class="vb-flow-step">④ dict</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">{&#x27;x&#x27;: tensor([[0., 0.],</span></div><div class="vb-flow-row"><span class="vb-flow-step">[1., 1.]]), &#x27;y&#x27;: tensor([1, 2])}</span></div><div class="vb-flow-row"><span class="vb-flow-step">⑤ 字符串</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">[&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;]</span></div></div></section>
 <p>四条规则：<strong>张量 <code>stack</code> 一层</strong>（多出一维在最前）、<strong>数字变张量</strong>、dict/tuple 递归进去、字符串原样留在 list 里不动。</p>
 <p>⚠️⚠️ <strong>第 ③ 条是个会静默伤人的坑</strong>：<code>float</code> → <strong><code>float64</code></strong>，而模型参数是 <code>float32</code>。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span>
 
@@ -596,7 +596,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>⭐ <strong>看到 <code>stack expects each tensor to be equal size</code> 就是变长样本</strong>（文本、音频、点云），要自己写 collate：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.nn.utils.rnn</span><span class="w"> </span><span class="kn">import</span> <span class="n">pad_sequence</span>
 
 
@@ -752,5 +752,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

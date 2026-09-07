@@ -180,9 +180,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -535,7 +535,7 @@ Krichene &amp; Rendle (KDD 2020) 的论文专门论证了这一点——<strong>
 <h2 id="_11">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>序列推荐：物品=单词，行为序列=句子，推荐=预测下一个词。演进：FPMC→GRU4Rec→SASRec(单向Transformer+因果掩码, 最强baseline)→BERT4Rec(双向完形填空)→生成式。长序列用 SIM 两阶段检索。评测要全量排序，别用采样负样本。<!--RECAP-EXT-->⭐ <b>因果掩码不是实现细节，是 SASRec 好用的原因</b>：把右边掩掉之后，一条长度 L 的序列一次前向就产生了 L 条训练样本（每个位置都预测它的下一个），而且训练目标和线上「只知道过去、预测未来」完全一致；BERT4Rec 的双向完形填空在论文里更高，但线上根本没有「右边」，天然存在 gap。⚠️ <b>2022 年后多篇复现研究指出，很多「超越 SASRec」在公平调参下复现不出来</b>，它至今仍是最强 baseline 之一——教训是别信论文里的 SOTA，先把 baseline 自己跑通。⭐ 三个实战点常被忽略：多行为不能混成一条序列，要加 behavior type embedding；时间间隔必须建模，连续 3 次点击隔 5 秒和隔 3 天含义完全不同（TiSASRec 或「距今时长分桶」）；匿名游客只有当前会话几个点击，那属于 Session-based 场景，GRU4Rec、SR-GNN 就是为它设计的。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>序列推荐利用行为顺序预测后续选择，不只是汇总用户点过什么。</li><li>因果掩码让训练位置只能使用过去信息，与预测场景对应。</li><li>行为类型、时间间隔和会话长度要分开考虑，并保持评测口径公平。</li></ul></section>
 </blockquote>
 <p><strong>下一节</strong> 👉 <a href="10-向量检索与ANN.html">10-向量检索与ANN.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
@@ -564,5 +564,5 @@ Krichene &amp; Rendle (KDD 2020) 的论文专门论证了这一点——<strong>
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
 </body></html>

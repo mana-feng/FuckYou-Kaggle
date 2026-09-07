@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -397,7 +397,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">· 奖励裁剪到 [-1, 1]</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">不同游戏的分数量级差异巨大，不裁剪没法用同一套超参</span></div><div class="vb-flow-row"><span class="vb-flow-step">· 画面转灰度、缩到 84×84、堆叠 4 帧</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">降维 + 恢复马尔可夫性（第 2 章）</span></div></div></section>
 <hr />
 <h2 id="_5">🔨 五、核心代码</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span><span class="o">,</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">random</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span><span class="o">,</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">random</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">DQN</span><span class="p">:</span>
@@ -501,7 +501,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p>💡 <strong>Double DQN 的一行改动</strong>（值得记住）：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：这里只对照两种写法的差别，r / gamma / d / s2 来自你的训练循环</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：这里只对照两种写法的差别，r / gamma / d / s2 来自你的训练循环</span>
 <span class="c1"># 原始 DQN：  用目标网络【既选又评】→ 高估</span>
 <span class="n">tgt</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_target</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">d</span><span class="p">)</span>
 
@@ -600,9 +600,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_9">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>DQN = Q表换成神经网络</strong>。换掉表格两个理由：存不下 + ⭐<strong>更根本的是表格没有泛化</strong>（"敌人在左30像素"和"左31"被当成完全不同的状态）。损失 <code>L=(r+γmaxQ(s',a';θ⁻)−Q(s,a;θ))²</code> —— ⭐<strong>把RL变成了监督学习</strong>。💀<strong>直接这么做会崩，三个问题</strong>：样本高度相关、⭐<strong>目标在动（追自己尾巴）</strong>、数据分布随策略变 —— 合称⭐<strong>致命三要素：函数近似+自举+离策略，理论上可发散，第6章的收敛保证在这里失效</strong>。<strong>三个补丁</strong>：①⭐<strong>经验回放</strong>（打破相关性+经验可重复利用，<strong>只有off-policy能用</strong>）②⭐<strong>目标网络</strong>（冻结一份算目标，C步同步一次；太小还在追尾巴、太大目标陈旧）③奖励裁剪+堆叠4帧。⚠️<strong>四个代码坑</strong>：<strong>目标忘了no_grad()训练直接乱</strong>、忘了<code>*(1-d)</code>、用MSE不用Huber、目标网络同步频率。<strong>Double DQN一行改动：主网络选动作、目标网络评估</strong>，治最大化偏差。⭐<strong>天花板：只能离散动作</strong>（max_a要遍历所有动作），<strong>方向盘转多少度/生成哪个token都没法取max → 第9章换路：不估价值，直接优化策略</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>DQN 用神经网络近似 Q 值，让相似状态之间能够共享信息。</li><li>经验回放和目标网络缓解相关样本、移动目标造成的不稳定。</li><li>目标计算、终止掩码和目标网络同步要分别验证，再尝试 Double DQN 等改动。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="09-策略梯度.html">09-策略梯度.md</a> ⭐</p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -630,5 +629,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

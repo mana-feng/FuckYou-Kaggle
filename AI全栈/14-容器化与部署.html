@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -348,7 +348,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="dockerfile">📦 二、Dockerfile：形状比语法重要</h2>
 <p>先说形状：<strong>一个 Dockerfile 就是「从一个干净的系统开始，一步步把你的东西装进去」的脚本，每一步产生一层，层会被缓存。</strong>
 两个决定性设计全都来自这一句：<strong>层缓存</strong>和多阶段。</p>
-<div class="codehilite"><pre><span></span><code><span class="c"># syntax=docker/dockerfile:1</span>
+<div class="codehilite" data-code-language="dockerfile"><pre><span></span><code><span class="c"># syntax=docker/dockerfile:1</span>
 
 <span class="c"># ── 第一阶段：装依赖。编译器、pip 缓存都留在这一阶段，最后不带走</span>
 <span class="k">FROM</span><span class="w"> </span><span class="s">python:3.11-slim</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">builder</span>
@@ -422,7 +422,7 @@ node_modules/
 <hr />
 <h2 id="docker-compose">🧱 三、docker-compose：本地开发的一整套</h2>
 <p>一个 AI 应用本地要起的东西通常是三个：应用、Postgres（第 6、7 章）、Redis（第 12 章的共享令牌桶）。compose 的价值是<strong>一条命令把三个都拉起来，并且它们之间用服务名互相找</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># docker-compose.yml —— 🗓️ 镜像版本号会变，按你实际用的钉</span>
+<div class="codehilite" data-code-language="yaml"><pre><span></span><code><span class="c1"># docker-compose.yml —— 🗓️ 镜像版本号会变，按你实际用的钉</span>
 <span class="nt">services</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">app</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.</span>
@@ -501,7 +501,7 @@ node_modules/
 <hr />
 <h2 id="_5">🔀 五、反向代理：三个坑，坑坑都在「本地正常」</h2>
 <p>不管哪种形态，你的应用前面几乎一定站着一层代理（平台的入口网关，或你自己的 Nginx）。它有自己的一套默认值，而<strong>那套默认值是给传统 Web 应用调的</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="k">location</span><span class="w"> </span><span class="s">/api/</span><span class="w"> </span><span class="p">{</span>
+<div class="codehilite" data-code-language="nginx"><pre><span></span><code><span class="k">location</span><span class="w"> </span><span class="s">/api/</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="kn">proxy_pass</span><span class="w"> </span><span class="s">http://app:8000</span><span class="p">;</span>
 <span class="w">    </span><span class="kn">proxy_http_version</span><span class="w"> </span><span class="mi">1</span><span class="s">.1</span><span class="p">;</span>
 
@@ -553,7 +553,7 @@ node_modules/
 <hr />
 <h2 id="_6">🩺 六、健康检查：两个端点，问的是两个问题</h2>
 <p>⭐ <strong><code>/healthz</code>（活着吗）和 <code>/readyz</code>（现在能接活吗）必须分开</strong>，因为它们的失败处理完全相反：<strong>前者失败 = 重启我，后者失败 = 先别给我派活，但别重启我。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ⚠️ 未实跑：要真的起 uvicorn、并由平台按「先摘流量、再发 SIGTERM」的顺序动作才看得出效果</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># ⚠️ 未实跑：要真的起 uvicorn、并由平台按「先摘流量、再发 SIGTERM」的顺序动作才看得出效果</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.responses</span><span class="w"> </span><span class="kn">import</span> <span class="n">JSONResponse</span>
 
@@ -766,5 +766,4 @@ node_modules/
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

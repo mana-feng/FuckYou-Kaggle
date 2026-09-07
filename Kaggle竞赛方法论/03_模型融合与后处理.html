@@ -180,9 +180,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -930,8 +930,7 @@ th,td{min-width:5.2em}
 <hr />
 <h2 id="recap">🛑 可以停在这里</h2>
 <blockquote>
-<p>⚡ <strong>走神救援</strong><br />
-⭐<strong>融合的收益不来自「模型更强」，来自「模型们错得不一样」</strong>——数学上就是 Var(平均) = ρσ² + (1−ρ)σ²/M，<strong>第一项不随模型数减小，只能靠降低相关性 ρ</strong>，所以五个同架构同种子的模型融合几乎等于没融。造多样性的路（从便宜到贵）：<strong>不同种子 → 不同特征子集 → 不同数据划分 → 不同损失 → 不同架构</strong>。<strong>预测级融合</strong>简单通用不用重训；<strong>特征级融合</strong>更强但要重训且易过拟合。⚠️<strong>融合权重必须在 OOF 上搜，绝不能在 LB 上搜</strong>（那等于把 LB 当验证集，私榜会掉）。<strong>Snapshot Ensemble</strong> 的巧妙在于用周期性学习率<strong>一次训练拿到多个落在不同极小值的模型</strong>。<strong>规则后处理</strong>是把模型不知道而你知道的硬约束补回去（非负、行间一致性、不可能出现的类别），稳定且不依赖分布。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>融合依靠模型错误的互补，而不是单纯增加模型数量。</li><li>用 OOF 预测选择融合方法和权重，避免围着公榜反复试。</li><li>后处理只补入可信约束，并在验证集上检查是否真的提升。</li></ul></section>
 </blockquote>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -959,5 +958,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
 </body></html>

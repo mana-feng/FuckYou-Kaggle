@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -318,7 +318,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="offset">🧩 一、<code>OFFSET</code> 分页的两个必然死法</h2>
 <p>翻页最直觉的写法，几乎每份教程的第一版都长这样：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">content</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">messages</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="k">OFFSET</span><span class="w"> </span><span class="o">?</span><span class="p">;</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">content</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">messages</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">20</span><span class="w"> </span><span class="k">OFFSET</span><span class="w"> </span><span class="o">?</span><span class="p">;</span>
 <span class="c1">-- 第 1 页 OFFSET 0，第 2 页 OFFSET 20，第 N 页 OFFSET (N-1)*20</span>
 </code></pre></div>
 
@@ -383,7 +383,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>看两列的形状，不是绝对值</strong>：<code>OFFSET</code> 那列<strong>随页深线性增长</strong>（翻到第 2 万页比第 1 页慢约 400 倍），下面要讲的 keyset 那列几乎是平的——第 2 万页和第 1 页一样快。执行计划里 <code>OFFSET</code> 版永远是 <code>SCAN messages</code>（从头扫），keyset 版是 <code>SEARCH messages USING INTEGER PRIMARY KEY (rowid&lt;?)</code>（直接定位）。</p>
 <h3 id="ai">死法二 ⭐：翻页途中有插入，就重复和漏项 —— 这才是 AI 应用的真坑</h3>
 <p>慢还能忍。真正要命的是：<strong><code>OFFSET</code> 算的是「位置」，而位置会被插入和删除挪动。</strong> AI 聊天恰恰是「你往回翻历史，新消息还在源源不断写进来」——这个场景下坑几乎必然触发。用纯 Python + SQLite 演示（可直接跑）：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE messages (conversation_id TEXT, seq INTEGER, content TEXT, &quot;</span>
            <span class="s2">&quot;PRIMARY KEY (conversation_id, seq))&quot;</span><span class="p">)</span>
@@ -409,7 +409,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="keyset">🧩 二、游标（keyset）分页：为什么它天然不重不漏</h2>
 <p>换个思路：不记「我翻到第几<strong>位置</strong>」，记「我读到的最后一条是<strong>哪一条</strong>」，下一页从它之后接着取。这个「最后一条的标识」就是游标（cursor）。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">-- 第一页：不带游标</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="c1">-- 第一页：不带游标</span>
 <span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">content</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">messages</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">conversation_id</span><span class="o">=?</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">seq</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
 <span class="c1">-- 下一页：游标 = 上一页最后一条的 seq，比它小的接着取</span>
 <span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">content</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">messages</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">conversation_id</span><span class="o">=?</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">seq</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">seq</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
@@ -419,7 +419,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>游标还有一个 <code>OFFSET</code> 给不了的好处：那条游标记录被删了也不影响</strong>。因为查的是 <code>seq &lt; 8</code>，不是「id=8 那条之后」——<code>8</code> 这条在不在都无所谓，比它小的照样查得出来（实测把游标行 <code>seq=8</code> 删掉，下一页仍正确返回 <code>[7,6,5,4,3]</code>）。</p>
 <h3 id="_2">⚠️ 排序列有重复值时，游标必须是「复合」的</h3>
 <p>上面用 <code>seq</code> 当游标很干净，因为它在一个会话里<strong>唯一</strong>。但会话列表按 <code>updated_at</code> 排序，<strong><code>updated_at</code> 会大量撞车</strong>（批量导入、脚本回填时一秒能写几百条）。这时候单列游标会漏掉同一秒里游标之后的那些行：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE conversations (id INTEGER PRIMARY KEY, updated_at INTEGER)&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="s2">&quot;INSERT INTO conversations VALUES (?,?)&quot;</span><span class="p">,</span>       <span class="c1"># ⭐ 前 4 条故意撞在同一秒 100</span>
@@ -471,7 +471,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p>⭐ <strong>推荐不透明串，但要清楚它不是加密</strong>——base64 只是「不透明」，谁都能解开看里面。所以<strong>游标里绝不能放敏感信息</strong>，解出来之后必须重新校验类型再用（别信客户端传回来的东西）：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">base64</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">base64</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">encode</span><span class="p">(</span><span class="n">updated_at</span><span class="p">,</span> <span class="n">last_id</span><span class="p">):</span>
     <span class="n">raw</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;u&quot;</span><span class="p">:</span> <span class="n">updated_at</span><span class="p">,</span> <span class="s2">&quot;i&quot;</span><span class="p">:</span> <span class="n">last_id</span><span class="p">},</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">urlsafe_b64encode</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;=&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>   <span class="c1"># ⭐ urlsafe + 去掉 = 才好放进 URL</span>
@@ -501,7 +501,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>列表接口一定会长出 <code>?sort=updated_at&amp;order=desc&amp;status=failed</code> 这类参数。<strong>排序字段最危险</strong>：它常被直接拼进 <code>ORDER BY</code>，而那里不只允许列名，也允许子查询或 <code>CASE</code>，于是成了 SQL 注入面。</p>
 <p>⚠️ 参数化占位符 <code>?</code> 救不了这里：它只能替换值，不能替换列名或关键字，<code>ORDER BY ?</code> 是语法错误。排序字段只能走白名单映射。</p>
 <p>下面这段真的把一个密钥从数据库里偷了出来——只靠一个 <code>sort</code> 参数（可直接跑）：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE conversations (id INTEGER PRIMARY KEY, title TEXT, updated_at INTEGER)&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span><span class="s2">&quot;INSERT INTO conversations VALUES (?,?,?)&quot;</span><span class="p">,</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="mi">30</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="mi">20</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">,</span><span class="mi">10</span><span class="p">)])</span>
@@ -528,7 +528,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p><strong>实测输出</strong> <code>sk-live-7fd3</code>——⚠️ 表里没有任何一句 <code>SELECT k</code>，攻击者却靠「这一页排出来报不报错」一个字节一个字节把密钥读了出来。修法是<strong>白名单</strong>：外部传来的排序名先映射到一个你写死的真实列名，不认识就拒绝，方向也只允许两个取值：</p>
-<div class="codehilite"><pre><span></span><code><span class="n">SORTABLE</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="s2">&quot;updated_at&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;title&quot;</span><span class="p">}</span>   <span class="c1"># ⭐ 外部名 → 真实列名，你写死的</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="n">SORTABLE</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;updated&quot;</span><span class="p">:</span> <span class="s2">&quot;updated_at&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;title&quot;</span><span class="p">}</span>   <span class="c1"># ⭐ 外部名 → 真实列名，你写死的</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">good</span><span class="p">(</span><span class="n">sort</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;desc&quot;</span><span class="p">):</span>
     <span class="n">col</span> <span class="o">=</span> <span class="n">SORTABLE</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sort</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;不支持的排序字段&quot;</span><span class="p">)</span>   <span class="c1"># ⭐ 不认识就拒，绝不回退到「原样拼」</span>
@@ -577,7 +577,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_5">📋 六、顺带：批量接口的部分失败怎么报</h2>
 <p>列表选中多项后「批量删除 / 批量归档」是列表接口的孪生兄弟。它有个独有的坑：<strong>十条里第三条失败了，你返 200 还是 500？</strong> 都不对——200 骗人（有失败），500 也骗人（大部分成了，而且客户端不知道该不该整批重试）。⭐ <strong>正确做法是逐项报</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">delete_one</span><span class="p">(</span><span class="n">doc_id</span><span class="p">):</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">delete_one</span><span class="p">(</span><span class="n">doc_id</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">doc_id</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span> <span class="k">raise</span> <span class="ne">PermissionError</span><span class="p">(</span><span class="s2">&quot;不是你的文档&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">doc_id</span> <span class="o">==</span> <span class="mi">99</span><span class="p">:</span> <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;不存在&quot;</span><span class="p">)</span>
 
@@ -734,5 +734,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

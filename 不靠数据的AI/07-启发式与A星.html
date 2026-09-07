@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -315,7 +315,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="h">🧭 一、启发式函数 h 是什么</h2>
 <p>$h(n)$ = <strong>从节点 $n$ 到目标的「最便宜路径」的估计代价</strong>。罗马尼亚地图上现成就有一个：<strong>每个城市到 Bucharest 的直线距离</strong> $h_{SLD}$。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 接 05 章的 search.py，加在文件末尾</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 接 05 章的 search.py，加在文件末尾</span>
 <span class="n">H</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Arad&quot;</span><span class="p">:</span> <span class="mi">366</span><span class="p">,</span> <span class="s2">&quot;Bucharest&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Craiova&quot;</span><span class="p">:</span> <span class="mi">160</span><span class="p">,</span> <span class="s2">&quot;Dobreta&quot;</span><span class="p">:</span> <span class="mi">242</span><span class="p">,</span> <span class="s2">&quot;Eforie&quot;</span><span class="p">:</span> <span class="mi">161</span><span class="p">,</span>
      <span class="s2">&quot;Fagaras&quot;</span><span class="p">:</span> <span class="mi">178</span><span class="p">,</span> <span class="s2">&quot;Giurgiu&quot;</span><span class="p">:</span> <span class="mi">77</span><span class="p">,</span> <span class="s2">&quot;Hirsova&quot;</span><span class="p">:</span> <span class="mi">151</span><span class="p">,</span> <span class="s2">&quot;Iasi&quot;</span><span class="p">:</span> <span class="mi">226</span><span class="p">,</span> <span class="s2">&quot;Lugoj&quot;</span><span class="p">:</span> <span class="mi">244</span><span class="p">,</span>
      <span class="s2">&quot;Mehadia&quot;</span><span class="p">:</span> <span class="mi">241</span><span class="p">,</span> <span class="s2">&quot;Neamt&quot;</span><span class="p">:</span> <span class="mi">234</span><span class="p">,</span> <span class="s2">&quot;Oradea&quot;</span><span class="p">:</span> <span class="mi">380</span><span class="p">,</span> <span class="s2">&quot;Pitesti&quot;</span><span class="p">:</span> <span class="mi">98</span><span class="p">,</span>
@@ -332,7 +332,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <summary>📋 直接能跑的完整版（上面那段依赖第 5 章的 <code>search</code>，这里把它带上了）</summary>
 <p>⭐ <strong>首页那个「直接看 A*」的按钮就是把你送到这一章的</strong>，所以这里给一份不依赖前面章节的完整脚本。
 复制到空文件，<code>python 文件名.py</code> 就能跑，不需要装任何库。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># astar.py —— 第 5 章的框架 + 本章的贪婪与 A*，可独立运行</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># astar.py —— 第 5 章的框架 + 本章的贪婪与 A*，可独立运行</span>
 <span class="n">ROMANIA</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;Arad&quot;</span><span class="p">:</span> <span class="p">[(</span><span class="s2">&quot;Zerind&quot;</span><span class="p">,</span> <span class="mi">75</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Sibiu&quot;</span><span class="p">,</span> <span class="mi">140</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Timisoara&quot;</span><span class="p">,</span> <span class="mi">118</span><span class="p">)],</span>
     <span class="s2">&quot;Zerind&quot;</span><span class="p">:</span> <span class="p">[(</span><span class="s2">&quot;Arad&quot;</span><span class="p">,</span> <span class="mi">75</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Oradea&quot;</span><span class="p">,</span> <span class="mi">71</span><span class="p">)],</span>
@@ -710,5 +710,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

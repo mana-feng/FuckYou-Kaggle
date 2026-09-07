@@ -186,9 +186,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -517,7 +517,7 @@ th,td{min-width:5.2em}
 <h2 id="_7">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
 <blockquote>
-<p>ANN = 牺牲 1-5% 准确率换 100-1000 倍速度。四类方法：Flat(暴力,&lt;10万用它)、IVF(聚类,调nprobe)、HNSW(多层图,主流,调efSearch)、PQ(量化压内存)。工具：Faiss / hnswlib / 向量数据库。内积检索前必须 L2 归一化。评估指标 Recall@K vs 延迟曲线。物品向量天级更新，用户向量实时算。<!--RECAP-EXT-->⭐ <b>选索引先看规模，不是看谁先进</b>：10 万以下直接 Flat 暴力最好——又快又准还零调参，别为了显得专业上 HNSW；亿级则要先算内存：1 亿 × 64 维 float32 就是 25.6 GB，HNSW 的图结构还得再加约 25 GB，而 PQ 压完只剩 0.8 GB，单机就能扛。⭐ 调参只有一条流程：固定索引类型，扫 <code>efSearch</code> / <code>nprobe</code> 画出 <b>「Recall@K vs 延迟」曲线</b>，在延迟预算内取 Recall 最高的那个点（典型目标是 Recall@100 ≥ 0.95 且 P99 &lt; 10ms）。⚠️ 带条件的检索最容易踩坑：<b>Post-filter 很可能过滤完就不够数了</b>，工业上更常按类目/时间做<b>分区索引</b>，只查相关分区。⭐ 多路召回各自的分数不在同一个尺度上，不能直接比大小——常见做法是每路按配额取 top-N，或者干脆全交给粗排统一打分。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>ANN 在搜索质量、延迟和内存之间取舍，先建立精确检索基线。</li><li>固定数据与指标，画出检索质量随搜索成本变化的曲线。</li><li>过滤条件、向量更新与多路分数尺度都可能改变实际返回结果。</li></ul></section>
 </blockquote>
 <p><strong>下一节</strong> 👉 <a href="11-重排与多样性.html">11-重排与多样性.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
@@ -546,5 +546,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
 </body></html>

@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -315,7 +315,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="selfx">🚪 一、<code>self.x = ...</code> 的那一刻，海关做了一次类型检查</h2>
 <p>先看三种写法各去了哪：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 
@@ -344,7 +344,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>（顺带记住 <code>__dict__</code> 里那个 <code>training</code> —— 它就是 <code>train()</code> / <code>eval()</code> 唯一改的那个布尔，是第 07 章的主角。）</p>
 <h3 id="_2">分拣规则只有两行</h3>
 <p><code>__setattr__</code> 认的是<strong>类型</strong>，不是名字：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 <span class="n">m</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">()</span>
@@ -372,7 +372,7 @@ buffer 没有专属类型 —— <code>nn.Parameter</code> 是个类，「buffer
 <p>⚠️ <strong>槽位一旦定了就换不掉</strong>：<code>w</code> 已经在 <code>_parameters</code> 里，再往它上面赋一个普通张量会直接 <code>TypeError</code>。
 （想换成别的值，写 <code>m.w.data.copy_(新值)</code>，或者 <code>m.w = nn.Parameter(新值)</code>。）</p>
 <h3 id="super__init__">💀 忘了 <code>super().__init__()</code></h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Forgot</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
@@ -442,7 +442,7 @@ buffer 没有专属类型 —— <code>nn.Parameter</code> 是个类，「buffer
 </tbody>
 </table></div>
 <p>最后那个 <code>persistent=False</code> 实测确认过：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 
@@ -474,7 +474,7 @@ buffer 没有专属类型 —— <code>nn.Parameter</code> 是个类，「buffer
 <hr />
 <h2 id="python-list">💀 二、装在 Python list 里的子模块，一个都不算数</h2>
 <p>⚠️ <strong>这是本章最贵的一条，也是「参数不更新」最常见的成因。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 
@@ -510,13 +510,13 @@ buffer 没有专属类型 —— <code>nn.Parameter</code> 是个类，「buffer
 </code></pre></div>
 
 <p>实测输出：</p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>--- BadNet ---</p><p>_modules : []</p><p>参数个数 : 0</p><p>state_dict key : []</p><p>forward 能跑吗 : torch.Size([1, 2])</p><p>--- GoodNet ---</p><p>_modules : [&#x27;layers&#x27;]</p><p>参数个数 : 6</p><p>state_dict key : [&#x27;layers.0.weight&#x27;, &#x27;layers.0.bias&#x27;, &#x27;layers.1.weight&#x27;, &#x27;layers.1.bias&#x27;, &#x27;layers.2.weight&#x27;, &#x27;layers.2.bias&#x27;]</p><p>forward 能跑吗 : torch.Size([1, 2])</p></div></section>
+<section class="comparison-repair" id="comparison-repair-40"><div class="tw"><table><caption>能前向运行，不等于参数已被注册</caption><thead><tr><th scope="col">检查项</th><th scope="col">BadNet</th><th scope="col">GoodNet</th></tr></thead><tbody><tr><th scope="row">_modules</th><td>[]</td><td>[&#x27;layers&#x27;]</td></tr><tr><th scope="row">参数个数</th><td>0</td><td>6</td></tr><tr><th scope="row">state_dict key</th><td>[]</td><td>[&#x27;layers.0.weight&#x27;,<br>&#x27;layers.0.bias&#x27;,<br>&#x27;layers.1.weight&#x27;,<br>&#x27;layers.1.bias&#x27;,<br>&#x27;layers.2.weight&#x27;,<br>&#x27;layers.2.bias&#x27;]</td></tr><tr><th scope="row">forward 能跑吗</th><td>torch.Size([1, 2])</td><td>torch.Size([1, 2])</td></tr></tbody></table></div></section>
 <p>⭐ <strong>最要命的是最后一行：<code>forward</code> 照跑，形状一模一样。</strong>
 一个 <code>list</code> 不是 <code>nn.Module</code> 也不是 <code>nn.Parameter</code>，海关把它整个丢进 <code>__dict__</code>，
 于是 <code>_modules</code> 是空的、参数 0 个、<code>state_dict</code> 是空字典 —— 而 Python 的 for 循环当然还是能遍历它。</p>
 <h3 id="_4">⚠️ 全错反而是好事，半错才致命</h3>
 <p>如果<strong>整个模型</strong>都在 list 里，你会撞上唯一一条报错：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 
@@ -537,7 +537,7 @@ buffer 没有专属类型 —— <code>nn.Parameter</code> 是个类，「buffer
 </code></pre></div>
 
 <p>💀 <strong>但真实的模型几乎不会全错。</strong> 典型形态是：stem 和 head 好好写着，中间那一堆重复的 block 顺手用了 list：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 
@@ -610,7 +610,7 @@ buffer 没有专属类型 —— <code>nn.Parameter</code> 是个类，「buffer
 <p>💀 <strong>代价</strong>：模型容量凭空少了一大截（这里 10 个张量只有 4 个在学），指标就是「差一点」；
 你会去调学习率、加正则、换优化器 —— <strong>而没有任何一条日志、报错或警告指向真正的原因</strong>。</p>
 <h3 id="_5">修法：五个容器，各修各的</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 
@@ -668,7 +668,7 @@ buffer 没有专属类型 —— <code>nn.Parameter</code> 是个类，「buffer
 <p>⚠️ <strong><code>nn.ModuleList</code> 不是 <code>nn.Sequential</code></strong>：前者<strong>没有 <code>forward</code></strong>，直接 <code>m.layers(x)</code> 会报错，你必须自己写 for 循环；后者会按顺序调用。想要 for 循环里做点别的（残差、条件分支）就用 <code>ModuleList</code>。</p>
 <hr />
 <h2 id="_6">🏷️ 三、名字是从根往下递归拼出来的</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 
@@ -726,7 +726,7 @@ buffer 没有专属类型 —— <code>nn.Parameter</code> 是个类，「buffer
 <p>⚠️ <strong><code>named_modules()</code> 的第一条是模型自己</strong>，名字是空字符串 <code>''</code>。
 写「给每个子模块挂 hook」之类的循环时，<strong>别忘了这一条也在里面</strong>（否则你会给根模块也挂一份）。</p>
 <p>⭐ <strong><code>apply(fn)</code> 是同一套递归</strong>，最常见的用法是自定义初始化：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 <span class="n">net</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 <span class="n">hit</span> <span class="o">=</span> <span class="p">[]</span>
@@ -738,7 +738,7 @@ buffer 没有专属类型 —— <code>nn.Parameter</code> 是个类，「buffer
 <section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>apply 走过: [&#x27;Linear&#x27;, &#x27;ReLU&#x27;, &#x27;Linear&#x27;, &#x27;Sequential&#x27;]</p></div></section>
 <p>⚠️ 注意顺序是<strong>从叶子往上</strong>，根模块 <code>Sequential</code> 排在最后。</p>
 <h3 id="_7">⭐ 权重共享：两个遍历给的答案不一样</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 
@@ -778,7 +778,7 @@ buffer 没有专属类型 —— <code>nn.Parameter</code> 是个类，「buffer
 <p>答案就是第一节那三个表 —— <strong>因为有表可遍历</strong>。
 <code>nn.Module._apply(fn)</code> 做三件事：递归所有子模块 → 对 <code>_parameters</code> 里每一个套 <code>fn</code> → 对 <code>_buffers</code> 里每一个套 <code>fn</code>。
 ⚠️ <strong><code>__dict__</code> 它根本不看。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 
@@ -802,9 +802,9 @@ buffer 没有专属类型 —— <code>nn.Parameter</code> 是个类，「buffer
 <p>实测输出：</p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>改之前: torch.float32 torch.float32 torch.float32</p><p>double() 之后:</p><p>w (Parameter): torch.float64</p><p>running (buffer) : torch.float64</p><p>plain (普通属性) : torch.float32 ⚠️ 没跟着变</p></div></section>
 <p>⭐ <strong>同一个机制，换成 <code>device</code> 就是那条最著名的报错。</strong>
-<code>.to("cuda")</code> 只搬 <code>_parameters</code> 和 <code>_buffers</code>；<code>self.plain</code> 留在 CPU 上，前向撞上 <code>Expected all tensors to be on the same device</code> —— <strong>而模型本身明明已经 <code>.to("cuda")</code> 过了</strong>，所以你会先怀疑数据、怀疑 DataLoader，很难想到怀疑一个属性。
-（🗓️ 未实跑 —— 需要 GPU。本机 CUDA 不可用，无法给出这条报错的原文。下面用 <code>dtype</code> 复现同一个机制。）</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<code>.to("cuda")</code> 只搬 <code>_parameters</code> 和 <code>_buffers</code>；<code>self.plain</code> 留在 CPU 上，前向撞上 <code>Expected all tensors to be on the same device</code> —— <strong>而模型本身明明已经 <code>.to("cuda")</code> 过了</strong>，所以你会先怀疑数据、怀疑 DataLoader，很难想到怀疑一个属性。</p>
+<p>（🗓️ 未实跑 —— 需要 GPU。本机 CUDA 不可用，无法给出这条报错的原文。下面用 <code>dtype</code> 复现同一个机制。）</p>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 
@@ -835,7 +835,7 @@ RuntimeError: expected m1 and m2 to have the same dtype, but got: double != floa
 同一段代码一声不吭地跑完 —— 因为加法有类型提升，float32 会被自动提上 float64。
 ⭐ <strong>判据：矩阵乘法卡 dtype，逐元素运算不卡。</strong> 所以「没报错」完全不能证明属性搬对了。</p>
 <h3 id="moduleto-tensorto"><code>Module.to</code> 是原地的，<code>Tensor.to</code> 不是</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 <span class="n">m</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
@@ -853,7 +853,7 @@ RuntimeError: expected m1 and m2 to have the same dtype, but got: double != floa
 <code>model = make_model().to(device)</code> 接不接返回值都行（<code>Module.to</code> 改的是注册表里的东西，返回 <code>self</code> 只是为了链式书写），
 而 <code>xb, yb = xb.to(device), yb.to(device)</code> <strong>必须接</strong> —— 张量是不可变对象，<code>.to()</code> 给你一个新的。</p>
 <h3 id="parameter">⭐ 转换之后，<code>Parameter</code> 对象没换</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 <span class="n">m</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
@@ -875,7 +875,7 @@ RuntimeError: expected m1 and m2 to have the same dtype, but got: double != floa
 <p>实测输出：</p>
 <section class="visual-block visual-block-note" aria-label="要点"><p class="visual-block-title">要点</p><div class="vb-note"><p>dtype 没变时是同一个对象吗: True</p><p>dtype 变了之后还是同一块存储吗: False</p><p>变完还是 Parameter 吗: Parameter requires_grad = True</p><p>⭐ 优化器拿到的是变换【之后】的对象吗: True</p></div></section>
 <p>⭐ <strong>换了存储，没换对象。</strong> 这一条决定了「先建优化器还是先 <code>.to()</code>」有没有关系 —— 实测：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -910,7 +910,7 @@ RuntimeError: expected m1 and m2 to have the same dtype, but got: double != floa
 <p><code>m(x)</code> 走的是 <code>nn.Module.__call__</code>，它按顺序做四件事：
 <strong>跑 forward pre-hook → 跑 <code>forward</code> → 跑 forward hook → 给输出挂上 backward hook</strong>。
 <code>m.forward(x)</code> 只做中间那一件。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 <span class="n">fired</span> <span class="o">=</span> <span class="p">[]</span>
@@ -946,7 +946,7 @@ RuntimeError: expected m1 and m2 to have the same dtype, but got: double != floa
 <p>⭐ <strong>注意 <code>post(fc)</code> 还在。</strong> 被跳过的只有你直接点名的那一层的 hook —— 它内部的子模块照常走各自的 <code>__call__</code>。
 ⚠️ 这让 bug 更难发现：hook <strong>不是全没了，是少了一部分</strong>，日志里还有东西在打。</p>
 <h3 id="_8">后果不止是「少打了日志」</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 
@@ -1013,7 +1013,7 @@ RuntimeError: expected m1 and m2 to have the same dtype, but got: double != floa
 <h2 id="20">🔍 六、一个 20 行的自检器</h2>
 <p>前面五节的坑全是静默的，所以值得在模型构造完之后加一道体检。
 ⭐ <strong>判据要认结构</strong>：不看你给属性起的名字，只看 <code>__dict__</code> 里躺着的东西<strong>是不是</strong>张量或模块。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 
@@ -1055,7 +1055,7 @@ RuntimeError: expected m1 and m2 to have the same dtype, but got: double != floa
 <p>⭐ 注意它<strong>跳过了 <code>_</code> 开头的键</strong>（三个注册表自己就叫 <code>_parameters</code> / <code>_buffers</code> / <code>_modules</code>），
 也<strong>跳过了 <code>training</code></strong>（那是个 bool 不是张量）—— 干净模型上的误报是 0 条。</p>
 <p>还有两个更粗、但一秒钟就能做的自检：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;参数量:&quot;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()))</span>
@@ -1144,7 +1144,11 @@ RuntimeError: expected m1 and m2 to have the same dtype, but got: double != floa
 <blockquote>
 <p>⭐ <strong><code>nn.Module</code> 认参数只靠 <code>__setattr__</code> 的一次类型检查</strong>：<code>nn.Parameter</code> 进 <code>_parameters</code>、<code>nn.Module</code> 进 <code>_modules</code>、<strong>其余一律掉进普通的 <code>__dict__</code></strong>。⭐ <strong>buffer 是唯一没有专属类型的</strong>，所以只能靠 <code>register_buffer</code> 显式登记。</p>
 <p>这三个表决定了三件事：优化器<strong>看不看得见</strong>、<code>state_dict()</code> <strong>存不存</strong>、<code>.to()</code> <strong>搬不搬得动</strong>。这就是「为什么我的参数没被优化器更新」的全部答案。</p>
-<p>💀 <strong>最贵的形态是把子模块装进 Python list</strong>：参数 0 个、<code>state_dict</code> 是空的，⭐ <strong>而 <code>forward</code> 照跑、输出形状和正确版本一模一样</strong>。全错会报「optimizer got an empty parameter list」——⭐ <strong>报错反而是好事</strong>；<strong>半错才致命</strong>：优化器只管住一部分，训练几十步后一部分变了另一部分一位没动，⚠️ 而且那些没被注册的参数<strong>梯度并不是 <code>None</code></strong>（autograd 只看图不看注册表）——<strong>模型的一多半既没在学也没被存过，没有一条日志会告诉你。</strong></p>
+<p>💀 <strong>最贵的形态是把子模块装进 Python list</strong>：参数 0 个、<code>state_dict</code> 是空的，⭐ <strong>而 <code>forward</code> 照跑、输出形状和正确版本一模一样</strong>。</p>
+</blockquote>
+<p>全错会报「optimizer got an empty parameter list」——⭐ <strong>报错反而是好事</strong>；</p>
+<p><strong>半错才致命</strong>：优化器只管住一部分，训练几十步后一部分变了另一部分一位没动，⚠️ 而且那些没被注册的参数<strong>梯度并不是 <code>None</code></strong>（autograd 只看图不看注册表）——<strong>模型的一多半既没在学也没被存过，没有一条日志会告诉你。</strong></p>
+<blockquote>
 <p>修法是 <code>nn.ModuleList</code> / <code>ModuleDict</code> / <code>ParameterList</code> / <code>register_buffer</code>。⚠️ <code>ModuleList</code> 没有 <code>forward</code>，要自己写循环。</p>
 <p>⭐ <strong>权重共享时两个遍历给的答案不同</strong>：<code>named_parameters()</code> 去重（让优化器不重复更新），<code>state_dict()</code> 不去重（于是 checkpoint 存了两份，而手工改 key 只改一半会<strong>静默断掉共享</strong>）。</p>
 <p>⚠️ <code>.to()</code> 只搬那两个表里的东西，普通属性它根本不看——换 dtype 时矩阵乘法会报错，但<strong>加法有类型提升，会一声不吭跑完</strong>。</p>
@@ -1176,5 +1180,4 @@ RuntimeError: expected m1 and m2 to have the same dtype, but got: double != floa
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

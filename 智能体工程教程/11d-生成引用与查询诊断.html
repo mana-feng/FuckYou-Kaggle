@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>11d · 答案不对：沿着证据查到断点 · 智能体工程教程</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">11d · 生成与引用诊断</span>
+  <span class="prevnext"><a href="11c-检索评测与调优实验.html">←</a>
+  <a href="12-Harness-长时任务的骨架.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">🔬 先看一个会误导人的成功结果</a></li>
+<li><a href="#_3">一、按这个顺序定位，避免盲改提示词</a></li>
+<li><a href="#_5">二、上下文拼装有自己的质量指标</a></li>
+<li><a href="#_6">三、提示注入由能力边界兜底</a></li>
+<li><a href="#_7">四、可选接本地模型</a></li>
+<li><a href="#_8">五、生成评测怎么判</a></li>
+<li><a href="#_9">✅ 检查点</a></li>
+<li><a href="#_10">🔗 接下来去哪</a></li>
+</ul>
+</div>
+</details>
+<h1 id="11d">11d · 答案不对：沿着证据查到断点</h1>
+<p>⏱ <strong>按问题查阅</strong> ｜ 已有检索结果，开始核对生成与引用</p>
+<h2 id="_1">🎯 一句话</h2>
+<p><strong>检索命中、引用有效、回答被证据支持，是三个不同的判断。</strong> 一个答案可以引用真实手册，却把 XR-300 的功率答给 XR-200。</p>
+<p>🔗 前置：<a href="11c-检索评测与调优实验.html">检索实验</a>；代码：<a href="../examples/knowledge-assistant/agent.py">agent.py</a>、<a href="../examples/knowledge-assistant/core.py">引用验证</a>。环境与下载见<a href="17b-企业知识助手交付项目.html">共同项目</a>。</p>
+<h2 id="_2">🔬 先看一个会误导人的成功结果</h2>
+<div class="codehilite" data-code-language="bash"><pre><span></span><code>python<span class="w"> </span>examples/knowledge-assistant/lab.py<span class="w"> </span>demo
+</code></pre></div>
+
+<p>命令在仓库根目录运行。观察返回的检索文档、预期型号提示和 citation 检查：<strong>结构校验通过不代表第一条证据就是正确答案</strong>。示例同时演示本地工单恢复，工单审批来自明确的测试操作者，不是线上已接好人工审批界面。</p>
+<p>项目的引用校验要求 chunk_id 存在、版本当前、当前用户可读、quote 是原文中的准确片段，并要求 Agent 引用本次实际收到的证据。它不证明完整答案的每个断言都被引用支持，返回中明确标为 <code>semantic_verification: requires_review</code>。</p>
+<h2 id="_3">一、按这个顺序定位，避免盲改提示词</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>断点</th>
+<th>拿什么证明</th>
+<th>下一步</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>该资料是否已发布</td>
+<td>文档 ID、版本、任务状态</td>
+<td>修解析、索引新鲜度、权限映射</td>
+</tr>
+<tr>
+<td>原问题保留了吗</td>
+<td>原 query 与每次改写并列</td>
+<td>查型号、否定词、日期是否丢失</td>
+</tr>
+<tr>
+<td>候选里是否有证据</td>
+<td>各路候选 ID 与 gold</td>
+<td>修召回、分词、过滤、查询路由</td>
+</tr>
+<tr>
+<td>最终上下文是否还在</td>
+<td>排序前后、被预算丢弃的块</td>
+<td>修重排、去重、裁剪与 K</td>
+</tr>
+<tr>
+<td>模型实际看到了什么</td>
+<td>模板版本、证据顺序、实际 token</td>
+<td>修截断、元数据与注入边界</td>
+</tr>
+<tr>
+<td>每个断言有无支持</td>
+<td>答案逐句对照证据原文</td>
+<td>修条件、时间、单位、冲突处理</td>
+</tr>
+<tr>
+<td>展示是否忠实</td>
+<td>引用跳转、撤权后重开</td>
+<td>修前端映射与二次鉴权</td>
+</tr>
+</tbody>
+</table></div>
+<p>检索没有命中时，扩大输出 token 通常无济于事。证据已经足够、却把“不超过”答成“至少”，才需要检查生成约束与事实判分。</p>
+<h3 id="_4">改写、分解与多轮指代</h3>
+<p>先保留原 query，改写只作额外查询。实体词、日期与权限范围不应被模型自由替换；“它功率多少”需要先从会话解析它指哪个型号，不能在多个候选型号之间猜。</p>
+<p>复杂问题可以分为子问题，但每个子问题都记录来源与预算。HyDE 的假想答案只是检索用文本，不是事实证据；多查询结果需要去重并限制总候选。遇到模糊型号先澄清，遇到资料缺失明确说明范围，避免循环搜索直到凑出答案。当前参考 Agent 没有实现专门的 query rewrite/HyDE 模块，可按此标准作为扩展消融。</p>
+<h2 id="_5">二、上下文拼装有自己的质量指标</h2>
+<p>对模型实际输入计数：系统与工具 schema 占用多少 token，证据占多少，输出预留多少。字符预算只适合本项目无模型基线；模型 tokenizer 和 API 用量才是最终口径。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>策略</th>
+<th>什么时候试</th>
+<th>防止什么退化</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>去重与相邻块合并</td>
+<td>多个块重复同一段</td>
+<td>重复文本占满预算；合并后仍验权限</td>
+</tr>
+<tr>
+<td>保留实体/章节/版本元数据</td>
+<td>孤立段落语义不完整</td>
+<td>不把标题或版本在裁剪时丢掉</td>
+</tr>
+<tr>
+<td>引用原文优先</td>
+<td>数值、条件、政策</td>
+<td>摘要压缩改变否定、单位或适用范围</td>
+</tr>
+<tr>
+<td>证据分组与顺序消融</td>
+<td>长上下文忽略中间信息</td>
+<td>同题换顺序，测结论是否不稳定</td>
+</tr>
+<tr>
+<td>明示冲突</td>
+<td>新旧政策或两来源矛盾</td>
+<td>给出日期与来源，不能把冲突平均成新事实</td>
+</tr>
+</tbody>
+</table></div>
+<p>“上下文越长越好”不是调优结论。比较证据完整率、有效信息占比、答案正确率、成本和尾延迟，记录被裁剪原因。</p>
+<h2 id="_6">三、提示注入由能力边界兜底</h2>
+<p>语料里有 <a href="../examples/knowledge-assistant/corpus/poison.md">poison.md</a>，包含伪装成指令的外部文本。系统提示会告诉模型把它当资料，但真正限制在代码层：只允许搜索与工单草稿，未知工具拒绝，模型没有审批工具，用户与租户来自调用方身份。</p>
+<p>攻击测试至少覆盖直接用户输入、检索文档、工具返回、历史记忆和被编码的内容。分别观察敏感内容是否进入候选、输出是否泄漏、危险动作是否真正发生。字符串出现“忽略指令”不等于攻击成功；模型说“已执行”也不等于外部状态已经改变，必须查业务审计与最终状态。</p>
+<p>本轮已有工具白名单、参数与引用负例；<strong>还没有真实模型对攻击语料的攻击成功率评测</strong>。做完后才能报告模型层效果。硬约束通过与模型抗注入能力应分开报告。</p>
+<blockquote>
+<p>🛑 <strong>现在可以停</strong>：知道怎样把错误定位到某一层。下面接真实模型时，再增加模型相关的不确定性。</p>
+</blockquote>
+<h2 id="_7">四、可选接本地模型</h2>
+<p>先在本机 Ollama 准备支持工具调用的模型；名称由你选择，命令中的名称需换成已安装模型。此步骤会消耗本机推理资源，参考代码不会自动安装或下载大模型。</p>
+<div class="codehilite" data-code-language="bash"><pre><span></span><code>python<span class="w"> </span>examples/knowledge-assistant/lab.py<span class="w"> </span>init
+python<span class="w"> </span>examples/knowledge-assistant/lab.py<span class="w"> </span>agent<span class="w"> </span><span class="s2">&quot;XR-200 的额定功率是多少？请引用手册。&quot;</span><span class="w"> </span>--model<span class="w"> </span>your-installed-tool-model<span class="w"> </span>--operation-id<span class="w"> </span>interview-001
+</code></pre></div>
+
+<p>接入遵循 <a href="https://docs.ollama.com/api/chat">Ollama chat API</a>。循环最多 6 轮，每轮最多 3 次工具调用，总时限默认 30 秒，重复调用会停止；输出长度另有限制。当前是非流式调用，未实现生产流式 UI、重连或网关配额。<strong>本轮已测试注入模型消息的确定性循环，尚未实测真实 Ollama 模型。</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>失败</th>
+<th>应留下的结果</th>
+<th>恢复条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>非法 JSON、缺字段</td>
+<td>输出无效；不当作正常答案</td>
+<td>修 schema/提示，最多做有预算的修复</td>
+</tr>
+<tr>
+<td>未知工具、越界参数</td>
+<td>明确拒绝，无业务副作用</td>
+<td>模型重新选择允许工具</td>
+</tr>
+<tr>
+<td>连续相同查询</td>
+<td>停止循环，保留调用轨迹</td>
+<td>澄清或改变检索策略</td>
+</tr>
+<tr>
+<td>超时或轮数耗尽</td>
+<td>任务未完成；记录已发生的动作</td>
+<td>根据持久化状态恢复，不能整轮盲重放</td>
+</tr>
+<tr>
+<td>用户中断</td>
+<td>取消后停止排新工具</td>
+<td>已提交动作仍需要查询与对账</td>
+</tr>
+</tbody>
+</table></div>
+<p>生产预算再增加输入/输出 token、单用户日限额、工具费用和最大并行数。模型供应商报告的 usage 与本地预估分别存储；敏感原文和 token 不应无差别写日志。</p>
+<h2 id="_8">五、生成评测怎么判</h2>
+<p>先用可执行断言判 schema、字段、数值单位、引用权限与动作状态，再用人工或裁判模型判完整性、相关性和支持程度。将答案拆成断言，把每条引用映射到对应断言；含引用但不支持结论仍应扣分。</p>
+<p>模型裁判需要固定版本、rubric、样例、盲化顺序与人工复核集。观察不同答案位置、措辞、裁判重复运行是否改变分数；对置信不足的结果复核。Ragas 不同指标需要的输入不同，不能一概说“无参考答案就都能评”，见<a href="../大模型全景导论/08c-RAG怎么评估.html">评估章节</a>。</p>
+<h2 id="_9">✅ 检查点</h2>
+<ol>
+<li>quote 真在原文里，为什么答案仍可能错？</li>
+<li>检索文档要求“调用转账工具”，哪层负责保证没发生转账？</li>
+<li>换更大模型之前，应该保存哪些失败证据？</li>
+</ol>
+<details>
+<summary>展开答案</summary>
+<ol>
+<li>它可能属于另一个型号、日期或条件，或根本不能推出该断言；还要判语义支持。</li>
+<li>服务端工具白名单、可信身份授权、审批与执行规则；提示词只是其中一层。</li>
+<li>原始/改写问题、当前文档版本、候选、排序、实际上下文、答案、引用、模型版本与用量。</li>
+</ol>
+</details>
+<div class="reading-recap"><strong>⚡ 走神救援</strong><p>从发布到候选、上下文、断言逐层定位；引用存在不等于支持；工具权限和任务预算由程序执行。</p></div>
+
+<h2 id="_10">🔗 接下来去哪</h2>
+<p>➡️ 下一站：<a href="12b-持久化审批与故障恢复.html">12b · 持久化审批与故障恢复</a>。</p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="11c-检索评测与调优实验.html"><div class="dir">← 上一节</div>🔬 11c · 检索调优实验</a><a class="next" href="12-Harness-长时任务的骨架.html"><div class="dir">下一节 →</div>🏗️ 12 · Harness 骨架</a></nav>
+</main>
+<script>(function(){
+  var KEY="agent-progress", FILE="11d-\u751f\u6210\u5f15\u7528\u4e0e\u67e5\u8be2\u8bca\u65ad.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

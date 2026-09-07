@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -361,7 +361,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="_4">频率怎么定</h3>
 <section class="visual-block visual-block-flow" aria-label="流程图"><p class="visual-block-title">流程图</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">⭐ 一个能算的判据：看【模型效果的衰减速度】</span></div><div class="vb-flow-row"><span class="vb-flow-step">① 拿一个历史模型，冻结它</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 用它去预测之后 1、2、4、8 周的数据</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 画出效果衰减曲线</span></div><div class="vb-flow-row"><span class="vb-flow-step">④ 找到「掉到不可接受」的那个点</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">重训周期设成它的一半</span></div><div class="vb-flow-row"><span class="vb-flow-step">例：8 周后 AUC 掉 0.02（可接受上限是 0.015）</span></div><div class="vb-flow-row"><span class="vb-flow-step">大约 6 周越线</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">重训周期设 3 周</span></div></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">roc_auc_score</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">roc_auc_score</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">decay_curve</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">train_end_week</span><span class="p">,</span> <span class="n">model_fn</span><span class="p">,</span> <span class="n">feats</span><span class="p">,</span> <span class="n">horizons</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">)):</span>
@@ -421,7 +421,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`df` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`df` 来自你自己的代码，这一段只看写法</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">time_decay_weight</span><span class="p">(</span><span class="n">days_ago</span><span class="p">,</span> <span class="n">half_life</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;指数衰减：半衰期 30 天 → 30 天前的样本权重是今天的一半&quot;&quot;&quot;</span>
@@ -439,7 +439,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="_6">⚠️ 一个反直觉的发现</h3>
 <section class="visual-block visual-block-flow" aria-label="信息关系"><p class="visual-block-title">信息关系</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">很多人默认「数据越多越好」，但在概念漂移的场景下：</span></div><div class="vb-flow-row"><span class="vb-flow-step">用最近 3 个月 的数据训</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">AUC 0.81</span></div><div class="vb-flow-row"><span class="vb-flow-step">用全部 2 年 的数据训</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">AUC 0.78 ⭐ 更差</span></div><div class="vb-flow-row"><span class="vb-flow-step">老数据不是没用，是【有害】</span></div></div></section>
 <p>💡 <strong>一定要把「训练窗口」当成一个超参数去调</strong>，而不是默认用全量。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">tune_window</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">valid_start</span><span class="p">,</span> <span class="n">model_fn</span><span class="p">,</span> <span class="n">feats</span><span class="p">,</span>
                 <span class="n">windows</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">365</span><span class="p">,</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">)):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;把训练窗口当超参数调。⭐ 验证集必须在【时间上靠后】，不能随机切&quot;&quot;&quot;</span>
@@ -486,7 +486,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>自动化会放大你的错误，而不只是放大你的效率。</strong></p>
 </blockquote>
 <p><strong>闸 1 长什么样（大多数团队做得太浅）</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">gate_data_quality</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">feats</span><span class="p">,</span> <span class="n">psi_max</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">row_drop_max</span><span class="o">=</span><span class="mf">0.2</span><span class="p">):</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">gate_data_quality</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">feats</span><span class="p">,</span> <span class="n">psi_max</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">row_drop_max</span><span class="o">=</span><span class="mf">0.2</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;闸1：⭐ 不能只看行数和缺失率 —— 那两项是最低标准，挡不住&quot;单位变了&quot;这类故障&quot;&quot;&quot;</span>
     <span class="n">issues</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">row_drop_max</span><span class="p">):</span>
@@ -788,5 +788,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

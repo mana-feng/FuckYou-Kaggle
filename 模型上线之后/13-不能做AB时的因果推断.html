@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -352,7 +352,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>🔑 <strong>核心问题</strong>：观察数据里，<strong>「是否接受处理」不是随机的，它由某些因素决定</strong> ——
 而那些因素<strong>同时也影响结果</strong>。这类因素叫<strong>混杂变量（confounder）</strong>。</p>
 </blockquote>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">混杂变量（活跃度）</span></div><div class="vb-tree-row"><span class="vb-tree-node">↓ ↓</span></div><div class="vb-tree-row"><span class="vb-tree-node">用不用新功能 ? → 留存</span></div><div class="vb-tree-row"><span class="vb-tree-node">⭐ 你看到的相关，可能全部来自那条绕行的路径</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-opsmd-13-1" style="--diagram-width:720px"><svg viewBox="0 0 720 390" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="活跃度同时影响功能使用和留存，形成绕行的关联路径；虚线表示我们想知道但不能只凭相关性确认的作用。"><title>活跃度同时影响功能使用和留存，形成绕行的关联路径；虚线表示我们想知道但不能只凭相关性确认的作用。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">相关可能来自共同原因</text><rect x="240" y="70" width="240" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="360.0" y="98" font-size="18" text-anchor="middle" fill="var(--fg)">活跃度：混杂变量</text><rect x="40" y="280" width="230" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="155.0" y="308" font-size="18" text-anchor="middle" fill="var(--fg)">用不用新功能</text><rect x="450" y="280" width="230" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="565.0" y="308" font-size="18" text-anchor="middle" fill="var(--fg)">留存</text><line x1="295" y1="118" x2="155" y2="280" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="155.0,280.0 157.1,269.9 164.7,276.5"/><line x1="425" y1="118" x2="565" y2="280" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="565.0,280.0 555.3,276.5 562.9,269.9"/><line x1="270" y1="304" x2="450" y2="304" stroke="var(--muted)" stroke-width="2" stroke-dasharray="5 5"/><text x="360" y="280" font-size="17" text-anchor="middle" fill="var(--fg)">待判断的因果</text></svg><figcaption>活跃度同时影响功能使用和留存，形成绕行的关联路径；虚线表示我们想知道但不能只凭相关性确认的作用。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>混杂变量（活跃度）</span></li><li><span>用不用新功能 ? → 留存</span></li><li><span>⭐ 你看到的相关，可能全部来自那条绕行的路径</span></li></ul></section>
 <hr />
 <h2 id="_3">🧰 三、四把工具</h2>
 <h3 id="1-psm">① 倾向得分匹配（PSM）—— 最常用</h3>
@@ -360,7 +361,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">思路：既然不能随机分，那就【人为配对】</span></div><div class="vb-flow-row"><span class="vb-flow-step">① 用协变量（年龄、活跃度、历史行为…）建模，</span></div><div class="vb-flow-row"><span class="vb-flow-step">预测「这个人有多大概率会用新功能」</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">这个概率叫【倾向得分】</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 给每个处理组用户，找一个倾向得分【几乎相同】的对照组用户</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 比较这些配对的结果差异</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 直觉：把「本来就长得很像、但一个用了一个没用」的人配成对</span></div></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.neighbors</span><span class="w"> </span><span class="kn">import</span> <span class="n">NearestNeighbors</span>
 
@@ -399,7 +400,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p>第二项检查有标准做法，十行代码：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">smd</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;标准化均值差：|均值差| / 合并标准差。⭐ 判据是 0.1，与样本量无关&quot;&quot;&quot;</span>
@@ -431,7 +432,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 这和 A/B 的随机化有本质差别（随机化连你不知道的都能平衡）。</p>
 </blockquote>
 <h3 id="psm-12-9">💀 一个真实案例：PSM 说 +12 分，全量之后掉了 9 分</h3>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>问题：智能客服 vs 人工客服，哪个满意度高？</p><p>（不能随机分配 —— 用户自己选择转不转人工）</p><p>PSM 做得很规范：</p><p>· 协变量：问题类型（8 类）、用户等级、历史工单数、时段、渠道</p><p>· 共同支撑区间重叠良好</p><p>· 配对后所有协变量 SMD ＜ 0.06 ✅ 教科书级别的均衡</p><p>· 结论：智能客服满意度 +12 分，置信区间不含 0</p></div></section>
+<section class="comparison-repair" id="comparison-repair-26"><p>问题：智能客服 vs 人工客服，哪个满意度高？（不能随机分配 —— 用户自己选择转不转人工）</p><section class="reading-information"><p class="reading-information-title">PSM 做得很规范：</p><ul><li>协变量：问题类型（8 类）、用户等级、历史工单数、时段、渠道</li><li>共同支撑区间重叠良好</li><li>配对后所有协变量 SMD ＜ 0.06 ✅ 教科书级别的均衡</li><li>结论：智能客服满意度 +12 分，置信区间不含 0</li></ul></section></section>
 <p><strong>决策</strong>：半年内把人工客服缩编，智能客服承接主要流量。
 <strong>结果</strong>：整体满意度下降 9 分，投诉量上升。</p>
 <p>根因：一个没进模型、也进不了模型的混杂变量 ——</p>
@@ -453,7 +454,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 如果上线前就已经在分叉，DID 的结论不成立。<strong>这一步不能省。</strong></p>
 </blockquote>
 <p><strong>DID 其实就是一个带交互项的回归</strong>（这样才能拿到置信区间）：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">statsmodels.formula.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">smf</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">statsmodels.formula.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">smf</span>
 
 <span class="c1"># df 每行 = 一个「地区 × 周」的观测</span>
 <span class="c1">#   treated: 该地区是否属于实验组(0/1)    post: 该周是否在上线之后(0/1)</span>
@@ -472,7 +473,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 ⭐ <strong>判断方法很简单：处理是在哪个层级分配的，就按哪个层级聚类。</strong></p>
 </blockquote>
 <p><strong>平行趋势不要用眼睛看，用「事件研究」跑一遍</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`df` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`df` 来自你自己的代码，这一段只看写法</span>
 <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;week&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;launch_week&quot;</span><span class="p">]</span>     <span class="c1"># 相对周：0 = 上线那一周</span>
 <span class="n">m2</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="s2">&quot;y ~ C(rel, Treatment(-1)):treated + C(region) + C(week)&quot;</span><span class="p">,</span>
              <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">cov_type</span><span class="o">=</span><span class="s2">&quot;cluster&quot;</span><span class="p">,</span> <span class="n">cov_kwds</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;groups&quot;</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;region&quot;</span><span class="p">]})</span>
@@ -725,5 +726,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

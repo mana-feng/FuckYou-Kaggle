@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,16 +271,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
- onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script><link rel="stylesheet" href="../assets/guided-lessons.css"><link rel="stylesheet" href="../assets/cross-reading.css"><script defer src="../assets/cross-reading.js"></script></head><body class="guided-reading cross-reading">
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
@@ -306,17 +306,25 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 </div>
 </details>
-<h1 id="07-svm">07 · SVM：最大间隔与对偶</h1>
+<div class="lesson-layout cross-layout" data-reading-profile="svm" data-reading-mode="concept">
+<div class="lesson-content">
+<header class="cross-hero"><p class="lesson-eyebrow">机器学习的数学原理 · 按需阅读</p><h1>先看分界线留了多少余量，再看 SVM 的公式。</h1><p class="lesson-lead">分对只是起点；SVM 还关心最近的样本离分界线有多远。</p></header>
+<section class="cross-result"><h2>先带走的结果</h2><p>硬间隔先要求样本分对，再尽量扩大间隔；软间隔允许违规，用 C 决定代价。</p></section>
+<nav class="cross-choices" aria-label="按当前目标开始"><a href="#read-margin"><strong>看图建立直觉</strong><span>从三条都能分开的线开始</span></a><a href="#read-objective"><strong>读公式为什么这样写</strong><span>先读目标与约束，再看对偶</span></a><a href="#read-tuning"><strong>只想调参数</strong><span>标准化，联合验证 C 与 γ</span></a></nav>
+<div class="cross-body" id="reading-body"><section class="cross-preface" aria-label="原文导语与阅读条件"><h2 id="07-svm" class="lesson-original-title">07 · SVM：最大间隔与对偶</h2>
+<!-- reading-pilot: svm -->
+
 <p>⏱ <strong>30 分钟</strong> ｜ ⭐ <strong>深度学习之前的王者</strong></p>
-<hr />
-<h2 id="_1">🎯 一句话</h2>
+<hr>
+<h3 id="_1">🎯 一句话</h3>
 <p>感知机「分对就满意」（第 3 章），SVM 问的是<strong>「哪条分界线最好？」</strong>——
 答案是<strong>离两边都最远的那条</strong>。这个"最远"叫间隔，最大化它带来了极好的泛化能力。</p>
 <figure class="dia" data-fig="svm_margin"><svg viewBox="0 0 700 310" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SVM 最大间隔与支持向量"><defs><marker id="ah__f1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--done)"/></marker></defs><line x1="90" y1="255" x2="440" y2="45" stroke="var(--accent)" stroke-width="3"/><line x1="90" y1="212" x2="440" y2="2" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="6 5" opacity=".75"/><line x1="90" y1="298" x2="440" y2="88" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="6 5" opacity=".75"/><circle cx="250" cy="90" r="6.5" fill="var(--link)"/><circle cx="300" cy="60" r="6.5" fill="var(--link)"/><circle cx="330" cy="120" r="6.5" fill="var(--link)"/><circle cx="390" cy="70" r="6.5" fill="var(--link)"/><circle cx="355" cy="45" r="6.5" fill="var(--link)"/><rect x="174" y="204" width="12" height="12" rx="2" fill="var(--muted)"/><rect x="234" y="234" width="12" height="12" rx="2" fill="var(--muted)"/><rect x="134" y="159" width="12" height="12" rx="2" fill="var(--muted)"/><rect x="294" y="249" width="12" height="12" rx="2" fill="var(--muted)"/><rect x="199" y="269" width="12" height="12" rx="2" fill="var(--muted)"/><circle cx="250" cy="90" r="12" fill="none" stroke="var(--accent)" stroke-width="2.2"/><circle cx="180" cy="210" r="12" fill="none" stroke="var(--accent)" stroke-width="2.2"/><line x1="300" y1="152" x2="258" y2="177" stroke="var(--done)" stroke-width="2.4" marker-end="url(#ah__f1)"/><line x1="300" y1="152" x2="342" y2="127" stroke="var(--done)" stroke-width="2.4" marker-end="url(#ah__f1)"/><text class="dia-t" x="470" y="50" font-size="12" text-anchor="start" fill="var(--accent)" font-weight="600">只有圈出的这两个点</text><text class="dia-t" x="470" y="68" font-size="12" text-anchor="start" fill="var(--accent)" font-weight="600">决定了这条线</text><text class="dia-t" x="470" y="92" font-size="12" text-anchor="start" fill="var(--muted)" font-weight="normal">= 支持向量</text><text class="dia-t" x="376" y="150" font-size="12.5" text-anchor="start" fill="var(--done)" font-weight="700">间隔</text><text class="dia-t" x="470" y="150" font-size="12" text-anchor="start" fill="var(--muted)" font-weight="normal">移动其他任何点</text><text class="dia-t" x="470" y="168" font-size="12" text-anchor="start" fill="var(--muted)" font-weight="normal">都不会改变结果</text></svg><figcaption>实线是决策边界，两条虚线之间是<b>间隔</b>。⭐ 只有落在间隔边界上的那几个点（圈出的）决定了这条线 —— 这就是「支持向量」；移动其他任何点，结果都不变。</figcaption></figure>
 
-<hr />
-<h2 id="_2">📏 一、最大间隔：为什么"最远"是好的</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">同样能分开数据的三条线：</span></div><div class="vb-tree-row"><span class="vb-tree-node">○ ○ ○ ● ● ● ○ ○ ○ ● ● ● ○ ○ ○ ● ● ●</span></div><div class="vb-tree-row"><span class="vb-tree-node">↑ ↑ ↑</span></div><div class="vb-tree-row"><span class="vb-tree-node">贴着●很近 两边都很远 ⭐ 贴着○很近</span></div><div class="vb-tree-row"><span class="vb-tree-node">哪条最好？中间那条。为什么？</span></div></div></section>
+<hr>
+</section><section class="cross-unit" id="read-margin" aria-labelledby="read-margin-title"><h2 id="read-margin-title">先看间隔：不是只要分对就够了</h2><p class="cross-cue">看图里最近的样本，而不是离边界最远的样本。</p><h3 id="_2">📏 一、最大间隔：为什么"最远"是好的</h3>
+<figure class="dia reading-diagram repair-diagram" id="relationship-theorymd-07-1" style="--diagram-width:720px"><svg viewBox="0 0 720 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="三条边界都把这组样本分开；中间的边界让最近样本离它更远。SVM 的间隔目标关心这个最小距离。示意中不表示一般数据总有唯一边界。"><title>三条边界都把这组样本分开；中间的边界让最近样本离它更远。SVM 的间隔目标关心这个最小距离。示意中不表示一般数据总有唯一边界。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">都能分开时，比较最近样本到边界的距离</text><rect x="20" y="70" width="215" height="255" fill="var(--quote-bg)" stroke="var(--border)"/><circle cx="65" cy="125" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="185" cy="110" r="8" fill="var(--accent)"/><circle cx="65" cy="205" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="185" cy="190" r="8" fill="var(--accent)"/><circle cx="65" cy="275" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="185" cy="260" r="8" fill="var(--accent)"/><line x1="145" y1="85" x2="145" y2="310" stroke="var(--muted)" stroke-width="2"/><text x="127" y="363" font-size="18" text-anchor="middle" fill="var(--fg)">靠近实心</text><rect x="255" y="70" width="215" height="255" fill="var(--quote-bg)" stroke="var(--border)"/><circle cx="300" cy="125" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="420" cy="110" r="8" fill="var(--accent)"/><circle cx="300" cy="205" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="420" cy="190" r="8" fill="var(--accent)"/><circle cx="300" cy="275" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="420" cy="260" r="8" fill="var(--accent)"/><line x1="355" y1="85" x2="355" y2="310" stroke="var(--muted)" stroke-width="2"/><text x="362" y="363" font-size="18" text-anchor="middle" fill="var(--fg)">两侧都留距离</text><rect x="490" y="70" width="215" height="255" fill="var(--quote-bg)" stroke="var(--border)"/><circle cx="535" cy="125" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="655" cy="110" r="8" fill="var(--accent)"/><circle cx="535" cy="205" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="655" cy="190" r="8" fill="var(--accent)"/><circle cx="535" cy="275" r="8" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="655" cy="260" r="8" fill="var(--accent)"/><line x1="565" y1="85" x2="565" y2="310" stroke="var(--muted)" stroke-width="2"/><text x="597" y="363" font-size="18" text-anchor="middle" fill="var(--fg)">靠近空心</text></svg><figcaption>三条边界都把这组样本分开；中间的边界让最近样本离它更远。SVM 的间隔目标关心这个最小距离。示意中不表示一般数据总有唯一边界。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>同样能分开数据的三条线：</span></li><li><span>贴着●很近 两边都很远 ⭐ 贴着○很近</span></li><li><span>哪条最好？中间那条。为什么？</span></li></ul></section>
 <p><strong>三个角度理解</strong>：</p>
 <div class="tw"><table>
 <thead>
@@ -341,12 +349,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <blockquote>
-<p>🔗 <strong>这个 γ 就是<a href="03-感知机.html">第 3 章</a>感知机收敛定理里那个 γ</strong>——
+<p>🔗 <strong>这个 γ 就是<a href="03-%E6%84%9F%E7%9F%A5%E6%9C%BA.html">第 3 章</a>感知机收敛定理里那个 γ</strong>——
 在那里它决定收敛速度，在这里它成了<strong>优化目标本身</strong>。</p>
 </blockquote>
-<hr />
-<h2 id="_3">📐 二、优化问题的形式</h2>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>目标：最大化间隔 γ = 1/‖w‖</p><p>等价：最小化 ‖w‖²</p><p>约束：所有点都分对，且距离边界至少 1</p><p>min ½‖w‖²</p><p>w,b</p><p>s.t. yᵢ(w·xᵢ + b) ≥ 1, ∀i</p></div></section>
+<hr>
+</section><section class="cross-unit" id="read-objective" aria-labelledby="read-objective-title"><h2 id="read-objective-title">目标、约束与支持向量</h2><p class="cross-cue">先读式子下方的读法；距离推导可以按需展开。</p><h3 id="_3">📐 二、优化问题的形式</h3>
+<p><strong>目标</strong>：最大化单侧几何间隔 γ = 1/‖w‖，等价于最小化 ‖w‖²。</p>
+<p>$$\min_{w,b}\; \frac{1}{2}\|w\|^2 \qquad \text{s.t.}\quad y_i(w^\top x_i+b)\ge 1,\ \forall i$$</p>
+<p><strong>约束怎么读</strong>：每个点都分对，而且带标签的函数间隔至少为 1。这里的 1 是缩放约定，<strong>不是说几何距离至少为 1</strong>；几何距离还需要除以 ‖w‖。</p>
 <p>💡 <strong>人话</strong>：<em>在"所有点都分对且离边界够远"的前提下，让 w 尽可能小。</em></p>
 <details>
 <summary>📐 <b>为什么间隔是 1/‖w‖（想看再点）</b></summary>
@@ -355,8 +365,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>所以支持向量到超平面的距离 = $\frac{1}{\|w\|}$，两侧总间隔 = $\frac{2}{\|w\|}$。</p>
 <p><strong>最大化间隔 ⟺ 最小化 ‖w‖ ⟺ 最小化 ½‖w‖²</strong>（平方和系数是为了求导方便）。</p>
 </details>
-<h3 id="_4">🎯 支持向量：只有少数点说了算</h3>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>○ ○</p><p>○ ⊙ ← 上边界</p><p>margin</p><p>← 决策边界</p><p>margin</p><p>⊙ ← 下边界</p><p>● ● ●</p><p>⊙ = 恰好落在边界上的点，叫【支持向量】</p></div></section>
+<h4 id="_4">🎯 支持向量：只有少数点说了算</h4>
+<figure class="dia"><svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="硬间隔 SVM：支持向量在两条间隔边界上，决策边界位于中间"><title>硬间隔 SVM 的三条线</title><rect x="36" y="100" width="420" height="140" fill="var(--accent-soft)"/><line x1="36" y1="100" x2="456" y2="100" stroke="var(--accent)" stroke-dasharray="6 5"/><line x1="36" y1="170" x2="456" y2="170" stroke="var(--fg)" stroke-width="2"/><line x1="36" y1="240" x2="456" y2="240" stroke="var(--accent)" stroke-dasharray="6 5"/><circle cx="90" cy="48" r="9" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="310" cy="58" r="9" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><circle cx="180" cy="100" r="15" fill="var(--card)" stroke="var(--accent)" stroke-width="3"/><circle cx="180" cy="100" r="6" fill="var(--accent)"/><circle cx="300" cy="240" r="15" fill="var(--card)" stroke="var(--accent)" stroke-width="3"/><circle cx="300" cy="240" r="7" fill="var(--fg)"/><circle cx="100" cy="286" r="9" fill="var(--fg)"/><circle cx="215" cy="282" r="9" fill="var(--fg)"/><circle cx="405" cy="290" r="9" fill="var(--fg)"/><text x="475" y="105" font-size="17" fill="var(--fg)">上边界 · 支持向量 ⊙</text><text x="475" y="175" font-size="17" fill="var(--fg)">决策边界</text><text x="475" y="245" font-size="17" fill="var(--fg)">下边界 · 支持向量 ⊙</text><text x="48" y="143" font-size="16" fill="var(--muted)">margin = 1/‖w‖</text><text x="48" y="216" font-size="16" fill="var(--muted)">margin = 1/‖w‖</text></svg><figcaption>看两条虚线上的 ⊙：它们是这个硬间隔示意中的支持向量；两段 margin 各为 1/‖w‖，中间实线才是决策边界。</figcaption></figure>
 <blockquote>
 <p>🔑 <strong>SVM 最漂亮的性质</strong>：<strong>最终模型只由支持向量决定</strong>（通常只占样本的一小部分）。
 <strong>把其他所有点删掉重新训练，得到的分界线一模一样。</strong></p>
@@ -384,8 +394,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<hr />
-<h2 id="_5">🔄 三、对偶：为什么要绕这一圈</h2>
+<hr>
+</section><section class="cross-unit" id="read-dual" aria-labelledby="read-dual-title"><h2 id="read-dual-title">对偶解决什么问题</h2><p class="cross-cue">它把预测写成内积，为核函数留下入口。</p><h3 id="_5">🔄 三、对偶：为什么要绕这一圈</h3>
 <p>原问题（primal）已经能解了，为什么还要转成对偶（dual）？</p>
 <details>
 <summary>📐 <b>对偶形式（想看再点）</b></summary>
@@ -396,8 +406,25 @@ $$\text{s.t.}\quad \alpha_i \ge 0,\quad \sum_i \alpha_i y_i = 0$$</p>
 <p><strong>KKT 条件</strong>告诉我们：只有满足 $y_i(w^\top x_i+b)=1$ 的点（即支持向量）才有 $\alpha_i &gt; 0$，
 其余点 $\alpha_i = 0$ —— <strong>稀疏性是自动出现的，不是人为设计的。</strong></p>
 </details>
-<h3 id="_6">💡 对偶的两个红利</h3>
-<section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 只剩内积 xᵢ·xⱼ ⭐</span></div><div class="vb-flow-row"><span class="vb-flow-step">直接换成核函数 K(xᵢ, xⱼ) 就得到【核 SVM】</span></div><div class="vb-flow-row"><span class="vb-flow-step">这就是第 6 章核技巧的用武之地！</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 支持向量自动浮现</span></div><div class="vb-flow-row"><span class="vb-flow-step">非支持向量的 α = 0，模型天然稀疏</span></div></div></section>
+<h4 id="_6">💡 对偶的两个红利</h4>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>红利</th>
+<th>它让什么变得可行</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>① 只剩内积 xᵢ·xⱼ</strong></td>
+<td>直接换成核函数 K(xᵢ, xⱼ) 就得到【核 SVM】；这就是第 6 章核技巧的用武之地！</td>
+</tr>
+<tr>
+<td><strong>② 支持向量自动浮现</strong></td>
+<td>非支持向量的 α = 0，模型天然稀疏</td>
+</tr>
+</tbody>
+</table></div>
 <blockquote>
 <p>🔑 <strong>对偶不是数学炫技，它是让核技巧能用上的那把钥匙。</strong></p>
 <p><strong>原问题</strong>：$w^\top x$ —— w 和 x 直接相乘，<strong>需要显式的高维向量</strong> 💀
@@ -405,14 +432,14 @@ $$\text{s.t.}\quad \alpha_i \ge 0,\quad \sum_i \alpha_i y_i = 0$$</p>
 </blockquote>
 <p>预测时也只用内积：</p>
 <p>$$f(x) = \text{sign}\left(\sum_{i\in SV} \alpha_i y_i \,K(x_i, x) + b\right)$$</p>
-<hr />
-<h2 id="_7">🩹 四、软间隔：允许犯错</h2>
-<p>现实数据往往线性不可分（<a href="03-感知机.html">第 3 章</a>感知机的死穴）。
+<hr>
+</section><section class="cross-unit" id="read-soft" aria-labelledby="read-soft-title"><h2 id="read-soft-title">数据分不开时：允许违规，但要付代价</h2><p class="cross-cue">把 ξ 的四种位置与 C 的权衡放在一起看。</p><h3 id="_7">🩹 四、软间隔：允许犯错</h3>
+<p>现实数据往往线性不可分（<a href="03-%E6%84%9F%E7%9F%A5%E6%9C%BA.html">第 3 章</a>感知机的死穴）。
 SVM 的解法是<strong>允许违规，但要罚</strong>：</p>
 <p>$$\min_{w,b,\xi}\; \frac{1}{2}\|w\|^2 + C\sum_i \xi_i \qquad \text{s.t. } y_i(w^\top x_i + b) \ge 1 - \xi_i,\ \xi_i \ge 0$$</p>
 <p>💡 <strong>人话</strong>：<em>ξᵢ 是第 i 个点"越界了多少"，C 是越界的罚款单价。</em></p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>ξ = 0 点在边界外，完全合规 ✅</p><p>0 &lt; ξ &lt; 1 点越过了边界，但还在正确的一侧</p><p>ξ = 1 点正好落在决策边界上</p><p>ξ &gt; 1 点被【分错了】 💀</p></div></section>
-<h3 id="c">🎚️ C 的含义（最重要的超参）</h3>
+<h4 id="c">🎚️ C 的含义（最重要的超参）</h4>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -437,36 +464,47 @@ SVM 的解法是<strong>允许违规，但要罚</strong>：</p>
 <blockquote>
 <p>🔗 <strong>C 其实就是正则化强度的倒数</strong>：</p>
 <p><code>min ½‖w‖² + C·误差</code> ⟺ <code>min 误差 + (1/C)·½‖w‖²</code></p>
-<p><strong>对照<a href="02-MAP与正则化的真身.html">第 2 章</a>：这就是 λ = 1/C。
+<p><strong>对照<a href="02-MAP%E4%B8%8E%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E7%9C%9F%E8%BA%AB.html">第 2 章</a>：这就是 λ = 1/C。
 SVM 的 C 和岭回归的 λ 是同一个旋钮的两种写法。</strong></p>
 </blockquote>
-<h3 id="_8">💡 软间隔还有一个损失函数视角</h3>
+<h4 id="_8">💡 软间隔还有一个损失函数视角</h4>
 <p>原问题可以改写成<strong>无约束</strong>形式：</p>
-<p>$$\min_w \; \underbrace{\sum_i \max(0,\, 1 - y_i(w^\top x_i + b))}_{\text{Hinge 损失}} + \frac{1}{2C}\|w\|^2$$</p>
+<p>$$\min_{w,b} \; \underbrace{\sum_i \max(0,\, 1 - y_i(w^\top x_i + b))}_{\text{Hinge 损失}} + \frac{1}{2C}\|w\|^2$$</p>
+<p><strong>这里延续同一个缩放口径</strong>：C &gt; 0，损失采用求和，不是平均；偏置 b 也参与优化。软间隔中的支持向量还可能位于间隔带内或被分错，不能把前面的硬间隔示意直接当作软间隔的全部情况。可对照 <a href="https://scikit-learn.org/stable/modules/svm.html#mathematical-formulation">scikit-learn 的 SVM 数学形式</a>。</p>
 <figure class="dia"><svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hinge 损失在间隔达到一后变为零"><line x1="88" y1="225" x2="705" y2="225" stroke="var(--fg)" stroke-width="2"/><line x1="88" y1="36" x2="88" y2="225" stroke="var(--fg)" stroke-width="2"/><path d="M115 55 L420 225 H675" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linejoin="round"/><line x1="420" y1="36" x2="420" y2="225" stroke="var(--border)" stroke-width="2" stroke-dasharray="6 5"/><circle cx="420" cy="225" r="6" fill="var(--accent)"/><text class="dia-t" x="76" y="50" text-anchor="end" font-size="14" fill="var(--muted)">损失</text><text class="dia-t" x="420" y="250" text-anchor="middle" font-size="14" fill="var(--muted)">1</text><text class="dia-t" x="690" y="250" text-anchor="end" font-size="14" fill="var(--muted)">y·f(x)（分类间隔）</text><text class="dia-t" x="230" y="100" text-anchor="middle" font-size="15" fill="var(--accent)" font-weight="700">间隔不够：仍然有损失</text><text class="dia-t" x="550" y="195" text-anchor="middle" font-size="15" fill="var(--fg)" font-weight="700">间隔 ≥ 1：损失 = 0</text><text class="dia-t" x="550" y="176" text-anchor="middle" font-size="13" fill="var(--muted)">这些样本不再推动边界</text></svg><figcaption>折点就是 SVM 的“安全边界”：分对还不够，必须离分界线够远；达到间隔后，该点不再贡献梯度。</figcaption></figure>
 <blockquote>
 <p>🔑 <strong>和逻辑回归对比</strong>：交叉熵损失<strong>永远大于 0</strong>（哪怕分得很对还想更自信），
 所以逻辑回归<strong>所有点都参与</strong>；Hinge 损失在分对且够远时<strong>恰好为 0</strong>，
 <strong>所以那些点的梯度为零，不影响模型 —— 这就是支持向量稀疏性的另一种解释。</strong></p>
 </blockquote>
-<hr />
-<h2 id="_9">🎛️ 五、实用调参</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.svm</span><span class="w"> </span><span class="kn">import</span> <span class="n">SVC</span>
+<hr>
+</section><section class="cross-unit" id="read-tuning" aria-labelledby="read-tuning-title"><h2 id="read-tuning-title">把理解变成调参选择</h2><p class="cross-cue">实践建议与适用场景一起看，不把经验当保证。</p><h3 id="_9">🎛️ 五、实用调参</h3>
+<p>先把标准化和 SVM 放进同一个流程，再配置参数搜索。点击讲解卡片，可定位对应代码。</p>
+<div class="cr-study" data-code-title="标准化与 SVM 配置">
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.svm</span><span class="w"> </span><span class="kn">import</span> <span class="n">SVC</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_pipeline</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">GridSearchCV</span>
 
 <span class="c1"># ⭐ SVM 必须标准化（它基于距离/内积）</span>
-<span class="n">pipe</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">(),</span> <span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">&quot;rbf&quot;</span><span class="p">))</span>
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">StandardScaler</span><span class="p">(),</span> <span class="n">SVC</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s2">"rbf"</span><span class="p">))</span>
 
 <span class="n">grid</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="p">{</span>
-    <span class="s2">&quot;svc__C&quot;</span><span class="p">:</span>     <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
-    <span class="s2">&quot;svc__gamma&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s2">"svc__C"</span><span class="p">:</span>     <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
+    <span class="s2">"svc__gamma"</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
 <span class="p">},</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
 
+<aside aria-label="SVM 代码讲解" class="cr-notes">
+<p>先看这两处 · 点击定位</p>
+<button class="cr-note" type="button" data-code-lines="7"><strong>1 · 把预处理放进流程</strong><span><code>StandardScaler</code> 与 <code>SVC</code> 放在同一个 Pipeline 中。</span><span class="cr-note-detail">后续做交叉验证时，标准化会在每个训练折上拟合，避免用到验证折的信息。</span><span class="cr-note-range">定位第 7 行 ↗</span></button>
+<button class="cr-note" type="button" data-code-lines="9-12"><strong>2 · 列出要尝试的参数</strong><span><code>C</code> 和 <code>gamma</code> 各提供一组候选值。</span><span class="cr-note-detail"><code>cv=5</code> 指定 5 折交叉验证；这里只完成配置，调用 <code>fit</code> 后才开始搜索。</span><span class="cr-note-range">定位第 9–12 行 ↗</span></button>
+</aside>
+<p class="cr-context">使用边界：这段代码只配置流程与参数搜索，尚未提供数据，也没有调用 <code>fit</code> 开始训练。</p>
+</div>
 <p><strong>C 和 γ 的交互（经典的对角线现象）</strong>：</p>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">γ</span></div><div class="vb-tree-row"><span class="vb-tree-node">过拟合 过拟合</span><span class="vb-tree-note">(太局部) (太局部+太严)</span></div><div class="vb-tree-row"><span class="vb-tree-node">⭐ 好的区域在对角线附近</span></div><div class="vb-tree-row"><span class="vb-tree-node">欠拟合</span></div><div class="vb-tree-row"><span class="vb-tree-node">C</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-theorymd-07-2" style="--diagram-width:720px"><svg viewBox="0 0 720 490" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="横轴 C，纵轴 γ。两者共同影响拟合；斜带只表示需要联合搜索的区域，不是固定的最佳参数规律。实际应看交叉验证热图。"><title>横轴 C，纵轴 γ。两者共同影响拟合；斜带只表示需要联合搜索的区域，不是固定的最佳参数规律。实际应看交叉验证热图。</title><line x1="100" y1="425" x2="650" y2="425" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="650.0,425.0 641.0,430.0 641.0,420.0"/><line x1="100" y1="425" x2="100" y2="60" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="100.0,60.0 105.0,69.0 95.0,69.0"/><text x="650" y="455" font-size="18" text-anchor="start" fill="var(--fg)">C</text><text x="65" y="60" font-size="18" text-anchor="start" fill="var(--fg)">γ</text><rect x="102" y="62" width="545" height="360" fill="var(--quote-bg)" stroke="var(--border)"/><path d="M110 85 L170 65 L640 385 L580 422 Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-dasharray="5 5"/><text x="380" y="105" font-size="20" text-anchor="start" fill="var(--fg)">过局部 / 约束过严</text><text x="150" y="365" font-size="20" text-anchor="start" fill="var(--fg)">欠拟合风险</text><text x="245" y="244" font-size="20" text-anchor="start" fill="var(--fg)">候选区域需实测</text></svg><figcaption>横轴 C，纵轴 γ。两者共同影响拟合；斜带只表示需要联合搜索的区域，不是固定的最佳参数规律。实际应看交叉验证热图。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>过拟合 过拟合</span> <span>(太局部) (太局部+太严)</span></li><li><span>⭐ 好的区域在对角线附近</span></li><li><span>欠拟合</span></li></ul></section>
 <p>💡 <strong>为什么是对角线</strong>：C 和 γ 都在增加模型复杂度。
 一个大另一个就该小，<strong>总复杂度保持在合适水平</strong>。</p>
 <p><strong>四个必须知道的实践点</strong>：</p>
@@ -484,7 +522,7 @@ SVM 的 C 和岭回归的 λ 是同一个旋钮的两种写法。</strong></p>
 </tr>
 <tr>
 <td><strong>不适合大数据</strong></td>
-<td>n &gt; 10 万就很吃力（<a href="06-核技巧.html">第 6 章</a>的 O(n²)）</td>
+<td>n &gt; 10 万就很吃力（<a href="06-%E6%A0%B8%E6%8A%80%E5%B7%A7.html">第 6 章</a>的 O(n²)）</td>
 </tr>
 <tr>
 <td><strong>原生不给概率</strong></td>
@@ -496,8 +534,8 @@ SVM 的 C 和岭回归的 λ 是同一个旋钮的两种写法。</strong></p>
 </tr>
 </tbody>
 </table></div>
-<hr />
-<h2 id="svm">⚖️ 六、SVM 今天还有用吗</h2>
+<hr>
+<h3 id="svm">⚖️ 六、SVM 今天还有用吗</h3>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -534,8 +572,8 @@ SVM 的 C 和岭回归的 λ 是同一个旋钮的两种写法。</strong></p>
 又一次印证「可扩展性胜过精巧设计」。</p>
 <p>但<strong>线性 SVM 在高维稀疏数据上至今没被淘汰</strong>——因为那种场景下它既快又准。</p>
 </blockquote>
-<hr />
-<h2 id="_10">🔗 七、和站内其他章的关系</h2>
+<hr>
+</section><section class="cross-unit" id="read-review" aria-labelledby="read-review-title"><h2 id="read-review-title">回顾、检查与继续学习</h2><p class="cross-cue">不必重读整页；用检查点定位需要回看的部分。</p><h3 id="_10">🔗 七、和站内其他章的关系</h3>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -545,15 +583,15 @@ SVM 的 C 和岭回归的 λ 是同一个旋钮的两种写法。</strong></p>
 </thead>
 <tbody>
 <tr>
-<td><a href="03-感知机.html">第 3 章</a>感知机的 γ</td>
+<td><a href="03-%E6%84%9F%E7%9F%A5%E6%9C%BA.html">第 3 章</a>感知机的 γ</td>
 <td>在 SVM 里成了优化目标</td>
 </tr>
 <tr>
-<td><a href="06-核技巧.html">第 6 章</a>核技巧</td>
+<td><a href="06-%E6%A0%B8%E6%8A%80%E5%B7%A7.html">第 6 章</a>核技巧</td>
 <td>通过对偶形式用上</td>
 </tr>
 <tr>
-<td><a href="02-MAP与正则化的真身.html">第 2 章</a> λ 正则强度</td>
+<td><a href="02-MAP%E4%B8%8E%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E7%9C%9F%E8%BA%AB.html">第 2 章</a> λ 正则强度</td>
 <td>SVM 的 C = 1/λ</td>
 </tr>
 <tr>
@@ -566,9 +604,9 @@ SVM 的 C 和岭回归的 λ 是同一个旋钮的两种写法。</strong></p>
 </tr>
 </tbody>
 </table></div>
-<hr />
+<hr>
 <!--XREF-->
-<h2 id="_11">🔗 这一章连到哪里</h2>
+<h3 id="_11">🔗 这一章连到哪里</h3>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -578,21 +616,21 @@ SVM 的 C 和岭回归的 λ 是同一个旋钮的两种写法。</strong></p>
 </thead>
 <tbody>
 <tr>
-<td><a href="../机器学习与深度学习基础/03-线性模型.html">ML基础 03</a></td>
+<td><a href="../%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/03-%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B.html">ML基础 03</a></td>
 <td>对照着看：逻辑回归最大化似然、SVM 最大化间隔，同样一条直线两种理由</td>
 </tr>
 <tr>
-<td><a href="../机器学习与深度学习基础/04-决策树与集成学习.html">ML 基础 04 · 决策树：怎么切一刀</a></td>
+<td><a href="../%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/04-%E5%86%B3%E7%AD%96%E6%A0%91%E4%B8%8E%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0.html">ML 基础 04 · 决策树：怎么切一刀</a></td>
 <td>另一条路线的分类器 —— 它不画超平面，也就没有间隔这回事</td>
 </tr>
 <tr>
-<td><a href="../模型上线之后/02-离线好不等于线上好.html">上线之后 02</a></td>
+<td><a href="../%E6%A8%A1%E5%9E%8B%E4%B8%8A%E7%BA%BF%E4%B9%8B%E5%90%8E/02-%E7%A6%BB%E7%BA%BF%E5%A5%BD%E4%B8%8D%E7%AD%89%E4%BA%8E%E7%BA%BF%E4%B8%8A%E5%A5%BD.html">上线之后 02</a></td>
 <td>⚠️ SVM 的判别值不是概率。要拿分数做阈值或出价，必须先看校准曲线</td>
 </tr>
 </tbody>
 </table></div>
-<hr />
-<h2 id="_12">✅ 检查点</h2>
+<hr>
+<h3 id="_12">✅ 检查点</h3>
 <ol>
 <li>SVM 和感知机的目标有什么不同？最大间隔好在哪（三个角度）？</li>
 <li>什么是支持向量？删掉非支持向量会怎样？这带来什么优缺点？</li>
@@ -614,13 +652,15 @@ SVM 的 C 和岭回归的 λ 是同一个旋钮的两种写法。</strong></p>
 <li>核矩阵 n×n，复杂度 O(n²)~O(n³)，n 超十万就存不下也算不动。<strong>线性 SVM 在高维稀疏数据（如文本 TF-IDF）上至今是强基线</strong>。</li>
 </ol>
 </details>
-<hr />
-<h2 id="_13">🛑 可以停在这里</h2>
+<hr>
+<h3 id="_13">🛑 可以停在这里</h3>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>感知机「分对就满意」，SVM 问⭐<strong>「哪条分界线最好」——离两边都最远的那条</strong>，这个"最远"叫<strong>间隔</strong>。三个理由：<strong>鲁棒性</strong>（新数据有抖动，余量越大越不容易抖过界）、⭐<strong>唯一性</strong>（感知机的解取决于初始化和数据顺序，最大间隔那条是唯一确定的）、<strong>理论保证</strong>（泛化界可用间隔而非 VC 维表述，间隔越大界越紧）。这个 γ 就是第 3 章感知机定理里的 γ：<strong>那里决定收敛速度，这里成了优化目标</strong>。间隔 <code>γ = 1/‖w‖</code>，所以<strong>最大化间隔 ⟺ <code>min ½‖w‖²</code>，约束 <code>yᵢ(w·xᵢ+b) ≥ 1</code></strong>。⭐<strong>支持向量</strong>＝恰好落在边界上的那少数点，<strong>模型只由它们决定，其余点全删掉重训分界线一模一样</strong>：对远处离群点鲁棒、天然稀疏，但⚠️<strong>对边界附近的噪声敏感</strong>（一个标错的点落在边界上就会改变结果）。⭐<strong>对偶不是数学炫技</strong>：原问题 <code>wᵀx</code> 需要显式的高维向量，对偶展开后<strong>只剩内积 <code>xᵢ·xⱼ</code>，才能整体换成核函数</strong>——这就是对偶存在的理由；KKT 保证只有支持向量 <code>αᵢ &amp;gt; 0</code>，<strong>稀疏性是自动出现的</strong>。<strong>软间隔</strong>允许违规但要罚：<code>min ½‖w‖² + C·Σξᵢ</code>（ξᵢ 是越界了多少，ξ &gt; 1 才算真的分错）。⭐<strong>C 大＝罚款贵→间隔窄、过拟合；C 小＝容忍犯错→间隔宽、欠拟合</strong>，且 <strong>C = 1/λ，和岭回归是同一个旋钮</strong>。⭐<strong>Hinge 损失在分对且间隔 ≥ 1 时恰好为 0</strong>（梯度也为 0，那些点不影响模型）——这是稀疏性的另一种解释；交叉熵<strong>永远大于 0</strong>，所以逻辑回归所有点都参与。实践：⚠️<strong>必须标准化</strong>、<strong>C 与 γ 的好区在对角线上</strong>（一个大另一个就得小）、原生不给概率。<strong>它输给深度学习不是想法不好，是 O(n²) 不 scale</strong>（n 过十万就吃力），但<strong>线性 SVM 在高维稀疏数据（文本 TF-IDF）上至今是强基线</strong>。</p>
-</blockquote>
-<p><strong>下一节</strong> 👉 <a href="08-偏差方差分解.html">08-偏差方差分解.md</a></p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>SVM 不只要求分对，还通过间隔控制分界线离样本有多远。</li><li>软间隔允许违规并付出代价，C 调节拟合与容错的权衡。</li><li>对偶形式让内积可以替换为核；先标准化并验证 C、核参数，再解释支持向量。</li></ul></section>
+
+<p><strong>下一节</strong> 👉 <a href="08-%E5%81%8F%E5%B7%AE%E6%96%B9%E5%B7%AE%E5%88%86%E8%A7%A3.html">08-偏差方差分解.md</a></p></section></div></div>
+<aside class="lesson-rail cross-rail" aria-label="本页阅读路线"><button type="button" class="lesson-route-toggle" aria-expanded="true" aria-controls="cross-route">本页阅读路线 <span aria-hidden="true">⌄</span></button>
+<div id="cross-route"><p class="lesson-position">路线可跳读，不表示已掌握</p><nav class="lesson-route-links" aria-label="正文分组"><a href="#read-margin">先看间隔：不是只要分对就够了</a><a href="#read-objective">目标、约束与支持向量</a><a href="#read-dual">对偶解决什么问题</a><a href="#read-soft">数据分不开时：允许违规，但要付代价</a><a href="#read-tuning">把理解变成调参选择</a><a href="#read-review">回顾、检查与继续学习</a></nav>
+<p class="cross-route-note">一次只处理眼前这一组。正文、图解、代码与答案都保留在页面里。</p><button class="lesson-save" type="button">记住当前位置</button><p class="lesson-save-status" role="status"></p></div></aside></div>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="06-核技巧.html"><div class="dir">← 上一节</div>🎩 06 · 核技巧</a><a class="next" href="08-偏差方差分解.html"><div class="dir">下一节 →</div>⚖️ 08 · 偏差方差分解</a></nav>
@@ -647,5 +687,4 @@ SVM 的 C 和岭回归的 λ 是同一个旋钮的两种写法。</strong></p>
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

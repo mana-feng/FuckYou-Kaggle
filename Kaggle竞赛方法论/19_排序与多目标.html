@@ -180,9 +180,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -1091,8 +1091,7 @@ th,td{min-width:5.2em}
 <hr />
 <h2 id="recap">🛑 可以停在这里</h2>
 <blockquote>
-<p>⚡ <strong>走神救援</strong><br />
-<strong>召回决定上限，排序决定你实际拿到多少</strong>。<strong>Wide&amp;Deep</strong>：Wide 负责<strong>记忆</strong>（交叉特征记住强共现），Deep 负责<strong>泛化</strong>（Embedding 学未见组合的相似性）。⭐<strong>FM 解决「稀疏特征下二阶交叉难学」</strong>——很多组合训练集里根本没出现过，<strong>FM 用每个特征一个隐向量、交叉权重取内积</strong>，从而能泛化；<strong>DeepFM = FM 并联 DNN</strong>，同时拿低阶和高阶交互。<strong>多目标</strong>：Shared-Bottom 底层全共享会有<strong>跷跷板效应</strong>，<strong>MMoE 用多专家+每任务一个门控让任务各取所需</strong>，PLE 再区分共享/专属专家。⚠️⭐<strong>推荐赛最常见的坑：训练和预测的候选集不一致</strong>（负样本分布对不上，离线好提交崩），其次是<strong>时间穿越</strong>。⭐<strong>特征工程权重比很多人以为的高</strong>——信号大量藏在交互统计里（近N天行为次数、类目偏好分布、物品热度衰减、用户-物品共现），<strong>这些聚合特征往往比换更复杂的模型收益大得多</strong>。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>排序模型在候选集中学习匹配，特征交互与多目标共享方式各有取舍。</li><li>交互统计可能提供重要信号，但每一项都要遵守预测时间。</li><li>训练与预测候选分布保持一致，避免验证好看而提交失效。</li></ul></section>
 </blockquote>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -1120,5 +1119,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
 </body></html>

@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -336,8 +336,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><code>__enter__</code> 里忘了 <code>return self</code>，<code>as x</code> 拿到的是 <code>None</code>。⭐ <strong><code>as x</code> 绑的是 <code>__enter__</code> 的返回值，不是那个对象本身。</strong>
 → 在 <code>with</code> 块第一行 <code>print(x)</code> 就能确认。详见 <a href="03-装饰器与上下文管理器.html">03 章</a>第六节。</p>
 <h3 id="runtimeerror-an-attempt-has-been-made-to-start-a-new-process-before-the-current-process-has-finished-its-bootstrapping-phase"><code>RuntimeError: An attempt has been made to start a new process before the current process has finished its bootstrapping phase</code></h3>
-<p>训练脚本 / 建进程池那一行<strong>没被 <code>if __name__ == "__main__"</code> 守住</strong>，子进程重新 import 主模块时又执行了一遍，无限递归。
-💀 <strong>难查的原因</strong>：你在终端里<strong>先看到的是 <code>BrokenProcessPool: A process in the process pool was terminated abruptly</code></strong> —— 字面像资源不足，而真正的 <code>RuntimeError</code> 埋在一堆 <code>multiprocessing/spawn.py</code> 栈帧中间；在 Notebook / IDE 里子进程的 stderr 常常根本不显示。详见 <a href="04-GIL：为什么多线程救不了你.html">04 · GIL</a>第五节。</p>
+<p>训练脚本 / 建进程池那一行<strong>没被 <code>if __name__ == "__main__"</code> 守住</strong>，子进程重新 import 主模块时又执行了一遍，无限递归。</p>
+<p>💀 <strong>难查的原因</strong>：你在终端里<strong>先看到的是 <code>BrokenProcessPool: A process in the process pool was terminated abruptly</code></strong> —— 字面像资源不足，而真正的 <code>RuntimeError</code> 埋在一堆 <code>multiprocessing/spawn.py</code> 栈帧中间；在 Notebook / IDE 里子进程的 stderr 常常根本不显示。详见 <a href="04-GIL：为什么多线程救不了你.html">04 · GIL</a>第五节。</p>
 <h3 id="picklingerror-typeerror-cannot-pickle"><code>PicklingError</code> / <code>TypeError: cannot pickle ...</code></h3>
 <p>要送进子进程的东西<strong>不能被 pickle</strong>：lambda、局部函数、打开的文件句柄、数据库连接、<code>threading.Lock</code> 都不行。详见 <a href="04-GIL：为什么多线程救不了你.html">04 章</a>第六节。</p>
 <h3 id="valueerror-invalid-literal-for-int-with-base-10-na"><code>ValueError: invalid literal for int() with base 10: 'n/a'</code></h3>
@@ -345,8 +345,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 ⭐ 3.11 之后 traceback 里那几行 <code>~~~^^^</code> 会<strong>指出一行里到底是哪个调用炸的</strong> —— <code>return int(v) / 100</code> 底下标在 <code>int(v)</code> 上，说明不是除法的问题。详见 <a href="07-异常traceback和调试.html">07 · 异常、traceback 和调试</a>第一节。</p>
 <h3 id="modulenotfounderror-no-module-named-xxx"><code>ModuleNotFoundError: No module named 'xxx'</code></h3>
 <p>⚠️ <strong>它只告诉你「没找到」，从不告诉你「在哪找过」。</strong> 自己打出来：
-<code>python -c "import importlib.util as u; print(u.find_spec('xxx'))"</code>，再打 <code>sys.path</code>。
-⭐ <strong>十次里有一次是名字问题</strong>：<code>pip install pyyaml</code> → <code>import yaml</code>；<code>scikit-learn</code> → <code>sklearn</code>；<code>opencv-python</code> → <code>cv2</code>；<code>Pillow</code> → <code>PIL</code>。<strong>去 PyPI 页面抄那行 import，别猜。</strong> 详见 <a href="08-环境、依赖和import.html">08 · 环境、依赖和 import</a>第一节。</p>
+<code>python -c "import importlib.util as u; print(u.find_spec('xxx'))"</code>，再打 <code>sys.path</code>。</p>
+<p>⭐ <strong>十次里有一次是名字问题</strong>：<code>pip install pyyaml</code> → <code>import yaml</code>；<code>scikit-learn</code> → <code>sklearn</code>；<code>opencv-python</code> → <code>cv2</code>；<code>Pillow</code> → <code>PIL</code>。<strong>去 PyPI 页面抄那行 import，别猜。</strong> 详见 <a href="08-环境、依赖和import.html">08 · 环境、依赖和 import</a>第一节。</p>
 <h3 id="unicodedecodeerror-gbk-codec-cant-decode-byte-0x8c-in-position-14"><code>UnicodeDecodeError: 'gbk' codec can't decode byte 0x8c in position 14</code></h3>
 <p>⭐ <strong>你从头到尾没提过 GBK，是 <code>open()</code> 替你选的。</strong> Windows 上 <code>open()</code> 用的是 <code>locale.getpreferredencoding(False)</code>（本机 <code>cp936</code>），不是 <code>sys.getdefaultencoding()</code>（那个管的是 str/bytes 互转，跟读文件没关系）。
 → 一律显式写 <code>encoding="utf-8"</code>。详见 <a href="10-编码、路径和文件.html">10 · 编码、路径和文件</a>第一节。</p>
@@ -1020,5 +1020,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

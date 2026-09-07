@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -365,7 +365,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>🗓️ <strong>本章的 SQL 全部未实跑 —— 需要 PostgreSQL + pgvector 扩展</strong>，本地没有环境就跑不了。
 而且运算符、索引参数、支持的向量类型<strong>都随 pgvector 版本变</strong>，动手前查你那一版的文档。</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="c1">-- 🗓️ 未实跑，需要 PostgreSQL + pgvector</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="c1">-- 🗓️ 未实跑，需要 PostgreSQL + pgvector</span>
 <span class="k">CREATE</span><span class="w"> </span><span class="n">EXTENSION</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">vector</span><span class="p">;</span>
 
 <span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">documents</span><span class="w"> </span><span class="p">(</span><span class="w">                  </span><span class="c1">-- ⭐ 业务侧的文档表，chunks 挂在它下面</span>
@@ -389,7 +389,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>注意 <code>ON DELETE CASCADE</code></strong> —— 上一节那个一致性问题，在这里就是一行 DDL 解决的。
 删文档，它的所有 chunk 和向量跟着走，<strong>在同一个事务里</strong>。</p>
 <p>查询就是普通 SQL 加一个距离运算符：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">-- 🗓️ 未实跑，需要 PostgreSQL + pgvector</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="c1">-- 🗓️ 未实跑，需要 PostgreSQL + pgvector</span>
 <span class="k">SELECT</span><span class="w"> </span><span class="n">content</span><span class="p">,</span><span class="w"> </span><span class="n">embedding</span><span class="w"> </span><span class="o">&lt;=&gt;</span><span class="w"> </span><span class="err">$</span><span class="mi">1</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">distance</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">chunks</span>
 <span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">embedding</span><span class="w"> </span><span class="o">&lt;=&gt;</span><span class="w"> </span><span class="err">$</span><span class="mi">1</span>
@@ -483,7 +483,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>「在<strong>这个用户</strong>的、<strong>这个文件夹</strong>里的、<strong>没被归档</strong>的文档里，搜最相似的 5 条」</p>
 </blockquote>
 <p>在 Postgres 里，这就是加个 <code>WHERE</code>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">-- 🗓️ 未实跑，需要 PostgreSQL + pgvector</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="c1">-- 🗓️ 未实跑，需要 PostgreSQL + pgvector</span>
 <span class="k">SELECT</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">content</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">embedding</span><span class="w"> </span><span class="o">&lt;=&gt;</span><span class="w"> </span><span class="err">$</span><span class="mi">1</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">distance</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">chunks</span><span class="w"> </span><span class="k">c</span>
 <span class="k">JOIN</span><span class="w"> </span><span class="n">documents</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">document_id</span>
@@ -525,38 +525,34 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 过滤完不够数就自动往下再扫一段。⭐ <strong>这恰恰说明这个问题在 pgvector 里真实存在</strong> ——
 不然不会专门给它一个开关。版本相关，用前查你那版文档。</p>
 </blockquote>
-<p>⭐ <strong>那 pgvector 的优势到底是什么？是三条，都和「选项」有关：</strong></p>
+<p>pgvector 的价值在于与业务 SQL、事务和查询规划器的结合，不能把专用向量库说成“不支持精确搜索”。例如 Qdrant 的 <code>SearchParams(exact=True)</code> 就能提供精确对照。<a href="https://qdrant.tech/documentation/tutorials-search-engineering/ann-recall/">官方 ANN 召回实验</a>。</p>
 <div class="tw"><table>
 <thead>
 <tr>
-<th></th>
-<th>优势</th>
-<th>为什么专用库给不了</th>
+<th>比较项</th>
+<th>pgvector 的特点</th>
+<th>对照时须核实</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>① ⭐</td>
-<td><strong>小数据量可以干脆不建索引</strong> —— 精确扫描，<code>WHERE</code> 和距离在同一遍扫描里算完，<strong>过滤结果一条不差</strong></td>
-<td>专用向量库存在的意义就是那个索引，<strong>「不建索引」不是它的选项</strong></td>
+<td>精确与近似</td>
+<td>不建近似索引时可精确扫描；也可建 HNSW/IVFFlat</td>
+<td>专用库也可能支持精确模式；按具体版本、过滤与数据规模测试</td>
 </tr>
 <tr>
-<td>②</td>
-<td><strong>过滤条件能用普通 B-tree 索引</strong>，于是「先按 <code>user_id</code> 过滤再精确算距离」和「走向量索引」是两条都可行的路，⭐ <strong>查询规划器自己按选择性挑</strong></td>
-<td>你得自己在 pre / post 之间二选一，还得为每种查询手工判断</td>
+<td>过滤与规划</td>
+<td>B-tree、SQL 条件与向量查询可组合</td>
+<td>规划器不保证总选最优；用 EXPLAIN 与实测观察，不能只看 SQL 写法</td>
 </tr>
 <tr>
-<td>③</td>
-<td><strong>过滤条件和向量在同一份数据、同一个事务里</strong> —— 所以上面那个 <code>archived</code> 在别的表上也能直接 JOIN</td>
-<td>专用库只能过滤<strong>自己那份元数据副本</strong>，<code>archived</code> 得同步一份过去，而<strong>同步就会漂</strong>（第一节那个问题的另一个化身）</td>
+<td>事务和关联</td>
+<td>与业务数据在同一个 PostgreSQL 事务中更新，可 JOIN</td>
+<td>独立向量库与业务库之间通常需要同步；更新/删除/撤权必须量延迟并对账</td>
 </tr>
 </tbody>
 </table></div>
-<blockquote>
-<p>⭐ <strong>所以结论不变（多租户 + 业务过滤确实适合 pgvector），但理由要说对</strong>：
-不是「这个问题不存在」，而是「<strong>你多了几个选项，而且不用自己选</strong>」。
-尤其第 ① 条 —— 几万条数据时不建索引，你拿到的是<strong>精确解</strong>，这是专用库根本给不了的东西。</p>
-</blockquote>
+<p>小数据量先用精确搜索建立基线；大数据量再测近似索引的召回—延迟取舍。存储选型要比较自己的过滤分布、成本和运维条件。<a href="../智能体工程教程/11c-检索评测与调优实验.html">检索实验</a>将这种对照接到 RAG。</p>
 <p>⚠️ <strong>一个必须做对的安全细节</strong>：<code>WHERE user_id = $2</code> 这个条件<strong>绝不能是可选的</strong>。
 <a href="08-认证会话与多租户.html">第 8 章</a>讲了怎么从结构上保证它不会被漏掉 —— 不是靠记得写。</p>
 <hr />
@@ -644,8 +640,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table></div>
 <p>⭐ 核心概念三家完全一致 —— 建表、<code>&lt;=&gt;</code> 运算符、索引、过滤，都是 SQL 层的事。
 ⭐ <strong>这一章的内容几乎全部是 SQL 和数据建模，换语言不影响</strong> ——
-这也是选 pgvector 的一个附带好处：你的知识不绑定在某个 SDK 上。
-（🗓️ 上表的包名和各家 ORM 的向量支持程度都在变，用前先查。
+这也是选 pgvector 的一个附带好处：你的知识不绑定在某个 SDK 上。</p>
+<p>（🗓️ 上表的包名和各家 ORM 的向量支持程度都在变，用前先查。
 ⚠️ <strong>官方客户端的仓库名带语言后缀（<code>pgvector-python</code> / <code>-node</code> / <code>-go</code>），但包管理器里的安装名不一定带</strong> ——
 以 PyPI / npm / Go module 上的实际名字为准，别照着仓库名去装。）</p>
 <hr />
@@ -709,7 +705,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li><code>&lt;=&gt;</code> <strong>余弦距离</strong>（大多数模型用这个）、<code>&lt;-&gt;</code> L2 欧氏、<code>&lt;#&gt;</code> 负内积（向量已归一化时更快）。⚠️ 选错不会报错，只会悄悄检索得更差 —— 最难发现的一类 bug。先查模型文档。</li>
 <li>⚠️⚠️ <strong>IVFFlat 必须先有数据才能建</strong>（要靠数据聚类）。在空表上建完再灌一百万条，索引是基于空数据建的、效果极差，而且不会有任何报错。灌完要 <code>REINDEX</code>。</li>
 <li><strong>干脆先不建。</strong> 几万条全表扫描又准又简单，还省得调参。真慢了先上 HNSW（不用操心数据分布），除非内存吃紧再考虑 IVFFlat。⚠️ 另外记住索引是近似的：加索引后结果可能和精确搜索不同，那是召回率下降，要调 <code>ef_search</code>/<code>probes</code>，不是 bug。</li>
-<li>两种做法：<strong>pre-filter</strong>（先过滤再搜——候选集变小，向量索引可能失效退化成暴力扫）、post-filter（先搜再过滤——⚠️ 取回 top 100 过滤完只剩 3 条甚至 0 条，要的 5 条拿不到）。⚠️⚠️ pgvector 一样有这个问题：只要按第三节建了 HNSW / IVFFlat，它走的就是同一条 post-filter 路，换个存储不会让近似索引变精确（🗓️ 较新版本有 <code>hnsw.iterative_scan</code> 这类开关，专门给它兜底——这恰恰说明问题真实存在）。它真正的优势是三条：① 小数据量可以干脆不建索引，精确扫描过滤得一条不差——「不建索引」不是专用库的选项；② 过滤条件能走普通 B-tree，「先过滤再精扫」还是「走向量索引」由查询规划器自己挑，不用你二选一；③ 过滤条件和向量在同一份数据、同一个事务里，<code>archived</code> 在另一张表上也能 JOIN，不必把元数据同步一份过去（同步就会漂）。</li>
+<li>两种做法：<strong>pre-filter</strong>（先过滤再搜——候选集变小，向量索引可能失效退化成暴力扫）、post-filter（先搜再过滤——⚠️ 取回 top 100 过滤完只剩 3 条甚至 0 条，要的 5 条拿不到）。⚠️⚠️ pgvector 一样有这个问题：实际使用 HNSW / IVFFlat 的查询可能遇到过滤后不足 K，应检查执行计划与迭代扫描配置，换个存储不会让近似索引变精确（🗓️ 较新版本有 <code>hnsw.iterative_scan</code> 这类开关，专门给它兜底——这恰恰说明问题真实存在）。它真正的优势是三条：① 小数据量可以干脆不建索引，精确扫描过滤得一条不差——专用库也可能提供精确模式，需按具体引擎验证；② 过滤条件能走普通 B-tree，「先过滤再精扫」还是「走向量索引」由查询规划器自己挑，不用你二选一；③ 过滤条件和向量在同一份数据、同一个事务里，<code>archived</code> 在另一张表上也能 JOIN，不必把元数据同步一份过去（同步就会漂）。</li>
 <li><strong>写入时算。</strong> 因为算 embedding 慢（几十秒起步），HTTP 请求等不了，要走队列（<a href="11-长任务与队列.html">第 11 章</a>）；query 的 embedding 一次一条，快，可以同步算。⚠️ 两边必须用同一个模型 —— 用错不报错，只返回一堆不相关的东西。</li>
 <li><strong>全部重算</strong>：一百万 chunk 是一笔真金白银；重算期间新旧向量不能混在一张表（维度可能不同），要么停机要么建新表双写再切换。提前存一列 <code>embedding_model</code> —— 不存的话，将来连「哪些需要重算」都查不出来。</li>
 <li>任选三条：<strong>向量数超千万级</strong>、QPS 高且延迟敏感、需要 Postgres 没有的检索能力（GPU 加速、放不进内存的磁盘索引；⚠️ 量化压缩不算 —— pgvector 已经有 <code>halfvec</code> 和二值量化，拿它当理由是不成立的）、向量和业务数据本来就分离（来自离线批处理、无一致性要求 —— 这时第一节的理由不成立）、团队已经在运维那个库。⚠️ 注意没有一条是「因为它是专门做这个的」 —— 技术选型的成本不在「学会用」，在「长期运维」。</li>
@@ -723,7 +719,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>多一个专用库就多四样东西</strong>：一套备份恢复、一套监控、一套连接管理，<strong>以及最贵的那个——一致性</strong>。删文档要删业务记录和删向量两步，⚠️ <strong>它们不在一个事务里</strong>。💀 <strong>一半成功就是「文档已删除却仍能被检索到」，那是数据泄露</strong>；反过来是文档还在但问不出内容。⭐ <strong>而放在一起时，这一切就是一行级联删除。</strong></p>
 <p>⚠️ <strong>索引别建太早</strong>：那类近似索引<strong>必须先有数据才能建</strong>（它靠数据聚类）——<strong>在空表上建完再灌数据，索引基于空数据、效果极差，而且不会报错。</strong> ⭐ 几万条以内<strong>干脆不建索引</strong>，全表扫描又准又简单。</p>
 <p>⭐⭐ <strong>最关键的一节是「带元数据过滤的检索」</strong>：真实需求几乎从不是「在全部向量里搜」，而是「在这个用户的、这个文件夹里的、没归档的文档里搜」。⚠️ <strong>别以为放在一起就没有先过滤还是后过滤的困境</strong>——⭐ <strong>只要建了近似索引，走的就是同一条路；换个存储不会让近似索引变成精确索引。</strong></p>
-<p>它真正的优势是三条：小数据量<strong>可以干脆不建索引</strong>（这不是专用库的选项）、过滤条件走普通索引由查询规划器自己挑、过滤和向量在同一份数据同一个事务里。⭐ <strong>所以理由是「你多了几个选项而且不用自己选」，不是「问题不存在」。</strong></p>
+<p>它真正的优势是三条：小数据量<strong>可以干脆不建索引</strong>（专用库也可能支持精确模式）、过滤条件走普通索引由查询规划器自己挑、过滤和向量在同一份数据同一个事务里。⭐ <strong>所以理由是「你多了几个选项而且不用自己选」，不是「问题不存在」。</strong></p>
 <p>⭐ <strong>换 embedding 模型等于全部重算</strong>，新旧维度可能不同、不能混在一张表里——⭐ <strong>提前存一列「用的是哪个模型」</strong>，否则将来连「哪些要重算」都查不出来。</p>
 <p>⚠️ 真该上专用库的信号里<strong>没有一条是「因为它是专门做这个的」</strong>——⭐ <strong>技术选型的成本不在学会用，在长期运维：多一个有状态组件，就多一个会在凌晨出问题的东西。</strong></p>
 </blockquote>
@@ -754,5 +750,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

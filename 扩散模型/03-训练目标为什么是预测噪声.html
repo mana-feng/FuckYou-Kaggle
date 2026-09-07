@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -348,7 +348,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>给我任意一个，都能算出另外两个：</p>
 <p>$$\hat x_0 = \frac{x_t - \sqrt{1-\bar\alpha_t}\,\varepsilon_\theta}{\sqrt{\bar\alpha_t}}, \qquad v = \sqrt{\bar\alpha_t}\,\varepsilon - \sqrt{1-\bar\alpha_t}\,x_0$$</p>
 <p>既然能互换，选哪个应该无所谓才对。<strong>但损失长在哪个量上，梯度就长在哪个量上：</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 同一份预测误差，换成两种训练目标之后，损失量级差多少</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 同一份预测误差，换成两种训练目标之后，损失量级差多少</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -469,9 +469,8 @@ t= 990 k=142.35 | 摆烂猜x0=1.9877 摆烂猜eps=0.9995 | x0-MSE=2.02e+02 eps-M
 <p>读到这里，你已经能<strong>看懂任意一份扩散训练脚本的核心几行</strong>：<code>t = torch.randint(0, T, (B,))</code> 是每张图各抽各的时刻，<code>noise = torch.randn_like(x0)</code> 就是标签，<code>F.mse_loss(model(x_t, t), noise)</code> 就是 L_simple，而 <code>prediction_type: v_prediction</code> 只是换了参数化、不是换了模型。</p>
 <p><strong>什么时候回来</strong>：改了预测目标却忘了改采样端的换算（第三节）；loss 好看但出图糊（第二节）；想上 zero terminal SNR 却发现 ε 参数化在终点除零（第三节的表）。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>扩散模型的训练是<strong>监督学习，标签是你自己造的</strong>：取一张真图 x₀、随机抽时刻 t、随机采一份 ε，闭式拼出 x_t，让网络看着 (x_t, t) 把那份 ε 认出来，损失就是 ‖ε − ε_θ‖²。⭐ <strong>采出来的和比对的是同一个张量</strong>，没有未知量；同一张图配不同 t 和 ε 就是新样本，训练数据几乎无限。这行均方误差从<strong>变分下界</strong>来：ELBO 展开后是 T 项 KL 之和，而<strong>两边都是高斯、方差写死只学均值</strong>，KL 塌成「均值差平方 ÷ 2σ²」，x_t 抵消后只剩带系数的平方差；DDPM 把系数也扔了得到 L_simple，等于<strong>给 t 大的样本更高权重</strong>。<strong>ε / x₀ / v 三种参数化可互换</strong>，选噪声是<strong>梯度量级</strong>的决定：t=10 时摆烂网络在 x₀ 上只错 <strong>0.0019</strong>、在 ε 上却错 <strong>1.0024</strong>，t=990 反过来是 <strong>1.9877</strong> 对 <strong>0.9995</strong>；同一个网络在 ε 上恒差 0.1，换 x₀ 口径后损失从 <strong>1.90e-05</strong> 跨到 <strong>202</strong>，ε 口径恒定 <strong>0.0100</strong>，换算比 k 在 t=990 时是 <strong>142.35</strong>。最后 t 必须送进网络每一层，做法是<strong>正弦嵌入</strong>（和 Transformer 位置编码同一个零件）。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>训练样本由干净数据、随机时刻和已知噪声构造，目标可以直接计算。</li><li>预测噪声、预测干净样本和 v 参数化之间可以换算，但损失的时间权重并不因此相同。</li><li>时间条件必须传给去噪网络；先核对采样出来的噪声与监督目标是同一份。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="04-DDIM与采样加速.html">04-DDIM与采样加速.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -499,5 +498,4 @@ t= 990 k=142.35 | 摆烂猜x0=1.9877 摆烂猜eps=0.9995 | x0-MSE=2.02e+02 eps-M
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

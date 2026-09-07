@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -323,7 +323,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 你可以开 100 个线程，操作系统也确实把它们分配到了不同的核上，但它们要排队抢同一把锁。</p>
 </blockquote>
 <p>先看你的解释器现在是什么形状：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 你的解释器现在是什么形状：启动方式 + GIL 在不在</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 你的解释器现在是什么形状：启动方式 + GIL 在不在</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">multiprocessing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
@@ -342,7 +342,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="python-cpu">🧩 二、纯 Python 的 CPU 活：线程一点忙都帮不上</h2>
 <p>先把最常见的期待打掉。8 核机器，4 份一模一样的计算活：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 纯 Python 的 CPU 活：串行 / 4 线程 / 4 进程</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 纯 Python 的 CPU 活：串行 / 4 线程 / 4 进程</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">math</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">concurrent.futures</span><span class="w"> </span><span class="kn">import</span> <span class="n">ThreadPoolExecutor</span><span class="p">,</span> <span class="n">ProcessPoolExecutor</span>
 
@@ -372,7 +372,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>看中间那一行</strong>：开了 4 个线程，<strong>比串行还慢</strong>。慢的那部分不是错觉，是抢锁和切换的开销——活一点没少干，还多干了「排队」这件事。</p>
 <p>⚠️ 线程那一档在不同机器、不同轮次之间会在「和串行持平」到「比串行慢三成」之间摆动（我这台机器上三轮分别是 0.57 / 0.60 / 0.75 s，对应的串行是 0.56 / 0.62 / 0.86 s）。<strong>要看的不是绝对数，是它从来不会接近 4 倍。</strong></p>
 <p>⚠️ 而进程那一档也只快了 <strong>1.5 倍</strong>，不是 4 倍——因为起进程本身要钱：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 起进程本身要多少钱</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 起进程本身要多少钱</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">concurrent.futures</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProcessPoolExecutor</span><span class="p">,</span> <span class="n">ThreadPoolExecutor</span>
 
@@ -398,7 +398,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>上一节容易让人得出「CPU 密集就用进程」的结论。<strong>那个结论太粗，而且恰好在最常见的两个场景上给出相反的建议。</strong></p>
 <p>关键在于：<strong>GIL 是可以被主动放开的</strong>。任何 C 扩展在进入一段「不碰 Python 对象」的纯计算之前，都可以调用 <code>Py_BEGIN_ALLOW_THREADS</code> 把锁交出去，算完再拿回来。<strong>锁交出去的那段时间里，别的线程是真的在另一个核上跑。</strong></p>
 <p>同样是「CPU 密集」，两个库的选择不一样：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 同样是「CPU 密集」，线程池管不管用取决于这个操作放不放 GIL</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 同样是「CPU 密集」，线程池管不管用取决于这个操作放不放 GIL</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">concurrent.futures</span><span class="w"> </span><span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
@@ -423,7 +423,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">  </span><span class="si">%.2f</span><span class="s2"> s&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">timed</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">))))</span>   <span class="c1"># ⭐ 取最小值，理由见 05 章</span>
 </code></pre></div>
 
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>JSON 大小 13.7 MB</p><p>np.sort 串行 0.80 s</p><p>np.sort 4线程 0.25 s</p><p>json 串行 1.51 s</p><p>json 4线程 1.45 s</p></div></section>
+<section class="comparison-repair" id="comparison-repair-30"><p>JSON 大小 13.7 MB</p><div class="tw"><table><caption>这次实测的耗时对照</caption><thead><tr><th scope="col">任务</th><th scope="col">串行</th><th scope="col">4 线程</th></tr></thead><tbody><tr><th scope="row">np.sort</th><td>0.80 s</td><td>0.25 s</td></tr><tr><th scope="row">json</th><td>1.51 s</td><td>1.45 s</td></tr></tbody></table></div></section>
 <p>⭐ <strong>这四行就是本章的正题</strong>：</p>
 <div class="tw"><table>
 <thead>
@@ -563,7 +563,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p>「在等」那一档的效果是最好看的——因为等待期间 GIL 是放开的，8 个任务能挤在一起等：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 等待类的活：线程和 async 都能赢，因为等待的时候 GIL 是放开的</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 等待类的活：线程和 async 都能赢，因为等待的时候 GIL 是放开的</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">concurrent.futures</span><span class="w"> </span><span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
 
@@ -639,7 +639,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p>⭐ <strong>spawn 会把你的主模块重新 import 一遍</strong>，这是 Windows 上所有多进程怪事的根源：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># spawn 会把这个模块【重新 import 一遍】：守卫外面的代码，每个子进程都会再跑一次</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># spawn 会把这个模块【重新 import 一遍】：守卫外面的代码，每个子进程都会再跑一次</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">concurrent.futures</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProcessPoolExecutor</span>
 
@@ -679,7 +679,7 @@ terminated abruptly while the future was running or pending.
 <hr />
 <h2 id="pickle">⚠️ 六、pickle 的账：搬数据的钱可能比省下的还多</h2>
 <p>跨进程传参数和收结果，走的是 pickle：<strong>对象序列化成字节 → 通过管道传给子进程 → 子进程再反序列化成对象</strong>。这一来一回的钱经常被忽略。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 进程间传参要 pickle：大对象搬过去的钱，可能比并行省下的还多</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 进程间传参要 pickle：大对象搬过去的钱，可能比并行省下的还多</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">concurrent.futures</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProcessPoolExecutor</span>
@@ -775,7 +775,7 @@ sklearn 的 <code>n_jobs</code> 走的是 joblib 的进程池，账和第六节�
 <h2 id="gil_2">🧯 八、GIL 不等于线程安全</h2>
 <p>最后一个反直觉的地方：<strong>GIL 保护的是解释器自己的内部状态，不是你的代码。</strong></p>
 <p>「同一时刻只有一个线程在跑字节码」不等于「你的一行 Python 是一个整体」。<code>total = plus_one(total)</code> 是<strong>读 → 调用 → 写回</strong>三步，中间任何一步都可能被换下去：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># GIL 不等于线程安全：读—改—写中间只要有一次函数调用，就有换线程的机会</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># GIL 不等于线程安全：读—改—写中间只要有一次函数调用，就有换线程的机会</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">threading</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">setswitchinterval</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">)</span>     <span class="c1"># 默认 0.005 秒，这里调到百万分之一秒，把概率放大</span>
 
@@ -992,5 +992,4 @@ sklearn 的 <code>n_jobs</code> 走的是 joblib 的进程池，账和第六节�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -313,7 +313,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_2">⚔️ 一、多数关系与多数图</h2>
 <p>对两个候选项 $x, y$，如果<strong>把 $x$ 排在 $y$ 前面的人更多</strong>，就说 $x$ 在多数意义下胜过 $y$：</p>
-<p>$$x \succ^{maj} y \iff |\{i\in N: x\succ_i y\}| \;&amp;gt;\; |\{i\in N: y\succ_i x\}|$$</p>
+<p>$$x \succ^{maj} y \iff |\{i\in N: x\succ_i y\}| \;\gt \; |\{i\in N: y\succ_i x\}|$$</p>
 <p>把每个候选项画成一个点，$x \succ^{maj} y$ 就从 $x$ 画一条箭头指向 $y$，得到的有向图叫<strong>多数图</strong>。记 $D(x)=\{y \mid x\to y\}$ 为 $x$ <strong>直接打败</strong>的那些人。</p>
 <p>⭐ <strong>选民人数是奇数时不会有平局</strong>，多数图就是一个<strong>锦标赛（tournament）</strong> —— 完全（任意两点之间有一条边）且反对称（不会互指）的有向图。</p>
 <p>Condorcet 赢家：<strong>打败所有其他候选项</strong>的那一个。它未必存在，但存在时一定唯一。</p>
@@ -421,7 +421,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>一个 17 人的反例（6 人 $a\succ b\succ c$，3 人 $c\succ a\succ b$，4 人 $b\succ a\succ c$，4 人 $b\succ c\succ a$）：</p>
 <ul>
 <li>三者得分：$a: 6s_1+7s_2+4s_3$，$b: 8s_1+6s_2+3s_3$，$c: 3s_1+4s_2+10s_3$</li>
-<li>于是 $\text{score}(b)-\text{score}(a) = 2s_1-s_2-s_3 \ \ge\ 2s_1-s_1-s_3 = s_1-s_3 \;&amp;gt;\;0$</li>
+<li>于是 $\text{score}(b)-\text{score}(a) = 2s_1-s_2-s_3 \ \ge\ 2s_1-s_1-s_3 = s_1-s_3 \;\gt \;0$</li>
 </ul>
 <p>⭐ <strong>不管打分向量怎么选，$b$ 永远压过 $a$。</strong> 但 $a$ 才是 Condorcet 赢家（$a$ 以 9:8 胜 $b$、10:7 胜 $c$）。</p>
 <blockquote>
@@ -637,7 +637,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <ol>
 <li>$x\succ^{maj}y$ 当且仅当<strong>把 $x$ 排在 $y$ 前面的人数严格更多</strong>。选民人数是奇数时不会平局，多数图就是完全且反对称的有向图，即锦标赛。</li>
 <li><strong>$c$</strong>（4 胜 0 负）。$a$ 是 0 胜 4 负 —— 输给所有人，却是 plurality 赢家。$c$ 一个第一名都没有（plurality 得 0 分），却在一对一比较里赢了每个对手。</li>
-<li>候选项 ≥ 3 时<strong>没有任何位置计分规则是 Condorcet 一致的</strong>。反例里 $\text{score}(b)-\text{score}(a)=2s_1-s_2-s_3\ge s_1-s_3&amp;gt;0$（用了 $s_2\le s_1$、$s_1&amp;gt;s_3$），与打分向量的具体取值无关；但 $a$ 才是 Condorcet 赢家（9:8 胜 $b$、10:7 胜 $c$）。</li>
+<li>候选项 ≥ 3 时<strong>没有任何位置计分规则是 Condorcet 一致的</strong>。反例里 $\text{score}(b)-\text{score}(a)=2s_1-s_2-s_3\ge s_1-s_3\gt 0$（用了 $s_2\le s_1$、$s_1\gt s_3$），与打分向量的具体取值无关；但 $a$ 才是 Condorcet 赢家（9:8 胜 $b$、10:7 胜 $c$）。</li>
 <li>3 人 3 候选：$a\succ b\succ c$ / $b\succ c\succ a$ / $c\succ a\succ b$。$a$ 以 2:1 胜 $b$、$b$ 以 2:1 胜 $c$、$c$ 以 2:1 胜 $a$ → 环。<strong>三个人的偏好都是完全传递的线性序</strong>，是「多数」这个聚合操作把传递性弄丢了。</li>
 <li>Copeland 分 = <strong>出度</strong>（打败了几个人）。例子里 $a{:}2,b{:}2,c{:}1,d{:}1$ → $CO=\{a,b\}$。</li>
 <li>$x$ 覆盖 $y$：$x\to y$ <strong>且</strong> $D(y)\subseteq D(x)$ —— 「$y$ 赢的人 $x$ 也全赢」。等价刻画：$x\in UC$ ⟺ $x$ 两步之内能到达其他每一个候选项。例子里 $b$ 覆盖 $c$（$b\to c$ 且 $D(c)=\{d\}\subseteq D(b)=\{c,d\}$），所以 $UC=\{a,b,d\}$。</li>
@@ -684,5 +684,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

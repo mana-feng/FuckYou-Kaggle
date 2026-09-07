@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -350,15 +350,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table></div>
 <blockquote>
 <p>⚠️ <strong>这张表缺了整整一类：Agent 基准。</strong> 上面四类测的都是「模型答得对不对」，
-而现在真正影响选型的问题往往是「<strong>它能不能在一个有工具、有状态、会多轮的环境里把事办完</strong>」——这两件事分数不相关。
-🔗 <a href="../智能体工程教程/14-评测Evals.html">《智能体工程教程》14 · 评测 Evals</a> 有一张五个基准的速查表：
+而现在真正影响选型的问题往往是「<strong>它能不能在一个有工具、有状态、会多轮的环境里把事办完</strong>」——这两件事分数不相关。</p>
+<p>🔗 <a href="../智能体工程教程/14-评测Evals.html">《智能体工程教程》14 · 评测 Evals</a> 有一张五个基准的速查表：
 <strong>SWE-bench</strong>（真实 GitHub issue，⭐ 看到这三个字<strong>先问是哪一版</strong>，Verified 是人工核验过的 500 题子集，分数不可直接比）、
 <strong>τ-bench</strong>（客服场景，用户由另一个模型扮演）、<strong>GAIA</strong>（多工具协作，答案是唯一短字符串）、
-<strong>WebArena</strong>（自建可复现网站里的浏览器任务）、<strong>OSWorld</strong>（真实操作系统里的跨应用桌面任务）。
-⭐ <strong>去那里的真正理由不是记住这五个名字，是抄它们的判分手法</strong>——分数会过期，手法不会：
-τ-bench 的 <strong><code>pass^k</code></strong>（k 次全对才算过，面向客户的 Agent 必须看它）、
-WebArena / OSWorld 的<strong>状态校验</strong>（不看 Agent 说了什么，只看<strong>世界被改成了什么样</strong>——「评产出不评路径」最干净的实现）、
-GAIA 的<strong>唯一短答案</strong>（把开放问题改造成能精确匹配的形式，代码评分器就能接管）。
+<strong>WebArena</strong>（自建可复现网站里的浏览器任务）、<strong>OSWorld</strong>（真实操作系统里的跨应用桌面任务）。</p>
+<p>⭐ <strong>去那里的真正理由不是记住这五个名字，是抄它们的判分手法</strong>——分数会过期，手法不会：
+τ-bench 的 <strong><code>pass^k</code></strong>（k 次全对才算过，面向客户的 Agent 必须看它）、</p>
+<p>WebArena / OSWorld 的<strong>状态校验</strong>（不看 Agent 说了什么，只看<strong>世界被改成了什么样</strong>——结果状态校验的实例；权限与安全过程约束仍需另外验证）、</p>
+<p>GAIA 的<strong>唯一短答案</strong>（把开放问题改造成能精确匹配的形式，代码评分器就能接管）。
 这三招你都能直接搬进下一页要建的那个私有评测集。</p>
 </blockquote>
 <hr />
@@ -378,7 +378,7 @@ GAIA 的<strong>唯一短答案</strong>（把开放问题改造成能精确匹�
 <p><strong>实用结论：对 3 个百分点以内、未说明测试条件的差距保持怀疑。</strong></p>
 </blockquote>
 <h3 id="5">⑤ 报告条件不对等（最不容易察觉）</h3>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>同一个 benchmark，测出来的分数可以差很多：</p><p>· 提示词不同 （有的用了精心调过的 few-shot）</p><p>· 采样温度不同 （T=0 vs T=1）</p><p>· 跑几次取最好 （pass@8 报成 pass@1）⭐</p><p>· 有没有用工具/联网</p><p>· 输出解析的宽松程度（&quot;答案是 B&quot; 算不算对）</p><p>⚠️ 各家发布分数时，往往【给自己用最优配置，给对手用默认配置】</p></div></section>
+<section class="comparison-repair" id="comparison-repair-28"><p>同一个 benchmark，测出来的分数可以差很多：</p><section class="reading-information"><p class="reading-information-title">比较前核对这些设置</p><ul><li>提示词不同 （有的用了精心调过的 few-shot）</li><li>采样温度不同 （T=0 vs T=1）</li><li>跑几次取最好 （pass@8 报成 pass@1）⭐</li><li>有没有用工具/联网</li><li>输出解析的宽松程度（&quot;答案是 B&quot; 算不算对）</li></ul></section><p>⚠️ 各家发布分数时，往往【给自己用最优配置，给对手用默认配置】</p></section>
 <blockquote>
 <p>🔑 <strong>看到任何模型对比图，先找这三行小字</strong>：
 <strong>① 用的什么提示词 ② 跑了几次怎么取 ③ 温度是多少</strong>。
@@ -468,9 +468,8 @@ GAIA 的<strong>唯一短答案</strong>（把开放问题改造成能精确匹�
 <p>读到这里，你已经能拿公开榜单做<strong>粗筛</strong>（排除明显不行的），并且能一眼看出一张模型对比图是不是广告。
 <strong>什么时候回来看下一页</strong>：当你真的要在两三个模型之间做决定时——粗筛之后那一步（你自己的私有评测集）才是决定性的，本页给不了答案。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>榜单分数不能照单全收。通用 benchmark 分四类：<strong>知识问答</strong>（MMLU、GPQA，多选题，最容易被污染）、<strong>真实任务</strong>（SWE-bench，端到端修真实 GitHub issue，⭐ 最接近现实但贵且慢）、<strong>人类偏好</strong>（LMArena 两两盲测算 Elo，⚠️ 有<strong>讨好偏差</strong>：话多、排版好看的容易赢）、<strong>专项能力</strong>（数学/代码/长上下文/多语言，只反映局部）。⚠️ 这四类之外还缺整整一类——<strong>Agent 基准</strong>（τ-bench / GAIA / WebArena / OSWorld），测的是「能不能在有工具、有状态、会多轮的环境里把事办完」，<strong>和前四类的分数不相关</strong>。<strong>五个陷阱</strong>：① <strong>数据污染</strong>（题目在网上 → 被爬进训练数据 → 模型等于背过答案，所以只有新发布的、私有的题才有说服力）② <strong>饱和</strong>（MMLU 涨到 90%+ 就没区分度了，差 1 分毫无意义）③ <strong>刷榜过拟合</strong>（为考试而学）④ <strong>测量噪声</strong>（光是基础设施配置差异就能造成 <strong>6 个百分点</strong>分差，常常大于模型之间的真实差距）⑤ ⭐ <strong>报告条件不对等</strong>（提示词、温度、跑几次取最好、有没有用工具、解析宽松程度——各家往往给自己用最优配置、给对手用默认配置）。⭐ <strong>看到任何模型对比图，先找三行小字：用的什么提示词 / 跑了几次怎么取 / 温度是多少；找不到就只能当广告看。</strong> 最后自己算一遍：100 题、正确率 80% 时二项标准误约 <strong>4.0%</strong>，95% 置信区间约 <strong>±7.8%</strong>——<strong>100 题的评测集只能分辨 8 个百分点以上的差距，想分辨 3 个点要约 700 题</strong>。所以「A 比 B 高 3 分」这句话，统计上通常什么都没说。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>榜单测的是特定题目和配置，不等于你的产品表现。</li><li>比较前核对提示、采样次数、工具条件与统计波动。</li><li>把知识、真实任务、偏好和专项能力分开看，再用自己的任务复测。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="11b-私有评测集怎么建.html">11b-私有评测集怎么建.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -498,5 +497,4 @@ GAIA 的<strong>唯一短答案</strong>（把开放问题改造成能精确匹�
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

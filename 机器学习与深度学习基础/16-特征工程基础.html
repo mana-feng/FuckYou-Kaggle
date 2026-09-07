@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,16 +271,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
- onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script><link rel="stylesheet" href="../assets/guided-lessons.css"><link rel="stylesheet" href="../assets/guided-batch1.css"><script defer src="../assets/guided-batch1.js"></script><link rel="stylesheet" href="../assets/guided-batch2.css"><script defer src="../assets/guided-batch2.js"></script><script defer src="../assets/guided-lessons.js"></script></head><body class="guided-reading">
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
@@ -306,7 +306,19 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 </div>
 </details>
-<h1 id="16">16 · 特征工程基础</h1>
+<div class="lesson-layout" data-lesson="ml-16" data-batch="ml-rest" data-reading-mode="practice">
+<div class="lesson-content"><section class="lesson-hero" id="lesson-start" data-route="先知道这页解决什么">
+<div><p class="lesson-eyebrow">16 / 先运行，再对照</p><h1>先问预测那一刻，<br>这个信息拿得到吗？</h1><p class="lesson-lead">好特征不仅要有用，还必须在真实预测时可获得；预处理也只能在训练数据上拟合。</p></div>
+<aside class="lesson-advice"><strong>一次只处理一个问题</strong><p>可以从入口直接跳到需要的部分。正文、图解、代码和检查点都在下方。</p><a href="#first-pause">先看懂这一点就可以停 →</a></aside></section>
+<div class="lesson-overview-grid">
+<section class="lesson-card" id="first-example" data-route="先看一个具体结果"><p class="lesson-kicker">先抓住一个具体结果</p><h2>过去 7 天，与未来 7 天</h2><p>预测明天是否流失，可以使用预测时点之前 7 天的行为。把之后 7 天的行为填进特征，即使分数大涨，也是偷看未来。</p></section>
+<section class="lesson-card lesson-task-entry" id="reading-choices" data-route="按需要选择下一步"><p class="lesson-kicker">接下来，按需要选一项</p><h2>你现在想看什么？</h2><nav aria-label="本页阅读入口"><a href="#_3">先处理脏数据 <span aria-hidden="true">→</span></a><a href="#_7">检查编码与泄漏 <span aria-hidden="true">→</span></a><a href="#_9">核对时间边界 <span aria-hidden="true">→</span></a></nav><p class="lesson-note">这些入口是选择，不是必须按顺序完成的任务。</p></section>
+<section class="lesson-card lesson-pause lesson-wide" id="first-pause" data-route="可以停在这里"><h2>可以停在这里</h2><p>好特征不仅要有用，还必须在真实预测时可获得；预处理也只能在训练数据上拟合。</p><a href="#full-lesson">需要更多细节时，继续看完整正文 →</a></section></div>
+<section class="lesson-full" id="full-lesson" aria-label="完整正文">
+<div class="lesson-divider"><span>继续探索</span><p>原有正文、图解和例子都在下方。按需跳转，不必一次读完。</p></div>
+<h2 id="16" class="lesson-original-title">16 · 特征工程基础</h2>
+<!-- guided-lesson: ml-16 -->
+
 <p>⏱ <strong>28 分钟</strong> ｜ ⭐ <strong>表格数据的胜负手</strong></p>
 <hr />
 <h2 id="_1">🎯 一句话</h2>
@@ -355,14 +367,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`df` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`df` 来自你自己的代码，这一段只看写法</span>
 <span class="c1"># ⭐ 加一列&quot;是否缺失&quot;，常常比填充值本身更有用</span>
 <span class="n">df</span><span class="p">[</span><span class="s2">&quot;income_missing&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;income&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 <span class="n">df</span><span class="p">[</span><span class="s2">&quot;income&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;income&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;income&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">())</span>
 </code></pre></div>
 
 <h3 id="_5">离群值</h3>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">先问：它是【错误】还是【真实的极端值】？</span></div><div class="vb-tree-row"><span class="vb-tree-node">错误（年龄=999）→ 修正或删除</span></div><div class="vb-tree-row"><span class="vb-tree-node">真实（土豪用户）→ 别删！用变换压缩：log1p、分位数裁剪</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>先问：它是【错误】还是【真实的极端值】？</span></li><li><span>错误（年龄=999）→ 修正或删除</span></li><li><span>真实（土豪用户）→ 别删！用变换压缩：log1p、分位数裁剪</span></li></ul></section>
 <hr />
 <h2 id="_6">🔢 二、数值特征的四种变换</h2>
 <div class="tw"><table>
@@ -396,7 +408,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="n">df</span><span class="p">[</span><span class="s2">&quot;log_amount&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;amount&quot;</span><span class="p">])</span>              <span class="c1"># 长尾必备</span>
 <span class="n">df</span><span class="p">[</span><span class="s2">&quot;age_bin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">],</span> <span class="n">q</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">duplicates</span><span class="o">=</span><span class="s2">&quot;drop&quot;</span><span class="p">)</span>  <span class="c1"># 等频分箱</span>
@@ -446,7 +458,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h3 id="_8">💀 目标编码的泄漏陷阱</h3>
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">❌ 错误：用全部数据算每个类别的目标均值</span></div><div class="vb-flow-row"><span class="vb-flow-step">每一行都&quot;看到&quot;了自己的标签</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">严重泄漏</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">CV 虚高、上线崩</span></div><div class="vb-flow-row"><span class="vb-flow-step">✅ 正确：K 折内部编码（Out-of-Fold）</span></div><div class="vb-flow-row"><span class="vb-flow-step">算第 i 折的编码时，只用其他 K−1 折的数据</span></div><div class="vb-flow-row"><span class="vb-flow-step">+ 平滑：样本少的类别向全局均值收缩</span></div></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="c1"># 带平滑的 OOF 目标编码</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 带平滑的 OOF 目标编码</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">target_encode_oof</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">KFold</span>
@@ -466,7 +478,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="_9">⏰ 四、时间特征</h2>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`df` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`df` 来自你自己的代码，这一段只看写法</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="n">df</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">]</span>      <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ts&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">hour</span>
 <span class="n">df</span><span class="p">[</span><span class="s2">&quot;dayofweek&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ts&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">dayofweek</span>
@@ -488,7 +500,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>💡 <strong>聚合统计是表格竞赛提分最猛的一类特征</strong>——把一对多的关系（用户→多条订单）压成一行。</p>
 </blockquote>
 <h3 id="_11">🔨 聚合统计的标准写法（照抄改字段名就能用）</h3>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`orders` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`orders` 来自你自己的代码，这一段只看写法</span>
 <span class="n">agg</span> <span class="o">=</span> <span class="n">orders</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;user_id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
     <span class="n">n_orders</span>   <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">),</span>
     <span class="n">amt_sum</span>    <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">,</span> <span class="s2">&quot;sum&quot;</span><span class="p">),</span>
@@ -612,10 +624,20 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_16">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>数据和特征决定上限。⭐ <strong>两条心法：①特征工程的价值=你知道多少模型不知道的事（领域知识）②先广后深——快速造30个跑CV，留下有用的10个（你对"哪个有用"的直觉经常是错的），但必须每加一批就跑一次CV记录</strong>。缺失值：<strong>加一列"是否缺失"</strong>常比填充值有用，树模型可直接不管。数值变换：标准化(线性/NN必做)、<strong>log1p(长尾)</strong>、分箱。类别编码：One-Hot(少类别)、<strong>Label只适合树模型</strong>、<strong>目标编码必须OOF+平滑否则泄漏</strong>、频次、Embedding。时间：<strong>小时用sin/cos</strong>，时间差比绝对时间有用，是泄漏重灾区。构造四套路：比值/<strong>聚合统计(提分最猛，且 std/nunique/max-over-mean 最常被漏掉)</strong>/交叉/<strong>多时间窗口</strong>。<strong>造特征提问清单</strong>：能相除吗/有时间维度吗/是一对多吗/长尾吗/<strong>和群体均值差多少(相对偏离常比绝对值更有预测力——月薪2万在北京和小城市不是一回事)</strong>。筛选先看覆盖率，用Permutation Importance，<strong>且必须在CV内部做</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>先明确预测发生的时点，再判断每个特征是否真的可用。</li><li>数值、类别、缺失和时间特征分别处理；编码与缩放只在训练部分拟合。</li><li>聚合与目标编码容易泄漏，必须配合正确的划分与交叉验证。</li><li>一次添加一组特征，用验证结果判断价值，并保留可复现的处理流程。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="17-实战项目.html">17-实战项目.md</a></p>
+</section></div>
+<aside class="lesson-rail" aria-label="本节学习路线">
+<button type="button" class="lesson-route-toggle" aria-expanded="true" aria-controls="lesson-route">本节学习路线 <span aria-hidden="true">⌄</span></button>
+<div id="lesson-route">
+<p class="lesson-position" aria-live="polite">从第一站开始</p>
+<div class="lesson-track" aria-hidden="true"><span></span></div>
+<nav class="lesson-route-links" aria-label="章节跳转"></nav>
+<div class="lesson-rail-note"><strong>一次只读一张卡片</strong><p>先找到眼前的问题。长代码可以展开阅读，正文和图解不会被省略。</p></div>
+<button type="button" class="lesson-save">记住当前位置</button>
+<p class="lesson-save-status" role="status"></p>
+</div></aside></div>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="15-PyTorch实战手册.html"><div class="dir">← 上一节</div>🔥 15 · PyTorch 实战手册</a><a class="next" href="17-实战项目.html"><div class="dir">下一节 →</div>🔨 17 · 实战项目</a></nav>
@@ -642,5 +664,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

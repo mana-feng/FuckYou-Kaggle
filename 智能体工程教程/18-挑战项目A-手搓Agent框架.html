@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,21 +271,21 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
   <span class="title">挑战A · 手搓框架</span>
-  <span class="prevnext"><a href="17-实战项目.html">←</a>
+  <span class="prevnext"><a href="17c-岗位专项与进阶实验.html">←</a>
   <a href="19-挑战项目B-评测驱动开发.html">→</a></span>
   <button class="js-done-btn">☐ 打卡</button>
   <button id="themeToggle" title="切换深浅色">🌗</button>
@@ -307,45 +307,72 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </details>
 <h1 id="a-agent">挑战项目 A · 手搓一个迷你 Agent 框架</h1>
 <p>⏱ <strong>5–7 天</strong> ｜ 难度 ★★★★☆ ｜ 前置：第 1–11 节</p>
-<hr />
+<hr>
 <h2 id="_1">🎯 为什么选这个项目（它的「特点」）</h2>
 <p>市面上的 Agent 教程都教你<strong>用</strong> LangChain / Agent SDK。这个项目反过来：<strong>从一个裸的 HTTP 请求开始，把框架本身造出来。</strong></p>
-<section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>你会亲手实现这些&quot;框架黑箱&quot;里的东西：</li><li>工具注册与调度（装饰器自动生成 schema）</li><li>上下文压缩（对话满了自动总结重启）——第 4 节</li><li>子 Agent 派生（隔离上下文，只回摘要）——第 4、13 节</li><li>护栏（max_steps / 超时 / 预算上限）——第 1 节</li><li>可观测性（结构化 trace，能回放每一步）——第 14 节</li><li>做完你会得到一个&quot;啊，原来 LangChain 就这？&quot;的顿悟。</li><li>之后用任何框架，你都知道皮下是什么，出问题知道去哪找。</li></ol></section>
+<section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>你会亲手实现这些"框架黑箱"里的东西：</li><li>工具注册与调度（装饰器自动生成 schema）</li><li>上下文压缩（对话满了自动总结重启）——第 4 节</li><li>子 Agent 派生（隔离上下文，只回摘要）——第 4、13 节</li><li>护栏（max_steps / 超时 / 预算上限）——第 1 节</li><li>可观测性（结构化 trace，能回放每一步）——第 14 节</li><li>做完你会得到一个"啊，原来 LangChain 就这？"的顿悟。</li><li>之后用任何框架，你都知道皮下是什么，出问题知道去哪找。</li></ol></section>
 <p><strong>这个项目无可替代的价值</strong>：把前 11 节的概念<strong>焊死成代码</strong>。读十遍「上下文压缩」，不如自己写一次触发压缩的那个 <code>if</code>。</p>
-<hr />
+<hr>
 <h2 id="_2">🏗️ 目标架构</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">MiniAgent</span></div><div class="vb-tree-row"><span class="vb-tree-node">@tool 装饰器 自动从函数签名和 docstring 生成工具 schema</span></div><div class="vb-tree-row"><span class="vb-tree-node">run() 主循环 第1节的循环，加上：</span></div><div class="vb-tree-row"><span class="vb-tree-node">每轮检查 token 预算，超阈值 → compact()</span></div><div class="vb-tree-row"><span class="vb-tree-node">max_steps / 超时护栏</span></div><div class="vb-tree-row"><span class="vb-tree-node">结构化 trace 记录每一步</span></div><div class="vb-tree-row"><span class="vb-tree-node">compact() 历史 → 摘要，保留关键事实</span></div><div class="vb-tree-row"><span class="vb-tree-node">spawn_subagent() 开一个干净上下文的子 Agent，只回摘要</span></div><div class="vb-tree-row"><span class="vb-tree-node">Tracer 每步的 (思考/工具调用/结果) 存成可回放的 JSON</span></div></div></section>
+<figure class="reading-diagram">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 700" role="img" aria-labelledby="miniagent-title miniagent-desc">
+<title id="miniagent-title">MiniAgent 的模块关系</title>
+<desc id="miniagent-desc">run 主循环调度工具、压缩历史、派生子 Agent；护栏限制主循环，Tracer 记录每一步。这些是并列能力，不是依次运行的阶段。</desc>
+<defs><marker id="miniagent-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 Z" fill="var(--accent)"/></marker></defs>
+<g fill="var(--card)" stroke="var(--border)" stroke-width="1.5">
+<rect x="60" y="10" width="260" height="94" rx="12"/>
+<rect x="60" y="150" width="260" height="92" rx="12"/>
+<rect x="60" y="270" width="260" height="92" rx="12"/>
+<rect x="60" y="390" width="260" height="92" rx="12"/>
+<rect x="60" y="510" width="260" height="72" rx="12"/>
+<rect x="60" y="610" width="260" height="80" rx="12"/>
+</g>
+<g fill="none" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#miniagent-arrow)">
+<path d="M60 58 H28 V196 H60"/><path d="M28 196 V316 H60"/><path d="M28 316 V436 H60"/>
+<path d="M320 548 H350 V78 H320"/><path d="M320 58 H368 V650 H320"/>
+</g>
+<g fill="var(--fg)" text-anchor="middle" font-family="sans-serif" font-size="16">
+<text x="190" y="37" font-weight="700">MiniAgent · run() 主循环</text>
+<text x="190" y="64">沿用第 1 节的模型与工具循环</text><text x="190" y="88">每轮检查预算，并记录 trace</text>
+<text x="190" y="178" font-weight="700">@tool · 工具注册</text><text x="190" y="205">函数签名 + docstring</text><text x="190" y="229">自动生成工具 schema</text>
+<text x="190" y="298" font-weight="700">compact() · 上下文管理</text><text x="190" y="325">token 预算超阈值时调用</text><text x="190" y="349">历史变摘要，保留关键事实</text>
+<text x="190" y="418" font-weight="700">spawn_subagent() · 子任务</text><text x="190" y="445">开启干净、独立的上下文</text><text x="190" y="469">主 Agent 只接收摘要</text>
+<text x="190" y="539" font-weight="700">护栏 → 约束主循环</text><text x="190" y="563" text-anchor="middle" font-size="16">max_steps / 超时 / token 预算</text>
+<text x="190" y="639" font-weight="700">Tracer ← 接收每步记录</text><text x="190" y="664">思考、工具调用、结果</text><text x="190" y="684">存为可回放的 JSON</text>
+</g></svg>
+<figcaption>从主循环看三项并列能力：工具、压缩、子任务。右侧连线表示护栏约束循环、Tracer 接收记录，不表示额外执行阶段。</figcaption>
+</figure>
 <p><strong>唯一的外部依赖</strong>：一个 LLM API（或第 1 节的 MockModel 升级版，用于零成本开发）。<strong>不许用任何 Agent 框架</strong>——这是重点。</p>
-<hr />
+<hr>
 <h2 id="adhd">🧠 ADHD 任务切分</h2>
 <h3 id="day-12">第一阶段：核心循环 + 工具系统（Day 1–2）</h3>
-<ul>
-<li>[ ] <strong>T1 (90min)</strong> <code>@tool</code> 装饰器：读函数的类型注解和 docstring，自动生成 <code>{name, description, parameters}</code> schema。这样注册工具只需 <code>@tool</code> 一行</li>
-<li>[ ] <strong>T2 (90min)</strong> <code>MiniAgent.run()</code>：第 1 节循环 + max_steps/超时/预算三道护栏。护栏触发时要<strong>优雅退出</strong>（返回已有进展），不是崩溃</li>
-<li>[ ] <strong>T3 (60min)</strong> 用 MockModel 跑通（MockModel 升级：能按工具 schema 生成合法调用）</li>
-<li>[ ] <strong>T4 (45min)</strong> 接真模型（用官方 tool use API，对比自己解析 JSON 的差别）</li>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="1"><label class="reading-task-title"><input type="checkbox" data-task-key="1"><span>任务 T1</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> <code>@tool</code> 装饰器：读函数的类型注解和 docstring，自动生成 <code>{name, description, parameters}</code> schema。这样注册工具只需 <code>@tool</code> 一行</div></li>
+<li class="reading-task" data-reading-task="2"><label class="reading-task-title"><input type="checkbox" data-task-key="2"><span>任务 T2</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> <code>MiniAgent.run()</code>：第 1 节循环 + max_steps/超时/预算三道护栏。护栏触发时要<strong>优雅退出</strong>（返回已有进展），不是崩溃</div></li>
+<li class="reading-task" data-reading-task="3"><label class="reading-task-title"><input type="checkbox" data-task-key="3"><span>任务 T3</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 用 MockModel 跑通（MockModel 升级：能按工具 schema 生成合法调用）</div></li>
+<li class="reading-task" data-reading-task="4"><label class="reading-task-title"><input type="checkbox" data-task-key="4"><span>任务 T4</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> 接真模型（用官方 tool use API，对比自己解析 JSON 的差别）</div></li>
 </ul>
-<h3 id="day-34">第二阶段：上下文管理（Day 3–4）—— 框架的精华</h3>
-<ul>
-<li>[ ] <strong>T5 (90min)</strong> <code>Tracer</code>：把每一步 <code>{step, thought, tool_call, tool_result, tokens}</code> 记成 JSON。<strong>这是后面 debug 一切的眼睛</strong></li>
-<li>[ ] <strong>T6 (120min)</strong> <code>compact()</code>：估算当前 token（简单用字符数/4），超过阈值时调模型总结历史。⭐ <strong>关键难点</strong>：摘要必须显式保留「已完成/当前状态/下一步/关键事实（路径、决策、报错）」，否则压缩后 Agent 会失忆重错</li>
-<li>[ ] <strong>T7 (60min)</strong> 压缩测试：造一个需要 20+ 轮的任务，验证压缩后 Agent 没丢关键信息、能继续正确工作</li>
+<h3 id="day-34">第二阶段：上下文管理（Day 3–4）</h3>
+<p class="reading-stage-note">框架的精华</p><ul class="reading-task-list">
+<li class="reading-task" data-reading-task="5"><label class="reading-task-title"><input type="checkbox" data-task-key="5"><span>任务 T5</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> <code>Tracer</code>：把每一步 <code>{step, thought, tool_call, tool_result, tokens}</code> 记成 JSON。<strong>这是后面 debug 一切的眼睛</strong></div></li>
+<li class="reading-task" data-reading-task="6"><label class="reading-task-title"><input type="checkbox" data-task-key="6"><span>任务 T6</span></label><p class="reading-task-time">参考用时 · 120 分钟</p><div class="reading-task-body"> <code>compact()</code>：估算当前 token（简单用字符数/4），超过阈值时调模型总结历史。⭐ <strong>关键难点</strong>：摘要必须显式保留「已完成/当前状态/下一步/关键事实（路径、决策、报错）」，否则压缩后 Agent 会失忆重错</div></li>
+<li class="reading-task" data-reading-task="7"><label class="reading-task-title"><input type="checkbox" data-task-key="7"><span>任务 T7</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 压缩测试：造一个需要 20+ 轮的任务，验证压缩后 Agent 没丢关键信息、能继续正确工作</div></li>
 </ul>
 <h3 id="agentday-5">第三阶段：子 Agent（Day 5）</h3>
-<ul>
-<li>[ ] <strong>T8 (90min)</strong> <code>spawn_subagent(task, tools)</code>：开一个全新 <code>MiniAgent</code> 实例（干净上下文），跑完只把最终摘要返回主 Agent</li>
-<li>[ ] <strong>T9 (60min)</strong> 把「spawn_subagent」本身也做成一个 <code>@tool</code>，让主 Agent 能自己决定「这个调查派给子 Agent」</li>
-<li>[ ] <strong>T10 (45min)</strong> 验证上下文隔离：子 Agent 读了 8000 字，主 Agent 的上下文只增加了那 200 字摘要</li>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="8"><label class="reading-task-title"><input type="checkbox" data-task-key="8"><span>任务 T8</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> <code>spawn_subagent(task, tools)</code>：开一个全新 <code>MiniAgent</code> 实例（干净上下文），跑完只把最终摘要返回主 Agent</div></li>
+<li class="reading-task" data-reading-task="9"><label class="reading-task-title"><input type="checkbox" data-task-key="9"><span>任务 T9</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 把「spawn_subagent」本身也做成一个 <code>@tool</code>，让主 Agent 能自己决定「这个调查派给子 Agent」</div></li>
+<li class="reading-task" data-reading-task="10"><label class="reading-task-title"><input type="checkbox" data-task-key="10"><span>任务 T10</span></label><p class="reading-task-time">参考用时 · 45 分钟</p><div class="reading-task-body"> 验证上下文隔离：子 Agent 读了 8000 字，主 Agent 的上下文只增加了那 200 字摘要</div></li>
 </ul>
 <h3 id="day-67">第四阶段：压测 + 报告（Day 6–7）</h3>
-<ul>
-<li>[ ] <strong>T11 (90min)</strong> 用你的框架重做第 17 节项目一（研究助手），证明框架能撑起真实任务</li>
-<li>[ ] <strong>T12 (60min)</strong> 可观测性验收：从 Tracer 的 JSON 完整回放一次任务的决策路径，画成时序图</li>
-<li>[ ] <strong>T13 (90min)</strong> README：架构图、三个核心机制的实现讲解、「我从造轮子里理解了什么」</li>
+<ul class="reading-task-list">
+<li class="reading-task" data-reading-task="11"><label class="reading-task-title"><input type="checkbox" data-task-key="11"><span>任务 T11</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> 用你的框架重做第 17 节项目一（研究助手），证明框架能撑起真实任务</div></li>
+<li class="reading-task" data-reading-task="12"><label class="reading-task-title"><input type="checkbox" data-task-key="12"><span>任务 T12</span></label><p class="reading-task-time">参考用时 · 60 分钟</p><div class="reading-task-body"> 可观测性验收：从 Tracer 的 JSON 完整回放一次任务的决策路径，画成时序图</div></li>
+<li class="reading-task" data-reading-task="13"><label class="reading-task-title"><input type="checkbox" data-task-key="13"><span>任务 T13</span></label><p class="reading-task-time">参考用时 · 90 分钟</p><div class="reading-task-body"> README：架构图、三个核心机制的实现讲解、「我从造轮子里理解了什么」</div></li>
 </ul>
-<hr />
+<hr>
 <h2 id="_3">🔨 关键骨架</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
 
 <span class="c1"># ============ @tool 装饰器：自动生成 schema ============</span>
@@ -436,7 +463,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">reason</span><span class="si">}</span><span class="s2">] 已完成步骤：</span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2">&quot;</span>
 </code></pre></div>
 
-<hr />
+<hr>
 <h2 id="_4">🕳️ 专属坑</h2>
 <div class="tw"><table>
 <thead>
@@ -472,7 +499,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<hr />
+<hr>
 <!--XREF-->
 <h2 id="_5">🔗 这一章连到哪里</h2>
 <div class="tw"><table>
@@ -484,24 +511,24 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </thead>
 <tbody>
 <tr>
-<td><a href="../AI基础设施/16-KV-Cache.html">AI基础设施 16</a></td>
+<td><a href="../AI%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD/16-KV-Cache.html">AI基础设施 16</a></td>
 <td>⭐ 第二阶段「上下文管理」为什么能省钱：前缀缓存在显存里的物理形态</td>
 </tr>
 <tr>
-<td><a href="../大模型全景导论/06-推理优化.html">全景导论 06</a></td>
+<td><a href="../%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%85%A8%E6%99%AF%E5%AF%BC%E8%AE%BA/06-%E6%8E%A8%E7%90%86%E4%BC%98%E5%8C%96.html">全景导论 06</a></td>
 <td>你在框架里调的那些旋钮，底层对应哪几件武器</td>
 </tr>
 <tr>
-<td><a href="../模型上线之后/17-版本回溯与可复现.html">上线之后 17</a></td>
+<td><a href="../%E6%A8%A1%E5%9E%8B%E4%B8%8A%E7%BA%BF%E4%B9%8B%E5%90%8E/17-%E7%89%88%E6%9C%AC%E5%9B%9E%E6%BA%AF%E4%B8%8E%E5%8F%AF%E5%A4%8D%E7%8E%B0.html">上线之后 17</a></td>
 <td>⚠️ 第四阶段的压测报告要能复现 —— 否则数字没人信</td>
 </tr>
 </tbody>
 </table></div>
 <!--LINK16-->
 <blockquote>
-<p>👉 <strong>做完这个项目再去看</strong> <a href="16b-框架这层皮.html">16b · 框架这层皮</a>：你手搓出来的每一块，正好对得上市面框架的一个模块 —— 那份对照表会让这个项目的价值翻倍。</p>
+<p>👉 <strong>做完这个项目再去看</strong> <a href="16b-%E6%A1%86%E6%9E%B6%E8%BF%99%E5%B1%82%E7%9A%AE.html">16b · 框架这层皮</a>：你手搓出来的每一块，正好对得上市面框架的一个模块 —— 那份对照表会让这个项目的价值翻倍。</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="_6">🏁 通关标准</h2>
 <ol>
 <li><code>@tool</code> 装饰器能自动生成 schema，加工具只需一行注解</li>
@@ -516,7 +543,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>实现一个 <code>@tool</code> 的<strong>防呆</strong>版本：参数校验失败返回可行动的错误</li>
 <li>支持并行子 Agent（第 17 节项目三就能直接用你的框架跑）</li>
 </ul>
-<hr />
+<hr>
 <h2 id="_8">✅ 检查点</h2>
 <ol>
 <li><code>@tool</code> 装饰器要自动生成什么？为什么值得花力气做这一步？</li>
@@ -533,20 +560,19 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>①<strong>最大轮数</strong>（防死循环）②最大 token / 预算（防成本失控）③重复调用检测（防它在同一个工具上反复撞墙）。</li>
 <li><strong>关键事实清单</strong>——已确认的结论、已做的决定、还没解决的问题、文件路径这类具体值。因为压缩是有损的，而"损掉的恰好是关键事实"是最常见的失败。摘要写得再流畅，丢了一个文件路径就得重新查一遍。</li>
 <li><strong>隔离上下文</strong>——子 Agent 读一大堆内容，主 Agent 只拿到结论。主 Agent 的上下文只应增加摘要那点量（可以从 token 曲线明显看出来）。</li>
-<li>因为<strong>结构化才能回放和分析</strong>。打日志只能"看"，JSON trace 能：按步骤回放、统计各工具调用次数和耗时、自动比对两次运行的差异、喂给评测脚本。🔗 这就是<a href="../大模型全景导论/13-LLMOps.html">第 13 章 LLMOps</a>说的可观测性。</li>
+<li>因为<strong>结构化才能回放和分析</strong>。打日志只能"看"，JSON trace 能：按步骤回放、统计各工具调用次数和耗时、自动比对两次运行的差异、喂给评测脚本。🔗 这就是<a href="../%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%85%A8%E6%99%AF%E5%AF%BC%E8%AE%BA/13-LLMOps.html">第 13 章 LLMOps</a>说的可观测性。</li>
 <li>从"框架很神秘"变成"<strong>框架就是我写的这几个机制 + 一堆适配器和边界处理</strong>"。之后你会更容易判断"这个框架值不值得用"，而不是被它的抽象吓住。</li>
 </ol>
 </details>
-<hr />
+<hr>
 <h2 id="_9">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>5–7天，从裸HTTP请求开始<strong>徒手造Agent框架，不许用任何框架/SDK</strong>——把前11节的概念焊死成代码：读十遍「上下文压缩」不如自己写一次触发压缩的那个if。五块黑箱：⭐<strong>@tool装饰器</strong>从类型注解和docstring自动生成schema（<strong>加一个工具的成本决定了你会加多少工具</strong>）；<strong>run()主循环＋三道护栏：最大轮数防死循环／token预算防成本失控／重复调用检测防在同一工具上反复撞墙</strong>，⚠️<strong>护栏触发要优雅退出返回已有进展，不是抛异常</strong>；⭐<strong>compact()是精华</strong>——粗估token（字符数除以3或4就够，⚠️别陷进精确tokenize）超过预算的75%就总结历史，<strong>摘要必须显式保留「已完成／当前状态／下一步／关键事实（路径、决策、报错）」</strong>，因为<strong>压缩是有损的，"损掉的恰好是关键事实"是最常见的失败</strong>；<strong>spawn_subagent()开干净上下文、只回摘要</strong>，验收很具体：<strong>子Agent读了8000字，主Agent上下文只增加那200字摘要</strong>，⚠️加depth上限防无限递归；<strong>Tracer输出结构化JSON而不是打日志</strong>——⭐<strong>结构化才能按步回放、统计调用次数和耗时、比对两次运行差异、喂给评测脚本</strong>，⚠️只记type/call/result前200字＋token。节奏：Day1–2循环与工具（先用MockModel零成本跑通，⚠️<strong>太假就测不出真问题</strong>），Day3–4上下文管理，Day5子Agent，Day6–7重做研究助手项目＋从Tracer回放。加分：<strong>system prompt放最前</strong>做提示缓存、@tool防呆版、并行子Agent。做完顿悟「原来LangChain就这」——<strong>用任何框架都知道皮下是什么</strong>。</p>
-</blockquote>
-<p><strong>下一个挑战</strong> 👉 <a href="19-挑战项目B-评测驱动开发.html">19-挑战项目B-评测驱动开发.md</a></p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>先用 MockModel 跑通循环和工具调用，再接真实模型。</li><li>轮数、预算与重复调用都设边界；触发限制时返回已有进展。</li><li>压缩摘要保留已完成、当前状态、下一步和关键事实，不能只写模糊概述。</li><li>子 Agent 使用独立上下文并限制深度；主 Agent 接收有用摘要。</li><li>用结构化 Tracer 回放步骤，检查调用、耗时与上下文增长。</li></ul></section>
+
+<p><strong>下一个挑战</strong> 👉 <a href="19-%E6%8C%91%E6%88%98%E9%A1%B9%E7%9B%AEB-%E8%AF%84%E6%B5%8B%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91.html">19-挑战项目B-评测驱动开发.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
-<nav class="pagenav"><a href="17-实战项目.html"><div class="dir">← 上一节</div>🔨 17 · 实战项目</a><a class="next" href="19-挑战项目B-评测驱动开发.html"><div class="dir">下一节 →</div>📏 挑战B · 评测驱动</a></nav>
+<nav class="pagenav"><a href="17c-岗位专项与进阶实验.html"><div class="dir">← 上一节</div>🎯 17c · 岗位专项</a><a class="next" href="19-挑战项目B-评测驱动开发.html"><div class="dir">下一节 →</div>📏 挑战B · 评测驱动</a></nav>
 </main>
 <script>(function(){
   var KEY="agent-progress", FILE="18-\u6311\u6218\u9879\u76eeA-\u624b\u6413Agent\u6846\u67b6.md";
@@ -570,5 +596,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

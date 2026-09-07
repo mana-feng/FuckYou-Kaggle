@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -386,7 +386,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="reinforce">🎬 四、REINFORCE：最朴素的实现</h2>
 <section class="visual-block visual-block-steps" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><ol class="vb-steps"><li>用当前策略跑完一整个回合</li><li>算出每一步的回报 G_t</li><li>对每一步做梯度上升：θ ← θ + α·∇log π(a_t|s_t)·G_t</li><li>重复</li></ol></section>
 
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">reinforce_update</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">actions</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.99</span><span class="p">):</span>
     <span class="c1"># 从后往前算折扣回报</span>
@@ -555,9 +555,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_10">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>⭐<strong>换路：不估价值，直接把策略当神经网络优化</strong>。三个理由：<strong>连续动作没法取max</strong>、最优策略可能本身随机、<strong>策略常比价值简单（你要的本来就是策略，价值只是手段）</strong>。⭐<strong>策略梯度定理人话：让导致高回报的动作概率变大，低回报的变小</strong>。<code>∇J = E[∇log π(a|s) · R]</code> —— ∇logπ 是"把这动作概率调大的方向"，R 是"这次结果多好"。推导关键是<strong>对数导数技巧 ∇p = p·∇log p</strong>（把对分布求导变回求期望）；⭐<strong>最惊人的是环境转移概率 P 被完全消掉了 → 策略梯度不需要环境模型</strong>。<strong>REINFORCE</strong> 两个坑：<strong>忘负号</strong>、误以为是交叉熵（<strong>权重是变量不是常数</strong>）。💀<strong>致命问题：方差大</strong>（一局运气全算进去，同一动作这局+100下局−100）。<strong>三个降方差</strong>：①<strong>reward-to-go</strong>（t 时刻动作影响不了之前的奖励）②⭐<strong>减基线</strong>（b 不依赖动作所以不改变期望；考80分班均60该鼓励、班均95该抑制 —— <strong>没基线时所有正回报动作都被鼓励哪怕它比平均差</strong>）③⭐<strong>优势函数 A=Q−V，PPO 优化的正是它</strong>。<strong>PG 的两个短板（样本效率低、方差高）正是第10、11章要补的</strong>。⭐<strong>RLHF必须走这条路</strong>：词表5万个token，DQN要取max不现实，而 <strong>log π(token) 正是语言模型本来就在算的东西</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>策略梯度直接调整动作概率，用回报或优势评价更新方向。</li><li>减去合适的状态基线可以降低方差，但不能把基线任意写成依赖动作的量。</li><li>核对最大化目标与最小化损失的符号，并用小环境观察概率如何变化。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="10-Actor-Critic.html">10-Actor-Critic.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -585,5 +584,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

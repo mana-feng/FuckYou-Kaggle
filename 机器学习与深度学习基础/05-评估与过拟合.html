@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,16 +271,16 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
- onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script><link rel="stylesheet" href="../assets/guided-lessons.css"><link rel="stylesheet" href="../assets/guided-batch1.css"><script defer src="../assets/guided-batch1.js"></script><link rel="stylesheet" href="../assets/guided-batch2.css"><script defer src="../assets/guided-batch2.js"></script><script defer src="../assets/guided-lessons.js"></script></head><body class="guided-reading">
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
@@ -304,7 +304,19 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </ul>
 </div>
 </details>
-<h1 id="05">05 · 评估与过拟合</h1>
+<div class="lesson-layout" data-lesson="ml-05" data-batch="ml-rest" data-reading-mode="concept">
+<div class="lesson-content"><section class="lesson-hero" id="lesson-start" data-route="先知道这页解决什么">
+<div><p class="lesson-eyebrow">05 / 先看直觉，再看细节</p><h1>先问分数是否可信，<br>再问能不能更高。</h1><p class="lesson-lead">评估要同时守住两件事：不偷看答案，指标确实对应你的目标。</p></div>
+<aside class="lesson-advice"><strong>一次只处理一个问题</strong><p>可以从入口直接跳到需要的部分。正文、图解、代码和检查点都在下方。</p><a href="#first-pause">先看懂这一点就可以停 →</a></aside></section>
+<div class="lesson-overview-grid">
+<section class="lesson-card" id="first-example" data-route="先看一个具体结果"><p class="lesson-kicker">先抓住一个具体结果</p><h2>95% 准确率，也可能一个都没找到</h2><p>100 个样本里有 5 个正例。如果全部预测成负例，准确率仍有 95%，但正例召回率是 0。只看准确率，会错过真正关心的问题。</p></section>
+<section class="lesson-card lesson-task-entry" id="reading-choices" data-route="按需要选择下一步"><p class="lesson-kicker">接下来，按需要选一项</p><h2>你现在想看什么？</h2><nav aria-label="本页阅读入口"><a href="#_6">按目标选指标 <span aria-hidden="true">→</span></a><a href="#_3">检查是否偷看答案 <span aria-hidden="true">→</span></a><a href="#_9">照着流程评估 <span aria-hidden="true">→</span></a></nav><p class="lesson-note">这些入口是选择，不是必须按顺序完成的任务。</p></section>
+<section class="lesson-card lesson-pause lesson-wide" id="first-pause" data-route="可以停在这里"><h2>可以停在这里</h2><p>评估要同时守住两件事：不偷看答案，指标确实对应你的目标。</p><a href="#full-lesson">需要更多细节时，继续看完整正文 →</a></section></div>
+<section class="lesson-full" id="full-lesson" aria-label="完整正文">
+<div class="lesson-divider"><span>继续探索</span><p>原有正文、图解和例子都在下方。按需跳转，不必一次读完。</p></div>
+<h2 id="05" class="lesson-original-title">05 · 评估与过拟合</h2>
+<!-- guided-lesson: ml-05 -->
+
 <p>⏱ <strong>30 分钟</strong> ｜ ⭐⭐ <strong>全教程最重要的一章</strong></p>
 <blockquote>
 <p>如果你这份教程只学一章，学这章。
@@ -414,7 +426,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <p>定义：训练时用到了「本不该知道的信息」，导致离线分数虚高、上线暴死。</p>
 <h3 id="_4">🔨 一个会让你后背发凉的实验</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">cross_val_score</span><span class="p">,</span> <span class="n">KFold</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">SelectKBest</span><span class="p">,</span> <span class="n">f_classif</span>
@@ -581,7 +593,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="_9">🧪 六、一套可以照抄的评估流程</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">① 先切出【最终测试集】，锁进保险柜，全程只用一次 ⭐</span></div><div class="vb-tree-row"><span class="vb-tree-node">反复在测试集上调参 = 慢性泄漏，测试集会失去意义</span></div><div class="vb-tree-row"><span class="vb-tree-node">② 在剩下的数据上做交叉验证（分类用 Stratified，时序用 TimeSeries）</span></div><div class="vb-tree-row"><span class="vb-tree-node">③ 所有预处理放进 Pipeline</span></div><div class="vb-tree-row"><span class="vb-tree-node">④ 选对指标（不平衡看 PR-AUC/F1，排序看 AUC）</span></div><div class="vb-tree-row"><span class="vb-tree-node">⑤ 记录【均值 ± 标准差】，差距小于一个标准差的改动别当真</span></div><div class="vb-tree-row"><span class="vb-tree-node">⑥ 定好之后，才打开保险柜跑最终测试集，只跑一次</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>① 先切出【最终测试集】，锁进保险柜，全程只用一次 ⭐</span></li><li><span>反复在测试集上调参 = 慢性泄漏，测试集会失去意义</span></li><li><span>② 在剩下的数据上做交叉验证（分类用 Stratified，时序用 TimeSeries）</span></li><li><span>③ 所有预处理放进 Pipeline</span></li><li><span>④ 选对指标（不平衡看 PR-AUC/F1，排序看 AUC）</span></li><li><span>⑤ 记录【均值 ± 标准差】，差距小于一个标准差的改动别当真</span></li><li><span>⑥ 定好之后，才打开保险柜跑最终测试集，只跑一次</span></li></ul></section>
 <blockquote>
 <p>🔗 这套流程和你在<a href="../智能体工程教程/14-评测Evals.html">智能体工程第 14 章</a>学的评测方法论<strong>同源</strong>：
 「读转录」「分维度看」「对小差距保持怀疑」在这里全都成立。</p>
@@ -612,10 +624,20 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_11">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>本章是全教程最重要的一章</strong>——90% 的翻车不是模型不好，而是<strong>你以为的好是假的</strong>。⭐<strong>总误差＝偏差²＋方差＋噪声</strong>：<strong>训练好测试差＝过拟合</strong>（⭐<strong>加数据</strong>/加正则/早停）。⭐<strong>过拟合不是"学得太多"，是方差涨得比偏差降得快的那一段</strong>；💡<strong>加数据是唯一同时降方差又不增偏差的手段</strong>。⭐<strong>别信单次切分</strong>：同一模型只换种子，10 次测试分在 <strong>94.7%~98.2%、极差 3.5%</strong>——<strong>靠单次切分判断"A 比 B 高 2%"大概率在读噪声</strong>。<strong>分类默认 StratifiedKFold、⭐时序必须 TimeSeriesSplit</strong>。💀<strong>数据泄漏最致命</strong>：200 个样本配 <strong>5000 个纯随机噪声特征</strong>、标签也随机（真值 50%），<strong>"先用全部数据选出最相关的 20 个特征再做交叉验证"刷出 76.5%，放进 Pipeline 后只有 47.5%</strong>——选特征时你已经偷看了全部标签。⭐<strong>凡是"会看到 y"的步骤（选特征、标准化、目标编码、填缺失、过采样）都必须进 Pipeline，在每折内部重做</strong>。⚠️<strong>准确率是陷阱</strong>：正样本只占 1.6% 时，<strong>全预测 0 的傻子模型和逻辑回归的准确率一模一样都是 98.4%</strong>，<strong>AUC 0.65 说明有信号，但默认阈值 0.5 一个正样本都没抓到</strong>，⭐<strong>PR-AUC 只有 0.07，不平衡时看它</strong>；⭐<strong>阈值是免费的自由参数</strong>，调到 0.05 召回就从 0 涨到 25.5%。<strong>学习曲线</strong>：样本 39→159 时测试集 91.8%→94.7%（<strong>还在涨＝去搞数据</strong>），到 398 反而 94.2%（<strong>平了＝改模型</strong>）。⚠️<strong>最终测试集锁进保险柜、只跑一次</strong>（反复调参是慢性泄漏），记录<strong>均值±标准差，差距小于一个标准差的改动别当真</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>验证集负责选方案，最终测试集负责检验泛化，不能反复拿测试集调参。</li><li>预处理只在训练部分拟合；时间、用户等分组关系也必须体现在划分里。</li><li>结合训练与验证曲线判断欠拟合、过拟合，再调整容量、正则化或数据。</li><li>指标必须对应实际任务；保留基线并观察不同划分或种子的波动。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="06-无监督-聚类与降维.html">06-无监督-聚类与降维.md</a></p>
+</section></div>
+<aside class="lesson-rail" aria-label="本节学习路线">
+<button type="button" class="lesson-route-toggle" aria-expanded="true" aria-controls="lesson-route">本节学习路线 <span aria-hidden="true">⌄</span></button>
+<div id="lesson-route">
+<p class="lesson-position" aria-live="polite">从第一站开始</p>
+<div class="lesson-track" aria-hidden="true"><span></span></div>
+<nav class="lesson-route-links" aria-label="章节跳转"></nav>
+<div class="lesson-rail-note"><strong>一次只读一张卡片</strong><p>蓝色下划线可以点开解释。关掉窗口，接着原来的位置读。</p></div>
+<button type="button" class="lesson-save">记住当前位置</button>
+<p class="lesson-save-status" role="status"></p>
+</div></aside></div>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
 <nav class="pagenav"><a href="04b-XGBoost的推导.html"><div class="dir">← 上一节</div>🧮 04b · XGBoost 的推导</a><a class="next" href="06-无监督-聚类与降维.html"><div class="dir">下一节 →</div>🔮 06 · 无监督：聚类降维</a></nav>
@@ -642,5 +664,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -348,7 +348,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_3">🧊 二、把这件事跑出来</h2>
 <p>最有效的一招是<strong>冻结</strong>：先用无标注数据学出一个表示，
 然后<strong>只在它上面训一个很小的头</strong>。下面这段把它和「直接用原始特征」对照：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="n">AA</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">5</span>          <span class="c1"># 20 种氨基酸，长 30，背后 5 维隐变量</span>
 
@@ -546,9 +546,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⚠️ <strong>什么时候看下一页</strong>：你已经把现有的几十条数据榨干了，
 开始想「<strong>那下一批实验该做什么</strong>」—— 那正是下一章。</p>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>在科学问题里，标注贵得离谱而无标注数据几乎免费</strong>：一条标注 = 一次湿实验（几百到几千元、几天到几周），量级常常只有<strong>两位数到三位数</strong>；而序列数据库里躺着亿级的无标签数据。💀 一个新酶项目第一轮可能就<strong>几十个</strong>突变体的活性数据，拿去训几百维的模型就是 <code>n &lt; p</code>。⭐ 整章只讲怎么把便宜的那一半换成贵的那一半，而最有效的一招是<strong>冻结</strong>：先用无标注数据学出表示，只在它上面训一个很小的头。实测：<strong>20 条标签时，原始 one-hot 的测试 R² 是 0.374，冻结的 16 维表示是 0.696 —— 差不多翻倍</strong>，而那 16 维是从 <strong>4000 条无标签序列</strong>用 PCA 抽的，<strong>一个标签都没用</strong>。⭐⭐ 但到 <strong>3000 条</strong>时两者收敛（0.878 vs 0.884，差 0.006）—— 差距从 <strong>+0.32</strong> 收窄到 <strong>+0.006</strong>，和 01 章「领域知识 ≈ 一倍数据」是同一个结论：<strong>预训练买的是速度，不是上限</strong>。⭐ 冻结之所以比全量微调适合这里，判据很朴素：<strong>可训练参数的数量级要和样本量匹配</strong> —— 冻结方案解 16 维岭回归，原始方案 600 维，20 个样本对 600 个参数是在背答案。另外四件事：<strong>用交叉验证不用单次划分</strong>（但 K 折必须按同源家族分组）、<strong>报区间不报单点</strong>、<strong>数据增强要尊重对称性</strong>（整体旋转合法，随便换个残基通常不合法）、<strong>主动选下一批标注哪些</strong>。⚠️ 两个最容易骗到自己的：<strong>指标好看是因为测试集也小</strong>（试过多种划分再挑好看的，那个数已经脏了）、<strong>用同一批数据既选模型又报成绩</strong>（在 5 个模型里挑测试集最好的，分数必然虚高）—— 本质是同一件事：<strong>测试集每被看一次，作为尺子的价值就掉一点。</strong></p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>标签少时，先用冻结表示和小模型建立基线，再判断是否需要更多可训练参数。</li><li>验证与测试都要考虑同源分组，报告不确定性而不只报一个分数。</li><li>新增标注、预训练与合法的数据增强解决不同问题，不能用反复挑测试集代替验证。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="07-评测的坑.html">07-评测的坑.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -576,5 +575,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

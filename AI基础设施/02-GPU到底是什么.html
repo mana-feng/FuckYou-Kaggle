@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -359,7 +359,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="gpu">🏗️ 二、GPU 的层次结构</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">GPU</span></div><div class="vb-tree-row"><span class="vb-tree-node">SM（流多处理器）× 100+</span><span class="vb-tree-note">真正干活的单元</span></div><div class="vb-tree-row"><span class="vb-tree-node">CUDA Core （FP32 通用运算）</span></div><div class="vb-tree-row"><span class="vb-tree-node">Tensor Core （⭐ 矩阵乘专用，深度学习的主力）</span></div><div class="vb-tree-row"><span class="vb-tree-node">寄存器 （最快，每 SM 几百 KB）</span></div><div class="vb-tree-row"><span class="vb-tree-node">Shared Memory / L1（几百 KB，⭐ FlashAttention 靠它）</span></div><div class="vb-tree-row"><span class="vb-tree-node">L2 Cache（几十 MB，全卡共享）</span></div><div class="vb-tree-row"><span class="vb-tree-node">HBM 显存（40 / 80 / 141 GB）</span><span class="vb-tree-note">慢，但容量大</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-aimd-02-1" style="--diagram-width:720px"><svg viewBox="0 0 720 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="先看包含关系：运算单元与局部存储在 SM 内；再看共享关系：多个 SM 连接 L2，继续访问显存。图示是逻辑层次，不是芯片物理布局。"><title>先看包含关系：运算单元与局部存储在 SM 内；再看共享关系：多个 SM 连接 L2，继续访问显存。图示是逻辑层次，不是芯片物理布局。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">GPU：执行单元在 SM 内，L2 由 SM 共享</text><rect x="20" y="65" width="680" height="405" rx="12" fill="var(--quote-bg)" stroke="var(--border)"/><text x="40" y="97" font-size="20" text-anchor="start" fill="var(--fg)">GPU 内部</text><rect x="40" y="120" width="400" height="220" rx="12" fill="var(--quote-bg)" stroke="var(--border)"/><text x="60" y="151" font-size="20" text-anchor="start" fill="var(--fg)">一个 SM 内</text><rect x="60" y="170" width="360" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="240.0" y="198" font-size="18" text-anchor="middle" fill="var(--fg)">CUDA Core / Tensor Core</text><rect x="60" y="245" width="360" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="240.0" y="273" font-size="18" text-anchor="middle" fill="var(--fg)">寄存器 / Shared Memory / L1</text><rect x="470" y="120" width="210" height="220" rx="12" fill="var(--quote-bg)" stroke="var(--border)"/><text x="575" y="195" font-size="20" text-anchor="middle" fill="var(--fg)">其他 SM</text><text x="575" y="227" font-size="18" text-anchor="middle" fill="var(--fg)">并行执行</text><rect x="40" y="385" width="640" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="360.0" y="413" font-size="18" text-anchor="middle" fill="var(--fg)">L2 Cache：多个 SM 共享</text><line x1="240" y1="340" x2="240" y2="385" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="240.0,385.0 235.0,376.0 245.0,376.0"/><line x1="575" y1="340" x2="575" y2="385" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="575.0,385.0 570.0,376.0 580.0,376.0"/><line x1="360" y1="433" x2="360" y2="520" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="360.0,520.0 355.0,511.0 365.0,511.0"/><rect x="20" y="520" width="680" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="360.0" y="548" font-size="18" text-anchor="middle" fill="var(--fg)">显卡显存 HBM：容量大，访问较慢</text></svg><figcaption>先看包含关系：运算单元与局部存储在 SM 内；再看共享关系：多个 SM 连接 L2，继续访问显存。图示是逻辑层次，不是芯片物理布局。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>GPU</span></li><li><span>SM（流多处理器）× 100+</span> <span>真正干活的单元</span></li><li><span>CUDA Core （FP32 通用运算）</span></li><li><span>Tensor Core （⭐ 矩阵乘专用，深度学习的主力）</span></li><li><span>寄存器 （最快，每 SM 几百 KB）</span></li><li><span>Shared Memory / L1（几百 KB，⭐ FlashAttention 靠它）</span></li><li><span>L2 Cache（几十 MB，全卡共享）</span></li><li><span>HBM 显存（40 / 80 / 141 GB）</span> <span>慢，但容量大</span></li></ul></section>
 <h3 id="tensor-core">⭐ Tensor Core：为什么它改变了一切</h3>
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">CUDA Core：一次做一个乘加 a×b+c</span></div><div class="vb-flow-row"><span class="vb-flow-step">Tensor Core：一次做一整个【小矩阵乘】 D = A×B + C（比如 4×4）</span></div><div class="vb-flow-row"><span class="vb-flow-step">单位时间的矩阵乘吞吐高【一个数量级】</span></div><div class="vb-flow-row"><span class="vb-flow-step">A100 的对照：</span></div><div class="vb-flow-row"><span class="vb-flow-step">FP32（CUDA Core） 19.5 TFLOPS</span></div><div class="vb-flow-row"><span class="vb-flow-step">TF32（Tensor Core） 156 TFLOPS ⭐ 8 倍</span></div><div class="vb-flow-row"><span class="vb-flow-step">BF16/FP16（Tensor Core） 312 TFLOPS ⭐ 16 倍</span></div><div class="vb-flow-row"><span class="vb-flow-step">INT8（Tensor Core） 624 TOPS</span></div></div></section>
 <blockquote>
@@ -370,13 +371,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="warp">🧵 三、执行模型：warp 和它的两个坑</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">线程（thread）</span></div><div class="vb-tree-row"><span class="vb-tree-node">32 个线程打包成一个 【warp】 ⭐ 这是真正的调度单位</span></div><div class="vb-tree-row"><span class="vb-tree-node">若干 warp 组成一个 block（跑在同一个 SM 上）</span></div><div class="vb-tree-row"><span class="vb-tree-node">若干 block 组成 grid</span></div><div class="vb-tree-row"><span class="vb-tree-node">⭐ 一个 warp 里的 32 个线程【必须执行同一条指令】（SIMT）</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-aimd-02-2" style="--diagram-width:720px"><svg viewBox="0 0 720 545" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="从外框向内读组织层级；线程格仅列出首尾示例，不是说一个 warp 只有三个线程。这张图不表示执行先后。"><title>从外框向内读组织层级；线程格仅列出首尾示例，不是说一个 warp 只有三个线程。这张图不表示执行先后。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">Grid 包含 block，block 包含 warp</text><rect x="20" y="65" width="680" height="445" rx="12" fill="var(--quote-bg)" stroke="var(--accent)" stroke-width="1.5"/><text x="42" y="99" font-size="20" text-anchor="start" fill="var(--fg)">Grid</text><rect x="40" y="130" width="450" height="330" rx="12" fill="var(--quote-bg)" stroke="var(--accent)" stroke-width="1.5"/><text x="60" y="164" font-size="20" text-anchor="start" fill="var(--fg)">一个 block</text><text x="60" y="194" font-size="18" text-anchor="start" fill="var(--fg)">在同一个 SM 上执行</text><rect x="60" y="225" width="410" height="190" rx="12" fill="var(--quote-bg)" stroke="var(--accent)" stroke-width="1.5"/><text x="80" y="260" font-size="20" text-anchor="start" fill="var(--fg)">一个 warp：32 个线程</text><rect x="80" y="305" width="110" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="135.0" y="333" font-size="18" text-anchor="middle" fill="var(--fg)">线程 0</text><rect x="205" y="305" width="110" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="260.0" y="333" font-size="18" text-anchor="middle" fill="var(--fg)">线程 1</text><rect x="340" y="305" width="110" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="395.0" y="333" font-size="18" text-anchor="middle" fill="var(--fg)">线程 31</text><text x="326" y="336" font-size="18" text-anchor="middle" fill="var(--fg)">…</text><rect x="520" y="130" width="160" height="330" rx="12" fill="var(--quote-bg)" stroke="var(--accent)" stroke-width="1.5"/><text x="600" y="264" font-size="18" text-anchor="middle" fill="var(--fg)">其他 block</text></svg><figcaption>从外框向内读组织层级；线程格仅列出首尾示例，不是说一个 warp 只有三个线程。这张图不表示执行先后。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>线程（thread）</span></li><li><span>32 个线程打包成一个 【warp】 ⭐ 这是真正的调度单位</span></li><li><span>若干 warp 组成一个 block（跑在同一个 SM 上）</span></li><li><span>若干 block 组成 grid</span></li><li><span>⭐ 一个 warp 里的 32 个线程【必须执行同一条指令】（SIMT）</span></li></ul></section>
 <h3 id="1-warp-divergence">坑 ① warp divergence（分支发散）</h3>
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">if (threadIdx.x % 2 == 0) A();</span></div><div class="vb-flow-row"><span class="vb-flow-step">else B();</span></div><div class="vb-flow-row"><span class="vb-flow-step">同一个 warp 里既有走 A 的又有走 B 的</span></div><div class="vb-flow-row"><span class="vb-flow-step">硬件只能【先跑 A（走 B 的线程闲置），再跑 B】</span></div><div class="vb-flow-row"><span class="vb-flow-step">耗时翻倍 💀</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 这就是为什么 GPU 不擅长分支多的逻辑</span></div></div></section>
 <h3 id="2-uncoalesced-access">坑 ② 非合并访存（uncoalesced access）</h3>
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">✅ 合并访存：warp 里 32 个线程访问【连续】的地址</span></div><div class="vb-flow-row"><span class="vb-flow-step">硬件合并成 1 次内存事务</span></div><div class="vb-flow-row"><span class="vb-flow-step">❌ 非合并：访问跳跃的地址（比如按列访问行主序矩阵）</span></div><div class="vb-flow-row"><span class="vb-flow-step">可能变成 32 次独立事务</span><span class="vb-flow-arrow">→</span><span class="vb-flow-step">有效带宽掉到 1/32 💀</span></div><div class="vb-flow-row"><span class="vb-flow-step">⭐ 这就是为什么【张量的内存布局（contiguous）很重要】</span></div></div></section>
 
-<div class="codehilite"><pre><span></span><code><span class="c1"># PyTorch 里的真实影响</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># PyTorch 里的真实影响</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4096</span><span class="p">,</span> <span class="mi">4096</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cuda&#39;</span><span class="p">)</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">t</span><span class="p">()</span>                      <span class="c1"># 转置只改 stride，没搬数据</span>
@@ -451,7 +453,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 先确认瓶颈真的在某个算子上（<a href="04-Roofline与MFU.html">第 4 章</a>教你怎么测），
 再考虑用 <strong>Triton</strong>（Python 语法，门槛低得多）—— <a href="07-算子融合与编译.html">第 7 章</a>。</p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 三个你一定会用到的命令</span>
+<div class="codehilite" data-code-language="bash"><pre><span></span><code><span class="c1"># 三个你一定会用到的命令</span>
 nvidia-smi<span class="w">                    </span><span class="c1"># 看显存占用、利用率、温度、功耗</span>
 nvidia-smi<span class="w"> </span>topo<span class="w"> </span>-m<span class="w">            </span><span class="c1"># ⭐ 看卡间互联拓扑（NVLink 还是 PCIe）</span>
 nvidia-smi<span class="w"> </span>dmon<span class="w"> </span>-s<span class="w"> </span>pucm<span class="w">       </span><span class="c1"># 持续监控</span>
@@ -523,9 +525,8 @@ nvidia-smi<span class="w"> </span>dmon<span class="w"> </span>-s<span class="w">
 <hr />
 <h2 id="_6">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>CPU 是几个博士生（降低延迟），GPU 是几千个小学生（提高吞吐）</strong>；GPU 把不做分支预测/乱序执行省下的晶体管全堆成核心，<strong>靠切换 warp 而不是靠缓存来掩盖内存延迟</strong> → ⭐<strong>batch 太小时驻留 warp 不够，掩盖不住延迟，效率低</strong>。<strong>层次</strong>：SM（含 CUDA Core / <strong>Tensor Core</strong> / 寄存器 / <strong>Shared Memory 几百KB</strong>）→ L2（几十MB）→ <strong>HBM</strong>（80GB，慢）。⭐<strong>Tensor Core 一次做一整个小矩阵乘</strong>，A100 上 FP32 19.5 TFLOPS vs <strong>BF16 312 TFLOPS（16倍）</strong> → ⭐<strong>混合精度快的真正原因不是"半精度算得快"，而是半精度才能用上 Tensor Core</strong>；⚠️要求<strong>维度对齐</strong>（4095 而非 4096 可能掉回 CUDA Core）。<strong>执行模型</strong>：32 线程 = 1 <strong>warp</strong>，必须执行同一条指令（SIMT）；两个坑：⚠️<strong>warp divergence</strong>（同 warp 走不同分支 → 先跑一个再跑另一个，<strong>耗时翻倍</strong>，所以 GPU 不擅长分支）、⚠️<strong>非合并访存</strong>（访问跳跃地址 → <strong>有效带宽掉到 1/32</strong>，所以 PyTorch 里 <strong>contiguous 很重要</strong>）。<strong>关键数字</strong>：A100 312 TFLOPS / 2.0TB/s / NVLink 600GB/s；H100 989 TFLOPS（<strong>FP8 翻倍到 1979</strong>）/ 3.35TB/s / NVLink 900GB/s；⭐<strong>4090 算力不差但显存仅 24GB 且只有 PCIe 无 NVLink → 多卡训练大模型基本不可用</strong>。⚠️⭐<strong><code>nvidia-smi</code> 的 GPU-Util 极具误导性</strong>——它只说"有 kernel 在跑"，<strong>一个只用 5% 算力的 kernel 也显示 100%</strong>，真正该看 <strong>MFU</strong>。99% 的情况不需要写 CUDA，真要写就用 <strong>Triton</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>GPU 通过大量并行任务提高吞吐；SM 内的执行单元与存储层次需要一起理解。</li><li>Tensor Core 面向矩阵运算，实际收益还取决于精度、形状与数据布局。</li><li>分支分歧和跳跃访存都会降低效率；检查真实执行与搬运，不只看利用率百分比。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="03-显存与带宽墙.html">03-显存与带宽墙.md</a> ⭐</p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -553,5 +554,4 @@ nvidia-smi<span class="w"> </span>dmon<span class="w"> </span>-s<span class="w">
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

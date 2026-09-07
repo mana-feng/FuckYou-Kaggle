@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,22 +271,22 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
   <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
   <span class="title">12 · Harness 骨架</span>
-  <span class="prevnext"><a href="11-检索与RAG.html">←</a>
-  <a href="13-多Agent协作.html">→</a></span>
+  <span class="prevnext"><a href="11d-生成引用与查询诊断.html">←</a>
+  <a href="12b-持久化审批与故障恢复.html">→</a></span>
   <button class="js-done-btn">☐ 打卡</button>
   <button id="themeToggle" title="切换深浅色">🌗</button>
 </div></header>
@@ -309,6 +309,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h1 id="12-harness">12 · Harness：长时任务的骨架</h1>
 <p>⏱ <strong>28 分钟</strong> ｜ ⭐⭐ <strong>本教程最重要的一节</strong></p>
 <hr />
+<p>🔗 <strong>可运行实践</strong>：<a href="12b-持久化审批与故障恢复.html"> 持久化审批与故障恢复 </a>。</p>
 <h2 id="_1">🎯 一句话</h2>
 <p>Harness = 把原始模型智能变成可用 Agent 的那一整套东西（<strong>循环 + 工具 + 上下文管理 + 护栏</strong>）。
 而这一节最重要的一句话是：</p>
@@ -444,7 +445,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><strong>这是本章最有价值的部分</strong>——它展示了 harness 是怎么随模型进步而变化的。</p>
 <h3 id="agent-agent">第一代：初始化 Agent + 编码 Agent</h3>
 <p>要解决：过度野心 + 过早宣告完成</p>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">【初始化 Agent】（只跑第一次）</span></div><div class="vb-tree-row"><span class="vb-tree-node">生成 init.sh 启动脚本</span></div><div class="vb-tree-row"><span class="vb-tree-node">生成 claude-progress.txt 进度文件</span></div><div class="vb-tree-row"><span class="vb-tree-node">初始 git commit</span></div><div class="vb-tree-row"><span class="vb-tree-node">⭐ JSON 格式的完整功能清单</span></div><div class="vb-tree-row"><span class="vb-tree-node">（示例项目 200+ 项，初始全标 failing）</span></div><div class="vb-tree-row"><span class="vb-tree-node">【编码 Agent】（后续所有会话）</span></div><div class="vb-tree-row"><span class="vb-tree-node">一次只做一个功能</span></div><div class="vb-tree-row"><span class="vb-tree-node">每次变更都提交</span></div><div class="vb-tree-row"><span class="vb-tree-node">宣布完成前严格端到端测试</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>【初始化 Agent】（只跑第一次）</span></li><li><span>生成 init.sh 启动脚本</span></li><li><span>生成 claude-progress.txt 进度文件</span></li><li><span>初始 git commit</span></li><li><span>⭐ JSON 格式的完整功能清单</span></li><li><span>（示例项目 200+ 项，初始全标 failing）</span></li><li><span>【编码 Agent】（后续所有会话）</span></li><li><span>一次只做一个功能</span></li><li><span>每次变更都提交</span></li><li><span>宣布完成前严格端到端测试</span></li></ul></section>
 <p><strong>两个关键细节</strong>：</p>
 <div class="tw"><table>
 <thead>
@@ -538,7 +539,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 - 一个上下文窗口就能解决的问题</p>
 <hr />
 <h2 id="harness_5">🧰 五、可以照抄的最小 harness</h2>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 一个能对付&quot;五头怪&quot;的最小骨架</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 一个能对付&quot;五头怪&quot;的最小骨架</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">MinimalHarness</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">tools</span><span class="p">,</span> <span class="n">goal</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">goal</span> <span class="o">=</span> <span class="n">goal</span>
@@ -693,13 +694,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_8">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>Harness=循环+工具+上下文管理+护栏。⭐<strong>核心命题：每个组件都编码了一个「模型自己做不到某事」的假设，而假设会随模型进步过时</strong> → 要定期问「<strong>我可以停止做什么</strong>」。<strong>五头怪</strong>：过度野心、<strong>过早宣告完成</strong>、上下文焦虑（快到上限就草草收尾）、目标漂移、状态丢失。<strong>减法三模式</strong>：①用通用工具而非自造——<strong>熟悉度本身就是能力</strong>，Claude 3.5 Sonnet只靠bash+文本编辑器就在SWE-bench Verified拿<strong>49%</strong>；②让模型自己编排/管理/持久化上下文——<strong>BrowseComp 45.3%→61.6%</strong>、子Agent再加<strong>2.8%</strong>、BrowseComp-Plus <strong>60.4%→67.2%</strong>；③谨慎设边界——缓存友好（⚠️<strong>不要中途换模型</strong>）、<strong>可逆性准则</strong>。<strong>三代架构</strong>：一代=初始化Agent（<strong>JSON功能清单</strong>200+项、初始全标failing）+编码Agent（一次一个功能、每次变更就提交、完成前端到端测试）；⭐<strong>用JSON不用Markdown，格式刚性让模型不容易覆盖</strong>；<strong>像真人一样点一遍能发现纯代码审查发现不了的bug</strong>。二代=<strong>生成-评估分离</strong>，因为⭐<strong>模型自评有系统性正面偏差</strong>；⭐<strong>把「这个设计美吗」改成「是否符合设计质量/原创性/工艺/功能性四项标准」</strong>；单Agent 20分钟<strong>$9</strong>但产物不可用，完整harness 6小时<strong>$200</strong>、覆盖16项功能——<strong>20倍买的是「能用vs不能用」</strong>。三代=模型自己写harness。⚠️<strong>上一代必不可少的Sprint级分解，下一代反成多余开销</strong>——设计空间不会缩小，只会移动。升级后做<strong>体检五问</strong>（删旧提示、专用换通用、编排交还模型、粒度放粗），⚠️但<strong>安全护栏不能删</strong>：它防的是外部攻击，不是模型能力不足。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>Harness 把循环、工具、上下文、状态与护栏组合成可持续执行的系统。</li><li>把进度和验收标准保存在可恢复的记录里，避免重启后丢失任务状态。</li><li>生成与评估要有清晰边界，完成声明必须对应实际验证。</li><li>模型升级后重新评估复杂组件，但安全边界不能因能力变强就取消。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="13-多Agent协作.html">13-多Agent协作.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
-<nav class="pagenav"><a href="11-检索与RAG.html"><div class="dir">← 上一节</div>🔍 11 · 检索与 RAG</a><a class="next" href="13-多Agent协作.html"><div class="dir">下一节 →</div>👥 13 · 多 Agent 协作</a></nav>
+<nav class="pagenav"><a href="11d-生成引用与查询诊断.html"><div class="dir">← 上一节</div>📎 11d · 生成与引用诊断</a><a class="next" href="12b-持久化审批与故障恢复.html"><div class="dir">下一节 →</div>💾 12b · 审批与故障恢复</a></nav>
 </main>
 <script>(function(){
   var KEY="agent-progress", FILE="12-Harness-\u957f\u65f6\u4efb\u52a1\u7684\u9aa8\u67b6.md";
@@ -723,5 +723,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

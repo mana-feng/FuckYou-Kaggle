@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -382,9 +382,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_3">🧱 二、一个聊天界面需要什么</h2>
 <p>拆开只有五件事：</p>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">消息列表</span><span class="vb-tree-note">历史消息，能滚动</span></div><div class="vb-tree-row"><span class="vb-tree-node">输入框</span><span class="vb-tree-note">回车发送，Shift+回车换行</span></div><div class="vb-tree-row"><span class="vb-tree-node">发送按钮</span><span class="vb-tree-note">发送中要禁用，否则用户会连点</span></div><div class="vb-tree-row"><span class="vb-tree-node">加载态</span><span class="vb-tree-note">⭐ 不能只是转圈，见第三节</span></div><div class="vb-tree-row"><span class="vb-tree-node">错误态</span><span class="vb-tree-note">⚠️ 要能重试，不能只是消失</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>消息列表</span> <span>历史消息，能滚动</span></li><li><span>输入框</span> <span>回车发送，Shift+回车换行</span></li><li><span>发送按钮</span> <span>发送中要禁用，否则用户会连点</span></li><li><span>加载态</span> <span>⭐ 不能只是转圈，见第三节</span></li><li><span>错误态</span> <span>⚠️ 要能重试，不能只是消失</span></li></ul></section>
 <p>⭐ <strong>核心的数据结构就一个数组</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// 整个应用的状态，就这些</span>
+<div class="codehilite" data-code-language="javascript"><pre><span></span><code><span class="c1">// 整个应用的状态，就这些</span>
 <span class="kd">let</span><span class="w"> </span><span class="nx">messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span><span class="w">        </span><span class="c1">// [{role: &#39;user&#39;|&#39;assistant&#39;, content: &#39;...&#39;, error?: true}]</span>
 <span class="kd">let</span><span class="w"> </span><span class="nx">isStreaming</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span><span class="w">  </span><span class="c1">// 正在生成中</span>
 <span class="kd">let</span><span class="w"> </span><span class="nx">controller</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w">    </span><span class="c1">// AbortController，用于「停止生成」</span>
@@ -406,7 +406,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>🗓️ <strong>本章正文里的代码块全部未实跑 —— 它们是浏览器代码，而且都是片段</strong>（拿来说明形状用的）。
 ⭐ <strong>完整、语法核验过、能直接打开就用的那一份在第五节。</strong></p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="kd">function</span><span class="w"> </span><span class="nx">render</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<div class="codehilite" data-code-language="javascript"><pre><span></span><code><span class="kd">function</span><span class="w"> </span><span class="nx">render</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">box</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;messages&#39;</span><span class="p">);</span>
 <span class="w">  </span><span class="nx">box</span><span class="p">.</span><span class="nx">innerHTML</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">;</span><span class="w">                       </span><span class="c1">// ⚠️ 简单但粗暴，见下面的注意</span>
 <span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">m</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">messages</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -438,7 +438,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⚠️ <strong>纯转圈的问题</strong>：用户分不清「在想」和「卡死了」。<strong>等上几秒还没有任何反馈，人就会去点刷新</strong> ——
 💸 而<a href="05-流式输出.html">第 5 章</a>第一节说过：重刷会再烧一次钱。</p>
 <p>⭐ <strong>正确做法：让首字尽快出现，用内容本身当加载态。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="c1">// ❌ 等全部返回再显示</span>
+<div class="codehilite" data-code-language="javascript"><pre><span></span><code><span class="c1">// ❌ 等全部返回再显示</span>
 <span class="kd">const</span><span class="w"> </span><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;/api/chat&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{...});</span>
 <span class="kd">const</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
 <span class="nx">messages</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="nx">role</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;assistant&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">content</span><span class="o">:</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">text</span><span class="p">});</span>
@@ -461,7 +461,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 结果每来一个 token 就被弹回底部，根本选不中。</p>
 </blockquote>
 <p>⭐ <strong>判据：只有当用户本来就在底部附近时，才自动滚。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kd">function</span><span class="w"> </span><span class="nx">shouldAutoScroll</span><span class="p">(</span><span class="nx">box</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<div class="codehilite" data-code-language="javascript"><pre><span></span><code><span class="kd">function</span><span class="w"> </span><span class="nx">shouldAutoScroll</span><span class="p">(</span><span class="nx">box</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="c1">// 距离底部小于 80px 就认为「用户在跟读」</span>
 <span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">box</span><span class="p">.</span><span class="nx">scrollHeight</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">box</span><span class="p">.</span><span class="nx">scrollTop</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">box</span><span class="p">.</span><span class="nx">clientHeight</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">80</span><span class="p">;</span>
 <span class="p">}</span>
@@ -470,7 +470,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⚠️ <strong>回头看第二节那个 <code>render()</code></strong> —— 它结尾那行无条件的 <code>box.scrollTop = box.scrollHeight</code>
 正是这里说的错误写法。修法不只是加个 <code>if</code>，⭐ <strong>顺序也很关键：必须在重绘之前量</strong>，
 因为重绘之后 <code>scrollHeight</code> 已经变了，再量就永远判成「不在底部」。</p>
-<div class="codehilite"><pre><span></span><code><span class="kd">function</span><span class="w"> </span><span class="nx">render</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<div class="codehilite" data-code-language="javascript"><pre><span></span><code><span class="kd">function</span><span class="w"> </span><span class="nx">render</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">stick</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">shouldAutoScroll</span><span class="p">(</span><span class="nx">box</span><span class="p">);</span><span class="w">          </span><span class="c1">// ⭐ 先量，再动 DOM</span>
 <span class="w">  </span><span class="c1">// ……清空、重新 append 每一条……</span>
 <span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">stick</span><span class="p">)</span><span class="w"> </span><span class="nx">box</span><span class="p">.</span><span class="nx">scrollTop</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">box</span><span class="p">.</span><span class="nx">scrollHeight</span><span class="p">;</span><span class="w">  </span><span class="c1">// ⭐ 只有本来就在底部才滚</span>
@@ -609,7 +609,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <details>
 <summary>📄 完整文件（163 行）—— 复制进 <code>chat.html</code>，双击打开</summary>
-<div class="codehilite"><pre><span></span><code><span class="cp">&lt;!doctype html&gt;</span>
+<div class="codehilite" data-code-language="html"><pre><span></span><code><span class="cp">&lt;!doctype html&gt;</span>
 <span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;zh-CN&quot;</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;utf-8&quot;</span><span class="p">&gt;</span>
@@ -801,7 +801,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ <strong>拆分的时机不是「文件太长」，是「你开始来回滚动找东西」</strong>。真到那一步，最小的拆法：</p>
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>static/</p><p>index.html ← 结构</p><p>app.js ← 状态 + 渲染 + 事件</p><p>style.css ← 样式</p></div></section>
 <p>⚠️ <strong>别为了拆而引入打包工具</strong>。现代浏览器原生支持 ES 模块：</p>
-<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;module&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;/static/app.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<div class="codehilite" data-code-language="html"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;module&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;/static/app.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 </code></pre></div>
 
 <p>⭐ <strong>这就够了，不需要 webpack。</strong> 后端直接把 <code>static/</code> 当静态目录挂出去
@@ -951,5 +951,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

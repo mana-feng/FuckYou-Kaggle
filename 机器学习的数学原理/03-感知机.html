@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -316,13 +316,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 
 <hr />
 <h2 id="_2">🧠 一、算法本身（真的只有一行）</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">模型：ŷ = sign(w·x + b)</span><span class="vb-tree-note">大于0判正类，小于0判负类</span></div><div class="vb-tree-row"><span class="vb-tree-node">训练：遍历样本</span></div><div class="vb-tree-row"><span class="vb-tree-node">预测对了 → 什么都不做 ⭐ 注意这一条</span></div><div class="vb-tree-row"><span class="vb-tree-node">预测错了 → w</span><span class="vb-tree-note">w + y·x</span></div><div class="vb-tree-row"><span class="vb-tree-node">（y 是真实标签 +1 或 −1）</span></div></div></section>
+<section class="reading-information"><p class="reading-information-title">关键信息</p><ul><li><span>模型：ŷ = sign(w·x + b)</span> <span>大于0判正类，小于0判负类</span></li><li><span>训练：遍历样本</span></li><li><span>预测对了 → 什么都不做 ⭐ 注意这一条</span></li><li><span>预测错了 → w</span> <span>w + y·x</span></li><li><span>（y 是真实标签 +1 或 −1）</span></li></ul></section>
 <h3 id="_3">💡 为什么这个更新是对的（自己验证一遍）</h3>
 <section class="visual-block visual-block-flow" aria-label="结果对照"><p class="visual-block-title">结果对照</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">假设真实标签 y = +1，但你预测成了 −1</span></div><div class="vb-flow-row"><span class="vb-flow-step">说明 w·x &lt; 0（分数太小了）</span></div><div class="vb-flow-row"><span class="vb-flow-step">更新：w_new = w + y·x = w + x</span></div><div class="vb-flow-row"><span class="vb-flow-step">再算这个样本的分数：</span></div><div class="vb-flow-row"><span class="vb-flow-step">w_new·x = (w + x)·x = w·x + ‖x‖²</span></div><div class="vb-flow-row"><span class="vb-flow-step">↑ 一定是正数（模长的平方）</span></div><div class="vb-flow-row"><span class="vb-flow-step">分数变大了，更可能判对 ✅</span></div></div></section>
 <p><strong>y = −1 的情况同理</strong>（更新是 <code>w − x</code>，分数会减小）。</p>
 <p><strong>这就是「朝正确方向挪一下」的严格含义。</strong></p>
 <h3 id="_4">🔨 十行实现</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">perceptron</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">max_epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="n">b</span> <span class="o">=</span> <span class="mf">0.0</span>
@@ -373,7 +373,8 @@ $$k\gamma \le \|w_k\| \le \sqrt{k}R \;\Rightarrow\; k \le (R/\gamma)^2$$</p>
 你只能看到它一直在跑，无法区分「快收敛了」和「永远不会收敛」。</p>
 </blockquote>
 <p>而异或（XOR）就是线性不可分的：</p>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">x2</span></div><div class="vb-tree-row"><span class="vb-tree-node">1 ●(0,1)=1 ○(1,1)=0</span></div><div class="vb-tree-row"><span class="vb-tree-node">0 ○(0,0)=0 ●(1,0)=1</span></div><div class="vb-tree-row"><span class="vb-tree-node">x1</span></div><div class="vb-tree-row"><span class="vb-tree-node">0 1</span></div><div class="vb-tree-row"><span class="vb-tree-node">画不出一条直线把 ● 和 ○ 分开</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-theorymd-03-2" style="--diagram-width:480px"><svg viewBox="0 0 480 414" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="XOR 在两个输入不同时输出 1。同类点处于对角位置，无法用一条直线把实心点与空心点完全分开。虚线用于显示对角关系，不是分类边界。"><title>XOR 在两个输入不同时输出 1。同类点处于对角位置，无法用一条直线把实心点与空心点完全分开。虚线用于显示对角关系，不是分类边界。</title><line x1="75" y1="325" x2="425" y2="325" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="425.0,325.0 416.0,330.0 416.0,320.0"/><line x1="75" y1="325" x2="75" y2="40" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="75.0,40.0 80.0,49.0 70.0,49.0"/><text x="430" y="346" font-size="18" text-anchor="start" fill="var(--fg)">x₁</text><text x="45" y="45" font-size="18" text-anchor="start" fill="var(--fg)">x₂</text><circle cx="125" cy="265" r="12" fill="var(--card)" stroke="var(--accent)" stroke-width="3"/><text x="125" y="305" font-size="18" text-anchor="middle" fill="var(--fg)">(0,0) → 0</text><circle cx="350" cy="265" r="12" fill="var(--accent)" stroke="var(--accent)" stroke-width="3"/><text x="350" y="305" font-size="18" text-anchor="middle" fill="var(--fg)">(1,0) → 1</text><circle cx="125" cy="100" r="12" fill="var(--accent)" stroke="var(--accent)" stroke-width="3"/><text x="125" y="140" font-size="18" text-anchor="middle" fill="var(--fg)">(0,1) → 1</text><circle cx="350" cy="100" r="12" fill="var(--card)" stroke="var(--accent)" stroke-width="3"/><text x="350" y="140" font-size="18" text-anchor="middle" fill="var(--fg)">(1,1) → 0</text><line x1="140" y1="100" x2="350" y2="265" stroke="var(--muted)" stroke-width="2" stroke-dasharray="5 5"/><line x1="125" y1="265" x2="350" y2="100" stroke="var(--muted)" stroke-width="2" stroke-dasharray="5 5"/><text x="240" y="386" font-size="18" text-anchor="middle" fill="var(--fg)">实心是 1，空心是 0；同类占据对角</text></svg><figcaption>XOR 在两个输入不同时输出 1。同类点处于对角位置，无法用一条直线把实心点与空心点完全分开。虚线用于显示对角关系，不是分类边界。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>1 ●(0,1)=1 ○(1,1)=0</span></li><li><span>0 ○(0,0)=0 ●(1,0)=1</span></li><li><span>画不出一条直线把 ● 和 ○ 分开</span></li></ul></section>
 <blockquote>
 <p>🔗 你在<a href="../机器学习与深度学习基础/07-从线性到神经网络.html">基础教程第 7 章</a>见过那个异或实验——
 <strong>1969 年 Minsky 和 Papert 指出感知机连异或都学不了，直接导致了第一次「AI 寒冬」。</strong></p>
@@ -584,9 +585,8 @@ $$k\gamma \le \|w_k\| \le \sqrt{k}R \;\Rightarrow\; k \le (R/\gamma)^2$$</p>
 <hr />
 <h2 id="_12">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>感知机 = 1957 年<strong>第一个能从数据中学习的算法</strong>，规则一行：ŷ = sign(w·x + b)，<strong>预测对了什么都不做，错了就 w ← w + y·x</strong>。为什么它朝正确方向挪：y=+1 却预测成负时，更新后该样本分数 w·x + ‖x‖² <strong>一定变大</strong>。⭐<strong>收敛定理</strong>：只要数据线性可分就保证<strong>有限步内停止</strong>，且<strong>犯错次数 ≤ (R/γ)²</strong>——R 是数据到原点的最大距离，γ 是<strong>间隔</strong>（分界线到最近点的距离）；也就是<strong>两类分得越开学得越快，数据越散学得越慢</strong>。三个要害：①<strong>它和数据量 n、维度 d 都无关</strong>（100 万个样本和 100 个样本上界一样），当时极其反直觉；②这是机器学习史上<strong>第一个学习保证</strong>，后来长成了整个学习理论；③<strong>间隔 γ 后来成了 SVM 的核心</strong>：这里它决定收敛速度，在 SVM 里成了优化目标本身。💀<strong>致命缺陷</strong>：线性不可分时永远震荡不收敛，⚠️<strong>而且它不会告诉你</strong>——你无法区分「快收敛了」和「永远不会收敛」。异或就学不了：1969 年 Minsky 和 Papert 据此发难，<strong>直接导致第一次 AI 寒冬</strong>。三条出路长成了后来三个方向：<strong>多层 + 非线性 → 神经网络</strong>、<strong>映射到高维 → 核方法</strong>、<strong>允许犯错但让间隔最大 → SVM 软间隔</strong>。和逻辑回归的差异：输出硬 ±1、没有概率解释、<strong>只在犯错时更新</strong>（逻辑回归每样本都更新）、可分时找到任意一条线就停，<strong>解不唯一</strong>（取决于初始化和顺序）。一句话：<strong>感知机分对就行，逻辑回归关心所有点，SVM 只关心边界附近的点</strong>。它还开创了 <strong>Mistake Bound</strong> 视角：不问「要多少数据」而问「总共会犯多少次错」，适合流式与在线场景——<strong>PAC 问要多少样本，Mistake Bound 问会犯多少错</strong>。💡后代里最值得记的是<strong>平均感知机</strong>：输出所有迭代中 w 的平均而非最后一个，一行改动常明显更好。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>感知机用线性分数分类，在误分类时沿样本方向更新权重。</li><li>有限步收敛保证依赖线性可分等条件，不能用于证明不可分数据也会收敛。</li><li>它找到可行分界线就可以停止；核方法、多层网络和软间隔分别放宽不同限制。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="04-非参数方法.html">04-非参数方法.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -614,5 +614,4 @@ $$k\gamma \le \|w_k\| \le \sqrt{k}R \;\Rightarrow\; k \le (R/\gamma)^2$$</p>
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

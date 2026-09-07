@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -318,7 +318,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>绝大多数团队的做法是：拿到 10 万块标注费，全砸进训练集，
 等模型训完了才想起来「我们拿什么评测？」——然后从训练集里随机切一块出来。
 <strong>这个顺序是反的。</strong></p>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">总预算 1000 条的正确切法：</span></div><div class="vb-tree-row"><span class="vb-tree-node">评测集 200 条 ⭐ 随机/分层抽样、独立标注、只标一次、锁起来</span></div><div class="vb-tree-row"><span class="vb-tree-node">这是【第一笔】花的钱，不是最后一笔</span></div><div class="vb-tree-row"><span class="vb-tree-node">种子集 80 条 随机或分层，把第一个模型跑起来</span></div><div class="vb-tree-row"><span class="vb-tree-node">主动池 720 条 分 8–15 轮迭代花掉</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-datamd-12-1" style="--diagram-width:720px"><svg viewBox="0 0 720 298" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="先独立建立评测集，再用种子启动，剩余预算进入主动学习循环。"><title>先独立建立评测集，再用种子启动，剩余预算进入主动学习循环。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">预算是分配关系，不是连续花三次</text><rect x="20" y="65" width="680" height="208" rx="12" fill="var(--quote-bg)" stroke="var(--border)"/><text x="40" y="97" font-size="20" text-anchor="start" fill="var(--fg)">总预算：1000 条</text><rect x="44" y="117" width="632" height="34" rx="6" fill="var(--card)" stroke="var(--border)"/><text x="58" y="140" font-size="18" text-anchor="start" fill="var(--fg)">评测集 200 条：先独立抽取并锁定</text><rect x="44" y="159" width="632" height="34" rx="6" fill="var(--card)" stroke="var(--border)"/><text x="58" y="182" font-size="18" text-anchor="start" fill="var(--fg)">种子集 80 条：启动模型</text><rect x="44" y="201" width="632" height="34" rx="6" fill="var(--card)" stroke="var(--border)"/><text x="58" y="224" font-size="18" text-anchor="start" fill="var(--fg)">主动池 720 条：分轮使用</text></svg><figcaption>先独立建立评测集，再用种子启动，剩余预算进入主动学习循环。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>总预算 1000 条的正确切法：</span></li><li><span>评测集 200 条 ⭐ 随机/分层抽样、独立标注、只标一次、锁起来</span></li><li><span>这是【第一笔】花的钱，不是最后一笔</span></li><li><span>种子集 80 条 随机或分层，把第一个模型跑起来</span></li><li><span>主动池 720 条 分 8–15 轮迭代花掉</span></li></ul></section>
 <p><strong>为什么评测集要先花、要占这么多？实跑一遍就清楚了</strong>
 （总预算固定 1000 条，剩下的全用主动学习）：</p>
 <div class="tw"><table>
@@ -410,7 +411,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tr>
 </tbody>
 </table></div>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">KMeans</span>
 
 
@@ -737,7 +738,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 💀 而标注费是<strong>线性</strong>的。所以「标注量翻倍」这件事，
 <strong>在项目早期是最划算的投入，在后期几乎总是最贵的一个选项。</strong></p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">curve_fit</span>
 
 
@@ -759,7 +760,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p><strong>拿本章那条随机采样曲线（1000/2000/4000/8000/16000 条）实跑一次</strong>：</p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>拟合出的天花板 · 0.9437</p><p>达到 0.86 需要 · 16,494 条</p><p>达到 0.88 需要 · 41,140 条 ← 比 0.86 多花 2.5 倍的钱</p><p>达到 0.90 需要 · 145,199 条 ← 比 0.88 再多花 3.5 倍 💀</p></div></section>
+<section class="comparison-repair" id="comparison-repair-11"><div class="tw"><table><caption>目标提高一点，样本代价可能跃升</caption><thead><tr><th scope="col">拟合目标</th><th scope="col">样本量 / 上限及代价</th></tr></thead><tbody><tr><th scope="row">拟合出的天花板</th><td>0.9437</td></tr><tr><th scope="row">达到 0.86 需要</th><td>16,494 条</td></tr><tr><th scope="row">达到 0.88 需要</th><td>41,140 条 ← 比 0.86 多花 2.5 倍的钱</td></tr><tr><th scope="row">达到 0.90 需要</th><td>145,199 条 ← 比 0.88 再多花 3.5 倍 💀</td></tr></tbody></table></div></section>
 <blockquote>
 <p>💀 <strong>这三个数字放在一起，就是标注预算谈判时最有说服力的一张图</strong>：
 <strong>从 0.86 到 0.90，准确率只涨 4 个百分点，标注费涨了近 9 倍。</strong>
@@ -810,7 +811,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><strong>为什么没被发现</strong></p>
 <section class="visual-block visual-block-flow" aria-label="操作步骤"><p class="visual-block-title">操作步骤</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">① 评测集和训练集来自【同一个主动学习管道】 ⭐ 根因</span></div><div class="vb-flow-row"><span class="vb-flow-step">评测集里长尾类目占 41%，而线上只占 6%</span></div><div class="vb-flow-row"><span class="vb-flow-step">这套评测集测的是&quot;模型在最难的样本上怎么样&quot;</span></div><div class="vb-flow-row"><span class="vb-flow-step">而不是&quot;模型在真实流量上怎么样&quot;</span></div><div class="vb-flow-row"><span class="vb-flow-step">② 只看宏 F1（每个类目权重相同），没有按【流量占比】加权</span></div><div class="vb-flow-row"><span class="vb-flow-step">占线上 63% 流量的三个头部类目，在评测集里只占 9%</span></div><div class="vb-flow-row"><span class="vb-flow-step">它们的错误率从上线时的 4.2% 一路涨到 7.8%，评测集完全看不见</span></div><div class="vb-flow-row"><span class="vb-flow-step">③ 从来没有人拿一份【随机抽样】的样本核对过评测集的类目分布</span></div><div class="vb-flow-row"><span class="vb-flow-step">—— 这件事只需要半天</span></div></div></section>
 <p><strong>代价</strong></p>
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>方向错配 2 人 × 3 个月，全用在占 6% 流量的长尾上</p><p>人工返工 头部类目路由错误约 1.1 万单 × 多花 6 分钟 ≈ 1,100 工时</p><p>重建评测集 6,000 条随机分层重标 + 仲裁，¥7.2 万，3 周</p><p>⭐ 讽刺的一笔账：</p><p>主动学习确实省了钱 —— 同样效果少标约 4 万条 ≈ 省 ¥4.8 万</p><p>但评测集选错造成的返工和方向错配，代价是这笔钱的两倍以上</p></div></section>
+<section class="comparison-repair" id="comparison-repair-12"><div class="tw"><table><caption>方向选错后的成本</caption><thead><tr><th scope="col">成本项</th><th scope="col">数量与代价</th></tr></thead><tbody><tr><th scope="row">方向错配</th><td>2 人 × 3 个月，全用在占 6% 流量的长尾上</td></tr><tr><th scope="row">人工返工</th><td>头部类目路由错误约 1.1 万单 × 多花 6 分钟 ≈ 1,100 工时</td></tr><tr><th scope="row">重建评测集</th><td>6,000 条随机分层重标 + 仲裁，¥7.2 万，3 周</td></tr></tbody></table></div><section class="reading-information"><p class="reading-information-title">省下的标注费与额外返工</p><ul><li>⭐ 讽刺的一笔账：主动学习确实省了钱 —— 同样效果少标约 4 万条 ≈ 省 ¥4.8 万</li><li>但评测集选错造成的返工和方向错配，代价是这笔钱的两倍以上</li></ul></section></section>
 <p><strong>该补什么</strong></p>
 <div class="tw"><table>
 <thead>
@@ -961,5 +962,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

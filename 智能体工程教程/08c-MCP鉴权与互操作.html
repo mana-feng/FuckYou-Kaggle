@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>08c · MCP：从连得上到权限正确 · 智能体工程教程</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">08c · 鉴权与互操作</span>
+  <span class="prevnext"><a href="08b-写一个MCP-Server.html">←</a>
+  <a href="09-计算机与浏览器使用.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#_2">🔬 先看到四条连接都工作</a></li>
+<li><a href="#_3">🧭 一、先锁定协议时代，再看报文</a></li>
+<li><a href="#_5">🔐 二、谁给凭证，谁检查权限</a></li>
+<li><a href="#http-stdio">🔌 三、手动走一遍 HTTP 与 stdio</a></li>
+<li><a href="#_6">🧯 四、把故障分层</a></li>
+<li><a href="#_7">🔗 这一章连到哪里</a></li>
+<li><a href="#_8">✅ 检查点</a></li>
+<li><a href="#_9">🛑 可以停在这里</a></li>
+</ul>
+</div>
+</details>
+<h1 id="08c-mcp">08c · MCP：从连得上到权限正确</h1>
+<p>⏱ <strong>28 分钟</strong> ｜ 按需实作：已有 Python 环境，想把工具交给多个宿主使用</p>
+<h2 id="_1">🎯 一句话</h2>
+<p><strong>工具能返回结果，只证明成功路径连通；不同协议、身份和失败输入也有明确结果，才算接入完成。</strong> 这一页使用同一个知识助手，实测 HTTP、stdio、新旧协议和授权拒绝。</p>
+<p>先准备<a href="17b-企业知识助手交付项目.html">共同项目的环境与文件</a>。完整代码在<a href="../examples/knowledge-assistant/mcp_server.py">Server</a>、<a href="../examples/knowledge-assistant/mcp_client.py">Client</a>和<a href="../examples/knowledge-assistant/test_protocol.py">协议测试</a>。下面命令均在仓库根目录、已安装项目依赖的 Python 环境运行。</p>
+<h2 id="_2">🔬 先看到四条连接都工作</h2>
+<div class="codehilite" data-code-language="bash"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w"> </span>discover<span class="w"> </span>-s<span class="w"> </span>examples/knowledge-assistant<span class="w"> </span>-p<span class="w"> </span>test_protocol.py<span class="w"> </span>-v
+</code></pre></div>
+
+<p>测试会在本机临时端口启动服务，结束后关闭；不会访问外部账户。它分别验证 <strong>HTTP 新协议、HTTP 旧协议、stdio 新协议、stdio 旧协议</strong>，并验证无凭证、过期、撤权和 scope 不足都不能进入业务工具。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>观察点</th>
+<th>预期</th>
+<th>这一步还不能证明什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>新协议 Client</td>
+<td><code>2026-07-28</code>，返回有 schema 的证据</td>
+<td>任意第三方宿主都兼容</td>
+</tr>
+<tr>
+<td><code>mode="legacy"</code></td>
+<td><code>2025-11-25</code>，同一工具仍可调用</td>
+<td>已覆盖所有更早版本</td>
+</tr>
+<tr>
+<td>HTTP 没有有效 token</td>
+<td>401；scope 不足通常为 403</td>
+<td>用户在身份平台的登录流程已经接好</td>
+</tr>
+<tr>
+<td>普通用户搜索薪酬</td>
+<td>不返回 HR 或其他租户资料</td>
+<td>其他业务资源的权限自然也正确</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>本轮验证的是同一 SDK 的 Client/Server 与真实传输。</strong> 上线前还需使用目标 IDE、桌面宿主或另一语言实现进行互测，不能把四个测试叫成“四种宿主验收”。</p>
+<h2 id="_3">🧭 一、先锁定协议时代，再看报文</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>2025-11-25</th>
+<th>2026-07-28</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>初始化</td>
+<td><code>initialize</code> 和初始化通知</td>
+<td>移除握手；可先调用 <code>server/discover</code></td>
+</tr>
+<tr>
+<td>能力与版本</td>
+<td>握手协商</td>
+<td>每请求 <code>_meta</code> 声明；HTTP 还带对应标准请求头</td>
+</tr>
+<tr>
+<td>HTTP 会话</td>
+<td>Server 可选择创建会话</td>
+<td>不再使用协议级 session ID</td>
+</tr>
+<tr>
+<td>流断开</td>
+<td>按该版服务支持的恢复机制处理</td>
+<td>丢失在途请求；新 RPC ID 重发，业务操作号保持稳定</td>
+</tr>
+<tr>
+<td>结果</td>
+<td>旧版结果可能无 <code>resultType</code></td>
+<td>有 <code>complete</code> / <code>input_required</code>；客户端兼容旧结果缺字段</td>
+</tr>
+</tbody>
+</table></div>
+<p>不要用 RPC 的 <code>id</code> 当业务幂等键。一次工单创建遇到断流，重发请求需要新的 RPC ID；<strong>它仍是同一笔业务动作</strong>，所以工单操作号不变。改掉操作号可能创建第二张工单。</p>
+<p>协议依据是<a href="https://modelcontextprotocol.io/specification/2026-07-28/changelog">2026 变更说明</a>与<a href="https://modelcontextprotocol.io/specification/2025-11-25/basic/transports">旧版传输</a>。代码锁定 <strong>mcp 2.1.1</strong>；升级前分别测试 Client、Server、宿主和依赖，不把包版本与协议日期混为一谈。</p>
+<h3 id="_4">结构化输出也要看真实返回</h3>
+<p>项目使用 Pydantic 输出模型，让 <code>outputSchema</code> 与 <code>structuredContent</code> 对得上。只写一个没有字段类型的 <code>dict</code> 返回注解，在本轮 SDK 实测中只有文本内容，<code>structured_content</code> 是空值。</p>
+<p>因此测试不能只断言 <code>is_error=False</code>。还要检查字段、类型、最大条数，以及每条证据的 <code>chunk_id</code>、版本和来源。需要兼容只返回文本的第三方工具时，显式做适配与校验，不把缺字段当空结果悄悄吞掉。</p>
+<h2 id="_5">🔐 二、谁给凭证，谁检查权限</h2>
+<figure class="dia"><svg viewBox="0 0 720 270" role="img" aria-label="身份平台签发凭证，宿主持凭证调用MCP服务，服务在业务库检查资源权限"><rect x="245" y="15" width="230" height="64" rx="10" fill="var(--card)" stroke="var(--border)"/><text x="360" y="41" text-anchor="middle" fill="var(--fg)" font-size="16">身份平台</text><text x="360" y="63" text-anchor="middle" fill="var(--muted)" font-size="13">登录、同意、签发凭证</text><rect x="25" y="165" width="210" height="78" rx="10" fill="var(--card)" stroke="var(--border)"/><text x="130" y="194" text-anchor="middle" fill="var(--fg)" font-size="16">Host / Client</text><text x="130" y="221" text-anchor="middle" fill="var(--muted)" font-size="13">工具暴露与动作预览</text><rect x="480" y="165" width="220" height="78" rx="10" fill="var(--accent-soft)" stroke="var(--accent)"/><text x="590" y="194" text-anchor="middle" fill="var(--fg)" font-size="16">MCP Server</text><text x="590" y="221" text-anchor="middle" fill="var(--muted)" font-size="13">验 token，再查资源权限</text><path d="M280 82 L160 150" fill="none" stroke="var(--muted)" stroke-width="2"/><polygon points="150,157 164,154 158,144" fill="var(--muted)"/><text x="178" y="113" fill="var(--fg)" font-size="13">取得凭证</text><path d="M445 85 L555 150" fill="none" stroke="var(--muted)" stroke-width="2"/><polygon points="565,156 552,145 548,155" fill="var(--muted)"/><text x="482" y="112" fill="var(--fg)" font-size="13">公钥 / 内省结果</text><path d="M240 205 H464" fill="none" stroke="var(--accent)" stroke-width="2"/><polygon points="476,205 463,198 463,212" fill="var(--accent)"/><text x="355" y="189" text-anchor="middle" fill="var(--fg)" font-size="13">带凭证的请求</text></svg><figcaption>看右下角的两次检查：凭证有效只回答“你是谁、能调用什么”，订单或文档权限还要单独核对。</figcaption></figure>
+
+<p>本地实验用随机 opaque token 与哈希存储模拟资源服务器验证。token 有用户、租户、scope、audience、过期时间和撤销状态；每次 HTTP 调用重新检查。<strong>这是授权负例的测试夹具，不是完整 OAuth 登录系统。</strong> <code>auth.example.invalid</code> 是明确不会访问的占位 issuer。</p>
+<p>正式对接身份平台时，补齐如下链路：</p>
+<ol>
+<li>Client 收到 401，读取 <code>WWW-Authenticate</code> 给出的资源元数据位置。</li>
+<li>校验资源与受信任 issuer，发现授权端点；不跟随任意外部 URL 获取凭证。</li>
+<li>按身份平台支持的机制注册客户端，使用授权码与 PKCE；校验 state、redirect URI，以及返回的 issuer。</li>
+<li>token 请求指定目标 resource；Server 验签或内省，验证 audience、有效期与 scope。</li>
+<li>将真实用户 subject 与租户绑定，业务查询再查 ACL；不能把 OAuth <code>client_id</code> 直接当终端用户 ID。</li>
+<li>刷新凭证时按 issuer 隔离保存；撤权后下一请求拒绝；上游 token 不直接透传给下游系统。</li>
+</ol>
+<p>采用<a href="https://py.sdk.modelcontextprotocol.io/run/authorization/">官方资源服务器说明</a>和<a href="https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization">授权规范</a>对接已有身份平台，不在业务工具里自造登录流程。</p>
+<!--MIDSTOP-->
+<blockquote>
+<p>🛑 <strong>可以停在这里</strong>：已分清协议连接与用户授权。下一段手动连接服务，看错误如何对应到具体层。</p>
+</blockquote>
+<h2 id="http-stdio">🔌 三、手动走一遍 HTTP 与 stdio</h2>
+<p>一个终端启动本机服务：</p>
+<div class="codehilite" data-code-language="bash"><pre><span></span><code>python<span class="w"> </span>examples/knowledge-assistant/lab.py<span class="w"> </span>init
+python<span class="w"> </span>examples/knowledge-assistant/mcp_server.py<span class="w"> </span>--db<span class="w"> </span>examples/knowledge-assistant/.runtime/lab.db<span class="w"> </span>--port<span class="w"> </span><span class="m">8932</span>
+</code></pre></div>
+
+<p>另一个 PowerShell 终端取得本地短期凭证并调用：</p>
+<div class="codehilite" data-code-language="powershell"><pre><span></span><code><span class="nv">$env:LAB_TOKEN</span> <span class="p">=</span> <span class="n">python</span> <span class="n">examples</span><span class="p">/</span><span class="n">knowledge-assistant</span><span class="p">/</span><span class="n">lab</span><span class="p">.</span><span class="n">py</span> <span class="n">token</span> <span class="p">-</span><span class="n">-port</span> <span class="n">8932</span>
+<span class="n">python</span> <span class="n">examples</span><span class="p">/</span><span class="n">knowledge-assistant</span><span class="p">/</span><span class="n">mcp_client</span><span class="p">.</span><span class="n">py</span>
+<span class="n">python</span> <span class="n">examples</span><span class="p">/</span><span class="n">knowledge-assistant</span><span class="p">/</span><span class="n">mcp_client</span><span class="p">.</span><span class="n">py</span> <span class="p">-</span><span class="n">-legacy</span>
+</code></pre></div>
+
+<p>凭证只存在本地演练环境；不要放进 prompt、工具参数、截图或仓库。真实产品由认证流程提供它，不能开放本项目的本地 <code>token</code> 命令给远端用户。</p>
+<p>不经过 HTTP 时，用显式单用户的 stdio 模式：</p>
+<div class="codehilite" data-code-language="bash"><pre><span></span><code>python<span class="w"> </span>examples/knowledge-assistant/mcp_client.py<span class="w"> </span>--stdio-db<span class="w"> </span>examples/knowledge-assistant/.runtime/lab.db
+</code></pre></div>
+
+<p>该模式从服务进程配置取得 Alice 身份。HTTP token verifier <strong>不会保护 stdio 或内存直连测试</strong>。限制子进程的 cwd、环境变量和文件权限；不能让模型通过参数选择它要扮演谁。</p>
+<h2 id="_6">🧯 四、把故障分层</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>症状</th>
+<th>先取什么证据</th>
+<th>修复与验收</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>启动就解析失败</td>
+<td>原始 stdout 与 stderr</td>
+<td>清除 stdout 日志；坏 JSON、UTF-8、路径、退出码分别测</td>
+</tr>
+<tr>
+<td>连上但工具没更新</td>
+<td>完整枚举结果、分页游标、缓存期限</td>
+<td>刷新 schema；处理列表变化与名称冲突，不只清 UI</td>
+</tr>
+<tr>
+<td>401 / 403</td>
+<td>audience、issuer、scope、到期时间，日志不含原 token</td>
+<td>刷新或重新授权；不重试模型来“修权限”</td>
+</tr>
+<tr>
+<td><code>is_error=False</code> 却取不到字段</td>
+<td>实际结果与输出 schema</td>
+<td>明确结构化返回类型，拒绝格式漂移</td>
+</tr>
+<tr>
+<td>本地流正常，代理后一次返回</td>
+<td>响应 Content-Type、首帧时间、代理 buffering</td>
+<td>关闭相应缓冲；区分 JSON 与 SSE，不强行用一套解析</td>
+</tr>
+<tr>
+<td>重连后重复写入</td>
+<td>RPC ID、业务操作号、下游执行状态</td>
+<td>先查询/对账；按下游幂等契约重放</td>
+</tr>
+<tr>
+<td>用户取消，服务仍在跑</td>
+<td>取消信号、子任务状态、超时点</td>
+<td>传播 deadline，释放资源，展示“取消中/结果未知”</td>
+</tr>
+<tr>
+<td>新协议追加输入</td>
+<td><code>resultType</code>、input requests、支持的能力</td>
+<td>处理多轮请求；限制轮数，不当成最终成功结果</td>
+</tr>
+</tbody>
+</table></div>
+<p>权限、工具结果中的注入、SSRF、Origin/Host 校验和依赖来源还应按<a href="https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/docs/docs/2026-07-28/tutorials/security/security_best_practices.mdx">安全实践</a>建立负例。根本规则是：<strong>远端输入不能扩大当前身份的权限</strong>。</p>
+<h2 id="_7">🔗 这一章连到哪里</h2>
+<ul>
+<li><a href="08b-写一个MCP-Server.html">08b · 写 Server</a>：回看工具描述、参数和错误消息。</li>
+<li><a href="12b-持久化审批与故障恢复.html">12b · 审批与恢复</a>：连接断了以后，业务动作是否已经发生。</li>
+<li><a href="../AI全栈/08-认证会话与多租户.html">全栈认证与多租户</a>：把身份落实到数据访问。</li>
+</ul>
+<h2 id="_8">✅ 检查点</h2>
+<ol>
+<li>新 RPC ID 为什么可以对应同一个工单操作号？</li>
+<li>内存直连 Client 测试通过，为什么不能证明 HTTP 授权正确？</li>
+<li>token 的 client_id、subject、audience 分别代表什么？</li>
+</ol>
+<details>
+<summary>查看答案与反例</summary>
+<ol>
+<li>RPC ID 标识一次协议请求；操作号标识一次业务动作。重发请求可换 RPC ID，不能无故换业务号。</li>
+<li>内存直连绕过 HTTP 认证层，必须用真实 HTTP 测无凭证、过期、撤权和权限不足。</li>
+<li>client_id 是调用应用，subject 是凭证所代表的主体，audience 是凭证面向的资源。三者不能互换。</li>
+</ol>
+</details>
+<h2 id="_9">🛑 可以停在这里</h2>
+<section class="reading-recap" aria-label="走神救援"><p>回来时接住这四点</p><ul><li>锁定 SDK 与协议版本；四条连接测试不等于任意宿主兼容。</li><li>Host 管用户意图，Server 验凭证与资源权限。</li><li>RPC 重发与业务幂等分开处理，断流不能直接推断未执行。</li><li>本地 token 是测试夹具，真实 OAuth 仍要对接身份平台验收。</li></ul></section>
+
+<p><strong>下一节</strong> 👉 <a href="09-计算机与浏览器使用.html">09 · 计算机与浏览器使用</a></p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="08b-写一个MCP-Server.html"><div class="dir">← 上一节</div>🛠️ 08b · 写一个 MCP Server</a><a class="next" href="09-计算机与浏览器使用.html"><div class="dir">下一节 →</div>🖥️ 09 · 计算机与浏览器使用</a></nav>
+</main>
+<script>(function(){
+  var KEY="agent-progress", FILE="08c-MCP\u9274\u6743\u4e0e\u4e92\u64cd\u4f5c.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

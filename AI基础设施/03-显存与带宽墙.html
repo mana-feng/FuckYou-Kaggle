@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -537,7 +537,7 @@ $$\text{训练显存(GB)} \approx 16 \times \text{参数量(B)} + \text{激活}$
 </blockquote>
 <hr />
 <h2 id="_6">🧮 四、动手：估算你的模型要多少显存</h2>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">estimate_training_memory</span><span class="p">(</span><span class="n">params_B</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="n">hidden</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">estimate_training_memory</span><span class="p">(</span><span class="n">params_B</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="n">hidden</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span>
                              <span class="n">optimizer</span><span class="o">=</span><span class="s2">&quot;adam&quot;</span><span class="p">,</span> <span class="n">grad_ckpt</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;返回 GB。粗估，用于判断量级和选并行策略。&quot;&quot;&quot;</span>
     <span class="n">P</span> <span class="o">=</span> <span class="n">params_B</span> <span class="o">*</span> <span class="mf">1e9</span>
@@ -685,9 +685,8 @@ $$\text{训练显存(GB)} \approx 16 \times \text{参数量(B)} + \text{激活}$
 <hr />
 <h2 id="_11">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>⭐<strong>这章是钥匙</strong>。<strong>内存层次</strong>：寄存器 → Shared/L1（228KB，~10TB/s）→ L2（50MB）→ <strong>HBM（80GB，~2-3TB/s）</strong>→ NVLink（900GB/s）→ PCIe（64GB/s）→ 网络。⭐<strong>记三个比值</strong>：<strong>Shared 比 HBM 快 5 倍</strong>（FlashAttention 的依据）、<strong>HBM 比 PCIe 快 40 倍</strong>（别随便 .cpu()）、<strong>NVLink 比网络快 20 倍</strong>（并行策略的依据）。⭐<strong>算术强度 = FLOP ÷ 搬运字节数</strong>，<strong>A100 平衡点 156</strong>：大于它是算力瓶颈，小于是带宽瓶颈。<strong>关键数字</strong>：大矩阵乘 ~1365 ✅；<strong>逐元素加法 ~0.17</strong>（离平衡点差 <strong>900 倍</strong>，算力 99.9% 闲置 → <strong>这就是算子融合的全部理由</strong>）；⭐<strong>batch=1 的矩阵乘只有 ~2</strong> → <strong>自回归解码天生是带宽瓶颈，和训练完全相反</strong>（第15章核心）。<strong>训练显存四大块</strong>（7B）：参数 14GB + 梯度 14GB + ⭐<strong>优化器状态 84GB（最大）</strong> + 激活；优化器 <strong>12 字节/参数</strong> = FP32主权重4 + Adam的m 4 + v 4；⭐<strong>经验公式：训练显存 ≈ 16 × 参数量(B) + 激活</strong>（7B→112GB，<strong>一张80G装不下</strong>；70B→1120GB）。⭐<strong>只有激活和 batch 成正比</strong> → 修正"OOM就调小batch"：<strong>如果 OOM 来自优化器状态，batch 调到 1 也没用</strong>，要用 ZeRO 或量化。<strong>带宽墙</strong>：算力/带宽比值 2012 年 20 → 2020 年 156 → 2024 年 295，<strong>在持续恶化</strong> → ⭐<strong>"少搬数据"的价值只会越来越高</strong>。后面七个技术里<strong>六个都在对抗带宽和显存</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>计算前先问数据在哪：不同存储和互联的容量、带宽差别很大。</li><li>算术强度是计算量与搬运字节数之比，用它判断更接近算力墙还是带宽墙。</li><li>显存分别核算参数、梯度、优化器状态和激活；减小 batch 不能解决所有 OOM。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="04-Roofline与MFU.html">04-Roofline与MFU.md</a> ⭐</p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -715,5 +714,4 @@ $$\text{训练显存(GB)} \approx 16 \times \text{参数量(B)} + \text{激活}$
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

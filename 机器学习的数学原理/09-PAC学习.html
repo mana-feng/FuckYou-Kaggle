@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -553,9 +553,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_11">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>PAC = Probably Approximately Correct</strong>：<strong>大概率地（≥ 1−δ）、近似正确（误差 ≤ ε）</strong>——两个让步是数学必然（训练集随机抽可能手气极差；有限数据无法完全确定函数）。⚠️<strong><code>err_D</code> 是真实分布上的误差，不是训练集上的</strong>；⭐<strong>PAC 的全部意义就是：从你能测量的训练误差，推出你真正关心的泛化误差</strong>。⭐核心界（有限 |H|、存在完美假设）：<strong><code>m ≥ (1/ε)(ln|H| + ln(1/δ))</code></strong>，推导只用了<strong>指数不等式＋联合界</strong>两个工具（<code>ln|H|</code> 的对数就来自联合界）。三个关系：<strong>|H| 是对数</strong>（大 1000 倍只需多约 7 倍数据）、<strong>δ 是对数</strong>（0.1→0.001 只多 3 倍，想更保险很便宜）、⭐<strong>ε 是反比——精度是最贵的东西</strong>（0.1→0.01 数据要多 10 倍）。所以<strong>准确率 95%→99%（误差 5%→1%）数据大致要 5 倍，别只想着换模型</strong>；而置信度 90%→99% 很便宜。算个数：合取式 <code>|H| = 3ⁿ</code>，ε=0.1、δ=0.05 时 n=10 只要 <strong>140</strong> 个样本、n=100 要 <strong>1130</strong> 个；而学<strong>任意</strong>布尔函数 <code>|H| = 2^(2ⁿ)</code>，n=20 时 → <strong>要 700 万个样本，合取式只要 226 个</strong> ⭐ 这就<strong>量化了归纳偏置的价值：限制假设空间＝大幅降低样本需求</strong>。⚠️三个局限：<strong>界极其宽松</strong>，实际需要的样本常比它小 <strong>10~100 倍</strong>（最坏情况保证，别拿它算具体样本量）；<strong>只对有限 |H| 成立</strong>（线性模型 <code>ln|H| = ∞</code> → 需要 VC 维）；<strong>要求存在完美假设</strong>，agnostic 版只保证"比假设空间里最好的差不了 ε"，且⚠️<strong>ε 从一次方变成平方——精度更贵，ε 减半要 4 倍数据</strong>。该带走的是定性关系，和⭐<strong>正则化＝缩小假设空间＝降低样本需求</strong>这个重新理解。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>PAC 同时容许小误差与小失败概率，用明确假设讨论泛化。</li><li>样本需求与假设空间、误差容忍度和置信要求有关。</li><li>理论界是保证条件，不是实际项目的精确样本量计算器；使用前先核对可实现等前提。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="10-VC维.html">10-VC维.md</a> ⭐</p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -583,5 +582,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

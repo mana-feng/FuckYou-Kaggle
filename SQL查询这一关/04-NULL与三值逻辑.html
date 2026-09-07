@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -351,7 +351,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="null">🚦 一、招牌事故：一个 <code>NULL</code> 清空整个结果集</h2>
 <p>一张 5 行的用户表，一张 2 行的「总部所在城市」表——其中一行的城市<strong>还没录</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE users(id INTEGER PRIMARY KEY, city TEXT)&quot;</span><span class="p">)</span>
@@ -373,7 +373,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>NOT IN 字面量: []
+<div class="codehilite" data-code-language="text"><pre><span></span><code>NOT IN 字面量: []
 NOT IN 子查询: []
 NOT EXISTS: [(2,), (3,), (4,), (5,)]
 IN 子查询（对照）: [(1,)]
@@ -389,7 +389,7 @@ IN 子查询（对照）: [(1,)]
 <p>普通编程语言里布尔值有两个：真、假。<strong>SQL 有三个。</strong></p>
 <p><code>NULL</code> 的含义不是「空」也不是「零」，是<strong>「这里有个值，但我不知道它是多少」</strong>。
 于是「不知道的那个值等于 5 吗」这个问题，唯一诚实的回答是：<strong>不知道</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 
@@ -411,7 +411,7 @@ IN 子查询（对照）: [(1,)]
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>NULL = NULL        -&gt; UNKNOWN
+<div class="codehilite" data-code-language="text"><pre><span></span><code>NULL = NULL        -&gt; UNKNOWN
 NULL &lt;&gt; NULL       -&gt; UNKNOWN
 NULL &gt; 1           -&gt; UNKNOWN
 NULL = 0           -&gt; UNKNOWN
@@ -461,7 +461,7 @@ NOT NULL  -&gt; UNKNOWN
 <p>⚠️ <strong>算术和字符串也一样被吞</strong>：<code>1 + NULL</code>、<code>0 * NULL</code>、<code>'abc' || NULL</code>、<code>length(NULL)</code>、<code>upper(NULL)</code> 实跑全部返回 <code>None</code>。
 注意 <code>0 * NULL</code> 也是 <code>NULL</code>——数学上零乘任何数都是零，但 SQL 不做这个推理，⭐ <strong>只有布尔运算享受上面那两条短路优待</strong>。</p>
 <p>现在回头看第一节：<code>city NOT IN ('BJ', NULL)</code> 会被展开成</p>
-<div class="codehilite"><pre><span></span><code>NOT (city = &#39;BJ&#39; OR city = NULL)
+<div class="codehilite" data-code-language="text"><pre><span></span><code>NOT (city = &#39;BJ&#39; OR city = NULL)
 </code></pre></div>
 
 <p>对 <code>city='SH'</code> 这一行：<code>('SH'='BJ') OR ('SH'=NULL)</code> → <code>FALSE OR UNKNOWN</code> → <strong>UNKNOWN</strong>（正是上表第 6 行），再 <code>NOT</code> 一下还是 <code>UNKNOWN</code>。
@@ -471,7 +471,7 @@ NOT NULL  -&gt; UNKNOWN
 <hr />
 <h2 id="where-true">🧯 三、<code>WHERE</code> 只放行 <code>TRUE</code>——排中律在这里失效</h2>
 <p>01 章说「<code>WHERE</code> 逐行判断，扔掉不要的行」。⭐ <strong>更准确的说法是：<code>WHERE</code> 只保留判为 <code>TRUE</code> 的行，<code>FALSE</code> 和 <code>UNKNOWN</code> 一起扔。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE t(id INTEGER PRIMARY KEY, v INTEGER)&quot;</span><span class="p">)</span>
@@ -489,7 +489,7 @@ NOT NULL  -&gt; UNKNOWN
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>WHERE v &gt; 10       : [(3,)]
+<div class="codehilite" data-code-language="text"><pre><span></span><code>WHERE v &gt; 10       : [(3,)]
 WHERE NOT (v &gt; 10) : [(1,)]
 两边相加: 2 行 / 全表 3 行
 WHERE v &gt; 10 OR NOT (v &gt; 10): [(1,), (3,)]
@@ -512,7 +512,7 @@ IS NULL 写法: [(2,)]
 </blockquote>
 <h3 id="check-unknown">⚠️ 一个反直觉的例外：<code>CHECK</code> 约束<strong>放行</strong> <code>UNKNOWN</code></h3>
 <p><code>ON</code>、<code>HAVING</code> 跟 <code>WHERE</code> 一样只认 <code>TRUE</code>，但<strong>约束是反过来的</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE c(id INTEGER, age INTEGER CHECK (age &gt;= 18))&quot;</span><span class="p">)</span>
@@ -527,7 +527,7 @@ IS NULL 写法: [(2,)]
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>  age=10    -&gt; IntegrityError : CHECK constraint failed: age &gt;= 18
+<div class="codehilite" data-code-language="text"><pre><span></span><code>  age=10    -&gt; IntegrityError : CHECK constraint failed: age &gt;= 18
   age=NULL  插入成功
   表里最终: [(1, 30), (99, None)]
 </code></pre></div>
@@ -538,7 +538,7 @@ IS NULL 写法: [(2,)]
 <hr />
 <h2 id="_3">🩹 四、反连接的三种写法，只有一种不会被毒化</h2>
 <p>「A 表里、B 表里没有的那些」叫<strong>反连接</strong>。三种常见写法在有 <code>NULL</code> 时<strong>给出三个不同答案</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE users(id INTEGER PRIMARY KEY, city TEXT)&quot;</span><span class="p">)</span>
@@ -565,7 +565,7 @@ IS NULL 写法: [(2,)]
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>A. NOT IN            : []
+<div class="codehilite" data-code-language="text"><pre><span></span><code>A. NOT IN            : []
 B. NOT EXISTS        : [(2,), (3,), (4,), (5,)]
 C. LEFT JOIN IS NULL : [(2,), (3,), (4,), (5,)]
 D. NOT IN + 内层过滤  : [(2,), (4,), (5,)]
@@ -626,7 +626,7 @@ NOT IN 空表: [(1,), (2,), (3,), (4,), (5,)]
 <p>⚠️ <strong>先划界</strong>：<strong>聚合函数怎么对待 <code>NULL</code></strong>（只有 <code>COUNT(*)</code> 数行、其余都数值，<code>AVG</code> 的分母是 <code>COUNT(score)</code> 不是 <code>COUNT(*)</code>，空集上 <code>SUM</code> 给 <code>NULL</code> 要用 <code>COALESCE</code> 兜底）——这一整套是 <a href="03-聚合与分组.html">03 章</a>的正题，那里讲得比这里细，本节不重讲。</p>
 <p><strong>本节只回答一个 <code>NULL</code> 语义的问题</strong>：一份数据里有一批行的键是 <code>NULL</code>，它们是在哪一步从你的看板上消失的？
 ⭐ 答案很反直觉——<strong>不是 <code>GROUP BY</code></strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE calls(id INTEGER PRIMARY KEY, city TEXT, cents REAL)&quot;</span><span class="p">)</span>
@@ -650,7 +650,7 @@ NOT IN 空表: [(1,), (2,), (3,), (4,), (5,)]
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>全表 SUM = 31.0
+<div class="codehilite" data-code-language="text"><pre><span></span><code>全表 SUM = 31.0
 GROUP BY : [(None, 20.0), (&#39;BJ&#39;, 9.0), (&#39;SH&#39;, 2.0)]
 --- 换成下面任意一步，NULL 那 20.0 就没了（都不报错）---
 a) INNER JOIN 维表    : 11.0
@@ -696,7 +696,7 @@ b 补上 NULL 之后      : 22.0
 <hr />
 <h2 id="sql-null">🔀 六、⭐ SQL 里其实有两套 <code>NULL</code> 语义</h2>
 <p>第二节刚说 <code>NULL = NULL</code> 判不出真。但下面这些地方，<code>NULL</code> <strong>又被当成能和自己配上的一个值</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE u(id INTEGER PRIMARY KEY, city TEXT)&quot;</span><span class="p">)</span>
@@ -718,7 +718,7 @@ b 补上 NULL 之后      : 22.0
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>GROUP BY : [(None, 2), (&#39;BJ&#39;, 1), (&#39;SH&#39;, 1)]
+<div class="codehilite" data-code-language="text"><pre><span></span><code>GROUP BY : [(None, 2), (&#39;BJ&#39;, 1), (&#39;SH&#39;, 1)]
 DISTINCT : [(&#39;BJ&#39;,), (None,), (&#39;SH&#39;,)]
 UNION    : [(None,), (&#39;BJ&#39;,), (&#39;SH&#39;,)]
 NULL IS NULL / 1 IS NULL: (1, 0)
@@ -758,7 +758,7 @@ UNIQUE 列里的三个 NULL: [(1, &#39;a@x.com&#39;), (3, None), (4, None), (5, 
 ⭐ 真想唯一，那一列得同时是 <code>NOT NULL</code>。（🗓️ 未实跑：Postgres 15+ 提供 <code>UNIQUE NULLS NOT DISTINCT</code> 改变这一行为，SQLite 无此语法。）</p>
 <p>⭐ <strong>想要一个「<code>NULL</code> 安全的等号」</strong>：SQLite 用 <code>IS</code>（实跑：<code>NULL IS NULL</code> → 1、<code>1 IS NULL</code> → 0），Postgres 用 <code>IS NOT DISTINCT FROM</code>——02 章第六节讲连接键时提过，那里是它最常见的用武之地。</p>
 <h3 id="order-by-null"><code>ORDER BY</code> 里 <code>NULL</code> 排哪儿：三个库不一样</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sqlite version:&quot;</span><span class="p">,</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">sqlite_version</span><span class="p">)</span>
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
@@ -774,7 +774,7 @@ UNIQUE 列里的三个 NULL: [(1, &#39;a@x.com&#39;), (3, None), (4, None), (5, 
 </code></pre></div>
 
 <p>实跑输出（SQLite 3.50.4）：</p>
-<div class="codehilite"><pre><span></span><code>sqlite version: 3.50.4
+<div class="codehilite" data-code-language="text"><pre><span></span><code>sqlite version: 3.50.4
 ORDER BY v          : [(2, None), (4, None), (3, 10), (5, 20), (1, 30)]
 ORDER BY v DESC     : [(1, 30), (5, 20), (3, 10), (2, None), (4, None)]
 ORDER BY (v IS NULL), v : [(3, 10), (5, 20), (1, 30), (2, None), (4, None)]
@@ -831,7 +831,7 @@ ORDER BY v LIMIT 1  = None
 </blockquote>
 <hr />
 <h2 id="coalesce-nullif-null">🧰 七、日常工具：<code>COALESCE</code> / <code>NULLIF</code> / 空串不是 <code>NULL</code></h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE p(id INTEGER PRIMARY KEY, nick TEXT, name TEXT, note TEXT)&quot;</span><span class="p">)</span>
@@ -853,7 +853,7 @@ ORDER BY v LIMIT 1  = None
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>COALESCE          : [(1, &#39;小明&#39;), (2, &#39;李雷&#39;), (3, &#39;&#39;), (4, &#39;(匿名)&#39;)]
+<div class="codehilite" data-code-language="text"><pre><span></span><code>COALESCE          : [(1, &#39;小明&#39;), (2, &#39;李雷&#39;), (3, &#39;&#39;), (4, &#39;(匿名)&#39;)]
 套一层 NULLIF     : [(1, &#39;小明&#39;), (2, &#39;李雷&#39;), (3, &#39;韩梅&#39;), (4, &#39;(匿名)&#39;)]
 note = &#39;&#39;         : [(2,)]
 note IS NULL      : [(3,), (4,)]
@@ -1014,5 +1014,4 @@ NULLIF 防除零     : (None, None)
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

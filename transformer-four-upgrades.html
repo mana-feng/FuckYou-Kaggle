@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>现代 Transformer：四个小升级</title>
+<style>
+:root{--ink:#172033;--muted:#56627a;--paper:#fffdf9;--mist:#f4f7fb;--line:#d9e0ea;--blue:#2766d8;--blue-soft:#eaf1ff;--orange:#c75809;--orange-soft:#fff0e5;--green:#13785e;--green-soft:#e7f7f1;--shadow:0 9px 28px rgba(35,53,82,.10)}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#f7fbff 0%,#fffaf3 100%);color:var(--ink);font:17px/1.65 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}
+main{width:min(100% - 32px,1040px);margin:0 auto;padding:38px 0 64px}h1,h2,h3,p{margin-top:0}h1{font-size:clamp(1.7rem,4vw,2.55rem);line-height:1.2;margin-bottom:.35rem}h2{font-size:1.3rem;line-height:1.35}.lead{max-width:45rem;color:var(--muted);margin-bottom:1.4rem}.rule{height:4px;width:74px;background:var(--orange);border-radius:99px;margin:0 0 26px}
+.start,.lesson,.compare{background:rgba(255,255,255,.88);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}.start{padding:18px 20px;margin-bottom:26px}.start strong{display:block;font-size:1.1rem;margin-bottom:3px}.start p{margin:0;color:var(--muted)}
+.step-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0 14px}.step-tabs button{min-height:52px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);font:inherit;font-weight:700;cursor:pointer;transition:background .18s,border-color .18s,transform .18s}.step-tabs button:hover{border-color:var(--blue);transform:translateY(-1px)}.step-tabs button[aria-selected="true"]{background:var(--blue);border-color:var(--blue);color:white}.step-tabs button:focus-visible,.next:focus-visible,.toggle:focus-visible{outline:3px solid #ffb000;outline-offset:3px}
+.lesson{padding:clamp(18px,4vw,32px);min-height:470px}.crumb{font-weight:800;color:var(--blue);letter-spacing:.04em;margin-bottom:8px}.lesson-title{font-size:clamp(1.45rem,3vw,2rem);margin-bottom:4px}.one-line{font-size:1.1rem;font-weight:700;color:var(--orange);margin-bottom:20px}.lesson-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(260px,.9fr);gap:24px;align-items:start}.explain{color:var(--muted)}.explain b{color:var(--ink)}.micro-list{padding-left:1.25rem;margin:1rem 0}.micro-list li{margin:.52rem 0}.takeaway{padding:13px 15px;background:var(--green-soft);border-left:4px solid var(--green);border-radius:0 10px 10px 0;color:#174b3d;font-weight:700}
+.fact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:17px 0}.fact{margin:0;padding:10px 11px;border:1px solid var(--line);background:#fff;border-radius:9px;color:var(--muted);font-size:.9rem}.fact b{display:block;margin-bottom:3px;color:var(--blue);font-size:.82rem;letter-spacing:.03em}
+.visual{border:1px solid var(--line);border-radius:14px;background:var(--mist);padding:16px}.visual h3{font-size:1rem;margin-bottom:12px}.flow{display:grid;gap:8px}.node{border:1px solid var(--line);border-radius:9px;background:white;padding:8px 11px;text-align:center;font-weight:650}.node.orange{background:var(--orange-soft);border-color:#f1ad77;color:#8f3b00}.node.blue{background:var(--blue-soft);border-color:#a9c3f7;color:#164eae}.node.green{background:var(--green-soft);border-color:#91d9c4;color:#0e5d49}.arrow{text-align:center;color:var(--muted);line-height:1;font-weight:bold}.split{display:grid;grid-template-columns:1fr 1fr;gap:9px}.caption{font-size:.9rem;color:var(--muted);margin:12px 0 0}
+.meter-label{display:flex;justify-content:space-between;gap:10px;margin:10px 0 5px;font-weight:700;font-size:.94rem}.meter{height:18px;border-radius:99px;background:#dfe5ee;overflow:hidden}.meter i{display:block;height:100%;border-radius:inherit;background:var(--orange);transition:width .28s ease}.meter i.good{background:var(--green)}.gate-control{width:100%;accent-color:var(--blue);margin:12px 0}.gate-value{font-weight:800;color:var(--blue);font-variant-numeric:tabular-nums}.word-line{display:flex;align-items:center;justify-content:space-between;gap:7px;margin-top:18px}.word{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;font-weight:800;background:var(--blue-soft);border:2px solid #8cafed;transition:transform .35s ease}.word.active{background:var(--orange-soft);border-color:#e98d4d;color:#8f3b00}.distance{flex:1;height:3px;background:#b5c1d3;position:relative}.distance:after{content:"距离";position:absolute;right:0;top:-25px;color:var(--muted);font-size:.78rem}.rotated{transform:rotate(26deg)}
+.actions{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:22px}.progress{color:var(--muted);font-weight:700}.next,.toggle{min-height:46px;border:0;border-radius:10px;background:var(--blue);color:#fff;padding:9px 16px;font:inherit;font-weight:750;cursor:pointer}.next:hover,.toggle:hover{filter:brightness(.94)}
+.compare{padding:clamp(18px,4vw,28px);margin-top:26px}.compare-head{display:flex;justify-content:space-between;gap:20px;align-items:baseline;flex-wrap:wrap}.compare-head p{color:var(--muted);margin-bottom:16px}.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.compare-col{padding:16px;border-radius:14px;background:var(--mist)}.compare-col h3{margin-bottom:12px}.compare-col.modern{background:var(--orange-soft)}.compact{font-size:.94rem}.compact .node{font-weight:600}.details{margin-top:18px}.details summary{cursor:pointer;font-weight:800;color:var(--blue);padding:8px 0}.formula{display:grid;gap:8px;margin:10px 0 0}.formula code{display:block;padding:10px 12px;border-radius:8px;background:#202c40;color:#f7f9fd;overflow:auto;font-size:.92rem}.note{color:var(--muted);font-size:.92rem}
+@media (max-width:720px){main{width:min(100% - 24px,1040px);padding-top:24px}.step-tabs{grid-template-columns:repeat(2,1fr)}.lesson-grid,.compare-grid,.fact-grid{grid-template-columns:1fr}.lesson{min-height:0}.actions{align-items:stretch;flex-direction:column}.next{width:100%}.word-line{justify-content:center}.word{width:47px;height:47px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>现代 LLaMA 式 Transformer：四个升级</h1>
+    <p class="lead">不用背术语。每次只看一个问题：它具体改了哪里，又解决什么麻烦？</p>
+    <div class="rule"></div>
+  </header>
+
+  <section class="start" aria-label="学习方式">
+    <strong>建议：一次只点一个按钮。</strong>
+    <p>读完橙色的一句话，再看右侧小图；其余文字是“想多懂一点”时才读的。</p>
+  </section>
+
+  <nav class="step-tabs" aria-label="选择要学习的概念" role="tablist">
+    <button type="button" role="tab" aria-selected="true" aria-controls="lesson" data-step="0">1. Pre-LN</button>
+    <button type="button" role="tab" aria-selected="false" aria-controls="lesson" data-step="1">2. RMSNorm</button>
+    <button type="button" role="tab" aria-selected="false" aria-controls="lesson" data-step="2">3. SwiGLU</button>
+    <button type="button" role="tab" aria-selected="false" aria-controls="lesson" data-step="3">4. RoPE</button>
+  </nav>
+
+  <section class="lesson" id="lesson" aria-live="polite"></section>
+
+  <section class="compare" aria-labelledby="compare-title">
+    <div class="compare-head">
+      <h2 id="compare-title">最后再看全貌：骨架没有换</h2>
+      <p>新版只是把旧流水线里的四个零件换得更顺手。</p>
+    </div>
+    <div class="compare-grid">
+      <article class="compare-col compact">
+        <h3>2017 原版</h3>
+        <div class="flow"><div class="node">词 + 绝对位置</div><div class="arrow">↓</div><div class="node">注意力</div><div class="arrow">↓</div><div class="node">残差 + LayerNorm</div><div class="arrow">↓</div><div class="node">ReLU 加工厂</div><div class="arrow">↓</div><div class="node">残差 + LayerNorm</div></div>
+      </article>
+      <article class="compare-col modern compact">
+        <h3>现代 LLaMA 式</h3>
+        <div class="flow"><div class="node orange">RMSNorm</div><div class="arrow">↓</div><div class="node orange">注意力 + RoPE</div><div class="arrow">↓</div><div class="node green">残差：原信息直通</div><div class="arrow">↓</div><div class="node orange">RMSNorm</div><div class="arrow">↓</div><div class="node orange">SwiGLU 加工厂</div><div class="arrow">↓</div><div class="node green">残差：原信息直通</div></div>
+      </article>
+    </div>
+    <details class="details">
+      <summary>想看一点公式（完全可跳过）</summary>
+      <div class="formula">
+        <code>Pre-LN：y = x + Attention(Norm(x))</code>
+        <code>RMSNorm：把 x 按整体大小缩放</code>
+        <code>SwiGLU：输出 = 内容 × 门的开关程度</code>
+        <code>RoPE：给注意力里的 Q、K 按位置旋转</code>
+      </div>
+      <p class="note">公式不是考试。它们只是在把上面的比喻写成机器能算的形式。</p>
+    </details>
+  </section>
+</main>
+
+<script>
+const steps = [
+  {
+    label: '1 / 4', title: 'Pre-LN：先整理，再干活', one: '它解决的问题：模型层数很多时，学习容易不稳定。',
+    body: `<p>Transformer 每层都要做一次“看词和词的关系”，再做一次“小加工”。<b>Pre-LN</b> 把“整理信息”的步骤放到每次处理之前。</p><ul class="micro-list"><li>旧做法：先干活，最后才整理。</li><li>新做法：<b>先把桌面收好，再开始做题。</b></li><li>这样原来的信息可以更直地往后传，不容易在很多层之后变乱。</li></ul><div class="fact-grid"><p class="fact"><b>具体改了哪里</b>Norm 从“残差之后”挪到 Attention、FFN 之前。</p><p class="fact"><b>实际做什么</b>先把输入整理好，再交给本层计算；计算结果最后才加回原信息。</p><p class="fact"><b>带来什么</b>很多层之后，学习信号仍更容易传回前面，训练更稳。</p></div><p class="takeaway">只记一句：Pre-LN 让深层模型更稳，因为“原信息的直通路”更顺。</p>`,
+    visual: `<h3>信息怎么走？</h3><div class="flow"><div class="node">原信息 x</div><div class="arrow">↓</div><div class="node blue">先整理：Norm(x)</div><div class="arrow">↓</div><div class="node orange">注意力处理</div><div class="arrow">↓</div><div class="node green">x + 新结果（原信息还在）</div></div><p class="caption">绿色框就是“保底通道”。</p>`
+  },
+  {
+    label: '2 / 4', title: 'RMSNorm：把音量调合适', one: '它解决的问题：数字太大或太小，后面的模块就不好工作。',
+    body: `<p>模型里面传的不是文字，而是一长串数字。数字忽然变得很大，像音响开到最大声；变得太小，又像几乎听不见。</p><ul class="micro-list"><li><b>RMSNorm</b> 会看这一串数字整体有多“响”。</li><li>太响就压小一点，太小就拉大一点。</li><li>它只管大小，不强行把数字的平均值改成 0，所以比旧的 LayerNorm 简单一些。</li></ul><div class="fact-grid"><p class="fact"><b>具体改了哪里</b>把原版的 LayerNorm 换成更简单的 RMSNorm。</p><p class="fact"><b>实际做什么</b>计算数字整体的大小，再让整组数字按相同比例缩小或放大。</p><p class="fact"><b>带来什么</b>相对信息不丢，数值却更稳定；计算也少一点。</p></div><p class="takeaway">只记一句：RMSNorm 是每次处理前的“自动音量调节”。</p>`,
+    visual: `<h3>调节前后</h3><div class="meter-label"><span>调节前：太响</span><span>8.0</span></div><div class="meter"><i style="width:92%"></i></div><div class="meter-label"><span>调节后：合适</span><span>1.0 左右</span></div><div class="meter"><i class="good" style="width:48%"></i></div><p class="caption">不是删信息，只是把整体大小调回可用范围。</p>`
+  },
+  {
+    label: '3 / 4', title: 'SwiGLU：带门卫的加工厂', one: '它解决的问题：不是每条信息都该同样重要。',
+    body: `<p>注意力帮模型找到“该看谁”；接着 <b>FFN</b> 这个小加工厂要决定“这些信息该怎么加工”。</p><ul class="micro-list"><li>旧版 ReLU 像硬开关：不要就是 0，要就放行。</li><li>SwiGLU 有两路：一路装<b>内容</b>，另一路当<b>门卫</b>。</li><li>门卫不是只有开和关，也可以“放一点”。</li></ul><div class="fact-grid"><p class="fact"><b>具体改了哪里</b>原版“线性层 → ReLU → 线性层”换成了带门的 SwiGLU。</p><p class="fact"><b>实际做什么</b>内容支路和门控支路逐项相乘；门控支路决定每个小特征放多少。</p><p class="fact"><b>带来什么</b>不再粗暴地全留或全丢，能更细致地筛选信息。</p></div><p class="takeaway">只记一句：SwiGLU 让模型更细地决定，每条信息该通过多少。</p>`,
+    visual: `<h3>拖动门卫，看看输出</h3><label class="meter-label" for="gate"><span>门卫放行程度</span><span class="gate-value" id="gateValue">60%</span></label><input class="gate-control" id="gate" type="range" min="0" max="100" value="60"><div class="meter-label"><span>内容本身</span><span>100%</span></div><div class="meter"><i class="good" style="width:100%"></i></div><div class="meter-label"><span>最终通过</span><span id="outputValue">60%</span></div><div class="meter"><i id="outputBar" style="width:60%"></i></div><p class="caption">最终通过 = 内容 × 门卫允许的比例。</p>`
+  },
+  {
+    label: '4 / 4', title: 'RoPE：告诉 AI 位置和距离', one: '它解决的问题：同一批词，换顺序，意思可能完全不同。',
+    body: `<p>“狗咬猫”和“猫咬狗”里的词一样，顺序却改变了意思。所以模型必须知道词在第几个位置、相隔多远。</p><ul class="micro-list"><li>旧版：一开始就把“第几个词”的信息加到词上。</li><li>RoPE：不直接改输入；它在每层注意力内部给 <b>Q、K</b> 加位置。</li><li>你可以把 Q、K 想成“我在找什么”和“我能提供什么”。位置不同，比较方式也不同。</li></ul><div class="fact-grid"><p class="fact"><b>具体改了哪里</b>不再只在输入处加位置；每层 Attention 的 Q、K 都使用 RoPE。</p><p class="fact"><b>实际做什么</b>按所在位置，把 Q、K 的数字两两旋转不同角度，再让它们互相比较。</p><p class="fact"><b>带来什么</b>注意力既看“内容像不像”，也能感到谁在前、相隔多远。</p></div><p class="takeaway">只记一句：RoPE 让注意力在比较两个词时，也能感觉到前后顺序和相隔距离。</p>`,
+    visual: `<h3>同样的词，位置不同</h3><div class="word-line" aria-label="词序示意"><span class="word active">猫</span><span class="distance"></span><span class="word rotated">咬</span><span class="distance"></span><span class="word">狗</span></div><button class="toggle" id="ropeToggle" type="button">切换词序</button><p class="caption" id="ropeCaption">现在：猫在前，狗在后。RoPE 会把这种位置关系带进注意力。</p>`
+  }
+];
+
+const lesson = document.getElementById('lesson');
+const tabs = [...document.querySelectorAll('[role="tab"]')];
+let active = 0;
+
+function render(index) {
+  active = index;
+  const item = steps[index];
+  lesson.innerHTML = `<div class="crumb">${item.label}</div><div class="lesson-grid"><div><h2 class="lesson-title">${item.title}</h2><p class="one-line">${item.one}</p><div class="explain">${item.body}</div></div><aside class="visual" aria-label="${item.title} 的小图">${item.visual}</aside></div><div class="actions"><span class="progress">现在只要理解这一块就够了。</span><button class="next" type="button">${index === steps.length - 1 ? '回到第一块' : '我懂一点了，看下一块'}</button></div>`;
+  tabs.forEach((tab, tabIndex) => tab.setAttribute('aria-selected', String(tabIndex === index)));
+  lesson.querySelector('.next').addEventListener('click', () => render((active + 1) % steps.length));
+
+  const gate = document.getElementById('gate');
+  if (gate) gate.addEventListener('input', event => {
+    const value = event.target.value;
+    document.getElementById('gateValue').textContent = `${value}%`;
+    document.getElementById('outputValue').textContent = `${value}%`;
+    document.getElementById('outputBar').style.width = `${value}%`;
+  });
+
+  const rope = document.getElementById('ropeToggle');
+  if (rope) rope.addEventListener('click', () => {
+    const words = [...lesson.querySelectorAll('.word')];
+    const before = words[0].textContent;
+    words[0].textContent = words[2].textContent;
+    words[2].textContent = before;
+    const cat = document.getElementById('ropeCaption');
+    const swapped = words[0].textContent === '狗';
+    cat.textContent = swapped ? '现在：狗在前，猫在后。同一批词，位置变了，意思也变了。' : '现在：猫在前，狗在后。RoPE 会把这种位置关系带进注意力。';
+  });
+}
+
+tabs.forEach((tab, index) => tab.addEventListener('click', () => render(index)));
+render(0);
+</script>
+<script src="assets/visual-blocks.js"></script><script src="assets/glossary.js"></script></body>
+</html>

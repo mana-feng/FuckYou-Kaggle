@@ -180,9 +180,9 @@ table.xref td:first-child{white-space:nowrap;font-weight:600}
 .tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;margin:0;font-size:.93em}
 th,td{min-width:5.2em}
-</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -885,8 +885,7 @@ th,td{min-width:5.2em}
 <hr />
 <h2 id="recap">🛑 可以停在这里</h2>
 <blockquote>
-<p>⚡ <strong>走神救援</strong><br />
-文本分类拉开差距的不是模型，是几个具体决策。<strong>长文本截断四策略</strong>：头部截断 → <strong>头尾拼接（如前128+后382，很多赛题最优）</strong> → 滑窗切块+聚合（推理×N）→ 先抽关键段落；代价依次是信息损失→信息损失→计算→复杂度。⭐<strong>池化方式零成本可调，值得单独试</strong>：[CLS] 是专门训的句表示，mean 更稳（长文本友好），max 突出最强信号，<strong>混合池化几乎总是不差</strong>。<strong>QA 类调换输入顺序会影响分数</strong>——因为注意力的位置偏好不均匀（中间迷失），零成本实验值得试。⚠️<strong>NLP 的不均衡别简单过采样</strong>（重复文本会让模型死记），优先用类别权重/Focal Loss/回译等增强造真正不同的样本。⭐<strong>最常见的坑：训练和推理的预处理不一致</strong>（CV 好但 LB 偏低）——把预处理封装成一个函数，两边都只调它。</p>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>长文本处理先决定保留哪些信息，再比较截断、切块与聚合成本。</li><li>池化方式和输入组织可以单独做实验，不必每次更换模型。</li><li>训练与推理共用预处理，避免同一文本在两端被处理成不同输入。</li></ul></section>
 </blockquote>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -914,5 +913,5 @@ th,td{min-width:5.2em}
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
 </body></html>

@@ -258,8 +258,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </details>
 </div>
 <div class="recap"><h2 id="recap">🛑 可以停在这里</h2>
-<p>⚡ <strong>走神救援</strong><br />
-⭐<strong>与其逐次调用工具把每个结果读回上下文，不如让模型写一段代码在沙箱里一次跑完</strong>。<br class="prose-beat">省下的主要是上下文（中间变量留在执行环境，只有最终结果回到模型），外加多轮往返的延迟。<br class="prose-beat">⭐适合的任务：多步组合且中间结果很大（批量处理文件、数据筛选聚合、需要循环分支）；判断标准是「中间结果模型其实不需要看」；反之每步都要模型判断后再决定下一步的任务不适合。<br class="prose-beat">⚠️新风险：代码执行的权限面比单个工具大得多——单个工具边界明确，而代码理论上能做沙箱允许的任何事；<strong>沙箱隔离/网络白名单/文件系统范围限制必须到位</strong>，提示注入场景下尤其重要，因为注入的指令现在能变成可执行代码。</p></div>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>中间结果不需模型逐条判断时，可以在受限执行环境中完成组合计算。</li><li>只回传必要结果，减少上下文体积和往返。</li><li>代码执行扩大了能力面，必须同时限制文件、网络与凭证权限。</li></ul></section></div>
 <nav class="pagenav"><a href="index.html"><div class="dir">← 返回</div>📚 资料库目录</a>
 <a class="next" href="../智能体工程教程/index.html"><div class="dir">系统学习 →</div>🎓 智能体工程教程</a></nav>
 </main><script>(function(){
@@ -273,5 +272,5 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script>
 </body></html>

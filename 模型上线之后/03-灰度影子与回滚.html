@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -388,7 +388,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="_3">👻 二、影子流量：最被低估的一步</h2>
-<section class="visual-block visual-block-tree" aria-label="结构路径"><p class="visual-block-title">结构路径</p><div class="vb-tree-flow"><div class="vb-tree-row"><span class="vb-tree-node">用户请求 → 旧模型 → 返回给用户 ✅</span></div><div class="vb-tree-row"><span class="vb-tree-node">→ 新模型 → 【只记录，不返回】 ⭐</span></div><div class="vb-tree-row"><span class="vb-tree-node">↓</span></div><div class="vb-tree-row"><span class="vb-tree-node">对比两边的输出</span></div></div></section>
+<figure class="dia reading-diagram repair-diagram" id="relationship-opsmd-03-1" style="--diagram-width:720px"><svg viewBox="0 0 720 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="同一请求进入两条并行分支。影子模型只产生对照记录，不能替代正式回复，也不应产生生产写入。"><title>同一请求进入两条并行分支。影子模型只产生对照记录，不能替代正式回复，也不应产生生产写入。</title><text x="20" y="30" font-size="20" text-anchor="start" fill="var(--fg)">影子流量：只让旧模型回复用户</text><rect x="20" y="170" width="180" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="110.0" y="198" font-size="18" text-anchor="middle" fill="var(--fg)">用户请求</text><rect x="290" y="65" width="180" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="380.0" y="93" font-size="18" text-anchor="middle" fill="var(--fg)">旧模型</text><rect x="290" y="275" width="180" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="380.0" y="303" font-size="18" text-anchor="middle" fill="var(--fg)">新模型（影子）</text><rect x="530" y="65" width="170" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="615.0" y="93" font-size="18" text-anchor="middle" fill="var(--fg)">回复用户</text><rect x="530" y="275" width="170" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="615.0" y="303" font-size="18" text-anchor="middle" fill="var(--fg)">只记录输出</text><line x1="200" y1="194" x2="290" y2="89" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="290.0,89.0 287.9,99.1 280.3,92.6"/><line x1="200" y1="194" x2="290" y2="299" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="290.0,299.0 280.3,295.4 287.9,288.9"/><line x1="470" y1="89" x2="530" y2="89" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="530.0,89.0 521.0,94.0 521.0,84.0"/><line x1="470" y1="299" x2="530" y2="299" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="530.0,299.0 521.0,304.0 521.0,294.0"/><line x1="380" y1="113" x2="380" y2="205" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="380.0,205.0 375.0,196.0 385.0,196.0"/><line x1="380" y1="275" x2="380" y2="248" stroke="var(--muted)" stroke-width="2"/><polygon fill="var(--muted)" points="380.0,248.0 385.0,257.0 375.0,257.0"/><rect x="280" y="205" width="200" height="48" rx="10" fill="var(--card)" stroke="var(--accent)" stroke-width="2"/><text x="380.0" y="233" font-size="18" text-anchor="middle" fill="var(--fg)">比较两边输出</text></svg><figcaption>同一请求进入两条并行分支。影子模型只产生对照记录，不能替代正式回复，也不应产生生产写入。</figcaption></figure>
+<section class="reading-information"><p class="reading-information-title">图下说明</p><ul><li><span>用户请求 → 旧模型 → 返回给用户 ✅</span></li><li><span>→ 新模型 → 【只记录，不返回】 ⭐</span></li><li><span>对比两边的输出</span></li></ul></section>
 <p><strong>它能发现什么</strong>（这些都是灰度发现不了或代价更大的）：</p>
 <div class="tw"><table>
 <thead>
@@ -619,7 +620,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_10">🎲 七、分流：怎么切、怎么验、需要多少流量</h2>
 <h3 id="_11">🔨 带盐的哈希分流（可以直接抄）</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">bucket</span><span class="p">(</span><span class="n">unit_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exp_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">buckets</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;unit_id: 用户ID/设备ID；exp_name: 实验名（就是那把盐）⭐&quot;&quot;&quot;</span>
@@ -639,7 +640,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <strong>规则：分流哈希只用 md5 / sha1 / murmur 这类确定性哈希。</strong></p>
 </blockquote>
 <h3 id="_12">✅ 分流上线前必须验的三件事</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">check_split</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">exp_name</span><span class="p">,</span> <span class="n">pct</span><span class="p">,</span> <span class="n">feats</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -846,5 +847,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

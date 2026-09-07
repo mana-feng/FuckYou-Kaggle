@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -314,7 +314,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_2">🚦 一、五种连接，一次跑完</h2>
 <p>三个用户、四张单，其中「阿花」一张单都没有，而 <code>id=13</code> 那张单挂在一个不存在的用户 <code>99</code> 上（孤儿行，真实系统里非常常见）：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE users (id INT, name TEXT)&quot;</span><span class="p">)</span>
@@ -342,7 +342,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>表里: 3 个用户, 4 张单
+<div class="codehilite" data-code-language="text"><pre><span></span><code>表里: 3 个用户, 4 张单
 INNER JOIN : 3 行
 LEFT  JOIN : 4 行
 RIGHT JOIN : 4 行
@@ -401,7 +401,7 @@ LEFT JOIN 明细:
 <hr />
 <h2 id="on-where-left-join">🧩 二、<code>ON</code> 和 <code>WHERE</code>，在 <code>LEFT JOIN</code> 上不是一回事</h2>
 <p>这是全章最容易被忽略、后果又最具体的一条。<strong>同样一个 <code>status='paid'</code> 条件，写在 <code>ON</code> 里和写在 <code>WHERE</code> 里，结果完全不同：</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE users (id INT, name TEXT)&quot;</span><span class="p">)</span>
@@ -434,7 +434,7 @@ LEFT JOIN 明细:
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>① LEFT JOIN，条件写在 ON 里:
+<div class="codehilite" data-code-language="text"><pre><span></span><code>① LEFT JOIN，条件写在 ON 里:
    (&#39;阿呆&#39;, 10, 100.0)
    (&#39;阿瓜&#39;, None, None)
    (&#39;阿花&#39;, None, None)
@@ -484,7 +484,7 @@ LEFT JOIN 明细:
 <h3 id="_3">症状</h3>
 <p>两张订单（100 元 + 50 元，真实总额 <strong>150</strong>），一张标签表。1 号单有两个标签，2 号单有一个。
 <strong>只是顺手连了一下标签表，总额就变成了 250：</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE orders(id INTEGER PRIMARY KEY, amount REAL)&quot;</span><span class="p">)</span>
@@ -518,7 +518,7 @@ LEFT JOIN 明细:
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>真实总额        = 150.0
+<div class="codehilite" data-code-language="text"><pre><span></span><code>真实总额        = 150.0
 JOIN 之后 SUM   = 250.0  参与求和的行数 = 3
 
 连接后的明细（看 100 出现了几次）:
@@ -538,7 +538,7 @@ JOIN 之后 SUM   = 250.0  参与求和的行数 = 3
 <p>连接之前，<code>orders</code> 的一行代表一张订单。连接之后，一行代表一个 <code>(订单, 标签)</code> 配对。
 <code>100.0</code> 这个金额在结果里<strong>物理上出现了两次</strong>，<code>SUM</code> 老老实实把它加了两次 —— 它没做错任何事，
 <strong>是你把「按订单求和」的问题喂给了一张「按配对」的表</strong>。</p>
-<div class="codehilite"><pre><span></span><code>100 + 100 + 50 = 250      ← SUM 看到的
+<div class="codehilite" data-code-language="text"><pre><span></span><code>100 + 100 + 50 = 250      ← SUM 看到的
 100 +       50 = 150      ← 你想要的
 </code></pre></div>
 
@@ -577,13 +577,13 @@ JOIN 之后 SUM   = 250.0  参与求和的行数 = 3
 两张真实订单都是 100 元时会少算一张。<strong>去重要按主键去重，不能按值去重。</strong></p>
 <h3 id="sql">事前体检：一行 SQL 判断会不会扇出</h3>
 <p>⭐ 连之前先量一下右表：<strong>同一个连接键平均对应几行</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">order_id</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">tags</span><span class="p">;</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">order_id</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">tags</span><span class="p">;</span>
 </code></pre></div>
 
 <p>实跑是 <strong>1.5</strong> —— 只要这个数大于 1，<code>JOIN</code> 就会扇出，你后面的聚合就必须处理它。
 等于 1 就是安全的一对一（或一对零一）。</p>
 <p>⚠️ <strong>1.5 这个平均值还会骗人</strong>：真正决定风险的是<strong>最大值</strong>，因为长尾那几个键会把误差集中放大：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">order_id</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">tags</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">order_id</span><span class="p">);</span>
+<div class="codehilite" data-code-language="sql"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">order_id</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">tags</span><span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">order_id</span><span class="p">);</span>
 </code></pre></div>
 
 <hr />
@@ -628,7 +628,7 @@ JOIN 之后 SUM   = 250.0  参与求和的行数 = 3
 </tbody>
 </table></div>
 <h3 id="join">⚠️ 多路 <code>JOIN</code> 是相乘，不是相加</h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE orders(id INTEGER PRIMARY KEY, amount REAL)&quot;</span><span class="p">)</span>
@@ -653,7 +653,7 @@ JOIN 之后 SUM   = 250.0  参与求和的行数 = 3
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>orders 2 行, tags 3 行, items 4 行
+<div class="codehilite" data-code-language="text"><pre><span></span><code>orders 2 行, tags 3 行, items 4 行
 orders JOIN tags        -&gt; 3 行
 orders JOIN items       -&gt; 4 行
 orders JOIN tags JOIN items -&gt; 7 行  ⚠️ 是相乘不是相加
@@ -668,7 +668,7 @@ orders JOIN tags JOIN items -&gt; 7 行  ⚠️ 是相乘不是相加
 <hr />
 <h2 id="_7">🧯 五、自连接：把「同一张表的两行」摆到一行上</h2>
 <p>表连自己没有任何特殊之处，只是<strong>必须起别名</strong>（否则数据库分不清 <code>id</code> 是哪个 <code>id</code>）。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE runs(id INT, model TEXT, acc REAL, dt TEXT)&quot;</span><span class="p">)</span>
@@ -701,7 +701,7 @@ orders JOIN tags JOIN items -&gt; 7 行  ⚠️ 是相乘不是相加
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>相邻两天的差:
+<div class="codehilite" data-code-language="text"><pre><span></span><code>相邻两天的差:
    (&#39;m-a&#39;, &#39;2026-08-01&#39;, 0.81, 0.83, 0.02)
    (&#39;m-a&#39;, &#39;2026-08-02&#39;, 0.83, 0.79, -0.04)
    (&#39;m-b&#39;, &#39;2026-08-01&#39;, 0.9, 0.88, -0.02)
@@ -724,7 +724,7 @@ orders JOIN tags JOIN items -&gt; 7 行  ⚠️ 是相乘不是相加
 <p><strong>② <code>NATURAL JOIN</code> 不要用。</strong> 它按「所有同名列」自动连接 ——
 💀 <strong>哪天有人给两张表都加了一个 <code>updated_at</code>，你的连接条件就悄悄多了一条，行数当场不对，而 SQL 一个字没改。</strong></p>
 <p><strong>③ 连接键类型不一致，会安静地连不上。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db2</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db2</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE a(k)&quot;</span><span class="p">)</span>          <span class="c1"># 无类型声明，存什么是什么</span>
@@ -738,7 +738,7 @@ orders JOIN tags JOIN items -&gt; 7 行  ⚠️ 是相乘不是相加
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>a JOIN b ON a.k=b.k -&gt; [(2, 2)]
+<div class="codehilite" data-code-language="text"><pre><span></span><code>a JOIN b ON a.k=b.k -&gt; [(2, 2)]
 CAST 之后           -&gt; [(1, &#39;1&#39;), (2, 2)]
 </code></pre></div>
 
@@ -746,7 +746,7 @@ CAST 之后           -&gt; [(1, &#39;1&#39;), (2, 2)]
 真实场景：一边的 id 是从 CSV / JSON 导进来的字符串，另一边是自增整数。
 （MySQL 相反 —— 它会隐式转换然后连上，⚠️ 代价是索引失效，09 章会讲。）</p>
 <p><strong>④ 连接键是 <code>NULL</code> 时永远连不上，哪怕两边都是 <code>NULL</code>。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
 
 <span class="n">db3</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
 <span class="n">db3</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE x(k, v)&quot;</span><span class="p">)</span>
@@ -759,7 +759,7 @@ CAST 之后           -&gt; [(1, &#39;1&#39;), (2, 2)]
 </code></pre></div>
 
 <p>实跑输出：</p>
-<div class="codehilite"><pre><span></span><code>INNER JOIN -&gt; [(&#39;x1&#39;, &#39;y1&#39;)]
+<div class="codehilite" data-code-language="text"><pre><span></span><code>INNER JOIN -&gt; [(&#39;x1&#39;, &#39;y1&#39;)]
 LEFT  JOIN -&gt; [(&#39;x1&#39;, &#39;y1&#39;), (&#39;x-null&#39;, None)]
 IS 而不是 = -&gt; [(&#39;x1&#39;, &#39;y1&#39;), (&#39;x-null&#39;, &#39;y-null&#39;)]
 </code></pre></div>
@@ -889,5 +889,4 @@ IS 而不是 = -&gt; [(&#39;x1&#39;, &#39;y1&#39;), (&#39;x-null&#39;, &#39;y-nu
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

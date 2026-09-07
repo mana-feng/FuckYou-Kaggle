@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -321,7 +321,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="deco-f-decof">🧩 一、<code>@deco</code> 就是 <code>f = deco(f)</code>，而且它在定义那一刻就跑完了</h2>
 <p>装饰器没有任何特殊语义。<code>@deco</code> 写在 <code>def f</code> 上面，等价于 <code>def f</code> 之后紧跟一行 <code>f = deco(f)</code>。</p>
 <p>⭐ <strong>关键推论：<code>deco</code> 是在【定义函数】那一刻执行的，不是在【调用函数】那一刻。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 装饰器就是 f = deco(f)：它在【定义那一刻】就执行了</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 装饰器就是 f = deco(f)：它在【定义那一刻】就执行了</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">deco</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  [deco 被执行了] 拿到的是:&quot;</span><span class="p">,</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -372,7 +372,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p><strong>「定义时执行」不是缺陷，它就是装饰器最大的用途</strong> —— 注册表：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 「定义时执行」的用处和代价：注册表模式</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 「定义时执行」的用处和代价：注册表模式</span>
 <span class="n">REGISTRY</span> <span class="o">=</span> <span class="p">{}</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">register</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
@@ -400,7 +400,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="functoolswraps">⚠️ 二、不写 <code>functools.wraps</code>：函数的身份被整个吃掉</h2>
 <p><code>wrapper</code> 是个<strong>新函数</strong>。你把 <code>add</code> 这个名字指向了它，于是原函数的名字、文档、签名全都不见了。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 不写 functools.wraps：函数的身份被整个吃掉</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 不写 functools.wraps：函数的身份被整个吃掉</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
 
@@ -474,7 +474,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_2">🧩 三、带参数的装饰器为什么要三层</h2>
 <p><code>@retry(3)</code> 里的 <code>retry(3)</code> <strong>先被调用</strong>，它的返回值才是真正的装饰器。所以一共发生两次调用，需要三层函数各接一批参数。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 带参数的装饰器：三层分别对应三次调用</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 带参数的装饰器：三层分别对应三次调用</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">retry</span><span class="p">(</span><span class="n">times</span><span class="p">):</span>                       <span class="c1"># 第 1 层：收【装饰器的参数】</span>
@@ -513,7 +513,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;手写等价:&quot;</span><span class="p">,</span> <span class="n">flaky2</span><span class="p">())</span>
 </code></pre></div>
 
-<section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>--- 定义 flaky ---</p><p>[1] retry(times) 执行，times = 3</p><p>[2] decorator(fn) 执行，fn = flaky</p><p>--- 定义完了 ---</p><p>[3] 第 1 次失败: 第 1 次不行</p><p>[3] 第 2 次失败: 第 2 次不行</p><p>结果: 第 3 次成功</p><p>[1] retry(times) 执行，times = 3</p><p>[2] decorator(fn) 执行，fn = flaky2</p><p>手写等价: ok</p></div></section>
+<section class="comparison-repair" id="comparison-repair-29"><section class="reading-information"><p class="reading-information-title">执行记录：按先后顺序读</p><ol><li>--- 定义 flaky ---</li><li>[1] retry(times) 执行，times = 3</li><li>[2] decorator(fn) 执行，fn = flaky</li><li>--- 定义完了 ---</li><li>[3] 第 1 次失败: 第 1 次不行</li><li>[3] 第 2 次失败: 第 2 次不行</li><li>结果: 第 3 次成功</li><li>[1] retry(times) 执行，times = 3</li><li>[2] decorator(fn) 执行，fn = flaky2</li><li>手写等价: ok</li></ol></section></section>
 <p>⭐ <strong>三层对应三批参数，一句话记住</strong>：</p>
 <div class="tw"><table>
 <thead>
@@ -542,7 +542,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </tbody>
 </table></div>
 <p>⚠️ <strong>少写一对括号，装饰那一步不会报错，报错的地方在很后面</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ⚠️ 少写一对括号：@retry 和 @retry(3) 差一层调用</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># ⚠️ 少写一对括号：@retry 和 @retry(3) 差一层调用</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">retry</span><span class="p">(</span><span class="n">times</span><span class="p">):</span>
@@ -588,7 +588,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ 想让 <code>@retry2</code> 和 <code>@retry2(times=5)</code> 都能用，就把「第一个位置参数是不是函数」当成分支条件，并<strong>把配置项做成 keyword-only</strong>（<code>*</code> 后面的参数）—— 这样不会有人误传位置参数进来。</p>
 <hr />
 <h2 id="_3">🚦 四、叠几个装饰器：从下往上应用，从上往下执行</h2>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 叠几个装饰器：从下往上【应用】，从上往下【执行】</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 叠几个装饰器：从下往上【应用】，从上往下【执行】</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">mark</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
@@ -621,7 +621,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_4">💀 五、叠在类方法上：从类上调能跑，从实例上调就废</h2>
 <p><code>@staticmethod</code> 和 <code>@classmethod</code> <strong>不是普通装饰器</strong>，它们返回的是<strong>描述符对象</strong>而不是函数。所以叠放顺序不是风格问题，是对错问题。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 装饰器叠在类方法上：顺序错了会怎样</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 装饰器叠在类方法上：顺序错了会怎样</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
@@ -670,7 +670,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <section class="visual-block visual-block-flow" aria-label="关键信息"><p class="visual-block-title">关键信息</p><div class="vb-flow"><div class="vb-flow-row"><span class="vb-flow-step">[log] ok_static args= (3,)</span></div><div class="vb-flow-row"><span class="vb-flow-step">ok_static : 6</span></div><div class="vb-flow-row"><span class="vb-flow-step">[log] ok_class args= (&lt;class &#x27;__main__.C&#x27;&gt;, 3)</span></div><div class="vb-flow-row"><span class="vb-flow-step">ok_class : C:3</span></div><div class="vb-flow-row"><span class="vb-flow-step">[log] bad_static args= (3,)</span></div><div class="vb-flow-row"><span class="vb-flow-step">bad_static: 6</span></div><div class="vb-flow-row"><span class="vb-flow-step">[log] bad_class args= (3,)</span></div><div class="vb-flow-row"><span class="vb-flow-step">bad_class: TypeError : &#x27;classmethod&#x27; object is not callable</span></div><div class="vb-flow-row"><span class="vb-flow-step">类字典里存的是什么类型:</span></div><div class="vb-flow-row"><span class="vb-flow-step">ok_static -&gt; staticmethod</span></div><div class="vb-flow-row"><span class="vb-flow-step">bad_static -&gt; function</span></div><div class="vb-flow-row"><span class="vb-flow-step">ok_class -&gt; classmethod</span></div><div class="vb-flow-row"><span class="vb-flow-step">bad_class -&gt; function</span></div></div></section>
 <p>⭐ <strong>最后四行是全部证据</strong>：正确顺序下类字典里存的是 <code>staticmethod</code> / <code>classmethod</code>；顺序反了之后<strong>变成了普通 <code>function</code></strong> —— 它已经不是静态方法了，只是一个恰好放在类里的函数。</p>
 <p>💀 <strong><code>bad_class</code> 当场炸了，反而是好事。真正贵的是 <code>bad_static</code>：它在上面那段输出里「跑通了」。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># bad_static 「从类上调能跑、从实例上调就废」</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># bad_static 「从类上调能跑、从实例上调就废」</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
@@ -736,7 +736,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="with">🧩 六、<code>with</code> 背后就两个方法</h2>
 <p><code>with obj as x:</code> 展开之后只有两步：调 <code>obj.__enter__()</code>，把返回值绑给 <code>x</code>；块结束时<strong>无论怎么结束</strong>，调 <code>obj.__exit__(异常类型, 异常对象, traceback)</code>。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># with 背后就两个方法：__enter__ 和 __exit__</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># with 背后就两个方法：__enter__ 和 __exit__</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Trace</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">tag</span>
@@ -771,11 +771,13 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <section class="visual-block visual-block-compare" aria-label="对照"><p class="visual-block-title">对照</p><div class="vb-compare"><p>[正常] __enter__ 跑了</p><p>body: ⭐ as 绑的是 __enter__ 的【返回值】</p><p>[正常] __exit__ 收到 exc_type = None</p><p>---</p><p>[出错] __enter__ 跑了</p><p>[出错] __exit__ 收到 exc_type = &lt;class &#x27;ValueError&#x27;&gt;</p><p>异常照常传出来: ValueError : 炸了</p><p>---</p><p>[提前 return] __enter__ 跑了</p><p>[提前 return] __exit__ 收到 exc_type = None</p><p>f() = 返回值</p><p>---</p><p>[break-0] __enter__ 跑了</p><p>[break-0] __exit__ 收到 exc_type = None</p><p>[break-1] __enter__ 跑了</p><p>[break-1] __exit__ 收到 exc_type = None</p></div></section>
-<p>⚠️ <strong><code>as x</code> 绑的是 <code>__enter__</code> 的返回值，不是那个对象本身。</strong> 上面 <code>x</code> 是一个字符串，不是 <code>Trace</code> 实例。多数库返回 <code>self</code>（所以你以为它们是一回事），但也有反例：<code>open()</code> 返回文件对象本身，而 <code>contextlib.suppress()</code> 的 <code>__enter__</code> 返回 <code>None</code>。⭐ <strong>写自己的上下文管理器时，<code>__enter__</code> 里忘了 <code>return self</code> 会让 <code>as x</code> 拿到 <code>None</code>，而这不报错</strong> —— 直到你用 <code>x.something</code> 才炸出一个 <code>AttributeError: 'NoneType' object has no attribute ...</code>。</p>
+<p>⚠️ <strong><code>as x</code> 绑的是 <code>__enter__</code> 的返回值，不是那个对象本身。</strong> 上面 <code>x</code> 是一个字符串，不是 <code>Trace</code> 实例。</p>
+<p>多数库返回 <code>self</code>（所以你以为它们是一回事），但也有反例：<code>open()</code> 返回文件对象本身，而 <code>contextlib.suppress()</code> 的 <code>__enter__</code> 返回 <code>None</code>。</p>
+<p>⭐ <strong>写自己的上下文管理器时，<code>__enter__</code> 里忘了 <code>return self</code> 会让 <code>as x</code> 拿到 <code>None</code>，而这不报错</strong> —— 直到你用 <code>x.something</code> 才炸出一个 <code>AttributeError: 'NoneType' object has no attribute ...</code>。</p>
 <p>⭐ <strong><code>__exit__</code> 的执行是无条件的</strong>：正常结束、<code>return</code>、<code>break</code>、<code>continue</code>、抛异常，五条路都会走到它。这正是它比手写清理可靠的全部原因。</p>
 <hr />
 <h2 id="with-tryfinally">⭐ 七、<code>with</code> 就是 <code>try/finally</code>，外加它多干的三件事</h2>
-<div class="codehilite"><pre><span></span><code><span class="c1"># with 就是 try/finally 的封装版；多个资源时 with 比手写可靠</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># with 就是 try/finally 的封装版；多个资源时 with 比手写可靠</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExitStack</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Res</span><span class="p">:</span>
@@ -842,7 +844,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="__exit__-true">💀 八、<code>__exit__</code> 返回 True 会把异常吞掉</h2>
 <p>这是本章一号杀手。<code>__exit__</code> 的返回值有一个你可能不知道自己在用的含义：<strong>返回真值 = 「这个异常我处理掉了，别往外抛」</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 💀 __exit__ 返回 True 会把异常吞掉，而且不留任何痕迹</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 💀 __exit__ 返回 True 会把异常吞掉，而且不留任何痕迹</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Swallow</span><span class="p">:</span>
@@ -918,7 +920,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="contextlibcontextmanageryield">🧯 九、<code>contextlib.contextmanager</code>：<code>yield</code> 把函数劈成两半</h2>
 <p>写一个类、两个 dunder 方法，只为了「前面做点事、后面做点事」太重了。<code>@contextmanager</code> 让你用<strong>一个生成器</strong>表达同一件事：<code>yield</code> 之前是 <code>__enter__</code>，之后是 <code>__exit__</code>。</p>
 <p>⭐ <strong>这就是 <a href="02-生成器与惰性求值.html">02 章</a> 的直接应用</strong>：生成器能被「暂停在半路」，<code>with</code> 块的整个执行过程就发生在那个暂停里。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># contextlib.contextmanager：yield 把函数劈成「进入前」和「退出后」</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># contextlib.contextmanager：yield 把函数劈成「进入前」和「退出后」</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">contextmanager</span>
 
 <span class="nd">@contextmanager</span>
@@ -978,7 +980,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="contextmanager">⚠️ 十、<code>contextmanager</code> 的三个坑，和一个好消息</h2>
-<div class="codehilite"><pre><span></span><code><span class="c1"># contextmanager 的三个坑：yield 前的异常 / 两个 yield / 一次性</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># contextmanager 的三个坑：yield 前的异常 / 两个 yield / 一次性</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">contextmanager</span>
 
 <span class="nd">@contextmanager</span>
@@ -1048,7 +1050,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </table></div>
 <p>⚠️ 坑 ③ 报的是什么错<strong>取决于版本</strong>（本机 3.13 是 <code>AttributeError</code>），⭐ <strong>别指望靠错误信息认出它</strong>，靠的是「<code>cm = xxx()</code> 存进变量」这个写法本身。</p>
 <p>⭐ <strong>好消息在这里</strong>：<code>@contextmanager</code> 造出来的对象<strong>同时也是个装饰器</strong>（它继承了 <code>ContextDecorator</code>），而且当装饰器用时每次调用都会自己重建一个新生成器，不受坑 ③ 影响。</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># ⭐ 同一个东西既能 with 也能 @：contextmanager 造出来的对象自带 ContextDecorator</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># ⭐ 同一个东西既能 with 也能 @：contextmanager 造出来的对象自带 ContextDecorator</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">contextmanager</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
@@ -1080,7 +1082,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="_5">💀 十一、站内那两行</h2>
 <p>⭐ 本章的两条主线在站内各有一处<strong>已经写好的对照</strong>，正好一正一反。</p>
 <p>反例：<a href="../PyTorch这个框架本身/07-train和eval改了什么.html"><code>PyTorch这个框架本身 07 · train 和 eval 改了什么</code></a> 里演示 BatchNorm 污染时，用的是手工切换：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`bn` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`bn` 来自你自己的代码，这一段只看写法</span>
 <span class="n">bn</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>                                   <span class="c1"># ⚠️ 忘了切回 eval()</span>
 <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>                        <span class="c1"># ⚠️ 而且包在 no_grad 里，看起来很安全</span>
     <span class="n">bn</span><span class="p">(</span><span class="n">val_x</span><span class="p">)</span>
@@ -1088,7 +1090,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </code></pre></div>
 
 <p>⭐ <strong>那两条注释指出的正是本章第七节的判据</strong>：<code>no_grad()</code> 是个上下文管理器，但它只管<strong>梯度</strong>，管不到 <code>train/eval</code> 模式；而 <code>train/eval</code> 这一对是手写的，中间一旦出异常就还原不了。实测：</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 成对操作写成手工的「设置…还原」，中途一炸就还原不了</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 成对操作写成手工的「设置…还原」，中途一炸就还原不了</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">contextmanager</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">FakeModel</span><span class="p">:</span>
@@ -1335,5 +1337,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -445,7 +445,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p><strong>而 kNN、K-Means、DBSCAN、余弦相似度检索、异常检测……
 全都建立在"距离有意义"这个前提上。</strong></p>
 </blockquote>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 你可以自己跑一遍（30 秒）</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 你可以自己跑一遍（30 秒）</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">500</span><span class="p">]:</span>
@@ -649,9 +649,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="_9">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p><strong>高维空间的几何和你的直觉完全相反</strong>。四个实测：①单位立方体内切球的体积 <strong>20 维只剩 0.0000025%</strong>——<strong>体积全在角落</strong>（d 维立方体有 2ᵈ 个角）；②单位球最外 5% 厚度那层壳，<strong>100 维占了 99.4% 的体积</strong>——<strong>点全挤在表面，没有「中心」可言</strong>，⚠️<strong>「离中心远 = 异常」的异常检测规则直接失效</strong>；③最远与最近距离的相对差，2 维 <strong>280.0</strong>，<strong>500 维只剩 0.19</strong>——<strong>最远的点只比最近的远 19%，「最近邻」没区分度了</strong>；④想让每维都有 10 个采样点，20 维要 <strong>10²⁰</strong> 个样本（比沙子还多）——<strong>永远填不满高维空间，所以高维必然过拟合</strong>。⭐<strong>统一原因</strong>：「靠近中心」需<strong>每一个</strong>坐标都靠近（p^d，<strong>指数衰减</strong>）；「远离中心」只需<strong>任意一个</strong>坐标偏远（<strong>指数增长</strong>）。💀受害者：kNN、K-Means、DBSCAN、相似度检索、<strong>任何「局部」方法</strong>，还有<strong>可视化直觉</strong>（2 维好看不代表 200 维如此）。五条出路：①降维 ②特征选择（<strong>大多数维度是噪声，删掉比压缩更好</strong>）③⭐<strong>加强归纳偏置，最重要的一条</strong>：一张 224×224×3 的图名义上 <strong>150,528 维</strong>，但 CNN 假设「局部相关 + 平移不变」，只看 3×3 窗口、共享权重，<strong>有效维度大幅降低——这就是 CNN 能处理 15 万维而 kNN 不能的原因</strong>；④正则化与先验 ⑤⭐<strong>流形假设</strong>：那 15 万维里绝大多数向量是噪声雪花，真实照片只占一个<strong>极低维弯曲子空间</strong>——<strong>这是 Embedding 与表示学习的理论基础：深度学习学的正是那个低维流形</strong>。诊断：<strong>n 小于 d 就是高危</strong>，n ≈ 10d~100d 需要正则化和特征选择；再看最近邻与最远邻距离比是否接近 1。⭐<strong>树模型每次只看一个特征切分、不算全维度距离，天然绕过了核心机制</strong>——这也是表格数据上它难被打败的原因。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>高维空间会改变体积、距离和邻域的直觉，低维图不能直接代替高维判断。</li><li>距离逐渐缺少区分度时，依赖局部邻居的方法会变得困难。</li><li>通过特征选择、表示学习和匹配任务的归纳偏置降低有效复杂度，再用验证结果判断。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="05b-PCA的推导.html">05b-PCA的推导.md</a></p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -679,5 +678,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

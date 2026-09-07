@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -315,7 +315,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="open">🧩 一、<code>open()</code> 的默认编码是个陷阱</h2>
 <p>先看本机（Windows 11，Python 3.13）真实的三个值：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">locale</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">locale</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">getpreferredencoding</span><span class="p">(</span><span class="kc">False</span><span class="p">))</span>   <span class="c1"># cp936     ⭐ 就是 GBK</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">getdefaultencoding</span><span class="p">())</span>             <span class="c1"># utf-8     ⚠️ 这个管的不是文件</span>
@@ -325,7 +325,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⚠️ <strong>三个值互不相同，而 <code>open()</code> 用的是第一个</strong> —— <code>cp936</code>。
 <code>sys.getdefaultencoding()</code> 管的是 <code>str</code> 和 <code>bytes</code> 互转，<strong>跟读文件没关系</strong>，别被名字骗了。</p>
 <p>于是这段代码在 Windows 上必炸：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
 
 <span class="n">d</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
 <span class="n">p</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s2">&quot;zh.txt&quot;</span><span class="p">)</span>
@@ -350,7 +350,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="bom">🧩 二、BOM：多出来的那个看不见的字符</h2>
 <p>有些工具（Excel 导出的 CSV 是重灾区）会在文件开头塞三个字节 <code>EF BB BF</code>，叫 <strong>BOM</strong>。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
 
 <span class="n">d</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
 <span class="n">p</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s2">&quot;bom.txt&quot;</span><span class="p">)</span>
@@ -374,7 +374,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <h2 id="print-emoji">🧩 三、💀 print 一个 emoji 就能崩掉整个构建</h2>
 <p>⚠️ <strong>这一节是本项目自己的事故</strong>，写在这里是因为它太典型了。</p>
 <p>Windows 控制台的默认编码不是 UTF-8。所以：</p>
-<div class="codehilite"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✅ 全部链接有效&quot;</span><span class="p">)</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;✅ 全部链接有效&quot;</span><span class="p">)</span>
 <span class="c1"># UnicodeEncodeError: &#39;gbk&#39; codec can&#39;t encode character &#39;\u2705&#39; ...</span>
 </code></pre></div>
 
@@ -387,7 +387,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 而它的<strong>失败信息里也有 emoji</strong> —— 所以「真有坏链」时同样崩。
 你看到一个 traceback，<strong>却分不清是脚本坏了还是站点坏了</strong>。</p>
 <p>⭐ <strong>对策是每个脚本开头钉死输出编码</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">io</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">io</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span>
 
 <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">TextIOWrapper</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">buffer</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">)</span>
 </code></pre></div>
@@ -405,7 +405,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="csv">🧩 四、换行符：CSV 的双回车</h2>
 <p>Windows 的行尾是 <code>\r\n</code>，Unix 是 <code>\n</code>。Python 的<strong>文本模式</strong>会替你转换 —— 而这正是问题所在。</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">csv</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">csv</span>
 
 <span class="n">d</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">nl</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
@@ -426,7 +426,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="pathlib">🧩 五、<code>pathlib</code>：别再用字符串拼路径</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
 
 <span class="n">p</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/data&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;raw&quot;</span> <span class="o">/</span> <span class="s2">&quot;x.csv&quot;</span>     <span class="c1"># ⭐ / 是重载过的</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>                                        <span class="c1"># 平台自适应的分隔符</span>
@@ -479,7 +479,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="windows">🧩 六、Windows 路径的三个坑</h2>
 <p><strong>① 反斜杠是转义符。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;C:\data</span><span class="se">\n</span><span class="s2">ew</span><span class="se">\t</span><span class="s2">est.txt&quot;</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;C:\data</span><span class="se">\n</span><span class="s2">ew</span><span class="se">\t</span><span class="s2">est.txt&quot;</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>     <span class="c1"># &#39;C:\\data\new\test.txt&#39;  ⚠️ \n 和 \t 已经变成换行和制表符了</span>
 <span class="c1"># ⚠️ 3.12 起解释器还会先打一行 SyntaxWarning: invalid escape sequence —— 别忽略它，那就是在报这个坑</span>
 </code></pre></div>
@@ -487,7 +487,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⭐ 用<strong>原始字符串</strong> <code>r"C:\data\new"</code>，或者干脆用正斜杠 <code>"C:/data/new"</code> —— <strong>Windows 的 API 两种都收</strong>。
 最好的办法还是 <code>pathlib</code>，它根本不需要你手写分隔符。</p>
 <p><strong>② 大小写不敏感。</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
 
 <span class="n">d</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
 <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s2">&quot;Abc.txt&quot;</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -505,7 +505,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </blockquote>
 <hr />
 <h2 id="_2">🧩 七、⭐ 相对路径相对于谁</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">pathlib</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">pathlib</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>                                   <span class="c1"># 当前【工作目录】</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>       <span class="c1"># 脚本【自己】在哪</span>
@@ -514,14 +514,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>⚠️ <strong><code>open("data.txt")</code> 找的是工作目录，不是脚本所在目录。</strong>
 同一个脚本，<code>cd 到项目根</code> 跑和 <code>cd 到脚本目录</code> 跑，读到的是<strong>两个不同的文件</strong>（或者一个报错）。</p>
 <p>⭐ <strong>要读「和脚本放在一起」的文件，永远这么写</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
 
 <span class="n">HERE</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
 <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">HERE</span> <span class="o">/</span> <span class="s2">&quot;data.txt&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 </code></pre></div>
 
 <p>💀 <strong>本项目在这上面栽过一次，而且极贵</strong>：构建脚本里写着</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 🧩 骨架：`os` 来自你自己的代码，这一段只看写法</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="c1"># 🧩 骨架：`os` 来自你自己的代码，这一段只看写法</span>
 <span class="n">ROOT</span>    <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\desktop\claude&quot;</span>                        <span class="c1"># 硬编码，指向【老位置】</span>
 <span class="n">SCRATCH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>  <span class="c1"># 跟着脚本走，指向【新位置】</span>
 </code></pre></div>
@@ -532,7 +532,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 唯一的破绽是产物的修改时间没变，而没人会去看。
 实况是：改完一整轮内容、构建、跑完 8 个校验脚本全过，回头一扫才发现 107 个文件还是旧的。</p>
 <p>⭐ <strong>现在全项目一律写成</strong>：</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<div class="codehilite" data-code-language="python"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
 <span class="n">ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)))</span>   <span class="c1"># 「本脚本上一级」</span>
 </code></pre></div>
@@ -632,5 +632,4 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

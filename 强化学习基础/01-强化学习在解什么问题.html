@@ -219,14 +219,14 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .gd { color: #FF4689 } /* Generic.Deleted */
 .codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
 .codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
-.codehilite .gr { color: #F8F8F2 } /* Generic.Error */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
 .codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
 .codehilite .gi { color: #A6E22E } /* Generic.Inserted */
 .codehilite .go { color: #66D9EF } /* Generic.Output */
 .codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
 .codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
 .codehilite .gu { color: #959077 } /* Generic.Subheading */
-.codehilite .gt { color: #F8F8F2 } /* Generic.Traceback */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
 .codehilite .kc { color: #66D9EF } /* Keyword.Constant */
 .codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
 .codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
@@ -237,7 +237,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .m { color: #AE81FF } /* Literal.Number */
 .codehilite .s { color: #E6DB74 } /* Literal.String */
 .codehilite .na { color: #A6E22E } /* Name.Attribute */
-.codehilite .nb { color: #F8F8F2 } /* Name.Builtin */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
 .codehilite .nc { color: #A6E22E } /* Name.Class */
 .codehilite .no { color: #66D9EF } /* Name.Constant */
 .codehilite .nd { color: #A6E22E } /* Name.Decorator */
@@ -271,15 +271,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
 .codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
 .codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
-.codehilite .bp { color: #F8F8F2 } /* Name.Builtin.Pseudo */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
 .codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
 .codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
 .codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
 .codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
 .codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
-.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
 <div id="scrollbar"></div>
 <header class="site"><div class="inner">
@@ -569,9 +569,8 @@ Thompson Sampling 在做的事</strong> —— 那一章告诉你怎么用，
 <hr />
 <h2 id="_12">🛑 可以停在这里</h2>
 <p>⚡ <strong>走神救援</strong></p>
-<blockquote>
-<p>RL 解决<strong>序贯决策</strong>：<strong>做一连串决定，每个影响后面的局面，好坏很久以后才知道</strong>。"中午吃什么"就有全部要素（⭐<strong>目标是这一年吃得最爽、不是这一顿</strong>）；RLHF 也是（<strong>状态＝已生成的 token、动作＝下一个 token、奖励＝对整段回答打的分</strong>⭐延迟）。<strong>和监督学习三个根本区别</strong>：①<strong>只有奖励分数、不是正确答案</strong>——它只说"你那步棋最后输了"，<strong>既不告诉你该走哪步，也不告诉你是哪步的错</strong>；②<strong>反馈可能延迟很久</strong>；③⭐<strong>数据是自己造的</strong>——策略决定你去哪些状态，💀<strong>相当于每走一步训练集就被换掉一次</strong>，训练因此极不稳定，⭐<strong>第 11 章 PPO 存在的全部理由就是限制每次更新的幅度</strong>。⭐<strong>信用分配问题</strong>：一局棋 80 步输了，<strong>是第 12 步还是第 60 步的失误？整个强化学习理论的核心就是在解决这件事</strong>，价值函数就是答案。<strong>五个零件</strong>：状态、动作、奖励、⭐<strong>策略 π——就是你要学的那个东西</strong>（<strong>RLHF 里语言模型本身就是策略</strong>）、回合。<strong>探索与利用</strong>：⚠️只利用就陷在局部最优，只探索就从不享受成果。⭐<strong>关键洞察：不确定性本身就是探索的理由</strong>——A 店试过 <strong>10 次平均 7 分</strong>、B 店只试过 <strong>1 次得 6 分</strong>，看均值该去 A，但 <strong>B 那 6 分可能是偶然，真实水平也许是 8 分</strong>。<strong>目标是累积奖励不是即时奖励</strong>（眼前 +1 的糖果，捡了会掉进 −100 的坑）。<strong>折扣因子 γ</strong>：⭐<strong>有效视野 ≈ 1/(1−γ)</strong>，γ=0.99 约看 100 步，⚠️<strong>γ=1 只能用在有限回合，否则会发散</strong>。⚠️<strong>效果上限等于你的奖励函数设计得多好</strong>——💀训练赛艇 AI，它发现<strong>原地转圈刷道具分比完成比赛得分更高，于是学会了原地转圈</strong>。它没错，是奖励函数错了，这叫<strong>奖励黑客</strong>。</p>
-</blockquote>
+<section class="reading-recap" aria-label="走神救援"><p>先记住这几件事</p><ul><li>策略决定怎样行动，目标通常是累计回报而非眼前奖励。</li><li>奖励可能延迟，探索又影响未来数据；不能照搬固定训练集的直觉。</li><li>先检查奖励是否代表真实目标，否则模型可能学会钻评分规则的空子。</li></ul></section>
+
 <p><strong>下一节</strong> 👉 <a href="02-MDP.html">02-MDP.md</a> ⭐</p>
 <div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
 <div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
@@ -599,5 +598,4 @@ Thompson Sampling 在做的事</strong> —— 那一章告诉你怎么用，
   var bar=document.getElementById('scrollbar');
   addEventListener('scroll',function(){var h=document.documentElement,
     m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
-})();</script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><script src="../assets/analytics.js" async></script>
-</body></html>
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>

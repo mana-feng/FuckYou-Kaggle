@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>17c · 按岗位补深度，不把所有名词当必修 · 智能体工程教程</title>
+<script>(function(){var t=localStorage.getItem('recsys-theme');
+if(t)document.documentElement.setAttribute('data-theme',t);})();</script><style>
+@font-face{font-family:"CodeCJK";
+ src:url("../assets/code-cjk-mono.woff2") format("woff2");
+ font-weight:400;font-style:normal;font-display:swap;}
+
+:root{
+/* ⭐ 字号阶梯：正文 = 1em（body 18px）。其余一律从这几档取，
+   不要再写 .92 / .94 / .95 这种随手值 —— body 18px 下它们相差不到 0.5px，
+   分不出来，只会让后来的人不知道该抄哪一个。 */
+  --fs-xs:.8em;    /* 角标、方向标签 */
+  --fs-sm:.88em;   /* 代码、图注、注解 */
+  --fs-md:.93em;   /* 略小于正文：表格、面板、目录 —— 站内最常用 */
+  --fs-lg:1.14em;  /* h3 */
+  --fs-xl:1.42em;  /* h2 */
+  --fs-2xl:1.9em;  /* h1 */
+--bg:#faf9f6;--fg:#2a2a33;--muted:#6b6b76;--card:#fff;--border:#e6e2d9;
+ --accent:#e8590c;--accent-soft:#fff0e6;--link:#0b6bcb;--quote-bg:#f4f1ea;
+ --code-bg:#282923;--done:#2f9e44;--danger:#c92a2a;--shadow:0 1px 3px rgba(0,0,0,.07)}
+[data-theme="dark"]{--bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;
+ --border:#33343d;--accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;
+ --quote-bg:#24252c;--done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#191a1f;--fg:#e6e4de;--muted:#9a99a2;--card:#22232a;--border:#33343d;
+ --accent:#ff8a3d;--accent-soft:#33261c;--link:#6cb2ff;--quote-bg:#24252c;
+ --done:#51cf66;--danger:#ff6b6b;--shadow:0 1px 3px rgba(0,0,0,.4)}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-size:18px;line-height:1.85;
+ font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased}
+#scrollbar{position:fixed;top:0;left:0;height:4px;background:var(--accent);width:0;z-index:99}
+header.site{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--border);
+ z-index:50;padding:0 16px;opacity:.98}
+header.site .inner{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;
+ height:52px;font-size:14px}
+header.site a{color:var(--fg);text-decoration:none;white-space:nowrap}
+header.site a:hover{color:var(--accent)}
+header.site .title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);text-align:center}
+header.site button{background:none;border:1px solid var(--border);border-radius:8px;
+ color:var(--fg);cursor:pointer;padding:4px 10px;font-size:14px}
+header.site button:hover{border-color:var(--accent)}
+header.site button.done{background:var(--done);color:#fff;border-color:var(--done)}
+main{max-width:880px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:var(--fs-2xl);line-height:1.35;margin:.4em 0 .6em;letter-spacing:-.01em}
+h2{font-size:var(--fs-xl);margin:2.2em 0 .7em;padding-top:.4em;border-top:2px dashed var(--border)}
+h3{font-size:var(--fs-lg);margin:1.6em 0 .5em}
+a{color:var(--link)}p{margin:.85em 0}
+hr{border:none;border-top:2px dashed var(--border);margin:2.2em 0}
+blockquote{margin:1.2em 0;padding:12px 18px;background:var(--quote-bg);
+ border-left:4px solid var(--accent);border-radius:0 10px 10px 0}
+blockquote p{margin:.4em 0}
+ul,ol{padding-left:1.5em}li{margin:.35em 0}
+/* ⭐ 表格横向滚动兜底：`width:100%` 让表格只会挤不会溢出，实测 305px 宽下
+   最窄单元格只剩 40px。给单元格一个 min-width 让它不再无限压缩，超出的由 .tw 兜住。
+   2–4 列的表仍然占满不滚动，只有真挤不下的多列表才出现滚动条。 */
+.tw{overflow-x:auto;margin:1.2em 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;margin:0;font-size:var(--fs-md)}
+th,td{min-width:5.2em}
+th,td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--quote-bg)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--quote-bg) 45%,transparent)}
+code{font-family:"CodeCJK","Sarasa Mono SC","Cascadia Mono","JetBrains Mono",Consolas,NSimSun,monospace;
+ font-size:var(--fs-sm);background:var(--quote-bg);padding:2px 6px;border-radius:5px}
+pre{background:var(--code-bg);border-radius:12px;padding:16px 18px;overflow-x:auto;
+ line-height:1.6;box-shadow:var(--shadow)}
+pre code{background:none;padding:0;color:#f8f8f2;font-size:var(--fs-sm)}
+.codehilite{background:var(--code-bg);border-radius:12px;overflow-x:auto;margin:1.2em 0}
+.codehilite pre{margin:0;background:none;box-shadow:none}
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:12px 18px;margin:1.2em 0;box-shadow:var(--shadow)}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:.6em}
+.toc-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+ padding:10px 18px;margin:1.4em 0;font-size:var(--fs-md)}
+.toc-box summary{cursor:pointer;font-weight:600;color:var(--muted)}
+.toc-box ul{margin:.5em 0;padding-left:1.3em}.toc-box a{text-decoration:none}
+.pagenav{display:flex;gap:14px;margin-top:50px}
+.pagenav a{flex:1;padding:16px 18px;background:var(--card);border:1px solid var(--border);
+ border-radius:14px;text-decoration:none;color:var(--fg);box-shadow:var(--shadow)}
+.pagenav a:hover{border-color:var(--accent)}
+.pagenav .dir{font-size:var(--fs-xs);color:var(--muted)}.pagenav .next{text-align:right}
+.donebar{margin-top:36px;text-align:center}
+.donebar button{font-size:1.05em;padding:12px 34px;border-radius:999px;cursor:pointer;
+ border:2px solid var(--accent);background:var(--accent-soft);color:var(--fg);font-weight:600}
+.donebar button.done{background:var(--done);border-color:var(--done);color:#fff}
+.donebar .hint{font-size:var(--fs-sm);color:var(--muted);margin-top:8px}
+.srcbox{background:var(--card);border:1px solid var(--border);border-left:5px solid var(--accent);
+ border-radius:0 14px 14px 0;padding:16px 20px;margin:0 0 26px;box-shadow:var(--shadow);font-size:var(--fs-md)}
+.srcbox .tag{display:inline-block;background:var(--accent);color:#fff;font-size:var(--fs-xs);
+ padding:2px 10px;border-radius:99px;margin-bottom:8px;font-weight:600}
+.srcbox dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.srcbox dt{color:var(--muted);white-space:nowrap}
+.srcbox dd{margin:0;word-break:break-all}
+.srcbox .warn{margin-top:10px;color:var(--muted);font-size:var(--fs-md);border-top:1px dashed var(--border);padding-top:8px}
+/* ── ASCII 边框图的替代组件 ──────────────────────────────────
+   站里原来用 ┌─┐│└─┘ 画方框。那玩意在窄屏上必然折行错位（中位宽 53 字符、
+   19 处超过 60），而且等宽字体下中英混排本来就对不齐 —— 看着永远是歪的。
+   下面三个组件覆盖了 71 处边框图里的绝大多数形态，全部：
+     · 只用 CSS 变量取色 → 自动跟随深浅色主题
+     · 不设固定宽度 → 任何屏宽都不溢出
+     · 窄屏自动改成单列堆叠                                       */
+
+/* ① 堆叠面板：原「一个大框 + ├──┤ 横隔成几段」 */
+.panels{margin:20px 0;border:1px solid var(--border);border-radius:12px;
+ overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.panels .panel{padding:15px 18px;border-top:1px solid var(--border)}
+.panels .panel:first-child{border-top:0}
+.panels .ph{font-weight:700;color:var(--accent);line-height:1.55;margin-bottom:9px}
+.panels .pl{margin:0;padding:0;list-style:none}
+.panels .pl li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.panels .pl li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.panels .pl b{color:var(--fg);font-weight:600}
+.panels .pt{margin-top:10px;background:var(--accent-soft);color:var(--accent);
+ border-radius:7px;padding:8px 11px;font-size:var(--fs-md);line-height:1.6}
+
+/* ② 单框卡片：原「一个方框，里面几行」 */
+.framecard{margin:18px 0;border:1px solid var(--border);border-radius:12px;
+ padding:15px 18px;background:var(--card);box-shadow:var(--shadow)}
+.framecard .fh{font-weight:700;color:var(--accent);margin-bottom:9px;line-height:1.55}
+.framecard ul{margin:0;padding:0;list-style:none}
+.framecard li{position:relative;padding:3px 0 3px 15px;line-height:1.7;font-size:var(--fs-md)}
+.framecard li::before{content:"";position:absolute;left:2px;top:.88em;width:5px;height:5px;
+ border-radius:50%;background:var(--accent);opacity:.45}
+.framecard .fnote{margin-top:10px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6;
+ border-top:1px dashed var(--border);padding-top:8px}
+
+/* ③ 流程链：原「几个方框用 → 或 ↓ 串起来」。宽屏横排，窄屏自动竖排 */
+.flowchain{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:18px 0}
+.flowchain .fstep{flex:1 1 150px;min-width:0;border:1px solid var(--border);border-radius:10px;
+ background:var(--card);padding:11px 13px;font-size:var(--fs-md);line-height:1.55}
+.flowchain .fstep b{display:block;color:var(--accent);margin-bottom:3px}
+.flowchain .fstep span{color:var(--muted);font-size:var(--fs-md)}
+.flowchain .farrow{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+ padding:0 9px;color:var(--accent);font-size:var(--fs-lg);opacity:.75}
+@media(max-width:600px){
+ .flowchain{flex-direction:column}
+ .flowchain .fstep{flex:1 1 auto}
+ .flowchain .farrow{padding:5px 0;transform:rotate(90deg)}
+}
+
+/* 图例样式提到基础样式里：原本由 insert_figs 按需注入，但现在正文里也会
+   手写内联 SVG（把拓扑类字符画换掉），那些文件不一定被 insert_figs 碰过。
+   insert_figs 里有 `if "figure.dia{" not in c` 的判断，所以不会重复注入。 */
+figure.dia{margin:22px 0;padding:0}
+figure.dia svg{display:block;width:100%;height:auto;max-width:760px;margin:0 auto}
+figure.dia figcaption{text-align:center;color:var(--muted);font-size:var(--fs-sm);
+ margin-top:8px;line-height:1.6}
+figure.dia .dia-t{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+/* 手机端不要把一整张信息图压成几像素的字。图在自己的容器内横向滑动，
+   正文仍保持正常宽度；800px 覆盖当前图集中最大的 viewBox 宽度。 */
+@media(max-width:640px){
+/* ⭐ 块公式也要能自己横向滚动：pre/表格/图都有兜底，只有它没有 —— 一条长公式会把整页撑出横向滚动条 */
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0 6px}
+figure.dia{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:0 0 8px;
+ -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+figure.dia::before{content:"图较宽，可左右滑动查看完整内容";display:block;width:max-content;
+ margin:0 0 8px;padding:4px 8px;border-radius:999px;color:var(--muted);font-size:var(--fs-xs);
+ background:var(--quote-bg);letter-spacing:.01em}
+figure.dia svg{width:800px;min-width:800px;max-width:none;margin:0}
+}
+
+.dia-lead{color:var(--muted);font-size:var(--fs-md);margin:14px 0 -6px;line-height:1.65}
+.dia-note{color:var(--muted);font-size:var(--fs-sm);margin:-8px 0 16px;line-height:1.65}
+
+.gapmap{margin:18px 0}
+.gapmap .lead{color:var(--muted);font-size:var(--fs-md);margin-bottom:14px}
+.gaprow{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(150px,1.5fr) minmax(160px,1.6fr);
+ gap:0;align-items:stretch;border:1px solid var(--border);border-radius:14px;overflow:hidden;
+ margin-bottom:10px;background:var(--card);box-shadow:var(--shadow)}
+.gaprow>div{padding:13px 16px;display:flex;align-items:center;font-size:var(--fs-md);line-height:1.5}
+.gaprow .who{font-weight:700;background:var(--code-bg);color:#f8f8f2;border-right:1px solid var(--border)}
+.gaprow .has{color:var(--fg);border-right:1px dashed var(--border)}
+.gaprow .miss{color:var(--danger,#e5534b);font-weight:600}
+.gaprow .miss::before{content:"缺 ";opacity:.65;font-weight:400}
+.gapdown{text-align:center;font-size:1.6em;color:var(--accent);margin:4px 0 10px;line-height:1}
+.gapfill{border:2px solid var(--accent);border-radius:16px;padding:18px 20px;background:var(--card);
+ box-shadow:var(--shadow)}
+.gapfill b{color:var(--accent);display:block;margin-bottom:10px;font-size:1.05em}
+.gapfill ul{margin:0;padding-left:1.1em;columns:2;column-gap:26px}
+.gapfill li{margin:.28em 0;font-size:var(--fs-md);break-inside:avoid}
+@media(max-width:640px){
+ .gaprow{grid-template-columns:1fr}
+ .gaprow .who{border-right:none;border-bottom:1px solid var(--border)}
+ .gaprow .has{border-right:none;border-bottom:1px dashed var(--border)}
+ .gapfill ul{columns:1}
+}
+::selection{background:var(--accent);color:#fff}
+@media(max-width:640px){body{font-size:16px}header.site .prevnext{display:none}}
+
+pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite { background: #272822; color: #F8F8F2 }
+.codehilite .c { color: #959077 } /* Comment */
+.codehilite .err { color: #ED007E; background-color: #1E0010 } /* Error */
+.codehilite .esc { color: #F8F8F2 } /* Escape */
+.codehilite .g { color: #F8F8F2 } /* Generic */
+.codehilite .k { color: #66D9EF } /* Keyword */
+.codehilite .l { color: #AE81FF } /* Literal */
+.codehilite .n { color: #F8F8F2 } /* Name */
+.codehilite .o { color: #FF4689 } /* Operator */
+.codehilite .x { color: #F8F8F2 } /* Other */
+.codehilite .p { color: #F8F8F2 } /* Punctuation */
+.codehilite .ch { color: #959077 } /* Comment.Hashbang */
+.codehilite .cm { color: #959077 } /* Comment.Multiline */
+.codehilite .cp { color: #959077 } /* Comment.Preproc */
+.codehilite .cpf { color: #959077 } /* Comment.PreprocFile */
+.codehilite .c1 { color: #959077 } /* Comment.Single */
+.codehilite .cs { color: #959077 } /* Comment.Special */
+.codehilite .gd { color: #FF4689 } /* Generic.Deleted */
+.codehilite .ge { color: #F8F8F2; font-style: italic } /* Generic.Emph */
+.codehilite .ges { color: #F8F8F2; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF4689 } /* Generic.Error */
+.codehilite .gh { color: #F8F8F2 } /* Generic.Heading */
+.codehilite .gi { color: #A6E22E } /* Generic.Inserted */
+.codehilite .go { color: #66D9EF } /* Generic.Output */
+.codehilite .gp { color: #FF4689; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { color: #F8F8F2; font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #959077 } /* Generic.Subheading */
+.codehilite .gt { color: #66D9EF } /* Generic.Traceback */
+.codehilite .kc { color: #66D9EF } /* Keyword.Constant */
+.codehilite .kd { color: #66D9EF } /* Keyword.Declaration */
+.codehilite .kn { color: #FF4689 } /* Keyword.Namespace */
+.codehilite .kp { color: #66D9EF } /* Keyword.Pseudo */
+.codehilite .kr { color: #66D9EF } /* Keyword.Reserved */
+.codehilite .kt { color: #66D9EF } /* Keyword.Type */
+.codehilite .ld { color: #E6DB74 } /* Literal.Date */
+.codehilite .m { color: #AE81FF } /* Literal.Number */
+.codehilite .s { color: #E6DB74 } /* Literal.String */
+.codehilite .na { color: #A6E22E } /* Name.Attribute */
+.codehilite .nb { color: #A6E22E } /* Name.Builtin */
+.codehilite .nc { color: #A6E22E } /* Name.Class */
+.codehilite .no { color: #66D9EF } /* Name.Constant */
+.codehilite .nd { color: #A6E22E } /* Name.Decorator */
+.codehilite .ni { color: #F8F8F2 } /* Name.Entity */
+.codehilite .ne { color: #A6E22E } /* Name.Exception */
+.codehilite .nf { color: #A6E22E } /* Name.Function */
+.codehilite .nl { color: #F8F8F2 } /* Name.Label */
+.codehilite .nn { color: #F8F8F2 } /* Name.Namespace */
+.codehilite .nx { color: #A6E22E } /* Name.Other */
+.codehilite .py { color: #F8F8F2 } /* Name.Property */
+.codehilite .nt { color: #FF4689 } /* Name.Tag */
+.codehilite .nv { color: #F8F8F2 } /* Name.Variable */
+.codehilite .ow { color: #FF4689 } /* Operator.Word */
+.codehilite .pm { color: #F8F8F2 } /* Punctuation.Marker */
+.codehilite .w { color: #F8F8F2 } /* Text.Whitespace */
+.codehilite .mb { color: #AE81FF } /* Literal.Number.Bin */
+.codehilite .mf { color: #AE81FF } /* Literal.Number.Float */
+.codehilite .mh { color: #AE81FF } /* Literal.Number.Hex */
+.codehilite .mi { color: #AE81FF } /* Literal.Number.Integer */
+.codehilite .mo { color: #AE81FF } /* Literal.Number.Oct */
+.codehilite .sa { color: #E6DB74 } /* Literal.String.Affix */
+.codehilite .sb { color: #E6DB74 } /* Literal.String.Backtick */
+.codehilite .sc { color: #E6DB74 } /* Literal.String.Char */
+.codehilite .dl { color: #E6DB74 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #E6DB74 } /* Literal.String.Doc */
+.codehilite .s2 { color: #E6DB74 } /* Literal.String.Double */
+.codehilite .se { color: #AE81FF } /* Literal.String.Escape */
+.codehilite .sh { color: #E6DB74 } /* Literal.String.Heredoc */
+.codehilite .si { color: #E6DB74 } /* Literal.String.Interpol */
+.codehilite .sx { color: #E6DB74 } /* Literal.String.Other */
+.codehilite .sr { color: #E6DB74 } /* Literal.String.Regex */
+.codehilite .s1 { color: #E6DB74 } /* Literal.String.Single */
+.codehilite .ss { color: #E6DB74 } /* Literal.String.Symbol */
+.codehilite .bp { color: #A6E22E } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #A6E22E } /* Name.Function.Magic */
+.codehilite .vc { color: #F8F8F2 } /* Name.Variable.Class */
+.codehilite .vg { color: #F8F8F2 } /* Name.Variable.Global */
+.codehilite .vi { color: #F8F8F2 } /* Name.Variable.Instance */
+.codehilite .vm { color: #F8F8F2 } /* Name.Variable.Magic */
+.codehilite .il { color: #AE81FF } /* Literal.Number.Integer.Long */</style><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script></head><body>
+<div id="scrollbar"></div>
+<header class="site"><div class="inner">
+  <a href="../index.html">🏠 总目录</a><a href="index.html">📚 本教程</a>
+  <span class="title">17c · 岗位专项</span>
+  <span class="prevnext"><a href="17b-企业知识助手交付项目.html">←</a>
+  <a href="18-挑战项目A-手搓Agent框架.html">→</a></span>
+  <button class="js-done-btn">☐ 打卡</button>
+  <button id="themeToggle" title="切换深浅色">🌗</button>
+</div></header>
+<main><details class="toc-box"><summary>📑 本页目录（点开跳转）</summary><div class="toc">
+<ul>
+<li><a href="#_1">🎯 一句话</a></li>
+<li><a href="#jd">一、把 JD 翻译成能展示的产出</a></li>
+<li><a href="#text-to-sql-sql">二、Text-to-SQL：能生成 SQL 只完成了开头</a></li>
+<li><a href="#lora-sft">三、LoRA / SFT：证明学到任务，而不是背下样本</a></li>
+<li><a href="#_2">四、推理服务：吞吐和用户等待不是同一个目标</a></li>
+<li><a href="#_3">五、多模态、图检索与记忆按场景扩展</a></li>
+<li><a href="#_4">✅ 检查点</a></li>
+<li><a href="#_5">🔗 接下来去哪</a></li>
+</ul>
+</div>
+</details>
+<h1 id="17c">17c · 按岗位补深度，不把所有名词当必修</h1>
+<p>⏱ <strong>按目标选一条</strong> ｜ 先完成共同项目，再做专项证据</p>
+<h2 id="_1">🎯 一句话</h2>
+<p><strong>求职所需的“深”取决于你负责哪一层。</strong> 应用开发要交付可靠系统，检索算法要解释数据与排序，模型训练和推理岗位还需要独立的实验与资源测量。</p>
+<p>🔗 共同基线：<a href="17b-企业知识助手交付项目.html">企业知识助手</a>。本页是岗位分流与扩展验收书，下面未附实现的实验均是<strong>待完成任务</strong>，不算参考项目已验证的能力。先用目标 JD 的职责与年限筛选，不用一个岗位的要求代替整个市场。</p>
+<h2 id="jd">一、把 JD 翻译成能展示的产出</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>岗位方向</th>
+<th>共同能力之外的重点</th>
+<th>一份可核对的作品</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>大模型应用 / 后端</td>
+<td>Python、异步、API、SQL、鉴权、队列、缓存、测试与部署</td>
+<td>从请求到业务副作用的 trace、故障恢复与容量报告</td>
+</tr>
+<tr>
+<td>RAG / 搜索算法</td>
+<td>分词、检索标注、embedding、排序、ANN、难负例</td>
+<td>逐题对照、分组指标、召回—延迟实验与训练消融</td>
+</tr>
+<tr>
+<td>Agent / 平台</td>
+<td>工具协议、编排、状态、预算、隔离、评测平台</td>
+<td>目标宿主联调、跨进程恢复、权限与重复执行负例</td>
+</tr>
+<tr>
+<td>SFT / 对齐 / 模型算法</td>
+<td>PyTorch、Transformer、优化、数据、LoRA 与训练评估</td>
+<td>可复跑训练配置、曲线、保留集、退化与合并验证</td>
+</tr>
+<tr>
+<td>推理 / 基础设施</td>
+<td>显存、KV cache、批处理、量化、调度、服务可观测</td>
+<td>固定负载下吞吐、TTFT/TPOT/p99、质量与成本对照</td>
+</tr>
+<tr>
+<td>文档 / 多模态应用</td>
+<td>OCR、版面、图表、图文检索、页级引用</td>
+<td>各版面类型的提取错误集、定位与检索生成评测</td>
+</tr>
+</tbody>
+</table></div>
+<p>框架名是实现工具，不代替 Python 异步取消、事务隔离、HTTP 超时、索引和复杂度等基础。遇到陌生要求，先定位它属于数据、模型、服务还是业务边界，再安排补课。</p>
+<h2 id="text-to-sql-sql">二、Text-to-SQL：能生成 SQL 只完成了开头</h2>
+<p>从<a href="../AI全栈/06-关系数据库.html">关系数据库</a>与<a href="16c-接进真实产品.html">结构化输出</a>接入。准备三张带关联的虚构业务表、字段说明、主外键与指标定义；题目包含同名客户、退款、NULL、时区与“一客多单”。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>环节</th>
+<th>具体问题</th>
+<th>实验与验收</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>schema linking</td>
+<td>“收入”是含税、退款前还是净额</td>
+<td>定义指标口径，列出选择哪些表列的依据</td>
+</tr>
+<tr>
+<td>值与实体映射</td>
+<td>用户说简称、大小写或同名对象</td>
+<td>参数化绑定值；不拼用户文本进 SQL</td>
+</tr>
+<tr>
+<td>查询生成</td>
+<td>多表 JOIN 放大金额、时间边界错</td>
+<td>构造重复行、NULL 与月末跨时区反例</td>
+</tr>
+<tr>
+<td>安全执行</td>
+<td>只写 SELECT 仍可能访问敏感表或调用危险函数</td>
+<td>只读受限数据库角色、表列白名单、AST 校验、超时、行数/扫描预算</td>
+</tr>
+<tr>
+<td>租户隔离</td>
+<td>模型忘记 tenant 条件</td>
+<td>数据库 RLS/受限视图兜底，应用身份不能自由设租户</td>
+</tr>
+<tr>
+<td>结果解释</td>
+<td>单位、空结果、聚合分母被误读</td>
+<td>答案附口径与查询结果；空结果不等于“业务不存在”</td>
+</tr>
+</tbody>
+</table></div>
+<p>AST 校验和正则都不能代替数据库权限；“只允许 SELECT”也不自动限制所有函数、CTE、系统表与高代价计算。禁止对生产库试未知生成语句，先用隔离只读快照验证。</p>
+<p>评测比较<strong>执行结果的语义等价</strong>，不强制 SQL 字符串完全相同。改变测试数据以识别碰巧相等的错误 SQL；记录超时、越权与拒答，不能只统计成功执行率。工具修复最多几轮、每轮读取多少 schema，都要有预算。</p>
+<h2 id="lora-sft">三、LoRA / SFT：证明学到任务，而不是背下样本</h2>
+<p>路线：<a href="../大模型全景导论/05-微调与LoRA.html">微调与 LoRA</a> → 数据清洗 → 小规模训练 → 保留集与业务对照。共同知识助手的事实更新先交给 RAG；稳定输出风格、格式或行为模式才值得设计 SFT 对照。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>实验变量</th>
+<th>观察什么</th>
+<th>常见误判</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据去重、划分</td>
+<td>按来源/用户/时间隔离，检查近重复</td>
+<td>改写题跨训练与测试导致虚高</td>
+</tr>
+<tr>
+<td>chat template、label mask</td>
+<td>模板与推理一致，只对目标响应算损失</td>
+<td>把用户输入也训练成答案，EOS 与停词错误</td>
+</tr>
+<tr>
+<td>rank、alpha、target modules</td>
+<td>参数量、显存、保留集收益</td>
+<td>rank 越高越好；忽略目标模块差异</td>
+</tr>
+<tr>
+<td>LR、batch、累积、warmup、epoch</td>
+<td>train/validation loss、梯度与业务分数</td>
+<td>训练 loss 下降就叫效果提升</td>
+</tr>
+<tr>
+<td>packing、长度、截断</td>
+<td>完整样本占比、跨样本边界</td>
+<td>重要答案在训练时已经被截掉</td>
+</tr>
+<tr>
+<td>BF16 / FP16 / 低比特训练</td>
+<td>数值稳定、NaN、吞吐、内存</td>
+<td>量化训练与量化部署混为一谈</td>
+</tr>
+<tr>
+<td>adapter 合并与加载</td>
+<td>合并前后固定样例结果</td>
+<td>tokenizer 或 base revision 不一致</td>
+</tr>
+</tbody>
+</table></div>
+<p>先跑极小批次证明样本、mask 与 loss 正常，再估算一次完整实验成本。记录 seed、数据哈希、模型 revision、硬件、有效 batch 与训练步数。发生 OOM，区分模型参数、优化器、激活和序列长度，按目标减少 micro-batch、长度或启用检查点；梯度累积只改变有效 batch，不消除单样本本身的内存需求。</p>
+<p>交付至少比较原模型、提示优化、RAG、微调的任务表现与退化；通用问答、工具参数、安全约束与拒答都需回归。没有训练环境和实际运行记录时，这一分支仍是方案，不能写“完成微调”。</p>
+<h2 id="_2">四、推理服务：吞吐和用户等待不是同一个目标</h2>
+<p>路线：<a href="../大模型全景导论/06-推理优化.html">推理优化</a> → <a href="../大模型全景导论/07-本地部署与开源生态.html">本地部署</a> → <a href="../模型上线之后/18-成本与容量.html">成本与容量</a>。</p>
+<p>固定模型与输入/输出长度分布，分别测试单请求、目标并发和过载。记录 TTFT（首 token 时间）、TPOT（后续每 token 时间）、端到端延迟、吞吐、排队、失败率、显存与费用；流式“很快出现第一个字”不能掩盖最终完成很慢。</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>调优方向</th>
+<th>机制与代价</th>
+<th>需要保留的对照</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>continuous batching</td>
+<td>提高设备利用，排队策略影响尾延迟</td>
+<td>不同到达率、长短请求混合</td>
+</tr>
+<tr>
+<td>KV cache 与最大上下文</td>
+<td>长输入/并发占用缓存</td>
+<td>预填充与解码分开，观察抢占与回收</td>
+</tr>
+<tr>
+<td>prefix cache</td>
+<td>共用前缀减少重复计算</td>
+<td>冷热分开，租户隔离与敏感缓存处理</td>
+</tr>
+<tr>
+<td>量化</td>
+<td>权重/缓存变小，可能损失质量</td>
+<td>同任务质量、吞吐、硬件算子支持</td>
+</tr>
+<tr>
+<td>tensor/pipeline parallel</td>
+<td>大模型跨卡，通信有代价</td>
+<td>通信拓扑、批量大小、单请求延迟</td>
+</tr>
+<tr>
+<td>speculative decoding</td>
+<td>草稿模型提议、主模型验证</td>
+<td>接受率、任务长度与额外显存</td>
+</tr>
+<tr>
+<td>admission control</td>
+<td>过载前限制进入</td>
+<td>429、Retry-After、配额与取消传播</td>
+</tr>
+</tbody>
+</table></div>
+<p>服务升级需要模型、tokenizer、chat template、采样、工具 schema 与量化配置一起版本化。回滚测试保留模型请求样本与安全断言；故障时可降级成只返回检索依据、排队或人工处理，不能让备用模型跳过业务权限。</p>
+<h2 id="_3">五、多模态、图检索与记忆按场景扩展</h2>
+<p><strong>多模态文档</strong>从<a href="../大模型全景导论/10-多模态.html">多模态章节</a>开始。测试文字、图片、表格、跨页关系与页坐标；比较 OCR 文本检索与图文模型，对图表单位和视觉引用逐页核对。语音还要测噪声、说话人、延迟与敏感录音保留；视频需要时间段定位，不能只引用整个文件。</p>
+<p><strong>GraphRAG</strong>适用于需要跨实体关系与全局归纳的任务假设。先用同一题集证明普通检索漏在哪，再测实体抽取、消歧、关系方向、来源与时间、社区摘要、增量更新和删除传播。图边同样有来源与权限，不能把受限事实压成公共摘要。报告构图成本、查询成本与增益，不能只展示漂亮关系图。</p>
+<p><strong>Agent 记忆</strong>接<a href="04b-Agent记忆.html">记忆章节</a>。区分用户明确偏好、临时任务状态与检索知识；写入带来源、时间、作用域和置信度。测试矛盾更新、TTL、用户撤销、跨用户读取与恶意记忆注入。记忆不是无限追加聊天记录；删除要覆盖索引、缓存与恢复后副本。</p>
+<p><strong>多 Agent</strong>接<a href="13-多Agent协作.html">协作章节</a>。先验证单体基线，然后比较专业分工、共享/隔离上下文和裁决策略；测并发冲突、环路、任务重复领取、预算放大与失败成员退出。任务成功与约束合规分别计分。</p>
+<blockquote>
+<p>🛑 <strong>现在可以停</strong>：选一个与目标 JD 对应的专项，把表里的实验做成真实记录。其余保留为按需入口。</p>
+</blockquote>
+<h2 id="_4">✅ 检查点</h2>
+<ol>
+<li>SQL 能执行、训练 loss 下降、吞吐变高，分别还缺什么证据？</li>
+<li>新增 GraphRAG 或多 Agent 前，应先证明什么？</li>
+</ol>
+<details>
+<summary>展开答案</summary>
+<ol>
+<li>SQL 要验证语义、权限与成本；训练要验证保留集和退化；吞吐要同时验证用户延迟、错误率与答案质量。</li>
+<li>现有简单基线的具体失败类别，以及新结构在同任务、同预算口径下的可测增益。</li>
+</ol>
+</details>
+<div class="reading-recap"><strong>⚡ 走神救援</strong><p>按职责选深度；每个专项都要有对照、负例和资源口径；完成计划不等于完成实验。</p></div>
+
+<h2 id="_5">🔗 接下来去哪</h2>
+<p>➡️ 随时查：<a href="附录C-全链路故障排查手册.html">附录 C · 全链路故障排查</a>。</p>
+<div class="donebar"><button class="js-done-btn" data-long="1">完成了？点这里打卡 ✔</button>
+<div class="hint">打卡记录保存在你的浏览器里，首页能看到总进度</div></div>
+<nav class="pagenav"><a href="17b-企业知识助手交付项目.html"><div class="dir">← 上一节</div>🔨 17b · 企业知识助手</a><a class="next" href="18-挑战项目A-手搓Agent框架.html"><div class="dir">下一节 →</div>⚙️ 挑战A · 手搓框架</a></nav>
+</main>
+<script>(function(){
+  var KEY="agent-progress", FILE="17c-\u5c97\u4f4d\u4e13\u9879\u4e0e\u8fdb\u9636\u5b9e\u9a8c.md";
+  function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}}
+  function refresh(){var d=!!load()[FILE];
+    document.querySelectorAll('.js-done-btn').forEach(function(b){b.classList.toggle('done',d);
+      b.textContent=d?(b.dataset.long?'✅ 已完成本章（点击撤销）':'✅ 已完成')
+                     :(b.dataset.long?'完成了？点这里打卡 ✔':'☐ 打卡');});}
+  document.querySelectorAll('.js-done-btn').forEach(function(b){b.addEventListener('click',function(){
+    var p=load(); if(p[FILE]){delete p[FILE]}else{p[FILE]=Date.now()}
+    localStorage.setItem(KEY,JSON.stringify(p)); refresh();});});
+  refresh();
+
+  var tt=document.getElementById('themeToggle');
+  if(tt)tt.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=dark?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    localStorage.setItem('recsys-theme',next);});
+  var bar=document.getElementById('scrollbar');
+  addEventListener('scroll',function(){var h=document.documentElement,
+    m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?(h.scrollTop/m*100):0)+'%';},{passive:true});
+})();</script><link rel="stylesheet" href="../assets/code-reader.css"><script src="../assets/code-reader.js"></script><script src="../assets/reader-assist.js"></script><script src="../assets/diagram-reader.js"></script><script src="../assets/visual-blocks.js"></script><script src="../assets/glossary.js"></script><link rel="stylesheet" href="../assets/reading-tasks.css"><script defer src="../assets/reading-tasks.js"></script></body></html>
